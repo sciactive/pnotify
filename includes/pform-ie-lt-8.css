@@ -1,0 +1,32 @@
+/* Required for IE 7 and lower. */
+.pf-form {
+	overflow: hidden; /* Hides an extended border. */
+	height: 100%; /* Makes IE6 enclose floats. */
+}
+.pf-form fieldset {
+	overflow: visible; /* IE7 will show scrollbars without this. */
+}
+.pf-form div.pf-element {
+	width: 100%; /* Positions the inputs correctly. */
+}
+.pf-form div.pf-buttons {
+	width: 550px; /* Keeps IE's broken box model from pushing the button box out of the form. Increase or decrease if needed. */
+}
+.pf-form-twocol div.pf-element {
+	width: 48%;
+}
+.pf-form-twocol div.pf-heading {
+	width: 100%;
+}
+.pf-form-twocol div.pf-buttons {
+	width: 550px;
+}
+.pf-form-threecol div.pf-element {
+	width: 32%;
+}
+.pf-form-threecol div.pf-heading {
+	width: 100%;
+}
+.pf-form-threecol div.pf-buttons {
+	width: 550px;
+}

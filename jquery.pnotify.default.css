@@ -1,0 +1,77 @@
+/* 
+	Document   : jquery.pnotify.default.css
+	Created on : Nov 23, 2009, 3:14:10 PM
+	Author     : Hunter Perrin
+	Description:
+		Default styling for Pines Notify jQuery plugin.
+*/
+
+/* Notice
+----------------------------------*/
+.ui-pnotify {
+	top: 18px;
+	right: 18px;
+	position: absolute;
+	height: auto;
+	/* Ensure that the notices are on top of everything else. */
+	z-index: 9999;
+}
+/* This hides position: fixed from IE6, which doesn't understand it. */
+html > body .ui-pnotify {
+	position: fixed;
+}
+.ui-pnotify .ui-pnotify-shadow {
+	margin: 0;
+	position: absolute;
+	top: .1em;
+	left: .1em;
+	bottom: -.2em;
+	right: -.2em;
+	z-index: -1;
+}
+.ui-pnotify-container {
+	background-position: 0 0;
+	padding: .8em;
+	height: 100%;
+}
+.ui-pnotify-closer {
+	float: right;
+	margin-left: .2em;
+}
+.ui-pnotify-title {
+	display: block;
+	font-size: 1.2em;
+	font-weight: bold;
+	margin-bottom: .4em;
+}
+.ui-pnotify-text {
+	display: block;
+}
+.ui-pnotify-icon, .ui-pnotify-icon span {
+	display: block;
+	float: left;
+	margin-right: .2em;
+}
+/* History Pulldown
+----------------------------------*/
+.ui-pnotify-history-container {
+	position: absolute;
+	top: 0;
+	right: 18px;
+	width: 70px;
+	border-top: none;
+	/* Ensure that the history container is on top of the notices. */
+	z-index: 10000;
+}
+.ui-pnotify-history-container .ui-pnotify-history-header {
+	padding: 2px;
+}
+.ui-pnotify-history-container button {
+	cursor: pointer;
+	display: block;
+	width: 100%;
+}
+.ui-pnotify-history-container .ui-pnotify-history-pulldown {
+	display: block;
+	margin: 0 auto;
+}
