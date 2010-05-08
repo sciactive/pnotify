@@ -6,8 +6,6 @@
 		The default icon set for Pines Notify. (Tango)
 */
 
-@import "tango-icon-theme/icons.css";
-
 .ui-pnotify .icon {
 	background-color: transparent;
 	background-repeat: no-repeat;

@@ -11,6 +11,8 @@
 		<!-- Theme Switcher Widget -->
 		<link type="text/css" rel="stylesheet" href="http://jqueryui.com/themes/base/ui.all.css" />
 		<script type="text/javascript" src="http://jqueryui.com/themeroller/themeswitchertool/"></script>
+		<!-- Tango Icons -->
+		<link href="tango/icons.css" rel="stylesheet" type="text/css" />
 		<!-- Pines Notify -->
 		<script type="text/javascript" src="jquery.pnotify.js"></script>
 		<link href="jquery.pnotify.default.css" rel="stylesheet" type="text/css" />
@@ -271,7 +273,7 @@
 				var loader = $.pnotify({
 					pnotify_title: "Fake Load",
 					pnotify_text: "<div class=\"progress_bar\" />",
-					pnotify_notice_icon: 'icon picon_16x16_animations_throbber',
+					pnotify_notice_icon: 'icon picon_16x16_throbber',
 					pnotify_hide: false,
 					pnotify_closer: false,
 					pnotify_history: false,
@@ -298,7 +300,7 @@
 				var percent = 0;
 				var notice = $.pnotify({
 					pnotify_title: "Please Wait",
-					pnotify_notice_icon: 'icon picon_16x16_animations_throbber',
+					pnotify_notice_icon: 'icon picon_16x16_throbber',
 					pnotify_hide: false,
 					pnotify_closer: false,
 					pnotify_opacity: .75,
@@ -319,7 +321,7 @@
 							options.pnotify_title = "Done!";
 							options.pnotify_hide = true;
 							options.pnotify_closer = true;
-							options.pnotify_notice_icon = 'icon picon_16x16_emblems_emblem-default';
+							options.pnotify_notice_icon = 'icon picon_16x16_emblem-default';
 							options.pnotify_opacity = 1;
 							options.pnotify_shadow = true;
 							options.pnotify_width = $.pnotify.defaults.pnotify_width;
@@ -649,7 +651,7 @@
 					<input value="Pines Icon Notice" onclick="$.pnotify({
 						pnotify_title: 'Pines Icon Notice',
 						pnotify_text: 'I have an icon that uses the Pines icon styles.',
-						pnotify_notice_icon: 'icon picon_16x16_actions_mail-message-new'
+						pnotify_notice_icon: 'icon picon_16x16_mail-message-new'
 					});" type="button" />
 					<input value="jQuery UI Icon Notice" onclick="$.pnotify({
 						pnotify_title: 'jQuery UI Icon Notice',
@@ -746,7 +748,7 @@
 						pnotify_title: 'Custom Styled Notice',
 						pnotify_text: 'I have an additional class that\'s used to give me special styling. I always wanted to be pretty.',
 						pnotify_addclass: 'custom',
-						pnotify_notice_icon: 'icon picon_32x32_emotes_face-monkey'
+						pnotify_notice_icon: 'icon picon_32x32_face-monkey'
 					});" type="button" />
 				</div>
 
@@ -779,7 +781,7 @@
 						pnotify_title: 'Pines Icon Error',
 						pnotify_text: 'Oh no. Something\'s wrong with your network, and I\'m showing you visually using an appropriate icon to indicate the type of error that has occured. You know, network.',
 						pnotify_type: 'error',
-						pnotify_error_icon: 'icon picon_16x16_status_network-error'
+						pnotify_error_icon: 'icon picon_16x16_network-error'
 					});" type="button" />
 					<input value="jQuery UI Icon Error" onclick="$.pnotify({
 						pnotify_title: 'jQuery UI Icon Error',
@@ -985,7 +987,7 @@
 						If a deeper level of customization is needed, there are
 						widget-specific classes referenced within the
 						jquery.pnotify.default.css stylesheet that can be modified.
-						These classes are highlighed in bold below.
+						These classes are highlighted in bold below.
 					</p>
 				</div>
 				<h2>Sample markup with jQuery UI CSS Framework classes</h2>
