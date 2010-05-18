@@ -186,7 +186,7 @@
 			
 			// Build main options.
 			var opts;
-			if (typeof options == "string") {
+			if (typeof options != "object") {
 				opts = $.extend({}, $.pnotify.defaults);
 				opts.pnotify_text = options;
 			} else {
@@ -519,7 +519,7 @@
 				"html": opts.pnotify_title
 			})
 			.appendTo(pnotify.container);
-			if (typeof opts.pnotify_title != "string")
+			if (opts.pnotify_title === false)
 				pnotify.title_container.hide();
 
 			// Replace new lines with HTML line breaks.
@@ -531,7 +531,7 @@
 				"html": opts.pnotify_text
 			})
 			.appendTo(pnotify.container);
-			if (typeof opts.pnotify_text != "string")
+			if (opts.pnotify_text === false)
 				pnotify.text_container.hide();
 
 			// Set width and min height.
@@ -679,6 +679,10 @@
 	};
 
 	$.pnotify.defaults = {
+		// The notice's title.
+		pnotify_title: false,
+		// The notice's text.
+		pnotify_text: false,
 		// Additional classes to be added to the notice. (For custom styling.)
 		pnotify_addclass: "",
 		// Create a non-blocking notice. It lets the user click elements underneath it.

@@ -470,7 +470,7 @@
 				}
 				info_box = $.pnotify({
 					pnotify_title: "Pines Notify Stacks",
-					pnotify_text: "Stacks are used to position notices, and also determine where new notices will go when they're created. Each notice that's placed into a stack will be positioned related to the other notices in that stack. There is no limit to the number of stacks, and no limit to the number of notices in each stack.",
+					pnotify_text: "Stacks are used to position notices and determine where new notices will go when they're created. Each notice that's placed into a stack will be positioned related to the other notices in that stack. There is no limit to the number of stacks, and no limit to the number of notices in each stack.",
 					pnotify_delay: 20000,
 					pnotify_stack: false,
 					pnotify_before_open: function(pnotify){
@@ -569,8 +569,13 @@
 						</ul>
 					</div>
 				</div>
-				<h2>Demos</h2>
+				<h2>Simple Demos</h2>
 				<div class="pf-group ui-widget-content ui-corner-all">
+					<input value="Hoot (To See Transparency)" onclick="$('.wrapper').toggleClass('background'); if (!credit_shown) $.pnotify({
+						pnotify_title: 'Picture Credit',
+						pnotify_text: 'Owl picture courtesy of:\n&lt;a href=\'http://www.flickr.com/photos/barloventomagico/\' onclick=\'window.open(this.href); return false;\'&gt;barloventomagico&lt;/a&gt;',
+						pnotify_opacity: .8
+					}); credit_shown = true;" style="float: right;" type="button" />
 					<input value="Regular Notice" onclick="$.pnotify({
 						pnotify_title: 'Regular Notice',
 						pnotify_text: 'Check me out! I\'m a notice.'
@@ -580,7 +585,83 @@
 						pnotify_text: 'Check me out! I\'m a sticky notice. You\'ll have to close me yourself.',
 						pnotify_hide: false
 					});" type="button" />
+					<input value="Transparent Notice" onclick="$.pnotify({
+						pnotify_title: 'See Through Notice',
+						pnotify_text: 'No one ever pays attention to me. Why should they? I\'m practically invisible.',
+						pnotify_opacity: .8
+					});" type="button" />
+					<input value="Shadow Notice" onclick="$.pnotify({
+						pnotify_title: 'Shadow Notice',
+						pnotify_text: 'I have a shadow. It makes me pop out!\n\nNote: Shadows do not work in IE.',
+						pnotify_shadow: true
+					});" type="button" />
+					<br style="margin-bottom: 5px;" />
+					<input value="Pines Icon Notice" onclick="$.pnotify({
+						pnotify_title: 'Pines Icon Notice',
+						pnotify_text: 'I have an icon that uses the Pines icon styles.',
+						pnotify_notice_icon: 'picon picon_16x16_mail-message-new'
+					});" type="button" />
+					<input value="jQuery UI Icon Notice" onclick="$.pnotify({
+						pnotify_title: 'jQuery UI Icon Notice',
+						pnotify_text: 'I have an icon that uses the jQuery UI icon styles.',
+						pnotify_notice_icon: 'ui-icon ui-icon-mail-closed'
+					});" type="button" />
+					<input value="No Icon Notice" onclick="$.pnotify({
+						pnotify_title: 'No Icon Notice',
+						pnotify_text: 'I have no icon.',
+						pnotify_notice_icon: ''
+					});" type="button" />
 					<input value="Simple Notice" onclick="$.pnotify('Check me out! I\'m a notice.');" type="button" />
+				</div>
+
+				<div class="pf-group ui-widget-content ui-corner-all">
+					<input value="Regular Error" onclick="$.pnotify({
+						pnotify_title: 'Oh No!',
+						pnotify_text: 'Something terrible happened. It seems everything\'s ok now.',
+						pnotify_type: 'error'
+					});" type="button" />
+					<input value="Sticky Error" onclick="$.pnotify({
+						pnotify_title: 'Uh Oh!',
+						pnotify_text: 'Something really terrible happened. You really need to read this, so I won\'t close automatically.',
+						pnotify_type: 'error',
+						pnotify_hide: false
+					});" type="button" />
+					<input value="Transparent Error" onclick="$.pnotify({
+						pnotify_title: 'See Through Error',
+						pnotify_text: 'There\'s an error, but no one cares.',
+						pnotify_type: 'error',
+						pnotify_opacity: .8
+					});" type="button" />
+					<input value="Shadow Error" onclick="$.pnotify({
+						pnotify_title: 'Shadow Error',
+						pnotify_text: 'I have a shadow. It makes me pop out!',
+						pnotify_type: 'error',
+						pnotify_shadow: true
+					});" type="button" />
+					<br style="margin-bottom: 5px;" />
+					<input value="Pines Icon Error" onclick="$.pnotify({
+						pnotify_title: 'Pines Icon Error',
+						pnotify_text: 'Oh no. Something\'s wrong with your network, and I\'m showing you visually using an appropriate icon to indicate the type of error that has occured. You know, network.',
+						pnotify_type: 'error',
+						pnotify_error_icon: 'picon picon_16x16_network-error'
+					});" type="button" />
+					<input value="jQuery UI Icon Error" onclick="$.pnotify({
+						pnotify_title: 'jQuery UI Icon Error',
+						pnotify_text: 'Oh no. Something\'s wrong with your network, and I\'m showing you visually using an appropriate icon to indicate the type of error that has occured. You know, network.',
+						pnotify_type: 'error',
+						pnotify_error_icon: 'ui-icon ui-icon-signal-diag'
+					});" type="button" />
+					<input value="No Icon Error" onclick="$.pnotify({
+						pnotify_title: 'No Icon Error',
+						pnotify_text: 'I have no icon.',
+						pnotify_type: 'error',
+						pnotify_error_icon: ''
+					});" type="button" />
+				</div>
+
+				<h2>Advanced Demos</h2>
+				<div class="pf-group ui-widget-content ui-corner-all">
+					<input value="Number Notice" onclick="$.pnotify(Math.round(Math.random()*9999));" type="button" />
 					<input value="Big Notice" onclick="$.pnotify({
 						pnotify_title: 'Tall Notice',
 						pnotify_text: 'Check me out! I\'m tall and wide, even though my text isn\'t.',
@@ -637,39 +718,33 @@
 						pnotify_animation: 'none'
 					});" type="button" />
 					<input value="Rich Notice" onclick="void show_rich();" type="button" />
-					<input value="Transparent Notice" onclick="$.pnotify({
-						pnotify_title: 'See Through Notice',
-						pnotify_text: 'No one ever pays attention to me. Why should they? I\'m practically invisible.',
-						pnotify_opacity: .8
-					});" type="button" />
-					<input value="Hoot (To See Transparency)" onclick="$('.wrapper').toggleClass('background'); if (!credit_shown) $.pnotify({
-						pnotify_title: 'Picture Credit',
-						pnotify_text: 'Owl picture courtesy of:\n&lt;a href=\'http://www.flickr.com/photos/barloventomagico/\' onclick=\'window.open(this.href); return false;\'&gt;barloventomagico&lt;/a&gt;',
-						pnotify_opacity: .8
-					}); credit_shown = true;" type="button" />
-					<br style="margin-bottom: 5px;" />
-					<input value="Pines Icon Notice" onclick="$.pnotify({
-						pnotify_title: 'Pines Icon Notice',
-						pnotify_text: 'I have an icon that uses the Pines icon styles.',
-						pnotify_notice_icon: 'picon picon_16x16_mail-message-new'
-					});" type="button" />
-					<input value="jQuery UI Icon Notice" onclick="$.pnotify({
-						pnotify_title: 'jQuery UI Icon Notice',
-						pnotify_text: 'I have an icon that uses the jQuery UI icon styles.',
-						pnotify_notice_icon: 'ui-icon ui-icon-mail-closed'
-					});" type="button" />
-					<input value="No Icon Notice" onclick="$.pnotify({
-						pnotify_title: 'No Icon Notice',
-						pnotify_text: 'I have no icon.',
-						pnotify_notice_icon: ''
-					});" type="button" />
-					<input value="Shadow Notice" onclick="$.pnotify({
-						pnotify_title: 'Shadow Notice',
-						pnotify_text: 'I have a shadow. It makes me pop out!\n\nNote: Shadows do not work in IE.',
-						pnotify_shadow: true
-					});" type="button" />
 					<input value="Pretend Loader" onclick="fake_load();" type="button" />
 					<input value="Dynamic Notice" onclick="dyn_notice();" type="button" />
+					<input value="Notice to Error" onclick="$.pnotify({
+						pnotify_title: 'Notice',
+						pnotify_text: 'Right now I\'m a notice.',
+						pnotify_before_close: function(pnotify){
+							pnotify.pnotify({
+								pnotify_title: 'Error',
+								pnotify_text: 'Uh oh. Now I\'ve become an error.',
+								pnotify_type: 'error',
+								pnotify_before_close: function(pnotify){
+									pnotify.pnotify({
+										pnotify_title: 'Notice',
+										pnotify_text: 'Oh, nevermind. Everything\'s cool now.',
+										pnotify_type: 'notice',
+										pnotify_before_close: null
+									});
+									pnotify.pnotify_queue_remove();
+									pnotify.effect('bounce');
+									return false;
+								}
+							});
+							pnotify.pnotify_queue_remove();
+							pnotify.effect('bounce');
+							return false;
+						}
+					});" type="button" />
 					<br style="margin-bottom: 5px;" />
 					<input value="Permanotice" onclick="if (permanotice) {
 						permanotice.pnotify_display();
@@ -749,76 +824,6 @@
 						pnotify_text: 'I have an additional class that\'s used to give me special styling. I always wanted to be pretty.',
 						pnotify_addclass: 'custom',
 						pnotify_notice_icon: 'picon picon_32x32_face-monkey'
-					});" type="button" />
-				</div>
-
-				<div class="pf-group ui-widget-content ui-corner-all">
-					<input value="Regular Error" onclick="$.pnotify({
-						pnotify_title: 'Oh No!',
-						pnotify_text: 'Something terrible happened. It seems everything\'s ok now.',
-						pnotify_type: 'error'
-					});" type="button" />
-					<input value="Sticky Error" onclick="$.pnotify({
-						pnotify_title: 'Uh Oh!',
-						pnotify_text: 'Something really terrible happened. You really need to read this, so I won\'t close automatically.',
-						pnotify_type: 'error',
-						pnotify_hide: false
-					});" type="button" />
-					<input value="Transparent Error" onclick="$.pnotify({
-						pnotify_title: 'See Through Error',
-						pnotify_text: 'There\'s an error, but no one cares.',
-						pnotify_type: 'error',
-						pnotify_opacity: .8
-					});" type="button" />
-					<input value="Shadow Error" onclick="$.pnotify({
-						pnotify_title: 'Shadow Error',
-						pnotify_text: 'I have a shadow. It makes me pop out!',
-						pnotify_type: 'error',
-						pnotify_shadow: true
-					});" type="button" />
-					<br style="margin-bottom: 5px;" />
-					<input value="Pines Icon Error" onclick="$.pnotify({
-						pnotify_title: 'Pines Icon Error',
-						pnotify_text: 'Oh no. Something\'s wrong with your network, and I\'m showing you visually using an appropriate icon to indicate the type of error that has occured. You know, network.',
-						pnotify_type: 'error',
-						pnotify_error_icon: 'picon picon_16x16_network-error'
-					});" type="button" />
-					<input value="jQuery UI Icon Error" onclick="$.pnotify({
-						pnotify_title: 'jQuery UI Icon Error',
-						pnotify_text: 'Oh no. Something\'s wrong with your network, and I\'m showing you visually using an appropriate icon to indicate the type of error that has occured. You know, network.',
-						pnotify_type: 'error',
-						pnotify_error_icon: 'ui-icon ui-icon-signal-diag'
-					});" type="button" />
-					<input value="No Icon Error" onclick="$.pnotify({
-						pnotify_title: 'No Icon Error',
-						pnotify_text: 'I have no icon.',
-						pnotify_type: 'error',
-						pnotify_error_icon: ''
-					});" type="button" />
-					<input value="Notice to Error" onclick="$.pnotify({
-						pnotify_title: 'Notice',
-						pnotify_text: 'Right now I\'m a notice.',
-						pnotify_before_close: function(pnotify){
-							pnotify.pnotify({
-								pnotify_title: 'Error',
-								pnotify_text: 'Uh oh. Now I\'ve become an error.',
-								pnotify_type: 'error',
-								pnotify_before_close: function(pnotify){
-									pnotify.pnotify({
-										pnotify_title: 'Notice',
-										pnotify_text: 'Oh, nevermind. Everything\'s cool now.',
-										pnotify_type: 'notice',
-										pnotify_before_close: null
-									});
-									pnotify.pnotify_queue_remove();
-									pnotify.effect('bounce');
-									return false;
-								}
-							});
-							pnotify.pnotify_queue_remove();
-							pnotify.effect('bounce');
-							return false;
-						}
 					});" type="button" />
 				</div>
 
