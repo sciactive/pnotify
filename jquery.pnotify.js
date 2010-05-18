@@ -599,13 +599,14 @@
 							"click": function(){
 								// Look up the last history notice, and display it.
 								var i = 1;
-								while (!body_data[body_data.length - i] || !body_data[body_data.length - i].pnotify_history) {
+								while (!body_data[body_data.length - i] || !body_data[body_data.length - i].pnotify_history || body_data[body_data.length - i].is(":visible")) {
 									if (body_data.length - i === 0)
 										return false;
 									i++;
 								}
-								if (body_data[body_data.length - i].pnotify_display)
-									body_data[body_data.length - i].pnotify_display();
+								var n = body_data[body_data.length - i];
+								if (n.pnotify_display)
+									n.pnotify_display();
 								return false;
 							}
 					}))
