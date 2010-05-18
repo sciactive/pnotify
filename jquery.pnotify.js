@@ -1,5 +1,5 @@
 /*
- * jQuery Pines Notify (pnotify) Plugin 1.0
+ * jQuery Pines Notify (pnotify) Plugin 1.0.0 Beta 1
  *
  * Copyright (c) 2009 Hunter Perrin
  *
@@ -299,7 +299,7 @@
 			pnotify.container = $("<div />", {"class": "ui-widget ui-widget-content ui-corner-all ui-pnotify-container "+(opts.pnotify_type == "error" ? "ui-state-error" : "ui-state-highlight")})
 			.appendTo(pnotify);
 
-			pnotify.pnotify_version = "1.0.0";
+			pnotify.pnotify_version = "1.0.0b1";
 
 			// This function is for updating the notice.
 			pnotify.pnotify = function(options) {
