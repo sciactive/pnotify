@@ -739,7 +739,7 @@
 						pnotify_text: 'I don\'t even bother to animate. I\'m too cool for that.',
 						pnotify_animation: 'none'
 					});" type="button" />
-					<input value="Rich Notice" onclick="void show_rich();" type="button" />
+					<input value="Rich Notice" onclick="show_rich();" type="button" />
 					<input value="Pretend Loader" onclick="fake_load();" type="button" />
 					<input value="Dynamic Notice" onclick="dyn_notice();" type="button" />
 					<input value="Notice to Error" onclick="$.pnotify({
@@ -854,27 +854,27 @@
 				<div class="pf-group ui-widget-content ui-corner-all">
 					<span>
 						Custom Stacks:
-						<input style="margin-left: 10px;" value="What are stacks?" onclick="void show_stack_info();" type="button" />
+						<input style="margin-left: 10px;" value="What are stacks?" onclick="show_stack_info();" type="button" />
 					</span>
 					<br style="margin-bottom: 5px;" />
-					<input value="Notice" onclick="void show_stack_topleft();" type="button" />
-					<input value="Error" onclick="void show_stack_topleft(true);" type="button" />
+					<input value="Notice" onclick="show_stack_topleft();" type="button" />
+					<input value="Error" onclick="show_stack_topleft(true);" type="button" />
 					Top Left. Moves down, then right. Pushes to stack top.
 					<br style="margin-bottom: 5px;" />
-					<input value="Notice" onclick="void show_stack_bottomleft();" type="button" />
-					<input value="Error" onclick="void show_stack_bottomleft(true);" type="button" />
+					<input value="Notice" onclick="show_stack_bottomleft();" type="button" />
+					<input value="Error" onclick="show_stack_bottomleft(true);" type="button" />
 					Bottom Left. Moves right, then up. Pushes to stack bottom.
 					<br style="margin-bottom: 5px;" />
-					<input value="Notice" onclick="void show_stack_bottomright();" type="button" />
-					<input value="Error" onclick="void show_stack_bottomright(true);" type="button" />
+					<input value="Notice" onclick="show_stack_bottomright();" type="button" />
+					<input value="Error" onclick="show_stack_bottomright(true);" type="button" />
 					Bottom Right. Moves up, then left. Pushes to stack bottom.
 					<br style="margin-bottom: 5px;" />
-					<input value="Notice" onclick="void show_stack_custom();" type="button" />
-					<input value="Error" onclick="void show_stack_custom(true);" type="button" />
+					<input value="Notice" onclick="show_stack_custom();" type="button" />
+					<input value="Error" onclick="show_stack_custom(true);" type="button" />
 					Custom. Moves right, then down. Pushes to stack bottom.
 					<br style="margin-bottom: 5px;" />
-					<input value="Notice" onclick="void show_stack_custom2();" type="button" />
-					<input value="Error" onclick="void show_stack_custom2(true);" type="button" />
+					<input value="Notice" onclick="show_stack_custom2();" type="button" />
+					<input value="Error" onclick="show_stack_custom2(true);" type="button" />
 					Custom. Moves left, then up. Pushes to stack top.
 					<br style="margin-bottom: 5px;" />
 					<input value="Hover Over Me" onmouseover="tooltip.pnotify_display();" onmousemove="tooltip.css({'top': event.clientY+12, 'left': event.clientX+12});" onmouseout="tooltip.pnotify_remove();" type="button" />
@@ -905,7 +905,7 @@
 					});}" type="button" />
 					-->
 					<br style="margin-bottom: 5px;" />
-					<input value="Remove All Notices" onclick="void $.pnotify_remove_all();" type="button" />
+					<input value="Remove All Notices" onclick="$.pnotify_remove_all();" type="button" />
 				</div>
 
 				<div class="pf-group ui-widget-content ui-corner-all">
@@ -997,10 +997,10 @@
 				<div class="pf-group ui-widget-content ui-corner-all">
 					This isn't really a feature of Pines Notify, but it's cool:
 					<br />
-					<input value="Consume alert()" onclick="void consume_alert();" type="button" />
-					<input value="Release alert()" onclick="void release_alert();" type="button" />
+					<input value="Consume alert()" onclick="consume_alert();" type="button" />
+					<input value="Release alert()" onclick="release_alert();" type="button" />
 					<br style="margin-bottom: 5px;" />
-					<input value="Display a JavaScript Alert" onclick="void alert('I\'m a standard alert, called with alert().')" type="button" />
+					<input value="Display a JavaScript Alert" onclick="alert('I\'m a standard alert, called with alert().')" type="button" />
 				</div>
 				<h2>Theming</h2>
 				<div>
