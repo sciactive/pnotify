@@ -9,7 +9,6 @@
 		<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.1/themes/smoothness/jquery-ui.css" media="all" rel="stylesheet" type="text/css" />
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.1/jquery-ui.js"></script>
 		<!-- Theme Switcher Widget -->
-		<link type="text/css" rel="stylesheet" href="http://jqueryui.com/themes/base/ui.all.css" />
 		<script type="text/javascript" src="http://jqueryui.com/themeroller/themeswitchertool/"></script>
 		<!-- Oxygen Icons -->
 		<link href="oxygen/icons.css" rel="stylesheet" type="text/css" />
@@ -104,22 +103,25 @@
 				text-shadow: 1px 1px 0.5px black;
 			}
 			.ui-pnotify.custom .ui-pnotify-container {
-				background-color: #60D6A7;
+				background-color: #666;
 				background-image: none;
-				border: 3px ridge #21825B;
+				border: none;
+				-moz-border-radius: 10px;
+				-webkit-border-radius: 10px;
+				border-radius: 10px;
 			}
 			.ui-pnotify.custom .ui-pnotify-title {
 				font-size: 15pt;
-				color: #007143;
+				color: #FFF;
 			}
 			.ui-pnotify.custom .ui-pnotify-text {
 				font-size: 11pt;
-				color: #A66000;
+				color: #FFF;
 			}
 			.ui-pnotify.custom .ui-pnotify-closer {
 				position: absolute;
-				bottom: 4px;
-				right: 4px;
+				bottom: 5px;
+				right: 5px;
 			}
 			.ui-pnotify.custom .ui-pnotify-icon {
 				float: right;
@@ -189,7 +191,7 @@
 
 				$.pnotify({
 					pnotify_title: "Pines Notify",
-					pnotify_text: "Welcome. Try hovering over me. You can click anything behind me.",
+					pnotify_text: "Welcome. Try hovering over me. You can click things behind me.",
 					pnotify_nonblock: true,
 					pnotify_mouse_reset: false,
 					pnotify_before_close: function(pnotify){
@@ -474,6 +476,7 @@
 					pnotify_text: "Stacks are used to position notices and determine where new notices will go when they're created. Each notice that's placed into a stack will be positioned related to the other notices in that stack. There is no limit to the number of stacks, and no limit to the number of notices in each stack.",
 					pnotify_notice_icon: "picon picon_16x16_object-order-raise",
 					pnotify_delay: 20000,
+					pnotify_history: false,
 					pnotify_stack: false,
 					pnotify_before_open: function(pnotify){
 						// Position this notice in the center of the screen.
@@ -482,12 +485,23 @@
 							"left": ($(window).width() / 2) - (pnotify.width() / 2)
 						});
 						// Make a modal screen overlay.
-						if (!modal_overlay)
-							modal_overlay = $("<div />", {"class": "ui-widget-overlay"}).appendTo("body");
+						if (modal_overlay)
+							modal_overlay.fadeIn("fast");
+						else
+							modal_overlay = $("<div />", {
+								"class": "ui-widget-overlay",
+								"css": {
+									"display": "none",
+									"position": "fixed",
+									"top": "0",
+									"bottom": "0",
+									"right": "0",
+									"left": "0"
+								}
+							}).appendTo("body").fadeIn("fast");
 					},
-					pnotify_after_close: function(){
-						modal_overlay.remove();
-						modal_overlay = null;
+					pnotify_before_close: function(){
+						modal_overlay.fadeOut("fast");
 					}
 				});
 			};
@@ -529,16 +543,22 @@
 					<img class="header" src="includes/default_logo.png" alt="Pines Logo" />
 					<h1 class="header">Pines Notify jQuery Plugin</h1>
 				</div>
+				<p style="float: right;">
+					<a href="http://sourceforge.net/projects/pines"><img src="http://sflogo.sourceforge.net/sflogo.php?group_id=264165&amp;type=15" width="150" height="40" alt="Get Pines at SourceForge.net. Fast, secure and Free Open Source software downloads" style="border: none;" /></a>
+				</p>
 				<p class="main-description">
-					Pines Notify is a JavaScript notification plugin for the
-					jQuery JavaScript library, developed by Hunter Perrin as part
-					of <a href="http://sourceforge.net/projects/pines/">Pines</a>.
-					It is licensed under the
-					<a href="http://www.gnu.org/licenses/agpl-3.0.html">GNU Affero GPL</a>.
-					It is designed to provide maximum flexibility, while
-					still being easy to use and easy to implement. Try out
-					different themes using the selector in the top right corner
-					of this page.
+					Pines Notify is a JavaScript notification plugin, developed
+					by Hunter Perrin as part of
+					<a href="http://sourceforge.net/projects/pines/">Pines</a>.
+					It is designed to provide an unparalleled level of
+					flexibility, while still being very easy to implement and
+					use. It uses the jQuery UI CSS library for styling, which
+					means it is fully and easily themeable. Try out some of the
+					readymade themes using the selector in the top right corner
+					of this page. It is licensed under the
+					<a href="http://www.gnu.org/licenses/agpl-3.0.html">GNU Affero GPL</a>,
+					which means you are free to use, study, modify, and
+					freely redistribute it under the same license.
 				</p>
 				<h2>Features</h2>
 				<div class="ui-helper-clearfix">
@@ -825,7 +845,9 @@
 						pnotify_title: 'Custom Styling',
 						pnotify_text: 'I have an additional class that\'s used to give me special styling. I always wanted to be pretty.',
 						pnotify_addclass: 'custom',
-						pnotify_notice_icon: 'picon picon_32x32_fill-color'
+						pnotify_notice_icon: 'picon picon_32x32_fill-color',
+						pnotify_nonblock: true,
+						pnotify_nonblock_opacity: .2
 					});" type="button" />
 				</div>
 
