@@ -278,7 +278,7 @@
 				var loader = $.pnotify({
 					pnotify_title: "Fake Load",
 					pnotify_text: "<div class=\"progress_bar\" />",
-					pnotify_notice_icon: 'picon picon_16x16_throbber',
+					pnotify_notice_icon: 'picon picon-throbber',
 					pnotify_hide: false,
 					pnotify_closer: false,
 					pnotify_history: false,
@@ -305,7 +305,7 @@
 				var percent = 0;
 				var notice = $.pnotify({
 					pnotify_title: "Please Wait",
-					pnotify_notice_icon: 'picon picon_16x16_throbber',
+					pnotify_notice_icon: 'picon picon-throbber',
 					pnotify_hide: false,
 					pnotify_closer: false,
 					pnotify_opacity: .75,
@@ -326,7 +326,7 @@
 							options.pnotify_title = "Done!";
 							options.pnotify_hide = true;
 							options.pnotify_closer = true;
-							options.pnotify_notice_icon = 'picon picon_16x16_task-complete';
+							options.pnotify_notice_icon = 'picon picon-task-complete';
 							options.pnotify_opacity = 1;
 							options.pnotify_shadow = true;
 							options.pnotify_width = $.pnotify.defaults.pnotify_width;
@@ -476,7 +476,7 @@
 				info_box = $.pnotify({
 					pnotify_title: "Pines Notify Stacks",
 					pnotify_text: "Stacks are used to position notices and determine where new notices will go when they're created. Each notice that's placed into a stack will be positioned related to the other notices in that stack. There is no limit to the number of stacks, and no limit to the number of notices in each stack.",
-					pnotify_notice_icon: "picon picon_16x16_object-order-raise",
+					pnotify_notice_icon: "picon picon-object-order-raise",
 					pnotify_delay: 20000,
 					pnotify_history: false,
 					pnotify_stack: false,
@@ -636,7 +636,7 @@
 					<input value="Pines Icon Notice" onclick="$.pnotify({
 						pnotify_title: 'Pines Icon Notice',
 						pnotify_text: 'I have an icon that uses the Pines icon styles.',
-						pnotify_notice_icon: 'picon picon_16x16_mail-unread-new'
+						pnotify_notice_icon: 'picon picon-mail-unread-new'
 					});" type="button" />
 					<input value="jQuery UI Icon Notice" onclick="$.pnotify({
 						pnotify_title: 'jQuery UI Icon Notice',
@@ -680,7 +680,7 @@
 						pnotify_title: 'Pines Icon Error',
 						pnotify_text: 'Oh no. Something\'s wrong with your network, and I\'m showing you visually using an appropriate icon to indicate the type of error that has occured. You know, network.',
 						pnotify_type: 'error',
-						pnotify_error_icon: 'picon picon_16x16_network-wireless'
+						pnotify_error_icon: 'picon picon-network-wireless'
 					});" type="button" />
 					<input value="jQuery UI Icon Error" onclick="$.pnotify({
 						pnotify_title: 'jQuery UI Icon Error',
@@ -860,7 +860,7 @@
 						pnotify_title: 'Custom Styling',
 						pnotify_text: 'I have an additional class that\'s used to give me special styling. I always wanted to be pretty.',
 						pnotify_addclass: 'custom',
-						pnotify_notice_icon: 'picon picon_32x32_fill-color',
+						pnotify_notice_icon: 'picon picon-32 picon-fill-color',
 						pnotify_nonblock: true,
 						pnotify_nonblock_opacity: .2
 					});" type="button" />
