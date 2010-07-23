@@ -1,5 +1,5 @@
 /*
- * jQuery Pines Notify (pnotify) Plugin 1.0.0
+ * jQuery Pines Notify (pnotify) Plugin 1.0.1
  *
  * Copyright (c) 2009 Hunter Perrin
  *
@@ -234,8 +234,10 @@
 					if (opts.pnotify_mouse_reset && animating == "out") {
 						// If it's animating out, animate back in really quick.
 						pnotify.stop(true);
+						animating = "in";
 						pnotify.css("height", "auto").animate({"width": opts.pnotify_width, "opacity": opts.pnotify_nonblock ? opts.pnotify_nonblock_opacity : opts.pnotify_opacity}, "fast");
-					} else if (opts.pnotify_nonblock && animating != "out") {
+					}
+					if (opts.pnotify_nonblock) {
 						// If it's non-blocking, animate to the other opacity.
 						pnotify.animate({"opacity": opts.pnotify_nonblock_opacity}, "fast");
 					}
@@ -299,7 +301,7 @@
 			pnotify.container = $("<div />", {"class": "ui-widget ui-widget-content ui-corner-all ui-pnotify-container "+(opts.pnotify_type == "error" ? "ui-state-error" : "ui-state-highlight")})
 			.appendTo(pnotify);
 
-			pnotify.pnotify_version = "1.0.0";
+			pnotify.pnotify_version = "1.0.1";
 
 			// This function is for updating the notice.
 			pnotify.pnotify = function(options) {
