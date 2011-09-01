@@ -1,12 +1,17 @@
 /*
-Pines Form
+Pines Form 1.1
 
-license: http://www.gnu.org/licenses/agpl-3.0.html
+license: http://www.gnu.org/licenses/gpl.html
+license: http://www.gnu.org/licenses/lgpl.html
+license: http://www.mozilla.org/MPL/MPL-1.1.html
 author: Hunter Perrin <hunter@sciactive.com>
 copyright: SciActive.com
 link: http://sciactive.com/
 */
-.pf-form:after {
+.pf-form {
+	display: inline;
+}
+.pf-form:after, .pf-form fieldset:after {
 	content: ".";
 	display: block;
 	height: 0;
@@ -20,7 +25,6 @@ link: http://sciactive.com/
 .pf-form fieldset {
 	padding: 5.6px 10px 12px;
 	border: 1px solid #CCC;
-	overflow: auto; /* Opera 8 won't enclose floated divs without this. */
 }
 .pf-form fieldset legend, .pf-form .pf-heading h1 {
 	font-size: 1.3em;
@@ -31,98 +35,101 @@ link: http://sciactive.com/
 	clear: left;
 	margin-bottom: 15px;
 }
-.pf-form div.pf-element {
+.pf-form .pf-element {
 	float: left;
 	clear: left;
 	padding-bottom: 15px;
 }
-.pf-form div.pf-heading, .pf-form div.pf-element.pf-full-width {
+.pf-form .pf-heading, .pf-form .pf-element.pf-full-width {
 	width: 100%;
 }
-.pf-form div.pf-heading {
+.pf-form .pf-heading {
 	border-bottom: 1px solid #CCC;
 	padding-bottom: 0;
 	margin-bottom: 10px;
 }
-.pf-form div.pf-heading h1 {
+.pf-form .pf-heading h1 {
 	margin-top: 5px;
 	margin-bottom: 5px;
 }
-.pf-form div.pf-heading p {
+.pf-form .pf-heading p {
 	clear: left;
 	margin-top: 5px;
 	margin-bottom: 5px;
 }
-.pf-form div.pf-element .pf-label, .pf-form div.pf-element .pf-note {
+.pf-form .pf-element .pf-label, .pf-form .pf-element .pf-note {
 	width: 160px; /* Width of labels. */
 	float: left;
 }
-.pf-form div.pf-element .pf-note {
+.pf-form .pf-element .pf-note {
 	margin-top: .5em;
 	clear: left;
 	font-size: 70%;
 	color: #555;
 }
-.pf-form div.pf-element .pf-group {
+.pf-form .pf-element .pf-required {
+	color: #f00;
+}
+.pf-form .pf-element .pf-group {
 	 margin-left: 160px; /* Same as width of labels. */
 }
-.pf-form div.pf-element .pf-field, .pf-form div.pf-buttons .pf-button {
+.pf-form .pf-element .pf-field, .pf-form .pf-buttons .pf-button {
 	float: none;
 	margin-left: 5px; /* Margin between inputs and labels. */
 }
-.pf-form div.pf-element .pf-field.pf-full-width {
+.pf-form .pf-element .pf-field.pf-full-width {
 	display: block;
 	margin-left: 165px; /* Width of labels + margin between inputs and labels. */
 }
-.pf-form div.pf-buttons {
+.pf-form .pf-buttons {
 	clear: both;
 	padding-bottom: 0;
 	padding-left: 145px; /* Width of labels + margin to inputs - button spacing. */
 }
-.pf-form div.pf-buttons.pf-centered {
+.pf-form .pf-buttons.pf-centered {
 	width: 100%;
 	padding-left: 0;
 	text-align: center;
 }
-.pf-form div.pf-buttons .pf-button {
+.pf-form .pf-buttons .pf-button {
 	margin-left: 20px; /* Button spacing. */
 	margin-bottom: 10px;
 }
-/* ----------- Two Columns ----------- */
+/* Two Columns */
 .pf-form-twocol, .pf-form-twocol fieldset {
 	overflow: hidden; /* Hides the unnecessary scrollbar caused by wide elements. */
 }
-.pf-form-twocol div.pf-element {
+.pf-form-twocol .pf-element {
 	clear: none;
 	width: auto;
 	min-width: 50%; /* For two columns max. */
 }
-.pf-form-twocol div.pf-heading, .pf-form-twocol div.pf-full-width {
+.pf-form-twocol .pf-heading, .pf-form-twocol .pf-full-width {
 	width: 100%;
 }
-.pf-form-twocol div.pf-heading {
+.pf-form-twocol .pf-heading {
 	clear: both;
 }
-.pf-form-twocol div.pf-buttons {
+.pf-form-twocol .pf-buttons {
 	clear: both;
 	width: 100%;
 }
-/* ----------- Three Columns ----------- */
+/* Three Columns */
 .pf-form-threecol, .pf-form-threecol fieldset {
 	overflow: hidden; /* Hides the unnecessary scrollbar caused by wide elements. */
 }
-.pf-form-threecol div.pf-element {
+.pf-form-threecol .pf-element {
 	clear: none;
 	width: auto;
 	min-width: 33%; /* For three columns max. */
 }
-.pf-form-threecol div.pf-heading, .pf-form-threecol div.pf-full-width {
+.pf-form-threecol .pf-heading, .pf-form-threecol .pf-full-width {
 	width: 100%;
 }
-.pf-form-threecol div.pf-heading {
+.pf-form-threecol .pf-heading {
 	clear: both;
 }
-.pf-form-threecol div.pf-buttons {
+.pf-form-threecol .pf-buttons {
 	clear: both;
 	width: 100%;
 }

@@ -6,10 +6,10 @@
 		<!-- Dev Notice -->
 		<link href="devnote.css" rel="stylesheet" type="text/css" />
 		<!-- jQuery -->
-		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.js"></script>
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.js"></script>
 		<!-- jQuery UI -->
-		<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.8/themes/smoothness/jquery-ui.css" media="all" rel="stylesheet" type="text/css" />
-		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.8/jquery-ui.js"></script>
+		<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/smoothness/jquery-ui.css" media="all" rel="stylesheet" type="text/css" />
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>
 		<!-- Theme Switcher Widget -->
 		<script type="text/javascript" src="http://jqueryui.com/themeroller/themeswitchertool/"></script>
 		<!-- Oxygen Icons -->
@@ -21,8 +21,8 @@
 		<style type="text/css">
 			/* <![CDATA[ */
 			html, body {
-				font-family: 'Palatino Linotype','Book Antiqua',Palatino,serif;
-				font-size: .92em;
+				font-family: Arial,sans-serif;
+				font-size: 12px;
 			}
 			.wrapper {
 				background: transparent url(includes/watermark-small.png) no-repeat fixed bottom right;
@@ -340,24 +340,27 @@
 			function timed_notices(n) {
 				var start_time = new Date().getTime();
 				var end_time;
-				var notices_left = n;
+				var options = {
+					pnotify_title: "Notice Benchmark",
+					pnotify_text: "Testing notice speed.",
+					pnotify_animation: 'none',
+					pnotify_delay: 0,
+					pnotify_history: false
+				};
 				for (var i = 0; i < n; i++) {
-					$.pnotify({
-						pnotify_title: "Notice Benchmark",
-						pnotify_text: "Testing notice speed.",
-						pnotify_animation: 'none',
-						pnotify_delay: 0,
-						pnotify_history: false,
-						pnotify_after_close: function(pnotify){
-							notices_left--;
-							if (notices_left > 0)
-								return;
+					if (i + 1 == n) {
+						options.pnotify_after_close = function(pnotify){
+							// Remove this callback.
+							pnotify.pnotify({
+								pnotify_after_close: null
+							});
 							end_time = new Date().getTime();
 							alert("Testing complete:\n\nTotal Notices: "+n+
 								"\nTotal Time: "+(end_time - start_time)+"ms ("+((end_time - start_time) / 1000)+"s)"+
 								"\nAverage Time: "+((end_time - start_time) / n)+"ms ("+((end_time - start_time) / n / 1000)+"s)")
-						}
-					});
+						};
+					}
+					$.pnotify(options);
 				}
 			}
 
@@ -557,10 +560,8 @@
 					use. It uses the jQuery UI CSS library for styling, which
 					means it is fully and easily themeable. Try out some of the
 					readymade themes using the selector in the top right corner
-					of this page. It is licensed under the
-					<a href="http://www.gnu.org/licenses/agpl-3.0.html">GNU Affero GPL</a>,
-					which means you are free to use, study, modify, and
-					freely redistribute it under the same license.
+					of this page.
+					Pines Notify is distributed under the <a href="http://www.gnu.org/licenses/gpl.html" onclick="window.open(this.href); return false;">GPL</a>, <a href="http://www.gnu.org/licenses/lgpl.html" onclick="window.open(this.href); return false;">LGPL</a>, and <a href="http://www.mozilla.org/MPL/MPL-1.1.html" onclick="window.open(this.href); return false;">MPL</a>. This triple copyleft licensing model avoids incompatibility with other open source licenses.
 				</p>
 				<p class="dev-note" style="display: none; color: red;">
 					This is the development site. It is a showcase of bleeding
@@ -576,7 +577,7 @@
 					<a href="http://pines.hg.sourceforge.net/hgweb/pines/pnotify/raw-file/tip/index.html">development site</a>.
 				</p>
 				<p style="text-align: center;">
-					<button type="button" onclick="window.location='https://sourceforge.net/projects/pines/files/pnotify/1.0/pnotify-1.0.1.zip/download';"><strong style="font-size: large;">Download Pines Notify</strong></button>
+					<button type="button" onclick="window.location='https://sourceforge.net/projects/pines/files/pnotify/1.0/pnotify-1.0.2.zip/download';"><strong style="font-size: large;">Download Pines Notify</strong></button>
 				</p>
 				<h2>Features</h2>
 				<div class="ui-helper-clearfix">
@@ -871,7 +872,7 @@
 
 				<div class="pf-group ui-widget-content ui-corner-all">
 					<span>
-						Custom Stacks:
+						Examples of Custom Stacks:
 						<input style="margin-left: 10px;" value="What are stacks?" onclick="show_stack_info();" type="button" />
 					</span>
 					<br style="margin-bottom: 5px;" />
@@ -950,7 +951,7 @@
 						pnotify_animation: {effect_in: 'show', effect_out: 'slide'}
 					});" type="button" />
 					<br style="margin-bottom: 5px;" />
-					Effects from jQuery UI:
+					Effects from jQuery UI: <small>(used on close animation)</small>
 					<br />
 					<input value="Blind" onclick="$.pnotify({
 						pnotify_title: 'Blind Effect',
@@ -985,7 +986,7 @@
 					<br style="margin-bottom: 5px;" />
 					Custom Functions:
 					<br />
-					<input value="One Functions" onclick="$.pnotify({
+					<input value="One Function" onclick="$.pnotify({
 						pnotify_title: 'Custom Function',
 						pnotify_text: 'I use a different effect.',
 						pnotify_animation: function(status, callback, pnotify){
@@ -1069,7 +1070,7 @@
 					</p>
 				</div>
 				<h2>Installation</h2>
-				<p>Installation is simple. Include jQuery 1.4 and jQuery UI (only the CSS is required). Then include the following files:</p>
+				<p>Installation is simple. Include jQuery 1.4 (or higher) and jQuery UI (only the CSS is required). Then include the following files:</p>
 				<div class="ui-helper-clearfix">
 					<div class="featurelist">
 						<ul>
@@ -1080,7 +1081,7 @@
 				</div>
 				<p>If you want to use jQuery UI effect animations, you also need to include the jQuery UI JavaScript.</p>
 				<p style="text-align: center;">
-					<button type="button" onclick="window.location='https://sourceforge.net/projects/pines/files/pnotify/1.0/pnotify-1.0.1.zip/download';"><strong style="font-size: large;">Download Pines Notify</strong></button>
+					<button type="button" onclick="window.location='https://sourceforge.net/projects/pines/files/pnotify/1.0/pnotify-1.0.2.zip/download';"><strong style="font-size: large;">Download Pines Notify</strong></button>
 				</p>
 			</div>
 		</div>

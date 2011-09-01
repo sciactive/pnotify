@@ -1,10 +1,12 @@
 /*
- * jQuery Pines Notify (pnotify) Plugin 1.0.1
+ * jQuery Pines Notify (pnotify) Plugin 1.0.2
  *
- * Copyright (c) 2009 Hunter Perrin
+ * Copyright (c) 2009-2011 Hunter Perrin
  *
- * Licensed (along with all of Pines) under the GNU Affero GPL:
- *	  http://www.gnu.org/licenses/agpl.html
+ * Triple license under the GPL, LGPL, and MPL:
+ *	  http://www.gnu.org/licenses/gpl.html
+ *	  http://www.gnu.org/licenses/lgpl.html
+ *	  http://www.mozilla.org/MPL/MPL-1.1.html
  */
 
 (function($) {
@@ -301,7 +303,7 @@
 			pnotify.container = $("<div />", {"class": "ui-widget ui-widget-content ui-corner-all ui-pnotify-container "+(opts.pnotify_type == "error" ? "ui-state-error" : "ui-state-highlight")})
 			.appendTo(pnotify);
 
-			pnotify.pnotify_version = "1.0.1";
+			pnotify.pnotify_version = "1.0.2";
 
 			// This function is for updating the notice.
 			pnotify.pnotify = function(options) {
