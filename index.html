@@ -6,7 +6,7 @@
 		<!-- Dev Notice -->
 		<link href="devnote.css" rel="stylesheet" type="text/css" />
 		<!-- jQuery -->
-		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.js"></script>
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.0/jquery.js"></script>
 		<!-- jQuery UI -->
 		<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/smoothness/jquery-ui.css" media="all" rel="stylesheet" type="text/css" />
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>
@@ -14,6 +14,13 @@
 		<script type="text/javascript" src="http://jqueryui.com/themeroller/themeswitchertool/"></script>
 		<!-- Oxygen Icons -->
 		<link href="oxygen/icons.css" rel="stylesheet" type="text/css" />
+		<!-- JavaScript Source Formatting -->
+		<script type="text/javascript" src="includes/beautify.js"></script>
+		<!--[if !IE]>-->
+		<script type="text/javascript" src="includes/shCore.js"></script>
+		<script type="text/javascript" src="includes/shBrushJScript.js"></script>
+		<link href="includes/shCoreDefault.css" rel="stylesheet" type="text/css" />
+		<!--<![endif]-->
 		<!-- Pines Notify -->
 		<script type="text/javascript" src="jquery.pnotify.js"></script>
 		<link href="jquery.pnotify.default.css" rel="stylesheet" type="text/css" />
@@ -96,6 +103,36 @@
 				padding: 2px !important;
 				font-size: .92em !important;
 				margin-bottom: 3px;
+			}
+
+			/* Source View */
+			.source-dialog pre {
+				border: 1px solid black;
+				margin: .5em .5em 1em;
+				padding: 1em;
+				background: beige;
+				color: midnightblue;
+				display:-moz-inline-stack;
+				display:inline-block;
+				zoom:1;
+				*display:inline;
+			}
+			.source-dialog > div {
+				border-top: 1px solid black;
+				border-bottom: 1px solid black;
+				margin-bottom: 1em;
+				display:-moz-inline-stack;
+				display:inline-block;
+				zoom:1;
+				*display:inline;
+			}
+			.source-dialog > div div.syntaxhighlighter {
+				overflow: visible !important;
+				width: auto !important;
+				display:-moz-inline-stack;
+				display:inline-block;
+				zoom:1;
+				*display:inline;
 			}
 
 			/* Custom styled notice CSS */
@@ -211,33 +248,80 @@
 				});
 
 				// This notice is used as a tooltip.
-				tooltip = $.pnotify({
-					pnotify_title: "Tooltip",
-					pnotify_text: "I'm not in a stack. I'm positioned like a tooltip with JavaScript.",
-					pnotify_hide: false,
-					pnotify_closer: false,
-					pnotify_history: false,
-					pnotify_animate_speed: 100,
-					pnotify_opacity: .9,
-					pnotify_notice_icon: "ui-icon ui-icon-comment",
-					// Setting stack to false causes Pines Notify to ignore this notice when positioning.
-					pnotify_stack: false,
-					pnotify_after_init: function(pnotify){
-						// Remove the notice if the user mouses over it.
-						pnotify.mouseout(function(){
-							pnotify.pnotify_remove();
-						});
-					},
-					pnotify_before_open: function(pnotify){
-						// This prevents the notice from displaying when it's created.
-						pnotify.pnotify({
-							pnotify_before_open: null
-						});
-						return false;
-					}
-				});
+				var make_tooltip = function(){
+					tooltip = $.pnotify({
+						pnotify_title: "Tooltip",
+						pnotify_text: "I'm not in a stack. I'm positioned like a tooltip with JavaScript.",
+						pnotify_hide: false,
+						pnotify_closer: false,
+						pnotify_history: false,
+						pnotify_animate_speed: 100,
+						pnotify_opacity: .9,
+						pnotify_notice_icon: "ui-icon ui-icon-comment",
+						// Setting stack to false causes Pines Notify to ignore this notice when positioning.
+						pnotify_stack: false,
+						pnotify_after_init: function(pnotify){
+							// Remove the notice if the user mouses over it.
+							pnotify.mouseout(function(){
+								pnotify.pnotify_remove();
+							});
+						},
+						pnotify_before_open: function(pnotify){
+							// This prevents the notice from displaying when it's created.
+							pnotify.pnotify({
+								pnotify_before_open: null
+							});
+							return false;
+						}
+					});
+				}
+				// I put it in a function so I could show the source easily.
+				make_tooltip();
 
-				$(".wrapper :button").button();
+				// This creates all those source buttons.
+				$(".wrapper :button").each(function(){
+					var button = $(this);
+					if (!button.closest(".pf-group").length || button.val() == "Hoot (To See Transparency)") {
+						button.button();
+						return;
+					}
+					// Wrap the button in a container.
+					var contain = $("<span />");
+					contain = button.wrap(contain).parent();
+					// Add a source button.
+					$("<input type=\"button\" value=\"{}\" title=\"Show source code.\" />").click(function(){
+						var text = button.attr("onclick");
+						if (!text && button.attr("onmouseover"))
+							text = "// Mouse Over:\n"+button.attr("onmouseover")+"\n\n// Mouse Move:\n"+button.attr("onmousemove")+"\n\n// Mouse Out:\n"+button.attr("onmouseout");
+						// IE needs this.
+						if (text.toString) {
+							text = text.toString();
+							if (text.match(/^function (onclick|anonymous)\(\)\n\{\n/))
+								text = text.replace(/^function (onclick|anonymous)\(\)\n\{\n/, "").replace(/\n}$/, "");
+						}
+						var dialog = $("<div title=\""+button.val()+" - Source\" class=\"source-dialog\"></div>");
+						$("<pre class=\"brush: js; toolbar: false;\" />").text(js_beautify(text)).appendTo(dialog);
+						if (text.match(/^\w*\([^\)]*\);$/)) {
+							var f_name = text.replace(/\(.*/g, "");
+							text = window[f_name].toString();
+							$("<pre class=\"brush: js; toolbar: false;\" />").text(js_beautify(text)).appendTo(dialog);
+						}
+						if (text.match(/tooltip\.pnotify_display\(\);/)) {
+							$("<pre class=\"brush: js; toolbar: false;\" />").text(js_beautify(make_tooltip.toString())).appendTo(dialog);
+						}
+						dialog.dialog({width: "auto"});
+						// Make sure the dialog isn't more than 800x600.
+						// Can't just add max-height cause that means it can't be resized beyond.
+						if (dialog.width() > 800)
+							dialog.dialog("option", "width", 800).dialog("option", "position", "center");
+						if (dialog.height() > 600)
+							dialog.dialog("option", "height", 600).dialog("option", "position", "center");
+						// Can't call .all(), it doesn't  work.
+						if (typeof SyntaxHighlighter != "undefined")
+							SyntaxHighlighter.highlight();
+					}).appendTo(contain);
+					contain.buttonset();
+				});
 
 				if ($.fn.themeswitcher) {
 					$('#switcher').themeswitcher();
@@ -469,7 +553,6 @@
 				}
 				$.pnotify(opts);
 			};
-			var info_box;
 			function show_stack_info() {
 				var modal_overlay;
 				if (info_box) {
@@ -992,7 +1075,7 @@
 						pnotify_animation: function(status, callback, pnotify){
 							alert('Current animation: '+status);
 							pnotify.toggle();
-							// Always call the callback.
+							// Always call the callback when the animation completes.
 							callback();
 						}
 					});" type="button" />
@@ -1002,12 +1085,12 @@
 						pnotify_animation: {effect_in: function(status, callback, pnotify){
 							alert('Showing...');
 							pnotify.show();
-							// Always call the callback.
+							// Always call the callback when the animation completes.
 							callback();
 						}, effect_out: function(status, callback, pnotify){
 							alert('Hiding...');
 							pnotify.hide();
-							// Always call the callback.
+							// Always call the callback when the animation completes.
 							callback();
 						}}
 					});" type="button" />
