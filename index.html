@@ -296,8 +296,8 @@
 						// IE needs this.
 						if (text.toString) {
 							text = text.toString();
-							if (text.match(/^function (onclick|anonymous)\(\)\n\{\n/))
-								text = text.replace(/^function (onclick|anonymous)\(\)\n\{\n/, "").replace(/\n}$/, "");
+							if (text.match(/^function (onclick|anonymous)\([^\)]*\)\n\{\n/))
+								text = text.replace(/^function (onclick|anonymous)\([^\)]*\)\n\{\n/, "").replace(/\n}$/, "");
 						}
 						var dialog = $("<div title=\""+button.val()+" - Source\" class=\"source-dialog\"></div>");
 						$("<pre class=\"brush: js; toolbar: false;\" />").text(js_beautify(text)).appendTo(dialog);
