@@ -555,7 +555,7 @@
 			};
 			function show_stack_info() {
 				var modal_overlay;
-				if (info_box) {
+				if (typeof info_box != "undefined") {
 					info_box.pnotify_display();
 					return;
 				}
@@ -646,13 +646,15 @@
 					of this page.
 					Pines Notify is distributed under the <a href="http://www.gnu.org/licenses/gpl.html" onclick="window.open(this.href); return false;">GPL</a>, <a href="http://www.gnu.org/licenses/lgpl.html" onclick="window.open(this.href); return false;">LGPL</a>, and <a href="http://www.mozilla.org/MPL/MPL-1.1.html" onclick="window.open(this.href); return false;">MPL</a>. This triple copyleft licensing model avoids incompatibility with other open source licenses.
 				</p>
-				<p class="dev-note" style="display: none; color: red;">
-					This is the development site. It is a showcase of bleeding
-					edge features and code that may work only partially or not
-					at all. If you are looking for a stable version, please
-					visit the
-					<a href="http://pinesframework.org/pnotify/">main site</a>.
-				</p>
+				<div class="dev-note ui-state-error ui-corner-all" style="display: none; padding: 1em; color: red; text-align: center;">
+					<h3 style="margin: 0;">Caution warning danger attention!</h3>
+					<p style="margin: .5em 0 0;">
+						This is the development site. It's a playground for
+						bleeding edge features and code that probably won't
+						work. You should head over to the
+						<a href="http://pinesframework.org/pnotify/"><button type="button" style="text-decoration: none !important; font-weight: bold !important;">Main Site</button></a>
+					</p>
+				</div>
 				<p class="stable-note" style="display: none;">
 					This is the stable site. You can download code here that's
 					tested and proven to work. However, if you like to live
