@@ -1,8 +1,8 @@
-/* 
+/*
 	Document   : jquery.pnotify.default.css
 	Created on : Nov 23, 2009, 3:14:10 PM
 	Author     : Hunter Perrin
-	Version    : 1.0.0
+	Version    : 1.1.0
 	Description:
 		Default styling for Pines Notify jQuery plugin.
 */
@@ -35,7 +35,7 @@ html > body .ui-pnotify {
 	padding: .8em;
 	height: 100%;
 }
-.ui-pnotify-closer {
+.ui-pnotify-closer, .ui-pnotify-sticker {
 	float: right;
 	margin-left: .2em;
 }

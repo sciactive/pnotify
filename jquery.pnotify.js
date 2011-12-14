@@ -1,5 +1,5 @@
 /*
- * jQuery Pines Notify (pnotify) Plugin 1.0.2
+ * jQuery Pines Notify (pnotify) Plugin 1.1.0
  *
  * Copyright (c) 2009-2011 Hunter Perrin
  *
@@ -25,13 +25,17 @@
 			}
 		},
 		pnotify_position_all: function () {
+			// This timer is used for queueing this function so it doesn't run
+			// repeatedly.
 			if (timer)
 				clearTimeout(timer);
 			timer = null;
+			// Get all the notices.
 			var body_data = body.data("pnotify");
 			if (!body_data || !body_data.length)
 				return;
 			$.each(body_data, function(){
+				// Get the notice's stack.
 				var s = this.opts.pnotify_stack;
 				if (!s) return;
 				if (!s.nextpos1)
@@ -40,8 +44,10 @@
 					s.nextpos2 = s.firstpos2;
 				if (!s.addpos2)
 					s.addpos2 = 0;
+				// Skip this notice if it's not shown.
 				if (this.css("display") != "none") {
 					var curpos1, curpos2;
+					// Store what will need to be animated.
 					var animate = {};
 					// Calculate the current pos1 value.
 					var csspos1;
@@ -153,6 +159,7 @@
 						} else
 							this.css(csspos1, s.nextpos1+"px");
 					}
+					// Run the animation.
 					if (animate.top || animate.bottom || animate.right || animate.left)
 						this.animate(animate, {duration: 500, queue: false});
 					// Calculate the next dir1 position.
@@ -184,6 +191,7 @@
 			if (!jwindow)
 				jwindow = $(window);
 
+			// Stores what is currently being animated (in or out).
 			var animating;
 			
 			// Build main options.
@@ -234,7 +242,7 @@
 				"mouseenter": function(e){
 					if (opts.pnotify_nonblock) e.stopPropagation();
 					if (opts.pnotify_mouse_reset && animating == "out") {
-						// If it's animating out, animate back in really quick.
+						// If it's animating out, animate back in really quickly.
 						pnotify.stop(true);
 						animating = "in";
 						pnotify.css("height", "auto").animate({"width": opts.pnotify_width, "opacity": opts.pnotify_nonblock ? opts.pnotify_nonblock_opacity : opts.pnotify_opacity}, "fast");
@@ -243,17 +251,26 @@
 						// If it's non-blocking, animate to the other opacity.
 						pnotify.animate({"opacity": opts.pnotify_nonblock_opacity}, "fast");
 					}
+					// Stop the close timer.
 					if (opts.pnotify_hide && opts.pnotify_mouse_reset) pnotify.pnotify_cancel_remove();
+					// Show the buttons.
+					if (opts.pnotify_sticker && !opts.pnotify_nonblock) pnotify.sticker.trigger("pnotify_icon").show();
 					if (opts.pnotify_closer && !opts.pnotify_nonblock) pnotify.closer.show();
 				},
 				"mouseleave": function(e){
 					if (opts.pnotify_nonblock) e.stopPropagation();
 					nonblock_last_elem = null;
 					pnotify.css("cursor", "auto");
+					// Animate back to the normal opacity.
 					if (opts.pnotify_nonblock && animating != "out")
 						pnotify.animate({"opacity": opts.pnotify_opacity}, "fast");
+					// Start the close timer.
 					if (opts.pnotify_hide && opts.pnotify_mouse_reset) pnotify.pnotify_queue_remove();
-					pnotify.closer.hide();
+					// Hide the buttons.
+					if (opts.pnotify_sticker_hover)
+						pnotify.sticker.hide();
+					if (opts.pnotify_closer_hover)
+						pnotify.closer.hide();
 					$.pnotify_position_all();
 				},
 				"mouseover": function(e){
@@ -303,7 +320,8 @@
 			pnotify.container = $("<div />", {"class": "ui-widget ui-widget-content ui-corner-all ui-pnotify-container "+(opts.pnotify_type == "error" ? "ui-state-error" : "ui-state-highlight")})
 			.appendTo(pnotify);
 
-			pnotify.pnotify_version = "1.0.2";
+			// The current version of Pines Notify.
+			pnotify.pnotify_version = "1.1.0";
 
 			// This function is for updating the notice.
 			pnotify.pnotify = function(options) {
@@ -316,6 +334,7 @@
 				pnotify.opts = opts;
 				// Update the shadow.
 				if (opts.pnotify_shadow != old_opts.pnotify_shadow) {
+					// Don't show a shadow in IE, because it's very buggy. No kidding... try it if you don't believe me.
 					if (opts.pnotify_shadow && !$.browser.msie)
 						pnotify.shadow_container = $("<div />", {"class": "ui-widget-shadow ui-pnotify-shadow"}).prependTo(pnotify);
 					else
@@ -329,15 +348,20 @@
 				// Update the title.
 				if (opts.pnotify_title === false)
 					pnotify.title_container.hide("fast");
-				else if (opts.pnotify_title !== old_opts.pnotify_title)
-					pnotify.title_container.html(opts.pnotify_title).show(200);
+				else if (opts.pnotify_title !== old_opts.pnotify_title) {
+					if (opts.pnotify_title_escape)
+						pnotify.title_container.text(opts.pnotify_title).show(200);
+					else
+						pnotify.title_container.html(opts.pnotify_title).show(200);
+				}
 				// Update the text.
 				if (opts.pnotify_text === false) {
 					pnotify.text_container.hide("fast");
 				} else if (opts.pnotify_text !== old_opts.pnotify_text) {
-					if (opts.pnotify_insert_brs)
-						opts.pnotify_text = opts.pnotify_text.replace(/\n/g, "<br />");
-					pnotify.text_container.html(opts.pnotify_text).show(200);
+					if (opts.pnotify_text_escape)
+						pnotify.text_container.text(opts.pnotify_text).show(200);
+					else
+						pnotify.text_container.html(opts.pnotify_insert_brs ? opts.pnotify_text.replace(/\n/g, "<br />") : opts.pnotify_text).show(200);
 				}
 				pnotify.pnotify_history = opts.pnotify_history;
 				// Change the notice type.
@@ -364,6 +388,18 @@
 				// Update the opacity.
 				if (opts.pnotify_opacity !== old_opts.pnotify_opacity)
 					pnotify.fadeTo(opts.pnotify_animate_speed, opts.pnotify_opacity);
+				// Update the sticker icon.
+				pnotify.sticker.trigger("pnotify_icon");
+				// Update the hover status of the buttons.
+				if (opts.pnotify_sticker_hover)
+					pnotify.sticker.hide();
+				else if (!opts.pnotify_nonblock)
+					pnotify.sticker.show();
+				if (opts.pnotify_closer_hover)
+					pnotify.closer.hide();
+				else if (!opts.pnotify_nonblock)
+					pnotify.closer.show();
+				// Update the timed hiding.
 				if (!opts.pnotify_hide)
 					pnotify.pnotify_cancel_remove();
 				else if (!old_opts.pnotify_hide)
@@ -501,13 +537,32 @@
 			// Provide a button to close the notice.
 			pnotify.closer = $("<div />", {
 				"class": "ui-pnotify-closer",
-				"css": {"cursor": "pointer", "display": "none"},
+				"css": {"cursor": "pointer", "display": opts.pnotify_closer_hover ? "none" : "block"},
 				"click": function(){
 					pnotify.pnotify_remove();
 					pnotify.closer.hide();
 				}
 			})
-			.append($("<span />", {"class": "ui-icon ui-icon-circle-close"}))
+			.append($("<span />", {"class": "ui-icon ui-icon-close"}))
+			.appendTo(pnotify.container);
+
+			// Provide a button to stick the notice.
+			pnotify.sticker = $("<div />", {
+				"class": "ui-pnotify-sticker",
+				"css": {"cursor": "pointer", "display": opts.pnotify_sticker_hover ? "none" : "block"},
+				"click": function(){
+					opts.pnotify_hide = !opts.pnotify_hide;
+					if (opts.pnotify_hide)
+						pnotify.pnotify_queue_remove();
+					else
+						pnotify.pnotify_cancel_remove();
+					$(this).trigger("pnotify_icon");
+				}
+			})
+			.bind("pnotify_icon", function(){
+				$(this).children().removeClass("ui-icon-pin-w ui-icon-pin-s").addClass(opts.pnotify_hide ? "ui-icon-pin-w" : "ui-icon-pin-s");
+			})
+			.append($("<span />", {"class": "ui-icon ui-icon-pin-w"}))
 			.appendTo(pnotify.container);
 
 			// Add the appropriate icon.
@@ -519,24 +574,27 @@
 
 			// Add a title.
 			pnotify.title_container = $("<div />", {
-				"class": "ui-pnotify-title",
-				"html": opts.pnotify_title
+				"class": "ui-pnotify-title"
 			})
 			.appendTo(pnotify.container);
 			if (opts.pnotify_title === false)
 				pnotify.title_container.hide();
+			else if (opts.pnotify_title_escape)
+				pnotify.title_container.text(opts.pnotify_title);
+			else
+				pnotify.title_container.html(opts.pnotify_title);
 
-			// Replace new lines with HTML line breaks.
-			if (opts.pnotify_insert_brs && typeof opts.pnotify_text == "string")
-				opts.pnotify_text = opts.pnotify_text.replace(/\n/g, "<br />");
 			// Add text.
 			pnotify.text_container = $("<div />", {
-				"class": "ui-pnotify-text",
-				"html": opts.pnotify_text
+				"class": "ui-pnotify-text"
 			})
 			.appendTo(pnotify.container);
 			if (opts.pnotify_text === false)
 				pnotify.text_container.hide();
+			else if (opts.pnotify_text_escape)
+				pnotify.text_container.text(opts.pnotify_text);
+			else
+				pnotify.text_container.html(opts.pnotify_insert_brs ? opts.pnotify_text.replace(/\n/g, "<br />") : opts.pnotify_text);
 
 			// Set width and min height.
 			if (typeof opts.pnotify_width == "string")
@@ -683,11 +741,22 @@
 		}
 	};
 
+	// Reposition the notices when the window resizes.
+	$(window).bind('resize', function(){
+		if (timer)
+			clearTimeout(timer);
+		timer = setTimeout($.pnotify_position_all, 10);
+	});
+
 	$.pnotify.defaults = {
 		// The notice's title.
 		pnotify_title: false,
+		// Whether to escape the content of the title. (Not allow HTML.)
+		pnotify_title_escape: false,
 		// The notice's text.
 		pnotify_text: false,
+		// Whether to escape the content of the text. (Not allow HTML.)
+		pnotify_text_escape: false,
 		// Additional classes to be added to the notice. (For custom styling.)
 		pnotify_addclass: "",
 		// Create a non-blocking notice. It lets the user click elements underneath it.
@@ -716,6 +785,12 @@
 		pnotify_shadow: false,
 		// Provide a button for the user to manually close the notice.
 		pnotify_closer: true,
+		// Only show the closer button on hover.
+		pnotify_closer_hover: true,
+		// Provide a button for the user to manually stick the notice.
+		pnotify_sticker: true,
+		// Only show the sticker button on hover.
+		pnotify_sticker_hover: true,
 		// After a delay, remove the notice.
 		pnotify_hide: true,
 		// Delay in milliseconds before the notice is removed.
