@@ -391,7 +391,8 @@
 				var percent = 0;
 				var notice = $.pnotify({
 					pnotify_title: "Please Wait",
-					pnotify_notice_icon: 'picon picon-throbber',
+					pnotify_type: 'info',
+					pnotify_info_icon: 'picon picon-throbber',
 					pnotify_hide: false,
 					pnotify_closer: false,
 					pnotify_sticker: false,
@@ -411,6 +412,7 @@
 						if (percent >= 100) {
 							window.clearInterval(interval);
 							options.pnotify_title = "Done!";
+							options.pnotify_type = "notice";
 							options.pnotify_hide = true;
 							options.pnotify_closer = true;
 							options.pnotify_sticker = true;
@@ -487,73 +489,108 @@
 			 */
 			var stack_bottomright = {"dir1": "up", "dir2": "left", "firstpos1": 15, "firstpos2": 15};
 
-			function show_stack_topleft(err) {
+			function show_stack_topleft(type) {
 				var opts = {
 					pnotify_title: "Over Here",
 					pnotify_text: "Check me out. I'm in a different stack.",
 					pnotify_addclass: "stack-topleft",
 					pnotify_stack: stack_topleft
 				};
-				if (err) {
-					opts.pnotify_title = "Oh No";
-					opts.pnotify_text = "Watch out for that water tower!";
-					opts.pnotify_type = "error";
+				switch (type) {
+					case 'error':
+						opts.pnotify_title = "Oh No";
+						opts.pnotify_text = "Watch out for that water tower!";
+						opts.pnotify_type = "error";
+						break;
+					case 'info':
+						opts.pnotify_title = "Breaking News";
+						opts.pnotify_text = "I like turtles.";
+						opts.pnotify_type = "info";
+						break;
 				}
 				$.pnotify(opts);
 			};
-			function show_stack_bottomleft(err) {
+			function show_stack_bottomleft(type) {
 				var opts = {
 					pnotify_title: "Over Here",
 					pnotify_text: "Check me out. I'm in a different stack.",
 					pnotify_addclass: "stack-bottomleft",
 					pnotify_stack: stack_bottomleft
 				};
-				if (err) {
-					opts.pnotify_title = "Oh No";
-					opts.pnotify_text = "Watch out for that water tower!";
-					opts.pnotify_type = "error";
+				switch (type) {
+					case 'error':
+						opts.pnotify_title = "Oh No";
+						opts.pnotify_text = "Watch out for that water tower!";
+						opts.pnotify_type = "error";
+						break;
+					case 'info':
+						opts.pnotify_title = "Breaking News";
+						opts.pnotify_text = "I like turtles.";
+						opts.pnotify_type = "info";
+						break;
 				}
 				$.pnotify(opts);
 			};
-			function show_stack_bottomright(err) {
+			function show_stack_bottomright(type) {
 				var opts = {
 					pnotify_title: "Over Here",
 					pnotify_text: "Check me out. I'm in a different stack.",
 					pnotify_addclass: "stack-bottomright",
 					pnotify_stack: stack_bottomright
 				};
-				if (err) {
-					opts.pnotify_title = "Oh No";
-					opts.pnotify_text = "Watch out for that water tower!";
-					opts.pnotify_type = "error";
+				switch (type) {
+					case 'error':
+						opts.pnotify_title = "Oh No";
+						opts.pnotify_text = "Watch out for that water tower!";
+						opts.pnotify_type = "error";
+						break;
+					case 'info':
+						opts.pnotify_title = "Breaking News";
+						opts.pnotify_text = "I like turtles.";
+						opts.pnotify_type = "info";
+						break;
 				}
 				$.pnotify(opts);
 			};
-			function show_stack_custom(err) {
+			function show_stack_custom(type) {
 				var opts = {
 					pnotify_title: "Over Here",
 					pnotify_text: "Check me out. I'm in a different stack.",
 					pnotify_addclass: "stack-custom",
 					pnotify_stack: stack_custom
 				};
-				if (err) {
-					opts.pnotify_title = "Oh No";
-					opts.pnotify_text = "Watch out for that water tower!";
-					opts.pnotify_type = "error";
+				switch (type) {
+					case 'error':
+						opts.pnotify_title = "Oh No";
+						opts.pnotify_text = "Watch out for that water tower!";
+						opts.pnotify_type = "error";
+						break;
+					case 'info':
+						opts.pnotify_title = "Breaking News";
+						opts.pnotify_text = "I like turtles.";
+						opts.pnotify_type = "info";
+						break;
 				}
 				$.pnotify(opts);
 			};
-			function show_stack_custom2(err) {
+			function show_stack_custom2(type) {
 				var opts = {
 					pnotify_title: "Over Here",
 					pnotify_text: "Check me out. I'm in a different stack.",
 					pnotify_addclass: "stack-custom2",
 					pnotify_stack: stack_custom2
 				};
-				if (err) {
-					opts.pnotify_title = "Oh No";
-					opts.pnotify_text = "Watch out for that water tower!";
-					opts.pnotify_type = "error";
+				switch (type) {
+					case 'error':
+						opts.pnotify_title = "Oh No";
+						opts.pnotify_text = "Watch out for that water tower!";
+						opts.pnotify_type = "error";
+						break;
+					case 'info':
+						opts.pnotify_title = "Breaking News";
+						opts.pnotify_text = "I like turtles.";
+						opts.pnotify_type = "info";
+						break;
 				}
 				$.pnotify(opts);
 			};
@@ -566,7 +603,8 @@
 				info_box = $.pnotify({
 					pnotify_title: "Pines Notify Stacks",
 					pnotify_text: "Stacks are used to position notices and determine where new notices will go when they're created. Each notice that's placed into a stack will be positioned related to the other notices in that stack. There is no limit to the number of stacks, and no limit to the number of notices in each stack.",
-					pnotify_notice_icon: "picon picon-object-order-raise",
+					pnotify_type: "info",
+					pnotify_info_icon: "picon picon-object-order-raise",
 					pnotify_delay: 20000,
 					pnotify_history: false,
 					pnotify_stack: false,
@@ -746,6 +784,51 @@
 				</div>
 
 				<div class="pf-group ui-widget-content ui-corner-all">
+					<input value="Regular Info" onclick="$.pnotify({
+						pnotify_title: 'New Thing',
+						pnotify_text: 'Just to let you know, something happened.',
+						pnotify_type: 'info'
+					});" type="button" />
+					<input value="Sticky Info" onclick="$.pnotify({
+						pnotify_title: 'Sticky Info',
+						pnotify_text: 'Is sticky info really something you want? That\'s like a newspaper covered in honey.',
+						pnotify_type: 'info',
+						pnotify_hide: false
+					});" type="button" />
+					<input value="Transparent Info" onclick="$.pnotify({
+						pnotify_title: 'See Through Info',
+						pnotify_text: 'Not only does it not matter, but I don\'t even care if you see this info.',
+						pnotify_type: 'info',
+						pnotify_opacity: .8
+					});" type="button" />
+					<input value="Shadow Info" onclick="$.pnotify({
+						pnotify_title: 'Shadow Info',
+						pnotify_text: 'I have a shadow. It makes me pop out!',
+						pnotify_type: 'info',
+						pnotify_shadow: true
+					});" type="button" />
+					<br style="margin-bottom: 5px;" />
+					<input value="Pines Icon Info" onclick="$.pnotify({
+						pnotify_title: 'Pines Icon Info',
+						pnotify_text: 'Something is encrypted. Check out my icon, it shows that you\'re secure because our encryption uses padlocks.',
+						pnotify_type: 'info',
+						pnotify_info_icon: 'picon picon-document-encrypt'
+					});" type="button" />
+					<input value="jQuery UI Icon Info" onclick="$.pnotify({
+						pnotify_title: 'jQuery UI Icon Info',
+						pnotify_text: 'Something is encrypted. Check out my icon, it shows that you\'re secure because our encryption uses padlocks.',
+						pnotify_type: 'info',
+						pnotify_info_icon: 'ui-icon ui-icon-locked'
+					});" type="button" />
+					<input value="No Icon Info" onclick="$.pnotify({
+						pnotify_title: 'No Icon Info',
+						pnotify_text: 'I have no icon.',
+						pnotify_type: 'info',
+						pnotify_info_icon: ''
+					});" type="button" />
+				</div>
+
+				<div class="pf-group ui-widget-content ui-corner-all">
 					<input value="Regular Error" onclick="$.pnotify({
 						pnotify_title: 'Oh No!',
 						pnotify_text: 'Something terrible happened. It seems everything\'s ok now.',
@@ -862,7 +945,7 @@
 					<input value="Rich Notice" onclick="show_rich();" type="button" />
 					<input value="Pretend Loader" onclick="fake_load();" type="button" />
 					<input value="Dynamic Notice" onclick="dyn_notice();" type="button" />
-					<input value="Notice to Error" onclick="$.pnotify({
+					<input value="Notice to Error to Info" onclick="$.pnotify({
 						pnotify_title: 'Notice',
 						pnotify_text: 'Right now I\'m a notice.',
 						pnotify_before_close: function(pnotify){
@@ -872,9 +955,9 @@
 								pnotify_type: 'error',
 								pnotify_before_close: function(pnotify){
 									pnotify.pnotify({
-										pnotify_title: 'Notice',
+										pnotify_title: 'Info',
 										pnotify_text: 'Oh, nevermind. Everything\'s cool now.',
-										pnotify_type: 'notice',
+										pnotify_type: 'info',
 										pnotify_before_close: null
 									});
 									pnotify.pnotify_queue_remove();
@@ -995,24 +1078,29 @@
 						<input style="margin-left: 10px;" value="What are stacks?" onclick="show_stack_info();" type="button" />
 					</span>
 					<br style="margin-bottom: 5px;" />
-					<input value="Notice" onclick="show_stack_topleft();" type="button" />
-					<input value="Error" onclick="show_stack_topleft(true);" type="button" />
+					<input value="Notice" onclick="show_stack_topleft('notice');" type="button" />
+					<input value="Info" onclick="show_stack_topleft('info');" type="button" />
+					<input value="Error" onclick="show_stack_topleft('error');" type="button" />
 					Top Left. Moves down, then right. Pushes to stack top.
 					<br style="margin-bottom: 5px;" />
-					<input value="Notice" onclick="show_stack_bottomleft();" type="button" />
-					<input value="Error" onclick="show_stack_bottomleft(true);" type="button" />
+					<input value="Notice" onclick="show_stack_bottomleft('notice');" type="button" />
+					<input value="Info" onclick="show_stack_bottomleft('info');" type="button" />
+					<input value="Error" onclick="show_stack_bottomleft('error');" type="button" />
 					Bottom Left. Moves right, then up. Pushes to stack bottom.
 					<br style="margin-bottom: 5px;" />
-					<input value="Notice" onclick="show_stack_bottomright();" type="button" />
-					<input value="Error" onclick="show_stack_bottomright(true);" type="button" />
+					<input value="Notice" onclick="show_stack_bottomright('notice');" type="button" />
+					<input value="Info" onclick="show_stack_bottomright('info');" type="button" />
+					<input value="Error" onclick="show_stack_bottomright('error');" type="button" />
 					Bottom Right. Moves up, then left. Pushes to stack bottom.
 					<br style="margin-bottom: 5px;" />
-					<input value="Notice" onclick="show_stack_custom();" type="button" />
-					<input value="Error" onclick="show_stack_custom(true);" type="button" />
+					<input value="Notice" onclick="show_stack_custom('notice');" type="button" />
+					<input value="Info" onclick="show_stack_custom('info');" type="button" />
+					<input value="Error" onclick="show_stack_custom('error');" type="button" />
 					Custom. Moves right, then down. Pushes to stack bottom.
 					<br style="margin-bottom: 5px;" />
-					<input value="Notice" onclick="show_stack_custom2();" type="button" />
-					<input value="Error" onclick="show_stack_custom2(true);" type="button" />
+					<input value="Notice" onclick="show_stack_custom2('notice');" type="button" />
+					<input value="Info" onclick="show_stack_custom2('info');" type="button" />
+					<input value="Error" onclick="show_stack_custom2('error');" type="button" />
 					Custom. Moves left, then up. Pushes to stack top.
 					<br style="margin-bottom: 5px;" />
 					<input value="Hover Over Me" onmouseover="tooltip.pnotify_display();" onmousemove="tooltip.css({'top': event.clientY+12, 'left': event.clientX+12});" onmouseout="tooltip.pnotify_remove();" type="button" />

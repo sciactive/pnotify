@@ -1,5 +1,5 @@
 /*
- * jQuery Pines Notify (pnotify) Plugin 1.1.0
+ * jQuery Pines Notify (pnotify) Plugin 1.1.0dev
  *
  * Copyright (c) 2009-2011 Hunter Perrin
  *
@@ -317,11 +317,11 @@
 			if (opts.pnotify_shadow && !$.browser.msie)
 				pnotify.shadow_container = $("<div />", {"class": "ui-widget-shadow ui-corner-all ui-pnotify-shadow"}).prependTo(pnotify);
 			// Create a container for the notice contents.
-			pnotify.container = $("<div />", {"class": "ui-widget ui-widget-content ui-corner-all ui-pnotify-container "+(opts.pnotify_type == "error" ? "ui-state-error" : "ui-state-highlight")})
+			pnotify.container = $("<div />", {"class": "ui-widget ui-widget-content ui-corner-all ui-pnotify-container "+(opts.pnotify_type == "error" ? "ui-state-error" : (opts.pnotify_type == "info" ? "" : "ui-state-highlight"))})
 			.appendTo(pnotify);
 
 			// The current version of Pines Notify.
-			pnotify.pnotify_version = "1.1.0";
+			pnotify.pnotify_version = "1.1.0dev";
 
 			// This function is for updating the notice.
 			pnotify.pnotify = function(options) {
@@ -361,21 +361,22 @@
 					if (opts.pnotify_text_escape)
 						pnotify.text_container.text(opts.pnotify_text).show(200);
 					else
-						pnotify.text_container.html(opts.pnotify_insert_brs ? opts.pnotify_text.replace(/\n/g, "<br />") : opts.pnotify_text).show(200);
+						pnotify.text_container.html(opts.pnotify_insert_brs ? String(opts.pnotify_text).replace(/\n/g, "<br />") : opts.pnotify_text).show(200);
 				}
 				pnotify.pnotify_history = opts.pnotify_history;
 				// Change the notice type.
 				if (opts.pnotify_type != old_opts.pnotify_type)
-					pnotify.container.toggleClass("ui-state-error ui-state-highlight");
+					pnotify.container.removeClass("ui-state-error ui-state-highlight").addClass(opts.pnotify_type == "error" ? "ui-state-error" : (opts.pnotify_type == "info" ? "" : "ui-state-highlight"));
 				if ((opts.pnotify_notice_icon != old_opts.pnotify_notice_icon && opts.pnotify_type == "notice") ||
+					(opts.pnotify_info_icon != old_opts.pnotify_info_icon && opts.pnotify_type == "info") ||
 					(opts.pnotify_error_icon != old_opts.pnotify_error_icon && opts.pnotify_type == "error") ||
 					(opts.pnotify_type != old_opts.pnotify_type)) {
 					// Remove any old icon.
 					pnotify.container.find("div.ui-pnotify-icon").remove();
-					if ((opts.pnotify_error_icon && opts.pnotify_type == "error") || (opts.pnotify_notice_icon)) {
+					if ((opts.pnotify_error_icon && opts.pnotify_type == "error") || (opts.pnotify_info_icon && opts.pnotify_type == "info") || (opts.pnotify_notice_icon)) {
 						// Build the new icon.
 						$("<div />", {"class": "ui-pnotify-icon"})
-						.append($("<span />", {"class": opts.pnotify_type == "error" ? opts.pnotify_error_icon : opts.pnotify_notice_icon}))
+						.append($("<span />", {"class": opts.pnotify_type == "error" ? opts.pnotify_error_icon : (opts.pnotify_type == "info" ? opts.pnotify_info_icon : opts.pnotify_notice_icon)}))
 						.prependTo(pnotify.container);
 					}
 				}
@@ -566,9 +567,9 @@
 			.appendTo(pnotify.container);
 
 			// Add the appropriate icon.
-			if ((opts.pnotify_error_icon && opts.pnotify_type == "error") || (opts.pnotify_notice_icon)) {
+			if ((opts.pnotify_error_icon && opts.pnotify_type == "error") || (opts.pnotify_info_icon && opts.pnotify_type == "info") || (opts.pnotify_notice_icon)) {
 				$("<div />", {"class": "ui-pnotify-icon"})
-				.append($("<span />", {"class": opts.pnotify_type == "error" ? opts.pnotify_error_icon : opts.pnotify_notice_icon}))
+				.append($("<span />", {"class": opts.pnotify_type == "error" ? opts.pnotify_error_icon : (opts.pnotify_type == "info" ? opts.pnotify_info_icon : opts.pnotify_notice_icon)}))
 				.appendTo(pnotify.container);
 			}
 
@@ -594,7 +595,7 @@
 			else if (opts.pnotify_text_escape)
 				pnotify.text_container.text(opts.pnotify_text);
 			else
-				pnotify.text_container.html(opts.pnotify_insert_brs ? opts.pnotify_text.replace(/\n/g, "<br />") : opts.pnotify_text);
+				pnotify.text_container.html(opts.pnotify_insert_brs ? String(opts.pnotify_text).replace(/\n/g, "<br />") : opts.pnotify_text);
 
 			// Set width and min height.
 			if (typeof opts.pnotify_width == "string")
@@ -769,10 +770,12 @@
 		pnotify_width: "300px",
 		// Minimum height of the notice. It will expand to fit content.
 		pnotify_min_height: "16px",
-		// Type of the notice. "notice" or "error".
+		// Type of the notice. "notice", "info", or "error".
 		pnotify_type: "notice",
-		// The icon class to use if type is notice.
+		// The icon class to use if type is notice. (The actual jQUI notice icon looks terrible.)
 		pnotify_notice_icon: "ui-icon ui-icon-info",
+		// The icon class to use if type is info.
+		pnotify_info_icon: "ui-icon ui-icon-info",
 		// The icon class to use if type is error.
 		pnotify_error_icon: "ui-icon ui-icon-alert",
 		// The animation to use when displaying and hiding the notice. "none", "show", "fade", and "slide" are built in to jQuery. Others require jQuery UI. Use an object with effect_in and effect_out to use different effects.
