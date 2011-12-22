@@ -137,12 +137,12 @@
 
 			/* Custom styled notice CSS */
 			.ui-pnotify.custom {
-				font-family: "Palatino Linotype","Book Antiqua",Palatino,serif;
-				font-weight: bold;
-				text-shadow: 1px 1px 0.5px black;
+				font-family: Arial, Helvetica, sans-serif;
+				text-shadow: 2px 2px 3px black;
+				font-size: 10pt;
 			}
 			.ui-pnotify.custom .ui-pnotify-container {
-				background-color: #666;
+				background-color: #404040;
 				background-image: none;
 				border: none;
 				-moz-border-radius: 10px;
@@ -150,11 +150,12 @@
 				border-radius: 10px;
 			}
 			.ui-pnotify.custom .ui-pnotify-title {
-				font-size: 15pt;
+				font-weight: bold;
+				padding-left: 50px;
 				color: #FFF;
 			}
 			.ui-pnotify.custom .ui-pnotify-text {
-				font-size: 11pt;
+				padding-left: 50px;
 				color: #FFF;
 			}
 			.ui-pnotify.custom .ui-pnotify-closer {
@@ -163,7 +164,7 @@
 				right: 5px;
 			}
 			.ui-pnotify.custom .ui-pnotify-icon {
-				float: right;
+				float: left;
 			}
 			.ui-pnotify.custom .picon {
 				margin: 3px;
@@ -191,15 +192,16 @@
 				top: auto;
 			}
 			.ui-pnotify.stack-custom {
-				top: 20%;
-				left: 20%;
+				/* Custom values have to be in pixels, because the code parses them. */
+				top: 200px;
+				left: 200px;
 				right: auto;
 			}
 			.ui-pnotify.stack-custom2 {
 				top: auto;
 				left: auto;
-				bottom: 20%;
-				right: 20%;
+				bottom: 200px;
+				right: 200px;
 			}
 			/* ]]> */
 		</style>
@@ -230,9 +232,8 @@
 
 				$.pnotify({
 					pnotify_title: "Pines Notify",
-					pnotify_text: "Welcome. Try hovering over me. You can click things behind me.",
+					pnotify_text: "Welcome. Try hovering over me. You can click things behind me, because I'm non-blocking.",
 					pnotify_nonblock: true,
-					pnotify_mouse_reset: false,
 					pnotify_before_close: function(pnotify){
 						// You can access the notice's options with this. It is read only.
 						//pnotify.opts.pnotify_text;
@@ -291,6 +292,7 @@
 					contain = button.wrap(contain).parent();
 					// Add a source button.
 					$("<input type=\"button\" value=\"{}\" title=\"Show source code.\" />").click(function(){
+						$(this).blur();
 						var text = button.attr("onclick");
 						if (!text && button.attr("onmouseover"))
 							text = "// Mouse Over:\n"+button.attr("onmouseover")+"\n\n// Mouse Move:\n"+button.attr("onmousemove")+"\n\n// Mouse Out:\n"+button.attr("onmouseout");
@@ -504,7 +506,7 @@
 						break;
 					case 'info':
 						opts.pnotify_title = "Breaking News";
-						opts.pnotify_text = "I like turtles.";
+						opts.pnotify_text = "Have you met Ted?";
 						opts.pnotify_type = "info";
 						break;
 				}
@@ -525,7 +527,7 @@
 						break;
 					case 'info':
 						opts.pnotify_title = "Breaking News";
-						opts.pnotify_text = "I like turtles.";
+						opts.pnotify_text = "Have you met Ted?";
 						opts.pnotify_type = "info";
 						break;
 				}
@@ -546,7 +548,7 @@
 						break;
 					case 'info':
 						opts.pnotify_title = "Breaking News";
-						opts.pnotify_text = "I like turtles.";
+						opts.pnotify_text = "Have you met Ted?";
 						opts.pnotify_type = "info";
 						break;
 				}
@@ -567,7 +569,7 @@
 						break;
 					case 'info':
 						opts.pnotify_title = "Breaking News";
-						opts.pnotify_text = "I like turtles.";
+						opts.pnotify_text = "Have you met Ted?";
 						opts.pnotify_type = "info";
 						break;
 				}
@@ -588,7 +590,7 @@
 						break;
 					case 'info':
 						opts.pnotify_title = "Breaking News";
-						opts.pnotify_text = "I like turtles.";
+						opts.pnotify_text = "Have you met Ted?";
 						opts.pnotify_type = "info";
 						break;
 				}
@@ -712,15 +714,17 @@
 						<ul>
 							<li><span class="ui-icon ui-icon-bullet"></span>Timed hiding with visual effects.</li>
 							<li><span class="ui-icon ui-icon-bullet"></span>Sticky (no automatic hiding) notices.</li>
-							<li><span class="ui-icon ui-icon-bullet"></span>Optional hide button.</li>
+							<li><span class="ui-icon ui-icon-bullet"></span>Optional hide and sticker buttons.</li>
 							<li><span class="ui-icon ui-icon-bullet"></span>Supports dynamically updating text, title, icon, type...</li>
 							<li><span class="ui-icon ui-icon-bullet"></span>Stacks allow notice sets to stack independently.</li>
 							<li><span class="ui-icon ui-icon-bullet"></span>Control stack direction and push to top or bottom.</li>
+							<li><span class="ui-icon ui-icon-bullet"></span>Non-blocking notices for less intrusive use.</li>
 						</ul>
 					</div>
 					<div class="featurelist ui-widget-content ui-corner-all">
 						<ul>
 							<li><span class="ui-icon ui-icon-bullet"></span>Supports HTML (including forms) in title and text.</li>
+							<li><span class="ui-icon ui-icon-bullet"></span>Can also escape HTML to prevent XSS attack.</li>
 							<li><span class="ui-icon ui-icon-bullet"></span>Variable opacity.</li>
 							<li><span class="ui-icon ui-icon-bullet"></span>Supports Pines icons/jQuery UI icons/any CSS based icons.</li>
 							<li><span class="ui-icon ui-icon-bullet"></span>Supports custom classes for individual notice styling.</li>
@@ -730,6 +734,7 @@
 					</div>
 					<div class="featurelist ui-widget-content ui-corner-all">
 						<ul>
+							<li><span class="ui-icon ui-icon-bullet"></span>Three notification types: notice, info, and error.</li>
 							<li><span class="ui-icon ui-icon-bullet"></span>Callbacks for various events, which can cancel events.</li>
 							<li><span class="ui-icon ui-icon-bullet"></span>History viewer allows user to review previous notices.</li>
 							<li><span class="ui-icon ui-icon-bullet"></span><a href="http://validator.w3.org/check?uri=referer">XHTML 1.0 Strict compliance.</a></li>
@@ -791,7 +796,7 @@
 					});" type="button" />
 					<input value="Sticky Info" onclick="$.pnotify({
 						pnotify_title: 'Sticky Info',
-						pnotify_text: 'Is sticky info really something you want? That\'s like a newspaper covered in honey.',
+						pnotify_text: 'Sticky info, you know, like a newspaper covered in honey.',
 						pnotify_type: 'info',
 						pnotify_hide: false
 					});" type="button" />
@@ -831,7 +836,7 @@
 				<div class="pf-group ui-widget-content ui-corner-all">
 					<input value="Regular Error" onclick="$.pnotify({
 						pnotify_title: 'Oh No!',
-						pnotify_text: 'Something terrible happened. It seems everything\'s ok now.',
+						pnotify_text: 'Something terrible happened.',
 						pnotify_type: 'error'
 					});" type="button" />
 					<input value="Sticky Error" onclick="$.pnotify({
@@ -986,7 +991,7 @@
 					<input value="Remove Permanotice" onclick="if (permanotice.pnotify_remove) permanotice.pnotify_remove();" type="button" />
 					<input value="Non-Blocking Notice" onclick="$.pnotify({
 						pnotify_title: 'Non-Blocking Notice',
-						pnotify_text: 'I\'m a special kind of notice called &quot;non-blocking&quot;. When you hover over me I\'ll fade to show the elements underneath. Feel free to click any of them just like I wasn\'t even here.\n\nNote: HTML links don\'t trigger in Firefox or IE, due to security settings.',
+						pnotify_text: 'I\'m a special kind of notice called &quot;non-blocking&quot;. When you hover over me I\'ll fade to show the elements underneath. Feel free to click any of them just like I wasn\'t even here.\n\nNote: HTML links don\'t trigger in some browsers, due to security settings.',
 						pnotify_nonblock: true,
 						pnotify_nonblock_opacity: .2
 					});" type="button" />
@@ -1067,6 +1072,7 @@
 						pnotify_text: 'I have an additional class that\'s used to give me special styling. I always wanted to be pretty.',
 						pnotify_addclass: 'custom',
 						pnotify_notice_icon: 'picon picon-32 picon-fill-color',
+						pnotify_opacity: .8,
 						pnotify_nonblock: true,
 						pnotify_nonblock_opacity: .2
 					});" type="button" />
@@ -1108,8 +1114,20 @@
 				</div>
 
 				<div class="pf-group ui-widget-content ui-corner-all">
-					<input value="Lower Timer" onclick="$.pnotify.defaults.pnotify_delay ? (function(){$.pnotify.defaults.pnotify_delay -= 500; alert('Timer lowered to '+($.pnotify.defaults.pnotify_delay/1000)+' seconds.');}()) : (alert('Timer is already at zero.'))" type="button" />
-					<input value="Raise Timer" onclick="(function(){$.pnotify.defaults.pnotify_delay += 500; alert('Timer raised to '+($.pnotify.defaults.pnotify_delay/1000)+' seconds.');}())" type="button" />
+					Current Timer: <span id="timer" style="font-family: monospace;"></span>
+					<script type="text/javascript">
+						// <![CDATA[
+						function update_timer_display() {
+							$("#timer").text(($.pnotify.defaults.pnotify_delay/1000)+" seconds");
+						}
+						$(function(){
+							update_timer_display();
+						});
+						// ]]>
+					</script>
+					<br style="margin-bottom: 3px;" />
+					<input value="Lower Timer" onclick="$.pnotify.defaults.pnotify_delay ? (function(){$.pnotify.defaults.pnotify_delay -= 500; update_timer_display();}()) : (alert('Timer is already at zero.'))" type="button" />
+					<input value="Raise Timer" onclick="(function(){$.pnotify.defaults.pnotify_delay += 500; update_timer_display();}())" type="button" />
 					<br style="margin-bottom: 5px;" />
 					Benchmarking:
 					<br />
@@ -1158,64 +1176,237 @@
 						pnotify_animation: {effect_in: 'show', effect_out: 'slide'}
 					});" type="button" />
 					<br style="margin-bottom: 5px;" />
-					Effects from jQuery UI: <small>(used on close animation)</small>
+					Effects from jQuery UI:
 					<br />
-					<input value="Blind" onclick="$.pnotify({
-						pnotify_title: 'Blind Effect',
-						pnotify_text: 'I use a different effect.',
-						pnotify_animation: {effect_in: 'fade', effect_out: 'blind'}
-					});" type="button" />
-					<input value="Clip" onclick="$.pnotify({
-						pnotify_title: 'Clip Effect',
-						pnotify_text: 'I use a different effect.',
-						pnotify_animation: {effect_in: 'fade', effect_out: 'clip'}
-					});" type="button" />
-					<input value="Drop" onclick="$.pnotify({
-						pnotify_title: 'Drop Effect',
-						pnotify_text: 'I use a different effect.',
-						pnotify_animation: {effect_in: 'fade', effect_out: 'drop'}
-					});" type="button" />
-					<input value="Explode" onclick="$.pnotify({
-						pnotify_title: 'Explode Effect',
-						pnotify_text: 'I use a different effect.',
-						pnotify_animation: {effect_in: 'fade', effect_out: 'explode'}
-					});" type="button" />
-					<input value="Puff" onclick="$.pnotify({
-						pnotify_title: 'Puff Effect',
-						pnotify_text: 'I use a different effect.',
-						pnotify_animation: {effect_in: 'fade', effect_out: 'puff'}
-					});" type="button" />
-					<input value="Scale" onclick="$.pnotify({
-						pnotify_title: 'Scale Effect',
-						pnotify_text: 'I use a different effect.',
-						pnotify_animation: {effect_in: 'fade', effect_out: 'scale'}
-					});" type="button" />
+					Presets:
+					<input value="Bouncy Fun" onclick="$('#ui_effect_in').val('scale'); $('#ui_easing_in').val('easeOutElastic'); $('#ui_effect_out').val('same'); $('#ui_easing_out').val('same'); $('#ui_speed').val('700'); $('#ui_button').click();" type="button" />
+					<input value="Toss In" onclick="$('#ui_effect_in').val('drop'); $('#ui_easing_in').val('easeOutBounce'); $('#ui_effect_out').val('same'); $('#ui_easing_out').val('easeOutCubic'); $('#ui_speed').val('700'); $('#ui_button').click();" type="button" />
+					<input value="Gentle Puff" onclick="$('#ui_effect_in').val('puff'); $('#ui_easing_in').val('easeOutBack'); $('#ui_effect_out').val('same'); $('#ui_easing_out').val('easeInBack'); $('#ui_speed').val('1000'); $('#ui_button').click();" type="button" />
+					<br />
+					<span style="display: inline-block; width: 30px;">In:</span>
+					Effect
+					<select id="ui_effect_in" class="ui-widget-content ui-corner-all">
+						<option value="blind">Blind</option>
+						<option value="bounce">Bounce</option>
+						<option value="clip">Clip</option>
+						<option value="drop">Drop</option>
+						<option value="explode">Explode</option>
+						<option value="fold">Fold</option>
+						<option value="puff">Puff</option>
+						<option value="scale">Scale</option>
+						<option value="slide">Slide</option>
+					</select>
+					Easing
+					<select id="ui_easing_in" class="ui-widget-content ui-corner-all">
+						<option value="linear">Linear</option>
+						<option value="swing">Swing</option>
+						<option value="easeInQuad">easeInQuad</option>
+						<option value="easeOutQuad">easeOutQuad</option>
+						<option value="easeInOutQuad">easeInOutQuad</option>
+						<option value="easeInCubic">easeInCubic</option>
+						<option value="easeOutCubic">easeOutCubic</option>
+						<option value="easeInOutCubic">easeInOutCubic</option>
+						<option value="easeInQuart">easeInQuart</option>
+						<option value="easeOutQuart">easeOutQuart</option>
+						<option value="easeInOutQuart">easeInOutQuart</option>
+						<option value="easeInQuint">easeInQuint</option>
+						<option value="easeOutQuint">easeOutQuint</option>
+						<option value="easeInOutQuint">easeInOutQuint</option>
+						<option value="easeInSine">easeInSine</option>
+						<option value="easeOutSine">easeOutSine</option>
+						<option value="easeInOutSine">easeInOutSine</option>
+						<option value="easeInExpo">easeInExpo</option>
+						<option value="easeOutExpo">easeOutExpo</option>
+						<option value="easeInOutExpo">easeInOutExpo</option>
+						<option value="easeInCirc">easeInCirc</option>
+						<option value="easeOutCirc">easeOutCirc</option>
+						<option value="easeInOutCirc">easeInOutCirc</option>
+						<option value="easeInElastic">easeInElastic</option>
+						<option value="easeOutElastic">easeOutElastic</option>
+						<option value="easeInOutElastic">easeInOutElastic</option>
+						<option value="easeInBack">easeInBack</option>
+						<option value="easeOutBack">easeOutBack</option>
+						<option value="easeInOutBack">easeInOutBack</option>
+						<option value="easeInBounce">easeInBounce</option>
+						<option value="easeOutBounce">easeOutBounce</option>
+						<option value="easeInOutBounce">easeInOutBounce</option>
+					</select>
+					<br style="margin-bottom: 4px;" />
+					<span style="display: inline-block; width: 30px;">Out:</span>
+					Effect
+					<select id="ui_effect_out" class="ui-widget-content ui-corner-all">
+						<option value="same">Same</option>
+						<option value="blind">Blind</option>
+						<option value="bounce">Bounce</option>
+						<option value="clip">Clip</option>
+						<option value="drop">Drop</option>
+						<option value="explode">Explode</option>
+						<option value="fold">Fold</option>
+						<option value="puff">Puff</option>
+						<option value="scale">Scale</option>
+						<option value="slide">Slide</option>
+					</select>
+					Easing
+					<select id="ui_easing_out" class="ui-widget-content ui-corner-all">
+						<option value="same">Same</option>
+						<option value="linear">Linear</option>
+						<option value="swing">Swing</option>
+						<option value="easeInQuad">easeInQuad</option>
+						<option value="easeOutQuad">easeOutQuad</option>
+						<option value="easeInOutQuad">easeInOutQuad</option>
+						<option value="easeInCubic">easeInCubic</option>
+						<option value="easeOutCubic">easeOutCubic</option>
+						<option value="easeInOutCubic">easeInOutCubic</option>
+						<option value="easeInQuart">easeInQuart</option>
+						<option value="easeOutQuart">easeOutQuart</option>
+						<option value="easeInOutQuart">easeInOutQuart</option>
+						<option value="easeInQuint">easeInQuint</option>
+						<option value="easeOutQuint">easeOutQuint</option>
+						<option value="easeInOutQuint">easeInOutQuint</option>
+						<option value="easeInSine">easeInSine</option>
+						<option value="easeOutSine">easeOutSine</option>
+						<option value="easeInOutSine">easeInOutSine</option>
+						<option value="easeInExpo">easeInExpo</option>
+						<option value="easeOutExpo">easeOutExpo</option>
+						<option value="easeInOutExpo">easeInOutExpo</option>
+						<option value="easeInCirc">easeInCirc</option>
+						<option value="easeOutCirc">easeOutCirc</option>
+						<option value="easeInOutCirc">easeInOutCirc</option>
+						<option value="easeInElastic">easeInElastic</option>
+						<option value="easeOutElastic">easeOutElastic</option>
+						<option value="easeInOutElastic">easeInOutElastic</option>
+						<option value="easeInBack">easeInBack</option>
+						<option value="easeOutBack">easeOutBack</option>
+						<option value="easeInOutBack">easeInOutBack</option>
+						<option value="easeInBounce">easeInBounce</option>
+						<option value="easeOutBounce">easeOutBounce</option>
+						<option value="easeInOutBounce">easeInOutBounce</option>
+					</select>
+					<br style="margin-bottom: 4px;" />
+					Speed (ms):
+					<input type="text" size="8" id="ui_speed" value="600" class="ui-widget-content ui-corner-all" />
+					<input value="Notify!" style="margin-left: 2em;" onclick="
+						var effect_in = $('#ui_effect_in').val();
+						var easing_in = $('#ui_easing_in').val();
+						var effect_out = $('#ui_effect_out').val();
+						var easing_out = $('#ui_easing_out').val();
+						if (effect_out == 'same')
+							effect_out = effect_in;
+						if (easing_out == 'same')
+							easing_out = easing_in;
+						var speed = $('#ui_speed').val();
+						if (speed.match(/^\d+$/))
+							speed = parseInt(speed);
+						var options_in = {easing: easing_in};
+						var options_out = {easing: easing_out};
+						if (effect_in == 'scale')
+							options_in.percent = 100;
+						if (effect_out == 'scale')
+							options_out.percent = 0;
+						$.pnotify({
+							pnotify_title: 'jQuery UI Effect',
+							pnotify_text: 'I use an effect from jQuery UI.',
+							pnotify_animate_speed: speed,
+							pnotify_animation: {
+								'effect_in': effect_in,
+								'options_in': options_in,
+								'effect_out': effect_out,
+								'options_out': options_out
+							}
+						});
+					" type="button" id="ui_button" />
 					<br style="margin-bottom: 5px;" />
-					Custom Functions:
+					Custom Functions (Uses CSS3):
 					<br />
 					<input value="One Function" onclick="$.pnotify({
 						pnotify_title: 'Custom Function',
 						pnotify_text: 'I use a different effect.',
 						pnotify_animation: function(status, callback, pnotify){
-							alert('Current animation: '+status);
-							pnotify.toggle();
 							var source_note = 'Always call the callback when the animation completes.';
-							callback();
+							var cur_angle = 0;
+							var cur_opacity_scale = 0;
+							if (status == 'out')
+								cur_opacity_scale = 1;
+							var timer = setInterval(function(){
+								cur_angle += 10;
+								if (cur_angle == 360) {
+									cur_angle = 0;
+									cur_opacity_scale = 1;
+									if (status == 'out')
+										cur_opacity_scale = 0;
+									clearInterval(timer);
+								} else {
+									cur_opacity_scale = cur_angle / 360;
+									if (status == 'out')
+										cur_opacity_scale = 1 - cur_opacity_scale;
+								}
+								pnotify.css({
+									'-moz-transform': ('rotate('+cur_angle+'deg) scale('+cur_opacity_scale+')'),
+									'-webkit-transform': ('rotate('+cur_angle+'deg) scale('+cur_opacity_scale+')'),
+									'-o-transform': ('rotate('+cur_angle+'deg) scale('+cur_opacity_scale+')'),
+									'-ms-transform': ('rotate('+cur_angle+'deg) scale('+cur_opacity_scale+')'),
+									'filter': ('progid:DXImageTransform.Microsoft.BasicImage(rotation='+(cur_angle / 360 * 4)+')')
+								}).fadeTo(0, cur_opacity_scale);
+								if (cur_angle == 0) {
+									if (status == 'out')
+											pnotify.hide();
+									callback();
+								}
+							}, 20);
 						}
 					});" type="button" />
 					<input value="Two Functions" onclick="$.pnotify({
 						pnotify_title: 'Custom Functions',
 						pnotify_text: 'I use a different effect.',
 						pnotify_animation: {effect_in: function(status, callback, pnotify){
-							alert('Showing...');
-							pnotify.show();
 							var source_note = 'Always call the callback when the animation completes.';
-							callback();
+							var cur_angle = 0;
+							var cur_opacity_scale = 0;
+							var timer = setInterval(function(){
+								cur_angle += 10;
+								if (cur_angle == 360) {
+									cur_angle = 0;
+									cur_opacity_scale = 1;
+									clearInterval(timer);
+								} else {
+									cur_opacity_scale = cur_angle / 360;
+								}
+								pnotify.css({
+									'-moz-transform': ('rotate('+cur_angle+'deg) scale('+cur_opacity_scale+')'),
+									'-webkit-transform': ('rotate('+cur_angle+'deg) scale('+cur_opacity_scale+')'),
+									'-o-transform': ('rotate('+cur_angle+'deg) scale('+cur_opacity_scale+')'),
+									'-ms-transform': ('rotate('+cur_angle+'deg) scale('+cur_opacity_scale+')'),
+									'filter': ('progid:DXImageTransform.Microsoft.BasicImage(rotation='+(cur_angle / 360 * 4)+')')
+								}).fadeTo(0, cur_opacity_scale);
+								if (cur_angle == 0)
+									callback();
+							}, 20);
 						}, effect_out: function(status, callback, pnotify){
-							alert('Hiding...');
-							pnotify.hide();
 							var source_note = 'Always call the callback when the animation completes.';
-							callback();
+							var cur_angle = 0;
+							var cur_opacity_scale = 1;
+							var timer = setInterval(function(){
+								cur_angle += 10;
+								if (cur_angle == 360) {
+									cur_angle = 0;
+									cur_opacity_scale = 0;
+									clearInterval(timer);
+								} else {
+									cur_opacity_scale = cur_angle / 360;
+									cur_opacity_scale = 1 - cur_opacity_scale;
+								}
+								pnotify.css({
+									'-moz-transform': ('rotate('+cur_angle+'deg) scale('+cur_opacity_scale+')'),
+									'-webkit-transform': ('rotate('+cur_angle+'deg) scale('+cur_opacity_scale+')'),
+									'-o-transform': ('rotate('+cur_angle+'deg) scale('+cur_opacity_scale+')'),
+									'-ms-transform': ('rotate('+cur_angle+'deg) scale('+cur_opacity_scale+')'),
+									'filter': ('progid:DXImageTransform.Microsoft.BasicImage(rotation='+(cur_angle / 360 * 4)+')')
+								}).fadeTo(0, cur_opacity_scale);
+								if (cur_angle == 0) {
+									pnotify.hide();
+									callback();
+								}
+							}, 20);
 						}}
 					});" type="button" />
 				</div>
@@ -1223,10 +1414,12 @@
 				<div class="pf-group ui-widget-content ui-corner-all">
 					This isn't really a feature of Pines Notify, but it's cool:
 					<br />
-					<input value="Consume alert()" onclick="consume_alert();" type="button" />
-					<input value="Release alert()" onclick="release_alert();" type="button" />
-					<br style="margin-bottom: 5px;" />
-					<input value="Display a JavaScript Alert" onclick="alert('I\'m a standard alert, called with alert().')" type="button" />
+					<ol>
+						<li><input value="Display a JavaScript Alert" onclick="alert('I\'m a standard alert, called with alert().')" type="button" /></li>
+						<li><input value="Consume alert()" onclick="consume_alert();" type="button" /></li>
+						<li>Repeat step 1.</li>
+						<li><input value="Release alert()" onclick="release_alert();" type="button" /></li>
+					</ol>
 				</div>
 				<h2>Theming</h2>
 				<div>

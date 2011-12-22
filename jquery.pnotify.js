@@ -1,7 +1,8 @@
 /*
- * jQuery Pines Notify (pnotify) Plugin 1.1.0dev
+ * jQuery Pines Notify (pnotify) Plugin 1.1.0
  *
- * Copyright (c) 2009-2011 Hunter Perrin
+ * http://pinesframework.org/pnotify/
+ * Copyright (c) 2009-2012 Hunter Perrin
  *
  * Triple license under the GPL, LGPL, and MPL:
  *	  http://www.gnu.org/licenses/gpl.html
@@ -13,6 +14,17 @@
 	var history_handle_top, timer;
 	var body;
 	var jwindow;
+	// Set global variables.
+	$(function(){
+		body = $("body");
+		jwindow = $(window);
+		// Reposition the notices when the window resizes.
+		jwindow.bind('resize', function(){
+			if (timer)
+				clearTimeout(timer);
+			timer = setTimeout($.pnotify_position_all, 10);
+		});
+	});
 	$.extend({
 		pnotify_remove_all: function () {
 			var body_data = body.data("pnotify");
@@ -34,147 +46,6 @@
 			var body_data = body.data("pnotify");
 			if (!body_data || !body_data.length)
 				return;
-			$.each(body_data, function(){
-				// Get the notice's stack.
-				var s = this.opts.pnotify_stack;
-				if (!s) return;
-				if (!s.nextpos1)
-					s.nextpos1 = s.firstpos1;
-				if (!s.nextpos2)
-					s.nextpos2 = s.firstpos2;
-				if (!s.addpos2)
-					s.addpos2 = 0;
-				// Skip this notice if it's not shown.
-				if (this.css("display") != "none") {
-					var curpos1, curpos2;
-					// Store what will need to be animated.
-					var animate = {};
-					// Calculate the current pos1 value.
-					var csspos1;
-					switch (s.dir1) {
-						case "down":
-							csspos1 = "top";
-							break;
-						case "up":
-							csspos1 = "bottom";
-							break;
-						case "left":
-							csspos1 = "right";
-							break;
-						case "right":
-							csspos1 = "left";
-							break;
-					}
-					curpos1 = parseInt(this.css(csspos1));
-					if (isNaN(curpos1))
-						curpos1 = 0;
-					// Remember the first pos1, so the first visible notice goes there.
-					if (typeof s.firstpos1 == "undefined") {
-						s.firstpos1 = curpos1;
-						s.nextpos1 = s.firstpos1;
-					}
-					// Calculate the current pos2 value.
-					var csspos2;
-					switch (s.dir2) {
-						case "down":
-							csspos2 = "top";
-							break;
-						case "up":
-							csspos2 = "bottom";
-							break;
-						case "left":
-							csspos2 = "right";
-							break;
-						case "right":
-							csspos2 = "left";
-							break;
-					}
-					curpos2 = parseInt(this.css(csspos2));
-					if (isNaN(curpos2))
-						curpos2 = 0;
-					// Remember the first pos2, so the first visible notice goes there.
-					if (typeof s.firstpos2 == "undefined") {
-						s.firstpos2 = curpos2;
-						s.nextpos2 = s.firstpos2;
-					}
-					// Check that it's not beyond the viewport edge.
-					if ((s.dir1 == "down" && s.nextpos1 + this.height() > jwindow.height()) ||
-						(s.dir1 == "up" && s.nextpos1 + this.height() > jwindow.height()) ||
-						(s.dir1 == "left" && s.nextpos1 + this.width() > jwindow.width()) ||
-						(s.dir1 == "right" && s.nextpos1 + this.width() > jwindow.width()) ) {
-						// If it is, it needs to go back to the first pos1, and over on pos2.
-						s.nextpos1 = s.firstpos1;
-						s.nextpos2 += s.addpos2 + 10;
-						s.addpos2 = 0;
-					}
-					// Animate if we're moving on dir2.
-					if (s.animation && s.nextpos2 < curpos2) {
-						switch (s.dir2) {
-							case "down":
-								animate.top = s.nextpos2+"px";
-								break;
-							case "up":
-								animate.bottom = s.nextpos2+"px";
-								break;
-							case "left":
-								animate.right = s.nextpos2+"px";
-								break;
-							case "right":
-								animate.left = s.nextpos2+"px";
-								break;
-						}
-					} else
-						this.css(csspos2, s.nextpos2+"px");
-					// Keep track of the widest/tallest notice in the column/row, so we can push the next column/row.
-					switch (s.dir2) {
-						case "down":
-						case "up":
-							if (this.outerHeight(true) > s.addpos2)
-								s.addpos2 = this.height();
-							break;
-						case "left":
-						case "right":
-							if (this.outerWidth(true) > s.addpos2)
-								s.addpos2 = this.width();
-							break;
-					}
-					// Move the notice on dir1.
-					if (s.nextpos1) {
-						// Animate if we're moving toward the first pos.
-						if (s.animation && (curpos1 > s.nextpos1 || animate.top || animate.bottom || animate.right || animate.left)) {
-							switch (s.dir1) {
-								case "down":
-									animate.top = s.nextpos1+"px";
-									break;
-								case "up":
-									animate.bottom = s.nextpos1+"px";
-									break;
-								case "left":
-									animate.right = s.nextpos1+"px";
-									break;
-								case "right":
-									animate.left = s.nextpos1+"px";
-									break;
-							}
-						} else
-							this.css(csspos1, s.nextpos1+"px");
-					}
-					// Run the animation.
-					if (animate.top || animate.bottom || animate.right || animate.left)
-						this.animate(animate, {duration: 500, queue: false});
-					// Calculate the next dir1 position.
-					switch (s.dir1) {
-						case "down":
-						case "up":
-							s.nextpos1 += this.height() + 10;
-							break;
-						case "left":
-						case "right":
-							s.nextpos1 += this.width() + 10;
-							break;
-					}
-				}
-			});
 			// Reset the next position data.
 			$.each(body_data, function(){
 				var s = this.opts.pnotify_stack;
@@ -184,13 +55,11 @@
 				s.addpos2 = 0;
 				s.animation = true;
 			});
+			$.each(body_data, function(){
+				this.pnotify_position();
+			});
 		},
 		pnotify: function(options) {
-			if (!body)
-				body = $("body");
-			if (!jwindow)
-				jwindow = $(window);
-
 			// Stores what is currently being animated (in or out).
 			var animating;
 			
@@ -321,7 +190,7 @@
 			.appendTo(pnotify);
 
 			// The current version of Pines Notify.
-			pnotify.pnotify_version = "1.1.0dev";
+			pnotify.pnotify_version = "1.1.0";
 
 			// This function is for updating the notice.
 			pnotify.pnotify = function(options) {
@@ -364,6 +233,7 @@
 						pnotify.text_container.html(opts.pnotify_insert_brs ? String(opts.pnotify_text).replace(/\n/g, "<br />") : opts.pnotify_text).show(200);
 				}
 				pnotify.pnotify_history = opts.pnotify_history;
+				pnotify.pnotify_hide = opts.pnotify_hide;
 				// Change the notice type.
 				if (opts.pnotify_type != old_opts.pnotify_type)
 					pnotify.container.removeClass("ui-state-error ui-state-highlight").addClass(opts.pnotify_type == "error" ? "ui-state-error" : (opts.pnotify_type == "info" ? "" : "ui-state-highlight"));
@@ -409,12 +279,158 @@
 				return pnotify;
 			};
 
-			// Queue the position function so it doesn't run repeatedly and use
-			// up resources.
-			pnotify.pnotify_queue_position = function() {
+			// Position the notice. dont_skip_hidden causes the notice to
+			// position even if it's not visible.
+			pnotify.pnotify_position = function(dont_skip_hidden){
+				// Get the notice's stack.
+				var s = pnotify.opts.pnotify_stack;
+				if (!s) return;
+				if (!s.nextpos1)
+					s.nextpos1 = s.firstpos1;
+				if (!s.nextpos2)
+					s.nextpos2 = s.firstpos2;
+				if (!s.addpos2)
+					s.addpos2 = 0;
+				// Skip this notice if it's not shown.
+				if (pnotify.css("display") != "none" || dont_skip_hidden) {
+					var curpos1, curpos2;
+					// Store what will need to be animated.
+					var animate = {};
+					// Calculate the current pos1 value.
+					var csspos1;
+					switch (s.dir1) {
+						case "down":
+							csspos1 = "top";
+							break;
+						case "up":
+							csspos1 = "bottom";
+							break;
+						case "left":
+							csspos1 = "right";
+							break;
+						case "right":
+							csspos1 = "left";
+							break;
+					}
+					curpos1 = parseInt(pnotify.css(csspos1));
+					if (isNaN(curpos1))
+						curpos1 = 0;
+					// Remember the first pos1, so the first visible notice goes there.
+					if (typeof s.firstpos1 == "undefined") {
+						s.firstpos1 = curpos1;
+						s.nextpos1 = s.firstpos1;
+					}
+					// Calculate the current pos2 value.
+					var csspos2;
+					switch (s.dir2) {
+						case "down":
+							csspos2 = "top";
+							break;
+						case "up":
+							csspos2 = "bottom";
+							break;
+						case "left":
+							csspos2 = "right";
+							break;
+						case "right":
+							csspos2 = "left";
+							break;
+					}
+					curpos2 = parseInt(pnotify.css(csspos2));
+					if (isNaN(curpos2))
+						curpos2 = 0;
+					// Remember the first pos2, so the first visible notice goes there.
+					if (typeof s.firstpos2 == "undefined") {
+						s.firstpos2 = curpos2;
+						s.nextpos2 = s.firstpos2;
+					}
+					// Check that it's not beyond the viewport edge.
+					if ((s.dir1 == "down" && s.nextpos1 + pnotify.height() > jwindow.height()) ||
+						(s.dir1 == "up" && s.nextpos1 + pnotify.height() > jwindow.height()) ||
+						(s.dir1 == "left" && s.nextpos1 + pnotify.width() > jwindow.width()) ||
+						(s.dir1 == "right" && s.nextpos1 + pnotify.width() > jwindow.width()) ) {
+						// If it is, it needs to go back to the first pos1, and over on pos2.
+						s.nextpos1 = s.firstpos1;
+						s.nextpos2 += s.addpos2 + 10;
+						s.addpos2 = 0;
+					}
+					// Animate if we're moving on dir2.
+					if (s.animation && s.nextpos2 < curpos2) {
+						switch (s.dir2) {
+							case "down":
+								animate.top = s.nextpos2+"px";
+								break;
+							case "up":
+								animate.bottom = s.nextpos2+"px";
+								break;
+							case "left":
+								animate.right = s.nextpos2+"px";
+								break;
+							case "right":
+								animate.left = s.nextpos2+"px";
+								break;
+						}
+					} else
+						pnotify.css(csspos2, s.nextpos2+"px");
+					// Keep track of the widest/tallest notice in the column/row, so we can push the next column/row.
+					switch (s.dir2) {
+						case "down":
+						case "up":
+							if (pnotify.outerHeight(true) > s.addpos2)
+								s.addpos2 = pnotify.height();
+							break;
+						case "left":
+						case "right":
+							if (pnotify.outerWidth(true) > s.addpos2)
+								s.addpos2 = pnotify.width();
+							break;
+					}
+					// Move the notice on dir1.
+					if (s.nextpos1) {
+						// Animate if we're moving toward the first pos.
+						if (s.animation && (curpos1 > s.nextpos1 || animate.top || animate.bottom || animate.right || animate.left)) {
+							switch (s.dir1) {
+								case "down":
+									animate.top = s.nextpos1+"px";
+									break;
+								case "up":
+									animate.bottom = s.nextpos1+"px";
+									break;
+								case "left":
+									animate.right = s.nextpos1+"px";
+									break;
+								case "right":
+									animate.left = s.nextpos1+"px";
+									break;
+							}
+						} else
+							pnotify.css(csspos1, s.nextpos1+"px");
+					}
+					// Run the animation.
+					if (animate.top || animate.bottom || animate.right || animate.left)
+						pnotify.animate(animate, {duration: 500, queue: false});
+					// Calculate the next dir1 position.
+					switch (s.dir1) {
+						case "down":
+						case "up":
+							s.nextpos1 += pnotify.height() + 10;
+							break;
+						case "left":
+						case "right":
+							s.nextpos1 += pnotify.width() + 10;
+							break;
+					}
+				}
+			};
+
+			// Queue the positiona all function so it doesn't run repeatedly and
+			// use up resources.
+			pnotify.pnotify_queue_position = function(milliseconds){
 				if (timer)
 					clearTimeout(timer);
-				timer = setTimeout($.pnotify_position_all, 10);
+				if (!milliseconds)
+					milliseconds = 10;
+				timer = setTimeout($.pnotify_position_all, milliseconds);
 			};
 
 			// Display the notice.
@@ -427,7 +443,9 @@
 					if (opts.pnotify_before_open(pnotify) === false)
 						return;
 				}
-				pnotify.pnotify_queue_position();
+				// Try to put it in the right position.
+				if (opts.pnotify_stack.push != "top")
+					pnotify.pnotify_position(true);
 				// First show it, then set its opacity, then hide it.
 				if (opts.pnotify_animation == "fade" || opts.pnotify_animation.effect_in == "fade") {
 					// If it's fading in, it should start at 0.
@@ -492,8 +510,8 @@
 					pnotify.slideDown(opts.pnotify_animate_speed, callback);
 				else if (typeof animation == "function")
 					animation("in", callback, pnotify);
-				else if (pnotify.effect)
-					pnotify.effect(animation, {}, opts.pnotify_animate_speed, callback);
+				else
+					pnotify.show(animation, (typeof opts.pnotify_animation.options_in == "object" ? opts.pnotify_animation.options_in : {}), opts.pnotify_animate_speed, callback);
 			};
 
 			// Animate the notice out.
@@ -516,8 +534,8 @@
 					pnotify.slideUp(opts.pnotify_animate_speed, callback);
 				else if (typeof animation == "function")
 					animation("out", callback, pnotify);
-				else if (pnotify.effect)
-					pnotify.effect(animation, {}, opts.pnotify_animate_speed, callback);
+				else
+					pnotify.hide(animation, (typeof opts.pnotify_animation.options_out == "object" ? opts.pnotify_animation.options_out : {}), opts.pnotify_animate_speed, callback);
 			};
 
 			// Cancel any pending removal timer.
@@ -541,6 +559,7 @@
 				"css": {"cursor": "pointer", "display": opts.pnotify_closer_hover ? "none" : "block"},
 				"click": function(){
 					pnotify.pnotify_remove();
+					pnotify.sticker.hide();
 					pnotify.closer.hide();
 				}
 			})
@@ -606,6 +625,9 @@
 			// The history variable controls whether the notice gets redisplayed
 			// by the history pull down.
 			pnotify.pnotify_history = opts.pnotify_history;
+			// The hide variable controls whether the history pull down should
+			// queue a removal timer.
+			pnotify.pnotify_hide = opts.pnotify_hide;
 
 			// Add the notice to the notice array.
 			var body_data = body.data("pnotify");
@@ -616,6 +638,9 @@
 			else
 				body_data = $.merge(body_data, [pnotify]);
 			body.data("pnotify", body_data);
+			// Now position all the notices if they are to push to the top.
+			if (opts.pnotify_stack.push == "top")
+				pnotify.pnotify_queue_position(1);
 
 			// Run callback.
 			if (opts.pnotify_after_init)
@@ -644,8 +669,13 @@
 							"click": function(){
 								// Display all notices. (Disregarding non-history notices.)
 								$.each(body_data, function(){
-									if (this.pnotify_history && this.pnotify_display)
-										this.pnotify_display();
+									if (this.pnotify_history) {
+										if (this.is(":visible")) {
+											if (this.pnotify_hide)
+												this.pnotify_queue_remove();
+										} else if (this.pnotify_display)
+											this.pnotify_display();
+									}
 								});
 								return false;
 							}
@@ -661,21 +691,27 @@
 							},
 							"click": function(){
 								// Look up the last history notice, and display it.
-								var i = 1;
-								while (!body_data[body_data.length - i] || !body_data[body_data.length - i].pnotify_history || body_data[body_data.length - i].is(":visible")) {
-									if (body_data.length - i === 0)
-										return false;
-									i++;
-								}
-								var n = body_data[body_data.length - i];
-								if (n.pnotify_display)
-									n.pnotify_display();
+								var i = -1;
+								var notice;
+								do {
+									if (i == -1)
+										notice = body_data.slice(i);
+									else
+										notice = body_data.slice(i, i+1);
+									if (!notice[0])
+										break;
+									i--;
+								} while (!notice[0].pnotify_history || notice[0].is(":visible"));
+								if (!notice[0])
+									return false;
+								if (notice[0].pnotify_display)
+									notice[0].pnotify_display();
 								return false;
 							}
 					}))
 					.appendTo(body);
 
-					// Make a handle so the user can pull down the history pull down.
+					// Make a handle so the user can pull down the history tab.
 					var handle = $("<span />", {
 						"class": "ui-pnotify-history-pulldown ui-icon ui-icon-grip-dotted-horizontal",
 						"mouseenter": function(){
@@ -741,13 +777,6 @@
 			this.fireEvent(e, event_object);
 		}
 	};
-
-	// Reposition the notices when the window resizes.
-	$(window).bind('resize', function(){
-		if (timer)
-			clearTimeout(timer);
-		timer = setTimeout($.pnotify_position_all, 10);
-	});
 
 	$.pnotify.defaults = {
 		// The notice's title.
