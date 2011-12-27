@@ -1,5 +1,5 @@
 /*
- * jQuery Pines Notify (pnotify) Plugin 1.1.0
+ * jQuery Pines Notify (pnotify) Plugin 1.1.1dev
  *
  * http://pinesframework.org/pnotify/
  * Copyright (c) 2009-2012 Hunter Perrin
@@ -183,14 +183,19 @@
 			});
 			pnotify.opts = opts;
 			// Create a drop shadow.
-			if (opts.pnotify_shadow && !$.browser.msie)
-				pnotify.shadow_container = $("<div />", {"class": "ui-widget-shadow ui-corner-all ui-pnotify-shadow"}).prependTo(pnotify);
+			if (opts.pnotify_shadow && !$.browser.msie) {
+				pnotify.shadow_container = $("<div />", {"class": "ui-widget-shadow ui-pnotify-shadow"}).prependTo(pnotify);
+				if (opts.pnotify_cornerclass != "")
+					pnotify.shadow_container.addClass(opts.pnotify_cornerclass);
+			}
 			// Create a container for the notice contents.
-			pnotify.container = $("<div />", {"class": "ui-widget ui-widget-content ui-corner-all ui-pnotify-container "+(opts.pnotify_type == "error" ? "ui-state-error" : (opts.pnotify_type == "info" ? "" : "ui-state-highlight"))})
+			pnotify.container = $("<div />", {"class": "ui-widget ui-widget-content ui-pnotify-container "+(opts.pnotify_type == "error" ? "ui-state-error" : (opts.pnotify_type == "info" ? "" : "ui-state-highlight"))})
 			.appendTo(pnotify);
+			if (opts.pnotify_cornerclass != "")
+				pnotify.container.addClass(opts.pnotify_cornerclass);
 
 			// The current version of Pines Notify.
-			pnotify.pnotify_version = "1.1.0";
+			pnotify.pnotify_version = "1.1.1dev";
 
 			// This function is for updating the notice.
 			pnotify.pnotify = function(options) {
@@ -351,7 +356,7 @@
 						(s.dir1 == "right" && s.nextpos1 + pnotify.width() > jwindow.width()) ) {
 						// If it is, it needs to go back to the first pos1, and over on pos2.
 						s.nextpos1 = s.firstpos1;
-						s.nextpos2 += s.addpos2 + 10;
+						s.nextpos2 += s.addpos2 + (typeof s.spacing2 == "undefined" ? 10 : s.spacing2);
 						s.addpos2 = 0;
 					}
 					// Animate if we're moving on dir2.
@@ -413,11 +418,11 @@
 					switch (s.dir1) {
 						case "down":
 						case "up":
-							s.nextpos1 += pnotify.height() + 10;
+							s.nextpos1 += pnotify.height() + (typeof s.spacing1 == "undefined" ? 10 : s.spacing1);
 							break;
 						case "left":
 						case "right":
-							s.nextpos1 += pnotify.width() + 10;
+							s.nextpos1 += pnotify.width() + (typeof s.spacing1 == "undefined" ? 10 : s.spacing1);
 							break;
 					}
 				}
@@ -789,6 +794,8 @@
 		pnotify_text_escape: false,
 		// Additional classes to be added to the notice. (For custom styling.)
 		pnotify_addclass: "",
+		// Class to be added to the notice for corner styling.
+		pnotify_cornerclass: "ui-corner-all",
 		// Create a non-blocking notice. It lets the user click elements underneath it.
 		pnotify_nonblock: false,
 		// The opacity of the notice (if it's non-blocking) when the mouse is over it.
@@ -834,6 +841,6 @@
 		// Change new lines to br tags.
 		pnotify_insert_brs: true,
 		// The stack on which the notices will be placed. Also controls the direction the notices stack.
-		pnotify_stack: {"dir1": "down", "dir2": "left", "push": "bottom"}
+		pnotify_stack: {"dir1": "down", "dir2": "left", "push": "bottom", "spacing1": 10, "spacing2": 10}
 	};
 })(jQuery);

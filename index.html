@@ -203,6 +203,19 @@
 				bottom: 200px;
 				right: 200px;
 			}
+			/* This one is totally different. It stacks at the top and looks
+			   like a Microsoft-esque browser notice bar. */
+			.ui-pnotify.stack-bar-top {
+				right: 0;
+				top: 0;
+			}
+			.ui-pnotify.stack-bar-bottom {
+				margin-left: 15%;
+				right: 0;
+				bottom: 0;
+				top: auto;
+				left: auto;
+			}
 			/* ]]> */
 		</style>
 		<!--[if lt IE 8]>
@@ -478,6 +491,8 @@
 			var stack_bottomleft = {"dir1": "right", "dir2": "up"};
 			var stack_custom = {"dir1": "right", "dir2": "down"};
 			var stack_custom2 = {"dir1": "left", "dir2": "up", "push": "top"};
+			var stack_bar_top = {"dir1": "down", "dir2": "right", "push": "top", "spacing1": 0, "spacing2": 0};
+			var stack_bar_bottom = {"dir1": "up", "dir2": "right", "spacing1": 0, "spacing2": 0};
 			/*********** Positioned Stack ***********
 			 * This stack is initially positioned through code instead of CSS.
 			 * This is done through two extra variables. firstpos1 and firstpos2
@@ -581,6 +596,52 @@
 					pnotify_text: "Check me out. I'm in a different stack.",
 					pnotify_addclass: "stack-custom2",
 					pnotify_stack: stack_custom2
+				};
+				switch (type) {
+					case 'error':
+						opts.pnotify_title = "Oh No";
+						opts.pnotify_text = "Watch out for that water tower!";
+						opts.pnotify_type = "error";
+						break;
+					case 'info':
+						opts.pnotify_title = "Breaking News";
+						opts.pnotify_text = "Have you met Ted?";
+						opts.pnotify_type = "info";
+						break;
+				}
+				$.pnotify(opts);
+			};
+			function show_stack_bar_top(type) {
+				var opts = {
+					pnotify_title: "Over Here",
+					pnotify_text: "Check me out. I'm in a different stack.",
+					pnotify_addclass: "stack-bar-top",
+					pnotify_cornerclass: "",
+					pnotify_width: "100%",
+					pnotify_stack: stack_bar_top
+				};
+				switch (type) {
+					case 'error':
+						opts.pnotify_title = "Oh No";
+						opts.pnotify_text = "Watch out for that water tower!";
+						opts.pnotify_type = "error";
+						break;
+					case 'info':
+						opts.pnotify_title = "Breaking News";
+						opts.pnotify_text = "Have you met Ted?";
+						opts.pnotify_type = "info";
+						break;
+				}
+				$.pnotify(opts);
+			};
+			function show_stack_bar_bottom(type) {
+				var opts = {
+					pnotify_title: "Over Here",
+					pnotify_text: "Check me out. I'm in a different stack.",
+					pnotify_addclass: "stack-bar-bottom",
+					pnotify_cornerclass: "",
+					pnotify_width: "70%",
+					pnotify_stack: stack_bar_bottom
 				};
 				switch (type) {
 					case 'error':
@@ -892,12 +953,6 @@
 						pnotify_closer_hover: false,
 						pnotify_sticker_hover: false
 					});" type="button" />
-					<input value="Big Notice" onclick="$.pnotify({
-						pnotify_title: 'Big Notice',
-						pnotify_text: 'Check me out! I\'m tall and wide, even though my text isn\'t.',
-						pnotify_width: '500px',
-						pnotify_min_height: '400px'
-					});" type="button" />
 					<input value="No History Notice" onclick="$.pnotify({
 						pnotify_title: 'No History Notice',
 						pnotify_text: 'I\'m not part of the notice history, so if you redisplay the last message, it won\'t be me.',
@@ -908,33 +963,10 @@
 						pnotify_text: 'I don\'t care if you move your mouse over me, I\'ll disappear when I want.',
 						pnotify_mouse_reset: false
 					});" type="button" />
-					<input value="Notice with Callbacks" onclick="var dont_alert = function(){};
-					$.pnotify({
-						pnotify_title: 'I\'m Here',
-						pnotify_text: 'I have a callback for each of my events. I\'ll call all my callbacks while I change states.',
-						pnotify_before_init: function(opts){
-							var source_note = 'Return false to cancel the notice.';
-							alert('I\'m called before the notice initializes. I\'m passed the options used to make the notice. I can modify them. Watch me replace the word callback with tire iron!');
-							opts.pnotify_text = opts.pnotify_text.replace(/callback/g, 'tire iron');
-						},
-						pnotify_after_init: function(pnotify){
-							alert('I\'m called after the notice initializes. I\'m passed the pnotify object for the current notice: '+pnotify+'\n\nThere are more callbacks you can assign, but this is the last notice you\'ll see. Check the code to see them all.');
-						},
-						pnotify_before_open: function(pnotify){
-							var source_note = 'Return false to cancel opening.';
-							dont_alert('I\'m called before the notice opens. I\'m passed the pnotify object for the current notice: '+pnotify);
-						},
-						pnotify_after_open: function(pnotify){
-							dont_alert('I\'m called after the notice opens. I\'m passed the pnotify object for the current notice: '+pnotify);
-						},
-						pnotify_before_close: function(pnotify){
-							var source_note = 'Return false to cancel close. Use pnotify.pnotify_queue_remove() to set the removal timer again.';
-							dont_alert('I\'m called before the notice closes. I\'m passed the pnotify object for the current notice: '+pnotify);
-						},
-						pnotify_after_close: function(pnotify){
-							var source_note = 'Return false to cancel removal from the DOM.';
-							dont_alert('I\'m called after the notice closes. I\'m passed the pnotify object for the current notice: '+pnotify);
-						}
+					<input value="No Rounded Corners" onclick="$.pnotify({
+						pnotify_title: 'No Rounded Corners Notice',
+						pnotify_text: 'Warning: Contains sharp objects. Not suitable for browsers under the age of CSS3.',
+						pnotify_cornerclass: ''
 					});" type="button" />
 					<br style="margin-bottom: 5px;" />
 					<input value="Fast Fading Notice" onclick="$.pnotify({
@@ -947,7 +979,6 @@
 						pnotify_text: 'I don\'t even bother to animate. I\'m too cool for that.',
 						pnotify_animation: 'none'
 					});" type="button" />
-					<input value="Rich Notice" onclick="show_rich();" type="button" />
 					<input value="Pretend Loader" onclick="fake_load();" type="button" />
 					<input value="Dynamic Notice" onclick="dyn_notice();" type="button" />
 					<input value="Notice to Error to Info" onclick="$.pnotify({
@@ -1052,6 +1083,42 @@
 							</div>
 						</form>
 					</div>
+					<input value="Notice with Callbacks" onclick="var dont_alert = function(){};
+					$.pnotify({
+						pnotify_title: 'I\'m Here',
+						pnotify_text: 'I have a callback for each of my events. I\'ll call all my callbacks while I change states.',
+						pnotify_before_init: function(opts){
+							var source_note = 'Return false to cancel the notice.';
+							alert('I\'m called before the notice initializes. I\'m passed the options used to make the notice. I can modify them. Watch me replace the word callback with tire iron!');
+							opts.pnotify_text = opts.pnotify_text.replace(/callback/g, 'tire iron');
+						},
+						pnotify_after_init: function(pnotify){
+							alert('I\'m called after the notice initializes. I\'m passed the pnotify object for the current notice: '+pnotify+'\n\nThere are more callbacks you can assign, but this is the last notice you\'ll see. Check the code to see them all.');
+						},
+						pnotify_before_open: function(pnotify){
+							var source_note = 'Return false to cancel opening.';
+							dont_alert('I\'m called before the notice opens. I\'m passed the pnotify object for the current notice: '+pnotify);
+						},
+						pnotify_after_open: function(pnotify){
+							dont_alert('I\'m called after the notice opens. I\'m passed the pnotify object for the current notice: '+pnotify);
+						},
+						pnotify_before_close: function(pnotify){
+							var source_note = 'Return false to cancel close. Use pnotify.pnotify_queue_remove() to set the removal timer again.';
+							dont_alert('I\'m called before the notice closes. I\'m passed the pnotify object for the current notice: '+pnotify);
+						},
+						pnotify_after_close: function(pnotify){
+							var source_note = 'Return false to cancel removal from the DOM.';
+							dont_alert('I\'m called after the notice closes. I\'m passed the pnotify object for the current notice: '+pnotify);
+						}
+					});" type="button" />
+					<br style="margin-bottom: 5px;" />
+					<input value="Big Notice" onclick="$.pnotify({
+						pnotify_title: 'Big Notice',
+						pnotify_text: 'Check me out! I\'m tall and wide, even though my text isn\'t.',
+						pnotify_width: '500px',
+						pnotify_min_height: '400px'
+					});" type="button" />
+					<input value="Rich Notice" onclick="show_rich();" type="button" />
 					<input value="Escaped Notice" onclick="$.pnotify({
 						pnotify_title: '&lt;em&gt;Escaped Notice&lt;/em&gt;',
 						pnotify_title_escape: true,
@@ -1075,7 +1142,7 @@
 						pnotify_opacity: .8,
 						pnotify_nonblock: true,
 						pnotify_nonblock_opacity: .2
-					});" type="button" />
+					});" type="button" /> &lt; This is how you make it look like Apple Growl.
 				</div>
 
 				<div class="pf-group ui-widget-content ui-corner-all">
@@ -1108,6 +1175,18 @@
 					<input value="Info" onclick="show_stack_custom2('info');" type="button" />
 					<input value="Error" onclick="show_stack_custom2('error');" type="button" />
 					Custom. Moves left, then up. Pushes to stack top.
+					<br style="margin-bottom: 5px;" />
+					Really Different Stacks:
+					<br style="margin-bottom: 5px;" />
+					<input value="Notice" onclick="show_stack_bar_top('notice');" type="button" />
+					<input value="Info" onclick="show_stack_bar_top('info');" type="button" />
+					<input value="Error" onclick="show_stack_bar_top('error');" type="button" />
+					Top bar style. (Like Old Microsoft Notification Bars.) Moves down, then right. Pushes to stack top.
+					<br style="margin-bottom: 5px;" />
+					<input value="Notice" onclick="show_stack_bar_bottom('notice');" type="button" />
+					<input value="Info" onclick="show_stack_bar_bottom('info');" type="button" />
+					<input value="Error" onclick="show_stack_bar_bottom('error');" type="button" />
+					Bottom bar style. (Like New Microsoft Notification Bars.) Moves down, then right. Pushes to stack top.
 					<br style="margin-bottom: 5px;" />
 					<input value="Hover Over Me" onmouseover="tooltip.pnotify_display();" onmousemove="tooltip.css({'top': event.clientY+12, 'left': event.clientX+12});" onmouseout="tooltip.pnotify_remove();" type="button" />
 					Tooltip
