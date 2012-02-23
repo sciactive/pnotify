@@ -12,10 +12,10 @@
 
 (function($) {
 	var history_handle_top, timer;
-	var body;
-	var jwindow;
+	var body = $("body");
+	var jwindow = $(window);
 	// Set global variables.
-	$(function(){
+	var do_when_ready = function(){
 		body = $("body");
 		jwindow = $(window);
 		// Reposition the notices when the window resizes.
@@ -24,13 +24,17 @@
 				clearTimeout(timer);
 			timer = setTimeout($.pnotify_position_all, 10);
 		});
-	});
+	};
+	if (body.length)
+		do_when_ready();
+	else
+		$(do_when_ready);
 	$.extend({
 		pnotify_remove_all: function () {
-			var body_data = body.data("pnotify");
+			var notices_data = jwindow.data("pnotify");
 			/* POA: Added null-check */
-			if (body_data && body_data.length) {
-				$.each(body_data, function(){
+			if (notices_data && notices_data.length) {
+				$.each(notices_data, function(){
 					if (this.pnotify_remove)
 						this.pnotify_remove();
 				});
@@ -43,11 +47,11 @@
 				clearTimeout(timer);
 			timer = null;
 			// Get all the notices.
-			var body_data = body.data("pnotify");
-			if (!body_data || !body_data.length)
+			var notices_data = jwindow.data("pnotify");
+			if (!notices_data || !notices_data.length)
 				return;
 			// Reset the next position data.
-			$.each(body_data, function(){
+			$.each(notices_data, function(){
 				var s = this.opts.pnotify_stack;
 				if (!s) return;
 				s.nextpos1 = s.firstpos1;
@@ -55,7 +59,7 @@
 				s.addpos2 = 0;
 				s.animation = true;
 			});
-			$.each(body_data, function(){
+			$.each(notices_data, function(){
 				this.pnotify_position();
 			});
 		},
@@ -635,14 +639,14 @@
 			pnotify.pnotify_hide = opts.pnotify_hide;
 
 			// Add the notice to the notice array.
-			var body_data = body.data("pnotify");
-			if (body_data == null || typeof body_data != "object")
-				body_data = [];
+			var notices_data = jwindow.data("pnotify");
+			if (notices_data == null || typeof notices_data != "object")
+				notices_data = [];
 			if (opts.pnotify_stack.push == "top")
-				body_data = $.merge([pnotify], body_data);
+				notices_data = $.merge([pnotify], notices_data);
 			else
-				body_data = $.merge(body_data, [pnotify]);
-			body.data("pnotify", body_data);
+				notices_data = $.merge(notices_data, [pnotify]);
+			jwindow.data("pnotify", notices_data);
 			// Now position all the notices if they are to push to the top.
 			if (opts.pnotify_stack.push == "top")
 				pnotify.pnotify_queue_position(1);
@@ -653,12 +657,12 @@
 
 			if (opts.pnotify_history) {
 				// If there isn't a history pull down, create one.
-				var body_history = body.data("pnotify_history");
-				if (typeof body_history == "undefined") {
-					body_history = $("<div />", {
+				var history_menu = jwindow.data("pnotify_history");
+				if (typeof history_menu == "undefined") {
+					history_menu = $("<div />", {
 						"class": "ui-pnotify-history-container ui-state-default ui-corner-bottom",
 						"mouseleave": function(){
-							body_history.animate({top: "-"+history_handle_top+"px"}, {duration: 100, queue: false});
+							history_menu.animate({top: "-"+history_handle_top+"px"}, {duration: 100, queue: false});
 						}
 					})
 					.append($("<div />", {"class": "ui-pnotify-history-header", "text": "Redisplay"}))
@@ -673,7 +677,7 @@
 							},
 							"click": function(){
 								// Display all notices. (Disregarding non-history notices.)
-								$.each(body_data, function(){
+								$.each(notices_data, function(){
 									if (this.pnotify_history) {
 										if (this.is(":visible")) {
 											if (this.pnotify_hide)
@@ -700,9 +704,9 @@
 								var notice;
 								do {
 									if (i == -1)
-										notice = body_data.slice(i);
+										notice = notices_data.slice(i);
 									else
-										notice = body_data.slice(i, i+1);
+										notice = notices_data.slice(i, i+1);
 									if (!notice[0])
 										break;
 									i--;
@@ -720,17 +724,17 @@
 					var handle = $("<span />", {
 						"class": "ui-pnotify-history-pulldown ui-icon ui-icon-grip-dotted-horizontal",
 						"mouseenter": function(){
-							body_history.animate({top: "0"}, {duration: 100, queue: false});
+							history_menu.animate({top: "0"}, {duration: 100, queue: false});
 						}
 					})
-					.appendTo(body_history);
+					.appendTo(history_menu);
 
 					// Get the top of the handle.
 					history_handle_top = handle.offset().top + 2;
 					// Hide the history pull down up to the top of the handle.
-					body_history.css({top: "-"+history_handle_top+"px"});
+					history_menu.css({top: "-"+history_handle_top+"px"});
 					// Save the history pull down.
-					body.data("pnotify_history", body_history);
+					jwindow.data("pnotify_history", history_menu);
 				}
 			}
 
