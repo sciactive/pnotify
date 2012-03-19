@@ -2,7 +2,7 @@
 	Document   : jquery.pnotify.default.css
 	Created on : Nov 23, 2009, 3:14:10 PM
 	Author     : Hunter Perrin
-	Version    : 1.1.0
+	Version    : 1.1.1dev
 	Link       : http://pinesframework.org/pnotify/
 	Description:
 		Default styling for Pines Notify jQuery plugin.
@@ -43,6 +43,7 @@ html > body .ui-pnotify {
 .ui-pnotify-title {
 	display: block;
 	font-size: 1.2em;
+	line-height: 1;
 	font-weight: bold;
 	margin-bottom: .4em;
 }
