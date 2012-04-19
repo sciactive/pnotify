@@ -1,0 +1,33 @@
+/*
+Pines Form 2.0
+
+license: http://www.gnu.org/licenses/gpl.html
+license: http://www.gnu.org/licenses/lgpl.html
+license: http://www.mozilla.org/MPL/MPL-1.1.html
+Resets Twitter Bootstrap's form styles so Pines Form can work with Bootstrap.
+*/
+.pf-form label input, .pf-form label textarea, .pf-form label select {
+	display: inline;
+}
+.pf-form input, .pf-form textarea, .pf-form select, .pf-form .uneditable-input {
+	display: inline;
+	margin-bottom: 0;
+	width: auto;
+}
+.pf-form label {
+	display: inline;
+	margin-bottom: 0;
+}
+.pf-form legend {
+    line-height: normal;
+    margin-bottom: 0;
+    width: auto;
+}
+.pf-form .pf-element .pf-group {
+	padding-right: 10px;
+}
+@media (max-width: 768px) {
+	.pf-form .pf-element .pf-group {
+		padding-right: 15px;
+	}
+}

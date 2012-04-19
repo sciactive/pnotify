@@ -2,7 +2,7 @@
 	Document   : jquery.pnotify.default.icons.css
 	Created on : Nov 24, 2009, 2:58:21 PM
 	Author     : Hunter Perrin
-	Version    : 1.1.1dev
+	Version    : 1.1.1
 	Link       : http://pinesframework.org/pnotify/
 	Description:
 		Pines Icon styling for Pines Notify.
@@ -14,4 +14,8 @@
 	background-position: center center;
 	width: 17px;
 	height: 17px;
+}
+.ui-pnotify-title {
+	line-height: 17px;
+	min-height: 17px;
 }

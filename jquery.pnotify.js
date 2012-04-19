@@ -1,5 +1,5 @@
 /*
- * jQuery Pines Notify (pnotify) Plugin 1.1.1dev
+ * jQuery Pines Notify (pnotify) Plugin 1.1.1
  *
  * http://pinesframework.org/pnotify/
  * Copyright (c) 2009-2012 Hunter Perrin
@@ -199,7 +199,7 @@
 				pnotify.container.addClass(opts.pnotify_cornerclass);
 
 			// The current version of Pines Notify.
-			pnotify.pnotify_version = "1.1.1dev";
+			pnotify.pnotify_version = "1.1.1";
 
 			// This function is for updating the notice.
 			pnotify.pnotify = function(options) {

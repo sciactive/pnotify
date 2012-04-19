@@ -1,987 +1,1152 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-		<title>Pines Notify</title>
-		<!-- Dev Notice -->
-		<link href="devnote.css" rel="stylesheet" type="text/css" />
-		<!-- jQuery -->
-		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.0/jquery.js"></script>
-		<!-- jQuery UI -->
-		<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/smoothness/jquery-ui.css" media="all" rel="stylesheet" type="text/css" />
-		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>
-		<!-- Theme Switcher Widget -->
-		<script type="text/javascript" src="http://jqueryui.com/themeroller/themeswitchertool/"></script>
-		<!-- Oxygen Icons -->
-		<link href="oxygen/icons.css" rel="stylesheet" type="text/css" />
-		<!-- JavaScript Source Formatting -->
-		<script type="text/javascript" src="includes/beautify.js"></script>
-		<!--[if !IE]>-->
-		<script type="text/javascript" src="includes/shCore.js"></script>
-		<script type="text/javascript" src="includes/shBrushJScript.js"></script>
-		<link href="includes/shCoreDefault.css" rel="stylesheet" type="text/css" />
-		<!--<![endif]-->
-		<!-- Pines Notify -->
-		<script type="text/javascript" src="jquery.pnotify.js"></script>
-		<link href="jquery.pnotify.default.css" rel="stylesheet" type="text/css" />
-		<link href="jquery.pnotify.default.icons.css" rel="stylesheet" type="text/css" />
-		<style type="text/css">
-			/* <![CDATA[ */
-			html, body {
-				font-family: Arial,sans-serif;
-				font-size: 12px;
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8"/>
+	<title>Pines Notify</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Dev Notice -->
+	<link href="devnote.css" rel="stylesheet" type="text/css" />
+	<!-- jQuery -->
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.js"></script>
+	<!-- jQuery UI -->
+	<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/themes/smoothness/jquery-ui.css" media="all" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.js"></script>
+	<!-- Theme Switcher Widget -->
+	<script type="text/javascript" src="http://jqueryui.com/themeroller/themeswitchertool/"></script>
+	<!-- Bootstrap -->
+	<link href="includes/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" src="includes/bootstrap/js/bootstrap.min.js"></script>
+	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+	<!--[if lt IE 9]>
+	<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<!-- Oxygen Icons -->
+	<link href="oxygen/icons.css" rel="stylesheet" type="text/css" />
+	<!-- JavaScript Source Formatting -->
+	<link href="includes/google-code-prettify/prettify.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" src="includes/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript" src="includes/beautify.js"></script>
+	<!-- Pines Notify -->
+	<script type="text/javascript" src="jquery.pnotify.js"></script>
+	<link href="jquery.pnotify.default.css" rel="stylesheet" type="text/css" />
+	<link href="jquery.pnotify.default.icons.css" rel="stylesheet" type="text/css" />
+	<style type="text/css">
+		/* Not pnotify specific, just make this page a little more presentable. */
+		body {
+			padding: 40px 1em 1em;
+		}
+		#wrapper {
+			max-width: 1140px;
+			margin: 0 auto;
+		}
+		.page-banner {
+			padding: 130px 0 170px;
+			text-align: center;
+		}
+		.page-banner h1 {
+			font-size: 65px;
+			line-height: 65px;
+		}
+		.page-banner p {
+			font-size: 30px;
+			line-height: 36px;
+		}
+		.page-banner .btn-large {
+			margin-top: 20px;
+			font-size: 26px;
+		}
+		.page-banner .right-button {
+			margin-left: 20px;
+		}
+		.page-points .row-fluid {
+			margin-bottom: 30px;
+		}
+		body .pf-form .pf-heading * {
+			margin-top: .1em !important;
+			margin-bottom: .1em !important;
+		}
+		#copyright {
+			text-align: center;
+			margin-top: 40px;
+		}
+		/* Mobile */
+		@media (max-width: 768px) {
+			body {
+				padding: 0;
 			}
-			.wrapper {
-				background: transparent url(includes/watermark-small.png) no-repeat fixed bottom right;
-				padding: 10px;
+			.page-banner {
+				padding: 20px 0;
 			}
-			.wrapper.background {
-				background: transparent url(includes/hoot.jpg) repeat scroll top center;
-				/* http://www.flickr.com/photos/barloventomagico/2435316564/ */
+			.page-banner h1 {
+				font-size: 35px;
+				line-height: 35px;
 			}
-			.wrapper.background, .wrapper.background a, .wrapper.background .ui-widget-content {
-				color: white;
-				text-shadow: 2px 2px 1px black;
+			.page-banner p {
+				font-size: 16px;
+				line-height: 30px;
 			}
-			#header {
-				height: 68px;
-				position: relative;
+			.page-banner .btn-large {
+				font-size: 16px;
 			}
+			.page-banner .right-button {
+				margin-left: 0;
+			}
+			.page-points .row-fluid {
+				margin-bottom: 0;
+			}
+			#sections {
+				padding: 0 .4em;
+			}
+			#sections .container-fluid {
+				padding-left: 0;
+				padding-right: 0;
+			}
+		}
+		/* Tablet */
+		@media (min-width: 768px) and (max-width: 980px) {
+			body {
+				padding: 0 1em 1em;
+			}
+			.navbar-fixed-top {
+				margin: 0 -1em 18px;
+			}
+			.page-banner {
+				float: left;
+				width: 20%;
+				padding: 5px 0;
+			}
+			.page-banner h1 {
+				font-size: 25px;
+				line-height: 25px;
+			}
+			.page-banner p {
+				font-size: 14px;
+				line-height: 16px;
+				margin-top: 10px;
+			}
+			.page-banner .btn-large {
+				margin-top: 30px;
+				font-size: 14px;
+			}
+			.page-banner .right-button {
+				margin-left: 0;
+			}
+			.page-points {
+				float: right;
+				width: 80%;
+			}
+			.page-points .row-fluid {
+				margin-bottom: 10px;
+			}
+			#sections {
+				clear: both;
+			}
+		}
+
+		#switcher-container {
+			position: fixed;
+			top: 45px;
+			right: 5px;
+		}
+		@media (max-width: 980px) {
 			#switcher-container {
 				position: absolute;
-				top: 5px;
-				right: 5px;
+				top: 55px;
 			}
-			#header img.header {
-				position: absolute;
-			}
-			#header h1.header {
-				text-align: center;
-			}
-			.main-description {
-				font-size: 1.2em;
-			}
-			h2 {
-				margin: .83em 0 .1em 0;
-			}
-			p {
-				margin: 1em 0 .5em 0;
-			}
-			.featurelist {
-				background: transparent none no-repeat 0 0 !important;
-				margin: .5em 10px .5em 0;
-				padding: .5em;
-				float: left;
-			}
-			.featurelist ul {
-				margin: 0;
-				padding: 0;
-				list-style-type: none;
-			}
-			.featurelist ul a {
-				text-decoration: underline !important;
-			}
-			.featurelist ul .ui-icon {
-				display: inline-block;
-				position: relative;
-				top: 4px;
-				margin-right: .3em;
-			}
-			.featurelist ul img {
-				vertical-align: middle;
-				border: none 0;
-			}
-			.pf-group {
-				background: transparent none no-repeat 0 0 !important;
-				padding: 4px;
-				margin: 5px auto;
-			}
-			.ui-widget {
-				font-size: 75% !important;
-			}
-			.pf-group input.ui-button {
-				padding: 2px !important;
-				font-size: .92em !important;
-				margin-bottom: 3px;
-			}
+		}
+		.pf-group {
+			background: transparent none no-repeat 0 0 !important;
+			padding: 4px;
+			margin: 5px auto;
+		}
+		.ui-widget {
+			font-size: 75% !important;
+		}
+		.pf-group input.ui-button {
+			padding: 2px !important;
+			font-size: .92em !important;
+			margin-bottom: 3px;
+		}
+		.btn-toolbar {
+			line-height: 28px;
+		}
+		.btn-toolbar h4 {
+			margin: 1em 0 .3em;
+		}
+		.btn-toolbar .btn-group {
+			vertical-align: middle;
+		}
 
-			/* Source View */
-			.source-dialog pre {
-				border: 1px solid black;
-				margin: .5em .5em 1em;
-				padding: 1em;
-				background: beige;
-				color: midnightblue;
-				display:-moz-inline-stack;
-				display:inline-block;
-				zoom:1;
-				*display:inline;
-			}
-			.source-dialog > div {
-				border-top: 1px solid black;
-				border-bottom: 1px solid black;
-				margin-bottom: 1em;
-				display:-moz-inline-stack;
-				display:inline-block;
-				zoom:1;
-				*display:inline;
-			}
-			.source-dialog > div div.syntaxhighlighter {
-				overflow: visible !important;
-				width: auto !important;
-				display:-moz-inline-stack;
-				display:inline-block;
-				zoom:1;
-				*display:inline;
-			}
+		/* Source View */
+		pre.prettyprint {
+			display: table;
+		}
 
-			/* Custom styled notice CSS */
-			.ui-pnotify.custom {
-				font-family: Arial, Helvetica, sans-serif;
-				text-shadow: 2px 2px 3px black;
-				font-size: 10pt;
-			}
-			.ui-pnotify.custom .ui-pnotify-container {
-				background-color: #404040;
-				background-image: none;
-				border: none;
-				-moz-border-radius: 10px;
-				-webkit-border-radius: 10px;
-				border-radius: 10px;
-			}
-			.ui-pnotify.custom .ui-pnotify-title {
-				font-weight: bold;
-				padding-left: 50px;
-				color: #FFF;
-			}
-			.ui-pnotify.custom .ui-pnotify-text {
-				padding-left: 50px;
-				color: #FFF;
-			}
-			.ui-pnotify.custom .ui-pnotify-closer {
-				position: absolute;
-				bottom: 5px;
-				right: 5px;
-			}
-			.ui-pnotify.custom .ui-pnotify-icon {
-				float: left;
-			}
-			.ui-pnotify.custom .picon {
-				margin: 3px;
-				width: 33px;
-				height: 33px;
-			}
+		/* Custom styled notice CSS */
+		.ui-pnotify.custom {
+			font-family: Arial, Helvetica, sans-serif;
+			text-shadow: 2px 2px 3px black;
+			font-size: 10pt;
+		}
+		.ui-pnotify.custom .ui-pnotify-container {
+			background-color: #404040;
+			background-image: none;
+			border: none;
+			-moz-border-radius: 10px;
+			-webkit-border-radius: 10px;
+			border-radius: 10px;
+		}
+		.ui-pnotify.custom .ui-pnotify-title {
+			font-weight: bold;
+			padding-left: 50px;
+			color: #FFF;
+		}
+		.ui-pnotify.custom .ui-pnotify-text {
+			padding-left: 50px;
+			color: #FFF;
+		}
+		.ui-pnotify.custom .ui-pnotify-closer {
+			position: absolute;
+			bottom: 5px;
+			right: 5px;
+		}
+		.ui-pnotify.custom .ui-pnotify-icon {
+			float: left;
+		}
+		.ui-pnotify.custom .picon {
+			margin: 3px;
+			width: 33px;
+			height: 33px;
+		}
 
-			/* Alternate stack initial positioning. */
-			.ui-pnotify.stack-topleft {
-				top: 15px;
-				left: 15px;
-				right: auto;
-			}
-			.ui-pnotify.stack-bottomleft {
-				bottom: 15px;
-				left: 15px;
-				top: auto;
-				right: auto;
-			}
-			/* This one is done through code, to show how it is done. Look down
-			   at the stack_bottomright variable in the JavaScript below. */
-			.ui-pnotify.stack-bottomright {
-				/* These are just CSS default values to reset the pnotify CSS. */
-				right: auto;
-				top: auto;
-			}
-			.ui-pnotify.stack-custom {
-				/* Custom values have to be in pixels, because the code parses them. */
-				top: 200px;
-				left: 200px;
-				right: auto;
-			}
-			.ui-pnotify.stack-custom2 {
-				top: auto;
-				left: auto;
-				bottom: 200px;
-				right: 200px;
-			}
-			/* This one is totally different. It stacks at the top and looks
-			   like a Microsoft-esque browser notice bar. */
-			.ui-pnotify.stack-bar-top {
-				right: 0;
-				top: 0;
-			}
-			.ui-pnotify.stack-bar-bottom {
-				margin-left: 15%;
-				right: 0;
-				bottom: 0;
-				top: auto;
-				left: auto;
-			}
-			/* ]]> */
-		</style>
-		<!--[if lt IE 8]>
-		<style type="text/css">
-			.featurelist ul {
-				padding-left: 1em;
-				list-style-type: disc;
-			}
-			.featurelist ul .ui-icon {
-				display: none;
-			}
-		</style>
-		<![endif]-->
-		<script type="text/javascript">
-			// <![CDATA[
+		/* Alternate stack initial positioning. */
+		.ui-pnotify.stack-topleft {
+			top: 15px;
+			left: 15px;
+			right: auto;
+		}
+		.ui-pnotify.stack-bottomleft {
+			bottom: 15px;
+			left: 15px;
+			top: auto;
+			right: auto;
+		}
+		/* This one is done through code, to show how it is done. Look down
+			at the stack_bottomright variable in the JavaScript below. */
+		.ui-pnotify.stack-bottomright {
+			/* These are just CSS default values to reset the pnotify CSS. */
+			right: auto;
+			top: auto;
+		}
+		.ui-pnotify.stack-custom {
+			/* Custom values have to be in pixels, because the code parses them. */
+			top: 200px;
+			left: 200px;
+			right: auto;
+		}
+		.ui-pnotify.stack-custom2 {
+			top: auto;
+			left: auto;
+			bottom: 200px;
+			right: 200px;
+		}
+		/* This one is totally different. It stacks at the top and looks
+			like a Microsoft-esque browser notice bar. */
+		.ui-pnotify.stack-bar-top {
+			right: 0;
+			top: 0;
+		}
+		.ui-pnotify.stack-bar-bottom {
+			margin-left: 15%;
+			right: 0;
+			bottom: 0;
+			top: auto;
+			left: auto;
+		}
+	</style>
+	<!--[if lt IE 8]>
+	<style type="text/css">
+		.featurelist ul {
+			padding-left: 1em;
+			list-style-type: disc;
+		}
+		.featurelist ul .ui-icon {
+			display: none;
+		}
+	</style>
+	<![endif]-->
+	<script type="text/javascript">
+		var permanotice, tooltip, _alert;
+		$(function(){
+			// This is how to change the default settings for the entire page.
+			//$.pnotify.defaults.pnotify_width = "400px";
+			// If you don't want new lines ("\n") automatically converted to breaks ("<br />")
+			//$.pnotify.defaults.pnotify_insert_brs = false;
 
-			var permanotice;
-			var tooltip;
-			var _alert;
-			var credit_shown = false;
+			$.pnotify({
+				pnotify_title: "Pines Notify",
+				pnotify_text: "Welcome. Try hovering over me. You can click things behind me, because I'm non-blocking.",
+				pnotify_nonblock: true,
+				pnotify_before_close: function(pnotify){
+					// You can access the notice's options with this. It is read only.
+					//pnotify.opts.pnotify_text;
 
-			$(document).ready(function(){
-				// This is how to change the default settings for the entire page.
-				//$.pnotify.defaults.pnotify_width = "400px";
-				// If you don't want new lines ("\n") automatically converted to breaks ("<br />")
-				//$.pnotify.defaults.pnotify_insert_brs = false;
-
-				$.pnotify({
-					pnotify_title: "Pines Notify",
-					pnotify_text: "Welcome. Try hovering over me. You can click things behind me, because I'm non-blocking.",
-					pnotify_nonblock: true,
-					pnotify_before_close: function(pnotify){
-						// You can access the notice's options with this. It is read only.
-						//pnotify.opts.pnotify_text;
-
-						// You can change the notice's options after the timer like this:
-						pnotify.pnotify({
-							pnotify_title: pnotify.opts.pnotify_title+" - Enjoy your Stay",
-							pnotify_before_close: null
-						});
-						pnotify.pnotify_queue_remove();
-						return false;
-					}
-				});
-
-				// This notice is used as a tooltip.
-				var make_tooltip = function(){
-					tooltip = $.pnotify({
-						pnotify_title: "Tooltip",
-						pnotify_text: "I'm not in a stack. I'm positioned like a tooltip with JavaScript.",
-						pnotify_hide: false,
-						pnotify_closer: false,
-						pnotify_sticker: false,
-						pnotify_history: false,
-						pnotify_animate_speed: 100,
-						pnotify_opacity: .9,
-						pnotify_notice_icon: "ui-icon ui-icon-comment",
-						// Setting stack to false causes Pines Notify to ignore this notice when positioning.
-						pnotify_stack: false,
-						pnotify_after_init: function(pnotify){
-							// Remove the notice if the user mouses over it.
-							pnotify.mouseout(function(){
-								pnotify.pnotify_remove();
-							});
-						},
-						pnotify_before_open: function(pnotify){
-							// This prevents the notice from displaying when it's created.
-							pnotify.pnotify({
-								pnotify_before_open: null
-							});
-							return false;
-						}
+					// You can change the notice's options after the timer like this:
+					pnotify.pnotify({
+						pnotify_title: pnotify.opts.pnotify_title+" - Enjoy your Stay",
+						pnotify_before_close: null
 					});
-				}
-				// I put it in a function so I could show the source easily.
-				make_tooltip();
-
-				// This creates all those source buttons.
-				$(".wrapper :button").each(function(){
-					var button = $(this);
-					if (!button.closest(".pf-group").length || button.val() == "Hoot (To See Transparency)") {
-						button.button();
-						return;
-					}
-					// Wrap the button in a container.
-					var contain = $("<span />");
-					contain = button.wrap(contain).parent();
-					// Add a source button.
-					$("<input type=\"button\" value=\"{}\" title=\"Show source code.\" />").click(function(){
-						$(this).blur();
-						var text = button.attr("onclick");
-						if (!text && button.attr("onmouseover"))
-							text = "// Mouse Over:\n"+button.attr("onmouseover")+"\n\n// Mouse Move:\n"+button.attr("onmousemove")+"\n\n// Mouse Out:\n"+button.attr("onmouseout");
-						// IE needs this.
-						if (text.toString) {
-							text = text.toString();
-							if (text.match(/^function (onclick|anonymous)[\n ]*\([^\)]*\)[\n ]*\{[\n\t ]*/))
-								text = text.replace(/^function (onclick|anonymous)[\n ]*\([^\)]*\)[\n ]*\{[\n\t ]*/, "").replace(/[\n\t ]*}[\n\t ]*$/, "");
-						}
-						var dialog = $("<div title=\""+button.val()+" - Source\" class=\"source-dialog\"></div>");
-						$("<pre class=\"brush: js; toolbar: false;\" />").text(js_beautify(text)).appendTo(dialog);
-						if (text.match(/^\w*\([^\)]*\);$/)) {
-							var f_name = text.replace(/\(.*/g, "");
-							text = window[f_name].toString();
-							$("<pre class=\"brush: js; toolbar: false;\" />").text(js_beautify(text)).appendTo(dialog);
-						}
-						if (text.match(/tooltip\.pnotify_display\(\);/)) {
-							$("<pre class=\"brush: js; toolbar: false;\" />").text(js_beautify(make_tooltip.toString())).appendTo(dialog);
-						}
-						dialog.dialog({width: "auto"});
-						// Make sure the dialog isn't more than 800x600.
-						// Can't just add max-height cause that means it can't be resized beyond.
-						if (dialog.width() > 800)
-							dialog.dialog("option", "width", 800).dialog("option", "position", "center");
-						if (dialog.height() > 600)
-							dialog.dialog("option", "height", 600).dialog("option", "position", "center");
-						// Can't call .all(), it doesn't  work.
-						if (typeof SyntaxHighlighter != "undefined")
-							SyntaxHighlighter.highlight();
-					}).appendTo(contain);
-					contain.buttonset();
-				});
-
-				if ($.fn.themeswitcher) {
-					$('#switcher').themeswitcher();
-				} else {
-					$('#switcher').html("Couldn't load theme switcher widget.")
+					pnotify.pnotify_queue_remove();
+					return false;
 				}
 			});
 
-			function show_rich() {
-				$.pnotify({
-					pnotify_title: '<span style="color: green;">Rich Content Notice</span>',
-					pnotify_text: '<span style="color: blue;">Look at my beautiful <strong>strong</strong>, <em>emphasized</em>, and <span style="font-size: 1.5em;">large</span> text.</span>'
-				});
-			}
-
-			function consume_alert() {
-				if (_alert) return;
-				_alert = window.alert;
-				window.alert = function(message) {
-					$.pnotify({
-						pnotify_title: 'Alert',
-						pnotify_text: message
-					});
-				};
-			}
-
-			function release_alert() {
-				if (!_alert) return;
-				window.alert = _alert;
-				_alert = null;
-			}
-
-			function fake_load() {
-				var cur_value = 1;
-				var progress;
-
-				// Make a loader.
-				var loader = $.pnotify({
-					pnotify_title: "Fake Load",
-					pnotify_text: "<div class=\"progress_bar\" />",
-					pnotify_notice_icon: 'picon picon-throbber',
+			// This notice is used as a tooltip.
+			var make_tooltip = function(){
+				tooltip = $.pnotify({
+					pnotify_title: "Tooltip",
+					pnotify_text: "I'm not in a stack. I'm positioned like a tooltip with JavaScript.",
 					pnotify_hide: false,
 					pnotify_closer: false,
 					pnotify_sticker: false,
 					pnotify_history: false,
-					pnotify_before_open: function(pnotify){
-						progress = pnotify.find("div.progress_bar");
-						progress.progressbar({value: cur_value});
-						// Pretend to do something.
-						var timer = setInterval(function(){
-							if (cur_value >= 100) {
-								// Remove the interval.
-								window.clearInterval(timer);
-								loader.pnotify_remove();
-								return;
-							}
-							//cur_value += Math.ceil(3 * ((100 - cur_value) / 100));
-							cur_value += .3;
-							progress.progressbar('option', 'value', cur_value);
-						}, 2);
-					}
-				});
-			}
-
-			function dyn_notice() {
-				var percent = 0;
-				var notice = $.pnotify({
-					pnotify_title: "Please Wait",
-					pnotify_type: 'info',
-					pnotify_info_icon: 'picon picon-throbber',
-					pnotify_hide: false,
-					pnotify_closer: false,
-					pnotify_sticker: false,
-					pnotify_opacity: .75,
-					pnotify_width: "150px"
-				});
-
-				setTimeout(function(){
-					notice.pnotify({pnotify_title: false});
-					var interval = setInterval(function(){
-						percent += 2;
-						var options = {
-							pnotify_text: percent+"% complete."
-						};
-						if (percent == 80)
-							options.pnotify_title = "Almost There";
-						if (percent >= 100) {
-							window.clearInterval(interval);
-							options.pnotify_title = "Done!";
-							options.pnotify_type = "notice";
-							options.pnotify_hide = true;
-							options.pnotify_closer = true;
-							options.pnotify_sticker = true;
-							options.pnotify_notice_icon = 'picon picon-task-complete';
-							options.pnotify_opacity = 1;
-							options.pnotify_shadow = true;
-							options.pnotify_width = $.pnotify.defaults.pnotify_width;
-							//options.pnotify_min_height = "300px";
-						}
-						notice.pnotify(options);
-					}, 120);
-				}, 2000);
-			}
-
-			function timed_notices(n) {
-				var start_time = new Date().getTime();
-				var end_time;
-				var options = {
-					pnotify_title: "Notice Benchmark",
-					pnotify_text: "Testing notice speed.",
-					pnotify_animation: 'none',
-					pnotify_delay: 0,
-					pnotify_history: false
-				};
-				for (var i = 0; i < n; i++) {
-					if (i + 1 == n) {
-						options.pnotify_after_close = function(pnotify){
-							// Remove this callback.
-							pnotify.pnotify({
-								pnotify_after_close: null
-							});
-							end_time = new Date().getTime();
-							alert("Testing complete:\n\nTotal Notices: "+n+
-								"\nTotal Time: "+(end_time - start_time)+"ms ("+((end_time - start_time) / 1000)+"s)"+
-								"\nAverage Time: "+((end_time - start_time) / n)+"ms ("+((end_time - start_time) / n / 1000)+"s)")
-						};
-					}
-					$.pnotify(options);
-				}
-			}
-
-			/*********** Custom Stacks ***********
-			 * A stack is an object which Pines Notify uses to determine where
-			 * to position notices. A stack has two mandatory variables, dir1
-			 * and dir2. dir1 is the first direction in which the notices are
-			 * stacked. When the notices run out of room in the window, they
-			 * will move over in the direction specified by dir2. The directions
-			 * can be "up", "down", "right", or "left". Stacks are independent
-			 * of each other, so a stack doesn't know and doesn't care if it
-			 * overlaps (and blocks) another stack. The default stack, which can
-			 * be changed like any other default, goes down, then left. Stack
-			 * objects are used and manipulated by Pines Notify, and therefore,
-			 * should be a variable when passed. So, calling something like
-			 *
-			 * $.pnotify({pnotify_stack: {"dir1": "down", "dir2": "left"}});
-			 *
-			 * will NOT work. It will create a notice, but that notice will be
-			 * in its own stack and may overlap other notices.
-			 */
-			var stack_topleft = {"dir1": "down", "dir2": "right", "push": "top"};
-			var stack_bottomleft = {"dir1": "right", "dir2": "up"};
-			var stack_custom = {"dir1": "right", "dir2": "down"};
-			var stack_custom2 = {"dir1": "left", "dir2": "up", "push": "top"};
-			var stack_bar_top = {"dir1": "down", "dir2": "right", "push": "top", "spacing1": 0, "spacing2": 0};
-			var stack_bar_bottom = {"dir1": "up", "dir2": "right", "spacing1": 0, "spacing2": 0};
-			/*********** Positioned Stack ***********
-			 * This stack is initially positioned through code instead of CSS.
-			 * This is done through two extra variables. firstpos1 and firstpos2
-			 * are pixel values, relative to a viewport edge. dir1 and dir2,
-			 * respectively, determine which edge. It is calculated as follows:
-			 *
-			 * - dir = "up" - firstpos is relative to the bottom of viewport.
-			 * - dir = "down" - firstpos is relative to the top of viewport.
-			 * - dir = "right" - firstpos is relative to the left of viewport.
-			 * - dir = "left" - firstpos is relative to the right of viewport.
-			 */
-			var stack_bottomright = {"dir1": "up", "dir2": "left", "firstpos1": 15, "firstpos2": 15};
-
-			function show_stack_topleft(type) {
-				var opts = {
-					pnotify_title: "Over Here",
-					pnotify_text: "Check me out. I'm in a different stack.",
-					pnotify_addclass: "stack-topleft",
-					pnotify_stack: stack_topleft
-				};
-				switch (type) {
-					case 'error':
-						opts.pnotify_title = "Oh No";
-						opts.pnotify_text = "Watch out for that water tower!";
-						opts.pnotify_type = "error";
-						break;
-					case 'info':
-						opts.pnotify_title = "Breaking News";
-						opts.pnotify_text = "Have you met Ted?";
-						opts.pnotify_type = "info";
-						break;
-				}
-				$.pnotify(opts);
-			};
-			function show_stack_bottomleft(type) {
-				var opts = {
-					pnotify_title: "Over Here",
-					pnotify_text: "Check me out. I'm in a different stack.",
-					pnotify_addclass: "stack-bottomleft",
-					pnotify_stack: stack_bottomleft
-				};
-				switch (type) {
-					case 'error':
-						opts.pnotify_title = "Oh No";
-						opts.pnotify_text = "Watch out for that water tower!";
-						opts.pnotify_type = "error";
-						break;
-					case 'info':
-						opts.pnotify_title = "Breaking News";
-						opts.pnotify_text = "Have you met Ted?";
-						opts.pnotify_type = "info";
-						break;
-				}
-				$.pnotify(opts);
-			};
-			function show_stack_bottomright(type) {
-				var opts = {
-					pnotify_title: "Over Here",
-					pnotify_text: "Check me out. I'm in a different stack.",
-					pnotify_addclass: "stack-bottomright",
-					pnotify_stack: stack_bottomright
-				};
-				switch (type) {
-					case 'error':
-						opts.pnotify_title = "Oh No";
-						opts.pnotify_text = "Watch out for that water tower!";
-						opts.pnotify_type = "error";
-						break;
-					case 'info':
-						opts.pnotify_title = "Breaking News";
-						opts.pnotify_text = "Have you met Ted?";
-						opts.pnotify_type = "info";
-						break;
-				}
-				$.pnotify(opts);
-			};
-			function show_stack_custom(type) {
-				var opts = {
-					pnotify_title: "Over Here",
-					pnotify_text: "Check me out. I'm in a different stack.",
-					pnotify_addclass: "stack-custom",
-					pnotify_stack: stack_custom
-				};
-				switch (type) {
-					case 'error':
-						opts.pnotify_title = "Oh No";
-						opts.pnotify_text = "Watch out for that water tower!";
-						opts.pnotify_type = "error";
-						break;
-					case 'info':
-						opts.pnotify_title = "Breaking News";
-						opts.pnotify_text = "Have you met Ted?";
-						opts.pnotify_type = "info";
-						break;
-				}
-				$.pnotify(opts);
-			};
-			function show_stack_custom2(type) {
-				var opts = {
-					pnotify_title: "Over Here",
-					pnotify_text: "Check me out. I'm in a different stack.",
-					pnotify_addclass: "stack-custom2",
-					pnotify_stack: stack_custom2
-				};
-				switch (type) {
-					case 'error':
-						opts.pnotify_title = "Oh No";
-						opts.pnotify_text = "Watch out for that water tower!";
-						opts.pnotify_type = "error";
-						break;
-					case 'info':
-						opts.pnotify_title = "Breaking News";
-						opts.pnotify_text = "Have you met Ted?";
-						opts.pnotify_type = "info";
-						break;
-				}
-				$.pnotify(opts);
-			};
-			function show_stack_bar_top(type) {
-				var opts = {
-					pnotify_title: "Over Here",
-					pnotify_text: "Check me out. I'm in a different stack.",
-					pnotify_addclass: "stack-bar-top",
-					pnotify_cornerclass: "",
-					pnotify_width: "100%",
-					pnotify_stack: stack_bar_top
-				};
-				switch (type) {
-					case 'error':
-						opts.pnotify_title = "Oh No";
-						opts.pnotify_text = "Watch out for that water tower!";
-						opts.pnotify_type = "error";
-						break;
-					case 'info':
-						opts.pnotify_title = "Breaking News";
-						opts.pnotify_text = "Have you met Ted?";
-						opts.pnotify_type = "info";
-						break;
-				}
-				$.pnotify(opts);
-			};
-			function show_stack_bar_bottom(type) {
-				var opts = {
-					pnotify_title: "Over Here",
-					pnotify_text: "Check me out. I'm in a different stack.",
-					pnotify_addclass: "stack-bar-bottom",
-					pnotify_cornerclass: "",
-					pnotify_width: "70%",
-					pnotify_stack: stack_bar_bottom
-				};
-				switch (type) {
-					case 'error':
-						opts.pnotify_title = "Oh No";
-						opts.pnotify_text = "Watch out for that water tower!";
-						opts.pnotify_type = "error";
-						break;
-					case 'info':
-						opts.pnotify_title = "Breaking News";
-						opts.pnotify_text = "Have you met Ted?";
-						opts.pnotify_type = "info";
-						break;
-				}
-				$.pnotify(opts);
-			};
-			function show_stack_info() {
-				var modal_overlay;
-				if (typeof info_box != "undefined") {
-					info_box.pnotify_display();
-					return;
-				}
-				info_box = $.pnotify({
-					pnotify_title: "Pines Notify Stacks",
-					pnotify_text: "Stacks are used to position notices and determine where new notices will go when they're created. Each notice that's placed into a stack will be positioned related to the other notices in that stack. There is no limit to the number of stacks, and no limit to the number of notices in each stack.",
-					pnotify_type: "info",
-					pnotify_info_icon: "picon picon-object-order-raise",
-					pnotify_delay: 20000,
-					pnotify_history: false,
+					pnotify_animate_speed: 100,
+					pnotify_opacity: .9,
+					pnotify_notice_icon: "ui-icon ui-icon-comment",
+					// Setting stack to false causes Pines Notify to ignore this notice when positioning.
 					pnotify_stack: false,
-					pnotify_before_open: function(pnotify){
-						// Position this notice in the center of the screen.
-						pnotify.css({
-							"top": ($(window).height() / 2) - (pnotify.height() / 2),
-							"left": ($(window).width() / 2) - (pnotify.width() / 2)
+					pnotify_after_init: function(pnotify){
+						// Remove the notice if the user mouses over it.
+						pnotify.mouseout(function(){
+							pnotify.pnotify_remove();
 						});
-						// Make a modal screen overlay.
-						if (modal_overlay)
-							modal_overlay.fadeIn("fast");
-						else
-							modal_overlay = $("<div />", {
-								"class": "ui-widget-overlay",
-								"css": {
-									"display": "none",
-									"position": "fixed",
-									"top": "0",
-									"bottom": "0",
-									"right": "0",
-									"left": "0"
-								}
-							}).appendTo("body").fadeIn("fast");
 					},
-					pnotify_before_close: function(){
-						modal_overlay.fadeOut("fast");
+					pnotify_before_open: function(pnotify){
+						// This prevents the notice from displaying when it's created.
+						pnotify.pnotify({
+							pnotify_before_open: null
+						});
+						return false;
 					}
 				});
-			};
+			}
+			// I put it in a function so I could show the source easily.
+			make_tooltip();
 
-			// ]]>
-		</script>
-		<!-- Pines Form (For the form notice.) -->
-		<link href="includes/pform.css" media="all" rel="stylesheet" type="text/css" />
-		<!--[if lt IE 8]>
-		<link href="includes/pform-ie-lt-8.css" media="all" rel="stylesheet" type="text/css" />
-		<![endif]-->
-		<style type="text/css">
-			/* <![CDATA[ */
-			.pform_custom div.pf-element .pf-label, .pform_custom div.pf-element .pf-note {
-				width: 130px; /* Width of labels. */
-				text-align: right;
+			// This creates all those source buttons.
+			$(".source").each(function(){
+				var button = $(this);
+				// Wrap the button in a container.
+				var contain = $('<div class="btn-group" />');
+				contain = button.wrap(contain).parent();
+				// Add a source button.
+				$('<button class="btn" title="Show source code.">{}</button>').click(function(){
+					$(this).blur();
+					var text = button.attr("onclick");
+					if (!text && button.attr("onmouseover"))
+						text = "// Mouse Over:\n"+button.attr("onmouseover")+"\n\n// Mouse Move:\n"+button.attr("onmousemove")+"\n\n// Mouse Out:\n"+button.attr("onmouseout");
+					// IE needs this.
+					if (text.toString) {
+						text = text.toString();
+						if (text.match(/^function (onclick|anonymous)[\n ]*\([^\)]*\)[\n ]*\{[\n\t ]*/))
+							text = text.replace(/^function (onclick|anonymous)[\n ]*\([^\)]*\)[\n ]*\{[\n\t ]*/, "").replace(/[\n\t ]*}[\n\t ]*$/, "");
+					}
+					var dialog = $("<div title=\""+button.text()+" - Source\" class=\"source-dialog\"></div>");
+					$("<pre class=\"prettyprint\" />").text(js_beautify(text)).appendTo(dialog);
+					if (text.match(/^\w*\([^\)]*\);$/)) {
+						var f_name = text.replace(/\(.*/g, "");
+						text = window[f_name].toString();
+						$("<pre class=\"prettyprint\" />").text(js_beautify(text)).appendTo(dialog);
+					}
+					if (text.match(/tooltip\.pnotify_display\(\);/)) {
+						$("<pre class=\"prettyprint\" />").text(js_beautify(make_tooltip.toString())).appendTo(dialog);
+					}
+					dialog.dialog({width: "auto"});
+					// Make sure the dialog isn't more than 800x600.
+					// Can't just add max-height cause that means it can't be resized beyond.
+					if (dialog.width() > 800)
+						dialog.dialog("option", "width", 800).dialog("option", "position", "center");
+					if (dialog.height() > 600)
+						dialog.dialog("option", "height", 600).dialog("option", "position", "center");
+					prettyPrint();
+				}).appendTo(contain);
+			});
+
+			if ($.fn.themeswitcher)
+				$('#switcher').themeswitcher();
+			else
+				$('#switcher').html("Couldn't load theme switcher widget.");
+			// Navbar scrollspy.
+			$('#navbar').scrollspy();
+		});
+
+		function show_rich() {
+			$.pnotify({
+				pnotify_title: '<span style="color: green;">Rich Content Notice</span>',
+				pnotify_text: '<span style="color: blue;">Look at my beautiful <strong>strong</strong>, <em>emphasized</em>, and <span style="font-size: 1.5em;">large</span> text.</span>'
+			});
+		}
+
+		function consume_alert() {
+			if (_alert) return;
+			_alert = window.alert;
+			window.alert = function(message) {
+				$.pnotify({
+					pnotify_title: 'Alert',
+					pnotify_text: message
+				});
+			};
+		}
+
+		function release_alert() {
+			if (!_alert) return;
+			window.alert = _alert;
+			_alert = null;
+		}
+
+		function fake_load() {
+			var cur_value = 1;
+			var progress;
+
+			// Make a loader.
+			var loader = $.pnotify({
+				pnotify_title: "Fake Load",
+				pnotify_text: "<div class=\"progress_bar\" />",
+				pnotify_notice_icon: 'picon picon-throbber',
+				pnotify_hide: false,
+				pnotify_closer: false,
+				pnotify_sticker: false,
+				pnotify_history: false,
+				pnotify_before_open: function(pnotify){
+					progress = pnotify.find("div.progress_bar");
+					progress.progressbar({value: cur_value});
+					// Pretend to do something.
+					var timer = setInterval(function(){
+						if (cur_value >= 100) {
+							// Remove the interval.
+							window.clearInterval(timer);
+							loader.pnotify_remove();
+							return;
+						}
+						//cur_value += Math.ceil(3 * ((100 - cur_value) / 100));
+						cur_value += .3;
+						progress.progressbar('option', 'value', cur_value);
+					}, 2);
+				}
+			});
+		}
+
+		function dyn_notice() {
+			var percent = 0;
+			var notice = $.pnotify({
+				pnotify_title: "Please Wait",
+				pnotify_type: 'info',
+				pnotify_info_icon: 'picon picon-throbber',
+				pnotify_hide: false,
+				pnotify_closer: false,
+				pnotify_sticker: false,
+				pnotify_opacity: .75,
+				pnotify_width: "150px"
+			});
+
+			setTimeout(function(){
+				notice.pnotify({pnotify_title: false});
+				var interval = setInterval(function(){
+					percent += 2;
+					var options = {
+						pnotify_text: percent+"% complete."
+					};
+					if (percent == 80)
+						options.pnotify_title = "Almost There";
+					if (percent >= 100) {
+						window.clearInterval(interval);
+						options.pnotify_title = "Done!";
+						options.pnotify_type = "notice";
+						options.pnotify_hide = true;
+						options.pnotify_closer = true;
+						options.pnotify_sticker = true;
+						options.pnotify_notice_icon = 'picon picon-task-complete';
+						options.pnotify_opacity = 1;
+						options.pnotify_shadow = true;
+						options.pnotify_width = $.pnotify.defaults.pnotify_width;
+						//options.pnotify_min_height = "300px";
+					}
+					notice.pnotify(options);
+				}, 120);
+			}, 2000);
+		}
+
+		function timed_notices(n) {
+			var start_time = new Date().getTime();
+			var end_time;
+			var options = {
+				pnotify_title: "Notice Benchmark",
+				pnotify_text: "Testing notice speed.",
+				pnotify_animation: 'none',
+				pnotify_delay: 0,
+				pnotify_history: false
+			};
+			for (var i = 0; i < n; i++) {
+				if (i + 1 == n) {
+					options.pnotify_after_close = function(pnotify){
+						// Remove this callback.
+						pnotify.pnotify({
+							pnotify_after_close: null
+						});
+						end_time = new Date().getTime();
+						alert("Testing complete:\n\nTotal Notices: "+n+
+							"\nTotal Time: "+(end_time - start_time)+"ms ("+((end_time - start_time) / 1000)+"s)"+
+							"\nAverage Time: "+((end_time - start_time) / n)+"ms ("+((end_time - start_time) / n / 1000)+"s)")
+					};
+				}
+				$.pnotify(options);
 			}
-			.pform_custom div.pf-element .pf-group {
-				 margin-left: 130px; /* Same as width of labels. */
+		}
+
+		/*********** Custom Stacks ***********
+			* A stack is an object which Pines Notify uses to determine where
+			* to position notices. A stack has two mandatory variables, dir1
+			* and dir2. dir1 is the first direction in which the notices are
+			* stacked. When the notices run out of room in the window, they
+			* will move over in the direction specified by dir2. The directions
+			* can be "up", "down", "right", or "left". Stacks are independent
+			* of each other, so a stack doesn't know and doesn't care if it
+			* overlaps (and blocks) another stack. The default stack, which can
+			* be changed like any other default, goes down, then left. Stack
+			* objects are used and manipulated by Pines Notify, and therefore,
+			* should be a variable when passed. So, calling something like
+			*
+			* $.pnotify({pnotify_stack: {"dir1": "down", "dir2": "left"}});
+			*
+			* will NOT work. It will create a notice, but that notice will be
+			* in its own stack and may overlap other notices.
+			*/
+		var stack_topleft = {"dir1": "down", "dir2": "right", "push": "top"};
+		var stack_bottomleft = {"dir1": "right", "dir2": "up"};
+		var stack_custom = {"dir1": "right", "dir2": "down"};
+		var stack_custom2 = {"dir1": "left", "dir2": "up", "push": "top"};
+		var stack_bar_top = {"dir1": "down", "dir2": "right", "push": "top", "spacing1": 0, "spacing2": 0};
+		var stack_bar_bottom = {"dir1": "up", "dir2": "right", "spacing1": 0, "spacing2": 0};
+		/*********** Positioned Stack ***********
+			* This stack is initially positioned through code instead of CSS.
+			* This is done through two extra variables. firstpos1 and firstpos2
+			* are pixel values, relative to a viewport edge. dir1 and dir2,
+			* respectively, determine which edge. It is calculated as follows:
+			*
+			* - dir = "up" - firstpos is relative to the bottom of viewport.
+			* - dir = "down" - firstpos is relative to the top of viewport.
+			* - dir = "right" - firstpos is relative to the left of viewport.
+			* - dir = "left" - firstpos is relative to the right of viewport.
+			*/
+		var stack_bottomright = {"dir1": "up", "dir2": "left", "firstpos1": 15, "firstpos2": 15};
+
+		function show_stack_topleft(type) {
+			var opts = {
+				pnotify_title: "Over Here",
+				pnotify_text: "Check me out. I'm in a different stack.",
+				pnotify_addclass: "stack-topleft",
+				pnotify_stack: stack_topleft
+			};
+			switch (type) {
+				case 'error':
+					opts.pnotify_title = "Oh No";
+					opts.pnotify_text = "Watch out for that water tower!";
+					opts.pnotify_type = "error";
+					break;
+				case 'info':
+					opts.pnotify_title = "Breaking News";
+					opts.pnotify_text = "Have you met Ted?";
+					opts.pnotify_type = "info";
+					break;
 			}
-			.pform_custom div.pf-buttons {
-				padding-left: 115px; /* Width of labels + margin to inputs - button spacing. */
+			$.pnotify(opts);
+		};
+		function show_stack_bottomleft(type) {
+			var opts = {
+				pnotify_title: "Over Here",
+				pnotify_text: "Check me out. I'm in a different stack.",
+				pnotify_addclass: "stack-bottomleft",
+				pnotify_stack: stack_bottomleft
+			};
+			switch (type) {
+				case 'error':
+					opts.pnotify_title = "Oh No";
+					opts.pnotify_text = "Watch out for that water tower!";
+					opts.pnotify_type = "error";
+					break;
+				case 'info':
+					opts.pnotify_title = "Breaking News";
+					opts.pnotify_text = "Have you met Ted?";
+					opts.pnotify_type = "info";
+					break;
 			}
-			/* ]]> */
-		</style>
-		<!--[if lt IE 7]>
-		<style type="text/css">
-			.pform_custom div.pf-buttons {
-				width: 225px; /* Custom form width - custom button div left padding - 20px (for IE's default padding.) */
+			$.pnotify(opts);
+		};
+		function show_stack_bottomright(type) {
+			var opts = {
+				pnotify_title: "Over Here",
+				pnotify_text: "Check me out. I'm in a different stack.",
+				pnotify_addclass: "stack-bottomright",
+				pnotify_stack: stack_bottomright
+			};
+			switch (type) {
+				case 'error':
+					opts.pnotify_title = "Oh No";
+					opts.pnotify_text = "Watch out for that water tower!";
+					opts.pnotify_type = "error";
+					break;
+				case 'info':
+					opts.pnotify_title = "Breaking News";
+					opts.pnotify_text = "Have you met Ted?";
+					opts.pnotify_type = "info";
+					break;
 			}
-		</style>
-		<![endif]-->
-	</head>
-	<body>
-		<div class="ui-widget-content ui-corner-all ui-helper-clearfix">
-			<div class="wrapper">
-				<div id="header" class="ui-widget-header ui-corner-all">
-					<div id="switcher-container"><div id="switcher"></div></div>
-					<img class="header" src="includes/default_logo.png" alt="Pines Logo" />
-					<h1 class="header">Pines Notify jQuery Plugin</h1>
+			$.pnotify(opts);
+		};
+		function show_stack_custom(type) {
+			var opts = {
+				pnotify_title: "Over Here",
+				pnotify_text: "Check me out. I'm in a different stack.",
+				pnotify_addclass: "stack-custom",
+				pnotify_stack: stack_custom
+			};
+			switch (type) {
+				case 'error':
+					opts.pnotify_title = "Oh No";
+					opts.pnotify_text = "Watch out for that water tower!";
+					opts.pnotify_type = "error";
+					break;
+				case 'info':
+					opts.pnotify_title = "Breaking News";
+					opts.pnotify_text = "Have you met Ted?";
+					opts.pnotify_type = "info";
+					break;
+			}
+			$.pnotify(opts);
+		};
+		function show_stack_custom2(type) {
+			var opts = {
+				pnotify_title: "Over Here",
+				pnotify_text: "Check me out. I'm in a different stack.",
+				pnotify_addclass: "stack-custom2",
+				pnotify_stack: stack_custom2
+			};
+			switch (type) {
+				case 'error':
+					opts.pnotify_title = "Oh No";
+					opts.pnotify_text = "Watch out for that water tower!";
+					opts.pnotify_type = "error";
+					break;
+				case 'info':
+					opts.pnotify_title = "Breaking News";
+					opts.pnotify_text = "Have you met Ted?";
+					opts.pnotify_type = "info";
+					break;
+			}
+			$.pnotify(opts);
+		};
+		function show_stack_bar_top(type) {
+			var opts = {
+				pnotify_title: "Over Here",
+				pnotify_text: "Check me out. I'm in a different stack.",
+				pnotify_addclass: "stack-bar-top",
+				pnotify_cornerclass: "",
+				pnotify_width: "100%",
+				pnotify_stack: stack_bar_top
+			};
+			switch (type) {
+				case 'error':
+					opts.pnotify_title = "Oh No";
+					opts.pnotify_text = "Watch out for that water tower!";
+					opts.pnotify_type = "error";
+					break;
+				case 'info':
+					opts.pnotify_title = "Breaking News";
+					opts.pnotify_text = "Have you met Ted?";
+					opts.pnotify_type = "info";
+					break;
+			}
+			$.pnotify(opts);
+		};
+		function show_stack_bar_bottom(type) {
+			var opts = {
+				pnotify_title: "Over Here",
+				pnotify_text: "Check me out. I'm in a different stack.",
+				pnotify_addclass: "stack-bar-bottom",
+				pnotify_cornerclass: "",
+				pnotify_width: "70%",
+				pnotify_stack: stack_bar_bottom
+			};
+			switch (type) {
+				case 'error':
+					opts.pnotify_title = "Oh No";
+					opts.pnotify_text = "Watch out for that water tower!";
+					opts.pnotify_type = "error";
+					break;
+				case 'info':
+					opts.pnotify_title = "Breaking News";
+					opts.pnotify_text = "Have you met Ted?";
+					opts.pnotify_type = "info";
+					break;
+			}
+			$.pnotify(opts);
+		};
+		function show_stack_info() {
+			var modal_overlay;
+			if (typeof info_box != "undefined") {
+				info_box.pnotify_display();
+				return;
+			}
+			info_box = $.pnotify({
+				pnotify_title: "Pines Notify Stacks",
+				pnotify_text: "Stacks are used to position notices and determine where new notices will go when they're created. Each notice that's placed into a stack will be positioned related to the other notices in that stack. There is no limit to the number of stacks, and no limit to the number of notices in each stack.",
+				pnotify_type: "info",
+				pnotify_info_icon: "picon picon-object-order-raise",
+				pnotify_delay: 20000,
+				pnotify_history: false,
+				pnotify_stack: false,
+				pnotify_before_open: function(pnotify){
+					// Position this notice in the center of the screen.
+					pnotify.css({
+						"top": ($(window).height() / 2) - (pnotify.height() / 2),
+						"left": ($(window).width() / 2) - (pnotify.width() / 2)
+					});
+					// Make a modal screen overlay.
+					if (modal_overlay)
+						modal_overlay.fadeIn("fast");
+					else
+						modal_overlay = $("<div />", {
+							"class": "ui-widget-overlay",
+							"css": {
+								"display": "none",
+								"position": "fixed",
+								"top": "0",
+								"bottom": "0",
+								"right": "0",
+								"left": "0"
+							}
+						}).appendTo("body").fadeIn("fast");
+				},
+				pnotify_before_close: function(){
+					modal_overlay.fadeOut("fast");
+				}
+			});
+		};
+	</script>
+	<!-- Pines Form (For the form notice.) -->
+	<link href="includes/pform.css" media="all" rel="stylesheet" type="text/css" />
+	<link href="includes/pform-bootstrap.css" media="all" rel="stylesheet" type="text/css" />
+	<!--[if lt IE 8]>
+	<link href="includes/pform-ie-lt-8.css" media="all" rel="stylesheet" type="text/css" />
+	<![endif]-->
+	<style type="text/css">
+		.pform_custom div.pf-element .pf-label, .pform_custom div.pf-element .pf-note {
+			width: 130px; /* Width of labels. */
+			text-align: right;
+		}
+		.pform_custom div.pf-element .pf-group {
+				margin-left: 130px; /* Same as width of labels. */
+		}
+		.pform_custom div.pf-buttons {
+			padding-left: 115px; /* Width of labels + margin to inputs - button spacing. */
+		}
+	</style>
+	<!--[if lt IE 7]>
+	<style type="text/css">
+		.pform_custom div.pf-buttons {
+			width: 225px; /* Custom form width - custom button div left padding - 20px (for IE's default padding.) */
+		}
+	</style>
+	<![endif]-->
+</head>
+<body id="page" data-spy="scroll">
+	<div id="navbar" class="navbar navbar-fixed-top">
+		<div class="navbar-inner">
+			<div class="container">
+				<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</a>
+				<a class="brand" href="http://pinesframework.org/pnotify/" style="height: 40px; padding-top: 0; padding-bottom: 0;">
+					<img alt="Pines Logo" src="includes/pines-logo.png" style="padding: 0; border: 0; vertical-align: middle;" />
+					<span style="line-height: 40px;">Pines Notify</span>
+				</a>
+				<div class="nav-collapse">
+					<ul class="nav">
+						<li class="active"><a href="#page">Overview</a></li>
+						<li><a href="#demos-simple">Simple Demos</a></li>
+						<li><a href="#demos-advanced">Advanced Demos</a></li>
+						<li><a href="#theming">Theming</a></li>
+						<li><a href="#installation">Installation</a></li>
+						<li><a href="#comments">Comments</a></li>
+					</ul>
+					<ul class="nav pull-right">
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+								Beyond Pines Notify <b class="caret"></b>
+							</a>
+							<ul class="dropdown-menu">
+								<li><a href="http://pinesframework.org/" target="_blank">Pines Framework</a></li>
+								<li><a href="http://pinescms.org/" target="_blank">Pines CMS</a></li>
+								<li class="divider"></li>
+								<li><a href="http://pinesframework.org/pform/" target="_blank">Pines Form</a></li>
+								<li><a href="http://pinesframework.org/pgrid/" target="_blank">Pines Grid</a></li>
+								<li><a href="http://pinesframework.org/ptags/" target="_blank">Pines Tags</a></li>
+								<li class="divider"></li>
+								<li>
+									<a href="http://sourceforge.net/projects/pines" target="_blank"><img src="http://sflogo.sourceforge.net/sflogo.php?group_id=264165&amp;type=13" width="120" height="30" alt="Get Pines at SourceForge.net. Fast, secure and Free Open Source software downloads" style="border: none;" /></a>
+								</li>
+							</ul>
+						</li>
+					</ul>
 				</div>
-				<p style="float: right;">
-					<a href="http://sourceforge.net/projects/pines"><img src="http://sflogo.sourceforge.net/sflogo.php?group_id=264165&amp;type=15" width="150" height="40" alt="Get Pines at SourceForge.net. Fast, secure and Free Open Source software downloads" style="border: none;" /></a>
-				</p>
-				<p class="main-description">
-					Pines Notify is a JavaScript notification plugin, developed
-					by Hunter Perrin as part of
-					<a href="http://pinesframework.org/">Pines</a>.
-					It is designed to provide an unparalleled level of
-					flexibility, while still being very easy to implement and
-					use. It uses the jQuery UI CSS library for styling, which
-					means it is fully and easily themeable. Try out some of the
-					readymade themes using the selector in the top right corner
-					of this page.
-					Pines Notify is distributed under the <a href="http://www.gnu.org/licenses/gpl.html" onclick="window.open(this.href); return false;">GPL</a>, <a href="http://www.gnu.org/licenses/lgpl.html" onclick="window.open(this.href); return false;">LGPL</a>, and <a href="http://www.mozilla.org/MPL/MPL-1.1.html" onclick="window.open(this.href); return false;">MPL</a>. This triple copyleft licensing model avoids incompatibility with other open source licenses.
-				</p>
-				<div class="dev-note ui-state-error ui-corner-all" style="display: none; padding: 1em; text-align: center;">
-					<h3 style="margin: 0;">Caution warning danger attention!</h3>
-					<p style="margin: .5em 0 0;">
-						This is the development site. It's a playground for
-						bleeding edge features and code that probably won't
-						work. You should head over to the
-						<a href="http://pinesframework.org/pnotify/"><button type="button" style="text-decoration: none !important; font-weight: bold !important;">Main Site</button></a>
-					</p>
-				</div>
-				<p class="stable-note" style="display: none;">
-					This is the stable site. You can download code here that's
-					tested and proven to work. However, if you like to live
-					dangerously, you can also check out the
-					<a href="http://pines.hg.sourceforge.net/hgweb/pines/pnotify/raw-file/tip/index.html">development site</a>.
-				</p>
-				<p style="text-align: center;">
-					<button type="button" onclick="window.location='https://sourceforge.net/projects/pines/files/pnotify/1.1/pnotify-1.1.0.zip/download';"><strong style="font-size: large;">Download Pines Notify</strong></button>
-				</p>
-				<h2>Features</h2>
-				<div class="ui-helper-clearfix">
-					<div class="featurelist ui-widget-content ui-corner-all">
-						<ul>
-							<li><span class="ui-icon ui-icon-bullet"></span>Timed hiding with visual effects.</li>
-							<li><span class="ui-icon ui-icon-bullet"></span>Sticky (no automatic hiding) notices.</li>
-							<li><span class="ui-icon ui-icon-bullet"></span>Optional hide and sticker buttons.</li>
-							<li><span class="ui-icon ui-icon-bullet"></span>Supports dynamically updating text, title, icon, type...</li>
-							<li><span class="ui-icon ui-icon-bullet"></span>Stacks allow notice sets to stack independently.</li>
-							<li><span class="ui-icon ui-icon-bullet"></span>Control stack direction and push to top or bottom.</li>
-							<li><span class="ui-icon ui-icon-bullet"></span>Non-blocking notices for less intrusive use.</li>
-						</ul>
-					</div>
-					<div class="featurelist ui-widget-content ui-corner-all">
-						<ul>
-							<li><span class="ui-icon ui-icon-bullet"></span>Supports HTML (including forms) in title and text.</li>
-							<li><span class="ui-icon ui-icon-bullet"></span>Can also escape HTML to prevent XSS attack.</li>
-							<li><span class="ui-icon ui-icon-bullet"></span>Variable opacity.</li>
-							<li><span class="ui-icon ui-icon-bullet"></span>Supports Pines icons/jQuery UI icons/any CSS based icons.</li>
-							<li><span class="ui-icon ui-icon-bullet"></span>Supports custom classes for individual notice styling.</li>
-							<li><span class="ui-icon ui-icon-bullet"></span>Standard and custom effects.</li>
-							<li><span class="ui-icon ui-icon-bullet"></span>Optional drop shadows.</li>
-						</ul>
-					</div>
-					<div class="featurelist ui-widget-content ui-corner-all">
-						<ul>
-							<li><span class="ui-icon ui-icon-bullet"></span>Three notification types: notice, info, and error.</li>
-							<li><span class="ui-icon ui-icon-bullet"></span>Callbacks for various events, which can cancel events.</li>
-							<li><span class="ui-icon ui-icon-bullet"></span>History viewer allows user to review previous notices.</li>
-							<li><span class="ui-icon ui-icon-bullet"></span><a href="http://validator.w3.org/check?uri=referer">XHTML 1.0 Strict compliance.</a></li>
-							<li><span class="ui-icon ui-icon-bullet"></span><a href="http://jqueryui.com/themeroller/"><img src="includes/themeroller-ready.png" alt="ThemeRoller Ready" /></a></li>
-						</ul>
+			</div>
+		</div>
+	</div>
+	<div id="switcher-container"><div id="switcher"></div></div>
+	<div id="wrapper">
+		<div class="page-banner">
+			<h1>Pines Notify</h1>
+			<p>JavaScript (jQuery) notification plugin.</p>
+			<div>
+				<a class="btn btn-primary btn-large" href="https://sourceforge.net/projects/pines/files/pnotify/1.1/pnotify-1.1.1.zip/download" target="_blank">Download Pines Notify 1.1.1</a>
+				<a class="right-button btn btn-large" href="http://github.com/sciactive/pnotify" target="_blank" title="Fork me on GitHub">Pines Notify on GitHub <img src="includes/github-icon.png" alt="GitHub Icon" /></a>
+			</div>
+		</div>
+		<div class="page-points">
+			<div class="container-fluid">
+				<div class="row-fluid dev-note" style="display: none;">
+					<div class="span3">&nbsp;</div>
+					<div class="span6 offset3">
+						<div class="alert alert-error">
+							<h3><i class="icon-exclamation-sign" style="position: relative; top: 3px;"></i> Caution warning danger attention!</h3>
+							<p>
+								This is the development site. It's a playground for
+								bleeding edge features and code that probably won't
+								work. You should head over to the
+								<a href="http://pinesframework.org/pnotify/" class="btn btn-success">Main Site</a>
+							</p>
+						</div>
 					</div>
 				</div>
-				<h2>Simple Demos</h2>
-				<div class="pf-group ui-widget-content ui-corner-all">
-					<input value="Hoot (To See Transparency)" onclick="$('.wrapper').toggleClass('background'); if (!credit_shown) $.pnotify({
-						pnotify_title: 'Picture Credit',
-						pnotify_text: 'Owl picture courtesy of:\n&lt;a href=\'http://www.flickr.com/photos/barloventomagico/\' onclick=\'window.open(this.href); return false;\'&gt;barloventomagico&lt;/a&gt;',
-						pnotify_opacity: .8
-					}); credit_shown = true;" style="float: right;" type="button" />
-					<input value="Regular Notice" onclick="$.pnotify({
+				<div class="row-fluid">
+					<div class="span8">
+						<div class="alert-block">
+							<h3><i class="icon-book" style="position: relative; top: 3px;"></i> About</h3>
+							<p>
+								Pines Notify is a JavaScript notification plugin, developed
+								by Hunter Perrin as part of
+								<a href="http://pinesframework.org/">Pines</a>.
+								It is designed to provide an unparalleled level of
+								flexibility, while still being very easy to implement and
+								use.
+							</p>
+						</div>
+					</div>
+					<div class="span4">
+						<div class="alert-block">
+							<h3><i class="icon-list-alt" style="position: relative; top: 3px;"></i> Cross-Browser</h3>
+							<p>
+								Pines Notify works in all major browsers and provides
+								a consistent interface. It is tested thoroughly for
+								consistency.
+							</p>
+						</div>
+					</div>
+				</div>
+				<div class="row-fluid">
+					<div class="span4">
+						<div class="alert-block">
+							<h3><i class="icon-asterisk" style="position: relative; top: 3px;"></i> Unobtrusive</h3>
+							<p>
+								Pines Notify can provide <strong>non-blocking</strong> notices.
+								This allows the user to click elements behind the notice without
+								even having to dismiss it.
+							</p>
+							<p>
+								<a class="btn" data-toggle="modal" href="#feature-modal" >See All Features</a>
+							</p>
+						</div>
+					</div>
+					<div class="span4">
+						<div class="alert-block">
+							<h3><i class="icon-picture" style="position: relative; top: 3px;"></i> Themeable</h3>
+							<p>
+								Pines Notify uses the jQuery UI CSS library for styling, which
+								means it is fully and easily themeable. Try out some of the
+								readymade themes using the selector in the top right corner
+								of this page.
+							</p>
+							<p style="text-align: right;">
+								<a href="http://jqueryui.com/themeroller/"><img src="includes/themeroller-ready.png" alt="ThemeRoller Ready" /></a>
+							</p>
+						</div>
+					</div>
+					<div class="span4">
+						<div class="alert-block">
+							<h3><i class="icon-gift" style="position: relative; top: 3px;"></i> Completely Open</h3>
+							<p>
+								Pines Notify is distributed under the
+								<a href="http://www.gnu.org/licenses/gpl.html" target="_blank">GPL</a>,
+								<a href="http://www.gnu.org/licenses/lgpl.html" target="_blank">LGPL</a>,
+								and
+								<a href="http://www.mozilla.org/MPL/MPL-1.1.html" target="_blank">MPL</a>.
+								This triple copyleft licensing model avoids
+								incompatibility with other open source licenses.
+							</p>
+						</div>
+					</div>
+				</div>
+				<div class="row-fluid stable-note" style="display: none;">
+					<div class="span3">&nbsp;</div>
+					<div class="span6 offset3">
+						<div class="alert alert-success">
+							<h3><i class="icon-info-sign" style="position: relative; top: 3px;"></i> Did you know?</h3>
+							<p>
+								This is the stable site. You can download code here that's
+								tested and proven to work. However, if you like to live
+								dangerously, you can also check out the
+								<a href="http://sciactive.github.com/pnotify">development site</a>.
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal hide fade" id="feature-modal">
+			<div class="modal-header">
+				<a class="close" data-dismiss="modal">×</a>
+				<h3>Pines Notify Features</h3>
+			</div>
+			<div class="modal-body">
+				<ul class="unstyled">
+					<li>Rich graphical features and effects.
+						<ul>
+							<li>jQuery UI, Bootstrap, Pines, and any other CSS based icons.</li>
+							<li>Timed hiding with visual effects.</li>
+							<li>Standard and custom effects.</li>
+							<li>Add custom classes for individual notice styling.</li>
+							<li>Variable opacity.</li>
+							<li>Optional drop shadows.</li>
+						</ul>
+					</li>
+					<li>Highly customizable UI.
+						<ul>
+							<li>Sticky (no automatic hiding) notices.</li>
+							<li>Optional hide and sticker buttons.</li>
+							<li>Non-blocking notices for less intrusive use.</li>
+							<li>Three notification types: notice, info, and error.</li>
+							<li>Stacks allow notice sets to stack independently.
+								<ul>
+									<li>Control stack direction and push to top or bottom.</li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+					<li>Feature rich API.
+						<ul>
+							<li>Supports dynamically updating text, title, icon, type...</li>
+							<li>Supports HTML (including forms) in title and text.
+								<ul>
+									<li>Can also escape HTML to prevent XSS attack.</li>
+								</ul>
+							</li>
+							<li>Callbacks for various events, which can cancel said events.</li>
+							<li>History viewer allows user to review previous notices.</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+			<div class="modal-footer">
+				<a data-dismiss="modal" class="btn">Close</a>
+			</div>
+		</div>
+		<div id="sections">
+			<div id="demos-simple">
+				<div class="page-header">
+					<h2>Simple Demos</h2>
+				</div>
+				<div class="btn-toolbar well">
+					<button class="btn source" onclick="$.pnotify({
 						pnotify_title: 'Regular Notice',
 						pnotify_text: 'Check me out! I\'m a notice.'
-					});" type="button" />
-					<input value="Sticky Notice" onclick="$.pnotify({
+					});">Regular Notice</button>
+					<button class="btn source" onclick="$.pnotify({
 						pnotify_title: 'Sticky Notice',
 						pnotify_text: 'Check me out! I\'m a sticky notice. You\'ll have to close me yourself.',
 						pnotify_hide: false
-					});" type="button" />
-					<input value="Transparent Notice" onclick="$.pnotify({
+					});">Sticky Notice</button>
+					<button class="btn source" onclick="$.pnotify({
 						pnotify_title: 'See Through Notice',
 						pnotify_text: 'No one ever pays attention to me. Why should they? I\'m practically invisible.',
 						pnotify_opacity: .8
-					});" type="button" />
-					<input value="Shadow Notice" onclick="$.pnotify({
+					});">Transparent Notice</button>
+					<button class="btn source" onclick="$.pnotify({
 						pnotify_title: 'Shadow Notice',
 						pnotify_text: 'I have a shadow. It makes me pop out!\n\nNote: Shadows do not work in IE.',
 						pnotify_shadow: true
-					});" type="button" />
+					});">Shadow Notice</button>
+					<button class="btn source" onclick="$.pnotify('Check me out! I\'m a notice.');">Simple Notice</button>
+					<button class="btn source" onclick="$.pnotify(Math.round(Math.random()*9999));">Number Notice</button>
 					<br style="margin-bottom: 5px;" />
-					<input value="Pines Icon Notice" onclick="$.pnotify({
+					<button class="btn source" onclick="$.pnotify({
 						pnotify_title: 'Pines Icon Notice',
 						pnotify_text: 'I have an icon that uses the Pines icon styles.',
 						pnotify_notice_icon: 'picon picon-mail-unread-new'
-					});" type="button" />
-					<input value="jQuery UI Icon Notice" onclick="$.pnotify({
+					});">Pines Icon Notice</button>
+					<button class="btn source" onclick="$.pnotify({
 						pnotify_title: 'jQuery UI Icon Notice',
 						pnotify_text: 'I have an icon that uses the jQuery UI icon styles.',
 						pnotify_notice_icon: 'ui-icon ui-icon-mail-closed'
-					});" type="button" />
-					<input value="No Icon Notice" onclick="$.pnotify({
+					});">jQuery UI Icon Notice</button>
+					<button class="btn source" onclick="$.pnotify({
+						pnotify_title: 'Bootstrap Icon Notice',
+						pnotify_text: 'I have an icon that uses the Bootstrap icon styles.',
+						pnotify_notice_icon: 'icon-envelope'
+					});">Bootstrap Icon Notice</button>
+					<button class="btn source" onclick="$.pnotify({
 						pnotify_title: 'No Icon Notice',
 						pnotify_text: 'I have no icon.',
 						pnotify_notice_icon: ''
-					});" type="button" />
-					<input value="Simple Notice" onclick="$.pnotify('Check me out! I\'m a notice.');" type="button" />
-					<input value="Number Notice" onclick="$.pnotify(Math.round(Math.random()*9999));" type="button" />
+					});">No Icon Notice</button>
 				</div>
-
-				<div class="pf-group ui-widget-content ui-corner-all">
-					<input value="Regular Info" onclick="$.pnotify({
+				<div class="btn-toolbar well">
+					<button class="btn source" onclick="$.pnotify({
 						pnotify_title: 'New Thing',
 						pnotify_text: 'Just to let you know, something happened.',
 						pnotify_type: 'info'
-					});" type="button" />
-					<input value="Sticky Info" onclick="$.pnotify({
+					});">Regular Info</button>
+					<button class="btn source" onclick="$.pnotify({
 						pnotify_title: 'Sticky Info',
 						pnotify_text: 'Sticky info, you know, like a newspaper covered in honey.',
 						pnotify_type: 'info',
 						pnotify_hide: false
-					});" type="button" />
-					<input value="Transparent Info" onclick="$.pnotify({
+					});">Sticky Info</button>
+					<button class="btn source" onclick="$.pnotify({
 						pnotify_title: 'See Through Info',
 						pnotify_text: 'Not only does it not matter, but I don\'t even care if you see this info.',
 						pnotify_type: 'info',
 						pnotify_opacity: .8
-					});" type="button" />
-					<input value="Shadow Info" onclick="$.pnotify({
+					});">Transparent Info</button>
+					<button class="btn source" onclick="$.pnotify({
 						pnotify_title: 'Shadow Info',
 						pnotify_text: 'I have a shadow. It makes me pop out!',
 						pnotify_type: 'info',
 						pnotify_shadow: true
-					});" type="button" />
+					});">Shadow Info</button>
 					<br style="margin-bottom: 5px;" />
-					<input value="Pines Icon Info" onclick="$.pnotify({
+					<button class="btn source" onclick="$.pnotify({
 						pnotify_title: 'Pines Icon Info',
 						pnotify_text: 'Something is encrypted. Check out my icon, it shows that you\'re secure because our encryption uses padlocks.',
 						pnotify_type: 'info',
 						pnotify_info_icon: 'picon picon-document-encrypt'
-					});" type="button" />
-					<input value="jQuery UI Icon Info" onclick="$.pnotify({
+					});">Pines Icon Info</button>
+					<button class="btn source" onclick="$.pnotify({
 						pnotify_title: 'jQuery UI Icon Info',
 						pnotify_text: 'Something is encrypted. Check out my icon, it shows that you\'re secure because our encryption uses padlocks.',
 						pnotify_type: 'info',
 						pnotify_info_icon: 'ui-icon ui-icon-locked'
-					});" type="button" />
-					<input value="No Icon Info" onclick="$.pnotify({
+					});">jQuery UI Icon Info</button>
+					<button class="btn source" onclick="$.pnotify({
 						pnotify_title: 'No Icon Info',
 						pnotify_text: 'I have no icon.',
 						pnotify_type: 'info',
 						pnotify_info_icon: ''
-					});" type="button" />
+					});">No Icon Info</button>
 				</div>
-
-				<div class="pf-group ui-widget-content ui-corner-all">
-					<input value="Regular Error" onclick="$.pnotify({
+				<div class="btn-toolbar well">
+					<button class="btn source" onclick="$.pnotify({
 						pnotify_title: 'Oh No!',
 						pnotify_text: 'Something terrible happened.',
 						pnotify_type: 'error'
-					});" type="button" />
-					<input value="Sticky Error" onclick="$.pnotify({
+					});">Regular Error</button>
+					<button class="btn source" onclick="$.pnotify({
 						pnotify_title: 'Uh Oh!',
 						pnotify_text: 'Something really terrible happened. You really need to read this, so I won\'t close automatically.',
 						pnotify_type: 'error',
 						pnotify_hide: false
-					});" type="button" />
-					<input value="Transparent Error" onclick="$.pnotify({
+					});">Sticky Error</button>
+					<button class="btn source" onclick="$.pnotify({
 						pnotify_title: 'See Through Error',
 						pnotify_text: 'There\'s an error, but no one cares.',
 						pnotify_type: 'error',
 						pnotify_opacity: .8
-					});" type="button" />
-					<input value="Shadow Error" onclick="$.pnotify({
+					});">Transparent Error</button>
+					<button class="btn source" onclick="$.pnotify({
 						pnotify_title: 'Shadow Error',
 						pnotify_text: 'I have a shadow. It makes me pop out!',
 						pnotify_type: 'error',
 						pnotify_shadow: true
-					});" type="button" />
+					});">Shadow Error</button>
 					<br style="margin-bottom: 5px;" />
-					<input value="Pines Icon Error" onclick="$.pnotify({
+					<button class="btn source" onclick="$.pnotify({
 						pnotify_title: 'Pines Icon Error',
 						pnotify_text: 'Oh no. Something\'s wrong with your network, and I\'m showing you visually using an appropriate icon to indicate the type of error that has occured. You know, network.',
 						pnotify_type: 'error',
 						pnotify_error_icon: 'picon picon-network-wireless'
-					});" type="button" />
-					<input value="jQuery UI Icon Error" onclick="$.pnotify({
+					});">Pines Icon Error</button>
+					<button class="btn source" onclick="$.pnotify({
 						pnotify_title: 'jQuery UI Icon Error',
 						pnotify_text: 'Oh no. Something\'s wrong with your network, and I\'m showing you visually using an appropriate icon to indicate the type of error that has occured. You know, network.',
 						pnotify_type: 'error',
 						pnotify_error_icon: 'ui-icon ui-icon-signal-diag'
-					});" type="button" />
-					<input value="No Icon Error" onclick="$.pnotify({
+					});">jQuery UI Icon Error</button>
+					<button class="btn source" onclick="$.pnotify({
 						pnotify_title: 'No Icon Error',
 						pnotify_text: 'I have no icon.',
 						pnotify_type: 'error',
 						pnotify_error_icon: ''
-					});" type="button" />
+					});">No Icon Error</button>
 				</div>
+			</div>
 
-				<h2>Advanced Demos</h2>
-				<div class="pf-group ui-widget-content ui-corner-all">
-					<input value="No Sticky Button" onclick="$.pnotify({
+			<div id="demos-advanced">
+				<div class="page-header">
+					<h2>Advanced Demos</h2>
+				</div>
+				<div class="btn-toolbar well">
+					<button class="btn source" onclick="$.pnotify({
 						pnotify_title: 'No Sticky Button Notice',
 						pnotify_text: 'Check me out! I\'m a sticky notice with no unsticky button. You\'ll have to close me yourself.',
 						pnotify_hide: false,
 						pnotify_sticker: false
-					});" type="button" />
-					<input value="Permanent Buttons" onclick="$.pnotify({
+					});">No Sticky Button</button>
+					<button class="btn source" onclick="$.pnotify({
 						pnotify_title: 'Permanent Buttons Notice',
 						pnotify_text: 'My buttons are really lonely, so they\'re gonna hang out with us.',
 						pnotify_closer_hover: false,
 						pnotify_sticker_hover: false
-					});" type="button" />
-					<input value="No History Notice" onclick="$.pnotify({
+					});">Permanent Buttons</button>
+					<button class="btn source" onclick="$.pnotify({
 						pnotify_title: 'No History Notice',
 						pnotify_text: 'I\'m not part of the notice history, so if you redisplay the last message, it won\'t be me.',
 						pnotify_history: false
-					});" type="button" />
-					<input value="No Mouse Reset Notice" onclick="$.pnotify({
+					});">No History Notice</button>
+					<button class="btn source" onclick="$.pnotify({
 						pnotify_title: 'No Mouse Reset Notice',
 						pnotify_text: 'I don\'t care if you move your mouse over me, I\'ll disappear when I want.',
 						pnotify_mouse_reset: false
-					});" type="button" />
-					<input value="No Rounded Corners" onclick="$.pnotify({
+					});">No Mouse Reset Notice</button>
+					<button class="btn source" onclick="$.pnotify({
 						pnotify_title: 'No Rounded Corners Notice',
 						pnotify_text: 'Warning: Contains sharp objects. Not suitable for browsers under the age of CSS3.',
 						pnotify_cornerclass: ''
-					});" type="button" />
+					});">No Rounded Corners</button>
 					<br style="margin-bottom: 5px;" />
-					<input value="Fast Fading Notice" onclick="$.pnotify({
+					<button class="btn source" onclick="$.pnotify({
 						pnotify_title: 'Fast Fading Notice',
 						pnotify_text: 'I fade in and out really quickly.',
 						pnotify_animate_speed: 'fast'
-					});" type="button" />
-					<input value="No Effect Notice" onclick="$.pnotify({
+					});">Fast Fading Notice</button>
+					<button class="btn source" onclick="$.pnotify({
 						pnotify_title: 'No Effect Notice',
 						pnotify_text: 'I don\'t even bother to animate. I\'m too cool for that.',
 						pnotify_animation: 'none'
-					});" type="button" />
-					<input value="Pretend Loader" onclick="fake_load();" type="button" />
-					<input value="Dynamic Notice" onclick="dyn_notice();" type="button" />
-					<input value="Notice to Error to Info" onclick="$.pnotify({
+					});">No Effect Notice</button>
+					<button class="btn source" onclick="fake_load();">Pretend Loader</button>
+					<button class="btn source" onclick="dyn_notice();">Dynamic Notice</button>
+					<button class="btn source" onclick="$.pnotify({
 						pnotify_title: 'Notice',
 						pnotify_text: 'Right now I\'m a notice.',
 						pnotify_before_close: function(pnotify){
@@ -1005,9 +1170,9 @@
 							pnotify.effect('bounce');
 							return false;
 						}
-					});" type="button" />
+					});">Notice to Error to Info</button>
 					<br style="margin-bottom: 5px;" />
-					<input value="Permanotice" onclick="if (permanotice) {
+					<button class="btn source" onclick="if (permanotice) {
 						permanotice.pnotify_display();
 					} else {
 						permanotice = $.pnotify({
@@ -1018,15 +1183,15 @@
 							pnotify_closer: false,
 							pnotify_sticker: false
 						});
-					}" type="button" />
-					<input value="Remove Permanotice" onclick="if (permanotice.pnotify_remove) permanotice.pnotify_remove();" type="button" />
-					<input value="Non-Blocking Notice" onclick="$.pnotify({
+					}">Permanotice</button>
+					<button class="btn source" onclick="if (permanotice.pnotify_remove) permanotice.pnotify_remove();">Remove Permanotice</button>
+					<button class="btn source" onclick="$.pnotify({
 						pnotify_title: 'Non-Blocking Notice',
 						pnotify_text: 'I\'m a special kind of notice called &quot;non-blocking&quot;. When you hover over me I\'ll fade to show the elements underneath. Feel free to click any of them just like I wasn\'t even here.\n\nNote: HTML links don\'t trigger in some browsers, due to security settings.',
 						pnotify_nonblock: true,
 						pnotify_nonblock_opacity: .2
-					});" type="button" />
-					<input value="Form Notice" onclick="var notice = $.pnotify({
+					});">Non-Blocking Notice</button>
+					<button class="btn source" onclick="var notice = $.pnotify({
 						pnotify_text: $('#form_notice').html(),
 						pnotify_notice_icon: '',
 						pnotify_width: 'auto',
@@ -1051,23 +1216,23 @@
 							pnotify_sticker: true
 						});
 						return false;
-					});" type="button" />
+					});">Form Notice</button>
 					<div id="form_notice" style="display: none;">
 						<form class="pf-form pform_custom" action="" method="post">
 							<div class="pf-element pf-heading">
-								<h1>Login to Continue</h1>
+								<h3>Login to Continue</h3>
 								<p>Just an example.</p>
 							</div>
 							<div class="pf-element">
 								<label>
 									<span class="pf-label">Username</span>
-									<input class="pf-field ui-widget-content ui-corner-all" type="text" name="username" />
+									<input class="pf-field" type="text" name="username" />
 								</label>
 							</div>
 							<div class="pf-element">
 								<label>
 									<span class="pf-label">Password</span>
-									<input class="pf-field ui-widget-content ui-corner-all" type="password" name="password" />
+									<input class="pf-field" type="password" name="password" />
 								</label>
 							</div>
 							<div class="pf-element">
@@ -1078,12 +1243,12 @@
 								</label>
 							</div>
 							<div class="pf-element pf-buttons pf-centered">
-								<input class="pf-button ui-state-default ui-corner-all ui-priority-primary" type="submit" name="submit" value="Submit" />
-								<input class="pf-button ui-state-default ui-corner-all ui-priority-secondary" type="reset" name="reset" value="Reset" />
+								<input class="pf-button btn btn-primary" type="submit" name="submit" value="Submit" />
+								<input class="pf-button btn" type="reset" name="reset" value="Reset" />
 							</div>
 						</form>
 					</div>
-					<input value="Notice with Callbacks" onclick="var dont_alert = function(){};
+					<button class="btn source" onclick="var dont_alert = function(){};
 					$.pnotify({
 						pnotify_title: 'I\'m Here',
 						pnotify_text: 'I have a callback for each of my events. I\'ll call all my callbacks while I change states.',
@@ -1110,21 +1275,21 @@
 							var source_note = 'Return false to cancel removal from the DOM.';
 							dont_alert('I\'m called after the notice closes. I\'m passed the pnotify object for the current notice: '+pnotify);
 						}
-					});" type="button" />
+					});">Notice with Callbacks</button>
 					<br style="margin-bottom: 5px;" />
-					<input value="Big Notice" onclick="$.pnotify({
+					<button class="btn source" onclick="$.pnotify({
 						pnotify_title: 'Big Notice',
 						pnotify_text: 'Check me out! I\'m tall and wide, even though my text isn\'t.',
 						pnotify_width: '500px',
 						pnotify_min_height: '400px'
-					});" type="button" />
-					<input value="Rich Notice" onclick="show_rich();" type="button" />
-					<input value="Escaped Notice" onclick="$.pnotify({
+					});">Big Notice</button>
+					<button class="btn source" onclick="show_rich();">Rich Notice</button>
+					<button class="btn source" onclick="$.pnotify({
 						pnotify_title: '&lt;em&gt;Escaped Notice&lt;/em&gt;',
 						pnotify_title_escape: true,
 						pnotify_text: $('#evil_html').html(),
 						pnotify_text_escape: true
-					});" type="button" />
+					});">Escaped Notice</button>
 					<div id="evil_html" style="display: none;">
 						<div>As you can see, I don't allow HTML in my content.</div>
 						<div>This prevents things like cross site scripting attacks:</div>
@@ -1134,7 +1299,7 @@
 							})()
 						</script>
 					</div>
-					<input value="Custom Styled Notice" onclick="$.pnotify({
+					<button class="btn source" onclick="$.pnotify({
 						pnotify_title: 'Custom Styling',
 						pnotify_text: 'I have an additional class that\'s used to give me special styling. I always wanted to be pretty.',
 						pnotify_addclass: 'custom',
@@ -1142,57 +1307,57 @@
 						pnotify_opacity: .8,
 						pnotify_nonblock: true,
 						pnotify_nonblock_opacity: .2
-					});" type="button" /> &lt; This is how you make it look like Apple Growl.
+					});">Custom Styled Notice</button> &lt; This is how you make it look like Apple Growl.
 				</div>
 
-				<div class="pf-group ui-widget-content ui-corner-all">
-					<span>
-						Examples of Custom Stacks:
-						<input style="margin-left: 10px;" value="What are stacks?" onclick="show_stack_info();" type="button" />
-					</span>
-					<br style="margin-bottom: 5px;" />
-					<input value="Notice" onclick="show_stack_topleft('notice');" type="button" />
-					<input value="Info" onclick="show_stack_topleft('info');" type="button" />
-					<input value="Error" onclick="show_stack_topleft('error');" type="button" />
+				<div class="btn-toolbar well">
+					<h4>
+						Examples of Custom Stacks
+						<button class="btn source" style="margin-left: 10px;" onclick="show_stack_info();">What are stacks?</button>
+					</h4>
+					<button class="btn source" onclick="show_stack_topleft('notice');">Notice</button>
+					<button class="btn source" onclick="show_stack_topleft('info');">Info</button>
+					<button class="btn source" onclick="show_stack_topleft('error');">Error</button>
 					Top Left. Moves down, then right. Pushes to stack top.
 					<br style="margin-bottom: 5px;" />
-					<input value="Notice" onclick="show_stack_bottomleft('notice');" type="button" />
-					<input value="Info" onclick="show_stack_bottomleft('info');" type="button" />
-					<input value="Error" onclick="show_stack_bottomleft('error');" type="button" />
+					<button class="btn source" onclick="show_stack_bottomleft('notice');">Notice</button>
+					<button class="btn source" onclick="show_stack_bottomleft('info');">Info</button>
+					<button class="btn source" onclick="show_stack_bottomleft('error');">Error</button>
 					Bottom Left. Moves right, then up. Pushes to stack bottom.
 					<br style="margin-bottom: 5px;" />
-					<input value="Notice" onclick="show_stack_bottomright('notice');" type="button" />
-					<input value="Info" onclick="show_stack_bottomright('info');" type="button" />
-					<input value="Error" onclick="show_stack_bottomright('error');" type="button" />
+					<button class="btn source" onclick="show_stack_bottomright('notice');">Notice</button>
+					<button class="btn source" onclick="show_stack_bottomright('info');">Info</button>
+					<button class="btn source" onclick="show_stack_bottomright('error');">Error</button>
 					Bottom Right. Moves up, then left. Pushes to stack bottom.
 					<br style="margin-bottom: 5px;" />
-					<input value="Notice" onclick="show_stack_custom('notice');" type="button" />
-					<input value="Info" onclick="show_stack_custom('info');" type="button" />
-					<input value="Error" onclick="show_stack_custom('error');" type="button" />
+					<button class="btn source" onclick="show_stack_custom('notice');">Notice</button>
+					<button class="btn source" onclick="show_stack_custom('info');">Info</button>
+					<button class="btn source" onclick="show_stack_custom('error');">Error</button>
 					Custom. Moves right, then down. Pushes to stack bottom.
 					<br style="margin-bottom: 5px;" />
-					<input value="Notice" onclick="show_stack_custom2('notice');" type="button" />
-					<input value="Info" onclick="show_stack_custom2('info');" type="button" />
-					<input value="Error" onclick="show_stack_custom2('error');" type="button" />
+					<button class="btn source" onclick="show_stack_custom2('notice');">Notice</button>
+					<button class="btn source" onclick="show_stack_custom2('info');">Info</button>
+					<button class="btn source" onclick="show_stack_custom2('error');">Error</button>
 					Custom. Moves left, then up. Pushes to stack top.
 					<br style="margin-bottom: 5px;" />
-					Really Different Stacks:
-					<br style="margin-bottom: 5px;" />
-					<input value="Notice" onclick="show_stack_bar_top('notice');" type="button" />
-					<input value="Info" onclick="show_stack_bar_top('info');" type="button" />
-					<input value="Error" onclick="show_stack_bar_top('error');" type="button" />
+
+					<h4>Really Different Stacks</h4>
+					<button class="btn source" onclick="show_stack_bar_top('notice');">Notice</button>
+					<button class="btn source" onclick="show_stack_bar_top('info');">Info</button>
+					<button class="btn source" onclick="show_stack_bar_top('error');">Error</button>
 					Top bar style. (Like Old Microsoft Notification Bars.) Moves down, then right. Pushes to stack top.
 					<br style="margin-bottom: 5px;" />
-					<input value="Notice" onclick="show_stack_bar_bottom('notice');" type="button" />
-					<input value="Info" onclick="show_stack_bar_bottom('info');" type="button" />
-					<input value="Error" onclick="show_stack_bar_bottom('error');" type="button" />
+					<button class="btn source" onclick="show_stack_bar_bottom('notice');">Notice</button>
+					<button class="btn source" onclick="show_stack_bar_bottom('info');">Info</button>
+					<button class="btn source" onclick="show_stack_bar_bottom('error');">Error</button>
 					Bottom bar style. (Like New Microsoft Notification Bars.) Moves down, then right. Pushes to stack top.
 					<br style="margin-bottom: 5px;" />
-					<input value="Hover Over Me" onmouseover="tooltip.pnotify_display();" onmousemove="tooltip.css({'top': event.clientY+12, 'left': event.clientX+12});" onmouseout="tooltip.pnotify_remove();" type="button" />
+					<button class="btn source" onmouseover="tooltip.pnotify_display();" onmousemove="tooltip.css({'top': event.clientY+12, 'left': event.clientX+12});" onmouseout="tooltip.pnotify_remove();">Hover Over Me</button>
 					Tooltip
 				</div>
 
-				<div class="pf-group ui-widget-content ui-corner-all">
+				<div class="btn-toolbar well">
+					<h4>Timer</h4>
 					Current Timer: <span id="timer" style="font-family: monospace;"></span>
 					<script type="text/javascript">
 						// <![CDATA[
@@ -1205,66 +1370,57 @@
 						// ]]>
 					</script>
 					<br style="margin-bottom: 3px;" />
-					<input value="Lower Timer" onclick="$.pnotify.defaults.pnotify_delay ? (function(){$.pnotify.defaults.pnotify_delay -= 500; update_timer_display();}()) : (alert('Timer is already at zero.'))" type="button" />
-					<input value="Raise Timer" onclick="(function(){$.pnotify.defaults.pnotify_delay += 500; update_timer_display();}())" type="button" />
+					<button class="btn source" onclick="$.pnotify.defaults.pnotify_delay ? (function(){$.pnotify.defaults.pnotify_delay -= 500; update_timer_display();}()) : (alert('Timer is already at zero.'))">Lower Timer</button>
+					<button class="btn source" onclick="(function(){$.pnotify.defaults.pnotify_delay += 500; update_timer_display();}())">Raise Timer</button>
 					<br style="margin-bottom: 5px;" />
-					Benchmarking:
-					<br />
-					<input value="10 Notices" onclick="for (i=0; i!=10; i++) {$.pnotify({
+					<h4>Benchmarking</h4>
+					<button class="btn source" onclick="for (i=0; i!=10; i++) {$.pnotify({
 						pnotify_title: 'Regular Notice',
 						pnotify_text: 'Check me out! I\'m a notice.'
-					});}" type="button" />
-					<input value="100 Notices (Careful)" onclick="for (i=0; i!=100; i++) {$.pnotify({
+					});}">10 Notices</button>
+					<button class="btn source" onclick="for (i=0; i!=100; i++) {$.pnotify({
 						pnotify_title: 'Regular Notice',
 						pnotify_text: 'Check me out! I\'m a notice.'
-					});}" type="button" />
-					<input value="Time 100 Notices" onclick="timed_notices(100);" type="button" />
-					<input value="Time 500 Notices" onclick="timed_notices(500);" type="button" />
-					<input value="Time 1000 Notices (Dangerous)" onclick="timed_notices(1000);" type="button" />
-					<!-- Too Dangerous Browser Killer
-					<input value="1000 Notices (Dangerous!!)" onclick="for (i=0; i!=1000; i++) {$.pnotify({
-						pnotify_title: 'Regular Notice',
-						pnotify_text: 'Check me out! I\'m a notice.'
-					});}" type="button" />
-					-->
+					});}">100 Notices (Careful)</button>
+					<button class="btn source" onclick="timed_notices(100);">Time 100 Notices</button>
+					<button class="btn source" onclick="timed_notices(500);">Time 500 Notices</button>
+					<button class="btn source" onclick="timed_notices(1000);">Time 1000 Notices (Dangerous)</button>
 					<br style="margin-bottom: 5px;" />
-					<input value="Remove All Notices" onclick="$.pnotify_remove_all();" type="button" />
+					<button class="btn source" onclick="$.pnotify_remove_all();">Remove All Notices</button>
 				</div>
 
-				<div class="pf-group ui-widget-content ui-corner-all">
-					Effects built in to jQuery:
-					<br />
-					<input value="Show" onclick="$.pnotify({
+				<div class="btn-toolbar well">
+					<h4>Effects built in to jQuery</h4>
+					<button class="btn source" onclick="$.pnotify({
 						pnotify_title: 'Show Effect',
 						pnotify_text: 'I use a different effect.',
 						pnotify_animation: 'show'
-					});" type="button" />
-					<input value="Fade" onclick="$.pnotify({
+					});">Show</button>
+					<button class="btn source" onclick="$.pnotify({
 						pnotify_title: 'Fade Effect',
 						pnotify_text: 'I use a different effect.',
 						pnotify_animation: 'fade'
-					});" type="button" />
-					<input value="Slide" onclick="$.pnotify({
+					});">Fade</button>
+					<button class="btn source" onclick="$.pnotify({
 						pnotify_title: 'Slide Effect',
 						pnotify_text: 'I use a different effect.',
 						pnotify_animation: 'slide'
-					});" type="button" />
-					<input value="Different In and Out" onclick="$.pnotify({
+					});">Slide</button>
+					<button class="btn source" onclick="$.pnotify({
 						pnotify_title: 'Show and Slide Effect',
 						pnotify_text: 'I use a different effect.',
 						pnotify_animation: {effect_in: 'show', effect_out: 'slide'}
-					});" type="button" />
+					});">Different In and Out</button>
 					<br style="margin-bottom: 5px;" />
-					Effects from jQuery UI:
-					<br />
+					<h4>Effects from jQuery UI</h4>
 					Presets:
-					<input value="Bouncy Fun" onclick="$('#ui_effect_in').val('scale'); $('#ui_easing_in').val('easeOutElastic'); $('#ui_effect_out').val('same'); $('#ui_easing_out').val('same'); $('#ui_speed').val('700'); $('#ui_button').click();" type="button" />
-					<input value="Toss In" onclick="$('#ui_effect_in').val('drop'); $('#ui_easing_in').val('easeOutBounce'); $('#ui_effect_out').val('same'); $('#ui_easing_out').val('easeOutCubic'); $('#ui_speed').val('700'); $('#ui_button').click();" type="button" />
-					<input value="Gentle Puff" onclick="$('#ui_effect_in').val('puff'); $('#ui_easing_in').val('easeOutBack'); $('#ui_effect_out').val('same'); $('#ui_easing_out').val('easeInBack'); $('#ui_speed').val('1000'); $('#ui_button').click();" type="button" />
-					<br />
+					<button class="btn source" onclick="$('#ui_effect_in').val('scale'); $('#ui_easing_in').val('easeOutElastic'); $('#ui_effect_out').val('same'); $('#ui_easing_out').val('same'); $('#ui_speed').val('700'); $('#ui_button').click();">Bouncy Fun</button>
+					<button class="btn source" onclick="$('#ui_effect_in').val('drop'); $('#ui_easing_in').val('easeOutBounce'); $('#ui_effect_out').val('same'); $('#ui_easing_out').val('easeOutCubic'); $('#ui_speed').val('700'); $('#ui_button').click();">Toss In</button>
+					<button class="btn source" onclick="$('#ui_effect_in').val('puff'); $('#ui_easing_in').val('easeOutBack'); $('#ui_effect_out').val('same'); $('#ui_easing_out').val('easeInBack'); $('#ui_speed').val('1000'); $('#ui_button').click();">Gentle Puff</button>
+					<br /><br />
 					<span style="display: inline-block; width: 30px;">In:</span>
 					Effect
-					<select id="ui_effect_in" class="ui-widget-content ui-corner-all">
+					<select id="ui_effect_in">
 						<option value="blind">Blind</option>
 						<option value="bounce">Bounce</option>
 						<option value="clip">Clip</option>
@@ -1276,7 +1432,7 @@
 						<option value="slide">Slide</option>
 					</select>
 					Easing
-					<select id="ui_easing_in" class="ui-widget-content ui-corner-all">
+					<select id="ui_easing_in">
 						<option value="linear">Linear</option>
 						<option value="swing">Swing</option>
 						<option value="easeInQuad">easeInQuad</option>
@@ -1313,7 +1469,7 @@
 					<br style="margin-bottom: 4px;" />
 					<span style="display: inline-block; width: 30px;">Out:</span>
 					Effect
-					<select id="ui_effect_out" class="ui-widget-content ui-corner-all">
+					<select id="ui_effect_out">
 						<option value="same">Same</option>
 						<option value="blind">Blind</option>
 						<option value="bounce">Bounce</option>
@@ -1326,7 +1482,7 @@
 						<option value="slide">Slide</option>
 					</select>
 					Easing
-					<select id="ui_easing_out" class="ui-widget-content ui-corner-all">
+					<select id="ui_easing_out">
 						<option value="same">Same</option>
 						<option value="linear">Linear</option>
 						<option value="swing">Swing</option>
@@ -1363,8 +1519,8 @@
 					</select>
 					<br style="margin-bottom: 4px;" />
 					Speed (ms):
-					<input type="text" size="8" id="ui_speed" value="600" class="ui-widget-content ui-corner-all" />
-					<input value="Notify!" style="margin-left: 2em;" onclick="
+					<input type="text" size="8" id="ui_speed" value="600" />
+					<button class="btn source" style="margin-left: 2em;" onclick="
 						var effect_in = $('#ui_effect_in').val();
 						var easing_in = $('#ui_easing_in').val();
 						var effect_out = $('#ui_effect_out').val();
@@ -1393,11 +1549,10 @@
 								'options_out': options_out
 							}
 						});
-					" type="button" id="ui_button" />
+					" id="ui_button">Notify!</button>
 					<br style="margin-bottom: 5px;" />
-					Custom Functions (Uses CSS3):
-					<br />
-					<input value="One Function" onclick="$.pnotify({
+					<h4>Custom Functions (Uses CSS3)</h4>
+					<button class="btn source" onclick="$.pnotify({
 						pnotify_title: 'Custom Function',
 						pnotify_text: 'I use a different effect.',
 						pnotify_animation: function(status, callback, pnotify){
@@ -1433,8 +1588,8 @@
 								}
 							}, 20);
 						}
-					});" type="button" />
-					<input value="Two Functions" onclick="$.pnotify({
+					});">One Function</button>
+					<button class="btn source" onclick="$.pnotify({
 						pnotify_title: 'Custom Functions',
 						pnotify_text: 'I use a different effect.',
 						pnotify_animation: {effect_in: function(status, callback, pnotify){
@@ -1487,37 +1642,38 @@
 								}
 							}, 20);
 						}}
-					});" type="button" />
+					});">Two Functions</button>
 				</div>
 
-				<div class="pf-group ui-widget-content ui-corner-all">
-					This isn't really a feature of Pines Notify, but it's cool:
-					<br />
+				<div class="btn-toolbar well">
+					<h4>Consuming the Alert Function</h4>
+					This isn't really a feature of Pines Notify, but it's cool.
 					<ol>
-						<li><input value="Display a JavaScript Alert" onclick="alert('I\'m a standard alert, called with alert().')" type="button" /></li>
-						<li><input value="Consume alert()" onclick="consume_alert();" type="button" /></li>
-						<li>Repeat step 1.</li>
-						<li><input value="Release alert()" onclick="release_alert();" type="button" /></li>
+						<li style="margin-bottom: 1em;"><button class="btn source" onclick="alert('I\'m a standard alert, called with alert().')">Display a JavaScript Alert</button></li>
+						<li style="margin-bottom: 1em;"><button class="btn source" onclick="consume_alert();">Consume alert()</button></li>
+						<li style="margin-bottom: 1em;">Repeat step 1.</li>
+						<li style="margin-bottom: 1em;"><button class="btn source" onclick="release_alert();">Release alert()</button></li>
 					</ol>
 				</div>
-				<h2>Theming</h2>
-				<div>
-					<p style="margin: 0; clear: both;">
-						The Pines Notify plugin uses the jQuery UI CSS Framework to
-						style its look and feel, including colors and background
-						textures. We recommend using the ThemeRoller tool to create
-						and download custom themes that are easy to build and
-						maintain.
-					</p>
-					<br />
-					<p style="margin: 0; clear: both;">
-						If a deeper level of customization is needed, there are
-						widget-specific classes referenced within the
-						jquery.pnotify.default.css stylesheet that can be modified.
-						These classes are highlighted in bold below.
-					</p>
+			</div>
+			<div id="theming">
+				<div class="page-header">
+					<h2>Theming</h2>
 				</div>
-				<h2>Sample markup with jQuery UI CSS Framework classes</h2>
+				<p>
+					The Pines Notify plugin uses the jQuery UI CSS Framework to
+					style its look and feel, including colors and background
+					textures. We recommend using the ThemeRoller tool to create
+					and download custom themes that are easy to build and
+					maintain.
+				</p>
+				<p>
+					If a deeper level of customization is needed, there are
+					widget-specific classes referenced within the
+					jquery.pnotify.default.css stylesheet that can be modified.
+					These classes are highlighted in bold below.
+				</p>
+				<h3>Sample markup with jQuery UI CSS Framework classes</h3>
 				<div>
 					<div style="margin: 0; clear: both; padding-left: 10px;">
 						&lt;div class="<strong>ui-pnotify</strong> ui-widget ui-helper-clearfix" style="width: 300px; opacity: 1; display: block; right: 15px; top: 15px;"&gt;
@@ -1544,28 +1700,44 @@
 						</div>
 						&lt;/div&gt;
 					</div>
-					<p>
-						<span style="padding: 8px; background-image: none; font-weight: bold;" class="ui-state-default ui-priority-secondary">Note: This is a sample of markup generated by Pines Notify, not markup you should use to create a notice. You don't need markup for that.</span>
-					</p>
-				</div>
-				<h2>Installation</h2>
-				<p>Installation is simple. Include jQuery 1.4 (or higher) and jQuery UI (only the CSS is required). Then include the following files:</p>
-				<div class="ui-helper-clearfix">
-					<div class="featurelist">
-						<ul>
-							<li><span class="ui-icon ui-icon-bullet"></span>jquery.pnotify.js or jquery.pnotify.min.js (Minified)</li>
-							<li><span class="ui-icon ui-icon-bullet"></span>jquery.pnotify.default.css</li>
-						</ul>
+					<div class="alert alert-info">
+						Note: This is a sample of markup generated by Pines Notify, not markup you should use to create a notice. You don't need markup for that.
 					</div>
 				</div>
+			</div>
+			<div id="installation">
+				<div class="page-header">
+					<h2>Installation</h2>
+				</div>
+				<p>Installation is simple. Include jQuery 1.4 (or higher) and jQuery UI (only the CSS is required). Then include the following files:</p>
+				<div class="ui-helper-clearfix">
+					<ul>
+						<li>jquery.pnotify.js or jquery.pnotify.min.js (Minified)</li>
+						<li>jquery.pnotify.default.css</li>
+					</ul>
+				</div>
 				<p>If you want to use jQuery UI effect animations, you also need to include the jQuery UI JavaScript.</p>
-				<p style="text-align: center;">
-					<button type="button" onclick="window.location='https://sourceforge.net/projects/pines/files/pnotify/1.1/pnotify-1.1.0.zip/download';"><strong style="font-size: large;">Download Pines Notify</strong></button>
-				</p>
+			</div>
+			<div id="comments">
+				<div class="page-header">
+					<h2>Comments</h2>
+				</div>
+				<div id="disqus_thread"></div>
+				<script type="text/javascript">
+					/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+					var disqus_shortname = 'pnotify'; // required: replace example with your forum shortname
+
+					/* * * DON'T EDIT BELOW THIS LINE * * */
+					(function() {
+						var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+						dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+						(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+					})();
+				</script>
+				<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+				<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 			</div>
 		</div>
-		<!-- Would love to keep this visible, but it causes the page to not validate.
-		<div xmlns:cc="http://creativecommons.org/ns#" about="http://www.flickr.com/photos/barloventomagico/2435316564/"><a rel="cc:attributionURL" href="http://www.flickr.com/photos/barloventomagico/">http://www.flickr.com/photos/barloventomagico/</a> / <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/2.0/">CC BY-NC-ND 2.0</a></div>
-		-->
-	</body>
+	</div>
+</body>
 </html>
