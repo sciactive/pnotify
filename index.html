@@ -1,9 +1,18 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" xmlns:og="http://ogp.me/ns#" xmlns:fb="https://www.facebook.com/2008/fbml">
 <head>
-	<meta charset="UTF-8"/>
+	<meta charset="utf-8"/>
 	<title>Pines Notify</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="HandheldFriendly" content="true" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta name="description" content="JavaScript (jQuery) notification plugin." />
+	<meta property="og:title" content="Pines Notify" />
+	<meta property="og:type" content="website" />
+	<meta property="og:url" content="http://pinesframework.org/pnotify/" />
+	<meta property="og:image" content="http://pinesframework.org/pnotify/includes/pines-logo.png" />
+	<meta property="og:site_name" content="Pines Notify" />
+	<meta property="fb:admins" content="508999194" />
+	<meta property="og:description" content="JavaScript (jQuery) notification plugin." />
 	<!-- Dev Notice -->
 	<link href="devnote.css" rel="stylesheet" type="text/css" />
 	<!-- jQuery -->
@@ -57,6 +66,29 @@
 		}
 		.page-banner .right-button {
 			margin-left: 20px;
+		}
+		.quick-links {
+			list-style: none outside none;
+			margin: 0;
+			min-height: 30px;
+			padding: 5px 20px;
+			text-align: center;
+		}
+		.quick-links:first-child {
+			min-height: 0;
+		}
+		.quick-links li {
+			position: relative;
+			top: 5px;
+			color: #999999;
+			display: inline;
+			margin: 0 5px;
+		}
+		.quick-links .fb-btn {
+			top: 1px;
+		}
+		.quick-links .fb_iframe_widget iframe {
+			left: 0;
 		}
 		.page-points .row-fluid {
 			margin-bottom: 30px;
@@ -760,6 +792,14 @@
 	<![endif]-->
 </head>
 <body id="page" data-spy="scroll">
+	<div id="fb-root"></div>
+	<script>(function(d, s, id) {
+		var js, fjs = d.getElementsByTagName(s)[0];
+		if (d.getElementById(id)) return;
+		js = d.createElement(s); js.id = id;
+		js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=231372466970244";
+		fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));</script>
 	<div id="navbar" class="navbar navbar-fixed-top">
 		<div class="navbar-inner">
 			<div class="container">
@@ -769,7 +809,7 @@
 					<span class="icon-bar"></span>
 				</a>
 				<a class="brand" href="http://pinesframework.org/pnotify/" style="height: 40px; padding-top: 0; padding-bottom: 0;">
-					<img alt="Pines Logo" src="includes/pines-logo.png" style="padding: 0; border: 0; vertical-align: middle;" />
+					<img id="logo" alt="Pines Logo" src="includes/pines-logo.png" style="padding: 0; border: 0; vertical-align: middle;" />
 					<span style="line-height: 40px;">Pines Notify</span>
 				</a>
 				<div class="nav-collapse">
@@ -808,10 +848,23 @@
 	<div id="wrapper">
 		<div class="page-banner">
 			<h1>Pines Notify</h1>
-			<p>JavaScript (jQuery) notification plugin.</p>
+			<p id="description">JavaScript (jQuery) notification plugin.</p>
 			<div>
 				<a class="btn btn-primary btn-large" href="https://sourceforge.net/projects/pines/files/pnotify/1.1/pnotify-1.1.1.zip/download" target="_blank">Download Pines Notify 1.1.1</a>
 				<a class="right-button btn btn-large" href="http://github.com/sciactive/pnotify" target="_blank" title="Fork me on GitHub">Pines Notify on GitHub <img src="includes/github-icon.png" alt="GitHub Icon" /></a>
+				<br /><br />
+				<ul class="quick-links">
+					<li class="fb-btn">
+						<div class="fb-like" data-href="http://pinesframework.org/pnotify/" data-send="false" data-layout="button_count" data-width="100" data-show-faces="false"></div>
+					</li>
+					<li class="follow-btn">
+						<a href="https://twitter.com/pinesframework" class="twitter-follow-button" data-show-count="false">Follow @pinesframework</a>
+					</li>
+					<li class="tweet-btn">
+						<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://pinesframework.org/pnotify/">Tweet</a>
+					</li>
+				</ul>
+				<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 			</div>
 		</div>
 		<div class="page-points">
