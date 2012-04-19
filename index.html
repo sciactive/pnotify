@@ -296,17 +296,6 @@
 			left: auto;
 		}
 	</style>
-	<!--[if lt IE 8]>
-	<style type="text/css">
-		.featurelist ul {
-			padding-left: 1em;
-			list-style-type: disc;
-		}
-		.featurelist ul .ui-icon {
-			display: none;
-		}
-	</style>
-	<![endif]-->
 	<script type="text/javascript">
 		var permanotice, tooltip, _alert;
 		$(function(){
@@ -1413,14 +1402,12 @@
 					<h4>Timer</h4>
 					Current Timer: <span id="timer" style="font-family: monospace;"></span>
 					<script type="text/javascript">
-						// <![CDATA[
 						function update_timer_display() {
 							$("#timer").text(($.pnotify.defaults.pnotify_delay/1000)+" seconds");
 						}
 						$(function(){
 							update_timer_display();
 						});
-						// ]]>
 					</script>
 					<br style="margin-bottom: 3px;" />
 					<button class="btn source" onclick="$.pnotify.defaults.pnotify_delay ? (function(){$.pnotify.defaults.pnotify_delay -= 500; update_timer_display();}()) : (alert('Timer is already at zero.'))">Lower Timer</button>
@@ -1763,7 +1750,7 @@
 					<h2>Installation</h2>
 				</div>
 				<p>Installation is simple. Include jQuery 1.4 (or higher) and jQuery UI (only the CSS is required). Then include the following files:</p>
-				<div class="ui-helper-clearfix">
+				<div class="clearfix">
 					<ul>
 						<li>jquery.pnotify.js or jquery.pnotify.min.js (Minified)</li>
 						<li>jquery.pnotify.default.css</li>
@@ -1791,6 +1778,7 @@
 				<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 			</div>
 		</div>
+		<p id="copyright">&copy; 2011-2012 SciActive.com. All Rights Reserved.</p>
 	</div>
 </body>
 </html>
