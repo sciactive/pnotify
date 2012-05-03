@@ -67,29 +67,6 @@
 		.page-banner .right-button {
 			margin-left: 20px;
 		}
-		.quick-links {
-			list-style: none outside none;
-			margin: 0;
-			min-height: 30px;
-			padding: 5px 20px;
-			text-align: center;
-		}
-		.quick-links:first-child {
-			min-height: 0;
-		}
-		.quick-links li {
-			position: relative;
-			top: 5px;
-			color: #999999;
-			display: inline;
-			margin: 0 5px;
-		}
-		.quick-links .fb-btn {
-			top: 1px;
-		}
-		.quick-links .fb_iframe_widget iframe {
-			left: 0;
-		}
 		.page-points .row-fluid {
 			margin-bottom: 30px;
 		}
@@ -842,18 +819,16 @@
 				<a class="btn btn-primary btn-large" href="https://sourceforge.net/projects/pines/files/pnotify/1.1/pnotify-1.1.1.zip/download" target="_blank">Download Pines Notify 1.1.1</a>
 				<a class="right-button btn btn-large" href="http://github.com/sciactive/pnotify" target="_blank" title="Fork me on GitHub">Pines Notify on GitHub <img src="includes/github-icon.png" alt="GitHub Icon" /></a>
 				<br /><br />
-				<ul class="quick-links">
-					<li class="fb-btn">
-						<div class="fb-like" data-href="http://pinesframework.org/pnotify/" data-send="false" data-layout="button_count" data-width="100" data-show-faces="false"></div>
-					</li>
-					<li class="follow-btn">
-						<a href="https://twitter.com/pinesframework" class="twitter-follow-button" data-show-count="false">Follow @pinesframework</a>
-					</li>
-					<li class="tweet-btn">
-						<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://pinesframework.org/pnotify/">Tweet</a>
-					</li>
-				</ul>
-				<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+				<!-- AddThis Button BEGIN -->
+				<div class="addthis_toolbox addthis_default_style " addthis:url="http://pinesframework.org/pnotify/" style="display: table; margin: 0pt auto;">
+					<a class="addthis_button_facebook_like" fb:like:layout="button_count" style="margin-right: 12px;"></a>
+					<a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+					<a class="addthis_button_tweet"></a>
+					<a class="addthis_button_twitter_follow_native" tw:screen_name="pinesframework"></a>
+					<a class="addthis_counter addthis_pill_style"></a>
+				</div>
+				<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=ra-4fa2edbb6da70bd1"></script>
+				<!-- AddThis Button END -->
 			</div>
 		</div>
 		<div class="page-points">
