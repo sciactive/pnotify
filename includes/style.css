@@ -1,0 +1,131 @@
+/*
+Pines Sub-Project Page Styling
+Copyright (C) 2012 SciActive.com. All Rights Reserved.
+*/
+body {
+	padding: 40px 1em 1em;
+}
+#wrapper {
+	max-width: 1140px;
+	margin: 0 auto;
+}
+.page-banner {
+	padding: 130px 0 170px;
+	text-align: center;
+}
+.page-banner h1 {
+	font-size: 65px;
+	line-height: 65px;
+}
+.page-banner p {
+	font-size: 30px;
+	line-height: 36px;
+}
+.page-banner .btn-large {
+	margin-top: 20px;
+	font-size: 26px;
+}
+.page-banner .right-button {
+	margin-left: 20px;
+}
+.page-points .row-fluid {
+	margin-bottom: 30px;
+}
+body .pf-form .pf-heading * {
+	margin-top: .1em !important;
+	margin-bottom: .1em !important;
+}
+#copyright {
+	text-align: center;
+	margin-top: 40px;
+}
+/* Mobile */
+@media (max-width: 768px) {
+	body {
+		padding: 0;
+	}
+	.page-banner {
+		padding: 20px 0;
+	}
+	.page-banner h1 {
+		font-size: 35px;
+		line-height: 35px;
+	}
+	.page-banner p {
+		font-size: 16px;
+		line-height: 30px;
+	}
+	.page-banner .btn-large {
+		font-size: 16px;
+	}
+	.page-banner .right-button {
+		margin-left: 0;
+	}
+	.page-points .row-fluid {
+		margin-bottom: 0;
+	}
+	#sections {
+		padding: 0 .4em;
+	}
+	#sections .container-fluid {
+		padding-left: 0;
+		padding-right: 0;
+	}
+}
+/* Tablet */
+@media (min-width: 768px) and (max-width: 980px) {
+	body {
+		padding: 0 1em 1em;
+	}
+	.navbar-fixed-top {
+		margin: 0 -1em 18px;
+	}
+	.page-banner {
+		float: left;
+		width: 20%;
+		padding: 5px 0;
+	}
+	.page-banner h1 {
+		font-size: 25px;
+		line-height: 25px;
+	}
+	.page-banner p {
+		font-size: 14px;
+		line-height: 16px;
+		margin-top: 10px;
+	}
+	.page-banner .btn-large {
+		margin-top: 30px;
+		font-size: 14px;
+	}
+	.page-banner .right-button {
+		margin-left: 0;
+	}
+	.page-points {
+		float: right;
+		width: 80%;
+	}
+	.page-points .row-fluid {
+		margin-bottom: 10px;
+	}
+	#sections {
+		clear: both;
+	}
+}
+
+/* Source View */
+.ui-dialog.sourcecode {
+	-webkit-box-shadow: 0px 6px 30px rgba(50, 50, 50, 0.75);
+	-moz-box-shadow: 0px 6px 30px rgba(50, 50, 50, 0.75);
+	-o-box-shadow: 0px 6px 30px rgba(50, 50, 50, 0.75);
+	box-shadow: 0px 6px 30px rgba(50, 50, 50, 0.75);
+}
+pre.prettyprint {
+	display: table;
+	min-width: 100%;
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	-o-border-radius: 0;
+	border-radius: 0;
+	padding: .4em;
+}

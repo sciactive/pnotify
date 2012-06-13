@@ -15,6 +15,8 @@
 	<meta property="og:description" content="JavaScript (jQuery) notification plugin." />
 	<!-- Dev Notice -->
 	<link href="devnote.css" rel="stylesheet" type="text/css" />
+	<!-- Page Style -->
+	<link href="includes/style.css" rel="stylesheet" type="text/css" />
 	<!-- jQuery -->
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.js"></script>
 	<!-- jQuery UI -->
@@ -41,117 +43,6 @@
 	<link href="jquery.pnotify.default.icons.css" rel="stylesheet" type="text/css" />
 	<style type="text/css">
 		/* Not pnotify specific, just make this page a little more presentable. */
-		body {
-			padding: 40px 1em 1em;
-		}
-		#wrapper {
-			max-width: 1140px;
-			margin: 0 auto;
-		}
-		.page-banner {
-			padding: 130px 0 170px;
-			text-align: center;
-		}
-		.page-banner h1 {
-			font-size: 65px;
-			line-height: 65px;
-		}
-		.page-banner p {
-			font-size: 30px;
-			line-height: 36px;
-		}
-		.page-banner .btn-large {
-			margin-top: 20px;
-			font-size: 26px;
-		}
-		.page-banner .right-button {
-			margin-left: 20px;
-		}
-		.page-points .row-fluid {
-			margin-bottom: 30px;
-		}
-		body .pf-form .pf-heading * {
-			margin-top: .1em !important;
-			margin-bottom: .1em !important;
-		}
-		#copyright {
-			text-align: center;
-			margin-top: 40px;
-		}
-		/* Mobile */
-		@media (max-width: 768px) {
-			body {
-				padding: 0;
-			}
-			.page-banner {
-				padding: 20px 0;
-			}
-			.page-banner h1 {
-				font-size: 35px;
-				line-height: 35px;
-			}
-			.page-banner p {
-				font-size: 16px;
-				line-height: 30px;
-			}
-			.page-banner .btn-large {
-				font-size: 16px;
-			}
-			.page-banner .right-button {
-				margin-left: 0;
-			}
-			.page-points .row-fluid {
-				margin-bottom: 0;
-			}
-			#sections {
-				padding: 0 .4em;
-			}
-			#sections .container-fluid {
-				padding-left: 0;
-				padding-right: 0;
-			}
-		}
-		/* Tablet */
-		@media (min-width: 768px) and (max-width: 980px) {
-			body {
-				padding: 0 1em 1em;
-			}
-			.navbar-fixed-top {
-				margin: 0 -1em 18px;
-			}
-			.page-banner {
-				float: left;
-				width: 20%;
-				padding: 5px 0;
-			}
-			.page-banner h1 {
-				font-size: 25px;
-				line-height: 25px;
-			}
-			.page-banner p {
-				font-size: 14px;
-				line-height: 16px;
-				margin-top: 10px;
-			}
-			.page-banner .btn-large {
-				margin-top: 30px;
-				font-size: 14px;
-			}
-			.page-banner .right-button {
-				margin-left: 0;
-			}
-			.page-points {
-				float: right;
-				width: 80%;
-			}
-			.page-points .row-fluid {
-				margin-bottom: 10px;
-			}
-			#sections {
-				clear: both;
-			}
-		}
-
 		#switcher-container {
 			position: fixed;
 			top: 45px;
@@ -184,11 +75,6 @@
 		}
 		.btn-toolbar .btn-group {
 			vertical-align: middle;
-		}
-
-		/* Source View */
-		pre.prettyprint {
-			display: table;
 		}
 
 		/* Custom styled notice CSS */
@@ -277,22 +163,22 @@
 		var permanotice, tooltip, _alert;
 		$(function(){
 			// This is how to change the default settings for the entire page.
-			//$.pnotify.defaults.pnotify_width = "400px";
+			//$.pnotify.defaults.width = "400px";
 			// If you don't want new lines ("\n") automatically converted to breaks ("<br />")
-			//$.pnotify.defaults.pnotify_insert_brs = false;
+			//$.pnotify.defaults.insert_brs = false;
 
 			$.pnotify({
-				pnotify_title: "Pines Notify",
-				pnotify_text: "Welcome. Try hovering over me. You can click things behind me, because I'm non-blocking.",
-				pnotify_nonblock: true,
-				pnotify_before_close: function(pnotify){
+				title: "Pines Notify",
+				text: "Welcome. Try hovering over me. You can click things behind me, because I'm non-blocking.",
+				nonblock: true,
+				before_close: function(pnotify){
 					// You can access the notice's options with this. It is read only.
-					//pnotify.opts.pnotify_text;
+					//pnotify.opts.text;
 
 					// You can change the notice's options after the timer like this:
 					pnotify.pnotify({
-						pnotify_title: pnotify.opts.pnotify_title+" - Enjoy your Stay",
-						pnotify_before_close: null
+						title: pnotify.opts.title+" - Enjoy your Stay",
+						before_close: null
 					});
 					pnotify.pnotify_queue_remove();
 					return false;
@@ -302,27 +188,27 @@
 			// This notice is used as a tooltip.
 			var make_tooltip = function(){
 				tooltip = $.pnotify({
-					pnotify_title: "Tooltip",
-					pnotify_text: "I'm not in a stack. I'm positioned like a tooltip with JavaScript.",
-					pnotify_hide: false,
-					pnotify_closer: false,
-					pnotify_sticker: false,
-					pnotify_history: false,
-					pnotify_animate_speed: 100,
-					pnotify_opacity: .9,
-					pnotify_notice_icon: "ui-icon ui-icon-comment",
+					title: "Tooltip",
+					text: "I'm not in a stack. I'm positioned like a tooltip with JavaScript.",
+					hide: false,
+					closer: false,
+					sticker: false,
+					history: false,
+					animate_speed: 100,
+					opacity: .9,
+					notice_icon: "ui-icon ui-icon-comment",
 					// Setting stack to false causes Pines Notify to ignore this notice when positioning.
-					pnotify_stack: false,
-					pnotify_after_init: function(pnotify){
+					stack: false,
+					after_init: function(pnotify){
 						// Remove the notice if the user mouses over it.
 						pnotify.mouseout(function(){
 							pnotify.pnotify_remove();
 						});
 					},
-					pnotify_before_open: function(pnotify){
+					before_open: function(pnotify){
 						// This prevents the notice from displaying when it's created.
 						pnotify.pnotify({
-							pnotify_before_open: null
+							before_open: null
 						});
 						return false;
 					}
@@ -350,16 +236,16 @@
 							text = text.replace(/^function (onclick|anonymous)[\n ]*\([^\)]*\)[\n ]*\{[\n\t ]*/, "").replace(/[\n\t ]*}[\n\t ]*$/, "");
 					}
 					var dialog = $("<div title=\""+button.text()+" - Source\" class=\"source-dialog\"></div>");
-					$("<pre class=\"prettyprint\" />").text(js_beautify(text)).appendTo(dialog);
+					$("<pre class=\"prettyprint linenums\" />").text(js_beautify(text)).appendTo(dialog);
 					if (text.match(/^\w*\([^\)]*\);$/)) {
 						var f_name = text.replace(/\(.*/g, "");
 						text = window[f_name].toString();
 						$("<pre class=\"prettyprint\" />").text(js_beautify(text)).appendTo(dialog);
 					}
 					if (text.match(/tooltip\.pnotify_display\(\);/)) {
-						$("<pre class=\"prettyprint\" />").text(js_beautify(make_tooltip.toString())).appendTo(dialog);
+						$("<pre class=\"prettyprint linenums\" />").text(js_beautify(make_tooltip.toString())).appendTo(dialog);
 					}
-					dialog.dialog({width: "auto"});
+					dialog.dialog({width: "auto", dialogClass: "sourcecode"});
 					// Make sure the dialog isn't more than 800x600.
 					// Can't just add max-height cause that means it can't be resized beyond.
 					if (dialog.width() > 800)
@@ -369,6 +255,7 @@
 					prettyPrint();
 				}).appendTo(contain);
 			});
+			prettyPrint(); // Format source in help.
 
 			if ($.fn.themeswitcher)
 				$('#switcher').themeswitcher();
@@ -380,8 +267,8 @@
 
 		function show_rich() {
 			$.pnotify({
-				pnotify_title: '<span style="color: green;">Rich Content Notice</span>',
-				pnotify_text: '<span style="color: blue;">Look at my beautiful <strong>strong</strong>, <em>emphasized</em>, and <span style="font-size: 1.5em;">large</span> text.</span>'
+				title: '<span style="color: green;">Rich Content Notice</span>',
+				text: '<span style="color: blue;">Look at my beautiful <strong>strong</strong>, <em>emphasized</em>, and <span style="font-size: 1.5em;">large</span> text.</span>'
 			});
 		}
 
@@ -390,8 +277,8 @@
 			_alert = window.alert;
 			window.alert = function(message) {
 				$.pnotify({
-					pnotify_title: 'Alert',
-					pnotify_text: message
+					title: 'Alert',
+					text: message
 				});
 			};
 		}
@@ -403,19 +290,19 @@
 		}
 
 		function fake_load() {
-			var cur_value = 1;
-			var progress;
+			var cur_value = 1,
+				progress;
 
 			// Make a loader.
 			var loader = $.pnotify({
-				pnotify_title: "Fake Load",
-				pnotify_text: "<div class=\"progress_bar\" />",
-				pnotify_notice_icon: 'picon picon-throbber',
-				pnotify_hide: false,
-				pnotify_closer: false,
-				pnotify_sticker: false,
-				pnotify_history: false,
-				pnotify_before_open: function(pnotify){
+				title: "Fake Load",
+				text: "<div class=\"progress_bar\" />",
+				notice_icon: 'picon picon-throbber',
+				hide: false,
+				closer: false,
+				sticker: false,
+				history: false,
+				before_open: function(pnotify){
 					progress = pnotify.find("div.progress_bar");
 					progress.progressbar({value: cur_value});
 					// Pretend to do something.
@@ -437,37 +324,37 @@
 		function dyn_notice() {
 			var percent = 0;
 			var notice = $.pnotify({
-				pnotify_title: "Please Wait",
-				pnotify_type: 'info',
-				pnotify_info_icon: 'picon picon-throbber',
-				pnotify_hide: false,
-				pnotify_closer: false,
-				pnotify_sticker: false,
-				pnotify_opacity: .75,
-				pnotify_width: "150px"
+				title: "Please Wait",
+				type: 'info',
+				info_icon: 'picon picon-throbber',
+				hide: false,
+				closer: false,
+				sticker: false,
+				opacity: .75,
+				width: "150px"
 			});
 
 			setTimeout(function(){
-				notice.pnotify({pnotify_title: false});
+				notice.pnotify({title: false});
 				var interval = setInterval(function(){
 					percent += 2;
 					var options = {
-						pnotify_text: percent+"% complete."
+						text: percent+"% complete."
 					};
 					if (percent == 80)
-						options.pnotify_title = "Almost There";
+						options.title = "Almost There";
 					if (percent >= 100) {
 						window.clearInterval(interval);
-						options.pnotify_title = "Done!";
-						options.pnotify_type = "notice";
-						options.pnotify_hide = true;
-						options.pnotify_closer = true;
-						options.pnotify_sticker = true;
-						options.pnotify_notice_icon = 'picon picon-task-complete';
-						options.pnotify_opacity = 1;
-						options.pnotify_shadow = true;
-						options.pnotify_width = $.pnotify.defaults.pnotify_width;
-						//options.pnotify_min_height = "300px";
+						options.title = "Done!";
+						options.type = "notice";
+						options.hide = true;
+						options.closer = true;
+						options.sticker = true;
+						options.notice_icon = 'picon picon-task-complete';
+						options.opacity = 1;
+						options.shadow = true;
+						options.width = $.pnotify.defaults.width;
+						//options.min_height = "300px";
 					}
 					notice.pnotify(options);
 				}, 120);
@@ -475,21 +362,21 @@
 		}
 
 		function timed_notices(n) {
-			var start_time = new Date().getTime();
-			var end_time;
+			var start_time = new Date().getTime(),
+				end_time;
 			var options = {
-				pnotify_title: "Notice Benchmark",
-				pnotify_text: "Testing notice speed.",
-				pnotify_animation: 'none',
-				pnotify_delay: 0,
-				pnotify_history: false
+				title: "Notice Benchmark",
+				text: "Testing notice speed.",
+				animation: 'none',
+				delay: 0,
+				history: false
 			};
 			for (var i = 0; i < n; i++) {
 				if (i + 1 == n) {
-					options.pnotify_after_close = function(pnotify){
+					options.after_close = function(pnotify){
 						// Remove this callback.
 						pnotify.pnotify({
-							pnotify_after_close: null
+							after_close: null
 						});
 						end_time = new Date().getTime();
 						alert("Testing complete:\n\nTotal Notices: "+n+
@@ -514,13 +401,13 @@
 			* objects are used and manipulated by Pines Notify, and therefore,
 			* should be a variable when passed. So, calling something like
 			*
-			* $.pnotify({pnotify_stack: {"dir1": "down", "dir2": "left"}});
+			* $.pnotify({stack: {"dir1": "down", "dir2": "left"}});
 			*
 			* will NOT work. It will create a notice, but that notice will be
 			* in its own stack and may overlap other notices.
 			*/
 		var stack_topleft = {"dir1": "down", "dir2": "right", "push": "top"};
-		var stack_bottomleft = {"dir1": "right", "dir2": "up"};
+		var stack_bottomleft = {"dir1": "right", "dir2": "up", "push": "top"};
 		var stack_custom = {"dir1": "right", "dir2": "down"};
 		var stack_custom2 = {"dir1": "left", "dir2": "up", "push": "top"};
 		var stack_bar_top = {"dir1": "down", "dir2": "right", "push": "top", "spacing1": 0, "spacing2": 0};
@@ -540,151 +427,151 @@
 
 		function show_stack_topleft(type) {
 			var opts = {
-				pnotify_title: "Over Here",
-				pnotify_text: "Check me out. I'm in a different stack.",
-				pnotify_addclass: "stack-topleft",
-				pnotify_stack: stack_topleft
+				title: "Over Here",
+				text: "Check me out. I'm in a different stack.",
+				addclass: "stack-topleft",
+				stack: stack_topleft
 			};
 			switch (type) {
 				case 'error':
-					opts.pnotify_title = "Oh No";
-					opts.pnotify_text = "Watch out for that water tower!";
-					opts.pnotify_type = "error";
+					opts.title = "Oh No";
+					opts.text = "Watch out for that water tower!";
+					opts.type = "error";
 					break;
 				case 'info':
-					opts.pnotify_title = "Breaking News";
-					opts.pnotify_text = "Have you met Ted?";
-					opts.pnotify_type = "info";
+					opts.title = "Breaking News";
+					opts.text = "Have you met Ted?";
+					opts.type = "info";
 					break;
 			}
 			$.pnotify(opts);
 		};
 		function show_stack_bottomleft(type) {
 			var opts = {
-				pnotify_title: "Over Here",
-				pnotify_text: "Check me out. I'm in a different stack.",
-				pnotify_addclass: "stack-bottomleft",
-				pnotify_stack: stack_bottomleft
+				title: "Over Here",
+				text: "Check me out. I'm in a different stack.",
+				addclass: "stack-bottomleft",
+				stack: stack_bottomleft
 			};
 			switch (type) {
 				case 'error':
-					opts.pnotify_title = "Oh No";
-					opts.pnotify_text = "Watch out for that water tower!";
-					opts.pnotify_type = "error";
+					opts.title = "Oh No";
+					opts.text = "Watch out for that water tower!";
+					opts.type = "error";
 					break;
 				case 'info':
-					opts.pnotify_title = "Breaking News";
-					opts.pnotify_text = "Have you met Ted?";
-					opts.pnotify_type = "info";
+					opts.title = "Breaking News";
+					opts.text = "Have you met Ted?";
+					opts.type = "info";
 					break;
 			}
 			$.pnotify(opts);
 		};
 		function show_stack_bottomright(type) {
 			var opts = {
-				pnotify_title: "Over Here",
-				pnotify_text: "Check me out. I'm in a different stack.",
-				pnotify_addclass: "stack-bottomright",
-				pnotify_stack: stack_bottomright
+				title: "Over Here",
+				text: "Check me out. I'm in a different stack.",
+				addclass: "stack-bottomright",
+				stack: stack_bottomright
 			};
 			switch (type) {
 				case 'error':
-					opts.pnotify_title = "Oh No";
-					opts.pnotify_text = "Watch out for that water tower!";
-					opts.pnotify_type = "error";
+					opts.title = "Oh No";
+					opts.text = "Watch out for that water tower!";
+					opts.type = "error";
 					break;
 				case 'info':
-					opts.pnotify_title = "Breaking News";
-					opts.pnotify_text = "Have you met Ted?";
-					opts.pnotify_type = "info";
+					opts.title = "Breaking News";
+					opts.text = "Have you met Ted?";
+					opts.type = "info";
 					break;
 			}
 			$.pnotify(opts);
 		};
 		function show_stack_custom(type) {
 			var opts = {
-				pnotify_title: "Over Here",
-				pnotify_text: "Check me out. I'm in a different stack.",
-				pnotify_addclass: "stack-custom",
-				pnotify_stack: stack_custom
+				title: "Over Here",
+				text: "Check me out. I'm in a different stack.",
+				addclass: "stack-custom",
+				stack: stack_custom
 			};
 			switch (type) {
 				case 'error':
-					opts.pnotify_title = "Oh No";
-					opts.pnotify_text = "Watch out for that water tower!";
-					opts.pnotify_type = "error";
+					opts.title = "Oh No";
+					opts.text = "Watch out for that water tower!";
+					opts.type = "error";
 					break;
 				case 'info':
-					opts.pnotify_title = "Breaking News";
-					opts.pnotify_text = "Have you met Ted?";
-					opts.pnotify_type = "info";
+					opts.title = "Breaking News";
+					opts.text = "Have you met Ted?";
+					opts.type = "info";
 					break;
 			}
 			$.pnotify(opts);
 		};
 		function show_stack_custom2(type) {
 			var opts = {
-				pnotify_title: "Over Here",
-				pnotify_text: "Check me out. I'm in a different stack.",
-				pnotify_addclass: "stack-custom2",
-				pnotify_stack: stack_custom2
+				title: "Over Here",
+				text: "Check me out. I'm in a different stack.",
+				addclass: "stack-custom2",
+				stack: stack_custom2
 			};
 			switch (type) {
 				case 'error':
-					opts.pnotify_title = "Oh No";
-					opts.pnotify_text = "Watch out for that water tower!";
-					opts.pnotify_type = "error";
+					opts.title = "Oh No";
+					opts.text = "Watch out for that water tower!";
+					opts.type = "error";
 					break;
 				case 'info':
-					opts.pnotify_title = "Breaking News";
-					opts.pnotify_text = "Have you met Ted?";
-					opts.pnotify_type = "info";
+					opts.title = "Breaking News";
+					opts.text = "Have you met Ted?";
+					opts.type = "info";
 					break;
 			}
 			$.pnotify(opts);
 		};
 		function show_stack_bar_top(type) {
 			var opts = {
-				pnotify_title: "Over Here",
-				pnotify_text: "Check me out. I'm in a different stack.",
-				pnotify_addclass: "stack-bar-top",
-				pnotify_cornerclass: "",
-				pnotify_width: "100%",
-				pnotify_stack: stack_bar_top
+				title: "Over Here",
+				text: "Check me out. I'm in a different stack.",
+				addclass: "stack-bar-top",
+				cornerclass: "",
+				width: "100%",
+				stack: stack_bar_top
 			};
 			switch (type) {
 				case 'error':
-					opts.pnotify_title = "Oh No";
-					opts.pnotify_text = "Watch out for that water tower!";
-					opts.pnotify_type = "error";
+					opts.title = "Oh No";
+					opts.text = "Watch out for that water tower!";
+					opts.type = "error";
 					break;
 				case 'info':
-					opts.pnotify_title = "Breaking News";
-					opts.pnotify_text = "Have you met Ted?";
-					opts.pnotify_type = "info";
+					opts.title = "Breaking News";
+					opts.text = "Have you met Ted?";
+					opts.type = "info";
 					break;
 			}
 			$.pnotify(opts);
 		};
 		function show_stack_bar_bottom(type) {
 			var opts = {
-				pnotify_title: "Over Here",
-				pnotify_text: "Check me out. I'm in a different stack.",
-				pnotify_addclass: "stack-bar-bottom",
-				pnotify_cornerclass: "",
-				pnotify_width: "70%",
-				pnotify_stack: stack_bar_bottom
+				title: "Over Here",
+				text: "Check me out. I'm in a different stack.",
+				addclass: "stack-bar-bottom",
+				cornerclass: "",
+				width: "70%",
+				stack: stack_bar_bottom
 			};
 			switch (type) {
 				case 'error':
-					opts.pnotify_title = "Oh No";
-					opts.pnotify_text = "Watch out for that water tower!";
-					opts.pnotify_type = "error";
+					opts.title = "Oh No";
+					opts.text = "Watch out for that water tower!";
+					opts.type = "error";
 					break;
 				case 'info':
-					opts.pnotify_title = "Breaking News";
-					opts.pnotify_text = "Have you met Ted?";
-					opts.pnotify_type = "info";
+					opts.title = "Breaking News";
+					opts.text = "Have you met Ted?";
+					opts.type = "info";
 					break;
 			}
 			$.pnotify(opts);
@@ -696,14 +583,14 @@
 				return;
 			}
 			info_box = $.pnotify({
-				pnotify_title: "Pines Notify Stacks",
-				pnotify_text: "Stacks are used to position notices and determine where new notices will go when they're created. Each notice that's placed into a stack will be positioned related to the other notices in that stack. There is no limit to the number of stacks, and no limit to the number of notices in each stack.",
-				pnotify_type: "info",
-				pnotify_info_icon: "picon picon-object-order-raise",
-				pnotify_delay: 20000,
-				pnotify_history: false,
-				pnotify_stack: false,
-				pnotify_before_open: function(pnotify){
+				title: "Pines Notify Stacks",
+				text: "Stacks are used to position notices and determine where new notices will go when they're created. Each notice that's placed into a stack will be positioned related to the other notices in that stack. There is no limit to the number of stacks, and no limit to the number of notices in each stack.",
+				type: "info",
+				info_icon: "picon picon-object-order-raise",
+				delay: 20000,
+				history: false,
+				stack: false,
+				before_open: function(pnotify){
 					// Position this notice in the center of the screen.
 					pnotify.css({
 						"top": ($(window).height() / 2) - (pnotify.height() / 2),
@@ -725,7 +612,7 @@
 							}
 						}).appendTo("body").fadeIn("fast");
 				},
-				pnotify_before_close: function(){
+				before_close: function(){
 					modal_overlay.fadeOut("fast");
 				}
 			});
@@ -758,14 +645,6 @@
 	<![endif]-->
 </head>
 <body id="page" data-spy="scroll">
-	<div id="fb-root"></div>
-	<script>(function(d, s, id) {
-		var js, fjs = d.getElementsByTagName(s)[0];
-		if (d.getElementById(id)) return;
-		js = d.createElement(s); js.id = id;
-		js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=231372466970244";
-		fjs.parentNode.insertBefore(js, fjs);
-		}(document, 'script', 'facebook-jssdk'));</script>
 	<div id="navbar" class="navbar navbar-fixed-top">
 		<div class="navbar-inner">
 			<div class="container">
@@ -784,7 +663,6 @@
 						<li><a href="#demos-simple">Simple Demos</a></li>
 						<li><a href="#demos-advanced">Advanced Demos</a></li>
 						<li><a href="#theming">Theming</a></li>
-						<li><a href="#installation">Installation</a></li>
 						<li><a href="#comments">Comments</a></li>
 					</ul>
 					<ul class="nav pull-right">
@@ -819,6 +697,10 @@
 				<a class="btn btn-primary btn-large" href="https://sourceforge.net/projects/pines/files/pnotify/1.1/pnotify-1.1.1.zip/download" target="_blank">Download Pines Notify 1.1.1</a>
 				<a class="right-button btn btn-large" href="http://github.com/sciactive/pnotify" target="_blank" title="Fork me on GitHub">Pines Notify on GitHub <img src="includes/github-icon.png" alt="GitHub Icon" /></a>
 				<br /><br />
+				<a style="margin: 0 8px;" data-toggle="modal" href="#using">Using Pines Notify</a>
+				<a style="margin: 0 8px;" href="https://github.com/sciactive/pnotify/issues?state=open" target="_blank">Issue Tracker</a>
+				<a style="margin: 0 8px;" href="https://github.com/sciactive/pnotify/issues/new" target="_blank">Bug Report/Feature Request</a>
+				<br /><br />
 				<!-- AddThis Button BEGIN -->
 				<div class="addthis_toolbox addthis_default_style " addthis:url="http://pinesframework.org/pnotify/" style="display: table; margin: 0pt auto;">
 					<a class="addthis_button_facebook_like" fb:like:layout="button_count" style="margin-right: 12px;"></a>
@@ -829,6 +711,53 @@
 				</div>
 				<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=ra-4fa2edbb6da70bd1"></script>
 				<!-- AddThis Button END -->
+			</div>
+		</div>
+		<div class="modal hide" id="using" style="max-height: inherit;">
+			<div class="modal-header">
+				<a class="close" data-dismiss="modal">×</a>
+				<h3>Using Pines Notify</h3>
+			</div>
+			<div class="modal-body">
+				<p>
+					Pines Notify comes with the following files:<br />
+					<br />
+					<code>jquery.pnotify.js</code> &amp; <code>jquery.pnotify.min.js</code> (Minified) - The main JavaScript.
+					<br />
+					<code>jquery.pnotify.default.css</code> - The main stylesheet.
+					<br />
+					<code>jquery.pnotify.default.icons.css</code> - Use this to support Pines Icon styles.
+				</p>
+				<p>
+					So here's how you'd include them all:
+				</p>
+				<pre class="prettyprint">&lt;script type="text/javascript" src="jquery.pnotify<em>.min</em>.js"&gt;&lt;/script&gt;
+&lt;link href="jquery.pnotify.default.css" media="all" rel="stylesheet" type="text/css" /&gt;
+&lt;!-- Include this file if you are using Pines Icons. --&gt;
+&lt;link href="jquery.pnotify.default.icons.css" media="all" rel="stylesheet" type="text/css" /&gt;</pre>
+				<p>
+					You also need to include jQuery (1.4 or higher) and a jQuery UI Theme.
+					<small>If you want to use jQuery UI effect animations, you also need to include the jQuery UI JavaScript.</small>
+				</p>
+				<p>
+					Now you can use Pines Notify like this:
+				</p>
+				<pre class="prettyprint">&lt;script type="text/javascript"&gt;
+$(function(){
+	$.pnotify({
+		title: 'Regular Notice',
+		text: 'Check me out! I\'m a notice.'
+	});
+});
+&lt;/script&gt;</pre>
+				<p>
+					All of the examples on this page provide source code with
+					the "{}" button,
+					<img style="margin-left: 3em;" src="includes/source-screen.png" alt="Source button screen shot." />
+				</p>
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="btn" data-dismiss="modal">Ok, got it.</a>
 			</div>
 		</div>
 		<div class="page-points">
@@ -843,6 +772,20 @@
 								bleeding edge features and code that probably won't
 								work. You should head over to the
 								<a href="http://pinesframework.org/pnotify/" class="btn btn-success">Main Site</a>
+							</p>
+						</div>
+					</div>
+				</div>
+				<div class="row-fluid dev-note">
+					<div class="span2">&nbsp;</div>
+					<div class="span8 offset2">
+						<div class="alert alert-info">
+							<h3><i class="icon-star" style="position: relative; top: 3px;"></i> Big Change!</h3>
+							<p>
+								With the upcoming version of Pines Notify, the "pnotify_"
+								prefix on options will no longer be necessary. It will
+								still work, so most of your current code should be
+								unaffected.
 							</p>
 						</div>
 					</div>
@@ -986,134 +929,134 @@
 				</div>
 				<div class="btn-toolbar well">
 					<button class="btn source" onclick="$.pnotify({
-						pnotify_title: 'Regular Notice',
-						pnotify_text: 'Check me out! I\'m a notice.'
+						title: 'Regular Notice',
+						text: 'Check me out! I\'m a notice.'
 					});">Regular Notice</button>
 					<button class="btn source" onclick="$.pnotify({
-						pnotify_title: 'Sticky Notice',
-						pnotify_text: 'Check me out! I\'m a sticky notice. You\'ll have to close me yourself.',
-						pnotify_hide: false
+						title: 'Sticky Notice',
+						text: 'Check me out! I\'m a sticky notice. You\'ll have to close me yourself.',
+						hide: false
 					});">Sticky Notice</button>
 					<button class="btn source" onclick="$.pnotify({
-						pnotify_title: 'See Through Notice',
-						pnotify_text: 'No one ever pays attention to me. Why should they? I\'m practically invisible.',
-						pnotify_opacity: .8
+						title: 'See Through Notice',
+						text: 'No one ever pays attention to me. Why should they? I\'m practically invisible.',
+						opacity: .8
 					});">Transparent Notice</button>
 					<button class="btn source" onclick="$.pnotify({
-						pnotify_title: 'Shadow Notice',
-						pnotify_text: 'I have a shadow. It makes me pop out!\n\nNote: Shadows do not work in IE.',
-						pnotify_shadow: true
+						title: 'Shadow Notice',
+						text: 'I have a shadow. It makes me pop out!\n\nNote: Shadows do not work in IE.',
+						shadow: true
 					});">Shadow Notice</button>
 					<button class="btn source" onclick="$.pnotify('Check me out! I\'m a notice.');">Simple Notice</button>
 					<button class="btn source" onclick="$.pnotify(Math.round(Math.random()*9999));">Number Notice</button>
 					<br style="margin-bottom: 5px;" />
 					<button class="btn source" onclick="$.pnotify({
-						pnotify_title: 'Pines Icon Notice',
-						pnotify_text: 'I have an icon that uses the Pines icon styles.',
-						pnotify_notice_icon: 'picon picon-mail-unread-new'
+						title: 'Pines Icon Notice',
+						text: 'I have an icon that uses the Pines icon styles.',
+						notice_icon: 'picon picon-mail-unread-new'
 					});">Pines Icon Notice</button>
 					<button class="btn source" onclick="$.pnotify({
-						pnotify_title: 'jQuery UI Icon Notice',
-						pnotify_text: 'I have an icon that uses the jQuery UI icon styles.',
-						pnotify_notice_icon: 'ui-icon ui-icon-mail-closed'
+						title: 'jQuery UI Icon Notice',
+						text: 'I have an icon that uses the jQuery UI icon styles.',
+						notice_icon: 'ui-icon ui-icon-mail-closed'
 					});">jQuery UI Icon Notice</button>
 					<button class="btn source" onclick="$.pnotify({
-						pnotify_title: 'Bootstrap Icon Notice',
-						pnotify_text: 'I have an icon that uses the Bootstrap icon styles.',
-						pnotify_notice_icon: 'icon-envelope'
+						title: 'Bootstrap Icon Notice',
+						text: 'I have an icon that uses the Bootstrap icon styles.',
+						notice_icon: 'icon-envelope'
 					});">Bootstrap Icon Notice</button>
 					<button class="btn source" onclick="$.pnotify({
-						pnotify_title: 'No Icon Notice',
-						pnotify_text: 'I have no icon.',
-						pnotify_notice_icon: ''
+						title: 'No Icon Notice',
+						text: 'I have no icon.',
+						notice_icon: ''
 					});">No Icon Notice</button>
 				</div>
 				<div class="btn-toolbar well">
 					<button class="btn source" onclick="$.pnotify({
-						pnotify_title: 'New Thing',
-						pnotify_text: 'Just to let you know, something happened.',
-						pnotify_type: 'info'
+						title: 'New Thing',
+						text: 'Just to let you know, something happened.',
+						type: 'info'
 					});">Regular Info</button>
 					<button class="btn source" onclick="$.pnotify({
-						pnotify_title: 'Sticky Info',
-						pnotify_text: 'Sticky info, you know, like a newspaper covered in honey.',
-						pnotify_type: 'info',
-						pnotify_hide: false
+						title: 'Sticky Info',
+						text: 'Sticky info, you know, like a newspaper covered in honey.',
+						type: 'info',
+						hide: false
 					});">Sticky Info</button>
 					<button class="btn source" onclick="$.pnotify({
-						pnotify_title: 'See Through Info',
-						pnotify_text: 'Not only does it not matter, but I don\'t even care if you see this info.',
-						pnotify_type: 'info',
-						pnotify_opacity: .8
+						title: 'See Through Info',
+						text: 'Not only does it not matter, but I don\'t even care if you see this info.',
+						type: 'info',
+						opacity: .8
 					});">Transparent Info</button>
 					<button class="btn source" onclick="$.pnotify({
-						pnotify_title: 'Shadow Info',
-						pnotify_text: 'I have a shadow. It makes me pop out!',
-						pnotify_type: 'info',
-						pnotify_shadow: true
+						title: 'Shadow Info',
+						text: 'I have a shadow. It makes me pop out!',
+						type: 'info',
+						shadow: true
 					});">Shadow Info</button>
 					<br style="margin-bottom: 5px;" />
 					<button class="btn source" onclick="$.pnotify({
-						pnotify_title: 'Pines Icon Info',
-						pnotify_text: 'Something is encrypted. Check out my icon, it shows that you\'re secure because our encryption uses padlocks.',
-						pnotify_type: 'info',
-						pnotify_info_icon: 'picon picon-document-encrypt'
+						title: 'Pines Icon Info',
+						text: 'Something is encrypted. Check out my icon, it shows that you\'re secure because our encryption uses padlocks.',
+						type: 'info',
+						info_icon: 'picon picon-document-encrypt'
 					});">Pines Icon Info</button>
 					<button class="btn source" onclick="$.pnotify({
-						pnotify_title: 'jQuery UI Icon Info',
-						pnotify_text: 'Something is encrypted. Check out my icon, it shows that you\'re secure because our encryption uses padlocks.',
-						pnotify_type: 'info',
-						pnotify_info_icon: 'ui-icon ui-icon-locked'
+						title: 'jQuery UI Icon Info',
+						text: 'Something is encrypted. Check out my icon, it shows that you\'re secure because our encryption uses padlocks.',
+						type: 'info',
+						info_icon: 'ui-icon ui-icon-locked'
 					});">jQuery UI Icon Info</button>
 					<button class="btn source" onclick="$.pnotify({
-						pnotify_title: 'No Icon Info',
-						pnotify_text: 'I have no icon.',
-						pnotify_type: 'info',
-						pnotify_info_icon: ''
+						title: 'No Icon Info',
+						text: 'I have no icon.',
+						type: 'info',
+						info_icon: ''
 					});">No Icon Info</button>
 				</div>
 				<div class="btn-toolbar well">
 					<button class="btn source" onclick="$.pnotify({
-						pnotify_title: 'Oh No!',
-						pnotify_text: 'Something terrible happened.',
-						pnotify_type: 'error'
+						title: 'Oh No!',
+						text: 'Something terrible happened.',
+						type: 'error'
 					});">Regular Error</button>
 					<button class="btn source" onclick="$.pnotify({
-						pnotify_title: 'Uh Oh!',
-						pnotify_text: 'Something really terrible happened. You really need to read this, so I won\'t close automatically.',
-						pnotify_type: 'error',
-						pnotify_hide: false
+						title: 'Uh Oh!',
+						text: 'Something really terrible happened. You really need to read this, so I won\'t close automatically.',
+						type: 'error',
+						hide: false
 					});">Sticky Error</button>
 					<button class="btn source" onclick="$.pnotify({
-						pnotify_title: 'See Through Error',
-						pnotify_text: 'There\'s an error, but no one cares.',
-						pnotify_type: 'error',
-						pnotify_opacity: .8
+						title: 'See Through Error',
+						text: 'There\'s an error, but no one cares.',
+						type: 'error',
+						opacity: .8
 					});">Transparent Error</button>
 					<button class="btn source" onclick="$.pnotify({
-						pnotify_title: 'Shadow Error',
-						pnotify_text: 'I have a shadow. It makes me pop out!',
-						pnotify_type: 'error',
-						pnotify_shadow: true
+						title: 'Shadow Error',
+						text: 'I have a shadow. It makes me pop out!',
+						type: 'error',
+						shadow: true
 					});">Shadow Error</button>
 					<br style="margin-bottom: 5px;" />
 					<button class="btn source" onclick="$.pnotify({
-						pnotify_title: 'Pines Icon Error',
-						pnotify_text: 'Oh no. Something\'s wrong with your network, and I\'m showing you visually using an appropriate icon to indicate the type of error that has occured. You know, network.',
-						pnotify_type: 'error',
-						pnotify_error_icon: 'picon picon-network-wireless'
+						title: 'Pines Icon Error',
+						text: 'Oh no. Something\'s wrong with your network, and I\'m showing you visually using an appropriate icon to indicate the type of error that has occured. You know, network.',
+						type: 'error',
+						error_icon: 'picon picon-network-wireless'
 					});">Pines Icon Error</button>
 					<button class="btn source" onclick="$.pnotify({
-						pnotify_title: 'jQuery UI Icon Error',
-						pnotify_text: 'Oh no. Something\'s wrong with your network, and I\'m showing you visually using an appropriate icon to indicate the type of error that has occured. You know, network.',
-						pnotify_type: 'error',
-						pnotify_error_icon: 'ui-icon ui-icon-signal-diag'
+						title: 'jQuery UI Icon Error',
+						text: 'Oh no. Something\'s wrong with your network, and I\'m showing you visually using an appropriate icon to indicate the type of error that has occured. You know, network.',
+						type: 'error',
+						error_icon: 'ui-icon ui-icon-signal-diag'
 					});">jQuery UI Icon Error</button>
 					<button class="btn source" onclick="$.pnotify({
-						pnotify_title: 'No Icon Error',
-						pnotify_text: 'I have no icon.',
-						pnotify_type: 'error',
-						pnotify_error_icon: ''
+						title: 'No Icon Error',
+						text: 'I have no icon.',
+						type: 'error',
+						error_icon: ''
 					});">No Icon Error</button>
 				</div>
 			</div>
@@ -1124,59 +1067,59 @@
 				</div>
 				<div class="btn-toolbar well">
 					<button class="btn source" onclick="$.pnotify({
-						pnotify_title: 'No Sticky Button Notice',
-						pnotify_text: 'Check me out! I\'m a sticky notice with no unsticky button. You\'ll have to close me yourself.',
-						pnotify_hide: false,
-						pnotify_sticker: false
+						title: 'No Sticky Button Notice',
+						text: 'Check me out! I\'m a sticky notice with no unsticky button. You\'ll have to close me yourself.',
+						hide: false,
+						sticker: false
 					});">No Sticky Button</button>
 					<button class="btn source" onclick="$.pnotify({
-						pnotify_title: 'Permanent Buttons Notice',
-						pnotify_text: 'My buttons are really lonely, so they\'re gonna hang out with us.',
-						pnotify_closer_hover: false,
-						pnotify_sticker_hover: false
+						title: 'Permanent Buttons Notice',
+						text: 'My buttons are really lonely, so they\'re gonna hang out with us.',
+						closer_hover: false,
+						sticker_hover: false
 					});">Permanent Buttons</button>
 					<button class="btn source" onclick="$.pnotify({
-						pnotify_title: 'No History Notice',
-						pnotify_text: 'I\'m not part of the notice history, so if you redisplay the last message, it won\'t be me.',
-						pnotify_history: false
+						title: 'No History Notice',
+						text: 'I\'m not part of the notice history, so if you redisplay the last message, it won\'t be me.',
+						history: false
 					});">No History Notice</button>
 					<button class="btn source" onclick="$.pnotify({
-						pnotify_title: 'No Mouse Reset Notice',
-						pnotify_text: 'I don\'t care if you move your mouse over me, I\'ll disappear when I want.',
-						pnotify_mouse_reset: false
+						title: 'No Mouse Reset Notice',
+						text: 'I don\'t care if you move your mouse over me, I\'ll disappear when I want.',
+						mouse_reset: false
 					});">No Mouse Reset Notice</button>
 					<button class="btn source" onclick="$.pnotify({
-						pnotify_title: 'No Rounded Corners Notice',
-						pnotify_text: 'Warning: Contains sharp objects. Not suitable for browsers under the age of CSS3.',
-						pnotify_cornerclass: ''
+						title: 'No Rounded Corners Notice',
+						text: 'Warning: Contains sharp objects. Not suitable for browsers under the age of CSS3.',
+						cornerclass: ''
 					});">No Rounded Corners</button>
 					<br style="margin-bottom: 5px;" />
 					<button class="btn source" onclick="$.pnotify({
-						pnotify_title: 'Fast Fading Notice',
-						pnotify_text: 'I fade in and out really quickly.',
-						pnotify_animate_speed: 'fast'
+						title: 'Fast Fading Notice',
+						text: 'I fade in and out really quickly.',
+						animate_speed: 'fast'
 					});">Fast Fading Notice</button>
 					<button class="btn source" onclick="$.pnotify({
-						pnotify_title: 'No Effect Notice',
-						pnotify_text: 'I don\'t even bother to animate. I\'m too cool for that.',
-						pnotify_animation: 'none'
+						title: 'No Effect Notice',
+						text: 'I don\'t even bother to animate. I\'m too cool for that.',
+						animation: 'none'
 					});">No Effect Notice</button>
 					<button class="btn source" onclick="fake_load();">Pretend Loader</button>
 					<button class="btn source" onclick="dyn_notice();">Dynamic Notice</button>
 					<button class="btn source" onclick="$.pnotify({
-						pnotify_title: 'Notice',
-						pnotify_text: 'Right now I\'m a notice.',
-						pnotify_before_close: function(pnotify){
+						title: 'Notice',
+						text: 'Right now I\'m a notice.',
+						before_close: function(pnotify){
 							pnotify.pnotify({
-								pnotify_title: 'Error',
-								pnotify_text: 'Uh oh. Now I\'ve become an error.',
-								pnotify_type: 'error',
-								pnotify_before_close: function(pnotify){
+								title: 'Error',
+								text: 'Uh oh. Now I\'ve become an error.',
+								type: 'error',
+								before_close: function(pnotify){
 									pnotify.pnotify({
-										pnotify_title: 'Info',
-										pnotify_text: 'Oh, nevermind. Everything\'s cool now.',
-										pnotify_type: 'info',
-										pnotify_before_close: null
+										title: 'Info',
+										text: 'Oh, nevermind. Everything\'s cool now.',
+										type: 'info',
+										before_close: null
 									});
 									pnotify.pnotify_queue_remove();
 									pnotify.effect('bounce');
@@ -1193,29 +1136,29 @@
 						permanotice.pnotify_display();
 					} else {
 						permanotice = $.pnotify({
-							pnotify_title: 'Now Look Here',
-							pnotify_text: 'There\'s something you need to know, and I won\'t go away until you come to grips with it.',
-							pnotify_nonblock: true,
-							pnotify_hide: false,
-							pnotify_closer: false,
-							pnotify_sticker: false
+							title: 'Now Look Here',
+							text: 'There\'s something you need to know, and I won\'t go away until you come to grips with it.',
+							nonblock: true,
+							hide: false,
+							closer: false,
+							sticker: false
 						});
 					}">Permanotice</button>
 					<button class="btn source" onclick="if (permanotice.pnotify_remove) permanotice.pnotify_remove();">Remove Permanotice</button>
 					<button class="btn source" onclick="$.pnotify({
-						pnotify_title: 'Non-Blocking Notice',
-						pnotify_text: 'I\'m a special kind of notice called &quot;non-blocking&quot;. When you hover over me I\'ll fade to show the elements underneath. Feel free to click any of them just like I wasn\'t even here.\n\nNote: HTML links don\'t trigger in some browsers, due to security settings.',
-						pnotify_nonblock: true,
-						pnotify_nonblock_opacity: .2
+						title: 'Non-Blocking Notice',
+						text: 'I\'m a special kind of notice called &quot;non-blocking&quot;. When you hover over me I\'ll fade to show the elements underneath. Feel free to click any of them just like I wasn\'t even here.\n\nNote: HTML links don\'t trigger in some browsers, due to security settings.',
+						nonblock: true,
+						nonblock_opacity: .2
 					});">Non-Blocking Notice</button>
 					<button class="btn source" onclick="var notice = $.pnotify({
-						pnotify_text: $('#form_notice').html(),
-						pnotify_notice_icon: '',
-						pnotify_width: 'auto',
-						pnotify_hide: false,
-						pnotify_closer: false,
-						pnotify_sticker: false,
-						pnotify_insert_brs: false
+						text: $('#form_notice').html(),
+						notice_icon: '',
+						width: 'auto',
+						hide: false,
+						closer: false,
+						sticker: false,
+						insert_brs: false
 					});
 					notice.find('form.pf-form').submit(function(){
 						var username = $(this).find('input[name=username]').val();
@@ -1224,13 +1167,13 @@
 							return false;
 						}
 						notice.pnotify({
-							pnotify_title: 'Welcome',
-							pnotify_text: 'Successfully logged in as '+username,
-							pnotify_notice_icon: $.pnotify.defaults.pnotify_notice_icon,
-							pnotify_width: $.pnotify.defaults.pnotify_width,
-							pnotify_hide: true,
-							pnotify_closer: true,
-							pnotify_sticker: true
+							title: 'Welcome',
+							text: 'Successfully logged in as '+username,
+							notice_icon: $.pnotify.defaults.notice_icon,
+							width: $.pnotify.defaults.width,
+							hide: true,
+							closer: true,
+							sticker: true
 						});
 						return false;
 					});">Form Notice</button>
@@ -1267,45 +1210,45 @@
 					</div>
 					<button class="btn source" onclick="var dont_alert = function(){};
 					$.pnotify({
-						pnotify_title: 'I\'m Here',
-						pnotify_text: 'I have a callback for each of my events. I\'ll call all my callbacks while I change states.',
-						pnotify_before_init: function(opts){
+						title: 'I\'m Here',
+						text: 'I have a callback for each of my events. I\'ll call all my callbacks while I change states.',
+						before_init: function(opts){
 							var source_note = 'Return false to cancel the notice.';
 							alert('I\'m called before the notice initializes. I\'m passed the options used to make the notice. I can modify them. Watch me replace the word callback with tire iron!');
-							opts.pnotify_text = opts.pnotify_text.replace(/callback/g, 'tire iron');
+							opts.text = opts.text.replace(/callback/g, 'tire iron');
 						},
-						pnotify_after_init: function(pnotify){
+						after_init: function(pnotify){
 							alert('I\'m called after the notice initializes. I\'m passed the pnotify object for the current notice: '+pnotify+'\n\nThere are more callbacks you can assign, but this is the last notice you\'ll see. Check the code to see them all.');
 						},
-						pnotify_before_open: function(pnotify){
+						before_open: function(pnotify){
 							var source_note = 'Return false to cancel opening.';
 							dont_alert('I\'m called before the notice opens. I\'m passed the pnotify object for the current notice: '+pnotify);
 						},
-						pnotify_after_open: function(pnotify){
+						after_open: function(pnotify){
 							dont_alert('I\'m called after the notice opens. I\'m passed the pnotify object for the current notice: '+pnotify);
 						},
-						pnotify_before_close: function(pnotify){
+						before_close: function(pnotify){
 							var source_note = 'Return false to cancel close. Use pnotify.pnotify_queue_remove() to set the removal timer again.';
 							dont_alert('I\'m called before the notice closes. I\'m passed the pnotify object for the current notice: '+pnotify);
 						},
-						pnotify_after_close: function(pnotify){
+						after_close: function(pnotify){
 							var source_note = 'Return false to cancel removal from the DOM.';
 							dont_alert('I\'m called after the notice closes. I\'m passed the pnotify object for the current notice: '+pnotify);
 						}
 					});">Notice with Callbacks</button>
 					<br style="margin-bottom: 5px;" />
 					<button class="btn source" onclick="$.pnotify({
-						pnotify_title: 'Big Notice',
-						pnotify_text: 'Check me out! I\'m tall and wide, even though my text isn\'t.',
-						pnotify_width: '500px',
-						pnotify_min_height: '400px'
+						title: 'Big Notice',
+						text: 'Check me out! I\'m tall and wide, even though my text isn\'t.',
+						width: '500px',
+						min_height: '400px'
 					});">Big Notice</button>
 					<button class="btn source" onclick="show_rich();">Rich Notice</button>
 					<button class="btn source" onclick="$.pnotify({
-						pnotify_title: '&lt;em&gt;Escaped Notice&lt;/em&gt;',
-						pnotify_title_escape: true,
-						pnotify_text: $('#evil_html').html(),
-						pnotify_text_escape: true
+						title: '&lt;em&gt;Escaped Notice&lt;/em&gt;',
+						title_escape: true,
+						text: $('#evil_html').html(),
+						text_escape: true
 					});">Escaped Notice</button>
 					<div id="evil_html" style="display: none;">
 						<div>As you can see, I don't allow HTML in my content.</div>
@@ -1317,14 +1260,81 @@
 						</script>
 					</div>
 					<button class="btn source" onclick="$.pnotify({
-						pnotify_title: 'Custom Styling',
-						pnotify_text: 'I have an additional class that\'s used to give me special styling. I always wanted to be pretty.',
-						pnotify_addclass: 'custom',
-						pnotify_notice_icon: 'picon picon-32 picon-fill-color',
-						pnotify_opacity: .8,
-						pnotify_nonblock: true,
-						pnotify_nonblock_opacity: .2
-					});">Custom Styled Notice</button> &lt; This is how you make it look like Apple Growl.
+						title: 'Custom Styling',
+						text: 'I have an additional class that\'s used to give me special styling. I always wanted to be pretty.',
+						addclass: 'custom',
+						notice_icon: 'picon picon-32 picon-fill-color',
+						opacity: .8,
+						nonblock: true,
+						nonblock_opacity: .2
+					});">Custom Styled Notice</button> &lt; <a data-toggle="modal" href="#growl">This is how you make it look like Apple Growl.</a>
+					<div class="modal hide" id="growl" style="max-height: inherit;">
+						<div class="modal-header">
+							<a class="close" data-dismiss="modal">×</a>
+							<h3>Styling Notices Like Growl</h3>
+						</div>
+						<div class="modal-body">
+							<p>
+								To custom style a notice, you need to use a
+								class. For this example, we'll use "<strong>custom</strong>".
+							</p>
+							<p>
+								Here's some CSS to make custom notices look like
+								Apple Growl:
+							</p>
+							<pre class="prettyprint lang-css" style="min-width: 100%;">/* Custom styled notice CSS */
+.ui-pnotify<strong>.custom</strong> {
+	font-family: Arial, Helvetica, sans-serif;
+	text-shadow: 2px 2px 3px black;
+	font-size: 10pt;
+}
+.ui-pnotify<strong>.custom</strong> .ui-pnotify-container {
+	background-color: #404040;
+	background-image: none;
+	border: none;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+}
+.ui-pnotify<strong>.custom</strong> .ui-pnotify-title {
+	font-weight: bold;
+	padding-left: 50px;
+	color: #FFF;
+}
+.ui-pnotify<strong>.custom</strong> .ui-pnotify-text {
+	padding-left: 50px;
+	color: #FFF;
+}
+.ui-pnotify<strong>.custom</strong> .ui-pnotify-closer {
+	position: absolute;
+	bottom: 5px;
+	right: 5px;
+}
+.ui-pnotify<strong>.custom</strong> .ui-pnotify-icon {
+	float: left;
+}
+.ui-pnotify<strong>.custom</strong> .picon {
+	margin: 3px;
+	width: 33px;
+	height: 33px;
+}</pre>
+							<p>
+								And here's the JavaScript to use this styling:
+							</p>
+							<pre class="prettyprint" style="min-width: 100%;">$.pnotify({
+	title: 'Custom Styling',
+	text: 'I have an additional class that\'s used to give me special styling. I always wanted to be pretty.',
+	<strong>addclass: 'custom'</strong>,
+	notice_icon: 'picon picon-32 picon-fill-color',
+	opacity: .8,
+	nonblock: true,
+	nonblock_opacity: .2
+});</pre>
+						</div>
+						<div class="modal-footer">
+							<a href="#" class="btn" data-dismiss="modal">Ok, got it.</a>
+						</div>
+					</div>
 				</div>
 
 				<div class="btn-toolbar well">
@@ -1340,7 +1350,7 @@
 					<button class="btn source" onclick="show_stack_bottomleft('notice');">Notice</button>
 					<button class="btn source" onclick="show_stack_bottomleft('info');">Info</button>
 					<button class="btn source" onclick="show_stack_bottomleft('error');">Error</button>
-					Bottom Left. Moves right, then up. Pushes to stack bottom.
+					Bottom Left. Moves right, then up. Pushes to stack top.
 					<br style="margin-bottom: 5px;" />
 					<button class="btn source" onclick="show_stack_bottomright('notice');">Notice</button>
 					<button class="btn source" onclick="show_stack_bottomright('info');">Info</button>
@@ -1367,7 +1377,7 @@
 					<button class="btn source" onclick="show_stack_bar_bottom('notice');">Notice</button>
 					<button class="btn source" onclick="show_stack_bar_bottom('info');">Info</button>
 					<button class="btn source" onclick="show_stack_bar_bottom('error');">Error</button>
-					Bottom bar style. (Like New Microsoft Notification Bars.) Moves down, then right. Pushes to stack top.
+					Bottom bar style. (Like New Microsoft Notification Bars.) Moves up, then right. Pushes to stack bottom.
 					<br style="margin-bottom: 5px;" />
 					<button class="btn source" onmouseover="tooltip.pnotify_display();" onmousemove="tooltip.css({'top': event.clientY+12, 'left': event.clientX+12});" onmouseout="tooltip.pnotify_remove();">Hover Over Me</button>
 					Tooltip
@@ -1378,24 +1388,24 @@
 					Current Timer: <span id="timer" style="font-family: monospace;"></span>
 					<script type="text/javascript">
 						function update_timer_display() {
-							$("#timer").text(($.pnotify.defaults.pnotify_delay/1000)+" seconds");
+							$("#timer").text(($.pnotify.defaults.delay/1000)+" seconds");
 						}
 						$(function(){
 							update_timer_display();
 						});
 					</script>
 					<br style="margin-bottom: 3px;" />
-					<button class="btn source" onclick="$.pnotify.defaults.pnotify_delay ? (function(){$.pnotify.defaults.pnotify_delay -= 500; update_timer_display();}()) : (alert('Timer is already at zero.'))">Lower Timer</button>
-					<button class="btn source" onclick="(function(){$.pnotify.defaults.pnotify_delay += 500; update_timer_display();}())">Raise Timer</button>
+					<button class="btn source" onclick="$.pnotify.defaults.delay ? (function(){$.pnotify.defaults.delay -= 500; update_timer_display();}()) : (alert('Timer is already at zero.'))">Lower Timer</button>
+					<button class="btn source" onclick="(function(){$.pnotify.defaults.delay += 500; update_timer_display();}())">Raise Timer</button>
 					<br style="margin-bottom: 5px;" />
 					<h4>Benchmarking</h4>
 					<button class="btn source" onclick="for (i=0; i!=10; i++) {$.pnotify({
-						pnotify_title: 'Regular Notice',
-						pnotify_text: 'Check me out! I\'m a notice.'
+						title: 'Regular Notice',
+						text: 'Check me out! I\'m a notice.'
 					});}">10 Notices</button>
 					<button class="btn source" onclick="for (i=0; i!=100; i++) {$.pnotify({
-						pnotify_title: 'Regular Notice',
-						pnotify_text: 'Check me out! I\'m a notice.'
+						title: 'Regular Notice',
+						text: 'Check me out! I\'m a notice.'
 					});}">100 Notices (Careful)</button>
 					<button class="btn source" onclick="timed_notices(100);">Time 100 Notices</button>
 					<button class="btn source" onclick="timed_notices(500);">Time 500 Notices</button>
@@ -1407,24 +1417,24 @@
 				<div class="btn-toolbar well">
 					<h4>Effects built in to jQuery</h4>
 					<button class="btn source" onclick="$.pnotify({
-						pnotify_title: 'Show Effect',
-						pnotify_text: 'I use a different effect.',
-						pnotify_animation: 'show'
+						title: 'Show Effect',
+						text: 'I use a different effect.',
+						animation: 'show'
 					});">Show</button>
 					<button class="btn source" onclick="$.pnotify({
-						pnotify_title: 'Fade Effect',
-						pnotify_text: 'I use a different effect.',
-						pnotify_animation: 'fade'
+						title: 'Fade Effect',
+						text: 'I use a different effect.',
+						animation: 'fade'
 					});">Fade</button>
 					<button class="btn source" onclick="$.pnotify({
-						pnotify_title: 'Slide Effect',
-						pnotify_text: 'I use a different effect.',
-						pnotify_animation: 'slide'
+						title: 'Slide Effect',
+						text: 'I use a different effect.',
+						animation: 'slide'
 					});">Slide</button>
 					<button class="btn source" onclick="$.pnotify({
-						pnotify_title: 'Show and Slide Effect',
-						pnotify_text: 'I use a different effect.',
-						pnotify_animation: {effect_in: 'show', effect_out: 'slide'}
+						title: 'Show and Slide Effect',
+						text: 'I use a different effect.',
+						animation: {effect_in: 'show', effect_out: 'slide'}
 					});">Different In and Out</button>
 					<br style="margin-bottom: 5px;" />
 					<h4>Effects from jQuery UI</h4>
@@ -1536,28 +1546,28 @@
 					Speed (ms):
 					<input type="text" size="8" id="ui_speed" value="600" />
 					<button class="btn source" style="margin-left: 2em;" onclick="
-						var effect_in = $('#ui_effect_in').val();
-						var easing_in = $('#ui_easing_in').val();
-						var effect_out = $('#ui_effect_out').val();
-						var easing_out = $('#ui_easing_out').val();
+						var effect_in = $('#ui_effect_in').val(),
+							easing_in = $('#ui_easing_in').val(),
+							effect_out = $('#ui_effect_out').val(),
+							easing_out = $('#ui_easing_out').val(),
+							speed = $('#ui_speed').val();
 						if (effect_out == 'same')
 							effect_out = effect_in;
 						if (easing_out == 'same')
 							easing_out = easing_in;
-						var speed = $('#ui_speed').val();
 						if (speed.match(/^\d+$/))
 							speed = parseInt(speed);
-						var options_in = {easing: easing_in};
-						var options_out = {easing: easing_out};
+						var options_in = {easing: easing_in},
+							options_out = {easing: easing_out};
 						if (effect_in == 'scale')
 							options_in.percent = 100;
 						if (effect_out == 'scale')
 							options_out.percent = 0;
 						$.pnotify({
-							pnotify_title: 'jQuery UI Effect',
-							pnotify_text: 'I use an effect from jQuery UI.',
-							pnotify_animate_speed: speed,
-							pnotify_animation: {
+							title: 'jQuery UI Effect',
+							text: 'I use an effect from jQuery UI.',
+							animate_speed: speed,
+							animation: {
 								'effect_in': effect_in,
 								'options_in': options_in,
 								'effect_out': effect_out,
@@ -1568,12 +1578,12 @@
 					<br style="margin-bottom: 5px;" />
 					<h4>Custom Functions (Uses CSS3)</h4>
 					<button class="btn source" onclick="$.pnotify({
-						pnotify_title: 'Custom Function',
-						pnotify_text: 'I use a different effect.',
-						pnotify_animation: function(status, callback, pnotify){
+						title: 'Custom Function',
+						text: 'I use a different effect.',
+						animation: function(status, callback, pnotify){
 							var source_note = 'Always call the callback when the animation completes.';
-							var cur_angle = 0;
-							var cur_opacity_scale = 0;
+							var cur_angle = 0,
+								cur_opacity_scale = 0;
 							if (status == 'out')
 								cur_opacity_scale = 1;
 							var timer = setInterval(function(){
@@ -1605,12 +1615,12 @@
 						}
 					});">One Function</button>
 					<button class="btn source" onclick="$.pnotify({
-						pnotify_title: 'Custom Functions',
-						pnotify_text: 'I use a different effect.',
-						pnotify_animation: {effect_in: function(status, callback, pnotify){
+						title: 'Custom Functions',
+						text: 'I use a different effect.',
+						animation: {effect_in: function(status, callback, pnotify){
 							var source_note = 'Always call the callback when the animation completes.';
-							var cur_angle = 0;
-							var cur_opacity_scale = 0;
+							var cur_angle = 0,
+								cur_opacity_scale = 0;
 							var timer = setInterval(function(){
 								cur_angle += 10;
 								if (cur_angle == 360) {
@@ -1632,8 +1642,8 @@
 							}, 20);
 						}, effect_out: function(status, callback, pnotify){
 							var source_note = 'Always call the callback when the animation completes.';
-							var cur_angle = 0;
-							var cur_opacity_scale = 1;
+							var cur_angle = 0,
+								cur_opacity_scale = 1;
 							var timer = setInterval(function(){
 								cur_angle += 10;
 								if (cur_angle == 360) {
@@ -1719,19 +1729,6 @@
 						Note: This is a sample of markup generated by Pines Notify, not markup you should use to create a notice. You don't need markup for that.
 					</div>
 				</div>
-			</div>
-			<div id="installation">
-				<div class="page-header">
-					<h2>Installation</h2>
-				</div>
-				<p>Installation is simple. Include jQuery 1.4 (or higher) and jQuery UI (only the CSS is required). Then include the following files:</p>
-				<div class="clearfix">
-					<ul>
-						<li>jquery.pnotify.js or jquery.pnotify.min.js (Minified)</li>
-						<li>jquery.pnotify.default.css</li>
-					</ul>
-				</div>
-				<p>If you want to use jQuery UI effect animations, you also need to include the jQuery UI JavaScript.</p>
 			</div>
 			<div id="comments">
 				<div class="page-header">
