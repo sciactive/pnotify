@@ -116,13 +116,13 @@
 
 		/* Alternate stack initial positioning. */
 		.ui-pnotify.stack-topleft {
-			top: 15px;
-			left: 15px;
+			top: 25px;
+			left: 25px;
 			right: auto;
 		}
 		.ui-pnotify.stack-bottomleft {
-			bottom: 15px;
-			left: 15px;
+			bottom: 25px;
+			left: 25px;
 			top: auto;
 			right: auto;
 		}
@@ -196,7 +196,7 @@
 					history: false,
 					animate_speed: 100,
 					opacity: .9,
-					notice_icon: "ui-icon ui-icon-comment",
+					icon: "ui-icon ui-icon-comment",
 					// Setting stack to false causes Pines Notify to ignore this notice when positioning.
 					stack: false,
 					after_init: function(pnotify){
@@ -297,7 +297,7 @@
 			var loader = $.pnotify({
 				title: "Fake Load",
 				text: "<div class=\"progress_bar\" />",
-				notice_icon: 'picon picon-throbber',
+				icon: 'picon picon-throbber',
 				hide: false,
 				closer: false,
 				sticker: false,
@@ -326,11 +326,12 @@
 			var notice = $.pnotify({
 				title: "Please Wait",
 				type: 'info',
-				info_icon: 'picon picon-throbber',
+				icon: 'picon picon-throbber',
 				hide: false,
 				closer: false,
 				sticker: false,
 				opacity: .75,
+				shadow: false,
 				width: "150px"
 			});
 
@@ -350,7 +351,7 @@
 						options.hide = true;
 						options.closer = true;
 						options.sticker = true;
-						options.notice_icon = 'picon picon-task-complete';
+						options.icon = 'picon picon-task-complete';
 						options.opacity = 1;
 						options.shadow = true;
 						options.width = $.pnotify.defaults.width;
@@ -423,7 +424,7 @@
 			* - dir = "right" - firstpos is relative to the left of viewport.
 			* - dir = "left" - firstpos is relative to the right of viewport.
 			*/
-		var stack_bottomright = {"dir1": "up", "dir2": "left", "firstpos1": 15, "firstpos2": 15};
+		var stack_bottomright = {"dir1": "up", "dir2": "left", "firstpos1": 25, "firstpos2": 25};
 
 		function show_stack_topleft(type) {
 			var opts = {
@@ -586,7 +587,7 @@
 				title: "Pines Notify Stacks",
 				text: "Stacks are used to position notices and determine where new notices will go when they're created. Each notice that's placed into a stack will be positioned related to the other notices in that stack. There is no limit to the number of stacks, and no limit to the number of notices in each stack.",
 				type: "info",
-				info_icon: "picon picon-object-order-raise",
+				icon: "picon picon-object-order-raise",
 				delay: 20000,
 				history: false,
 				stack: false,
@@ -943,32 +944,32 @@ $(function(){
 						opacity: .8
 					});">Transparent Notice</button>
 					<button class="btn source" onclick="$.pnotify({
-						title: 'Shadow Notice',
-						text: 'I have a shadow. It makes me pop out!\n\nNote: Shadows do not work in IE.',
-						shadow: true
-					});">Shadow Notice</button>
+						title: 'No Shadow Notice',
+						text: 'I don\'t have a shadow. (It\'s cause I\'m a vampire or something. Or is that reflections...)',
+						shadow: false
+					});">No Shadow Notice</button>
 					<button class="btn source" onclick="$.pnotify('Check me out! I\'m a notice.');">Simple Notice</button>
 					<button class="btn source" onclick="$.pnotify(Math.round(Math.random()*9999));">Number Notice</button>
 					<br style="margin-bottom: 5px;" />
 					<button class="btn source" onclick="$.pnotify({
 						title: 'Pines Icon Notice',
 						text: 'I have an icon that uses the Pines icon styles.',
-						notice_icon: 'picon picon-mail-unread-new'
+						icon: 'picon picon-mail-unread-new'
 					});">Pines Icon Notice</button>
 					<button class="btn source" onclick="$.pnotify({
 						title: 'jQuery UI Icon Notice',
 						text: 'I have an icon that uses the jQuery UI icon styles.',
-						notice_icon: 'ui-icon ui-icon-mail-closed'
+						icon: 'ui-icon ui-icon-mail-closed'
 					});">jQuery UI Icon Notice</button>
 					<button class="btn source" onclick="$.pnotify({
 						title: 'Bootstrap Icon Notice',
 						text: 'I have an icon that uses the Bootstrap icon styles.',
-						notice_icon: 'icon-envelope'
+						icon: 'icon-envelope'
 					});">Bootstrap Icon Notice</button>
 					<button class="btn source" onclick="$.pnotify({
 						title: 'No Icon Notice',
 						text: 'I have no icon.',
-						notice_icon: ''
+						icon: false
 					});">No Icon Notice</button>
 				</div>
 				<div class="btn-toolbar well">
@@ -990,29 +991,29 @@ $(function(){
 						opacity: .8
 					});">Transparent Info</button>
 					<button class="btn source" onclick="$.pnotify({
-						title: 'Shadow Info',
-						text: 'I have a shadow. It makes me pop out!',
+						title: 'No Shadow Info',
+						text: 'I don\'t have a shadow. (It\'s cause I\'m a vampire or something. Or is that reflections...)',
 						type: 'info',
-						shadow: true
-					});">Shadow Info</button>
+						shadow: false
+					});">No Shadow Info</button>
 					<br style="margin-bottom: 5px;" />
 					<button class="btn source" onclick="$.pnotify({
 						title: 'Pines Icon Info',
 						text: 'Something is encrypted. Check out my icon, it shows that you\'re secure because our encryption uses padlocks.',
 						type: 'info',
-						info_icon: 'picon picon-document-encrypt'
+						icon: 'picon picon-document-encrypt'
 					});">Pines Icon Info</button>
 					<button class="btn source" onclick="$.pnotify({
 						title: 'jQuery UI Icon Info',
 						text: 'Something is encrypted. Check out my icon, it shows that you\'re secure because our encryption uses padlocks.',
 						type: 'info',
-						info_icon: 'ui-icon ui-icon-locked'
+						icon: 'ui-icon ui-icon-locked'
 					});">jQuery UI Icon Info</button>
 					<button class="btn source" onclick="$.pnotify({
 						title: 'No Icon Info',
 						text: 'I have no icon.',
 						type: 'info',
-						info_icon: ''
+						icon: false
 					});">No Icon Info</button>
 				</div>
 				<div class="btn-toolbar well">
@@ -1034,29 +1035,29 @@ $(function(){
 						opacity: .8
 					});">Transparent Error</button>
 					<button class="btn source" onclick="$.pnotify({
-						title: 'Shadow Error',
-						text: 'I have a shadow. It makes me pop out!',
+						title: 'No Shadow Error',
+						text: 'I don\'t have a shadow. (It\'s cause I\'m a vampire or something. Or is that reflections...)',
 						type: 'error',
-						shadow: true
-					});">Shadow Error</button>
+						shadow: false
+					});">No Shadow Error</button>
 					<br style="margin-bottom: 5px;" />
 					<button class="btn source" onclick="$.pnotify({
 						title: 'Pines Icon Error',
 						text: 'Oh no. Something\'s wrong with your network, and I\'m showing you visually using an appropriate icon to indicate the type of error that has occured. You know, network.',
 						type: 'error',
-						error_icon: 'picon picon-network-wireless'
+						icon: 'picon picon-network-wireless'
 					});">Pines Icon Error</button>
 					<button class="btn source" onclick="$.pnotify({
 						title: 'jQuery UI Icon Error',
 						text: 'Oh no. Something\'s wrong with your network, and I\'m showing you visually using an appropriate icon to indicate the type of error that has occured. You know, network.',
 						type: 'error',
-						error_icon: 'ui-icon ui-icon-signal-diag'
+						icon: 'ui-icon ui-icon-signal-diag'
 					});">jQuery UI Icon Error</button>
 					<button class="btn source" onclick="$.pnotify({
 						title: 'No Icon Error',
 						text: 'I have no icon.',
 						type: 'error',
-						error_icon: ''
+						icon: false
 					});">No Icon Error</button>
 				</div>
 			</div>
@@ -1091,7 +1092,7 @@ $(function(){
 					<button class="btn source" onclick="$.pnotify({
 						title: 'No Rounded Corners Notice',
 						text: 'Warning: Contains sharp objects. Not suitable for browsers under the age of CSS3.',
-						cornerclass: ''
+						cornerclass: 'ui-pnotify-sharp'
 					});">No Rounded Corners</button>
 					<br style="margin-bottom: 5px;" />
 					<button class="btn source" onclick="$.pnotify({
@@ -1153,7 +1154,7 @@ $(function(){
 					});">Non-Blocking Notice</button>
 					<button class="btn source" onclick="var notice = $.pnotify({
 						text: $('#form_notice').html(),
-						notice_icon: '',
+						icon: false,
 						width: 'auto',
 						hide: false,
 						closer: false,
@@ -1169,7 +1170,7 @@ $(function(){
 						notice.pnotify({
 							title: 'Welcome',
 							text: 'Successfully logged in as '+username,
-							notice_icon: $.pnotify.defaults.notice_icon,
+							icon: true,
 							width: $.pnotify.defaults.width,
 							hide: true,
 							closer: true,
@@ -1263,7 +1264,7 @@ $(function(){
 						title: 'Custom Styling',
 						text: 'I have an additional class that\'s used to give me special styling. I always wanted to be pretty.',
 						addclass: 'custom',
-						notice_icon: 'picon picon-32 picon-fill-color',
+						icon: 'picon picon-32 picon-fill-color',
 						opacity: .8,
 						nonblock: true,
 						nonblock_opacity: .2
@@ -1325,7 +1326,7 @@ $(function(){
 	title: 'Custom Styling',
 	text: 'I have an additional class that\'s used to give me special styling. I always wanted to be pretty.',
 	<strong>addclass: 'custom'</strong>,
-	notice_icon: 'picon picon-32 picon-fill-color',
+	icon: 'picon picon-32 picon-fill-color',
 	opacity: .8,
 	nonblock: true,
 	nonblock_opacity: .2
@@ -1686,11 +1687,15 @@ $(function(){
 					<h2>Theming</h2>
 				</div>
 				<p>
-					The Pines Notify plugin uses the jQuery UI CSS Framework to
-					style its look and feel, including colors and background
-					textures. We recommend using the ThemeRoller tool to create
-					and download custom themes that are easy to build and
-					maintain.
+					The Pines Notify plugin can use either
+					<a href="http://jqueryui.com/" target="_blank">jQuery UI</a>
+					or <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter
+					Bootstrap</a> to style its look and feel, including colors
+					and background textures. We recommend using the
+					<a href="http://jqueryui.com/themeroller/" target="_blank">ThemeRoller tool</a>
+					or <a href="http://bootswatchr.com/" target="_blank">Bootswatchr</a>
+					to create and download custom themes that are easy to build
+					and maintain.
 				</p>
 				<p>
 					If a deeper level of customization is needed, there are
@@ -1703,10 +1708,7 @@ $(function(){
 					<div style="margin: 0; clear: both; padding-left: 10px;">
 						&lt;div class="<strong>ui-pnotify</strong> ui-widget ui-helper-clearfix" style="width: 300px; opacity: 1; display: block; right: 15px; top: 15px;"&gt;
 						<div style="margin: 0; clear: both; padding-left: 10px;">
-							&lt;div class="<strong>ui-pnotify-shadow</strong> ui-widget-shadow"&gt;&lt;/div&gt; <small>(This div only appears when shadow is turned on.)</small>
-						</div>
-						<div style="margin: 0; clear: both; padding-left: 10px;">
-							&lt;div class="<strong>ui-pnotify-container</strong> ui-corner-all ui-state-highlight" style="min-height: 16px;"&gt;
+							&lt;div class="<strong>ui-pnotify-container ui-pnotify-shadow</strong> ui-corner-all ui-state-highlight" style="min-height: 16px;"&gt;
 							<div style="margin: 0; clear: both; padding-left: 10px;">
 								&lt;div class="<strong>ui-pnotify-closer</strong>" style="cursor: pointer; display: none;"&gt;
 								<div style="margin: 0; clear: both; padding-left: 10px;">

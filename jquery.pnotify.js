@@ -11,9 +11,37 @@
  */
 
 (function($) {
-	var history_handle_top, timer;
-	var body = $("body");
-	var jwindow = $(window);
+	var history_handle_top,
+		timer,
+		body = $("body"),
+		jwindow = $(window),
+		styling = {
+			jqueryui: {
+				container: "ui-widget ui-widget-content ui-corner-all",
+				notice: "ui-state-highlight",
+				// (The actual jQUI notice icon looks terrible.)
+				notice_icon: "ui-icon ui-icon-info",
+				info: "",
+				info_icon: "ui-icon ui-icon-info",
+				error: "ui-state-error",
+				error_icon: "ui-icon ui-icon-alert",
+				closer: "ui-icon ui-icon-close",
+				pin_up: "ui-icon ui-icon-pin-w",
+				pin_down: "ui-icon ui-icon-pin-s"
+			},
+			bootstrap: {
+				container: "alert",
+				notice: "",
+				notice_icon: "icon-exclamation-sign",
+				info: "alert-info",
+				info_icon: "icon-info-sign",
+				error: "alert-error",
+				error_icon: "icon-warning-sign",
+				closer: "icon-remove",
+				pin_up: "icon-pause",
+				pin_down: "icon-play"
+			}
+		};
 	// Set global variables.
 	var do_when_ready = function(){
 		body = $("body");
@@ -111,6 +139,9 @@
 				nonblock_last_elem = jelement_below;
 			};
 
+			// Get our styling object.
+			var styles = styling[opts.styling];
+
 			// Create our widget.
 			// Stop animation, reset the removal timer, and show the close
 			// button when the user mouses over.
@@ -191,17 +222,14 @@
 				}
 			});
 			pnotify.opts = opts;
-			// Create a drop shadow.
-			if (opts.shadow && !$.browser.msie) {
-				pnotify.shadow_container = $("<div />", {"class": "ui-widget-shadow ui-pnotify-shadow"}).prependTo(pnotify);
-				if (opts.cornerclass != "")
-					pnotify.shadow_container.addClass(opts.cornerclass);
-			}
 			// Create a container for the notice contents.
-			pnotify.container = $("<div />", {"class": "ui-widget ui-widget-content ui-pnotify-container "+(opts.type == "error" ? "ui-state-error" : (opts.type == "info" ? "" : "ui-state-highlight"))})
+			pnotify.container = $("<div />", {"class": styles.container+" ui-pnotify-container "+(opts.type == "error" ? styles.error : (opts.type == "info" ? styles.info : styles.notice))})
 			.appendTo(pnotify);
 			if (opts.cornerclass != "")
-				pnotify.container.addClass(opts.cornerclass);
+				pnotify.container.removeClass("ui-corner-all").addClass(opts.cornerclass);
+			// Create a drop shadow.
+			if (opts.shadow)
+				pnotify.container.addClass("ui-pnotify-shadow");
 
 			// The current version of Pines Notify.
 			pnotify.pnotify_version = "1.2.0dev";
@@ -220,13 +248,15 @@
 						opts[i.replace(/^pnotify_/, "")] = opts[i];
 				}
 				pnotify.opts = opts;
+				// Update the corner class.
+				if (opts.cornerclass != old_opts.cornerclass)
+					pnotify.container.removeClass("ui-corner-all").addClass(opts.cornerclass);
 				// Update the shadow.
 				if (opts.shadow != old_opts.shadow) {
-					// Don't show a shadow in IE, because it's very buggy. No kidding... try it if you don't believe me.
-					if (opts.shadow && !$.browser.msie)
-						pnotify.shadow_container = $("<div />", {"class": "ui-widget-shadow ui-pnotify-shadow"}).prependTo(pnotify);
+					if (opts.shadow)
+						pnotify.container.addClass("ui-pnotify-shadow");
 					else
-						pnotify.children(".ui-pnotify-shadow").remove();
+						pnotify.container.removeClass("ui-pnotify-shadow");
 				}
 				// Update the additional classes.
 				if (opts.addclass === false)
@@ -255,17 +285,14 @@
 				pnotify.pnotify_hide = opts.hide;
 				// Change the notice type.
 				if (opts.type != old_opts.type)
-					pnotify.container.removeClass("ui-state-error ui-state-highlight").addClass(opts.type == "error" ? "ui-state-error" : (opts.type == "info" ? "" : "ui-state-highlight"));
-				if ((opts.notice_icon != old_opts.notice_icon && opts.type == "notice") ||
-					(opts.info_icon != old_opts.info_icon && opts.type == "info") ||
-					(opts.error_icon != old_opts.error_icon && opts.type == "error") ||
-					(opts.type != old_opts.type)) {
+					pnotify.container.removeClass(styles.error+" "+styles.notice+" "+styles.info).addClass(opts.type == "error" ? styles.error : (opts.type == "info" ? styles.info : styles.notice));
+				if (opts.icon !== old_opts.icon || (opts.icon === true && opts.type != old_opts.type)) {
 					// Remove any old icon.
 					pnotify.container.find("div.ui-pnotify-icon").remove();
-					if ((opts.error_icon && opts.type == "error") || (opts.info_icon && opts.type == "info") || (opts.notice_icon)) {
+					if (opts.icon !== false) {
 						// Build the new icon.
 						$("<div />", {"class": "ui-pnotify-icon"})
-						.append($("<span />", {"class": opts.type == "error" ? opts.error_icon : (opts.type == "info" ? opts.info_icon : opts.notice_icon)}))
+						.append($("<span />", {"class": opts.icon === true ? (opts.type == "error" ? styles.error_icon : (opts.type == "info" ? styles.info_icon : styles.notice_icon)) : opts.icon}))
 						.prependTo(pnotify.container);
 					}
 				}
@@ -370,7 +397,7 @@
 						(s.dir1 == "right" && s.nextpos1 + pnotify.width() > jwindow.width()) ) {
 						// If it is, it needs to go back to the first pos1, and over on pos2.
 						s.nextpos1 = s.firstpos1;
-						s.nextpos2 += s.addpos2 + (typeof s.spacing2 == "undefined" ? 10 : s.spacing2);
+						s.nextpos2 += s.addpos2 + (typeof s.spacing2 == "undefined" ? 25 : s.spacing2);
 						s.addpos2 = 0;
 					}
 					// Animate if we're moving on dir2.
@@ -432,11 +459,11 @@
 					switch (s.dir1) {
 						case "down":
 						case "up":
-							s.nextpos1 += pnotify.height() + (typeof s.spacing1 == "undefined" ? 10 : s.spacing1);
+							s.nextpos1 += pnotify.height() + (typeof s.spacing1 == "undefined" ? 25 : s.spacing1);
 							break;
 						case "left":
 						case "right":
-							s.nextpos1 += pnotify.width() + (typeof s.spacing1 == "undefined" ? 10 : s.spacing1);
+							s.nextpos1 += pnotify.width() + (typeof s.spacing1 == "undefined" ? 25 : s.spacing1);
 							break;
 					}
 				}
@@ -582,7 +609,7 @@
 					pnotify.closer.hide();
 				}
 			})
-			.append($("<span />", {"class": "ui-icon ui-icon-close"}))
+			.append($("<span />", {"class": styles.closer}))
 			.appendTo(pnotify.container);
 
 			// Provide a button to stick the notice.
@@ -599,16 +626,16 @@
 				}
 			})
 			.bind("pnotify_icon", function(){
-				$(this).children().removeClass("ui-icon-pin-w ui-icon-pin-s").addClass(opts.hide ? "ui-icon-pin-w" : "ui-icon-pin-s");
+				$(this).children().removeClass(styles.pin_up+" "+styles.pin_down).addClass(opts.hide ? styles.pin_up : styles.pin_down);
 			})
-			.append($("<span />", {"class": "ui-icon ui-icon-pin-w"}))
+			.append($("<span />", {"class": styles.pin_up}))
 			.appendTo(pnotify.container);
 
 			// Add the appropriate icon.
-			if ((opts.error_icon && opts.type == "error") || (opts.info_icon && opts.type == "info") || (opts.notice_icon)) {
+			if (opts.icon !== false) {
 				$("<div />", {"class": "ui-pnotify-icon"})
-				.append($("<span />", {"class": opts.type == "error" ? opts.error_icon : (opts.type == "info" ? opts.info_icon : opts.notice_icon)}))
-				.appendTo(pnotify.container);
+				.append($("<span />", {"class": opts.icon === true ? (opts.type == "error" ? styles.error_icon : (opts.type == "info" ? styles.info_icon : styles.notice_icon)) : opts.icon}))
+				.prependTo(pnotify.container);
 			}
 
 			// Add a title.
@@ -806,10 +833,12 @@
 		text: false,
 		// Whether to escape the content of the text. (Not allow HTML.)
 		text_escape: false,
+		// What styling classes to use. (Can be either jqueryui or bootstrap.)
+		styling: "bootstrap",
 		// Additional classes to be added to the notice. (For custom styling.)
 		addclass: "",
 		// Class to be added to the notice for corner styling.
-		cornerclass: "ui-corner-all",
+		cornerclass: "",
 		// Create a non-blocking notice. It lets the user click elements underneath it.
 		nonblock: false,
 		// The opacity of the notice (if it's non-blocking) when the mouse is over it.
@@ -822,12 +851,8 @@
 		min_height: "16px",
 		// Type of the notice. "notice", "info", or "error".
 		type: "notice",
-		// The icon class to use if type is notice. (The actual jQUI notice icon looks terrible.)
-		notice_icon: "ui-icon ui-icon-info",
-		// The icon class to use if type is info.
-		info_icon: "ui-icon ui-icon-info",
-		// The icon class to use if type is error.
-		error_icon: "ui-icon ui-icon-alert",
+		// Set icon to true to use the default icon for the selected style/type, false for no icon, or a string for your own icon class.
+		icon: true,
 		// The animation to use when displaying and hiding the notice. "none", "show", "fade", and "slide" are built in to jQuery. Others require jQuery UI. Use an object with effect_in and effect_out to use different effects.
 		animation: "fade",
 		// Speed at which the notice animates in and out. "slow", "def" or "normal", "fast" or number of milliseconds.
@@ -835,7 +860,7 @@
 		// Opacity of the notice.
 		opacity: 1,
 		// Display a drop shadow.
-		shadow: false,
+		shadow: true,
 		// Provide a button for the user to manually close the notice.
 		closer: true,
 		// Only show the closer button on hover.
@@ -855,6 +880,6 @@
 		// Change new lines to br tags.
 		insert_brs: true,
 		// The stack on which the notices will be placed. Also controls the direction the notices stack.
-		stack: {"dir1": "down", "dir2": "left", "push": "bottom", "spacing1": 10, "spacing2": 10}
+		stack: {"dir1": "down", "dir2": "left", "push": "bottom", "spacing1": 25, "spacing2": 25}
 	};
 })(jQuery);
