@@ -46,9 +46,6 @@ html > body .ui-pnotify {
 }
 .ui-pnotify-title {
 	display: block;
-	font-size: 1.2em;
-	line-height: 1;
-	font-weight: bold;
 	margin-bottom: .4em;
 }
 .ui-pnotify-text {
@@ -67,6 +64,15 @@ html > body .ui-pnotify {
 	right: 18px;
 	width: 70px;
 	border-top: none;
+	padding: 0;
+	-webkit-border-top-left-radius: 0;
+	-moz-border-top-left-radius: 0;
+	-o-border-top-left-radius: 0;
+	border-top-left-radius: 0;
+	-webkit-border-top-right-radius: 0;
+	-moz-border-top-right-radius: 0;
+	-o-border-top-right-radius: 0;
+	border-top-right-radius: 0;
 	/* Ensure that the history container is on top of the notices. */
 	z-index: 10000;
 }

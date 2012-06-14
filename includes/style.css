@@ -2,16 +2,10 @@
 Pines Sub-Project Page Styling
 Copyright (C) 2012 SciActive.com. All Rights Reserved.
 */
-body {
-	padding: 40px 1em 1em;
-}
-#wrapper {
-	max-width: 1140px;
-	margin: 0 auto;
-}
 .page-banner {
 	padding: 130px 0 170px;
 	text-align: center;
+	overflow: hidden;
 }
 .page-banner h1 {
 	font-size: 65px;
@@ -41,9 +35,6 @@ body .pf-form .pf-heading * {
 }
 /* Mobile */
 @media (max-width: 768px) {
-	body {
-		padding: 0;
-	}
 	.page-banner {
 		padding: 20px 0;
 	}
@@ -74,12 +65,6 @@ body .pf-form .pf-heading * {
 }
 /* Tablet */
 @media (min-width: 768px) and (max-width: 980px) {
-	body {
-		padding: 0 1em 1em;
-	}
-	.navbar-fixed-top {
-		margin: 0 -1em 18px;
-	}
 	.page-banner {
 		float: left;
 		width: 20%;

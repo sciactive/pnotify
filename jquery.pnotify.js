@@ -23,11 +23,17 @@
 				notice_icon: "ui-icon ui-icon-info",
 				info: "",
 				info_icon: "ui-icon ui-icon-info",
+				success: "ui-state-default",
+				success_icon: "ui-icon ui-icon-circle-check",
 				error: "ui-state-error",
 				error_icon: "ui-icon ui-icon-alert",
 				closer: "ui-icon ui-icon-close",
 				pin_up: "ui-icon ui-icon-pin-w",
-				pin_down: "ui-icon ui-icon-pin-s"
+				pin_down: "ui-icon ui-icon-pin-s",
+				history_menu: "ui-state-default ui-corner-bottom",
+				history_button: "ui-state-default ui-corner-all",
+				history_button_hover: "ui-state-hover",
+				history_handle: "ui-icon ui-icon-grip-dotted-horizontal"
 			},
 			bootstrap: {
 				container: "alert",
@@ -35,11 +41,17 @@
 				notice_icon: "icon-exclamation-sign",
 				info: "alert-info",
 				info_icon: "icon-info-sign",
+				success: "alert-success",
+				success_icon: "icon-ok-sign",
 				error: "alert-error",
 				error_icon: "icon-warning-sign",
 				closer: "icon-remove",
 				pin_up: "icon-pause",
-				pin_down: "icon-play"
+				pin_down: "icon-play",
+				history_menu: "well",
+				history_button: "btn",
+				history_button_hover: "",
+				history_handle: "icon-chevron-down"
 			}
 		};
 	// Set global variables.
@@ -163,8 +175,8 @@
 					// Stop the close timer.
 					if (opts.hide && opts.mouse_reset) pnotify.pnotify_cancel_remove();
 					// Show the buttons.
-					if (opts.sticker && !opts.nonblock) pnotify.sticker.trigger("pnotify_icon").show();
-					if (opts.closer && !opts.nonblock) pnotify.closer.show();
+					if (opts.sticker && !opts.nonblock) pnotify.sticker.trigger("pnotify_icon").css("visibility", "visible");
+					if (opts.closer && !opts.nonblock) pnotify.closer.css("visibility", "visible");
 				},
 				"mouseleave": function(e){
 					if (opts.nonblock) e.stopPropagation();
@@ -177,9 +189,9 @@
 					if (opts.hide && opts.mouse_reset) pnotify.pnotify_queue_remove();
 					// Hide the buttons.
 					if (opts.sticker_hover)
-						pnotify.sticker.hide();
+						pnotify.sticker.css("visibility", "hidden");
 					if (opts.closer_hover)
-						pnotify.closer.hide();
+						pnotify.closer.css("visibility", "hidden");
 					$.pnotify_position_all();
 				},
 				"mouseover": function(e){
@@ -223,7 +235,7 @@
 			});
 			pnotify.opts = opts;
 			// Create a container for the notice contents.
-			pnotify.container = $("<div />", {"class": styles.container+" ui-pnotify-container "+(opts.type == "error" ? styles.error : (opts.type == "info" ? styles.info : styles.notice))})
+			pnotify.container = $("<div />", {"class": styles.container+" ui-pnotify-container "+(opts.type == "error" ? styles.error : (opts.type == "info" ? styles.info : (opts.type == "success" ? styles.success : styles.notice)))})
 			.appendTo(pnotify);
 			if (opts.cornerclass != "")
 				pnotify.container.removeClass("ui-corner-all").addClass(opts.cornerclass);
@@ -265,34 +277,34 @@
 					pnotify.removeClass(old_opts.addclass).addClass(opts.addclass);
 				// Update the title.
 				if (opts.title === false)
-					pnotify.title_container.hide("fast");
+					pnotify.title_container.slideUp("fast");
 				else if (opts.title !== old_opts.title) {
 					if (opts.title_escape)
-						pnotify.title_container.text(opts.title).show(200);
+						pnotify.title_container.text(opts.title).slideDown(200);
 					else
-						pnotify.title_container.html(opts.title).show(200);
+						pnotify.title_container.html(opts.title).slideDown(200);
 				}
 				// Update the text.
 				if (opts.text === false) {
-					pnotify.text_container.hide("fast");
+					pnotify.text_container.slideUp("fast");
 				} else if (opts.text !== old_opts.text) {
 					if (opts.text_escape)
-						pnotify.text_container.text(opts.text).show(200);
+						pnotify.text_container.text(opts.text).slideDown(200);
 					else
-						pnotify.text_container.html(opts.insert_brs ? String(opts.text).replace(/\n/g, "<br />") : opts.text).show(200);
+						pnotify.text_container.html(opts.insert_brs ? String(opts.text).replace(/\n/g, "<br />") : opts.text).slideDown(200);
 				}
 				pnotify.pnotify_history = opts.history;
 				pnotify.pnotify_hide = opts.hide;
 				// Change the notice type.
 				if (opts.type != old_opts.type)
-					pnotify.container.removeClass(styles.error+" "+styles.notice+" "+styles.info).addClass(opts.type == "error" ? styles.error : (opts.type == "info" ? styles.info : styles.notice));
+					pnotify.container.removeClass(styles.error+" "+styles.notice+" "+styles.success+" "+styles.info).addClass(opts.type == "error" ? styles.error : (opts.type == "info" ? styles.info : (opts.type == "success" ? styles.success : styles.notice)));
 				if (opts.icon !== old_opts.icon || (opts.icon === true && opts.type != old_opts.type)) {
 					// Remove any old icon.
 					pnotify.container.find("div.ui-pnotify-icon").remove();
 					if (opts.icon !== false) {
 						// Build the new icon.
 						$("<div />", {"class": "ui-pnotify-icon"})
-						.append($("<span />", {"class": opts.icon === true ? (opts.type == "error" ? styles.error_icon : (opts.type == "info" ? styles.info_icon : styles.notice_icon)) : opts.icon}))
+						.append($("<span />", {"class": opts.icon === true ? (opts.type == "error" ? styles.error_icon : (opts.type == "info" ? styles.info_icon : (opts.type == "success" ? styles.success_icon : styles.notice_icon))) : opts.icon}))
 						.prependTo(pnotify.container);
 					}
 				}
@@ -305,17 +317,26 @@
 				// Update the opacity.
 				if (opts.opacity !== old_opts.opacity)
 					pnotify.fadeTo(opts.animate_speed, opts.opacity);
+				// Update the sticker and closer buttons.
+				if (!opts.closer || opts.nonblock)
+					pnotify.closer.css("display", "none");
+				else
+					pnotify.closer.css("display", "block");
+				if (!opts.sticker || opts.nonblock)
+					pnotify.sticker.css("display", "none");
+				else
+					pnotify.sticker.css("display", "block");
 				// Update the sticker icon.
 				pnotify.sticker.trigger("pnotify_icon");
 				// Update the hover status of the buttons.
 				if (opts.sticker_hover)
-					pnotify.sticker.hide();
+					pnotify.sticker.css("visibility", "hidden");
 				else if (!opts.nonblock)
-					pnotify.sticker.show();
+					pnotify.sticker.css("visibility", "visible");
 				if (opts.closer_hover)
-					pnotify.closer.hide();
+					pnotify.closer.css("visibility", "hidden");
 				else if (!opts.nonblock)
-					pnotify.closer.show();
+					pnotify.closer.css("visibility", "visible");
 				// Update the timed hiding.
 				if (!opts.hide)
 					pnotify.pnotify_cancel_remove();
@@ -602,20 +623,22 @@
 			// Provide a button to close the notice.
 			pnotify.closer = $("<div />", {
 				"class": "ui-pnotify-closer",
-				"css": {"cursor": "pointer", "display": opts.closer_hover ? "none" : "block"},
+				"css": {"cursor": "pointer", "visibility": opts.closer_hover ? "hidden" : "visible"},
 				"click": function(){
 					pnotify.pnotify_remove();
-					pnotify.sticker.hide();
-					pnotify.closer.hide();
+					pnotify.sticker.css("visibility", "hidden");
+					pnotify.closer.css("visibility", "hidden");
 				}
 			})
 			.append($("<span />", {"class": styles.closer}))
 			.appendTo(pnotify.container);
+			if (!opts.closer || opts.nonblock)
+				pnotify.closer.css("display", "none");
 
 			// Provide a button to stick the notice.
 			pnotify.sticker = $("<div />", {
 				"class": "ui-pnotify-sticker",
-				"css": {"cursor": "pointer", "display": opts.sticker_hover ? "none" : "block"},
+				"css": {"cursor": "pointer", "visibility": opts.sticker_hover ? "hidden" : "visible"},
 				"click": function(){
 					opts.hide = !opts.hide;
 					if (opts.hide)
@@ -630,16 +653,18 @@
 			})
 			.append($("<span />", {"class": styles.pin_up}))
 			.appendTo(pnotify.container);
+			if (!opts.sticker || opts.nonblock)
+				pnotify.sticker.css("display", "none");
 
 			// Add the appropriate icon.
 			if (opts.icon !== false) {
 				$("<div />", {"class": "ui-pnotify-icon"})
-				.append($("<span />", {"class": opts.icon === true ? (opts.type == "error" ? styles.error_icon : (opts.type == "info" ? styles.info_icon : styles.notice_icon)) : opts.icon}))
+				.append($("<span />", {"class": opts.icon === true ? (opts.type == "error" ? styles.error_icon : (opts.type == "info" ? styles.info_icon : (opts.type == "success" ? styles.success_icon : styles.notice_icon))) : opts.icon}))
 				.prependTo(pnotify.container);
 			}
 
 			// Add a title.
-			pnotify.title_container = $("<div />", {
+			pnotify.title_container = $("<h4 />", {
 				"class": "ui-pnotify-title"
 			})
 			.appendTo(pnotify.container);
@@ -697,20 +722,20 @@
 				var history_menu = jwindow.data("pnotify_history");
 				if (typeof history_menu == "undefined") {
 					history_menu = $("<div />", {
-						"class": "ui-pnotify-history-container ui-state-default ui-corner-bottom",
+						"class": "ui-pnotify-history-container "+styles.history_menu,
 						"mouseleave": function(){
 							history_menu.animate({top: "-"+history_handle_top+"px"}, {duration: 100, queue: false});
 						}
 					})
 					.append($("<div />", {"class": "ui-pnotify-history-header", "text": "Redisplay"}))
 					.append($("<button />", {
-							"class": "ui-pnotify-history-all ui-state-default ui-corner-all",
+							"class": "ui-pnotify-history-all "+styles.history_button,
 							"text": "All",
 							"mouseenter": function(){
-								$(this).addClass("ui-state-hover");
+								$(this).addClass(styles.history_button_hover);
 							},
 							"mouseleave": function(){
-								$(this).removeClass("ui-state-hover");
+								$(this).removeClass(styles.history_button_hover);
 							},
 							"click": function(){
 								// Display all notices. (Disregarding non-history notices.)
@@ -727,13 +752,13 @@
 							}
 					}))
 					.append($("<button />", {
-							"class": "ui-pnotify-history-last ui-state-default ui-corner-all",
+							"class": "ui-pnotify-history-last "+styles.history_button,
 							"text": "Last",
 							"mouseenter": function(){
-								$(this).addClass("ui-state-hover");
+								$(this).addClass(styles.history_button_hover);
 							},
 							"mouseleave": function(){
-								$(this).removeClass("ui-state-hover");
+								$(this).removeClass(styles.history_button_hover);
 							},
 							"click": function(){
 								// Look up the last history notice, and display it.
@@ -759,7 +784,7 @@
 
 					// Make a handle so the user can pull down the history tab.
 					var handle = $("<span />", {
-						"class": "ui-pnotify-history-pulldown ui-icon ui-icon-grip-dotted-horizontal",
+						"class": "ui-pnotify-history-pulldown "+styles.history_handle,
 						"mouseenter": function(){
 							history_menu.animate({top: "0"}, {duration: 100, queue: false});
 						}
@@ -786,10 +811,10 @@
 	});
 
 	// Some useful regexes.
-	var re_on = /^on/;
-	var re_mouse_events = /^(dbl)?click$|^mouse(move|down|up|over|out|enter|leave)$|^contextmenu$/;
-	var re_ui_events = /^(focus|blur|select|change|reset)$|^key(press|down|up)$/;
-	var re_html_events = /^(scroll|resize|(un)?load|abort|error)$/;
+	var re_on = /^on/,
+		re_mouse_events = /^(dbl)?click$|^mouse(move|down|up|over|out|enter|leave)$|^contextmenu$/,
+		re_ui_events = /^(focus|blur|select|change|reset)$|^key(press|down|up)$/,
+		re_html_events = /^(scroll|resize|(un)?load|abort|error)$/;
 	// Fire a DOM event.
 	var dom_event = function(e, orig_e){
 		var event_object;
@@ -849,7 +874,7 @@
 		width: "300px",
 		// Minimum height of the notice. It will expand to fit content.
 		min_height: "16px",
-		// Type of the notice. "notice", "info", or "error".
+		// Type of the notice. "notice", "info", "success", or "error".
 		type: "notice",
 		// Set icon to true to use the default icon for the selected style/type, false for no icon, or a string for your own icon class.
 		icon: true,

@@ -1,0 +1,24 @@
+<html>
+<head>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js"></script>
+    <script type="text/javascript" src="jquery.pnotify.js"></script>
+
+    <link type="text/css" rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/themes/ui-lightness/jquery-ui.css" />
+    <link type="text/css" rel="stylesheet" href="includes/bootstrap/css/bootstrap.normal.css" />
+    <link type="text/css" rel="stylesheet" href="jquery.pnotify.default.css" />
+</head>                                                                                                                                                                        
+<body>                                                                                                                                                                         
+    <h2>This is Foo - the home of a sticky note.</h2>
+    <script>                                                                                                                                                                   
+        $(function(){
+			$.pnotify({
+				pnotify_title: 'Sticky Notice',
+				pnotify_text: 'I\'m a sticky notice.',
+				pnotify_hide: false
+			});
+			// If this blinky works, then it ran the above function.
+			$("h2").hide(400).show(400);
+		});                                           
+    </script>                                                                                                                                                                  
+</body>                                                                                                                                                                        
+</html>
