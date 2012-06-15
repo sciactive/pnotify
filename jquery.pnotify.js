@@ -13,7 +13,7 @@
 (function($) {
 	var history_handle_top,
 		timer,
-		body = $("body"),
+		body,
 		jwindow = $(window),
 		styling = {
 			jqueryui: {
@@ -65,7 +65,7 @@
 			timer = setTimeout($.pnotify_position_all, 10);
 		});
 	};
-	if (body.length)
+	if (document.body)
 		do_when_ready();
 	else
 		$(do_when_ready);
@@ -358,8 +358,9 @@
 					s.nextpos2 = s.firstpos2;
 				if (!s.addpos2)
 					s.addpos2 = 0;
+				var hidden = pnotify.css("display") == "none";
 				// Skip this notice if it's not shown.
-				if (pnotify.css("display") != "none" || dont_skip_hidden) {
+				if (!hidden || dont_skip_hidden) {
 					var curpos1, curpos2;
 					// Store what will need to be animated.
 					var animate = {};
@@ -383,7 +384,7 @@
 					if (isNaN(curpos1))
 						curpos1 = 0;
 					// Remember the first pos1, so the first visible notice goes there.
-					if (typeof s.firstpos1 == "undefined") {
+					if (typeof s.firstpos1 == "undefined" && !hidden) {
 						s.firstpos1 = curpos1;
 						s.nextpos1 = s.firstpos1;
 					}
@@ -407,7 +408,7 @@
 					if (isNaN(curpos2))
 						curpos2 = 0;
 					// Remember the first pos2, so the first visible notice goes there.
-					if (typeof s.firstpos2 == "undefined") {
+					if (typeof s.firstpos2 == "undefined" && !hidden) {
 						s.firstpos2 = curpos2;
 						s.nextpos2 = s.firstpos2;
 					}

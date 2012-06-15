@@ -46,7 +46,7 @@
 		/* Not pnotify specific, just make this page a little more presentable. */
 		#switcher-container {
 			position: fixed;
-			top: 45px;
+			top: 60px;
 			right: 5px;
 		}
 		#switcher-bootstrap .dropdown-menu {
@@ -742,6 +742,8 @@
 					<li><a href="javascript:void(0);" onclick="$('#bootstrap-current').text('Spruce'); $('#bootstrap-css').attr('href', 'includes/bootstrap/css/bootstrap.spruce.css');">Spruce</a></li>
 					<li><a href="javascript:void(0);" onclick="$('#bootstrap-current').text('Superhero'); $('#bootstrap-css').attr('href', 'includes/bootstrap/css/bootstrap.superhero.css');">Superhero</a></li>
 					<li><a href="javascript:void(0);" onclick="$('#bootstrap-current').text('United'); $('#bootstrap-css').attr('href', 'includes/bootstrap/css/bootstrap.united.css');">United</a></li>
+					<li class="divider"></li>
+					<li><a href="http://bootswatch.com/" target="_blank">Themes by Bootswatch</a></li>
 				</ul>
 			</div>
 		</div>
@@ -750,9 +752,9 @@
 	<div class="container">
 		<div class="page-banner">
 			<h1>Pines Notify</h1>
-			<p id="description">JavaScript (jQuery) notification plugin.</p>
+			<p id="description">JavaScript notifications for Bootstrap or jQuery UI.</p>
 			<div>
-				<a class="btn btn-primary btn-large" href="https://sourceforge.net/projects/pines/files/pnotify/1.1/pnotify-1.1.1.zip/download" target="_blank">Download Pines Notify 1.1.1</a>
+				<a class="btn btn-primary btn-large" href="https://sourceforge.net/projects/pines/files/pnotify/1.2/pnotify-1.2.0.zip/download" target="_blank">Download Pines Notify 1.2</a>
 				<a class="right-button btn btn-large" href="http://github.com/sciactive/pnotify" target="_blank" title="Fork me on GitHub">Pines Notify on GitHub <img src="includes/github-icon.png" alt="GitHub Icon" /></a>
 				<br /><br />
 				<a style="margin: 0 8px;" data-toggle="modal" href="#using">Using Pines Notify</a>
@@ -794,7 +796,7 @@
 &lt;!-- Include this file if you are using Pines Icons. --&gt;
 &lt;link href="jquery.pnotify.default.icons.css" media="all" rel="stylesheet" type="text/css" /&gt;</pre>
 				<p>
-					You also need to include jQuery (1.4 or higher) and a jQuery UI Theme.
+					You also need to include jQuery (1.4 or higher) and either Bootstrap CSS or a jQuery UI Theme.
 					<small>If you want to use jQuery UI effect animations, you also need to include the jQuery UI JavaScript.</small>
 				</p>
 				<p>
@@ -808,6 +810,11 @@ $(function(){
 	});
 });
 &lt;/script&gt;</pre>
+				<p>
+					And if you don't want the history pull-down menu in the top
+					corner, include this line somewhere before your first notice:
+				</p>
+				<pre class="prettyprint">$.pnotify.defaults.history = false;</pre>
 				<p>
 					All of the examples on this page provide source code with
 					the "{}" button,
@@ -877,7 +884,7 @@ $(function(){
 						<div class="alert-block">
 							<h3><i class="icon-picture" style="position: relative; top: 3px;"></i> Themeable</h3>
 							<p>
-								Pines Notify uses the jQuery UI CSS library for styling, which
+								Pines Notify uses either Bootstrap or jQuery UI for styling, which
 								means it is fully and easily themeable. Try out some of the
 								readymade themes using the selector in the top right corner
 								of this page.
@@ -906,16 +913,28 @@ $(function(){
 					<div class="span2">&nbsp;</div>
 					<div class="span8 offset2">
 						<div class="alert alert-info">
-							<h3><i class="icon-star" style="position: relative; top: 3px;"></i> Big Changes!</h3>
-							<ul>
-								<li>With the upcoming version of Pines Notify, the "pnotify_"
-									prefix on options will no longer be necessary. It will
-									still work, so most of your current code should be
-									unaffected.</li>
-								<li>The way icons are specified has changed. Now there is
-									only one "icon" option. The defaults depend on the
-									style chosen.</li>
-								<li>There's a new notice type called "success".</li>
+							<h3><i class="icon-star" style="position: relative; top: 3px;"></i> New Version Has Big Changes!</h3>
+							<ul class="unstyled">
+								<li>New Stuff:
+									<ul>
+										<li>Styling can now be applied with either <strong>jQuery
+											UI</strong> or <strong>Twitter Bootstrap</strong>
+											using the "styling" option.</li>
+										<li>There's a new notice type called "success".</li>
+									</ul>
+								</li>
+								<li>Changes:
+									<ul>
+										<li>With this version of Pines Notify, the "pnotify_"
+											prefix on options is no longer be necessary. It will
+											still work, so most of your current code should be
+											unaffected.</li>
+										<li>The way icons are specified has changed. Now there is
+											only one "icon" option. The defaults depend on the
+											style chosen.</li>
+									</ul>
+								</li>
+								
 							</ul>
 						</div>
 					</div>

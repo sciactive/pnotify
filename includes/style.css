@@ -3,20 +3,20 @@ Pines Sub-Project Page Styling
 Copyright (C) 2012 SciActive.com. All Rights Reserved.
 */
 .page-banner {
-	padding: 130px 0 170px;
+	padding: 200px 0 170px;
 	text-align: center;
 	overflow: hidden;
 }
 .page-banner h1 {
-	font-size: 65px;
+	font-size: 70px;
 	line-height: 65px;
 }
 .page-banner p {
 	font-size: 30px;
-	line-height: 36px;
+	line-height: 48px;
 }
 .page-banner .btn-large {
-	margin-top: 20px;
+	margin-top: 30px;
 	font-size: 26px;
 }
 .page-banner .right-button {
@@ -36,7 +36,7 @@ body .pf-form .pf-heading * {
 /* Mobile */
 @media (max-width: 768px) {
 	.page-banner {
-		padding: 20px 0;
+		padding: 30px 0 20px;
 	}
 	.page-banner h1 {
 		font-size: 35px;
