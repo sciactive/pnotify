@@ -1,5 +1,5 @@
 /*
- * jQuery Pines Notify (pnotify) Plugin 1.2.0dev
+ * jQuery Pines Notify (pnotify) Plugin 1.2.0
  *
  * http://pinesframework.org/pnotify/
  * Copyright (c) 2009-2012 Hunter Perrin
@@ -30,10 +30,10 @@
 				closer: "ui-icon ui-icon-close",
 				pin_up: "ui-icon ui-icon-pin-w",
 				pin_down: "ui-icon ui-icon-pin-s",
-				history_menu: "ui-state-default ui-corner-bottom",
-				history_button: "ui-state-default ui-corner-all",
-				history_button_hover: "ui-state-hover",
-				history_handle: "ui-icon ui-icon-grip-dotted-horizontal"
+				hi_menu: "ui-state-default ui-corner-bottom",
+				hi_btn: "ui-state-default ui-corner-all",
+				hi_btnhov: "ui-state-hover",
+				hi_hnd: "ui-icon ui-icon-grip-dotted-horizontal"
 			},
 			bootstrap: {
 				container: "alert",
@@ -48,10 +48,10 @@
 				closer: "icon-remove",
 				pin_up: "icon-pause",
 				pin_down: "icon-play",
-				history_menu: "well",
-				history_button: "btn",
-				history_button_hover: "",
-				history_handle: "icon-chevron-down"
+				hi_menu: "well",
+				hi_btn: "btn",
+				hi_btnhov: "",
+				hi_hnd: "icon-chevron-down"
 			}
 		};
 	// Set global variables.
@@ -244,7 +244,7 @@
 				pnotify.container.addClass("ui-pnotify-shadow");
 
 			// The current version of Pines Notify.
-			pnotify.pnotify_version = "1.2.0dev";
+			pnotify.pnotify_version = "1.2.0";
 
 			// This function is for updating the notice.
 			pnotify.pnotify = function(options) {
@@ -293,6 +293,7 @@
 					else
 						pnotify.text_container.html(opts.insert_brs ? String(opts.text).replace(/\n/g, "<br />") : opts.text).slideDown(200);
 				}
+				// Update values for history menu access.
 				pnotify.pnotify_history = opts.history;
 				pnotify.pnotify_hide = opts.hide;
 				// Change the notice type.
@@ -723,20 +724,20 @@
 				var history_menu = jwindow.data("pnotify_history");
 				if (typeof history_menu == "undefined") {
 					history_menu = $("<div />", {
-						"class": "ui-pnotify-history-container "+styles.history_menu,
+						"class": "ui-pnotify-history-container "+styles.hi_menu,
 						"mouseleave": function(){
 							history_menu.animate({top: "-"+history_handle_top+"px"}, {duration: 100, queue: false});
 						}
 					})
 					.append($("<div />", {"class": "ui-pnotify-history-header", "text": "Redisplay"}))
 					.append($("<button />", {
-							"class": "ui-pnotify-history-all "+styles.history_button,
+							"class": "ui-pnotify-history-all "+styles.hi_btn,
 							"text": "All",
 							"mouseenter": function(){
-								$(this).addClass(styles.history_button_hover);
+								$(this).addClass(styles.hi_btnhov);
 							},
 							"mouseleave": function(){
-								$(this).removeClass(styles.history_button_hover);
+								$(this).removeClass(styles.hi_btnhov);
 							},
 							"click": function(){
 								// Display all notices. (Disregarding non-history notices.)
@@ -753,13 +754,13 @@
 							}
 					}))
 					.append($("<button />", {
-							"class": "ui-pnotify-history-last "+styles.history_button,
+							"class": "ui-pnotify-history-last "+styles.hi_btn,
 							"text": "Last",
 							"mouseenter": function(){
-								$(this).addClass(styles.history_button_hover);
+								$(this).addClass(styles.hi_btnhov);
 							},
 							"mouseleave": function(){
-								$(this).removeClass(styles.history_button_hover);
+								$(this).removeClass(styles.hi_btnhov);
 							},
 							"click": function(){
 								// Look up the last history notice, and display it.
@@ -785,7 +786,7 @@
 
 					// Make a handle so the user can pull down the history tab.
 					var handle = $("<span />", {
-						"class": "ui-pnotify-history-pulldown "+styles.history_handle,
+						"class": "ui-pnotify-history-pulldown "+styles.hi_hnd,
 						"mouseenter": function(){
 							history_menu.animate({top: "0"}, {duration: 100, queue: false});
 						}
