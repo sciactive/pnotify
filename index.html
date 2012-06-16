@@ -25,7 +25,7 @@
 	<!-- Theme Switcher Widget -->
 	<script type="text/javascript" src="http://jqueryui.com/themeroller/themeswitchertool/"></script>
 	<!-- Bootstrap -->
-	<link href="includes/bootstrap/css/bootstrap.normal.css" id="bootstrap-css" rel="stylesheet" type="text/css" />
+	<link href="includes/bootstrap/css/bootstrap.css" id="bootstrap-css" rel="stylesheet" type="text/css" />
 	<link href="includes/bootstrap/css/bootstrap-responsive.css" rel="stylesheet" type="text/css" />
 	<script type="text/javascript" src="includes/bootstrap/js/bootstrap.min.js"></script>
 	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -729,7 +729,7 @@
 					<span class="caret"></span>
 				</a>
 				<ul class="dropdown-menu pull-right">
-					<li><a href="javascript:void(0);" onclick="$('#bootstrap-current').text('Normal'); $('#bootstrap-css').attr('href', 'includes/bootstrap/css/bootstrap.normal.css');">Normal</a></li>
+					<li><a href="javascript:void(0);" onclick="$('#bootstrap-current').text('Normal'); $('#bootstrap-css').attr('href', 'includes/bootstrap/css/bootstrap.css');">Normal</a></li>
 					<li class="divider"></li>
 					<li><a href="javascript:void(0);" onclick="$('#bootstrap-current').text('Amelia'); $('#bootstrap-css').attr('href', 'includes/bootstrap/css/bootstrap.amelia.css');">Amelia</a></li>
 					<li><a href="javascript:void(0);" onclick="$('#bootstrap-current').text('Cerulean'); $('#bootstrap-css').attr('href', 'includes/bootstrap/css/bootstrap.cerulean.css');">Cerulean</a></li>
@@ -810,6 +810,11 @@ $(function(){
 	});
 });
 &lt;/script&gt;</pre>
+				<p>
+					And if you choose to use jQuery UI for all your styling,
+					include this line somewhere before your first notice:
+				</p>
+				<pre class="prettyprint">$.pnotify.defaults.styling = "jqueryui";</pre>
 				<p>
 					And if you don't want the history pull-down menu in the top
 					corner, include this line somewhere before your first notice:
