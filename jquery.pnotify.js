@@ -805,6 +805,7 @@
 			// Mark the stack so it won't animate the new notice.
 			opts.stack.animation = false;
 
+                        if(opts.history && !opts.history_only)
 			// Display the notice.
 			pnotify.pnotify_display();
 
@@ -872,6 +873,8 @@
 		nonblock_opacity: .2,
 		// Display a pull down menu to redisplay previous notices, and place the notice in the history.
 		history: true,
+		// Add notifications to the history without having to display them.
+		history_only: false,
 		// Width of the notice.
 		width: "300px",
 		// Minimum height of the notice. It will expand to fit content.
