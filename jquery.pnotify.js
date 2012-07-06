@@ -805,10 +805,10 @@
 			// Mark the stack so it won't animate the new notice.
 			opts.stack.animation = false;
 
-                        if(opts.history && !opts.history_only)
-			// Display the notice.
-			pnotify.pnotify_display();
-
+			if(!opts.history_only){
+				// Display the notice.
+				pnotify.pnotify_display();
+			}
 			return pnotify;
 		}
 	});
