@@ -81,3 +81,30 @@ width: 100%;
 display: block;
 margin: 0 auto;
 }
+/* Alternate stack initial positioning. */
+.ui-pnotify.stack-topleft {
+top: 25px;
+left: 25px;
+right: auto;
+}
+.ui-pnotify.stack-bottomleft {
+bottom: 25px;
+left: 25px;
+top: auto;
+right: auto;
+}
+.ui-pnotify.stack-bottomright {
+right: auto;
+top: auto;
+}
+.ui-pnotify.stack-bar-top {
+right: 0;
+top: 0;
+}
+.ui-pnotify.stack-bar-bottom {
+margin-left: 15%;
+right: 0;
+bottom: 0;
+top: auto;
+left: auto;
+}
