@@ -38,7 +38,7 @@ Now you can use Pines Notify like this:
     </script>
 
 And if you choose to use jQuery UI for all your styling, include this line somewhere before your first notice:
-* `$.pnotify.defaults.styling = \"jqueryui";`
+* `$.pnotify.defaults.styling = "jqueryui";`
 
 And if you don't want the history pull-down menu in the top corner, include this line somewhere before your first notice:
 * `$.pnotify.defaults.history = false;`
