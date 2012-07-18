@@ -2,7 +2,7 @@
 Document   : jquery.pnotify.default.css
 Created on : Nov 23, 2009, 3:14:10 PM
 Author     : Hunter Perrin
-Version    : 1.2.0
+Version    : 1.2.2
 Link       : http://pinesframework.org/pnotify/
 Description:
 	Default styling for Pines Notify jQuery plugin.
@@ -82,29 +82,11 @@ display: block;
 margin: 0 auto;
 }
 /* Alternate stack initial positioning. */
-.ui-pnotify.stack-topleft {
-top: 25px;
+.ui-pnotify.stack-topleft, .ui-pnotify.stack-bottomleft {
 left: 25px;
 right: auto;
 }
-.ui-pnotify.stack-bottomleft {
+.ui-pnotify.stack-bottomright, .ui-pnotify.stack-bottomleft {
 bottom: 25px;
-left: 25px;
 top: auto;
-right: auto;
-}
-.ui-pnotify.stack-bottomright {
-right: auto;
-top: auto;
-}
-.ui-pnotify.stack-bar-top {
-right: 0;
-top: 0;
-}
-.ui-pnotify.stack-bar-bottom {
-margin-left: 15%;
-right: 0;
-bottom: 0;
-top: auto;
-left: auto;
 }

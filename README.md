@@ -1,7 +1,9 @@
 Introduction
-===========
+============
 
-Pines Notify is a JavaScript notification plugin, developed by Hunter Perrin as part of Pines. It is designed to provide an unparalleled level of flexibility, while still being very easy to implement and use.
+Pines Notify is a JavaScript notification plugin, developed by Hunter Perrin as
+part of Pines. It is designed to provide an unparalleled level of flexibility,
+while still being very easy to implement and use.
 
 See http://pinesframework.org/pnotify/ for more information and examples.
 
@@ -11,7 +13,7 @@ Requirements
 jQuery (1.4 or higher) and either Bootstrap CSS or a jQuery UI Theme.
 
 Getting Started
-==========
+===============
 
 Pines Notify comes with the following files:
 
@@ -21,60 +23,73 @@ Pines Notify comes with the following files:
 
 So here's how you'd include them all:
 
-    <script type="text/javascript" src="jquery.pnotify.min.js"></script>
-    <link href="jquery.pnotify.default.css" media="all" rel="stylesheet" type="text/css" />
-    <!-- Include this file if you are using Pines Icons. -->
-    <link href="jquery.pnotify.default.icons.css" media="all" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" src="jquery.pnotify.min.js"></script>
+	<link href="jquery.pnotify.default.css" media="all" rel="stylesheet" type="text/css" />
+	<!-- Include this file if you are using Pines Icons. -->
+	<link href="jquery.pnotify.default.icons.css" media="all" rel="stylesheet" type="text/css" />
 
 Now you can use Pines Notify like this:
 
-    <script type="text/javascript">
-    $(function(){
-    	$.pnotify({
-	    	title: 'Regular Notice',
-		    text: 'Check me out! I\'m a notice.'
-    	});
-    });
-    </script>
+	<script type="text/javascript">
+	$(function(){
+		$.pnotify({
+			title: 'Regular Notice',
+			text: 'Check me out! I\'m a notice.'
+		});
+	});
+	</script>
 
-And if you choose to use jQuery UI for all your styling, include this line somewhere before your first notice:
+And if you choose to use jQuery UI for **all** your styling, include this line somewhere before your first notice:
 * `$.pnotify.defaults.styling = "jqueryui";`
 
 And if you don't want the history pull-down menu in the top corner, include this line somewhere before your first notice:
 * `$.pnotify.defaults.history = false;`
 
 Stacks
-==========
+======
 
-A stack is an object which Pines Notify uses to determine where to position notices. A stack has two mandatory variables, `dir1` and `dir2`. `dir1` is the first direction in which the notices are stacked. When the notices run out of room in the window, they will move over in the direction specified by `dir2`. The directions can be `"up"`, `"down"`, `"right"`, or `"left"`. Stacks are independent of each other, so a stack doesn't know and doesn't care if it overlaps (and blocks) another stack. The default stack, which can be changed like any other default, goes down, then left. Stack objects are used and manipulated by Pines Notify, and therefore, should be a variable when passed. So, calling something like `$.pnotify({stack: {"dir1": "down", "dir2": "left"}});` will NOT work. It will create a notice, but that notice will be in its own stack and may overlap other notices.
+A stack is an object which Pines Notify uses to determine where to position notices. A stack has two mandatory variables, `dir1` and `dir2`. `dir1` is the first direction in which the notices are stacked. When the notices run out of room in the window, they will move over in the direction specified by `dir2`. The directions can be `"up"`, `"down"`, `"right"`, or `"left"`. Stacks are independent of each other, so a stack doesn't know and doesn't care if it overlaps (and blocks) another stack. The default stack, which can be changed like any other default, goes down, then left. Stack objects are used and manipulated by Pines Notify, and therefore, should be a variable when passed. So, calling something like `$.pnotify({stack: {"dir1": "down", "dir2": "left"}});` will **NOT** work. It will create a notice, but that notice will be in its own stack and may overlap other notices.
 
-This stack is initially positioned through code instead of CSS. This is done through two extra variables. `firstpos1` and `firstpos2` are pixel values, relative to a viewport edge. `dir1` and `dir2`, respectively, determine which edge. It is calculated as follows:
+Example Stacks
+--------------
+
+	var stack_topleft = {"dir1": "down", "dir2": "right", "push": "top"};
+	var stack_bottomleft = {"dir1": "right", "dir2": "up", "push": "top"};
+	var stack_custom = {"dir1": "right", "dir2": "down"};
+	var stack_custom2 = {"dir1": "left", "dir2": "up", "push": "top"};
+	var stack_bar_top = {"dir1": "down", "dir2": "right", "push": "top", "spacing1": 0, "spacing2": 0};
+	var stack_bar_bottom = {"dir1": "up", "dir2": "right", "spacing1": 0, "spacing2": 0};
+
+This stack is initially positioned through code instead of CSS.
+
+	var stack_bottomright = {"dir1": "up", "dir2": "left", "firstpos1": 25, "firstpos2": 25};
+
+This is done through two extra variables. `firstpos1` and `firstpos2` are pixel values, relative to a viewport edge. `dir1` and `dir2`, respectively, determine which edge. It is calculated as follows:
 
 * `dir = "up"` - firstpos is relative to the bottom of viewport.
 * `dir = "down"` - firstpos is relative to the top of viewport.
 * `dir = "right"` - firstpos is relative to the left of viewport.
 * `dir = "left"` - firstpos is relative to the right of viewport.
 
-To create a stack in the top left (default), define the stack:
+To create a stack in the top left, define the stack:
 
-    var stack_topleft = {"dir1": "down", "dir2": "right", "push": "top"};
+	var stack_topleft = {"dir1": "down", "dir2": "right"};
 		
-and then add two options to your pnotify options:
+and then add two options to your pnotify call:
 		
-    addclass: "stack-topleft",
-    stack: stack_topleft
+	addclass: "stack-topleft", // This is one of the included default classes.
+	stack: stack_topleft
 
-Some other useful position are:
+There are several CSS classes included which will position your notices for you:
 
-    var stack_bottomleft = {"dir1": "right", "dir2": "up", "push": "top"};
-    var stack_bar_top = {"dir1": "down", "dir2": "right", "push": "top", "spacing1": 0, "spacing2": 0};
-    var stack_bar_bottom = {"dir1": "up", "dir2": "right", "spacing1": 0, "spacing2": 0};
-    var stack_bottomright = {"dir1": "up", "dir2": "left", "firstpos1": 25, "firstpos2": 25};
+* `stack-topleft`
+* `stack-bottomleft`
+* `stack-bottomright`
 
-and you can obviously create your own custom position and movement by defining a custom stack.
+You can create your own custom position and movement by defining a custom stack.
 
 Configuration Defaults / Options
-==========
+================================
 
 * `title: false` - The notice's title.
 * `title_escape: false` - Whether to escape the content of the title. (Not allow HTML.)
@@ -86,6 +101,7 @@ Configuration Defaults / Options
 * `nonblock: false` - Create a non-blocking notice. It lets the user click elements underneath it.
 * `nonblock_opacity: .2` - The opacity of the notice (if it's non-blocking) when the mouse is over it.
 * `history: true` - Display a pull down menu to redisplay previous notices, and place the notice in the history.
+* `auto_display: true` - Display the notice when it is created. Turn this off to add notifications to the history without displaying them.
 * `width: "300px"` - Width of the notice.
 * `min_height: "16px"` - Minimum height of the notice. It will expand to fit content.
 * `type: "notice"` - Type of the notice. "notice", "info", "success", or "error".
@@ -106,6 +122,6 @@ Configuration Defaults / Options
 * `stack: {"dir1": "down", "dir2": "left", "push": "bottom", "spacing1": 25, "spacing2": 25}` - The stack on which the notices will be placed. Also controls the direction the notices stack.
 
 Additional Info
-==========
+===============
 
 For examples/demos see http://pinesframework.org/pnotify/

@@ -1,5 +1,5 @@
 /*
- * jQuery Pines Notify (pnotify) Plugin 1.2.0
+ * jQuery Pines Notify (pnotify) Plugin 1.2.2
  *
  * http://pinesframework.org/pnotify/
  * Copyright (c) 2009-2012 Hunter Perrin
@@ -244,7 +244,7 @@
 				pnotify.container.addClass("ui-pnotify-shadow");
 
 			// The current version of Pines Notify.
-			pnotify.pnotify_version = "1.2.0";
+			pnotify.pnotify_version = "1.2.2";
 
 			// This function is for updating the notice.
 			pnotify.pnotify = function(options) {
@@ -805,10 +805,10 @@
 			// Mark the stack so it won't animate the new notice.
 			opts.stack.animation = false;
 
-			if(!opts.history_only){
-				// Display the notice.
+			// Display the notice.
+			if (opts.auto_display)
 				pnotify.pnotify_display();
-			}
+
 			return pnotify;
 		}
 	});
@@ -873,8 +873,8 @@
 		nonblock_opacity: .2,
 		// Display a pull down menu to redisplay previous notices, and place the notice in the history.
 		history: true,
-		// Add notifications to the history without having to display them.
-		history_only: false,
+		// Display the notice when it is created. Turn this off to add notifications to the history without displaying them.
+		auto_display: true,
 		// Width of the notice.
 		width: "300px",
 		// Minimum height of the notice. It will expand to fit content.

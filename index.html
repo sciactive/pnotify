@@ -111,24 +111,15 @@
 			height: 33px;
 		}
 
-		/* Alternate stack initial positioning. */
-		.ui-pnotify.stack-topleft {
-			top: 25px;
-			left: 25px;
-			right: auto;
-		}
-		.ui-pnotify.stack-bottomleft {
-			bottom: 25px;
-			left: 25px;
-			top: auto;
-			right: auto;
-		}
-		/* This one is done through code, to show how it is done. Look down
-			at the stack_bottomright variable in the JavaScript below. */
+		/* Alternate stack initial positioning. This one is done through code,
+			to show how it is done. Look down at the stack_bottomright variable
+			in the JavaScript below. */
 		.ui-pnotify.stack-bottomright {
 			/* These are just CSS default values to reset the pnotify CSS. */
 			right: auto;
 			top: auto;
+			left: auto;
+			bottom: auto;
 		}
 		.ui-pnotify.stack-custom {
 			/* Custom values have to be in pixels, because the code parses them. */
@@ -150,7 +141,7 @@
 		}
 		.ui-pnotify.stack-bar-bottom {
 			margin-left: 15%;
-			right: 0;
+			right: auto;
 			bottom: 0;
 			top: auto;
 			left: auto;
@@ -401,8 +392,8 @@
 			*
 			* $.pnotify({stack: {"dir1": "down", "dir2": "left"}});
 			*
-			* will NOT work. It will create a notice, but that notice will be
-			* in its own stack and may overlap other notices.
+			* will **NOT** work. It will create a notice, but that notice will
+			* be in its own stack and may overlap other notices.
 			*/
 		var stack_topleft = {"dir1": "down", "dir2": "right", "push": "top"};
 		var stack_bottomleft = {"dir1": "right", "dir2": "up", "push": "top"};
@@ -754,7 +745,7 @@
 			<h1>Pines Notify</h1>
 			<p id="description">JavaScript notifications for Bootstrap or jQuery UI.</p>
 			<div>
-				<a class="btn btn-primary btn-large" href="https://sourceforge.net/projects/pines/files/pnotify/1.2/pnotify-1.2.0.zip/download" target="_blank">Download Pines Notify 1.2</a>
+				<a class="btn btn-primary btn-large" href="https://sourceforge.net/projects/pines/files/pnotify/1.2/pnotify-1.2.2.zip/download" target="_blank">Download Pines Notify 1.2</a>
 				<a class="right-button btn btn-large" href="http://github.com/sciactive/pnotify" target="_blank" title="Fork me on GitHub">Pines Notify on GitHub <img src="includes/github-icon.png" alt="GitHub Icon" /></a>
 				<br /><br />
 				<a style="margin: 0 8px;" data-toggle="modal" href="#using">Using Pines Notify</a>
@@ -931,7 +922,7 @@ $(function(){
 								<li>Changes:
 									<ul>
 										<li>With this version of Pines Notify, the "pnotify_"
-											prefix on options is no longer be necessary. It will
+											prefix on options is no longer necessary. It will
 											still work, so most of your current code should be
 											unaffected.</li>
 										<li>The way icons are specified has changed. Now there is
