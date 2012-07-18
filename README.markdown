@@ -86,6 +86,7 @@ Configuration Defaults / Options
 * `nonblock: false` - Create a non-blocking notice. It lets the user click elements underneath it.
 * `nonblock_opacity: .2` - The opacity of the notice (if it's non-blocking) when the mouse is over it.
 * `history: true` - Display a pull down menu to redisplay previous notices, and place the notice in the history.
+* `auto_display: true` - If the notification must be displayed automatically.
 * `width: "300px"` - Width of the notice.
 * `min_height: "16px"` - Minimum height of the notice. It will expand to fit content.
 * `type: "notice"` - Type of the notice. "notice", "info", "success", or "error".
