@@ -1,9 +1,7 @@
 Introduction
 ============
 
-Pines Notify is a JavaScript notification plugin, developed by Hunter Perrin as
-part of Pines. It is designed to provide an unparalleled level of flexibility,
-while still being very easy to implement and use.
+Pines Notify is a JavaScript notification plugin, developed by Hunter Perrin as part of Pines. It is designed to provide an unparalleled level of flexibility, while still being very easy to implement and use.
 
 See http://pinesframework.org/pnotify/ for more information and examples.
 
