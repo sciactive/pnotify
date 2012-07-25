@@ -71,6 +71,7 @@ z-index: 10000;
 }
 .ui-pnotify-history-container .ui-pnotify-history-header {
 padding: 2px;
+text-align: center;
 }
 .ui-pnotify-history-container button {
 cursor: pointer;
