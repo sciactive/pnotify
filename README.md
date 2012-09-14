@@ -118,7 +118,7 @@ Configuration Defaults / Options
 * `remove: true` - Remove the notice's elements from the DOM after it is removed.
 * `insert_brs: true` - Change new lines to br tags.
 * `stack: {"dir1": "down", "dir2": "left", "push": "bottom", "spacing1": 25, "spacing2": 25}` - The stack on which the notices will be placed. Also controls the direction the notices stack.
-* `global_text: {redisplay: "Redisplay", all: "All", last: "Last", close: "Close", stick: "Stick"}` - Lets you change the displayed text, facilitating the internationalization..
+* `labels: {redisplay: "Redisplay", all: "All", last: "Last", close: "Close", stick: "Stick"}` - Lets you change the displayed text, facilitating the internationalization..
 
 Additional Info
 ===============
