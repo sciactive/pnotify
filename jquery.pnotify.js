@@ -632,7 +632,7 @@
 					pnotify.closer.css("visibility", "hidden");
 				}
 			})
-			.append($("<span />", {"class": styles.closer, "title": opts.global_text.close}))
+			.append($("<span />", {"class": styles.closer, "title": opts.labels.close}))
 			.appendTo(pnotify.container);
 			if (!opts.closer || opts.nonblock)
 				pnotify.closer.css("display", "none");
@@ -653,7 +653,7 @@
 			.bind("pnotify_icon", function(){
 				$(this).children().removeClass(styles.pin_up+" "+styles.pin_down).addClass(opts.hide ? styles.pin_up : styles.pin_down);
 			})
-			.append($("<span />", {"class": styles.pin_up, "title": opts.global_text.stick}))
+			.append($("<span />", {"class": styles.pin_up, "title": opts.labels.stick}))
 			.appendTo(pnotify.container);
 			if (!opts.sticker || opts.nonblock)
 				pnotify.sticker.css("display", "none");
@@ -729,10 +729,10 @@
 							history_menu.animate({top: "-"+history_handle_top+"px"}, {duration: 100, queue: false});
 						}
 					})
-					.append($("<div />", {"class": "ui-pnotify-history-header", "text": opts.global_text.redisplay}))
+					.append($("<div />", {"class": "ui-pnotify-history-header", "text": opts.labels.redisplay}))
 					.append($("<button />", {
 							"class": "ui-pnotify-history-all "+styles.hi_btn,
-							"text": opts.global_text.all,
+							"text": opts.labels.all,
 							"mouseenter": function(){
 								$(this).addClass(styles.hi_btnhov);
 							},
@@ -755,7 +755,7 @@
 					}))
 					.append($("<button />", {
 							"class": "ui-pnotify-history-last "+styles.hi_btn,
-							"text": opts.global_text.last,
+							"text": opts.labels.last,
 							"mouseenter": function(){
 								$(this).addClass(styles.hi_btnhov);
 							},
@@ -912,7 +912,7 @@
 		// The stack on which the notices will be placed. Also controls the direction the notices stack.
 		stack: {"dir1": "down", "dir2": "left", "push": "bottom", "spacing1": 25, "spacing2": 25},
                 //Lets you change the displayed text, facilitating the internationalization.
-                global_text: {
+                labels: {
                     redisplay: "Redisplay", 
                     all: "All", 
                     last: "Last",
