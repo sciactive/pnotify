@@ -170,7 +170,7 @@
 					}
 					if (opts.nonblock) {
 						// If it's non-blocking, animate to the other opacity.
-						pnotify.animate({"opacity": opts.nonblock_opacity}, "fast");
+						pnotify.stop().animate({"opacity": opts.nonblock_opacity}, "fast");
 					}
 					// Stop the close timer.
 					if (opts.hide && opts.mouse_reset) pnotify.pnotify_cancel_remove();
@@ -184,7 +184,7 @@
 					pnotify.css("cursor", "auto");
 					// Animate back to the normal opacity.
 					if (opts.nonblock && animating != "out")
-						pnotify.animate({"opacity": opts.opacity}, "fast");
+						pnotify.stop().animate({"opacity": opts.opacity}, "fast");
 					// Start the close timer.
 					if (opts.hide && opts.mouse_reset) pnotify.pnotify_queue_remove();
 					// Hide the buttons.
