@@ -99,6 +99,7 @@ Configuration Defaults / Options
 * `nonblock: false` - Create a non-blocking notice. It lets the user click elements underneath it.
 * `nonblock_opacity: .2` - The opacity of the notice (if it's non-blocking) when the mouse is over it.
 * `history: true` - Display a pull down menu to redisplay previous notices, and place the notice in the history.
+* `maxonscreen: Infinity` - Maximum number of notifications to have onscreen.
 * `auto_display: true` - Display the notice when it is created. Turn this off to add notifications to the history without displaying them.
 * `width: "300px"` - Width of the notice.
 * `min_height: "16px"` - Minimum height of the notice. It will expand to fit content.
