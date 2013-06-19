@@ -537,19 +537,19 @@
 			};
 
 			// Remove the notice.
-			pnotify.pnotify_remove = function() {
+			pnotify.pnotify_remove = function(hide) {
 				if (pnotify.timer) {
 					window.clearTimeout(pnotify.timer);
 					pnotify.timer = null;
 				}
 				// Run callback.
 				if (opts.before_close) {
-					if (opts.before_close(pnotify) === false)
+					if (opts.before_close(pnotify, hide) === false)
 						return;
 				}
 				pnotify.animate_out(function(){
 					if (opts.after_close) {
-						if (opts.after_close(pnotify) === false)
+						if (opts.after_close(pnotify, hide) === false)
 							return;
 					}
 					pnotify.pnotify_queue_position();
@@ -618,7 +618,7 @@
 				// Cancel any current removal timer.
 				pnotify.pnotify_cancel_remove();
 				pnotify.timer = window.setTimeout(function(){
-					pnotify.pnotify_remove();
+					pnotify.pnotify_remove(true);
 				}, (isNaN(opts.delay) ? 0 : opts.delay));
 			};
 
@@ -627,7 +627,7 @@
 				"class": "ui-pnotify-closer",
 				"css": {"cursor": "pointer", "visibility": opts.closer_hover ? "hidden" : "visible"},
 				"click": function(){
-					pnotify.pnotify_remove();
+					pnotify.pnotify_remove(false);
 					pnotify.sticker.css("visibility", "hidden");
 					pnotify.closer.css("visibility", "hidden");
 				}
