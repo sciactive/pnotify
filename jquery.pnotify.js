@@ -439,8 +439,10 @@
 								animate.left = s.nextpos2+"px";
 								break;
 						}
-					} else
-						pnotify.css(csspos2, s.nextpos2+"px");
+					} else {
+						if(s.nextpos2)
+							pnotify.css(csspos2, s.nextpos2+"px");
+					}
 					// Keep track of the widest/tallest notice in the column/row, so we can push the next column/row.
 					switch (s.dir2) {
 						case "down":
