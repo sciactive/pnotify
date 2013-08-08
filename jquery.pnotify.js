@@ -479,7 +479,7 @@
 					}
 					// Run the animation.
 					if (animate.top || animate.bottom || animate.right || animate.left)
-						pnotify.animate(animate, {duration: 500, queue: false});
+						pnotify.animate(animate, {duration: this.opts.position_animate_speed, queue: false});
 					// Calculate the next dir1 position.
 					switch (s.dir1) {
 						case "down":
@@ -899,6 +899,8 @@
 		animation: "fade",
 		// Speed at which the notice animates in and out. "slow", "def" or "normal", "fast" or number of milliseconds.
 		animate_speed: "slow",
+		// Specify a specific duration of position animation
+		position_animate_speed: 500,
 		// Opacity of the notice.
 		opacity: 1,
 		// Display a drop shadow.

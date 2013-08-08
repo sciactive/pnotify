@@ -107,6 +107,7 @@ Configuration Defaults / Options
 * `icon: true` - Set icon to true to use the default icon for the selected style/type, false for no icon, or a string for your own icon class.
 * `animation: "fade"` - The animation to use when displaying and hiding the notice. "none", "show", "fade", and "slide" are built in to jQuery. Others require jQuery UI. Use an object with effect_in and effect_out to use different effects.
 * `animate_speed: "slow"` - Speed at which the notice animates in and out. "slow", "def" or "normal", "fast" or number of milliseconds.
+* `position_animate_speed: 500` - Specify a specific duration of position animation.
 * `opacity: 1` - Opacity of the notice.
 * `shadow: true` - Display a drop shadow.
 * `closer: true` - Provide a button for the user to manually close the notice.
