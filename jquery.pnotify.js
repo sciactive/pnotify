@@ -221,6 +221,9 @@
 					}
 				},
 				"click": function(e){
+					if (opts.close_click){
+						pnotify.pnotify_remove();
+					}
 					if (opts.nonblock) {
 						e.stopPropagation();
 						nonblock_pass(e, "onclick");
@@ -905,6 +908,8 @@
 		opacity: 1,
 		// Display a drop shadow.
 		shadow: true,
+		// Close the notice on mouse click
+		close_click: false,
 		// Provide a button for the user to manually close the notice.
 		closer: true,
 		// Only show the closer button on hover.
