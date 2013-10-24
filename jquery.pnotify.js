@@ -457,7 +457,7 @@
 							break;
 					}
 					// Move the notice on dir1.
-					if (s.nextpos1) {
+					if (s.nextpos1 || s.nextpos1 === 0) {
 						// Animate if we're moving toward the first pos.
 						if (s.animation && (curpos1 > s.nextpos1 || animate.top || animate.bottom || animate.right || animate.left)) {
 							switch (s.dir1) {
