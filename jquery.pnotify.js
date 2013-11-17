@@ -55,7 +55,7 @@
 			},
 			bootstrap3: {
 				container: "alert",
-				notice: "alert-info",
+				notice: "alert-warning",
 				notice_icon: "glyphicon glyphicon-exclamation-sign",
 				info: "alert-info",
 				info_icon: "glyphicon glyphicon-info-sign",
