@@ -52,6 +52,24 @@
 				hi_btn: "btn",
 				hi_btnhov: "",
 				hi_hnd: "icon-chevron-down"
+			},
+            font_awesome: {
+				container: "alert",
+				notice: "",
+				notice_icon: "fa fa-exclamation-circle",
+				info: "alert-info",
+				info_icon: "fa fa-info",
+				success: "alert-success",
+				success_icon: "fa fa-check",
+				error: "alert-error",
+				error_icon: "fa fa-warning",
+				closer: "fa fa-times",
+				pin_up: "fa fa-pause",
+				pin_down: "fa fa-play",
+				hi_menu: "well",
+				hi_btn: "btn",
+				hi_btnhov: "",
+				hi_hnd: "fa fa-chevron-down"
 			}
 		};
 	// Set global variables.
