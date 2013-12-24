@@ -21,21 +21,25 @@ Pines Notify comes with the following files:
 
 So here's how you'd include them all:
 
-	<script type="text/javascript" src="jquery.pnotify.min.js"></script>
-	<link href="jquery.pnotify.default.css" media="all" rel="stylesheet" type="text/css" />
-	<!-- Include this file if you are using Pines Icons. -->
-	<link href="jquery.pnotify.default.icons.css" media="all" rel="stylesheet" type="text/css" />
+```html
+<script type="text/javascript" src="jquery.pnotify.min.js"></script>
+<link href="jquery.pnotify.default.css" media="all" rel="stylesheet" type="text/css" />
+<!-- Include this file if you are using Pines Icons. -->
+<link href="jquery.pnotify.default.icons.css" media="all" rel="stylesheet" type="text/css" />
+```
 
 Now you can use Pines Notify like this:
 
-	<script type="text/javascript">
+```html
+<script type="text/javascript">
 	$(function(){
 		$.pnotify({
 			title: 'Regular Notice',
 			text: 'Check me out! I\'m a notice.'
 		});
 	});
-	</script>
+</script>
+```
 
 And if you choose to use jQuery UI for **all** your styling, include this line somewhere before your first notice:
 * `$.pnotify.defaults.styling = "jqueryui";`
@@ -51,12 +55,14 @@ A stack is an object which Pines Notify uses to determine where to position noti
 Example Stacks
 --------------
 
-	var stack_topleft = {"dir1": "down", "dir2": "right", "push": "top"};
-	var stack_bottomleft = {"dir1": "right", "dir2": "up", "push": "top"};
-	var stack_custom = {"dir1": "right", "dir2": "down"};
-	var stack_custom2 = {"dir1": "left", "dir2": "up", "push": "top"};
-	var stack_bar_top = {"dir1": "down", "dir2": "right", "push": "top", "spacing1": 0, "spacing2": 0};
-	var stack_bar_bottom = {"dir1": "up", "dir2": "right", "spacing1": 0, "spacing2": 0};
+```js
+var stack_topleft = {"dir1": "down", "dir2": "right", "push": "top"};
+var stack_bottomleft = {"dir1": "right", "dir2": "up", "push": "top"};
+var stack_custom = {"dir1": "right", "dir2": "down"};
+var stack_custom2 = {"dir1": "left", "dir2": "up", "push": "top"};
+var stack_bar_top = {"dir1": "down", "dir2": "right", "push": "top", "spacing1": 0, "spacing2": 0};
+var stack_bar_bottom = {"dir1": "up", "dir2": "right", "spacing1": 0, "spacing2": 0};
+```
 
 This stack is initially positioned through code instead of CSS.
 
