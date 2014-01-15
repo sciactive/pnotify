@@ -547,19 +547,19 @@
 			};
 
 			// Remove the notice.
-			pnotify.pnotify_remove = function(hide) {
+			pnotify.pnotify_remove = function(timer_hide) {
 				if (pnotify.timer) {
 					window.clearTimeout(pnotify.timer);
 					pnotify.timer = null;
 				}
 				// Run callback.
 				if (opts.before_close) {
-					if (opts.before_close(pnotify, hide) === false)
+					if (opts.before_close(pnotify, timer_hide) === false)
 						return;
 				}
 				pnotify.animate_out(function(){
 					if (opts.after_close) {
-						if (opts.after_close(pnotify, hide) === false)
+						if (opts.after_close(pnotify, timer_hide) === false)
 							return;
 					}
 					pnotify.pnotify_queue_position();

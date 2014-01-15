@@ -1440,13 +1440,15 @@ $(function(){
 						after_open: function(pnotify){
 							dont_alert('I\'m called after the notice opens. I\'m passed the pnotify object for the current notice: '+pnotify);
 						},
-						before_close: function(pnotify){
+						before_close: function(pnotify, timer_hide){
 							var source_note = 'Return false to cancel close. Use pnotify.pnotify_queue_remove() to set the removal timer again.';
 							dont_alert('I\'m called before the notice closes. I\'m passed the pnotify object for the current notice: '+pnotify);
+							dont_alert('I also have an argument called timer_hide, which is true if the notice was closed because the timer ran down. Value: '+timer_hide);
 						},
-						after_close: function(pnotify){
+						after_close: function(pnotify, timer_hide){
 							var source_note = 'Return false to cancel removal from the DOM.';
 							dont_alert('I\'m called after the notice closes. I\'m passed the pnotify object for the current notice: '+pnotify);
+							dont_alert('I also have an argument called timer_hide, which is true if the notice was closed because the timer ran down. Value: '+timer_hide);
 						}
 					});">Notice with Callbacks</button>
 					<br style="margin-bottom: 5px;" />
