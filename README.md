@@ -8,7 +8,7 @@ See http://pinesframework.org/pnotify/ for more information and examples.
 Requirements
 ============
 
-jQuery (1.4 or higher) and either Bootstrap CSS or a jQuery UI Theme.
+jQuery (1.4 or higher) and either Bootstrap CSS (2 or 3) or a jQuery UI Theme.
 
 Getting Started
 ===============
@@ -39,9 +39,6 @@ Now you can use Pines Notify like this:
 
 And if you choose to use jQuery UI for **all** your styling, include this line somewhere before your first notice:
 * `$.pnotify.defaults.styling = "jqueryui";`
-
-If you use Bootstrap 3, include this line somewhere before your first notice:
-* `$.pnotify.defaults.styling = "bootstrap3";`
 
 And if you don't want the history pull-down menu in the top corner, include this line somewhere before your first notice:
 * `$.pnotify.defaults.history = false;`

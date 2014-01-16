@@ -36,40 +36,23 @@
 				hi_hnd: "ui-icon ui-icon-grip-dotted-horizontal"
 			},
 			bootstrap: {
-				container: "alert",
-				notice: "",
-				notice_icon: "icon-exclamation-sign",
-				info: "alert-info",
-				info_icon: "icon-info-sign",
-				success: "alert-success",
-				success_icon: "icon-ok-sign",
-				error: "alert-error",
-				error_icon: "icon-warning-sign",
-				closer: "icon-remove",
-				pin_up: "icon-pause",
-				pin_down: "icon-play",
-				hi_menu: "well",
-				hi_btn: "btn",
-				hi_btnhov: "",
-				hi_hnd: "icon-chevron-down"
-			},
-			bootstrap3: {
+				// support for bootstrap2 and bootstrap2. First, the bootstrap3 classes are put (glyphicon*), then the bootstrap2 classes
 				container: "alert",
 				notice: "alert-warning",
-				notice_icon: "glyphicon glyphicon-exclamation-sign",
-				info: "alert-info",
-				info_icon: "glyphicon glyphicon-info-sign",
+				notice_icon: "glyphicon glyphicon-exclamation-sign icon-exclamation-sign",
+				info: "glyphicon glyphicon-info-sign alert-info",
+				info_icon: "icon-info-sign",
 				success: "alert-success",
-				success_icon: "glyphicon glyphicon-ok-sign",
-				error: "alert-danger",
-				error_icon: "glyphicon glyphicon-warning-sign",
-				closer: "glyphicon glyphicon-remove",
-				pin_up: "glyphicon glyphicon-pause",
-				pin_down: "glyphicon glyphicon-play",
+				success_icon: "glyphicon glyphicon-ok-sign icon-ok-sign",
+				error: "alert-danger alert-error", // bootstrap2: alert-error
+				error_icon: "glyphicon glyphicon-warning-sign icon-warning-sign",
+				closer: "glyphicon glyphicon-remove icon-remove",
+				pin_up: "glyphicon glyphicon-pause icon-pause",
+				pin_down: "glyphicon glyphicon-play icon-play",
 				hi_menu: "well",
-				hi_btn: "btn btn-default",
+				hi_btn: "btn-default btn",
 				hi_btnhov: "",
-				hi_hnd: "glyphicon glyphicon-chevron-down"
+				hi_hnd: "glyphicon glyphicon-chevron-down icon-chevron-down"
 			}
 		};
 	// Set global variables.
