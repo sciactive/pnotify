@@ -43,6 +43,7 @@ margin-left: .2em;
 .ui-pnotify-title {
 display: block;
 margin-bottom: .4em;
+margin-top: 0;
 }
 .ui-pnotify-text {
 display: block;

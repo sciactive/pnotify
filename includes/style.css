@@ -117,3 +117,8 @@ pre.prettyprint {
 	border-radius: 0;
 	padding: .4em;
 }
+
+/* Custom */
+.panel .btn {
+	margin-top: 5px;
+}
