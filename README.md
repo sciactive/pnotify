@@ -1,9 +1,9 @@
 Introduction
 ============
 
-Pines Notify is a JavaScript notification plugin, developed by Hunter Perrin as part of Pines. It is designed to provide an unparalleled level of flexibility, while still being very easy to implement and use.
+PNotify is a JavaScript notification plugin, developed by SciActive. Formerly known as Pines Notify. It is designed to provide an unparalleled level of flexibility, while still being very easy to implement and use.
 
-See http://pinesframework.org/pnotify/ for more information and examples.
+See http://sciactive.com/pnotify/ for more information and examples.
 
 Requirements
 ============
@@ -13,20 +13,20 @@ jQuery (1.4 or higher) and either Bootstrap CSS or a jQuery UI Theme.
 Getting Started
 ===============
 
-Pines Notify comes with the following files:
+PNotify comes with the following files:
 
 * `jquery.pnotify.js` & `jquery.pnotify.min.js` (Minified) - The main JavaScript. 
 * `jquery.pnotify.default.css` - The main stylesheet. 
-* `jquery.pnotify.default.icons.css` - Use this to support Pines Icon styles.
+* `jquery.pnotify.default.icons.css` - Use this to support PIcon styles.
 
 So here's how you'd include them all:
 
 	<script type="text/javascript" src="jquery.pnotify.min.js"></script>
 	<link href="jquery.pnotify.default.css" media="all" rel="stylesheet" type="text/css" />
-	<!-- Include this file if you are using Pines Icons. -->
+	<!-- Include this file if you are using PIcons. -->
 	<link href="jquery.pnotify.default.icons.css" media="all" rel="stylesheet" type="text/css" />
 
-Now you can use Pines Notify like this:
+Now you can use PNotify like this:
 
 	<script type="text/javascript">
 	$(function(){
@@ -49,7 +49,7 @@ And if you don't want the history pull-down menu in the top corner, include this
 Stacks
 ======
 
-A stack is an object which Pines Notify uses to determine where to position notices. A stack has two mandatory variables, `dir1` and `dir2`. `dir1` is the first direction in which the notices are stacked. When the notices run out of room in the window, they will move over in the direction specified by `dir2`. The directions can be `"up"`, `"down"`, `"right"`, or `"left"`. Stacks are independent of each other, so a stack doesn't know and doesn't care if it overlaps (and blocks) another stack. The default stack, which can be changed like any other default, goes down, then left. Stack objects are used and manipulated by Pines Notify, and therefore, should be a variable when passed. So, calling something like `$.pnotify({stack: {"dir1": "down", "dir2": "left"}});` will **NOT** work. It will create a notice, but that notice will be in its own stack and may overlap other notices.
+A stack is an object which PNotify uses to determine where to position notices. A stack has two mandatory variables, `dir1` and `dir2`. `dir1` is the first direction in which the notices are stacked. When the notices run out of room in the window, they will move over in the direction specified by `dir2`. The directions can be `"up"`, `"down"`, `"right"`, or `"left"`. Stacks are independent of each other, so a stack doesn't know and doesn't care if it overlaps (and blocks) another stack. The default stack, which can be changed like any other default, goes down, then left. Stack objects are used and manipulated by PNotify, and therefore, should be a variable when passed. So, calling something like `$.pnotify({stack: {"dir1": "down", "dir2": "left"}});` will **NOT** work. It will create a notice, but that notice will be in its own stack and may overlap other notices.
 
 Example Stacks
 --------------
@@ -128,4 +128,4 @@ Configuration Defaults / Options
 Additional Info
 ===============
 
-For examples/demos see http://pinesframework.org/pnotify/
+For examples/demos see http://sciactive.com/pnotify/

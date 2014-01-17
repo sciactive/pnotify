@@ -1,7 +1,7 @@
 /*
- * jQuery Pines Notify (pnotify) Plugin 1.2.2
+ * jQuery PNotify Plugin 1.2.2
  *
- * http://pinesframework.org/pnotify/
+ * http://sciactive.com/pnotify/
  * Copyright (c) 2009-2012 Hunter Perrin
  *
  * Triple license under the GPL, LGPL, and MPL:
@@ -274,7 +274,7 @@
 			if (opts.shadow)
 				pnotify.container.addClass("ui-pnotify-shadow");
 
-			// The current version of Pines Notify.
+			// The current version of PNotify.
 			pnotify.pnotify_version = "1.2.2";
 
 			// This function is for updating the notice.

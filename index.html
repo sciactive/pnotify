@@ -2,15 +2,15 @@
 <html lang="en" xmlns:og="http://ogp.me/ns#" xmlns:fb="https://www.facebook.com/2008/fbml">
 <head>
 	<meta charset="utf-8"/>
-	<title>Pines Notify</title>
+	<title>PNotify</title>
 	<meta name="HandheldFriendly" content="true" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta name="description" content="JavaScript (jQuery) notification plugin." />
-	<meta property="og:title" content="Pines Notify" />
+	<meta property="og:title" content="PNotify" />
 	<meta property="og:type" content="website" />
-	<meta property="og:url" content="http://pinesframework.org/pnotify/" />
-	<meta property="og:image" content="http://pinesframework.org/pnotify/includes/github-icon.png" />
-	<meta property="og:site_name" content="Pines Notify" />
+	<meta property="og:url" content="http://sciactive.com/pnotify/" />
+	<meta property="og:image" content="http://sciactive.com/pnotify/includes/github-icon.png" />
+	<meta property="og:site_name" content="PNotify" />
 	<meta property="fb:admins" content="508999194" />
 	<meta property="og:description" content="JavaScript (jQuery) notification plugin." />
 	<!-- Dev Notice -->
@@ -40,7 +40,7 @@
 	<link href="includes/google-code-prettify/prettify.css" rel="stylesheet" type="text/css" />
 	<script type="text/javascript" src="includes/google-code-prettify/prettify.js"></script>
 	<script type="text/javascript" src="includes/beautify.js"></script>
-	<!-- Pines Notify -->
+	<!-- PNotify -->
 	<script type="text/javascript" src="jquery.pnotify.js"></script>
 	<link href="jquery.pnotify.default.css" rel="stylesheet" type="text/css" />
 	<link href="jquery.pnotify.default.icons.css" rel="stylesheet" type="text/css" />
@@ -159,7 +159,7 @@
 			$.pnotify.defaults.styling = "bootstrap3";
 
 			$.pnotify({
-				title: "Pines Notify",
+				title: "PNotify",
 				text: "Welcome. Try hovering over me. You can click things behind me, because I'm non-blocking.",
 				nonblock: true,
 				before_close: function(pnotify){
@@ -188,7 +188,7 @@
 					animate_speed: 100,
 					opacity: .9,
 					icon: "ui-icon ui-icon-comment",
-					// Setting stack to false causes Pines Notify to ignore this notice when positioning.
+					// Setting stack to false causes PNotify to ignore this notice when positioning.
 					stack: false,
 					after_init: function(pnotify){
 						// Remove the notice if the user mouses over it.
@@ -381,7 +381,7 @@
 		}
 
 		/*********** Custom Stacks ***********
-			* A stack is an object which Pines Notify uses to determine where
+			* A stack is an object which PNotify uses to determine where
 			* to position notices. A stack has two mandatory variables, dir1
 			* and dir2. dir1 is the first direction in which the notices are
 			* stacked. When the notices run out of room in the window, they
@@ -390,7 +390,7 @@
 			* of each other, so a stack doesn't know and doesn't care if it
 			* overlaps (and blocks) another stack. The default stack, which can
 			* be changed like any other default, goes down, then left. Stack
-			* objects are used and manipulated by Pines Notify, and therefore,
+			* objects are used and manipulated by PNotify, and therefore,
 			* should be a variable when passed. So, calling something like
 			*
 			* $.pnotify({stack: {"dir1": "down", "dir2": "left"}});
@@ -610,7 +610,7 @@
 				return;
 			}
 			info_box = $.pnotify({
-				title: "Pines Notify Stacks",
+				title: "PNotify Stacks",
 				text: "Stacks are used to position notices and determine where new notices will go when they're created. Each notice that's placed into a stack will be positioned related to the other notices in that stack. There is no limit to the number of stacks, and no limit to the number of notices in each stack.",
 				type: "info",
 				icon: "fa fa-bars",
@@ -645,7 +645,7 @@
 			});
 		};
 	</script>
-	<!-- Pines Form (For the form notice.) -->
+	<!-- PForm (For the form notice.) -->
 	<link href="includes/pform.css" media="all" rel="stylesheet" type="text/css" />
 	<link href="includes/pform-bootstrap.css" media="all" rel="stylesheet" type="text/css" />
 	<!--[if lt IE 8]>
@@ -681,7 +681,7 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="http://pinesframework.org/pnotify/">Pines Notify</a>
+			<a class="navbar-brand" href="http://sciactive.com/pnotify/">PNotify</a>
 		</div>
 
 		<!-- Collect the nav links, forms, and other content for toggling -->
@@ -695,18 +695,14 @@
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Beyond Pines Notify <b class="caret"></b></a>
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Beyond PNotify <b class="caret"></b></a>
 					<ul class="dropdown-menu">
-						<li><a href="http://pinesframework.org/" target="_blank">Pines Framework</a></li>
-						<li><a href="http://pinescms.org/" target="_blank">Pines CMS</a></li>
+						<li><a href="http://sciactive.com/" target="_blank">SciActive</a></li>
+						<li><a href="http://wonderphp.org/" target="_blank">WonderPHP</a></li>
 						<li class="divider"></li>
-						<li><a href="http://pinesframework.org/pform/" target="_blank">Pines Form</a></li>
-						<li><a href="http://pinesframework.org/pgrid/" target="_blank">Pines Grid</a></li>
-						<li><a href="http://pinesframework.org/ptags/" target="_blank">Pines Tags</a></li>
-						<li class="divider"></li>
-						<li>
-							<a href="http://sourceforge.net/projects/pines" target="_blank"><img src="http://sflogo.sourceforge.net/sflogo.php?group_id=264165&amp;type=13" width="120" height="30" alt="Get Pines at SourceForge.net. Fast, secure and Free Open Source software downloads" style="border: none;" /></a>
-						</li>
+						<li><a href="http://sciactive.com/pform/" target="_blank">PForm</a></li>
+						<li><a href="http://sciactive.com/pgrid/" target="_blank">PGrid</a></li>
+						<li><a href="http://sciactive.com/ptags/" target="_blank">PTags</a></li>
 					</ul>
 				</li>
 			</ul>
@@ -743,22 +739,22 @@
 	</div>
 	<div class="container">
 		<div class="page-banner">
-			<h1>Pines Notify</h1>
+			<h1>PNotify</h1>
 			<p id="description">JavaScript notifications for Bootstrap or jQuery UI.</p>
 			<div>
-				<a class="btn btn-primary btn-large" href="https://sourceforge.net/projects/pines/files/pnotify/1.2/pnotify-1.2.2.zip/download" target="_blank">Download Pines Notify 1.2</a>
-				<a class="right-button btn btn-default btn-large" href="http://github.com/sciactive/pnotify" target="_blank" title="Fork me on GitHub">Pines Notify on GitHub <img src="includes/github-icon.png" alt="GitHub Icon" /></a>
+				<a class="btn btn-primary btn-large" href="https://sourceforge.net/projects/pines/files/pnotify/1.2/pnotify-1.2.2.zip/download" target="_blank">Download PNotify 1.2</a>
+				<a class="right-button btn btn-default btn-large" href="http://github.com/sciactive/pnotify" target="_blank" title="Fork me on GitHub">PNotify on GitHub <img src="includes/github-icon.png" alt="GitHub Icon" /></a>
 				<br /><br />
-				<a style="margin: 0 8px;" data-toggle="modal" href="#using">Using Pines Notify</a>
+				<a style="margin: 0 8px;" data-toggle="modal" href="#using">Using PNotify</a>
 				<a style="margin: 0 8px;" href="https://github.com/sciactive/pnotify/issues?state=open" target="_blank">Issue Tracker</a>
 				<a style="margin: 0 8px;" href="https://github.com/sciactive/pnotify/issues/new" target="_blank">Bug Report/Feature Request</a>
 				<br /><br />
 				<!-- AddThis Button BEGIN -->
-				<div class="addthis_toolbox addthis_default_style " addthis:url="http://pinesframework.org/pnotify/" style="display: table; margin: 0pt auto;">
+				<div class="addthis_toolbox addthis_default_style " addthis:url="http://sciactive.com/pnotify/" style="display: table; margin: 0pt auto;">
 					<a class="addthis_button_facebook_like" fb:like:layout="button_count" style="margin-right: 12px;"></a>
 					<a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
 					<a class="addthis_button_tweet"></a>
-					<a class="addthis_button_twitter_follow_native" tw:screen_name="pinesframework"></a>
+					<a class="addthis_button_twitter_follow_native" tw:screen_name="wonderphp"></a>
 					<a class="addthis_counter addthis_pill_style"></a>
 				</div>
 				<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=ra-4fa2edbb6da70bd1"></script>
@@ -770,31 +766,31 @@
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-						<h4 class="modal-title" id="using-title">Using Pines Notify</h4>
+						<h4 class="modal-title" id="using-title">Using PNotify</h4>
 					</div>
 					<div class="modal-body">
 						<p>
-							Pines Notify comes with the following files:<br />
+							PNotify comes with the following files:<br />
 							<br />
 							<code>jquery.pnotify.js</code> &amp; <code>jquery.pnotify.min.js</code> (Minified) - The main JavaScript.
 							<br />
 							<code>jquery.pnotify.default.css</code> - The main stylesheet.
 							<br />
-							<code>jquery.pnotify.default.icons.css</code> - Use this to support Pines Icon styles.
+							<code>jquery.pnotify.default.icons.css</code> - Use this to support PIcon styles.
 						</p>
 						<p>
 							So here's how you'd include them all:
 						</p>
 						<pre class="prettyprint">&lt;script type="text/javascript" src="jquery.pnotify<em>.min</em>.js"&gt;&lt;/script&gt;
 &lt;link href="jquery.pnotify.default.css" media="all" rel="stylesheet" type="text/css" /&gt;
-&lt;!-- Include this file if you are using Pines Icons. --&gt;
+&lt;!-- Include this file if you are using PIcons. --&gt;
 &lt;link href="jquery.pnotify.default.icons.css" media="all" rel="stylesheet" type="text/css" /&gt;</pre>
 						<p>
 							You also need to include jQuery (1.4 or higher) and either Bootstrap CSS or a jQuery UI Theme.
 							<small>If you want to use jQuery UI effect animations, you also need to include the jQuery UI JavaScript.</small>
 						</p>
 						<p>
-							Now you can use Pines Notify like this:
+							Now you can use PNotify like this:
 						</p>
 						<pre class="prettyprint">&lt;script type="text/javascript"&gt;
 $(function(){
@@ -842,7 +838,7 @@ $(function(){
 								This is the development site. It's a playground for
 								bleeding edge features and code that probably won't
 								work. You should head over to the
-								<a href="http://pinesframework.org/pnotify/" class="btn btn-success">Main Site</a>
+								<a href="http://sciactive.com/pnotify/" class="btn btn-success">Main Site</a>
 							</p>
 						</div>
 					</div>
@@ -852,9 +848,9 @@ $(function(){
 						<div class="alert-block">
 							<h3><i class="glyphicon glyphicon-book" style="position: relative; top: 3px;"></i> About</h3>
 							<p>
-								Pines Notify is a JavaScript notification plugin, developed
-								by Hunter Perrin as part of
-								<a href="http://pinesframework.org/">Pines</a>.
+								PNotify is a JavaScript notification plugin, developed
+								by <a href="http://sciactive.com">SciActive</a>.
+								Formerly known as Pines Notify.
 								It is designed to provide an unparalleled level of
 								flexibility, while still being very easy to implement and
 								use.
@@ -865,7 +861,7 @@ $(function(){
 						<div class="alert-block">
 							<h3><i class="glyphicon glyphicon-list-alt" style="position: relative; top: 3px;"></i> Cross-Browser</h3>
 							<p>
-								Pines Notify works in all major browsers and provides
+								PNotify works in all major browsers and provides
 								a consistent interface. It is tested thoroughly for
 								consistency.
 							</p>
@@ -877,7 +873,7 @@ $(function(){
 						<div class="alert-block">
 							<h3><i class="glyphicon glyphicon-asterisk" style="position: relative; top: 3px;"></i> Unobtrusive</h3>
 							<p>
-								Pines Notify can provide <strong>non-blocking</strong> notices.
+								PNotify can provide <strong>non-blocking</strong> notices.
 								This allows the user to click elements behind the notice without
 								even having to dismiss it.
 							</p>
@@ -890,7 +886,7 @@ $(function(){
 						<div class="alert-block">
 							<h3><i class="glyphicon glyphicon-picture" style="position: relative; top: 3px;"></i> Themeable</h3>
 							<p>
-								Pines Notify uses either Bootstrap or jQuery UI for styling, which
+								PNotify uses either Bootstrap or jQuery UI for styling, which
 								means it is fully and easily themeable. Try out some of the
 								readymade themes using the selector in the top right corner
 								of this page.
@@ -904,7 +900,7 @@ $(function(){
 						<div class="alert-block">
 							<h3><i class="glyphicon glyphicon-gift" style="position: relative; top: 3px;"></i> Completely Open</h3>
 							<p>
-								Pines Notify is distributed under the
+								PNotify is distributed under the
 								<a href="http://www.gnu.org/licenses/gpl.html" target="_blank">GPL</a>,
 								<a href="http://www.gnu.org/licenses/lgpl.html" target="_blank">LGPL</a>,
 								and
@@ -936,13 +932,13 @@ $(function(){
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-						<h4 class="modal-title" id="feature-modal-title">Pines Notify Features</h4>
+						<h4 class="modal-title" id="feature-modal-title">PNotify Features</h4>
 					</div>
 					<div class="modal-body">
 						<ul>
 							<li>Rich graphical features and effects.
 								<ul>
-									<li>jQuery UI, Bootstrap, Pines, and any other CSS based icons.</li>
+									<li>jQuery UI, Bootstrap, PIcon, and any other CSS based icons.</li>
 									<li>Timed hiding with visual effects.</li>
 									<li>Standard and custom effects.</li>
 									<li>Add custom classes for individual notice styling.</li>
@@ -989,7 +985,7 @@ $(function(){
 				<h3 class="panel-title">Wait! Choose Your Styling</h3>
 			</div>
 			<div class="panel-body">
-				Pines Notify offers two styling methods. Each uses a different
+				PNotify offers two styling methods. Each uses a different
 				CSS library.
 				<div class="btn-toolbar">
 					<div class="btn-group" data-toggle="buttons-radio">
@@ -1130,10 +1126,10 @@ $(function(){
 						<button class="btn btn-default source" onclick="$.pnotify(Math.round(Math.random()*9999));">Number Notice</button>
 
 						<button class="btn btn-default source" onclick="$.pnotify({
-							title: 'Pines Icon Notice',
-							text: 'I have an icon that uses the Pines icon styles.',
+							title: 'PIcon Notice',
+							text: 'I have an icon that uses the PIcon styles.',
 							icon: 'picon picon-mail-unread-new'
-						});">Pines Icon Notice</button>
+						});">PIcon Notice</button>
 						<button class="btn btn-default source" onclick="$.pnotify({
 							title: 'jQuery UI Icon Notice',
 							text: 'I have an icon that uses the jQuery UI icon styles.',
@@ -1174,11 +1170,11 @@ $(function(){
 							shadow: false
 						});">No Shadow Info</button>
 						<button class="btn btn-default source" onclick="$.pnotify({
-							title: 'Pines Icon Info',
+							title: 'PIcon Info',
 							text: 'Something is encrypted. Check out my icon, it shows that you\'re secure because our encryption uses padlocks.',
 							type: 'info',
 							icon: 'picon picon-document-encrypt'
-						});">Pines Icon Info</button>
+						});">PIcon Info</button>
 						<button class="btn btn-default source" onclick="$.pnotify({
 							title: 'jQuery UI Icon Info',
 							text: 'Something is encrypted. Check out my icon, it shows that you\'re secure because our encryption uses padlocks.',
@@ -1216,11 +1212,11 @@ $(function(){
 							shadow: false
 						});">No Shadow Success</button>
 						<button class="btn btn-default source" onclick="$.pnotify({
-							title: 'Pines Icon Success',
+							title: 'PIcon Success',
 							text: 'We reached the moon first! See, we planted a flag.',
 							type: 'success',
 							icon: 'picon picon-flag-green'
-						});">Pines Icon Success</button>
+						});">PIcon Success</button>
 						<button class="btn btn-default source" onclick="$.pnotify({
 							title: 'jQuery UI Icon Success',
 							text: 'We reached the moon first! See, we planted a flag.',
@@ -1258,11 +1254,11 @@ $(function(){
 							shadow: false
 						});">No Shadow Error</button>
 						<button class="btn btn-default source" onclick="$.pnotify({
-							title: 'Pines Icon Error',
+							title: 'PIcon Error',
 							text: 'Oh no. Something\'s wrong with your network, and I\'m showing you visually using an appropriate icon to indicate the type of error that has occured. You know, network.',
 							type: 'error',
 							icon: 'picon picon-network-wireless'
-						});">Pines Icon Error</button>
+						});">PIcon Error</button>
 						<button class="btn btn-default source" onclick="$.pnotify({
 							title: 'jQuery UI Icon Error',
 							text: 'Oh no. Something\'s wrong with your network, and I\'m showing you visually using an appropriate icon to indicate the type of error that has occured. You know, network.',
@@ -1945,7 +1941,7 @@ $(function(){
 						<h3 class="panel-title">Consuming the Alert Function</h3>
 					</div>
 					<div class="panel-body">
-						This isn't really a feature of Pines Notify, but it's cool.
+						This isn't really a feature of PNotify, but it's cool.
 						<ol>
 							<li style="margin-bottom: 1em;"><button class="btn btn-default source" onclick="alert('I\'m a standard alert, called with alert().')">Display a JavaScript Alert</button></li>
 							<li style="margin-bottom: 1em;"><button class="btn btn-default source" onclick="consume_alert();">Consume alert()</button></li>
@@ -1962,7 +1958,7 @@ $(function(){
 					</div>
 					<div class="panel-body">
 						<p>
-							The Pines Notify plugin can use either
+							The PNotify plugin can use either
 							<a href="http://jqueryui.com/" target="_blank">jQuery UI</a>
 							or <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter
 							Bootstrap</a> to style its look and feel, including colors
@@ -1995,15 +1991,15 @@ $(function(){
 											&lt;span class="ui-icon ui-icon-info"&gt;&lt;/span&gt;
 										</div>
 										&lt;/div&gt;<br />
-										&lt;h4 class="<strong>ui-pnotify-title</strong>"&gt;Pines Notify&lt;/h4&gt;<br />
-										&lt;div class="<strong>ui-pnotify-text</strong>"&gt;Welcome to Pines Notify.&lt;/div&gt;
+										&lt;h4 class="<strong>ui-pnotify-title</strong>"&gt;PNotify&lt;/h4&gt;<br />
+										&lt;div class="<strong>ui-pnotify-text</strong>"&gt;Welcome to PNotify.&lt;/div&gt;
 									</div>
 									&lt;/div&gt;
 								</div>
 								&lt;/div&gt;
 							</div>
 							<div class="alert alert-info">
-								Note: This is a sample of markup generated by Pines Notify, not markup you should use to create a notice. You don't need markup for that.
+								Note: This is a sample of markup generated by PNotify, not markup you should use to create a notice. You don't need markup for that.
 							</div>
 						</div>
 					</div>
