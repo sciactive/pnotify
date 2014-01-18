@@ -36,7 +36,7 @@ body .pf-form .pf-heading * {
 /* Mobile */
 @media (max-width: 768px) {
 	.page-banner {
-		padding: 30px 0 20px;
+		padding: 80px 0 20px;
 	}
 	.page-banner h1 {
 		font-size: 35px;
@@ -66,40 +66,6 @@ body .pf-form .pf-heading * {
 		display: none; /* Facebook's code makes a horizontal scrollbar. Grr. */
 	}
 }
-/* Tablet */
-@media (min-width: 768px) and (max-width: 980px) {
-	.page-banner {
-		float: left;
-		width: 20%;
-		padding: 5px 0;
-	}
-	.page-banner h1 {
-		font-size: 25px;
-		line-height: 25px;
-	}
-	.page-banner p {
-		font-size: 14px;
-		line-height: 16px;
-		margin-top: 10px;
-	}
-	.page-banner .btn-large {
-		margin-top: 30px;
-		font-size: 14px;
-	}
-	.page-banner .right-button {
-		margin-left: 0;
-	}
-	.page-points {
-		float: right;
-		width: 80%;
-	}
-	.page-points .row-fluid {
-		margin-bottom: 10px;
-	}
-	#sections {
-		clear: both;
-	}
-}
 
 /* Source View */
 .ui-dialog.sourcecode {
@@ -116,9 +82,4 @@ pre.prettyprint {
 	-o-border-radius: 0;
 	border-radius: 0;
 	padding: .4em;
-}
-
-/* Custom */
-.panel .btn {
-	margin-top: 5px;
 }

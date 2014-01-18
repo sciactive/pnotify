@@ -82,6 +82,9 @@
 		.btn-toolbar .btn-group {
 			vertical-align: middle;
 		}
+		.panel .btn {
+			margin-top: 5px;
+		}
 
 		/* Custom styled notice CSS */
 		.ui-pnotify.custom .ui-pnotify-container {
@@ -673,39 +676,41 @@
 </head>
 <body id="page" data-spy="scroll" data-target=".navbar">
 	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-		<!-- Brand and toggle get grouped for better mobile display -->
-		<div class="navbar-header">
-			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
-				<span class="sr-only">Toggle navigation</span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			</button>
-			<a class="navbar-brand" href="http://sciactive.com/pnotify/">PNotify</a>
-		</div>
+		<div class="container">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="http://sciactive.com/pnotify/">PNotify</a>
+			</div>
 
-		<!-- Collect the nav links, forms, and other content for toggling -->
-		<div class="collapse navbar-collapse" id="navbar-collapse-1">
-			<ul class="nav navbar-nav">
-				<li class="active"><a href="#page">Overview</a></li>
-				<li><a href="#demos-simple">Simple Demos</a></li>
-				<li><a href="#demos-advanced">Advanced Demos</a></li>
-				<li><a href="#theming">Theming</a></li>
-				<li><a href="#comments">Comments</a></li>
-			</ul>
-			<ul class="nav navbar-nav navbar-right">
-				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Beyond PNotify <b class="caret"></b></a>
-					<ul class="dropdown-menu">
-						<li><a href="http://sciactive.com/" target="_blank">SciActive</a></li>
-						<li><a href="http://wonderphp.org/" target="_blank">WonderPHP</a></li>
-						<li class="divider"></li>
-						<li><a href="http://sciactive.com/pform/" target="_blank">PForm</a></li>
-						<li><a href="http://sciactive.com/pgrid/" target="_blank">PGrid</a></li>
-						<li><a href="http://sciactive.com/ptags/" target="_blank">PTags</a></li>
-					</ul>
-				</li>
-			</ul>
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse" id="navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<li class="active"><a href="#page">Overview</a></li>
+					<li><a href="#demos-simple">Simple Demos</a></li>
+					<li><a href="#demos-advanced">Advanced Demos</a></li>
+					<li><a href="#theming">Theming</a></li>
+					<li><a href="#comments">Comments</a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Beyond PNotify <b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li><a href="http://sciactive.com/" target="_blank">SciActive</a></li>
+							<li><a href="http://wonderphp.org/" target="_blank">WonderPHP</a></li>
+							<li class="divider"></li>
+							<li><a href="http://sciactive.com/pform/" target="_blank">PForm</a></li>
+							<li><a href="http://sciactive.com/pgrid/" target="_blank">PGrid</a></li>
+							<li><a href="http://sciactive.com/ptags/" target="_blank">PTags</a></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
 		</div>
 	</nav>
 	<div id="switcher-container">
@@ -829,8 +834,8 @@ $(function(){
 			</div>
 		</div>
 		<div class="page-points">
-			<div class="container-fluid">
-				<div class="row-fluid dev-note" style="display: none;">
+			<div class="container">
+				<div class="row dev-note" style="display: none;">
 					<div class="col-sm-6 col-sm-offset-3">
 						<div class="alert alert-danger">
 							<h3 style="margin-top: 0;"><i class="glyphicon glyphicon-exclamation-sign" style="position: relative; top: 3px;"></i> Caution warning danger attention!</h3>
@@ -843,7 +848,7 @@ $(function(){
 						</div>
 					</div>
 				</div>
-				<div class="row-fluid">
+				<div class="row">
 					<div class="col-sm-8">
 						<div class="alert-block">
 							<h3><i class="glyphicon glyphicon-book" style="position: relative; top: 3px;"></i> About</h3>
@@ -868,7 +873,7 @@ $(function(){
 						</div>
 					</div>
 				</div>
-				<div class="row-fluid">
+				<div class="row">
 					<div class="col-sm-4">
 						<div class="alert-block">
 							<h3><i class="glyphicon glyphicon-asterisk" style="position: relative; top: 3px;"></i> Unobtrusive</h3>
@@ -911,7 +916,7 @@ $(function(){
 						</div>
 					</div>
 				</div>
-				<div class="row-fluid stable-note" style="display: none;">
+				<div class="row stable-note" style="display: none;">
 					<div class="col-sm-3">&nbsp;</div>
 					<div class="col-sm-6 col-sm-offset-3">
 						<div class="alert alert-success">
@@ -1960,7 +1965,7 @@ $(function(){
 						<p>
 							The PNotify plugin can use either
 							<a href="http://jqueryui.com/" target="_blank">jQuery UI</a>
-							or <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter
+							or <a href="http://getbootstrap.com/" target="_blank">Twitter
 							Bootstrap</a> to style its look and feel, including colors
 							and background textures. We recommend using the
 							<a href="http://jqueryui.com/themeroller/" target="_blank">ThemeRoller tool</a>
