@@ -76,7 +76,7 @@
 	 * uses icons from http://fontawesome.io/
 	 * version 4.0.3
 	 */
-	styling.fontawesome = styling.bootstrap3;
+	styling.fontawesome = $.extend({}, styling.bootstrap3);
 	styling.fontawesome.notice_icon = "fa fa-exclamation-circle";
 	styling.fontawesome.info_icon = "fa fa-info";
 	styling.fontawesome.success_icon = "fa fa-check";
