@@ -773,28 +773,20 @@
 								$(this).removeClass(styles.hi_btnhov);
 							},
 							"click": function(){
-								// Get notices
-								var notices = jwindow.data("pnotify");
-								if (notices == null) {
-									return false;
-								}
-
-								var pushTop = ($.pnotify.defaults.stack.push == "top");
-
 								// Look up the last history notice, and display it.
-								var i = (pushTop ? 0 : -1);
-
+								var i = -1;
 								var notice;
 								do {
 									if (i == -1)
-										notice = notices.slice(i);
+										notice = notices_data.slice(i);
 									else
-										notice = notices.slice(i, i + 1);
+										notice = notices_data.slice(i, i+1);
 									if (!notice[0])
-										return false;
-
-									i = (pushTop ? i + 1 : i - 1);
+										break;
+									i--;
 								} while (!notice[0].pnotify_history || notice[0].is(":visible"));
+								if (!notice[0])
+									return false;
 								if (notice[0].pnotify_display)
 									notice[0].pnotify_display();
 								return false;
