@@ -115,7 +115,7 @@ Configuration Defaults / Options
 * `title_escape: false` - Whether to escape the content of the title. (Not allow HTML.)
 * `text: false` - The notice's text.
 * `text_escape: false` - Whether to escape the content of the text. (Not allow HTML.)
-* `styling: "bootstrap"` - What styling classes to use. (Can be either jqueryui or bootstrap.)
+* `styling: "bootstrap"` - What styling classes to use. (Can be either jqueryui, bootstrap, bootstrap3, fontawesome, or a custom style object. See the source for the properties in a style object.)
 * `addclass: ""` - Additional classes to be added to the notice. (For custom styling.)
 * `cornerclass: ""` - Class to be added to the notice for corner styling.
 * `nonblock: false` - Create a non-blocking notice. It lets the user click elements underneath it.
