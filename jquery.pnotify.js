@@ -750,13 +750,8 @@
 								$(this).removeClass(styles.hi_btnhov);
 							},
 							"click": function(){
-								// Gets notices
-								var notices = jwindow.data("pnotify");
-								if (notices == null)
-									return false;
-									
 								// Display all notices. (Disregarding non-history notices.)
-								$.each(notices, function(){
+								$.each(notices_data, function(){
 									if (this.pnotify_history) {
 										if (this.is(":visible")) {
 											if (this.pnotify_hide)
