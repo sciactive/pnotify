@@ -355,6 +355,38 @@
 				}, 120);
 			}, 2000);
 		}
+		
+		function show_confirm_dialog() {
+			function confirm_dialog(title, text, callback, buttons) {
+				if (typeof buttons !== "object") {
+					buttons = {
+						"Ok": true,
+						"Cancel": false
+					}
+				}
+				var notice;
+				text = $('<div>'+text+'<br style="clear: both;" /><div class="button-container" style="margin-top: 10px; text-align: right;"></div></div>');
+				$.each(buttons, function(b, val){
+					text.find("div.button-container")
+					.append($('<button style="margin-left: 5px;" class="btn btn-default btn-small">'+b+'</button>').click(function(){
+						notice.pnotify_remove();
+						callback.call(notice, val);
+					}));
+				});
+				notice = $.pnotify({
+					title: title,
+					text: text,
+					insert_brs: false,
+					closer: false,
+					sticker: false,
+					hide: false,
+					history: false,
+					icon: 'glyphicon glyphicon-question-sign'
+				});
+			}
+			
+			confirm_dialog('Confirmation Needed', 'Are you sure?', function(answer){ alert(answer ? 'Ok, cool.' : 'Oh ok. Chicken, I see.'); });
+		}
 
 		function timed_notices(n) {
 			var start_time = new Date().getTime(),
@@ -1437,6 +1469,7 @@ $(function(){
 								</div>
 							</form>
 						</div>
+						<button class="btn btn-default source" onclick="show_confirm_dialog();">Confirm Dialog</button>
 						<button class="btn btn-default source" onclick="var dont_alert = function(){};
 						$.pnotify({
 							title: 'I\'m Here',
