@@ -1475,6 +1475,14 @@ $(function(){
 								return;
 							notice.pnotify({type: 'success', text: 'Yay, you clicked me!&lt;div style=&quot;text-align: center;&quot;&gt;&lt;img src=&quot;http://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Happy_smiley_face.png/240px-Happy_smiley_face.png&quot; /&gt;&lt;/div&gt;'});
 						});">Click Notice</button>
+						<button class="btn btn-default source" onclick="var notice = $.pnotify({
+							title: 'Click Close Notice',
+							text: 'Click me anywhere to dismiss me.',
+							closer: false,
+							sticker: false
+						}).click(function(){
+							notice.pnotify_remove();
+						});">Click Close Notice</button>
 						<button class="btn btn-default source" onclick="$.pnotify({
 							title: 'Big Notice',
 							text: 'Check me out! I\'m tall and wide, even though my text isn\'t.',
