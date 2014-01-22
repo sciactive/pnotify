@@ -42,13 +42,22 @@ Now you can use PNotify like this:
 ```
 
 And if you choose to use jQuery UI for **all** your styling, include this line somewhere before your first notice:
-* `$.pnotify.defaults.styling = "jqueryui";`
+
+```js
+$.pnotify.defaults.styling = "jqueryui";
+```
 
 If you use Bootstrap 3, include this line somewhere before your first notice:
-* `$.pnotify.defaults.styling = "bootstrap3";`
+
+```js
+$.pnotify.defaults.styling = "bootstrap3";
+```
 
 And if you don't want the history pull-down menu in the top corner, include this line somewhere before your first notice:
-* `$.pnotify.defaults.history = false;`
+
+```js
+$.pnotify.defaults.history = false;
+```
 
 Stacks
 ======
@@ -69,7 +78,9 @@ var stack_bar_bottom = {"dir1": "up", "dir2": "right", "spacing1": 0, "spacing2"
 
 This stack is initially positioned through code instead of CSS.
 
-	var stack_bottomright = {"dir1": "up", "dir2": "left", "firstpos1": 25, "firstpos2": 25};
+```js
+var stack_bottomright = {"dir1": "up", "dir2": "left", "firstpos1": 25, "firstpos2": 25};
+```
 
 This is done through two extra variables. `firstpos1` and `firstpos2` are pixel values, relative to a viewport edge. `dir1` and `dir2`, respectively, determine which edge. It is calculated as follows:
 
@@ -80,7 +91,9 @@ This is done through two extra variables. `firstpos1` and `firstpos2` are pixel 
 
 To create a stack in the top left, define the stack:
 
-	var stack_topleft = {"dir1": "down", "dir2": "right"};
+```js
+var stack_topleft = {"dir1": "down", "dir2": "right"};
+```
 		
 and then add two options to your pnotify call:
 		
