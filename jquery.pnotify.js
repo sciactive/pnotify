@@ -183,7 +183,12 @@
 			};
 
 			// Get our styling object.
-			var styles = styling[opts.styling];
+			var styles;
+			if (typeof opts.styling == "object") {
+				styles = opts.styling;
+			} else {
+				styles = styling[opts.styling];
+			}
 
 			// Create our widget.
 			// Stop animation, reset the removal timer, and show the close
