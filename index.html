@@ -25,8 +25,7 @@
 	<!-- Theme Switcher Widget -->
 	<script type="text/javascript" src="http://jqueryui.com/themeroller/themeswitchertool/"></script>
 	<!-- Bootstrap -->
-	<link href="includes/bootstrap3/css/bootstrap.css" rel="stylesheet" type="text/css" />
-	<link href="includes/bootstrap3/css/bootstrap-theme.css" id="bootstrap-css" rel="stylesheet" type="text/css" />
+	<link href="includes/bootstrap3/css/bootstrap.css" id="bootstrap-css" rel="stylesheet" type="text/css" />
 	<script type="text/javascript" src="includes/bootstrap/js/bootstrap.min.js"></script>
 	<!-- Font Awesome -->
 	<link href="includes/font-awesome-4.0.3/css/font-awesome.css" rel="stylesheet" type="text/css" />
@@ -50,9 +49,7 @@
 			position: fixed;
 			top: 60px;
 			right: 5px;
-		}
-		#switcher-bootstrap .dropdown-menu {
-			z-index: 10000;
+			z-index: 100;
 		}
 		@media (max-width: 980px) {
 			#switcher-container {
@@ -692,7 +689,7 @@
 			text-align: right;
 		}
 		.pform_custom div.pf-element .pf-group {
-				margin-left: 130px; /* Same as width of labels. */
+			margin-left: 130px; /* Same as width of labels. */
 		}
 		.pform_custom div.pf-buttons {
 			padding-left: 115px; /* Width of labels + margin to inputs - button spacing. */
@@ -707,7 +704,7 @@
 	<![endif]-->
 </head>
 <body id="page" data-spy="scroll" data-target=".navbar">
-	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+	<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
 		<div class="container">
 			<!-- Brand and toggle get grouped for better mobile display -->
 			<div class="navbar-header">
@@ -753,23 +750,44 @@
 					<span class="caret"></span>
 				</a>
 				<ul class="dropdown-menu pull-right">
-					<li><a href="javascript:void(0);" onclick="$('#bootstrap-current').text('Normal'); $('#bootstrap-css').attr('href', 'includes/bootstrap3/css/bootstrap-theme.css');">Normal</a></li>
+					<li><a href="javascript:void(0);" data-theme="normal">Normal</a></li>
 					<li class="divider"></li>
-					<li><a href="javascript:void(0);" onclick="$('#bootstrap-current').text('Amelia'); $('#bootstrap-css').attr('href', 'includes/bootstrap3/css/bootstrap-amelia.css');">Amelia</a></li>
-					<li><a href="javascript:void(0);" onclick="$('#bootstrap-current').text('Cerulean'); $('#bootstrap-css').attr('href', 'includes/bootstrap3/css/bootstrap-cerulean.css');">Cerulean</a></li>
-					<li><a href="javascript:void(0);" onclick="$('#bootstrap-current').text('Cosmo'); $('#bootstrap-css').attr('href', 'includes/bootstrap3/css/bootstrap-cosmo.css');">Cosmo</a></li>
-					<li><a href="javascript:void(0);" onclick="$('#bootstrap-current').text('Cyborg'); $('#bootstrap-css').attr('href', 'includes/bootstrap3/css/bootstrap-cyborg.css');">Cyborg</a></li>
-					<li><a href="javascript:void(0);" onclick="$('#bootstrap-current').text('Flatly'); $('#bootstrap-css').attr('href', 'includes/bootstrap3/css/bootstrap-flatly.css');">Flatly</a></li>
-					<li><a href="javascript:void(0);" onclick="$('#bootstrap-current').text('Journal'); $('#bootstrap-css').attr('href', 'includes/bootstrap3/css/bootstrap-journal.css');">Journal</a></li>
-					<li><a href="javascript:void(0);" onclick="$('#bootstrap-current').text('Readable'); $('#bootstrap-css').attr('href', 'includes/bootstrap3/css/bootstrap-readable.css');">Readable</a></li>
-					<li><a href="javascript:void(0);" onclick="$('#bootstrap-current').text('Simplex'); $('#bootstrap-css').attr('href', 'includes/bootstrap3/css/bootstrap-simplex.css');">Simplex</a></li>
-					<li><a href="javascript:void(0);" onclick="$('#bootstrap-current').text('Slate'); $('#bootstrap-css').attr('href', 'includes/bootstrap3/css/bootstrap-slate.css');">Slate</a></li>
-					<li><a href="javascript:void(0);" onclick="$('#bootstrap-current').text('Spacelab'); $('#bootstrap-css').attr('href', 'includes/bootstrap3/css/bootstrap-spacelab.css');">Spacelab</a></li>
-					<li><a href="javascript:void(0);" onclick="$('#bootstrap-current').text('United'); $('#bootstrap-css').attr('href', 'includes/bootstrap3/css/bootstrap-united.css');">United</a></li>
-					<li><a href="javascript:void(0);" onclick="$('#bootstrap-current').text('Yeti'); $('#bootstrap-css').attr('href', 'includes/bootstrap3/css/bootstrap-yeti.css');">Yeti</a></li>
+					<li><a href="javascript:void(0);" data-theme="amelia">Amelia</a></li>
+					<li><a href="javascript:void(0);" data-theme="cerulean">Cerulean</a></li>
+					<li><a href="javascript:void(0);" data-theme="cosmo">Cosmo</a></li>
+					<li><a href="javascript:void(0);" data-theme="cupid">Cupid</a></li>
+					<li><a href="javascript:void(0);" data-theme="cyborg">Cyborg</a></li>
+					<li><a href="javascript:void(0);" data-theme="flatly">Flatly</a></li>
+					<li><a href="javascript:void(0);" data-theme="journal">Journal</a></li>
+					<li><a href="javascript:void(0);" data-theme="lumen">Lumen</a></li>
+					<li><a href="javascript:void(0);" data-theme="pinkiepie">Pinkie Pie</a></li>
+					<li><a href="javascript:void(0);" data-theme="readable">Readable</a></li>
+					<li><a href="javascript:void(0);" data-theme="simplex">Simplex</a></li>
+					<li><a href="javascript:void(0);" data-theme="slate">Slate</a></li>
+					<li><a href="javascript:void(0);" data-theme="spacelab">Spacelab</a></li>
+					<li><a href="javascript:void(0);" data-theme="superhero">Superhero</a></li>
+					<li><a href="javascript:void(0);" data-theme="united">United</a></li>
+					<li><a href="javascript:void(0);" data-theme="yeti">Yeti</a></li>
 					<li class="divider"></li>
-					<li><a href="http://bootswatch.com/" target="_blank">Themes by Bootswatch</a></li>
+					<li><a href="http://bootswatch.com/" target="_blank">Certain Themes by Bootswatch</a></li>
 				</ul>
+				<script type="text/javascript">
+					$(function(){
+						var reset = function(){
+							setTimeout(function(){
+								var y = $(".navbar").height() + 10;
+								$("#switcher-container").css('top', y+'px');
+							}, 500);
+						};
+						reset();
+						$('#switcher-bootstrap').on('click', 'a[data-theme]', function(){
+							var $this = $(this),
+								theme = $this.attr('data-theme');
+							$('#bootstrap-current').text($this.text()); $('#bootstrap-css').attr('href', 'includes/bootstrap3/css/bootstrap'+(theme==='normal'?'':'-'+theme)+'.css');
+							reset();
+						});
+					});
+				</script>
 			</div>
 		</div>
 		<div id="switcher-jqueryui" class="hide"></div>
