@@ -271,8 +271,17 @@
 			});
 			pnotify.opts = opts;
 			// Create a container for the notice contents.
-			pnotify.container = $("<div />", {"class": styles.container+" ui-pnotify-container "+(opts.type == "error" ? styles.error : (opts.type == "info" ? styles.info : (opts.type == "success" ? styles.success : styles.notice)))})
-			.appendTo(pnotify);
+			var stateClass;
+                        if (opts.state) {
+                            stateClass = 'ui-state-' + opts.state;
+                        } else if (styles[opts.type]) {
+                            stateClass = styles[opts.type];
+                        } else {
+                            stateClass = styles.notice;
+                        }
+			pnotify.container = $("<div />", {
+                            "class": styles.container + " ui-pnotify-container " + stateClass
+                        }).appendTo(pnotify);
 			if (opts.cornerclass != "")
 				pnotify.container.removeClass("ui-corner-all").addClass(opts.cornerclass);
 			// Create a drop shadow.
