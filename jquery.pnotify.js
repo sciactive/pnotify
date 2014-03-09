@@ -610,12 +610,15 @@
 					// If we're supposed to remove the notice from the DOM, do it.
 					if (opts.remove)
 						pnotify.detach();
-					// Remove object from notices_data (issue #49)
-					var notices_data = jwindow.data("pnotify");
-					if (notices_data!=null) {
-						var idx = $.inArray(pnotify,notices_data);
-						if (idx!==-1) {
-							notices_data.splice(idx,1);
+					// Remove object from notices_data to prevent memory leak (issue #49)
+					// unless history is on
+					if (!opts.history) {
+						var notices_data = jwindow.data("pnotify");
+						if (notices_data!=null) {
+							var idx = $.inArray(pnotify,notices_data);
+							if (idx!==-1) {
+								notices_data.splice(idx,1);
+							}
 						}
 					}
 				});
