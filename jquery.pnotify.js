@@ -972,14 +972,20 @@
 		// Change new lines to br tags.
 		insert_brs: true,
 		// The stack on which the notices will be placed. Also controls the direction the notices stack.
-		stack: {"dir1": "down", "dir2": "left", "push": "bottom", "spacing1": 25, "spacing2": 25},
-                //Lets you change the displayed text, facilitating the internationalization.
-                labels: {
-                    redisplay: "Redisplay",
-                    all: "All",
-                    last: "Last",
-                    close: "Close",
-                    stick: "Stick"
-                }
+		stack: {
+			dir1: "down",
+			dir2: "left",
+			push: "bottom",
+			spacing1: 25,
+			spacing2: 25
+		},
+		// The various displayed text, helps facilitating internationalization.
+		labels: {
+			redisplay: "Redisplay",
+			all: "All",
+			last: "Last",
+			close: "Close",
+			stick: "Stick"
+		}
 	};
 }));
