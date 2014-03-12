@@ -10,7 +10,17 @@
  *	  http://www.mozilla.org/MPL/MPL-1.1.html
  */
 
-(function($) {
+// Uses AMD or browser globals to create a jQuery plugin.
+
+(function (factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define(['jquery'], factory);
+    } else {
+        // Browser globals
+        factory(jQuery);
+    }
+}(function($) {
 	var history_handle_top,
 		timer,
 		body,
@@ -899,7 +909,7 @@
 			this.fireEvent(e, event_object);
 		}
 	};
-        
+
 	$.pnotify.defaults = {
 		// The notice's title.
 		title: false,
@@ -965,11 +975,11 @@
 		stack: {"dir1": "down", "dir2": "left", "push": "bottom", "spacing1": 25, "spacing2": 25},
                 //Lets you change the displayed text, facilitating the internationalization.
                 labels: {
-                    redisplay: "Redisplay", 
-                    all: "All", 
+                    redisplay: "Redisplay",
+                    all: "All",
                     last: "Last",
                     close: "Close",
                     stick: "Stick"
                 }
 	};
-})(jQuery);
+}));
