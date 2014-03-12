@@ -561,11 +561,11 @@
                 	// Oldest are normally in front of array, or if stack.push=="top" then
                 	// they are at the end of the array! (issue #98)
                 	var el;
-                	if (opts.stack.push != "top")
+                	if (opts.stack.push !== "top")
                 		el = notices_data.slice(0, notices_data.length - opts.maxonscreen);
                 	else
-                		el = notices_data.slice(opts.maxonscreen, notices_data.length); 
-                	
+                		el = notices_data.slice(opts.maxonscreen, notices_data.length);
+
                     $.each(el, function(){
                         if (this.pnotify_remove)
                             this.pnotify_remove();
@@ -627,9 +627,9 @@
 					// unless history is on
 					if (!opts.history) {
 						var notices_data = jwindow.data("pnotify");
-						if (notices_data!=null) {
+						if (notices_data !== null) {
 							var idx = $.inArray(pnotify,notices_data);
-							if (idx!==-1) {
+							if (idx !== -1) {
 								notices_data.splice(idx,1);
 							}
 						}
