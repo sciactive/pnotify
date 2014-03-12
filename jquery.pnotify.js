@@ -558,7 +558,15 @@
                 // Remove oldest notifications leaving only opts.maxonscreen on screen
                 notices_data = jwindow.data("pnotify");
                 if (notices_data && (notices_data.length > opts.maxonscreen)) {
-                    $.each(notices_data.slice(0, notices_data.length - opts.maxonscreen), function(){
+                	// Oldest are normally in front of array, or if stack.push=="top" then
+                	// they are at the end of the array! (issue #98)
+                	var el;
+                	if (opts.stack.push != "top")
+                		el = notices_data.slice(0, notices_data.length - opts.maxonscreen);
+                	else
+                		el = notices_data.slice(opts.maxonscreen, notices_data.length); 
+                	
+                    $.each(el, function(){
                         if (this.pnotify_remove)
                             this.pnotify_remove();
                         });
@@ -615,6 +623,17 @@
 					// If we're supposed to remove the notice from the DOM, do it.
 					if (opts.remove)
 						pnotify.detach();
+					// Remove object from notices_data to prevent memory leak (issue #49)
+					// unless history is on
+					if (!opts.history) {
+						var notices_data = jwindow.data("pnotify");
+						if (notices_data!=null) {
+							var idx = $.inArray(pnotify,notices_data);
+							if (idx!==-1) {
+								notices_data.splice(idx,1);
+							}
+						}
+					}
 				});
 			};
 
