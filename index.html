@@ -413,23 +413,23 @@
 		}
 
 		/*********** Custom Stacks ***********
-			* A stack is an object which PNotify uses to determine where
-			* to position notices. A stack has two mandatory variables, dir1
-			* and dir2. dir1 is the first direction in which the notices are
-			* stacked. When the notices run out of room in the window, they
-			* will move over in the direction specified by dir2. The directions
-			* can be "up", "down", "right", or "left". Stacks are independent
-			* of each other, so a stack doesn't know and doesn't care if it
-			* overlaps (and blocks) another stack. The default stack, which can
-			* be changed like any other default, goes down, then left. Stack
-			* objects are used and manipulated by PNotify, and therefore,
-			* should be a variable when passed. So, calling something like
-			*
-			* $.pnotify({stack: {"dir1": "down", "dir2": "left"}});
-			*
-			* will **NOT** work. It will create a notice, but that notice will
-			* be in its own stack and may overlap other notices.
-			*/
+		* A stack is an object which PNotify uses to determine where
+		* to position notices. A stack has two mandatory variables, dir1
+		* and dir2. dir1 is the first direction in which the notices are
+		* stacked. When the notices run out of room in the window, they
+		* will move over in the direction specified by dir2. The directions
+		* can be "up", "down", "right", or "left". Stacks are independent
+		* of each other, so a stack doesn't know and doesn't care if it
+		* overlaps (and blocks) another stack. The default stack, which can
+		* be changed like any other default, goes down, then left. Stack
+		* objects are used and manipulated by PNotify, and therefore,
+		* should be a variable when passed. So, calling something like
+		*
+		* $.pnotify({stack: {"dir1": "down", "dir2": "left"}});
+		*
+		* will **NOT** work. It will create a notice, but that notice will
+		* be in its own stack and may overlap other notices.
+		*/
 		var stack_topleft = {"dir1": "down", "dir2": "right", "push": "top"};
 		var stack_bottomleft = {"dir1": "right", "dir2": "up", "push": "top"};
 		var stack_custom = {"dir1": "right", "dir2": "down"};
@@ -437,16 +437,16 @@
 		var stack_bar_top = {"dir1": "down", "dir2": "right", "push": "top", "spacing1": 0, "spacing2": 0};
 		var stack_bar_bottom = {"dir1": "up", "dir2": "right", "spacing1": 0, "spacing2": 0};
 		/*********** Positioned Stack ***********
-			* This stack is initially positioned through code instead of CSS.
-			* This is done through two extra variables. firstpos1 and firstpos2
-			* are pixel values, relative to a viewport edge. dir1 and dir2,
-			* respectively, determine which edge. It is calculated as follows:
-			*
-			* - dir = "up" - firstpos is relative to the bottom of viewport.
-			* - dir = "down" - firstpos is relative to the top of viewport.
-			* - dir = "right" - firstpos is relative to the left of viewport.
-			* - dir = "left" - firstpos is relative to the right of viewport.
-			*/
+		* This stack is initially positioned through code instead of CSS.
+		* This is done through two extra variables. firstpos1 and firstpos2
+		* are pixel values, relative to a viewport edge. dir1 and dir2,
+		* respectively, determine which edge. It is calculated as follows:
+		*
+		* - dir = "up" - firstpos is relative to the bottom of viewport.
+		* - dir = "down" - firstpos is relative to the top of viewport.
+		* - dir = "right" - firstpos is relative to the left of viewport.
+		* - dir = "left" - firstpos is relative to the right of viewport.
+		*/
 		var stack_bottomright = {"dir1": "up", "dir2": "left", "firstpos1": 25, "firstpos2": 25};
 
 		function show_stack_topleft(type) {
@@ -615,6 +615,33 @@
 				cornerclass: "",
 				width: "70%",
 				stack: stack_bar_bottom
+			};
+			switch (type) {
+				case 'error':
+					opts.title = "Oh No";
+					opts.text = "Watch out for that water tower!";
+					opts.type = "error";
+					break;
+				case 'info':
+					opts.title = "Breaking News";
+					opts.text = "Have you met Ted?";
+					opts.type = "info";
+					break;
+				case 'success':
+					opts.title = "Good News Everyone";
+					opts.text = "I've invented a device that bites shiny metal asses.";
+					opts.type = "success";
+					break;
+			}
+			$.pnotify(opts);
+		};
+		function show_stack_context(type) {
+			if (typeof stack_context === "undefined")
+				stack_context = {"dir1": "down", "dir2": "left", "context": $("#stack-context")};
+			var opts = {
+				title: "Over Here",
+				text: "Check me out. I'm in a different stack.",
+				stack: stack_context
 			};
 			switch (type) {
 				case 'error':
@@ -1688,6 +1715,35 @@ $(function(){
 						<hr />
 						<button class="btn btn-default source" onmouseover="tooltip.pnotify_display();" onmousemove="tooltip.css({'top': event.clientY+12, 'left': event.clientX+12});" onmouseout="tooltip.pnotify_remove();">Hover Over Me</button>
 						Tooltip
+					</div>
+					<div class="panel-heading">
+						<h3 class="panel-title">Stack Contexts</h3>
+					</div>
+					<div class="panel-body">
+						By default, a stack will place its notices underneath the body node. You can also specify a context for your notices to be placed in.
+						<hr />
+						<div class="row">
+							<div class="col-md-2">
+								<button class="btn btn-default source" onclick="show_stack_context('notice');">Notice</button>
+								<br />
+								<button class="btn btn-default source" onclick="show_stack_context('info');">Info</button>
+								<br />
+								<button class="btn btn-default source" onclick="show_stack_context('success');">Success</button>
+								<br />
+								<button class="btn btn-default source" onclick="show_stack_context('error');">Error</button>
+							</div>
+							<div class="col-md-10">
+								<div id="stack-context" class="well" style="height: 350px; position: relative; overflow: auto;">
+									<div class="page-header"><h3>Stack Context</h3></div>
+									<p>I'm the stack context where notices will be
+										placed. I'm position: relative, so the notices
+										will be positioned relative to me. My overflow
+										is set to auto, so the notices won't show beyond
+										my borders.</p>
+									<p style="text-align: center;"><img alt="Happy face" src="includes/le_happy_face_by_luchocas.png" /></p>
+								</div>
+							</div>
+						</div>
 					</div>
 					<div class="panel-footer alert-warning">
 						<i class="glyphicon glyphicon-warning-sign"></i> Remember that you can't just pass an object literal as a

@@ -98,6 +98,7 @@
 	// Set global variables.
 	var do_when_ready = function(){
 		body = $("body");
+		$.pnotify.defaults.stack.context = body;
 		jwindow = $(window);
 		// Reposition the notices when the window resizes.
 		jwindow.bind('resize', function(){
@@ -398,6 +399,8 @@
 			pnotify.pnotify_position = function(dont_skip_hidden){
 				// Get the notice's stack.
 				var s = pnotify.opts.stack;
+				if (typeof s.context === "undefined")
+					s.context = body;
 				if (!s) return;
 				if (typeof s.nextpos1 !== "number")
 					s.nextpos1 = s.firstpos1;
@@ -460,10 +463,10 @@
 						s.nextpos2 = s.firstpos2;
 					}
 					// Check that it's not beyond the viewport edge.
-					if ((s.dir1 === "down" && s.nextpos1 + pnotify.height() > jwindow.height()) ||
-						(s.dir1 === "up" && s.nextpos1 + pnotify.height() > jwindow.height()) ||
-						(s.dir1 === "left" && s.nextpos1 + pnotify.width() > jwindow.width()) ||
-						(s.dir1 === "right" && s.nextpos1 + pnotify.width() > jwindow.width()) ) {
+					if ((s.dir1 === "down" && s.nextpos1 + pnotify.height() > (s.context.is(body) ? jwindow.height() : s.context.prop('scrollHeight')) ) ||
+						(s.dir1 === "up" && s.nextpos1 + pnotify.height() > (s.context.is(body) ? jwindow.height() : s.context.prop('scrollHeight')) ) ||
+						(s.dir1 === "left" && s.nextpos1 + pnotify.width() > (s.context.is(body) ? jwindow.width() : s.context.prop('scrollWidth')) ) ||
+						(s.dir1 === "right" && s.nextpos1 + pnotify.width() > (s.context.is(body) ? jwindow.width() : s.context.prop('scrollWidth')) ) ) {
 						// If it is, it needs to go back to the first pos1, and over on pos2.
 						s.nextpos1 = s.firstpos1;
 						s.nextpos2 += s.addpos2 + (typeof s.spacing2 === "undefined" ? 25 : s.spacing2);
@@ -562,7 +565,7 @@
                 };
 				// If the notice is not in the DOM, append it.
 				if (!pnotify.parent().length)
-					pnotify.appendTo(body);
+					pnotify.appendTo(opts.stack.context ? opts.stack.context : body);
 				// Run callback.
 				if (opts.before_open) {
 					if (opts.before_open(pnotify) === false)
@@ -977,7 +980,8 @@
 			dir2: "left",
 			push: "bottom",
 			spacing1: 25,
-			spacing2: 25
+			spacing2: 25,
+			context: $("body")
 		},
 		// The various displayed text, helps facilitating internationalization.
 		labels: {

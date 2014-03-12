@@ -15,8 +15,8 @@ Getting Started
 
 PNotify comes with the following files:
 
-* `jquery.pnotify.js` & `jquery.pnotify.min.js` (Minified) - The main JavaScript. 
-* `jquery.pnotify.default.css` - The main stylesheet. 
+* `jquery.pnotify.js` & `jquery.pnotify.min.js` (Minified) - The main JavaScript.
+* `jquery.pnotify.default.css` - The main stylesheet.
 * `jquery.pnotify.default.icons.css` - Use this to support PIcon styles.
 
 So here's how you'd include them all:
@@ -74,6 +74,7 @@ var stack_custom = {"dir1": "right", "dir2": "down"};
 var stack_custom2 = {"dir1": "left", "dir2": "up", "push": "top"};
 var stack_bar_top = {"dir1": "down", "dir2": "right", "push": "top", "spacing1": 0, "spacing2": 0};
 var stack_bar_bottom = {"dir1": "up", "dir2": "right", "spacing1": 0, "spacing2": 0};
+var stack_context = {"dir1": "down", "dir2": "left", "context": $("#stack-context")};
 ```
 
 This stack is initially positioned through code instead of CSS.
@@ -94,9 +95,9 @@ To create a stack in the top left, define the stack:
 ```js
 var stack_topleft = {"dir1": "down", "dir2": "right"};
 ```
-		
+
 and then add two options to your pnotify call:
-		
+
 	addclass: "stack-topleft", // This is one of the included default classes.
 	stack: stack_topleft
 
@@ -141,7 +142,7 @@ Configuration Defaults / Options
 * `mouse_reset: true` - Reset the hide timer if the mouse moves over the notice.
 * `remove: true` - Remove the notice's elements from the DOM after it is removed.
 * `insert_brs: true` - Change new lines to br tags.
-* `stack: {"dir1": "down", "dir2": "left", "push": "bottom", "spacing1": 25, "spacing2": 25}` - The stack on which the notices will be placed. Also controls the direction the notices stack.
+* `stack: {"dir1": "down", "dir2": "left", "push": "bottom", "spacing1": 25, "spacing2": 25, context: $("body")}` - The stack on which the notices will be placed. Also controls the direction the notices stack.
 * `labels: {redisplay: "Redisplay", all: "All", last: "Last", close: "Close", stick: "Stick"}` - Lets you change the displayed text, facilitating the internationalization..
 
 Additional Info

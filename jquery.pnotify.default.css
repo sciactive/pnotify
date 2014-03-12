@@ -17,7 +17,7 @@ height: auto;
 z-index: 9999;
 }
 /* Hides position: fixed from IE6 */
-html > body .ui-pnotify {
+html > body > .ui-pnotify {
 position: fixed;
 }
 .ui-pnotify .ui-pnotify-shadow {
