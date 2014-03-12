@@ -1,6 +1,7 @@
 {
-    "name": "pnotify",
-    "version": "1.2.2",
+    "name": "sciactive/pnotify",
+    "version": "1.2.0",
+	"description": "JavaScript notification plugin.",
     "main": [
         "jquery.pnotify.js",
         "jquery.pnotify.default.css",
