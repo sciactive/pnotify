@@ -801,6 +801,37 @@
 				// If there isn't a history pull down, create one.
 				var history_menu = jwindow.data("pnotify_history");
 				if (typeof history_menu === "undefined") {
+					$("body").on("pnotify.history-all", function(){
+						// Display all notices. (Disregarding non-history notices.)
+						$.each(notices_data, function(){
+							if (this.pnotify_history) {
+								if (this.is(":visible")) {
+									if (this.pnotify_hide)
+										this.pnotify_queue_remove();
+								} else if (this.pnotify_display)
+									this.pnotify_display();
+							}
+						});
+					}).on("pnotify.history-last", function(){
+						var pushTop = ($.pnotify.defaults.stack.push === "top");
+
+						// Look up the last history notice, and display it.
+						var i = (pushTop ? 0 : -1);
+
+						var notice;
+						do {
+							if (i === -1)
+								notice = notices_data.slice(i);
+							else
+								notice = notices_data.slice(i, i+1);
+							if (!notice[0])
+								return false;
+
+							i = (pushTop ? i + 1 : i - 1);
+						} while (!notice[0].pnotify_history || notice[0].is(":visible"));
+						if (notice[0].pnotify_display)
+							notice[0].pnotify_display();
+					});
 					history_menu = $("<div />", {
 						"class": "ui-pnotify-history-container "+styles.hi_menu,
 						"mouseleave": function(){
@@ -818,16 +849,7 @@
 								$(this).removeClass(styles.hi_btnhov);
 							},
 							"click": function(){
-								// Display all notices. (Disregarding non-history notices.)
-								$.each(notices_data, function(){
-									if (this.pnotify_history) {
-										if (this.is(":visible")) {
-											if (this.pnotify_hide)
-												this.pnotify_queue_remove();
-										} else if (this.pnotify_display)
-											this.pnotify_display();
-									}
-								});
+								$(this).trigger("pnotify.history-all");
 								return false;
 							}
 					}))
@@ -841,24 +863,7 @@
 								$(this).removeClass(styles.hi_btnhov);
 							},
 							"click": function(){
-								var pushTop = ($.pnotify.defaults.stack.push === "top");
-
-								// Look up the last history notice, and display it.
-								var i = (pushTop ? 0 : -1);
-
-								var notice;
-								do {
-									if (i === -1)
-										notice = notices_data.slice(i);
-									else
-										notice = notices_data.slice(i, i+1);
-									if (!notice[0])
-										return false;
-
-									i = (pushTop ? i + 1 : i - 1);
-								} while (!notice[0].pnotify_history || notice[0].is(":visible"));
-								if (notice[0].pnotify_display)
-									notice[0].pnotify_display();
+								$(this).trigger("pnotify.history-last");
 								return false;
 							}
 					}))
