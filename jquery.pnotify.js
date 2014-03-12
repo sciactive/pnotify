@@ -150,7 +150,7 @@
 
 			// Build main options.
 			var opts;
-			if (typeof options != "object") {
+			if (typeof options !== "object") {
 				opts = $.extend({}, $.pnotify.defaults);
 				opts.text = options;
 			} else {
@@ -158,7 +158,7 @@
 			}
 			// Translate old pnotify_ style options.
 			for (var i in opts) {
-				if (typeof i == "string" && i.match(/^pnotify_/))
+				if (typeof i === "string" && i.match(/^pnotify_/))
 					opts[i.replace(/^pnotify_/, "")] = opts[i];
 			}
 
@@ -177,7 +177,7 @@
 				pnotify.css("display", "block");
 				var jelement_below = $(element_below);
 				var cursor_style = jelement_below.css("cursor");
-				pnotify.css("cursor", cursor_style != "auto" ? cursor_style : "default");
+				pnotify.css("cursor", cursor_style !== "auto" ? cursor_style : "default");
 				// If the element changed, call mouseenter, mouseleave, etc.
 				if (!nonblock_last_elem || nonblock_last_elem.get(0) != element_below) {
 					if (nonblock_last_elem) {
@@ -194,7 +194,7 @@
 
 			// Get our styling object.
 			var styles;
-			if (typeof opts.styling == "object") {
+			if (typeof opts.styling === "object") {
 				styles = opts.styling;
 			} else {
 				styles = styling[opts.styling];
@@ -208,7 +208,7 @@
 				"css": {"display": "none"},
 				"mouseenter": function(e){
 					if (opts.nonblock) e.stopPropagation();
-					if (opts.mouse_reset && animating == "out") {
+					if (opts.mouse_reset && animating === "out") {
 						// If it's animating out, animate back in really quickly.
 						pnotify.stop(true);
 						animating = "in";
@@ -229,7 +229,7 @@
 					nonblock_last_elem = null;
 					pnotify.css("cursor", "auto");
 					// Animate back to the normal opacity.
-					if (opts.nonblock && animating != "out")
+					if (opts.nonblock && animating !== "out")
 						pnotify.stop().animate({"opacity": opts.opacity}, "fast");
 					// Start the close timer.
 					if (opts.hide && opts.mouse_reset) pnotify.pnotify_queue_remove();
@@ -281,9 +281,9 @@
 			});
 			pnotify.opts = opts;
 			// Create a container for the notice contents.
-			pnotify.container = $("<div />", {"class": styles.container+" ui-pnotify-container "+(opts.type == "error" ? styles.error : (opts.type == "info" ? styles.info : (opts.type == "success" ? styles.success : styles.notice)))})
+			pnotify.container = $("<div />", {"class": styles.container+" ui-pnotify-container "+(opts.type === "error" ? styles.error : (opts.type === "info" ? styles.info : (opts.type === "success" ? styles.success : styles.notice)))})
 			.appendTo(pnotify);
-			if (opts.cornerclass != "")
+			if (opts.cornerclass !== "")
 				pnotify.container.removeClass("ui-corner-all").addClass(opts.cornerclass);
 			// Create a drop shadow.
 			if (opts.shadow)
@@ -296,21 +296,21 @@
 			pnotify.pnotify = function(options) {
 				// Update the notice.
 				var old_opts = opts;
-				if (typeof options == "string")
+				if (typeof options === "string")
 					opts.text = options;
 				else
 					opts = $.extend({}, opts, options);
 				// Translate old pnotify_ style options.
 				for (var i in opts) {
-					if (typeof i == "string" && i.match(/^pnotify_/))
+					if (typeof i === "string" && i.match(/^pnotify_/))
 						opts[i.replace(/^pnotify_/, "")] = opts[i];
 				}
 				pnotify.opts = opts;
 				// Update the corner class.
-				if (opts.cornerclass != old_opts.cornerclass)
+				if (opts.cornerclass !== old_opts.cornerclass)
 					pnotify.container.removeClass("ui-corner-all").addClass(opts.cornerclass);
 				// Update the shadow.
-				if (opts.shadow != old_opts.shadow) {
+				if (opts.shadow !== old_opts.shadow) {
 					if (opts.shadow)
 						pnotify.container.addClass("ui-pnotify-shadow");
 					else
@@ -343,15 +343,15 @@
 				pnotify.pnotify_history = opts.history;
 				pnotify.pnotify_hide = opts.hide;
 				// Change the notice type.
-				if (opts.type != old_opts.type)
-					pnotify.container.removeClass(styles.error+" "+styles.notice+" "+styles.success+" "+styles.info).addClass(opts.type == "error" ? styles.error : (opts.type == "info" ? styles.info : (opts.type == "success" ? styles.success : styles.notice)));
-				if (opts.icon !== old_opts.icon || (opts.icon === true && opts.type != old_opts.type)) {
+				if (opts.type !== old_opts.type)
+					pnotify.container.removeClass(styles.error+" "+styles.notice+" "+styles.success+" "+styles.info).addClass(opts.type === "error" ? styles.error : (opts.type === "info" ? styles.info : (opts.type === "success" ? styles.success : styles.notice)));
+				if (opts.icon !== old_opts.icon || (opts.icon === true && opts.type !== old_opts.type)) {
 					// Remove any old icon.
 					pnotify.container.find("div.ui-pnotify-icon").remove();
 					if (opts.icon !== false) {
 						// Build the new icon.
 						$("<div />", {"class": "ui-pnotify-icon"})
-						.append($("<span />", {"class": opts.icon === true ? (opts.type == "error" ? styles.error_icon : (opts.type == "info" ? styles.info_icon : (opts.type == "success" ? styles.success_icon : styles.notice_icon))) : opts.icon}))
+						.append($("<span />", {"class": opts.icon === true ? (opts.type === "error" ? styles.error_icon : (opts.type === "info" ? styles.info_icon : (opts.type === "success" ? styles.success_icon : styles.notice_icon))) : opts.icon}))
 						.prependTo(pnotify.container);
 					}
 				}
@@ -399,13 +399,13 @@
 				// Get the notice's stack.
 				var s = pnotify.opts.stack;
 				if (!s) return;
-				if (!s.nextpos1)
+				if (typeof s.nextpos1 !== "number")
 					s.nextpos1 = s.firstpos1;
-				if (!s.nextpos2)
+				if (typeof s.nextpos2 !== "number")
 					s.nextpos2 = s.firstpos2;
-				if (!s.addpos2)
+				if (typeof s.addpos2 !== "number")
 					s.addpos2 = 0;
-				var hidden = pnotify.css("display") == "none";
+				var hidden = pnotify.css("display") === "none";
 				// Skip this notice if it's not shown.
 				if (!hidden || dont_skip_hidden) {
 					var curpos1, curpos2;
@@ -427,11 +427,11 @@
 							csspos1 = "left";
 							break;
 					}
-					curpos1 = parseInt(pnotify.css(csspos1));
+					curpos1 = parseInt(pnotify.css(csspos1).replace(/(?:\..*|[^0-9.])/g, ''));
 					if (isNaN(curpos1))
 						curpos1 = 0;
 					// Remember the first pos1, so the first visible notice goes there.
-					if (typeof s.firstpos1 == "undefined" && !hidden) {
+					if (typeof s.firstpos1 === "undefined" && !hidden) {
 						s.firstpos1 = curpos1;
 						s.nextpos1 = s.firstpos1;
 					}
@@ -455,18 +455,18 @@
 					if (isNaN(curpos2))
 						curpos2 = 0;
 					// Remember the first pos2, so the first visible notice goes there.
-					if (typeof s.firstpos2 == "undefined" && !hidden) {
+					if (typeof s.firstpos2 === "undefined" && !hidden) {
 						s.firstpos2 = curpos2;
 						s.nextpos2 = s.firstpos2;
 					}
 					// Check that it's not beyond the viewport edge.
-					if ((s.dir1 == "down" && s.nextpos1 + pnotify.height() > jwindow.height()) ||
-						(s.dir1 == "up" && s.nextpos1 + pnotify.height() > jwindow.height()) ||
-						(s.dir1 == "left" && s.nextpos1 + pnotify.width() > jwindow.width()) ||
-						(s.dir1 == "right" && s.nextpos1 + pnotify.width() > jwindow.width()) ) {
+					if ((s.dir1 === "down" && s.nextpos1 + pnotify.height() > jwindow.height()) ||
+						(s.dir1 === "up" && s.nextpos1 + pnotify.height() > jwindow.height()) ||
+						(s.dir1 === "left" && s.nextpos1 + pnotify.width() > jwindow.width()) ||
+						(s.dir1 === "right" && s.nextpos1 + pnotify.width() > jwindow.width()) ) {
 						// If it is, it needs to go back to the first pos1, and over on pos2.
 						s.nextpos1 = s.firstpos1;
-						s.nextpos2 += s.addpos2 + (typeof s.spacing2 == "undefined" ? 25 : s.spacing2);
+						s.nextpos2 += s.addpos2 + (typeof s.spacing2 === "undefined" ? 25 : s.spacing2);
 						s.addpos2 = 0;
 					}
 					// Animate if we're moving on dir2.
@@ -486,7 +486,7 @@
 								break;
 						}
 					} else {
-						if(s.nextpos2)
+						if(typeof s.nextpos2 === "number")
 							pnotify.css(csspos2, s.nextpos2+"px");
 					}
 					// Keep track of the widest/tallest notice in the column/row, so we can push the next column/row.
@@ -503,7 +503,7 @@
 							break;
 					}
 					// Move the notice on dir1.
-					if (s.nextpos1) {
+					if (typeof s.nextpos1 === "number") {
 						// Animate if we're moving toward the first pos.
 						if (s.animation && (curpos1 > s.nextpos1 || animate.top || animate.bottom || animate.right || animate.left)) {
 							switch (s.dir1) {
@@ -530,11 +530,11 @@
 					switch (s.dir1) {
 						case "down":
 						case "up":
-							s.nextpos1 += pnotify.height() + (typeof s.spacing1 == "undefined" ? 25 : s.spacing1);
+							s.nextpos1 += pnotify.height() + (typeof s.spacing1 === "undefined" ? 25 : s.spacing1);
 							break;
 						case "left":
 						case "right":
-							s.nextpos1 += pnotify.width() + (typeof s.spacing1 == "undefined" ? 25 : s.spacing1);
+							s.nextpos1 += pnotify.width() + (typeof s.spacing1 === "undefined" ? 25 : s.spacing1);
 							break;
 					}
 				}
@@ -569,15 +569,15 @@
 						return;
 				}
 				// Try to put it in the right position.
-				if (opts.stack.push != "top")
+				if (opts.stack.push !== "top")
 					pnotify.pnotify_position(true);
 				// First show it, then set its opacity, then hide it.
-				if (opts.animation == "fade" || opts.animation.effect_in == "fade") {
+				if (opts.animation === "fade" || opts.animation.effect_in === "fade") {
 					// If it's fading in, it should start at 0.
 					pnotify.show().fadeTo(0, 0).hide();
 				} else {
 					// Or else it should be set to the opacity.
-					if (opts.opacity != 1)
+					if (opts.opacity !== 1)
 						pnotify.show().fadeTo(0, opts.opacity).hide();
 				}
 				pnotify.animate_in(function(){
@@ -620,23 +620,23 @@
 				// Declare that the notice is animating in. (Or has completed animating in.)
 				animating = "in";
 				var animation;
-				if (typeof opts.animation.effect_in != "undefined")
+				if (typeof opts.animation.effect_in !== "undefined")
 					animation = opts.animation.effect_in;
 				else
 					animation = opts.animation;
-				if (animation == "none") {
+				if (animation === "none") {
 					pnotify.show();
 					callback();
-				} else if (animation == "show")
+				} else if (animation === "show")
 					pnotify.show(opts.animate_speed, callback);
-				else if (animation == "fade")
+				else if (animation === "fade")
 					pnotify.show().fadeTo(opts.animate_speed, opts.opacity, callback);
-				else if (animation == "slide")
+				else if (animation === "slide")
 					pnotify.slideDown(opts.animate_speed, callback);
-				else if (typeof animation == "function")
+				else if (typeof animation === "function")
 					animation("in", callback, pnotify);
 				else
-					pnotify.show(animation, (typeof opts.animation.options_in == "object" ? opts.animation.options_in : {}), opts.animate_speed, callback);
+					pnotify.show(animation, (typeof opts.animation.options_in === "object" ? opts.animation.options_in : {}), opts.animate_speed, callback);
 			};
 
 			// Animate the notice out.
@@ -644,23 +644,23 @@
 				// Declare that the notice is animating out. (Or has completed animating out.)
 				animating = "out";
 				var animation;
-				if (typeof opts.animation.effect_out != "undefined")
+				if (typeof opts.animation.effect_out !== "undefined")
 					animation = opts.animation.effect_out;
 				else
 					animation = opts.animation;
-				if (animation == "none") {
+				if (animation === "none") {
 					pnotify.hide();
 					callback();
-				} else if (animation == "show")
+				} else if (animation === "show")
 					pnotify.hide(opts.animate_speed, callback);
-				else if (animation == "fade")
+				else if (animation === "fade")
 					pnotify.fadeOut(opts.animate_speed, callback);
-				else if (animation == "slide")
+				else if (animation === "slide")
 					pnotify.slideUp(opts.animate_speed, callback);
-				else if (typeof animation == "function")
+				else if (typeof animation === "function")
 					animation("out", callback, pnotify);
 				else
-					pnotify.hide(animation, (typeof opts.animation.options_out == "object" ? opts.animation.options_out : {}), opts.animate_speed, callback);
+					pnotify.hide(animation, (typeof opts.animation.options_out === "object" ? opts.animation.options_out : {}), opts.animate_speed, callback);
 			};
 
 			// Cancel any pending removal timer.
@@ -717,7 +717,7 @@
 			// Add the appropriate icon.
 			if (opts.icon !== false) {
 				$("<div />", {"class": "ui-pnotify-icon"})
-				.append($("<span />", {"class": opts.icon === true ? (opts.type == "error" ? styles.error_icon : (opts.type == "info" ? styles.info_icon : (opts.type == "success" ? styles.success_icon : styles.notice_icon))) : opts.icon}))
+				.append($("<span />", {"class": opts.icon === true ? (opts.type === "error" ? styles.error_icon : (opts.type === "info" ? styles.info_icon : (opts.type === "success" ? styles.success_icon : styles.notice_icon))) : opts.icon}))
 				.prependTo(pnotify.container);
 			}
 
@@ -746,9 +746,9 @@
 				pnotify.text_container.html(opts.insert_brs ? String(opts.text).replace(/\n/g, "<br />") : opts.text);
 
 			// Set width and min height.
-			if (typeof opts.width == "string")
+			if (typeof opts.width === "string")
 				pnotify.css("width", opts.width);
-			if (typeof opts.min_height == "string")
+			if (typeof opts.min_height === "string")
 				pnotify.container.css("min-height", opts.min_height);
 
 			// The history variable controls whether the notice gets redisplayed
@@ -760,15 +760,15 @@
 
 			// Add the notice to the notice array.
 			var notices_data = jwindow.data("pnotify");
-			if (notices_data == null || typeof notices_data != "object")
+			if (notices_data === null || typeof notices_data !== "object")
 				notices_data = [];
-			if (opts.stack.push == "top")
+			if (opts.stack.push === "top")
 				notices_data = $.merge([pnotify], notices_data);
 			else
 				notices_data = $.merge(notices_data, [pnotify]);
 			jwindow.data("pnotify", notices_data);
 			// Now position all the notices if they are to push to the top.
-			if (opts.stack.push == "top")
+			if (opts.stack.push === "top")
 				pnotify.pnotify_queue_position(1);
 
 			// Run callback.
@@ -778,7 +778,7 @@
 			if (opts.history) {
 				// If there isn't a history pull down, create one.
 				var history_menu = jwindow.data("pnotify_history");
-				if (typeof history_menu == "undefined") {
+				if (typeof history_menu === "undefined") {
 					history_menu = $("<div />", {
 						"class": "ui-pnotify-history-container "+styles.hi_menu,
 						"mouseleave": function(){
@@ -819,14 +819,14 @@
 								$(this).removeClass(styles.hi_btnhov);
 							},
 							"click": function(){
-								var pushTop = ($.pnotify.defaults.stack.push == "top");
+								var pushTop = ($.pnotify.defaults.stack.push === "top");
 
 								// Look up the last history notice, and display it.
 								var i = (pushTop ? 0 : -1);
 
 								var notice;
 								do {
-									if (i == -1)
+									if (i === -1)
 										notice = notices_data.slice(i);
 									else
 										notice = notices_data.slice(i, i+1);
