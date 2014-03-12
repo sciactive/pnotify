@@ -323,7 +323,7 @@
 				sticker: false,
 				opacity: .75,
 				shadow: false,
-				width: "150px"
+				width: "170px"
 			});
 
 			setTimeout(function(){
@@ -352,7 +352,7 @@
 				}, 120);
 			}, 2000);
 		}
-		
+
 		function show_confirm_dialog() {
 			function confirm_dialog(title, text, callback, buttons) {
 				if (typeof buttons !== "object") {
@@ -381,7 +381,7 @@
 					icon: 'glyphicon glyphicon-question-sign'
 				});
 			}
-			
+
 			confirm_dialog('Confirmation Needed', 'Are you sure?', function(answer){ alert(answer ? 'Ok, cool.' : 'Oh ok. Chicken, I see.'); });
 		}
 
@@ -1693,7 +1693,36 @@ $(function(){
 						<i class="glyphicon glyphicon-warning-sign"></i> Remember that you can't just pass an object literal as a
 						stack. You need to create a new variable and pass that.
 						This is because PNotify will use that object to store
-						the notices that go into it.
+						the notices that go into it.<br /><br />
+						<div class="row">
+							<div class="col-sm-6">
+								<div class="panel panel-danger">
+									<div class="panel-heading"><h4 class="panel-title">Bad</h4></div>
+									<div class="panel-body">
+										<pre class="code">$.pnotify({
+  title: "Over Here",
+  text: "Check me out. I'm in a different stack.",
+  addclass: "stack-custom",
+  stack: {"dir1":"down", "dir2":"right", "push":"top"}
+})</pre>
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="panel panel-success">
+									<div class="panel-heading"><h4 class="panel-title">Good</h4></div>
+									<div class="panel-body">
+										<pre class="code">var myStack = {"dir1":"down", "dir2":"right", "push":"top"};
+$.pnotify({
+  title: "Over Here",
+  text: "Check me out. I'm in a different stack.",
+  addclass: "stack-custom",
+  stack: myStack
+})</pre>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 
