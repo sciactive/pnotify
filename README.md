@@ -59,6 +59,18 @@ And if you don't want the history pull-down menu in the top corner, include this
 $.pnotify.defaults.history = false;
 ```
 
+Callbacks
+=========
+
+The callback options all expect one argument, a function, which will be called when that event occurs. They can be included in the options object passed to $.pnotify() just like any other options. If the function returns false on a "before" callback, that event will be canceled.
+
+* `before_init` - This option is called before the notice has been initialized. It accepts one argument, the options object.
+* `after_init` - This option is called after the notice has been initialized. It accepts one argument, the notice object.
+* `before_open` - This option is called before the notice has been displayed. It accepts one argument, the notice object.
+* `after_open` - This option is called after the notice has been displayed. It accepts one argument, the notice object.
+* `before_close` - This option is called before the notice closes. It accepts one argument, the notice object.
+* `after_close` - This option is called after the notice closes. It accepts one argument, the notice object.
+
 Stacks
 ======
 
