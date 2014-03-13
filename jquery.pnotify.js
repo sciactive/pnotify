@@ -107,10 +107,6 @@
 			timer = setTimeout($.pnotify_position_all, 10);
 		});
 	};
-	if (document.body)
-		do_when_ready();
-	else
-		$(do_when_ready);
 	$.extend({
 		pnotify_remove_all: function () {
 			var notices_data = jwindow.data("pnotify");
@@ -1016,4 +1012,8 @@
 			stick: "Stick"
 		}
 	};
+	if (document.body)
+		do_when_ready();
+	else
+		$(do_when_ready);
 }));
