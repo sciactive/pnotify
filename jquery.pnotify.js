@@ -1,5 +1,5 @@
 /*
- * jQuery PNotify Plugin 1.3.0
+ * jQuery PNotify Plugin 1.3.1
  *
  * http://sciactive.com/pnotify/
  * Copyright (c) 2009-2014 Hunter Perrin
@@ -287,7 +287,7 @@
 				pnotify.container.addClass("ui-pnotify-shadow");
 
 			// The current version of PNotify.
-			pnotify.pnotify_version = "1.3.0";
+			pnotify.pnotify_version = "1.3.1";
 
 			// This function is for updating the notice.
 			pnotify.pnotify = function(options) {
