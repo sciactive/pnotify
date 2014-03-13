@@ -104,7 +104,7 @@
 		jwindow.bind('resize', function(){
 			if (timer)
 				clearTimeout(timer);
-			timer = setTimeout($.pnotify_position_all, 10);
+			timer = setTimeout(function(){ $.pnotify_position_all(true) }, 10);
 		});
 	};
 	$.extend({
@@ -118,7 +118,7 @@
 				});
 			}
 		},
-		pnotify_position_all: function () {
+		pnotify_position_all: function (animate) {
 			// This timer is used for queueing this function so it doesn't run
 			// repeatedly.
 			if (timer)
@@ -135,7 +135,7 @@
 				s.nextpos1 = s.firstpos1;
 				s.nextpos2 = s.firstpos2;
 				s.addpos2 = 0;
-				s.animation = true;
+				s.animation = animate;
 			});
 			$.each(notices_data, function(){
 				this.pnotify_position();
@@ -386,7 +386,7 @@
 					pnotify.pnotify_cancel_remove();
 				else if (!old_opts.hide)
 					pnotify.pnotify_queue_remove();
-				pnotify.pnotify_queue_position();
+				pnotify.pnotify_queue_position(true);
 				return pnotify;
 			};
 
@@ -450,7 +450,7 @@
 							csspos2 = "left";
 							break;
 					}
-					curpos2 = parseInt(pnotify.css(csspos2));
+					curpos2 = parseInt(pnotify.css(csspos2).replace(/(?:\..*|[^0-9.])/g, ''));
 					if (isNaN(curpos2))
 						curpos2 = 0;
 					// Remember the first pos2, so the first visible notice goes there.
@@ -541,12 +541,12 @@
 
 			// Queue the positiona all function so it doesn't run repeatedly and
 			// use up resources.
-			pnotify.pnotify_queue_position = function(milliseconds){
+			pnotify.pnotify_queue_position = function(animate, milliseconds){
 				if (timer)
 					clearTimeout(timer);
 				if (!milliseconds)
 					milliseconds = 10;
-				timer = setTimeout($.pnotify_position_all, milliseconds);
+				timer = setTimeout(function(){ $.pnotify_position_all(animate) }, milliseconds);
 			};
 
 			// Display the notice.
@@ -591,7 +591,7 @@
 					if (opts.after_open)
 						opts.after_open(pnotify);
 
-					pnotify.pnotify_queue_position();
+					pnotify.pnotify_queue_position(true);
 
 					// Now set it to hide.
 					if (opts.hide)
@@ -615,7 +615,7 @@
 						if (opts.after_close(pnotify, timer_hide) === false)
 							return;
 					}
-					pnotify.pnotify_queue_position();
+					pnotify.pnotify_queue_position(true);
 					// If we're supposed to remove the notice from the DOM, do it.
 					if (opts.remove)
 						pnotify.detach();
@@ -787,7 +787,7 @@
 			jwindow.data("pnotify", notices_data);
 			// Now position all the notices if they are to push to the top.
 			if (opts.stack.push === "top")
-				pnotify.pnotify_queue_position(1);
+				pnotify.pnotify_queue_position(false, 1);
 
 			// Run callback.
 			if (opts.after_init)
