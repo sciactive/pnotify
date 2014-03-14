@@ -5,6 +5,15 @@
     "main": [
         "jquery.pnotify.js",
         "jquery.pnotify.default.css",
-        "jquery.pnotify.icons.css"
+        "jquery.pnotify.default.icons.css"
+    ],
+    "ignore": [
+        "build-tools/",
+        "includes/",
+        "oxygen/",
+        "devnote*.*",
+        "index.html",
+        "README.md",
+        "testing.html"
     ]
 }
