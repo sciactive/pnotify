@@ -760,6 +760,8 @@
 				pnotify.text_container.hide();
 			else if (opts.text_escape)
 				pnotify.text_container.text(opts.text);
+                        else if (typeof opts.text === "object")
+            			pnotify.text_container.append(opts.text).slideDown(200);
 			else
 				pnotify.text_container.html(opts.insert_brs ? String(opts.text).replace(/\n/g, "<br />") : opts.text);
 
