@@ -565,8 +565,8 @@
                     $.each(el, function(){
                         if (this.pnotify_remove)
                             this.pnotify_remove();
-                        });
-                };
+					});
+                }
 				// If the notice is not in the DOM, append it.
 				if (!pnotify.parent().length)
 					pnotify.appendTo(opts.stack.context ? opts.stack.context : body);
@@ -954,7 +954,7 @@
 		nonblock_opacity: .2,
 		// Display a pull down menu to redisplay previous notices, and place the notice in the history.
 		history: true,
-        // Maximum number of notifications to have onscreen
+        // Maximum number of notifications to have onscreen.
         maxonscreen: Infinity,
 		// Display the notice when it is created. Turn this off to add notifications to the history without displaying them.
 		auto_display: true,
