@@ -1,10 +1,10 @@
 /*
-Pines Form 2.0
+PForm 2.0
 
 license: http://www.gnu.org/licenses/gpl.html
 license: http://www.gnu.org/licenses/lgpl.html
 license: http://www.mozilla.org/MPL/MPL-1.1.html
-Resets Twitter Bootstrap's form styles so Pines Form can work with Bootstrap.
+Resets Twitter Bootstrap's form styles so PForm can work with Bootstrap.
 */
 .pf-form label input, .pf-form label textarea, .pf-form label select {
 	display: inline;
