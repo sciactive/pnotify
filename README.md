@@ -82,8 +82,6 @@ Example Stacks
 ```js
 var stack_topleft = {"dir1": "down", "dir2": "right", "push": "top"};
 var stack_bottomleft = {"dir1": "right", "dir2": "up", "push": "top"};
-var stack_custom = {"dir1": "right", "dir2": "down"};
-var stack_custom2 = {"dir1": "left", "dir2": "up", "push": "top"};
 var stack_bar_top = {"dir1": "down", "dir2": "right", "push": "top", "spacing1": 0, "spacing2": 0};
 var stack_bar_bottom = {"dir1": "up", "dir2": "right", "spacing1": 0, "spacing2": 0};
 var stack_context = {"dir1": "down", "dir2": "left", "context": $("#stack-context")};
