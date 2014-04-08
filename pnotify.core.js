@@ -10,22 +10,167 @@
  *	  http://www.mozilla.org/MPL/MPL-1.1.html
  */
 
-// Uses AMD or browser globals to create a jQuery plugin.
+if (!PNotify) { (function($){
+	var default_stack = {
+		dir1: "down",
+		dir2: "left",
+		push: "bottom",
+		spacing1: 25,
+		spacing2: 25,
+		context: $("body")
+	};
+	PNotify = function(options){
+		if (typeof options === 'string') {
+			this.options.text = options;
+		} else {
+			$.extend(this.options, options);
+		}
+		this.init();
+		this.runModules('init');
+	};
+	$.extend(PNotify.prototype, {
 
-(function (factory) {
-    if (typeof define === 'function' && define.amd) {
-        // AMD. Register as an anonymous module.
-        define(['jquery'], factory);
-    } else {
-        // Browser globals
-        factory(jQuery);
-    }
-}(function($) {
-	var history_handle_top,
-		timer,
-		body,
-		jwindow = $(window),
-		styling = {
+		// === Options ===
+
+		// The current version of PNotify.
+		version: "1.3.1",
+		// Options defaults.
+		options: {
+			// The notice's title.
+			title: false,
+			// Whether to escape the content of the title. (Not allow HTML.)
+			title_escape: false,
+			// The notice's text.
+			text: false,
+			// Whether to escape the content of the text. (Not allow HTML.)
+			text_escape: false,
+			// What styling classes to use. (Can be either jqueryui or bootstrap.)
+			styling: "bootstrap3",
+			// Additional classes to be added to the notice. (For custom styling.)
+			addclass: "",
+			// Class to be added to the notice for corner styling.
+			cornerclass: "",
+			// Display the notice when it is created. Turn this off to add
+			// notifications to the history without displaying them.
+			auto_display: true,
+			// Width of the notice.
+			width: "300px",
+			// Minimum height of the notice. It will expand to fit content.
+			min_height: "16px",
+			// Type of the notice. "notice", "info", "success", or "error".
+			type: "notice",
+			// Set icon to true to use the default icon for the selected
+			// style/type, false for no icon, or a string for your own icon class.
+			icon: true,
+			// Opacity of the notice.
+			opacity: 1,
+			// After a delay, remove the notice.
+			hide: true,
+			// Delay in milliseconds before the notice is removed.
+			delay: 8000,
+			// Reset the hide timer if the mouse moves over the notice.
+			mouse_reset: true,
+			// Remove the notice's elements from the DOM after it is removed.
+			remove: true,
+			// Change new lines to br tags.
+			insert_brs: true,
+			// The stack on which the notices will be placed. Also controls the
+			// direction the notices stack.
+			stack: default_stack
+		},
+
+		// === Modules ===
+
+		// This object holds all the PNotify modules. They are used to provide
+		// additional functionality.
+		modules: {},
+		// This runs an event on all the modules.
+		runModules: function(event){
+			for (module in this.modules) {
+				if (typeof this.modules[module][event] === 'function')
+					this.modules[module][event].apply(this);
+			}
+		},
+
+		// === Class Variables ===
+
+		styles: null,
+
+		// === Events ===
+
+		init: function(){
+			// Get our styling object.
+			if (typeof this.options.styling === "object") {
+				this.styles = this.options.styling;
+			} else {
+				this.styles = styling[this.options.styling];
+			}
+
+		},
+		update: function(options){
+
+		},
+		remove: function(){
+
+		},
+		beforeOpen: function(){
+
+		},
+		open: function(){
+
+		},
+		afterOpen: function(){
+
+		},
+		beforeClose: function(){
+
+		},
+		afterClose: function(){
+
+		},
+		beforeDestroy: function(){
+
+		},
+		afterDestroy: function(){
+
+		}
+	});
+	// These functions affect all notices.
+	$.extend(PNotify, {
+		removeAll: function () {
+			var notices_data = jwindow.data("pnotify");
+			/* POA: Added null-check */
+			if (notices_data && notices_data.length) {
+				$.each(notices_data, function(){
+					if (this.pnotify_remove)
+						this.pnotify_remove();
+				});
+			}
+		},
+		positionAll: function (animate) {
+			// This timer is used for queueing this function so it doesn't run
+			// repeatedly.
+			if (timer)
+				clearTimeout(timer);
+			timer = null;
+			// Get all the notices.
+			var notices_data = jwindow.data("pnotify");
+			if (!notices_data || !notices_data.length)
+				return;
+			// Reset the next position data.
+			$.each(notices_data, function(){
+				var s = this.opts.stack;
+				if (!s) return;
+				s.nextpos1 = s.firstpos1;
+				s.nextpos2 = s.firstpos2;
+				s.addpos2 = 0;
+				s.animation = animate;
+			});
+			$.each(notices_data, function(){
+				this.pnotify_position();
+			});
+		},
+		styling: {
 			jqueryui: {
 				container: "ui-widget ui-widget-content ui-corner-all",
 				notice: "ui-state-highlight",
@@ -81,20 +226,224 @@
 				hi_btnhov: "",
 				hi_hnd: "glyphicon glyphicon-chevron-down"
 			}
-		};
+		}
+	});
 	/*
 	 * uses icons from http://fontawesome.io/
 	 * version 4.0.3
 	 */
-	styling.fontawesome = $.extend({}, styling.bootstrap3);
-	styling.fontawesome.notice_icon = "fa fa-exclamation-circle";
-	styling.fontawesome.info_icon = "fa fa-info";
-	styling.fontawesome.success_icon = "fa fa-check";
-	styling.fontawesome.error_icon = "fa fa-warning";
-	styling.fontawesome.closer = "fa fa-times";
-	styling.fontawesome.pin_up = "fa fa-pause";
-	styling.fontawesome.pin_down = "fa fa-play";
-	styling.fontawesome.hi_hnd = "fa fa-chevron-down";
+	with (PNotify.styling) {
+		fontawesome = $.extend({}, bootstrap3);
+		fontawesome.notice_icon = "fa fa-exclamation-circle";
+		fontawesome.info_icon = "fa fa-info";
+		fontawesome.success_icon = "fa fa-check";
+		fontawesome.error_icon = "fa fa-warning";
+		fontawesome.closer = "fa fa-times";
+		fontawesome.pin_up = "fa fa-pause";
+		fontawesome.pin_down = "fa fa-play";
+		fontawesome.hi_hnd = "fa fa-chevron-down";
+	}
+})(jQuery); }
+
+
+// Buttons
+$.extend(PNotify.prototype.options, {
+	// Provide a button for the user to manually close the notice.
+	closer: true,
+	// Only show the closer button on hover.
+	closer_hover: true,
+	// Provide a button for the user to manually stick the notice.
+	sticker: true,
+	// Only show the sticker button on hover.
+	sticker_hover: true,
+	// The various displayed text, helps facilitating internationalization.
+	buttons_text: {
+		close: "Close",
+		stick: "Stick"
+	}
+});
+PNotify.prototype.modules.buttons = {
+	init: function(){
+
+	},
+	update: function(options){
+
+	},
+	remove: function(){
+
+	},
+	beforeOpen: function(){
+
+	},
+	open: function(){
+
+	},
+	afterOpen: function(){
+
+	},
+	beforeClose: function(){
+
+	},
+	afterClose: function(){
+
+	},
+	beforeDestroy: function(){
+
+	},
+	afterDestroy: function(){
+
+	}
+};
+
+// History
+$.extend(PNotify.prototype.options, {
+	// Display a pull down menu to redisplay previous notices, and place the
+	// notice in the history.
+	history: true,
+	// Maximum number of notifications to have onscreen.
+	maxonscreen: Infinity,
+	// The various displayed text, helps facilitating internationalization.
+	history_text: {
+		redisplay: "Redisplay",
+		all: "All",
+		last: "Last"
+	}
+});
+PNotify.prototype.modules.history = {
+	init: function(){
+
+	},
+	update: function(options){
+
+	},
+	remove: function(){
+
+	},
+	beforeOpen: function(){
+
+	},
+	open: function(){
+
+	},
+	afterOpen: function(){
+
+	},
+	beforeClose: function(){
+
+	},
+	afterClose: function(){
+
+	},
+	beforeDestroy: function(){
+
+	},
+	afterDestroy: function(){
+
+	}
+};
+
+// Nonblock
+$.extend(PNotify.prototype.options, {
+	// Create a non-blocking notice. It lets the user click elements underneath it.
+	nonblock: false,
+	// The opacity of the notice (if it's non-blocking) when the mouse is over it.
+	nonblock_opacity: .2
+});
+PNotify.prototype.modules.nonblock = {
+	init: function(){
+
+	},
+	update: function(options){
+
+	},
+	remove: function(){
+
+	},
+	beforeOpen: function(){
+
+	},
+	open: function(){
+
+	},
+	afterOpen: function(){
+
+	},
+	beforeClose: function(){
+
+	},
+	afterClose: function(){
+
+	},
+	beforeDestroy: function(){
+
+	},
+	afterDestroy: function(){
+
+	}
+};
+
+// Glamor
+$.extend(PNotify.prototype.options, {
+	// The animation to use when displaying and hiding the notice. "none",
+	// "show", "fade", and "slide" are built in to jQuery. Others require jQuery
+	// UI. Use an object with effect_in and effect_out to use different effects.
+	animation: "fade",
+	// Speed at which the notice animates in and out. "slow", "def" or "normal",
+	// "fast" or number of milliseconds.
+	animate_speed: "slow",
+	// Specify a specific duration of position animation
+	position_animate_speed: 500,
+	// Display a drop shadow.
+	shadow: true
+});
+PNotify.prototype.modules.glamor = {
+	init: function(){
+
+	},
+	update: function(options){
+
+	},
+	remove: function(){
+
+	},
+	beforeOpen: function(){
+
+	},
+	open: function(){
+
+	},
+	afterOpen: function(){
+
+	},
+	beforeClose: function(){
+
+	},
+	afterClose: function(){
+
+	},
+	beforeDestroy: function(){
+
+	},
+	afterDestroy: function(){
+
+	}
+};
+
+// Uses AMD or browser globals to create a jQuery plugin.
+
+(function (factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define(['jquery'], factory);
+    } else {
+        // Browser globals
+        factory(jQuery);
+    }
+}(function($) {
+	var history_handle_top,
+		timer,
+		body,
+		jwindow = $(window);
 	// Set global variables.
 	var do_when_ready = function(){
 		body = $("body");
@@ -108,56 +457,9 @@
 		});
 	};
 	$.extend({
-		pnotify_remove_all: function () {
-			var notices_data = jwindow.data("pnotify");
-			/* POA: Added null-check */
-			if (notices_data && notices_data.length) {
-				$.each(notices_data, function(){
-					if (this.pnotify_remove)
-						this.pnotify_remove();
-				});
-			}
-		},
-		pnotify_position_all: function (animate) {
-			// This timer is used for queueing this function so it doesn't run
-			// repeatedly.
-			if (timer)
-				clearTimeout(timer);
-			timer = null;
-			// Get all the notices.
-			var notices_data = jwindow.data("pnotify");
-			if (!notices_data || !notices_data.length)
-				return;
-			// Reset the next position data.
-			$.each(notices_data, function(){
-				var s = this.opts.stack;
-				if (!s) return;
-				s.nextpos1 = s.firstpos1;
-				s.nextpos2 = s.firstpos2;
-				s.addpos2 = 0;
-				s.animation = animate;
-			});
-			$.each(notices_data, function(){
-				this.pnotify_position();
-			});
-		},
 		pnotify: function(options) {
 			// Stores what is currently being animated (in or out).
 			var animating;
-
-			// Build main options.
-			var opts;
-			if (typeof options !== "object") {
-				opts = $.extend({}, $.pnotify.defaults);
-				opts.text = options;
-			} else {
-				opts = $.extend({}, $.pnotify.defaults, options);
-			}
-			// Translate old pnotify_ style options.
-			for (var i in opts) {
-				if (typeof i === "string" && i.match(/^pnotify_/))
-					opts[i.replace(/^pnotify_/, "")] = opts[i];
-			}
 
 			if (opts.before_init) {
 				if (opts.before_init(opts) === false)
@@ -188,14 +490,6 @@
 				// Remember the latest element the mouse was over.
 				nonblock_last_elem = jelement_below;
 			};
-
-			// Get our styling object.
-			var styles;
-			if (typeof opts.styling === "object") {
-				styles = opts.styling;
-			} else {
-				styles = styling[opts.styling];
-			}
 
 			// Create our widget.
 			// Stop animation, reset the removal timer, and show the close
@@ -286,8 +580,6 @@
 			if (opts.shadow)
 				pnotify.container.addClass("ui-pnotify-shadow");
 
-			// The current version of PNotify.
-			pnotify.pnotify_version = "1.3.1";
 
 			// This function is for updating the notice.
 			pnotify.pnotify = function(options) {
@@ -934,83 +1226,7 @@
 	};
 
 	$.pnotify.defaults = {
-		// The notice's title.
-		title: false,
-		// Whether to escape the content of the title. (Not allow HTML.)
-		title_escape: false,
-		// The notice's text.
-		text: false,
-		// Whether to escape the content of the text. (Not allow HTML.)
-		text_escape: false,
-		// What styling classes to use. (Can be either jqueryui or bootstrap.)
-		styling: "bootstrap",
-		// Additional classes to be added to the notice. (For custom styling.)
-		addclass: "",
-		// Class to be added to the notice for corner styling.
-		cornerclass: "",
-		// Create a non-blocking notice. It lets the user click elements underneath it.
-		nonblock: false,
-		// The opacity of the notice (if it's non-blocking) when the mouse is over it.
-		nonblock_opacity: .2,
-		// Display a pull down menu to redisplay previous notices, and place the notice in the history.
-		history: true,
-        // Maximum number of notifications to have onscreen.
-        maxonscreen: Infinity,
-		// Display the notice when it is created. Turn this off to add notifications to the history without displaying them.
-		auto_display: true,
-		// Width of the notice.
-		width: "300px",
-		// Minimum height of the notice. It will expand to fit content.
-		min_height: "16px",
-		// Type of the notice. "notice", "info", "success", or "error".
-		type: "notice",
-		// Set icon to true to use the default icon for the selected style/type, false for no icon, or a string for your own icon class.
-		icon: true,
-		// The animation to use when displaying and hiding the notice. "none", "show", "fade", and "slide" are built in to jQuery. Others require jQuery UI. Use an object with effect_in and effect_out to use different effects.
-		animation: "fade",
-		// Speed at which the notice animates in and out. "slow", "def" or "normal", "fast" or number of milliseconds.
-		animate_speed: "slow",
-		// Specify a specific duration of position animation
-		position_animate_speed: 500,
-		// Opacity of the notice.
-		opacity: 1,
-		// Display a drop shadow.
-		shadow: true,
-		// Provide a button for the user to manually close the notice.
-		closer: true,
-		// Only show the closer button on hover.
-		closer_hover: true,
-		// Provide a button for the user to manually stick the notice.
-		sticker: true,
-		// Only show the sticker button on hover.
-		sticker_hover: true,
-		// After a delay, remove the notice.
-		hide: true,
-		// Delay in milliseconds before the notice is removed.
-		delay: 8000,
-		// Reset the hide timer if the mouse moves over the notice.
-		mouse_reset: true,
-		// Remove the notice's elements from the DOM after it is removed.
-		remove: true,
-		// Change new lines to br tags.
-		insert_brs: true,
-		// The stack on which the notices will be placed. Also controls the direction the notices stack.
-		stack: {
-			dir1: "down",
-			dir2: "left",
-			push: "bottom",
-			spacing1: 25,
-			spacing2: 25,
-			context: $("body")
-		},
-		// The various displayed text, helps facilitating internationalization.
-		labels: {
-			redisplay: "Redisplay",
-			all: "All",
-			last: "Last",
-			close: "Close",
-			stick: "Stick"
-		}
+
 	};
 	if (document.body)
 		do_when_ready();
