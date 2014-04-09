@@ -2,10 +2,46 @@
 (function($){
 	var history_menu,
 		history_handle_top;
+	$(function(){
+		$("body").on("pnotify.history-all", function(){
+			// Display all notices. (Disregarding non-history notices.)
+			$.each(PNotify.notices, function(){
+				if (this.modules.history.inHistory) {
+					if (this.elem.is(":visible")) {
+						// The hide variable controls whether the history pull down should
+						// queue a removal timer.
+						if (this.options.hide)
+							this.queueRemove();
+					} else if (this.open)
+						this.open();
+				}
+			});
+		}).on("pnotify.history-last", function(){
+			var pushTop = (PNotify.prototype.options.stack.push === "top");
+
+			// Look up the last history notice, and display it.
+			var i = (pushTop ? 0 : -1);
+
+			var notice;
+			do {
+				if (i === -1)
+					notice = PNotify.notices.slice(i);
+				else
+					notice = PNotify.notices.slice(i, i+1);
+				if (!notice[0])
+					return false;
+
+				i = (pushTop ? i + 1 : i - 1);
+			} while (!notice[0].modules.history.inHistory || notice[0].elem.is(":visible"));
+			if (notice[0].open)
+				notice[0].open();
+		});
+	});
 	PNotify.prototype.options.history = {
-		// Display a pull down menu to redisplay previous notices, and place the
-		// notice in the history.
+		// Place the notice in the history.
 		history: true,
+		// Display a pull down menu to redisplay previous notices.
+		menu: false,
 		// Make the pull down menu fixed to the top of the viewport.
 		fixed: true,
 		// Maximum number of notifications to have onscreen.
@@ -18,53 +54,21 @@
 		}
 	};
 	PNotify.prototype.modules.history = {
+		// The history variable controls whether the notice gets redisplayed
+		// by the history pull down.
+		inHistory: false,
+
 		init: function(notice, options){
 			// Make sure that no notices get destroyed.
 			notice.options.destroy = false;
 
-			// The history variable controls whether the notice gets redisplayed
-			// by the history pull down.
-			notice.history = options.history;
+			this.inHistory = options.history;
 
-
-			if (options.history) {
+			if (options.menu) {
 				// If there isn't a history pull down, create one.
 				if (typeof history_menu === "undefined") {
-					$("body").on("pnotify.history-all", function(){
-						// Display all notices. (Disregarding non-history notices.)
-						$.each(PNotify.notices, function(){
-							if (this.history) {
-								if (this.elem.is(":visible")) {
-									// The hide variable controls whether the history pull down should
-									// queue a removal timer.
-									if (this.options.hide)
-										this.queueRemove();
-								} else if (this.open)
-									this.open();
-							}
-						});
-					}).on("pnotify.history-last", function(){
-						var pushTop = (PNotify.prototype.options.stack.push === "top");
-
-						// Look up the last history notice, and display it.
-						var i = (pushTop ? 0 : -1);
-
-						var notice;
-						do {
-							if (i === -1)
-								notice = PNotify.notices.slice(i);
-							else
-								notice = PNotify.notices.slice(i, i+1);
-							if (!notice[0])
-								return false;
-
-							i = (pushTop ? i + 1 : i - 1);
-						} while (!notice[0].history || notice[0].elem.is(":visible"));
-						if (notice[0].open)
-							notice[0].open();
-					});
 					history_menu = $("<div />", {
-						"class": "ui-pnotify-history-container "+notice.styles.hi_menu+(options.fixed ? ' ui-pnotify-history-fixed' : ''),
+						"class": "ui-pnotify-history-container "+notice.styles.hi_menu,
 						"mouseleave": function(){
 							history_menu.animate({top: "-"+history_handle_top+"px"}, {duration: 100, queue: false});
 						}
@@ -98,7 +102,7 @@
 								return false;
 							}
 					}))
-					.appendTo($("body"));
+					.appendTo("body");
 
 					// Make a handle so the user can pull down the history tab.
 					var handle = $("<span />", {
@@ -110,18 +114,24 @@
 					.appendTo(history_menu);
 
 					// Get the top of the handle.
+					console.log(handle.offset());
 					history_handle_top = handle.offset().top + 2;
 					// Hide the history pull down up to the top of the handle.
 					history_menu.css({top: "-"+history_handle_top+"px"});
+
+					// Apply the fixed styling.
+					if (options.fixed) {
+						history_menu.addClass('ui-pnotify-history-fixed');
+					}
 				}
 			}
 		},
 		update: function(notice, options){
 			// Update values for history menu access.
-			notice.history = options.history;
-			if (options.fixed) {
+			this.inHistory = options.history;
+			if (options.fixed && history_menu) {
 				history_menu.addClass('ui-pnotify-history-fixed');
-			} else {
+			} else if (history_menu) {
 				history_menu.removeClass('ui-pnotify-history-fixed');
 			}
 		},
@@ -149,7 +159,7 @@
 		hi_btnhov: "ui-state-hover",
 		hi_hnd: "ui-icon ui-icon-grip-dotted-horizontal"
 	});
-	$.extend(PNotify.styling.bootstrap, {
+	$.extend(PNotify.styling.bootstrap2, {
 		hi_menu: "well",
 		hi_btn: "btn",
 		hi_btnhov: "",

@@ -806,7 +806,7 @@
 	<section class="container page-banner">
 		<div class="intro-section">
 			<h1>PNotify</h1>
-			<p id="description">JavaScript notifications for Bootstrap or jQuery UI,<br /> and <a href="http://www.w3.org/TR/notifications/" target="_blank">web notifications draft</a>.</p>
+			<p id="description">JavaScript notifications for Bootstrap, jQuery UI,<br /> and the <a href="http://www.w3.org/TR/notifications/" target="_blank">web notifications draft</a>.</p>
 		</div>
 		<div class="intro-section">
 			<a class="btn btn-primary btn-large" href="https://github.com/sciactive/pnotify/releases/download/1.3.1/pnotify-1.3.1.zip" target="_blank">Download PNotify 1.3</a>
@@ -839,21 +839,17 @@
 				</div>
 				<div class="modal-body">
 					<p>
-						PNotify comes with the following files:<br />
+						PNotify downloads come with the following files:<br />
 						<br />
-						<code>jquery.pnotify.js</code> &amp; <code>jquery.pnotify.min.js</code> (Minified) - The main JavaScript.
+						<code>pnotify.custom.js</code> &amp; <code>pnotify.custom.min.js</code> (Minified)
 						<br />
-						<code>jquery.pnotify.default.css</code> - The main stylesheet.
-						<br />
-						<code>jquery.pnotify.default.icons.css</code> - Use this to support PIcon styles.
+						<code>pnotify.custom.css</code>
 					</p>
 					<p>
-						So here's how you'd include them all:
+						So here's how you'd include them on your page:
 					</p>
-					<pre class="prettyprint">&lt;script type="text/javascript" src="jquery.pnotify<em>.min</em>.js"&gt;&lt;/script&gt;
-&lt;link href="jquery.pnotify.default.css" media="all" rel="stylesheet" type="text/css" /&gt;
-&lt;!-- Include this file if you are using PIcons. --&gt;
-&lt;link href="jquery.pnotify.default.icons.css" media="all" rel="stylesheet" type="text/css" /&gt;</pre>
+					<pre class="prettyprint">&lt;script type="text/javascript" src="pnotify.custom<em>.min</em>.js"&gt;&lt;/script&gt;
+&lt;link href="pnotify.custom.css" media="all" rel="stylesheet" type="text/css" /&gt;</pre>
 					<p>
 						You also need to include jQuery (1.4 or higher) and either Bootstrap CSS or a jQuery UI Theme.
 						<small>If you want to use jQuery UI effect animations, you also need to include the jQuery UI JavaScript.</small>
@@ -870,23 +866,17 @@ $(function(){
 });
 &lt;/script&gt;</pre>
 					<p>
-						And if you choose to use Bootstrap 3 rather than 2
-						for all your styling, include this line somewhere
-						before your first notice:
+						If you are using Bootstrap version 2, include this
+						line somewhere before your first notice:
 					</p>
-					<pre class="prettyprint">PNotify.prototype.options.styling = "bootstrap3";</pre>
+					<pre class="prettyprint">PNotify.prototype.options.styling = "bootstrap2";</pre>
 					<p>
-						And if you choose to use jQuery UI for all your styling,
+						If you are using jQuery UI for all your styling,
 						include this line somewhere before your first notice:
 					</p>
 					<pre class="prettyprint">PNotify.prototype.options.styling = "jqueryui";</pre>
 					<p>
-						And if you don't want the history pull-down menu in the top
-						corner, include this line somewhere before your first notice:
-					</p>
-					<pre class="prettyprint">PNotify.prototype.options.history.history = false;</pre>
-					<p>
-						All of the examples on this page provide source code with
+						All of the demos on this page provide source code with
 						the "{}" button,
 						<img style="margin-left: 3em;" src="includes/source-screen.png" alt="Source button screen shot." />
 					</p>
@@ -923,6 +913,13 @@ $(function(){
 							It is designed to provide an unparalleled level of
 							flexibility, while still being very easy to implement and
 							use.
+							<br />
+							<br />
+							PNotify provides desktop notifications based on the
+							<a href="http://www.w3.org/TR/notifications/" target="_blank">web notifications draft</a>.
+							If desktop notifications are not available or not allowed,
+							PNotify will fall back to displaying the notice as a
+							regular, in-browser notice.
 						</p>
 					</div>
 				</div>
@@ -1029,6 +1026,7 @@ $(function(){
 						</li>
 						<li>Feature rich API.
 							<ul>
+								<li>Desktop notifications based on the draft web notifications standard.</li>
 								<li>Supports dynamically updating text, title, icon, type...</li>
 								<li>Supports HTML (including forms) in title and text.
 									<ul>
@@ -1551,7 +1549,7 @@ height: 33px;
 				});">Desktop Notification Custom</button>
 				<button class="btn btn-default source" onclick="PNotify.desktop.permission(); (new PNotify({
 					title: 'Sticky Desktop Notice',
-					text: 'If you\'ve given me permission, I\'ll appear as a desktop notification. If you haven\'t, I\'ll still appear as a regular PNotify notice. Also, I\'m a sticky notice, so you\'ll have to close me yourself.',
+					text: 'I\'m a sticky notice, so you\'ll have to close me yourself. If you\'ve given me permission, I\'ll appear as a desktop notification. If you haven\'t, I\'ll still appear as a regular PNotify notice.',
 					hide: false,
 					desktop: {
 						desktop: true
@@ -1796,6 +1794,13 @@ height: 33px;
 			<div class="panel-body">
 				<button class="btn btn-default source" onclick="$(this).trigger('pnotify.history-last');">Display Last Notice</button>
 				<button class="btn btn-default source" onclick="$(this).trigger('pnotify.history-all');">Display All Notices</button>
+				<button class="btn btn-default source" onclick="new PNotify({
+					title: 'Pull Down Menu Notice',
+					text: 'I\'ll create a menu in the upper right corner that provides history functions.',
+					history: {
+						menu: true
+					}
+				});">Pull Down Menu</button>
 				<button class="btn btn-default source" onclick="new PNotify({
 					title: 'No History Notice',
 					text: 'I\'m not part of the notice history, so if you redisplay the last message, it won\'t be me.',

@@ -1,21 +1,5 @@
 // Confirm
 (function($){
-	$.extend(PNotify.styling.jqueryui, {
-		btn: "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only",
-		btnhover: "ui-state-hover",
-		btnactive: "ui-state-active",
-		btnfocus: "ui-state-focus",
-		text: "ui-button-text"
-	});
-	$.extend(PNotify.styling.bootstrap, {
-		btn: "btn"
-	});
-	$.extend(PNotify.styling.bootstrap3, {
-		btn: "btn btn-default"
-	});
-	$.extend(PNotify.styling.fontawesome, {
-		btn: "btn btn-default"
-	});
 	PNotify.prototype.options.confirm = {
 		// Make a confirmation box.
 		confirm: false,
@@ -106,4 +90,20 @@
 			}
 		}
 	};
+	$.extend(PNotify.styling.jqueryui, {
+		btn: "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only",
+		btnhover: "ui-state-hover",
+		btnactive: "ui-state-active",
+		btnfocus: "ui-state-focus",
+		text: "ui-button-text"
+	});
+	$.extend(PNotify.styling.bootstrap2, {
+		btn: "btn"
+	});
+	$.extend(PNotify.styling.bootstrap3, {
+		btn: "btn btn-default"
+	});
+	$.extend(PNotify.styling.fontawesome, {
+		btn: "btn btn-default"
+	});
 })(jQuery);

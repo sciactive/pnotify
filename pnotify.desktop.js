@@ -43,7 +43,6 @@
 		init: function(notice, options){
 			if (!options.desktop)
 				return;
-			var that = this;
 			permission = PNotify.desktop.checkPermission();
 			if (permission != 0)
 				return;

@@ -3,6 +3,8 @@ Introduction
 
 PNotify is a JavaScript notification plugin, developed by SciActive. Formerly known as Pines Notify. It is designed to provide an unparalleled level of flexibility, while still being very easy to implement and use.
 
+PNotify provides desktop notifications based on the [web notifications draft](http://www.w3.org/TR/notifications/). If desktop notifications are not available or not allowed, PNotify will fall back to displaying the notice as a regular, in-browser notice.
+
 See http://sciactive.com/pnotify/ for more information and examples.
 
 Requirements
@@ -15,17 +17,14 @@ Getting Started
 
 PNotify comes with the following files:
 
-* `jquery.pnotify.js` & `jquery.pnotify.min.js` (Minified) - The main JavaScript.
-* `jquery.pnotify.default.css` - The main stylesheet.
-* `jquery.pnotify.default.icons.css` - Use this to support PIcon styles.
+* `pnotify.custom.js` & `pnotify.custom.min.js` (Minified)
+* `pnotify.custom.css`
 
-So here's how you'd include them all:
+So here's how you'd include them on your page:
 
 ```html
-<script type="text/javascript" src="jquery.pnotify.min.js"></script>
-<link href="jquery.pnotify.default.css" media="all" rel="stylesheet" type="text/css" />
-<!-- Include this file if you are using PIcons. -->
-<link href="jquery.pnotify.default.icons.css" media="all" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="pnotify.custom.min.js"></script>
+<link href="pnotify.custom.css" media="all" rel="stylesheet" type="text/css" />
 ```
 
 Now you can use PNotify like this:
@@ -33,7 +32,7 @@ Now you can use PNotify like this:
 ```html
 <script type="text/javascript">
 	$(function(){
-		$.pnotify({
+		new PNotify({
 			title: 'Regular Notice',
 			text: 'Check me out! I\'m a notice.'
 		});
@@ -41,40 +40,22 @@ Now you can use PNotify like this:
 </script>
 ```
 
-And if you choose to use jQuery UI for **all** your styling, include this line somewhere before your first notice:
+If you are using Bootstrap version 2, include this line somewhere before your first notice:
 
 ```js
-$.pnotify.defaults.styling = "jqueryui";
+PNotify.prototype.options.styling = "bootstrap2";
 ```
 
-If you use Bootstrap 3, include this line somewhere before your first notice:
+If you are using jQuery UI for **all** your styling, include this line somewhere before your first notice:
 
 ```js
-$.pnotify.defaults.styling = "bootstrap3";
+PNotify.prototype.options.styling = "jqueryui";
 ```
-
-And if you don't want the history pull-down menu in the top corner, include this line somewhere before your first notice:
-
-```js
-$.pnotify.defaults.history = false;
-```
-
-Callbacks
-=========
-
-The callback options all expect one argument, a function, which will be called when that event occurs. They can be included in the options object passed to $.pnotify() just like any other options. If the function returns false on a "before" callback, that event will be canceled.
-
-* `before_init` - This option is called before the notice has been initialized. It accepts one argument, the options object.
-* `after_init` - This option is called after the notice has been initialized. It accepts one argument, the notice object.
-* `before_open` - This option is called before the notice has been displayed. It accepts one argument, the notice object.
-* `after_open` - This option is called after the notice has been displayed. It accepts one argument, the notice object.
-* `before_close` - This option is called before the notice closes. It accepts one argument, the notice object.
-* `after_close` - This option is called after the notice closes. It accepts one argument, the notice object.
 
 Stacks
 ======
 
-A stack is an object which PNotify uses to determine where to position notices. A stack has two mandatory variables, `dir1` and `dir2`. `dir1` is the first direction in which the notices are stacked. When the notices run out of room in the window, they will move over in the direction specified by `dir2`. The directions can be `"up"`, `"down"`, `"right"`, or `"left"`. Stacks are independent of each other, so a stack doesn't know and doesn't care if it overlaps (and blocks) another stack. The default stack, which can be changed like any other default, goes down, then left. Stack objects are used and manipulated by PNotify, and therefore, should be a variable when passed. So, calling something like `$.pnotify({stack: {"dir1": "down", "dir2": "left"}});` will **NOT** work. It will create a notice, but that notice will be in its own stack and may overlap other notices.
+A stack is an object which PNotify uses to determine where to position notices. A stack has two mandatory properties, `dir1` and `dir2`. `dir1` is the first direction in which the notices are stacked. When the notices run out of room in the window, they will move over in the direction specified by `dir2`. The directions can be `"up"`, `"down"`, `"right"`, or `"left"`. Stacks are independent of each other, so a stack doesn't know and doesn't care if it overlaps (and blocks) another stack. The default stack, which can be changed like any other default, goes down, then left. Stack objects are used and manipulated by PNotify, and therefore, should be a variable when passed. So, calling something like `new PNotify({stack: {"dir1": "down", "dir2": "left"}});` will **NOT** work. It will create a notice, but that notice will be in its own stack and may overlap other notices.
 
 Example Stacks
 --------------
@@ -108,8 +89,10 @@ var stack_topleft = {"dir1": "down", "dir2": "right"};
 
 and then add two options to your pnotify call:
 
-	addclass: "stack-topleft", // This is one of the included default classes.
-	stack: stack_topleft
+```
+addclass: "stack-topleft", // This is one of the included default classes.
+stack: stack_topleft
+```
 
 There are several CSS classes included which will position your notices for you:
 
@@ -126,13 +109,9 @@ Configuration Defaults / Options
 * `title_escape: false` - Whether to escape the content of the title. (Not allow HTML.)
 * `text: false` - The notice's text.
 * `text_escape: false` - Whether to escape the content of the text. (Not allow HTML.)
-* `styling: "bootstrap"` - What styling classes to use. (Can be either jqueryui, bootstrap, bootstrap3, fontawesome, or a custom style object. See the source for the properties in a style object.)
+* `styling: "bootstrap3"` - What styling classes to use. (Can be either jqueryui, bootstrap2, bootstrap3, fontawesome, or a custom style object. See the source for the properties in a style object.)
 * `addclass: ""` - Additional classes to be added to the notice. (For custom styling.)
 * `cornerclass: ""` - Class to be added to the notice for corner styling.
-* `nonblock: false` - Create a non-blocking notice. It lets the user click elements underneath it.
-* `nonblock_opacity: .2` - The opacity of the notice (if it's non-blocking) when the mouse is over it.
-* `history: true` - Display a pull down menu to redisplay previous notices, and place the notice in the history.
-* `maxonscreen: Infinity` - Maximum number of notifications to have onscreen.
 * `auto_display: true` - Display the notice when it is created. Turn this off to add notifications to the history without displaying them.
 * `width: "300px"` - Width of the notice.
 * `min_height: "16px"` - Minimum height of the notice. It will expand to fit content.
@@ -143,17 +122,79 @@ Configuration Defaults / Options
 * `position_animate_speed: 500` - Specify a specific duration of position animation.
 * `opacity: 1` - Opacity of the notice.
 * `shadow: true` - Display a drop shadow.
-* `closer: true` - Provide a button for the user to manually close the notice.
-* `closer_hover: true` - Only show the closer button on hover.
-* `sticker: true` - Provide a button for the user to manually stick the notice.
-* `sticker_hover: true` - Only show the sticker button on hover.
 * `hide: true` - After a delay, remove the notice.
 * `delay: 8000` - Delay in milliseconds before the notice is removed.
 * `mouse_reset: true` - Reset the hide timer if the mouse moves over the notice.
 * `remove: true` - Remove the notice's elements from the DOM after it is removed.
 * `insert_brs: true` - Change new lines to br tags.
 * `stack: {"dir1": "down", "dir2": "left", "push": "bottom", "spacing1": 25, "spacing2": 25, context: $("body")}` - The stack on which the notices will be placed. Also controls the direction the notices stack.
-* `labels: {redisplay: "Redisplay", all: "All", last: "Last", close: "Close", stick: "Stick"}` - Lets you change the displayed text, facilitating the internationalization..
+
+Desktop Module
+--------------
+
+`desktop: {`
+* `desktop: false` - Display the notification as a desktop notification.
+* `icon: null` - The URL of the icon to display. If false, no icon will show. If null, a default icon will show.
+`}`
+
+Buttons Module
+--------------
+
+`buttons: {`
+* `closer: true` - Provide a button for the user to manually close the notice.
+* `closer_hover: true` - Only show the closer button on hover.
+* `sticker: true` - Provide a button for the user to manually stick the notice.
+* `sticker_hover: true` - Only show the sticker button on hover.
+* `labels: {close: "Close", stick: "Stick"}` - Lets you change the displayed text, facilitating internationalization.
+`}`
+
+NonBlock Module
+--------------
+
+`nonblock: {`
+* `nonblock: false` - Create a non-blocking notice. It lets the user click elements underneath it.
+* `nonblock_opacity: .2` - The opacity of the notice (if it's non-blocking) when the mouse is over it.
+`}`
+
+Confirm Module
+--------------
+
+`confirm: {`
+* `confirm: false` - Make a confirmation box.
+* `align: "right"` - Where to align the buttons. (right, center, left, justify)
+* `buttons: [{text: "Ok", addClass: "", click: function(notice){ notice.remove(); notice.elem.trigger("pnotify.confirm"); }},{text: "Cancel", addClass: "", click: function(notice){ notice.remove(); notice.elem.trigger("pnotify.cancel"); }}]` - The buttons to display, and their callbacks.
+`}`
+
+History Module
+--------------
+
+`history: {`
+* `history: true` - Place the notice in the history.
+* `menu: false` - Display a pull down menu to redisplay previous notices.
+* `fixed: true` - Make the pull down menu fixed to the top of the viewport.
+* `maxonscreen: Infinity` - Maximum number of notifications to have onscreen.
+* `labels: {redisplay: "Redisplay", all: "All", last: "Last"}` - Lets you change the displayed text, facilitating internationalization.
+`}`
+
+Reference Module
+--------------
+
+`reference: {`
+* `putThing: false` - Provide a thing for stuff. Turned off by default.
+* `labels: {text: "Spin Around"}` - If you are displaying any text, you should use a labels options to support internationalization.
+`}`
+
+Callbacks Module
+================
+
+The callback options all expect one argument, a function, which will be called when that event occurs. They can be included in the options object passed to $.pnotify() just like any other options. If the function returns false on the "before_open" or "before_close" callback, that event will be canceled.
+
+* `before_init` - This option is called before the notice has been initialized. It accepts one argument, the options object.
+* `after_init` - This option is called after the notice has been initialized. It accepts one argument, the notice object.
+* `before_open` - This option is called before the notice has been displayed. It accepts one argument, the notice object.
+* `after_open` - This option is called after the notice has been displayed. It accepts one argument, the notice object.
+* `before_close` - This option is called before the notice closes. It accepts one argument, the notice object.
+* `after_close` - This option is called after the notice closes. It accepts one argument, the notice object.
 
 Additional Info
 ===============

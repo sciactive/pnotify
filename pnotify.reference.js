@@ -111,7 +111,7 @@
 	$.extend(PNotify.styling.jqueryui, {
 		athing: "ui-icon ui-icon-refresh"
 	});
-	$.extend(PNotify.styling.bootstrap, {
+	$.extend(PNotify.styling.bootstrap2, {
 		athing: "icon-refresh"
 	});
 	$.extend(PNotify.styling.bootstrap3, {

@@ -713,7 +713,7 @@ license GPL/LGPL/MPL
 				error: "ui-state-error",
 				error_icon: "ui-icon ui-icon-alert"
 			},
-			bootstrap: {
+			bootstrap2: {
 				container: "alert",
 				notice: "",
 				notice_icon: "icon-exclamation-sign",

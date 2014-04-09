@@ -105,7 +105,7 @@
 		pin_up: "ui-icon ui-icon-pin-w",
 		pin_down: "ui-icon ui-icon-pin-s"
 	});
-	$.extend(PNotify.styling.bootstrap, {
+	$.extend(PNotify.styling.bootstrap2, {
 		closer: "icon-remove",
 		pin_up: "icon-pause",
 		pin_down: "icon-play"
