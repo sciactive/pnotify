@@ -1485,6 +1485,8 @@ height: 33px;
 						</div>
 					</div>
 				</div>
+				<hr />
+				Ok, I lied when I said they <em>only</em> use core PNotify features. The Buttons module provides buttons by default.
 			</div>
 		</div>
 	</div>
@@ -1549,7 +1551,7 @@ height: 33px;
 				});">Desktop Notification Custom</button>
 				<button class="btn btn-default source" onclick="PNotify.desktop.permission(); (new PNotify({
 					title: 'Sticky Desktop Notice',
-					text: 'I\'m a sticky notice, so you\'ll have to close me yourself. If you\'ve given me permission, I\'ll appear as a desktop notification. If you haven\'t, I\'ll still appear as a regular PNotify notice.',
+					text: 'I\'m a sticky notice, so you\'ll have to close me yourself. (Some systems don\'t allow sticky notifications.) If you\'ve given me permission, I\'ll appear as a desktop notification. If you haven\'t, I\'ll still appear as a regular PNotify notice.',
 					hide: false,
 					desktop: {
 						desktop: true
