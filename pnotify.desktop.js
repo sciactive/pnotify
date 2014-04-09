@@ -1,7 +1,5 @@
 // Desktop
 (function($){
-	if (!window.webkitNotifications)
-		return;
 	var permission;
 	var notify = function(title, options){
 		// Memoize based on feature detection.
