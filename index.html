@@ -1683,7 +1683,6 @@ height: 33px;
 							{
 								text: 'Mashed Potatoes',
 								click: function(notice){
-									notice.queueRemove();
 									notice.update({
 										title: 'You\'ve Chosen a Side', text: 'You want mashed potatoes.', icon: true, type: 'info', hide: true,
 										confirm: {
@@ -1699,7 +1698,6 @@ height: 33px;
 							{
 								text: 'Fruit',
 								click: function(notice){
-									notice.queueRemove();
 									notice.update({
 										title: 'You\'ve Chosen a Side', text: 'You want fruit.', icon: true, type: 'info', hide: true,
 										confirm: {
