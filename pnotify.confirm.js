@@ -11,16 +11,16 @@
 				text: "Ok",
 				addClass: "",
 				click: function(notice){
+					notice.get().trigger("pnotify.confirm");
 					notice.remove();
-					notice.elem.trigger("pnotify.confirm");
 				}
 			},
 			{
 				text: "Cancel",
 				addClass: "",
 				click: function(notice){
+					notice.get().trigger("pnotify.cancel");
 					notice.remove();
-					notice.elem.trigger("pnotify.cancel");
 				}
 			}
 		]

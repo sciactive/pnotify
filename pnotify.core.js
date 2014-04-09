@@ -141,6 +141,7 @@ license GPL/LGPL/MPL
 		title_container: null,
 		text_container: null,
 		animating: false, // Stores what is currently being animated (in or out).
+		timerHide: false, // Stores whether the notice was hidden by a timer.
 
 		// === Events ===
 
@@ -165,8 +166,11 @@ license GPL/LGPL/MPL
 				"css": {"display": "none"},
 				"mouseenter": function(e){
 					if (that.options.mouse_reset && that.animating === "out") {
+						if (!that.timerHide)
+							return;
 						// If it's animating out, animate back in really quickly.
 						that.elem.stop(true);
+						that.state = "open";
 						that.animating = "in";
 						that.elem.css("height", "auto").animate({"width": that.options.width, "opacity": that.options.opacity}, "fast");
 					}
@@ -380,8 +384,9 @@ license GPL/LGPL/MPL
 		// Remove the notice.
 		remove: function(timer_hide) {
 			this.state = "closing";
+			this.timerHide = !!timer_hide; // Make sure it's a boolean.
 			// Run the modules.
-			this.runModules('beforeClose', timer_hide);
+			this.runModules('beforeClose');
 
 			var that = this;
 			if (this.timer) {
@@ -391,7 +396,7 @@ license GPL/LGPL/MPL
 			this.animateOut(function(){
 				that.state = "closed";
 				// Run the modules.
-				that.runModules('afterClose', timer_hide);
+				that.runModules('afterClose');
 				that.queuePosition(true);
 				// If we're supposed to remove the notice from the DOM, do it.
 				if (that.options.remove)

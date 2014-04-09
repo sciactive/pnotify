@@ -299,7 +299,7 @@
 					history: false
 				},
 				before_open: function(PNotify){
-					progress = PNotify.elem.find("div.progress_bar");
+					progress = PNotify.get().find("div.progress_bar");
 					progress.progressbar({value: cur_value});
 					// Pretend to do something.
 					var timer = setInterval(function(){
@@ -658,9 +658,9 @@
 				stack: false,
 				before_open: function(PNotify){
 					// Position this notice in the center of the screen.
-					PNotify.elem.css({
-						"top": ($(window).height() / 2) - (PNotify.elem.height() / 2),
-						"left": ($(window).width() / 2) - (PNotify.elem.width() / 2)
+					PNotify.get().css({
+						"top": ($(window).height() / 2) - (PNotify.get().height() / 2),
+						"left": ($(window).width() / 2) - (PNotify.get().width() / 2)
 					});
 					// Make a modal screen overlay.
 					if (modal_overlay)
@@ -1315,7 +1315,9 @@ $(function(){
 					},
 					insert_brs: false
 				});
-				notice.elem.find('form.pf-form').submit(function(){
+				notice.get().find('form.pf-form').on('click', '[name=cancel]', function(){
+					notice.remove();
+				}).submit(function(){
 					var username = $(this).find('input[name=username]').val();
 					if (!username) {
 						alert('Please provide a username.');
@@ -1362,7 +1364,7 @@ $(function(){
 						</div>
 						<div class="pf-element pf-buttons pf-centered">
 							<input class="pf-button btn btn-primary" type="submit" name="submit" value="Submit" />
-							<input class="pf-button btn btn-default" type="reset" name="reset" value="Reset" />
+							<input class="pf-button btn btn-default" type="button" name="cancel" value="Cancel" />
 						</div>
 					</form>
 				</div>
@@ -1485,8 +1487,6 @@ height: 33px;
 						</div>
 					</div>
 				</div>
-				<hr />
-				Ok, I lied when I said they <em>only</em> use core PNotify features. The Buttons module provides buttons by default.
 			</div>
 		</div>
 	</div>
@@ -1651,7 +1651,7 @@ height: 33px;
 					history: {
 						history: false
 					}
-				})).elem.on('pnotify.confirm', function(){
+				})).get().on('pnotify.confirm', function(){
 					alert('Ok, cool.');
 				}).on('pnotify.cancel', function(){
 					alert('Oh ok. Chicken, I see.');
@@ -1774,17 +1774,17 @@ height: 33px;
 											before_close: null
 										});
 										PNotify.queueRemove();
-										PNotify.elem.effect('bounce');
+										PNotify.get().effect('bounce');
 										return false;
 									}
 								});
 								PNotify.queueRemove();
-								PNotify.elem.effect('bounce');
+								PNotify.get().effect('bounce');
 								return false;
 							}
 						});
 						PNotify.queueRemove();
-						PNotify.elem.effect('bounce');
+						PNotify.get().effect('bounce');
 						return false;
 					}
 				});">Notice to Error to Success to Info</button>

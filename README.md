@@ -165,7 +165,7 @@ Confirm Module
 `confirm: {`
 * `confirm: false` - Make a confirmation box.
 * `align: "right"` - Where to align the buttons. (right, center, left, justify)
-* `buttons: [{text: "Ok", addClass: "", click: function(notice){ notice.remove(); notice.elem.trigger("pnotify.confirm"); }},{text: "Cancel", addClass: "", click: function(notice){ notice.remove(); notice.elem.trigger("pnotify.cancel"); }}]` - The buttons to display, and their callbacks.
+* `buttons: [{text: "Ok", addClass: "", click: function(notice){ notice.get().trigger("pnotify.confirm"); notice.remove(); }},{text: "Cancel", addClass: "", click: function(notice){ notice.get().trigger("pnotify.cancel"); notice.remove(); }}]` - The buttons to display, and their callbacks.
 
 `}`
 
