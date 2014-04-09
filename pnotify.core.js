@@ -1,13 +1,11 @@
 /*
- * jQuery PNotify Plugin 1.3.1
- *
+ * jQuery PNotify Plugin 2.0.0
  * http://sciactive.com/pnotify/
- * Copyright (c) 2009-2014 Hunter Perrin
- *
- * Triple license under the GPL, LGPL, and MPL:
- *	  http://www.gnu.org/licenses/gpl.html
- *	  http://www.gnu.org/licenses/lgpl.html
- *	  http://www.mozilla.org/MPL/MPL-1.1.html
+ * Copyright 2009-2014 Hunter Perrin
+ * Triple license
+ * gnu.org/licenses/gpl.html
+ * gnu.org/licenses/lgpl.html
+ * mozilla.org/MPL/MPL-1.1.html
  */
 
 // Uses AMD or browser globals to create a jQuery plugin.
@@ -48,11 +46,11 @@
 		this.init();
 	};
 	$.extend(PNotify.prototype, {
+		// The current version of PNotify.
+		version: "2.0.0",
 
 		// === Options ===
 
-		// The current version of PNotify.
-		version: "1.3.1",
 		// Options defaults.
 		options: {
 			// The notice's title.
@@ -117,14 +115,17 @@
 		modules: {},
 		// This runs an event on all the modules.
 		runModules: function(event, arg){
-			for (module in this.modules) {
+			var curArg;
+			for (var module in this.modules) {
+				curArg = ((typeof arg === "object" && module in arg) ? arg[module] : arg);
 				if (typeof this.modules[module][event] === 'function')
-					this.modules[module][event](this, typeof this.options[module] === 'object' ? this.options[module] : {}, arg);
+					this.modules[module][event](this, typeof this.options[module] === 'object' ? this.options[module] : {}, curArg);
 			}
 		},
 
 		// === Class Variables ===
 
+		state: "initializing", // The state can be "initializing", "opening", "open", "closing", and "closed".
 		timer: null, // Auto close timer.
 		styles: null,
 		elem: null,
@@ -137,6 +138,11 @@
 
 		init: function(){
 			var that = this;
+
+			// First and foremost, we don't want our module objects all referencing the prototype.
+			this.modules = {};
+			$.extend(true, this.modules, PNotify.prototype.modules);
+
 			// Get our styling object.
 			if (typeof this.options.styling === "object") {
 				this.styles = this.options.styling;
@@ -242,7 +248,7 @@
 			// Save old options.
 			var oldOpts = this.options;
 			// Then update to the new options.
-			this.parseOptions(options);
+			this.parseOptions(oldOpts, options);
 			// Update the corner class.
 			if (this.options.cornerclass !== oldOpts.cornerclass)
 				this.container.removeClass("ui-corner-all "+oldOpts.cornerclass).addClass(this.options.cornerclass);
@@ -263,22 +269,37 @@
 				this.title_container.slideUp("fast");
 			else if (this.options.title !== oldOpts.title) {
 				if (this.options.title_escape)
-					this.title_container.text(this.options.title).slideDown(200);
+					this.title_container.text(this.options.title);
 				else
-					this.title_container.html(this.options.title).slideDown(200);
+					this.title_container.html(this.options.title);
+				if (oldOpts.title === false)
+					this.title_container.slideDown(200)
 			}
 			// Update the text.
 			if (this.options.text === false) {
 				this.text_container.slideUp("fast");
 			} else if (this.options.text !== oldOpts.text) {
 				if (this.options.text_escape)
-					this.text_container.text(this.options.text).slideDown(200);
+					this.text_container.text(this.options.text);
 				else
-					this.text_container.html(this.options.insert_brs ? String(this.options.text).replace(/\n/g, "<br />") : this.options.text).slideDown(200);
+					this.text_container.html(this.options.insert_brs ? String(this.options.text).replace(/\n/g, "<br />") : this.options.text);
+				if (oldOpts.text === false)
+					this.text_container.slideDown(200)
 			}
 			// Change the notice type.
 			if (this.options.type !== oldOpts.type)
-				this.container.removeClass(this.styles.error+" "+this.styles.notice+" "+this.styles.success+" "+this.styles.info).addClass(this.options.type === "error" ? this.styles.error : (this.options.type === "info" ? this.styles.info : (this.options.type === "success" ? this.styles.success : this.styles.notice)));
+				this.container.removeClass(
+					this.styles.error+" "+this.styles.notice+" "+this.styles.success+" "+this.styles.info
+				).addClass(this.options.type === "error" ?
+					this.styles.error :
+					(this.options.type === "info" ?
+						this.styles.info :
+						(this.options.type === "success" ?
+							this.styles.success :
+							this.styles.notice
+						)
+					)
+				);
 			if (this.options.icon !== oldOpts.icon || (this.options.icon === true && this.options.type !== oldOpts.type)) {
 				// Remove any old icon.
 				this.container.find("div.ui-pnotify-icon").remove();
@@ -312,6 +333,7 @@
 
 		// Display the notice.
 		open: function(){
+			this.state = "opening";
 			// Run the modules.
 			this.runModules('beforeOpen');
 
@@ -337,17 +359,21 @@
 				// Now set it to hide.
 				if (that.options.hide)
 					that.queueRemove();
+
+				that.state = "open";
+
+				// Run the modules.
+				that.runModules('afterOpen');
 			});
 
-			// Run the modules.
-			this.runModules('afterOpen');
 			return this;
 		},
 
 		// Remove the notice.
 		remove: function(timer_hide) {
+			this.state = "closing";
 			// Run the modules.
-			this.runModules('beforeClose');
+			this.runModules('beforeClose', timer_hide);
 
 			var that = this;
 			if (this.timer) {
@@ -355,8 +381,9 @@
 				this.timer = null;
 			}
 			this.animateOut(function(){
+				that.state = "closed";
 				// Run the modules.
-				that.runModules('afterClose');
+				that.runModules('afterClose', timer_hide);
 				that.queuePosition(true);
 				// If we're supposed to remove the notice from the DOM, do it.
 				if (that.options.remove)
@@ -386,19 +413,23 @@
 		get: function(){ return this.elem; },
 
 		// Put all the options in the right places.
-		parseOptions: function(options){
+		parseOptions: function(options, moreOptions){
 			this.options = $.extend(true, {}, PNotify.prototype.options);
 			// This is the only thing that *should* be copied by reference.
 			this.options.stack = PNotify.prototype.options.stack;
-			if (typeof options === 'string') {
-				this.options.text = options;
-			} else {
-				for (option in options) {
-					if (this.modules[option]) {
-						// Avoid overwriting module defaults.
-						$.extend(true, this.options[option], options[option]);
-					} else {
-						this.options[option] = options[option];
+			var optArray = [options, moreOptions], curOpts;
+			for (var curIndex in optArray) {
+				curOpts = optArray[curIndex];
+				if (typeof curOpts === 'string') {
+					this.options.text = curOpts;
+				} else {
+					for (var option in curOpts) {
+						if (this.modules[option]) {
+							// Avoid overwriting module defaults.
+							$.extend(true, this.options[option], curOpts[option]);
+						} else {
+							this.options[option] = curOpts[option];
+						}
 					}
 				}
 			}
@@ -614,13 +645,13 @@
 
 
 		// Cancel any pending removal timer.
-		cancelRemove: function() {
+		cancelRemove: function(){
 			if (this.timer)
 				window.clearTimeout(this.timer);
 			return this;
 		},
 		// Queue a removal timer.
-		queueRemove: function() {
+		queueRemove: function(){
 			var that = this;
 			// Cancel any current removal timer.
 			this.cancelRemove();

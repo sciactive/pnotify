@@ -1,14 +1,17 @@
 // History
 (function($){
-	var history_handle_top;
+	var history_menu,
+		history_handle_top;
 	PNotify.prototype.options.history = {
 		// Display a pull down menu to redisplay previous notices, and place the
 		// notice in the history.
 		history: true,
+		// Make the pull down menu fixed to the top of the viewport.
+		fixed: true,
 		// Maximum number of notifications to have onscreen.
 		maxonscreen: Infinity,
 		// The various displayed text, helps facilitating internationalization.
-		history_text: {
+		labels: {
 			redisplay: "Redisplay",
 			all: "All",
 			last: "Last"
@@ -16,36 +19,32 @@
 	};
 	PNotify.prototype.modules.history = {
 		init: function(notice, options){
-			var that = this;
-
 			// Make sure that no notices get destroyed.
 			notice.options.destroy = false;
 
 			// The history variable controls whether the notice gets redisplayed
 			// by the history pull down.
-			this.pnotify_history = this.options.history;
-			// The hide variable controls whether the history pull down should
-			// queue a removal timer.
-			this.pnotify_hide = this.options.hide;
+			notice.history = options.history;
 
 
-			if (this.options.history) {
+			if (options.history) {
 				// If there isn't a history pull down, create one.
-				var history_menu = jwindow.data("pnotify_history");
 				if (typeof history_menu === "undefined") {
 					$("body").on("pnotify.history-all", function(){
 						// Display all notices. (Disregarding non-history notices.)
 						$.each(PNotify.notices, function(){
-							if (this.pnotify_history) {
-								if (this.is(":visible")) {
-									if (this.pnotify_hide)
+							if (this.history) {
+								if (this.elem.is(":visible")) {
+									// The hide variable controls whether the history pull down should
+									// queue a removal timer.
+									if (this.options.hide)
 										this.queueRemove();
 								} else if (this.open)
 									this.open();
 							}
 						});
 					}).on("pnotify.history-last", function(){
-						var pushTop = ($.pnotify.defaults.stack.push === "top");
+						var pushTop = (PNotify.prototype.options.stack.push === "top");
 
 						// Look up the last history notice, and display it.
 						var i = (pushTop ? 0 : -1);
@@ -60,20 +59,20 @@
 								return false;
 
 							i = (pushTop ? i + 1 : i - 1);
-						} while (!notice[0].pnotify_history || notice[0].is(":visible"));
+						} while (!notice[0].history || notice[0].elem.is(":visible"));
 						if (notice[0].open)
 							notice[0].open();
 					});
 					history_menu = $("<div />", {
-						"class": "ui-pnotify-history-container "+notice.styles.hi_menu,
+						"class": "ui-pnotify-history-container "+notice.styles.hi_menu+(options.fixed ? ' ui-pnotify-history-fixed' : ''),
 						"mouseleave": function(){
 							history_menu.animate({top: "-"+history_handle_top+"px"}, {duration: 100, queue: false});
 						}
 					})
-					.append($("<div />", {"class": "ui-pnotify-history-header", "text": this.options.labels.redisplay}))
+					.append($("<div />", {"class": "ui-pnotify-history-header", "text": options.labels.redisplay}))
 					.append($("<button />", {
 							"class": "ui-pnotify-history-all "+notice.styles.hi_btn,
-							"text": this.options.labels.all,
+							"text": options.labels.all,
 							"mouseenter": function(){
 								$(this).addClass(notice.styles.hi_btnhov);
 							},
@@ -87,7 +86,7 @@
 					}))
 					.append($("<button />", {
 							"class": "ui-pnotify-history-last "+notice.styles.hi_btn,
-							"text": this.options.labels.last,
+							"text": options.labels.last,
 							"mouseenter": function(){
 								$(this).addClass(notice.styles.hi_btnhov);
 							},
@@ -99,7 +98,7 @@
 								return false;
 							}
 					}))
-					.appendTo(body);
+					.appendTo($("body"));
 
 					// Make a handle so the user can pull down the history tab.
 					var handle = $("<span />", {
@@ -114,18 +113,20 @@
 					history_handle_top = handle.offset().top + 2;
 					// Hide the history pull down up to the top of the handle.
 					history_menu.css({top: "-"+history_handle_top+"px"});
-					// Save the history pull down.
-					jwindow.data("pnotify_history", history_menu);
 				}
 			}
 		},
-		update: function(notice, options, oldOpts){
+		update: function(notice, options){
 			// Update values for history menu access.
-			this.pnotify_history = this.options.history;
-			this.pnotify_hide = this.options.hide;
+			notice.history = options.history;
+			if (options.fixed) {
+				history_menu.addClass('ui-pnotify-history-fixed');
+			} else {
+				history_menu.removeClass('ui-pnotify-history-fixed');
+			}
 		},
 		beforeOpen: function(notice, options){
-			// Remove oldest notifications leaving only this.options.maxonscreen on screen
+			// Remove oldest notifications leaving only options.maxonscreen on screen
 			if (PNotify.notices && (PNotify.notices.length > options.maxonscreen)) {
 				// Oldest are normally in front of array, or if stack.push=="top" then
 				// they are at the end of the array! (issue #98)

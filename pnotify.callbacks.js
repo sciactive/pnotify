@@ -13,21 +13,27 @@
 		}
 	};
 	PNotify.prototype.open = function(){
+		var ret;
 		if (this.options.before_open) {
-			this.options.before_open(this);
+			ret = this.options.before_open(this);
 		}
-		_open.apply(this, arguments);
-		if (this.options.after_open) {
-			this.options.after_open(this);
+		if (ret !== false) {
+			_open.apply(this, arguments);
+			if (this.options.after_open) {
+				this.options.after_open(this);
+			}
 		}
 	};
-	PNotify.prototype.remove = function(){
-		if (this.options.before_remove) {
-			this.options.before_remove(this);
+	PNotify.prototype.remove = function(timer_hide){
+		var ret;
+		if (this.options.before_close) {
+			ret = this.options.before_close(this, timer_hide);
 		}
-		_remove.apply(this, arguments);
-		if (this.options.after_remove) {
-			this.options.after_remove(this);
+		if (ret !== false) {
+			_remove.apply(this, arguments);
+			if (this.options.after_close) {
+				this.options.after_close(this, timer_hide);
+			}
 		}
 	};
 })(jQuery);

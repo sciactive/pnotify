@@ -1,11 +1,7 @@
 /*
-Document   : jquery.pnotify.default.css
-Created on : Nov 23, 2009, 3:14:10 PM
-Author     : Hunter Perrin
-Version    : 1.3.1
-Link       : http://sciactive.com/pnotify/
-Description:
-	Default styling for PNotify jQuery plugin.
+Author  : Hunter Perrin
+Version : 2.0.0
+Link    : http://sciactive.com/pnotify/
 */
 /* -- Notice */
 .ui-pnotify {
@@ -69,6 +65,9 @@ border-top-left-radius: 0;
 border-top-right-radius: 0;
 /* Ensures history container is above notices. */
 z-index: 10000;
+}
+.ui-pnotify-history-container.ui-pnotify-history-fixed {
+position: fixed;
 }
 .ui-pnotify-history-container .ui-pnotify-history-header {
 padding: 2px;

@@ -10,7 +10,7 @@
 		// Only show the sticker button on hover.
 		sticker_hover: true,
 		// The various displayed text, helps facilitating internationalization.
-		buttons_text: {
+		labels: {
 			close: "Close",
 			stick: "Stick"
 		}
@@ -51,7 +51,7 @@
 			.bind("pnotify_icon", function(){
 				$(this).children().removeClass(notice.styles.pin_up+" "+notice.styles.pin_down).addClass(notice.options.hide ? notice.styles.pin_up : notice.styles.pin_down);
 			})
-			.append($("<span />", {"class": notice.styles.pin_up, "title": options.buttons_text.stick}))
+			.append($("<span />", {"class": notice.styles.pin_up, "title": options.labels.stick}))
 			.prependTo(notice.container);
 			if (!options.sticker || (notice.options.nonblock && notice.options.nonblock.nonblock))
 				this.sticker.css("display", "none");
@@ -66,12 +66,12 @@
 					that.closer.css("visibility", "hidden");
 				}
 			})
-			.append($("<span />", {"class": notice.styles.closer, "title": options.buttons_text.close}))
+			.append($("<span />", {"class": notice.styles.closer, "title": options.labels.close}))
 			.prependTo(notice.container);
 			if (!options.closer || (notice.options.nonblock && notice.options.nonblock.nonblock))
 				this.closer.css("display", "none");
 		},
-		update: function(notice, options, oldOpts){
+		update: function(notice, options){
 			// Update the sticker and closer buttons.
 			if (!options.closer || (notice.options.nonblock && notice.options.nonblock.nonblock))
 				this.closer.css("display", "none");
@@ -92,24 +92,6 @@
 				this.closer.css("visibility", "hidden");
 			else if (!options.nonblock)
 				this.closer.css("visibility", "visible");
-		},
-		beforeOpen: function(notice, options){
-
-		},
-		afterOpen: function(notice, options){
-
-		},
-		beforeClose: function(notice, options){
-
-		},
-		afterClose: function(notice, options){
-
-		},
-		beforeDestroy: function(notice, options){
-
-		},
-		afterDestroy: function(notice, options){
-
 		}
 	};
 	$.extend(PNotify.styling.jqueryui, {

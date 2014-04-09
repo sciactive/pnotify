@@ -43,10 +43,14 @@
 	<script type="text/javascript" src="pnotify.core.js"></script>
 	<script type="text/javascript" src="pnotify.buttons.js"></script>
 	<script type="text/javascript" src="pnotify.nonblock.js"></script>
+	<script type="text/javascript" src="pnotify.desktop.js"></script>
+	<script type="text/javascript" src="pnotify.history.js"></script>
+	<script type="text/javascript" src="pnotify.callbacks.js"></script>
+	<script type="text/javascript" src="pnotify.reference.js"></script>
 	<link href="pnotify.core.css" rel="stylesheet" type="text/css" />
 	<link href="pnotify.picon.css" rel="stylesheet" type="text/css" />
 	<style type="text/css">
-		/* Not pnotify specific, just make this page a little more presentable. */
+		/* Not PNotify specific, just make this page a little more presentable. */
 		#switcher-container {
 			position: fixed;
 			top: 60px;
@@ -119,7 +123,7 @@
 			to show how it is done. Look down at the stack_bottomright variable
 			in the JavaScript below. */
 		.ui-pnotify.stack-bottomright {
-			/* These are just CSS default values to reset the pnotify CSS. */
+			/* These are just CSS default values to reset the PNotify CSS. */
 			right: auto;
 			top: auto;
 			left: auto;
@@ -160,16 +164,16 @@
 				nonblock: {
 					nonblock: true
 				},
-				before_close: function(pnotify){
+				before_close: function(PNotify){
 					// You can access the notice's options with this. It is read only.
-					//pnotify.opts.text;
+					//PNotify.options.text;
 
 					// You can change the notice's options after the timer like this:
-					pnotify.update({
-						title: pnotify.opts.title+" - Enjoy your Stay",
+					PNotify.update({
+						title: PNotify.options.title+" - Enjoy your Stay",
 						before_close: null
 					});
-					pnotify.pnotify_queue_remove();
+					PNotify.queueRemove();
 					return false;
 				}
 			});
@@ -291,8 +295,8 @@
 				history: {
 					history: false
 				},
-				before_open: function(pnotify){
-					progress = pnotify.find("div.progress_bar");
+				before_open: function(PNotify){
+					progress = PNotify.elem.find("div.progress_bar");
 					progress.progressbar({value: cur_value});
 					// Pretend to do something.
 					var timer = setInterval(function(){
@@ -340,13 +344,14 @@
 						options.title = "Done!";
 						options.type = "success";
 						options.hide = true;
-						options.buttons.closer = true;
-						options.buttons.sticker = true;
+						options.buttons = {
+							closer: true,
+							sticker: true
+						};
 						options.icon = 'picon picon-task-complete';
 						options.opacity = 1;
 						options.shadow = true;
 						options.width = PNotify.prototype.options.width;
-						//options.min_height = "300px";
 					}
 					notice.update(options);
 				}, 120);
@@ -403,9 +408,9 @@
 			};
 			for (var i = 0; i < n; i++) {
 				if (i + 1 == n) {
-					options.after_close = function(pnotify){
+					options.after_close = function(PNotify){
 						// Remove this callback.
-						pnotify.update({
+						PNotify.update({
 							after_close: null
 						});
 						end_time = new Date().getTime();
@@ -684,11 +689,11 @@
 					history: false
 				},
 				stack: false,
-				before_open: function(pnotify){
+				before_open: function(PNotify){
 					// Position this notice in the center of the screen.
-					pnotify.css({
-						"top": ($(window).height() / 2) - (pnotify.height() / 2),
-						"left": ($(window).width() / 2) - (pnotify.width() / 2)
+					PNotify.elem.css({
+						"top": ($(window).height() / 2) - (PNotify.elem.height() / 2),
+						"left": ($(window).width() / 2) - (PNotify.elem.width() / 2)
 					});
 					// Make a modal screen overlay.
 					if (modal_overlay)
@@ -1372,6 +1377,66 @@ $(function(){
 						<h3 class="panel-title">Advanced Demos</h3>
 					</div>
 					<div class="panel-body">
+						<button class="btn btn-default source" onclick="PNotify.desktop.permission(); (new PNotify({
+							title: 'Desktop Notice',
+							text: 'If you\'ve given me permission, I\'ll appear as a desktop notification. If you haven\'t, I\'ll still appear as a regular PNotify notice.',
+							desktop: {
+								desktop: true
+							}
+						})).get().click(function(){
+							alert('Hey! You clicked the desktop notification!');
+						});">Desktop Notification Notice</button>
+						<button class="btn btn-default source" onclick="PNotify.desktop.permission(); (new PNotify({
+							title: 'Desktop Info',
+							text: 'If you\'ve given me permission, I\'ll appear as a desktop notification. If you haven\'t, I\'ll still appear as a regular PNotify notice.',
+							type: 'info',
+							desktop: {
+								desktop: true
+							}
+						})).get().click(function(){
+							alert('Hey! You clicked the desktop notification!');
+						});">Desktop Notification Info</button>
+						<button class="btn btn-default source" onclick="PNotify.desktop.permission(); (new PNotify({
+							title: 'Desktop Success',
+							text: 'If you\'ve given me permission, I\'ll appear as a desktop notification. If you haven\'t, I\'ll still appear as a regular PNotify notice.',
+							type: 'success',
+							desktop: {
+								desktop: true
+							}
+						})).get().click(function(){
+							alert('Hey! You clicked the desktop notification!');
+						});">Desktop Notification Success</button>
+						<button class="btn btn-default source" onclick="PNotify.desktop.permission(); (new PNotify({
+							title: 'Desktop Error',
+							text: 'If you\'ve given me permission, I\'ll appear as a desktop notification. If you haven\'t, I\'ll still appear as a regular PNotify notice.',
+							type: 'error',
+							desktop: {
+								desktop: true
+							}
+						})).get().click(function(){
+							alert('Hey! You clicked the desktop notification!');
+						});">Desktop Notification Error</button>
+						<button class="btn btn-default source" onclick="PNotify.desktop.permission(); (new PNotify({
+							title: 'Desktop Custom Icon',
+							text: 'If you\'ve given me permission, I\'ll appear as a desktop notification. If you haven\'t, I\'ll still appear as a regular PNotify notice.',
+							desktop: {
+								desktop: true,
+								icon: 'includes/le_happy_face_by_luchocas-32.png'
+							}
+						})).get().click(function(){
+							alert('Hey! You clicked the desktop notification!');
+						});">Desktop Notification Custom</button>
+						<button class="btn btn-default source" onclick="PNotify.desktop.permission(); (new PNotify({
+							title: 'Sticky Desktop Notice',
+							text: 'If you\'ve given me permission, I\'ll appear as a desktop notification. If you haven\'t, I\'ll still appear as a regular PNotify notice. Also, I\'m a sticky notice, so you\'ll have to close me yourself.',
+							hide: false,
+							desktop: {
+								desktop: true
+							}
+						})).get().click(function(){
+							alert('Hey! You clicked the desktop notification!');
+						});">Sticky Desktop Notification</button>
+						<hr />
 						<button class="btn btn-default source" onclick="new PNotify({
 							title: 'No Sticky Button Notice',
 							text: 'Check me out! I\'m a sticky notice with no unsticky button. You\'ll have to close me yourself.',
@@ -1420,35 +1485,35 @@ $(function(){
 						<button class="btn btn-default source" onclick="new PNotify({
 							title: 'Notice',
 							text: 'Right now I\'m a notice.',
-							before_close: function(pnotify){
-								pnotify.update({
+							before_close: function(PNotify){
+								PNotify.update({
 									title: 'Error',
 									text: 'Uh oh. Now I\'ve become an error.',
 									type: 'error',
-									before_close: function(pnotify){
-										pnotify.update({
+									before_close: function(PNotify){
+										PNotify.update({
 											title: 'Success',
 											text: 'I fixed the error!',
 											type: 'success',
-											before_close: function(pnotify){
-												pnotify.update({
+											before_close: function(PNotify){
+												PNotify.update({
 													title: 'Info',
 													text: 'Everything\'s cool now.',
 													type: 'info',
 													before_close: null
 												});
-												pnotify.pnotify_queue_remove();
-												pnotify.effect('bounce');
+												PNotify.queueRemove();
+												PNotify.elem.effect('bounce');
 												return false;
 											}
 										});
-										pnotify.pnotify_queue_remove();
-										pnotify.effect('bounce');
+										PNotify.queueRemove();
+										PNotify.elem.effect('bounce');
 										return false;
 									}
 								});
-								pnotify.pnotify_queue_remove();
-								pnotify.effect('bounce');
+								PNotify.queueRemove();
+								PNotify.elem.effect('bounce');
 								return false;
 							}
 						});">Notice to Error to Success to Info</button>
@@ -1546,28 +1611,26 @@ $(function(){
 							title: 'I\'m Here',
 							text: 'I have a callback for each of my events. I\'ll call all my callbacks while I change states.',
 							before_init: function(opts){
-								var source_note = 'Return false to cancel the notice.';
 								alert('I\'m called before the notice initializes. I\'m passed the options used to make the notice. I can modify them. Watch me replace the word callback with tire iron!');
 								opts.text = opts.text.replace(/callback/g, 'tire iron');
 							},
-							after_init: function(pnotify){
-								alert('I\'m called after the notice initializes. I\'m passed the pnotify object for the current notice: '+pnotify+'\n\nThere are more callbacks you can assign, but this is the last notice you\'ll see. Check the code to see them all.');
+							after_init: function(PNotify){
+								alert('I\'m called after the notice initializes. I\'m passed the PNotify object for the current notice: '+PNotify+'\n\nThere are more callbacks you can assign, but this is the last notice you\'ll see. Check the code to see them all.');
 							},
-							before_open: function(pnotify){
+							before_open: function(PNotify){
 								var source_note = 'Return false to cancel opening.';
-								dont_alert('I\'m called before the notice opens. I\'m passed the pnotify object for the current notice: '+pnotify);
+								dont_alert('I\'m called before the notice opens. I\'m passed the PNotify object for the current notice: '+PNotify);
 							},
-							after_open: function(pnotify){
-								dont_alert('I\'m called after the notice opens. I\'m passed the pnotify object for the current notice: '+pnotify);
+							after_open: function(PNotify){
+								dont_alert('I\'m called after the notice opens. I\'m passed the PNotify object for the current notice: '+PNotify);
 							},
-							before_close: function(pnotify, timer_hide){
-								var source_note = 'Return false to cancel close. Use pnotify.pnotify_queue_remove() to set the removal timer again.';
-								dont_alert('I\'m called before the notice closes. I\'m passed the pnotify object for the current notice: '+pnotify);
+							before_close: function(PNotify, timer_hide){
+								var source_note = 'Return false to cancel close. Use PNotify.queueRemove() to set the removal timer again.';
+								dont_alert('I\'m called before the notice closes. I\'m passed the PNotify object for the current notice: '+PNotify);
 								dont_alert('I also have an argument called timer_hide, which is true if the notice was closed because the timer ran down. Value: '+timer_hide);
 							},
-							after_close: function(pnotify, timer_hide){
-								var source_note = 'Return false to cancel removal from the DOM.';
-								dont_alert('I\'m called after the notice closes. I\'m passed the pnotify object for the current notice: '+pnotify);
+							after_close: function(PNotify, timer_hide){
+								dont_alert('I\'m called after the notice closes. I\'m passed the PNotify object for the current notice: '+PNotify);
 								dont_alert('I also have an argument called timer_hide, which is true if the notice was closed because the timer ran down. Value: '+timer_hide);
 							}
 						});">Notice with Callbacks</button>
@@ -1615,6 +1678,15 @@ $(function(){
 						</div>
 						<button class="btn btn-default source" onclick="$(this).trigger('pnotify.history-last');">Display Last Notice</button>
 						<button class="btn btn-default source" onclick="$(this).trigger('pnotify.history-all');">Display All Notices</button>
+						<hr />
+						<button class="btn btn-default source" onclick="new PNotify({
+							title: 'Reference Module',
+							text: 'The reference module is a basic module that demonstrates how to write a PNotify module by implementing many of its features. You can find it in pnotify.reference.js.',
+							type: 'info',
+							reference: {
+								putThing: true
+							}
+						});">Reference Module Notice</button>
 						<hr />
 						<button class="btn btn-default source" onclick="new PNotify({
 							title: 'Custom Styling',
@@ -2027,7 +2099,7 @@ new PNotify({
 						<button class="btn btn-default source" onclick="new PNotify({
 							title: 'Custom Function',
 							text: 'I use a different effect.',
-							animation: function(status, callback, pnotify){
+							animation: function(status, callback, elem){
 								var source_note = 'Always call the callback when the animation completes.';
 								var cur_angle = 0,
 									cur_opacity_scale = 0;
@@ -2046,7 +2118,7 @@ new PNotify({
 										if (status == 'out')
 											cur_opacity_scale = 1 - cur_opacity_scale;
 									}
-									pnotify.css({
+									elem.css({
 										'-moz-transform': ('rotate('+cur_angle+'deg) scale('+cur_opacity_scale+')'),
 										'-webkit-transform': ('rotate('+cur_angle+'deg) scale('+cur_opacity_scale+')'),
 										'-o-transform': ('rotate('+cur_angle+'deg) scale('+cur_opacity_scale+')'),
@@ -2055,7 +2127,7 @@ new PNotify({
 									}).fadeTo(0, cur_opacity_scale);
 									if (cur_angle == 0) {
 										if (status == 'out')
-												pnotify.hide();
+												elem.hide();
 										callback();
 									}
 								}, 20);
@@ -2064,7 +2136,7 @@ new PNotify({
 						<button class="btn btn-default source" onclick="new PNotify({
 							title: 'Custom Functions',
 							text: 'I use a different effect.',
-							animation: {effect_in: function(status, callback, pnotify){
+							animation: {effect_in: function(status, callback, elem){
 								var source_note = 'Always call the callback when the animation completes.';
 								var cur_angle = 0,
 									cur_opacity_scale = 0;
@@ -2077,7 +2149,7 @@ new PNotify({
 									} else {
 										cur_opacity_scale = cur_angle / 360;
 									}
-									pnotify.css({
+									elem.css({
 										'-moz-transform': ('rotate('+cur_angle+'deg) scale('+cur_opacity_scale+')'),
 										'-webkit-transform': ('rotate('+cur_angle+'deg) scale('+cur_opacity_scale+')'),
 										'-o-transform': ('rotate('+cur_angle+'deg) scale('+cur_opacity_scale+')'),
@@ -2087,7 +2159,7 @@ new PNotify({
 									if (cur_angle == 0)
 										callback();
 								}, 20);
-							}, effect_out: function(status, callback, pnotify){
+							}, effect_out: function(status, callback, elem){
 								var source_note = 'Always call the callback when the animation completes.';
 								var cur_angle = 0,
 									cur_opacity_scale = 1;
@@ -2101,7 +2173,7 @@ new PNotify({
 										cur_opacity_scale = cur_angle / 360;
 										cur_opacity_scale = 1 - cur_opacity_scale;
 									}
-									pnotify.css({
+									elem.css({
 										'-moz-transform': ('rotate('+cur_angle+'deg) scale('+cur_opacity_scale+')'),
 										'-webkit-transform': ('rotate('+cur_angle+'deg) scale('+cur_opacity_scale+')'),
 										'-o-transform': ('rotate('+cur_angle+'deg) scale('+cur_opacity_scale+')'),
@@ -2109,7 +2181,7 @@ new PNotify({
 										'filter': ('progid:DXImageTransform.Microsoft.BasicImage(rotation='+(cur_angle / 360 * 4)+')')
 									}).fadeTo(0, cur_opacity_scale);
 									if (cur_angle == 0) {
-										pnotify.hide();
+										elem.hide();
 										callback();
 									}
 								}, 20);
@@ -2153,7 +2225,7 @@ new PNotify({
 						<p>
 							If a deeper level of customization is needed, there are
 							widget-specific classes referenced within the
-							jquery.pnotify.default.css stylesheet that can be modified.
+							pnotify.core.css stylesheet that can be modified.
 							These classes are highlighted in bold below.
 						</p>
 						<h4>Sample markup with jQuery UI classes</h4>
