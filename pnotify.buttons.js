@@ -16,21 +16,26 @@
 		}
 	};
 	PNotify.prototype.modules.buttons = {
+		// This lets us update the options available in the closures.
+		myOptions: null,
+
 		closer: null,
 		sticker: null,
+
 		init: function(notice, options){
 			var that = this;
+			this.myOptions = options;
 			notice.elem.on({
 				"mouseenter": function(e){
 					// Show the buttons.
-					if (options.sticker && !(notice.options.nonblock && notice.options.nonblock.nonblock)) that.sticker.trigger("pnotify_icon").css("visibility", "visible");
-					if (options.closer && !(notice.options.nonblock && notice.options.nonblock.nonblock)) that.closer.css("visibility", "visible");
+					if (that.myOptions.sticker && !(notice.options.nonblock && notice.options.nonblock.nonblock)) that.sticker.trigger("pnotify_icon").css("visibility", "visible");
+					if (that.myOptions.closer && !(notice.options.nonblock && notice.options.nonblock.nonblock)) that.closer.css("visibility", "visible");
 				},
 				"mouseleave": function(e){
 					// Hide the buttons.
-					if (options.sticker_hover)
+					if (that.myOptions.sticker_hover)
 						that.sticker.css("visibility", "hidden");
-					if (options.closer_hover)
+					if (that.myOptions.closer_hover)
 						that.closer.css("visibility", "hidden");
 				}
 			});
@@ -72,25 +77,26 @@
 				this.closer.css("display", "none");
 		},
 		update: function(notice, options){
+			this.myOptions = options;
 			// Update the sticker and closer buttons.
 			if (!options.closer || (notice.options.nonblock && notice.options.nonblock.nonblock))
 				this.closer.css("display", "none");
-			else
+			else if (options.closer)
 				this.closer.css("display", "block");
 			if (!options.sticker || (notice.options.nonblock && notice.options.nonblock.nonblock))
 				this.sticker.css("display", "none");
-			else
+			else if (options.sticker)
 				this.sticker.css("display", "block");
 			// Update the sticker icon.
 			this.sticker.trigger("pnotify_icon");
 			// Update the hover status of the buttons.
 			if (options.sticker_hover)
 				this.sticker.css("visibility", "hidden");
-			else if (!options.nonblock)
+			else if (!(notice.options.nonblock && notice.options.nonblock.nonblock))
 				this.sticker.css("visibility", "visible");
 			if (options.closer_hover)
 				this.closer.css("visibility", "hidden");
-			else if (!options.nonblock)
+			else if (!(notice.options.nonblock && notice.options.nonblock.nonblock))
 				this.closer.css("visibility", "visible");
 		}
 	};

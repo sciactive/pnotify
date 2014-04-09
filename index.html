@@ -41,13 +41,16 @@
 	<script type="text/javascript" src="includes/beautify.js"></script>
 	<!-- PNotify -->
 	<script type="text/javascript" src="pnotify.core.js"></script>
+	<link href="pnotify.core.css" rel="stylesheet" type="text/css" />
 	<script type="text/javascript" src="pnotify.buttons.js"></script>
+	<link href="pnotify.buttons.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" src="pnotify.confirm.js"></script>
 	<script type="text/javascript" src="pnotify.nonblock.js"></script>
 	<script type="text/javascript" src="pnotify.desktop.js"></script>
 	<script type="text/javascript" src="pnotify.history.js"></script>
+	<link href="pnotify.history.css" rel="stylesheet" type="text/css" />
 	<script type="text/javascript" src="pnotify.callbacks.js"></script>
 	<script type="text/javascript" src="pnotify.reference.js"></script>
-	<link href="pnotify.core.css" rel="stylesheet" type="text/css" />
 	<link href="pnotify.picon.css" rel="stylesheet" type="text/css" />
 	<style type="text/css">
 		/* Not PNotify specific, just make this page a little more presentable. */
@@ -356,42 +359,6 @@
 					notice.update(options);
 				}, 120);
 			}, 2000);
-		}
-
-		function show_confirm_dialog() {
-			function confirm_dialog(title, text, callback, buttons) {
-				if (typeof buttons !== "object") {
-					buttons = {
-						"Ok": true,
-						"Cancel": false
-					}
-				}
-				var notice;
-				text = $('<div>'+text+'<br style="clear: both;" /><div class="button-container" style="margin-top: 10px; text-align: right;"></div></div>');
-				$.each(buttons, function(b, val){
-					text.find("div.button-container")
-					.append($('<button style="margin-left: 5px;" class="btn btn-default btn-small">'+b+'</button>').click(function(){
-						notice.remove();
-						callback.call(notice, val);
-					}));
-				});
-				notice = new PNotify({
-					title: title,
-					text: text,
-					insert_brs: false,
-					buttons: {
-						closer: false,
-						sticker: false
-					},
-					hide: false,
-					history: {
-						history: false
-					},
-					icon: 'glyphicon glyphicon-question-sign'
-				});
-			}
-
-			confirm_dialog('Confirmation Needed', 'Are you sure?', function(answer){ alert(answer ? 'Ok, cool.' : 'Oh ok. Chicken, I see.'); });
 		}
 
 		function timed_notices(n) {
@@ -1401,7 +1368,6 @@ $(function(){
 						</div>
 					</form>
 				</div>
-				<button class="btn btn-default source" onclick="show_confirm_dialog();">Confirm Dialog</button>
 				<button class="btn btn-default source" onclick="var notice = new PNotify({
 					title: 'Click Notice',
 					text: 'I wish someone would click me.'
@@ -1665,6 +1631,97 @@ height: 33px;
 						nonblock_opacity: .2
 					}
 				});">Non-Blocking Notice</button>
+			</div>
+			<div class="panel-heading">
+				<h3 class="panel-title">Confirm Module <small>Provides confirmation dialogs.</small></h3>
+			</div>
+			<div class="panel-body">
+				<button class="btn btn-default source" onclick="(new PNotify({
+					title: 'Confirmation Needed',
+					text: 'Are you sure?',
+					icon: 'glyphicon glyphicon-question-sign',
+					hide: false,
+					confirm: {
+						confirm: true
+					},
+					buttons: {
+						closer: false,
+						sticker: false
+					},
+					history: {
+						history: false
+					}
+				})).elem.on('pnotify.confirm', function(){
+					alert('Ok, cool.');
+				}).on('pnotify.cancel', function(){
+					alert('Oh ok. Chicken, I see.');
+				});">Confirm Dialog</button>
+				<button class="btn btn-default source" onclick="new PNotify({
+					title: 'Choose a Side',
+					text: 'You have three options to choose from.',
+					icon: 'glyphicon glyphicon-question-sign',
+					hide: false,
+					confirm: {
+						confirm: true,
+						buttons: [
+							{
+								text: 'Fries',
+								addClass: 'btn-primary',
+								click: function(notice){
+									notice.update({
+										title: 'You\'ve Chosen a Side', text: 'You want fries.', icon: true, type: 'info', hide: true,
+										confirm: {
+											confirm: false
+										},
+										buttons: {
+											closer: true,
+											sticker: true
+										}
+									});
+								}
+							},
+							{
+								text: 'Mashed Potatoes',
+								click: function(notice){
+									notice.queueRemove();
+									notice.update({
+										title: 'You\'ve Chosen a Side', text: 'You want mashed potatoes.', icon: true, type: 'info', hide: true,
+										confirm: {
+											confirm: false
+										},
+										buttons: {
+											closer: true,
+											sticker: true
+										}
+									});
+								}
+							},
+							{
+								text: 'Fruit',
+								click: function(notice){
+									notice.queueRemove();
+									notice.update({
+										title: 'You\'ve Chosen a Side', text: 'You want fruit.', icon: true, type: 'info', hide: true,
+										confirm: {
+											confirm: false
+										},
+										buttons: {
+											closer: true,
+											sticker: true
+										}
+									});
+								}
+							}
+						]
+					},
+					buttons: {
+						closer: false,
+						sticker: false
+					},
+					history: {
+						history: false
+					}
+				});">Custom Buttons</button>
 			</div>
 			<div class="panel-heading">
 				<h3 class="panel-title">Callback Module <small>Provides a way to manipulate the notice at given events.</small></h3>
