@@ -135,6 +135,7 @@ Desktop Module
 `desktop: {`
 * `desktop: false` - Display the notification as a desktop notification.
 * `icon: null` - The URL of the icon to display. If false, no icon will show. If null, a default icon will show.
+
 `}`
 
 Buttons Module
@@ -146,6 +147,7 @@ Buttons Module
 * `sticker: true` - Provide a button for the user to manually stick the notice.
 * `sticker_hover: true` - Only show the sticker button on hover.
 * `labels: {close: "Close", stick: "Stick"}` - Lets you change the displayed text, facilitating internationalization.
+
 `}`
 
 NonBlock Module
@@ -154,6 +156,7 @@ NonBlock Module
 `nonblock: {`
 * `nonblock: false` - Create a non-blocking notice. It lets the user click elements underneath it.
 * `nonblock_opacity: .2` - The opacity of the notice (if it's non-blocking) when the mouse is over it.
+
 `}`
 
 Confirm Module
@@ -163,6 +166,7 @@ Confirm Module
 * `confirm: false` - Make a confirmation box.
 * `align: "right"` - Where to align the buttons. (right, center, left, justify)
 * `buttons: [{text: "Ok", addClass: "", click: function(notice){ notice.remove(); notice.elem.trigger("pnotify.confirm"); }},{text: "Cancel", addClass: "", click: function(notice){ notice.remove(); notice.elem.trigger("pnotify.cancel"); }}]` - The buttons to display, and their callbacks.
+
 `}`
 
 History Module
@@ -174,6 +178,7 @@ History Module
 * `fixed: true` - Make the pull down menu fixed to the top of the viewport.
 * `maxonscreen: Infinity` - Maximum number of notifications to have onscreen.
 * `labels: {redisplay: "Redisplay", all: "All", last: "Last"}` - Lets you change the displayed text, facilitating internationalization.
+
 `}`
 
 Reference Module
@@ -182,6 +187,7 @@ Reference Module
 `reference: {`
 * `putThing: false` - Provide a thing for stuff. Turned off by default.
 * `labels: {text: "Spin Around"}` - If you are displaying any text, you should use a labels options to support internationalization.
+
 `}`
 
 Callbacks Module
