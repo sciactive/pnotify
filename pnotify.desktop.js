@@ -99,17 +99,19 @@
 	};
 	PNotify.desktop = {
 		permission: function(){
-			if (Notification && "requestPermission" in Notification) {
+			if (typeof Notification !== "undefined" && "requestPermission" in Notification) {
 				Notification.requestPermission();
 			} else if ("webkitNotifications" in window) {
 				window.webkitNotifications.requestPermission();
 			}
 		},
 		checkPermission: function(){
-			if (Notification && "permission" in Notification) {
+			if (typeof Notification !== "undefined" && "permission" in Notification) {
 				return (Notification.permission == "granted" ? 0 : 1);
 			} else if ("webkitNotifications" in window) {
 				return window.webkitNotifications.checkPermission();
+			} else {
+				return 1;
 			}
 		}
 	};
