@@ -7,13 +7,17 @@ Copyright (C) 2012 SciActive.com. All Rights Reserved.
 	text-align: center;
 	overflow: hidden;
 }
+.page-banner, .page-points, .page-section {
+	margin-bottom: 300px;
+}
 .page-banner h1 {
 	font-size: 70px;
-	line-height: 65px;
+	line-height: 70px;
 }
 .page-banner p {
-	font-size: 30px;
-	line-height: 48px;
+	margin-top: 25px;
+	font-size: 20px;
+	line-height: 24px;
 }
 .page-banner .btn-large {
 	margin-top: 30px;
@@ -21,6 +25,9 @@ Copyright (C) 2012 SciActive.com. All Rights Reserved.
 }
 .page-banner .right-button {
 	margin-left: 20px;
+}
+.intro-section {
+	margin-bottom: 30px;
 }
 .page-points .row-fluid {
 	margin-bottom: 30px;
@@ -55,12 +62,8 @@ body .pf-form .pf-heading * {
 	.page-points .row-fluid {
 		margin-bottom: 0;
 	}
-	#sections {
+	.container {
 		padding: 0 .4em;
-	}
-	#sections .container-fluid {
-		padding-left: 0;
-		padding-right: 0;
 	}
 	#fb-root {
 		display: none; /* Facebook's code makes a horizontal scrollbar. Grr. */

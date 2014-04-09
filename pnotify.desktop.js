@@ -48,6 +48,7 @@
 			if (permission != 0)
 				return;
 			if (options.icon === null) {
+				// todo: change the location of these.
 				options.icon = "includes/desktop/"+notice.options.type+".png";
 			} else if (options.icon === false) {
 				options.icon = null;

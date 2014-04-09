@@ -1,11 +1,19 @@
 /*
- * jQuery PNotify Plugin 2.0.0
+PNotify 2.0.0 sciactive.com/pnotify/
+(C) 2014 Hunter Perrin
+license GPL/LGPL/MPL
+*/
+/*
+ * ====== PNotify ======
+ *
  * http://sciactive.com/pnotify/
+ *
  * Copyright 2009-2014 Hunter Perrin
- * Triple license
- * gnu.org/licenses/gpl.html
- * gnu.org/licenses/lgpl.html
- * mozilla.org/MPL/MPL-1.1.html
+ *
+ * Triple licensed under the GPL, LGPL, and MPL.
+ * 	http://gnu.org/licenses/gpl.html
+ * 	http://gnu.org/licenses/lgpl.html
+ * 	http://mozilla.org/MPL/MPL-1.1.html
  */
 
 // Uses AMD or browser globals to create a jQuery plugin.
@@ -420,7 +428,9 @@
 			var optArray = [options, moreOptions], curOpts;
 			for (var curIndex in optArray) {
 				curOpts = optArray[curIndex];
-				if (typeof curOpts === 'string') {
+				if (typeof curOpts == "undefined")
+					break;
+				if (typeof curOpts !== 'object') {
 					this.options.text = curOpts;
 				} else {
 					for (var option in curOpts) {

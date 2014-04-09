@@ -3,7 +3,7 @@
 DIR=$(dirname $0)
 
 echo Compressing JavaScript with Google Closure Compiler.
-head -n 9 "${DIR}/../pnotify.core.js" > "${DIR}/../pnotify.core.min.js"
+head -n 5 "${DIR}/../pnotify.core.js" > "${DIR}/../pnotify.core.min.js"
 java -jar "${DIR}/compiler.jar" --js="${DIR}/../pnotify.core.js" >> "${DIR}/../pnotify.core.min.js"
 
 java -jar "${DIR}/compiler.jar" --js="${DIR}/../pnotify.buttons.js" > "${DIR}/../pnotify.buttons.min.js"
