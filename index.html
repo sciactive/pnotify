@@ -1545,6 +1545,10 @@ height: 33px;
 				<h3 class="panel-title">Desktop Module <small>Provides <a href="http://www.w3.org/TR/notifications/" target="_blank">notifications</a> that display even when the web page is hidden.</small></h3>
 			</div>
 			<div class="panel-body">
+				<p>
+					If your browser doesn't support web notifications, you will only see regular in-browser notices. You can check <a href="http://caniuse.com/notifications" target="_blank">here</a>.
+				</p>
+				<hr />
 				<button class="btn btn-default source" onclick="PNotify.desktop.permission(); (new PNotify({
 					title: 'Desktop Notice',
 					text: 'If you\'ve given me permission, I\'ll appear as a desktop notification. If you haven\'t, I\'ll still appear as a regular PNotify notice.',
