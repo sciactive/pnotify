@@ -796,7 +796,7 @@
 	<section class="container page-banner">
 		<div class="intro-section">
 			<h1>PNotify</h1>
-			<p id="description">JavaScript notifications for Bootstrap, jQuery UI,<br /> and the <a href="http://www.w3.org/TR/notifications/" target="_blank">Web Notifications Draft</a>.</p>
+			<p id="description">JavaScript notifications for Bootstrap, jQuery UI,<br /> and the <a href="#web-notifications">Web Notifications Draft</a>.</p>
 		</div>
 		<div class="intro-section">
 			<a class="btn btn-primary btn-large" data-toggle="modal" href="#download">Download PNotify 2.0</a>
@@ -1536,17 +1536,22 @@ height: 33px;
 		</div>
 	</div>
 
+	<div id="web-notifications"></div>
 	<div id="demos-modules" class="container page-section">
 		<div class="page-header">
 			<h1>Module Demos</h1>
 		</div>
 		<div class="panel panel-default">
 			<div class="panel-heading">
-				<h3 class="panel-title">Desktop Module <small>Provides <a href="http://www.w3.org/TR/notifications/" target="_blank">notifications</a> that display even when the web page is hidden.</small></h3>
+				<div style="float: right;">Implements the <a href="http://www.w3.org/TR/notifications/" target="_blank">Web Notifications Draft</a>.</div>
+				<h3 class="panel-title">Desktop Module <small>Provides Web Notifications that display even when the web page is hidden.</small></h3>
 			</div>
 			<div class="panel-body">
 				<p>
-					If your browser doesn't support Web Notifications, you will only see regular in-browser notices. You can check <a href="http://caniuse.com/notifications" target="_blank">here</a>.
+					The first time you click one of these buttons, you will be asked to grant permission for this site to show notices. Then you can click them again to see the desktop notification.
+				</p>
+				<p>
+					If your browser doesn't support Web Notifications, or you deny permission to show them, you will only see regular in-browser notices. You can check <a href="http://caniuse.com/notifications" target="_blank">here</a>.
 				</p>
 				<hr />
 				<button class="btn btn-default source" onclick="PNotify.desktop.permission(); (new PNotify({
