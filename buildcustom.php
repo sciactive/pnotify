@@ -14,7 +14,7 @@ if (!$files || $files === array('')) {
 	exit;
 }
 sort($files);
-$cache_file = 'build-cache/pnotify.'.implode('-', $files).'.'.$min.$ext;
+$cache_file = 'build-cache/pnotify.custom.'.implode('-', $files).'.'.$min.$ext;
 
 if (file_exists($cache_file)) {
 	$content = file_get_contents($cache_file);
