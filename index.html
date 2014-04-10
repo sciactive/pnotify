@@ -66,18 +66,8 @@
 				top: 55px;
 			}
 		}
-		.pf-group {
-			background: transparent none no-repeat 0 0 !important;
-			padding: 4px;
-			margin: 5px auto;
-		}
 		.ui-widget {
 			font-size: 75% !important;
-		}
-		.pf-group input.ui-button {
-			padding: 2px !important;
-			font-size: .92em !important;
-			margin-bottom: 3px;
 		}
 		.btn-toolbar {
 			line-height: 28px;
@@ -809,7 +799,7 @@
 			<p id="description">JavaScript notifications for Bootstrap, jQuery UI,<br /> and the <a href="http://www.w3.org/TR/notifications/" target="_blank">web notifications draft</a>.</p>
 		</div>
 		<div class="intro-section">
-			<a class="btn btn-primary btn-large" href="https://github.com/sciactive/pnotify/releases/download/1.3.1/pnotify-1.3.1.zip" target="_blank">Download PNotify 1.3</a>
+			<a class="btn btn-primary btn-large" data-toggle="modal" href="#download">Download PNotify 2.0</a>
 			<a class="right-button btn btn-default btn-large" href="http://github.com/sciactive/pnotify" target="_blank" title="Fork me on GitHub">PNotify on GitHub <img src="includes/github-icon.png" alt="GitHub Icon" /></a>
 		</div>
 		<div class="intro-section">
@@ -830,6 +820,61 @@
 			<!-- AddThis Button END -->
 		</div>
 	</section>
+	<div class="modal fade" id="download" tabindex="-1" role="dialog" aria-labelledby="download-title" aria-hidden="true" style="max-height: inherit;">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="download-title">Download a PNotify Bundle</h4>
+				</div>
+				<div class="modal-body">
+					<div class="page-header" style="margin-top: 0;">
+						<h3 style="margin-top: 0;">Modules</h3>
+					</div>
+					<div><label><input type="checkbox" data-type="module" name="desktop" checked /> Desktop</label></div>
+					<div style="margin-bottom: 10px;"><small>Provides notifications that display even when the web page is hidden.</small></div>
+					<div><label><input type="checkbox" data-type="module" name="buttons" checked /> Buttons</label></div>
+					<div style="margin-bottom: 10px;"><small>Provides a sticker and a closer button.</small></div>
+					<div><label><input type="checkbox" data-type="module" name="nonblock" /> NonBlock</label></div>
+					<div style="margin-bottom: 10px;"><small>Lets the user click through to things underneath the notice.</small></div>
+					<div><label><input type="checkbox" data-type="module" name="confirm" /> Confirm</label></div>
+					<div style="margin-bottom: 10px;"><small>Provides confirmation dialogs.</small></div>
+					<div><label><input type="checkbox" data-type="module" name="callbacks" /> Callbacks</label></div>
+					<div style="margin-bottom: 10px;"><small>Provides a way to manipulate the notice at given events.</small></div>
+					<div><label><input type="checkbox" data-type="module" name="history" /> History</label></div>
+					<div style="margin-bottom: 10px;"><small>Provides a way for the user to redisplay notices.</small></div>
+					<div><label><input type="checkbox" data-type="module" name="reference" /> Reference</label></div>
+					<div><small>A reference for when you are coding your own module.</small></div>
+					<div class="page-header">
+						<h3>Minification</h3>
+					</div>
+					<div><label><input type="checkbox" data-type="minify" name="minify" checked /> Minify the Script and Stylesheet</label></div>
+					<div><small>It is a good idea to enable this on production services, so you get faster transfer times.</small></div>
+				</div>
+				<div class="modal-footer">
+					<a class="btn btn-primary" data-href="buildcustom.php?mode=js&amp;min={min}&amp;modules={modules}" href="#">Get the JavaScript!</a>
+					<a class="btn btn-primary" data-href="buildcustom.php?mode=css&amp;min={min}&amp;modules={modules}" href="#">Get the CSS!</a>
+				</div>
+				<script type="text/javascript">
+					$(function(){
+						var changeFunction = function(){
+								var modules = [];
+								form.find("[data-type=module]:checked").each(function(){
+									modules.push($(this).attr("name"));
+								});
+								modules = modules.join("-");
+								var minify = !!form.find("[data-type=minify]:checked").length;
+								form.find("a").each(function(){
+									$(this).attr("href", $(this).attr("data-href").replace("{min}", minify ? "true" : "").replace("{modules}", modules));
+								});
+							},
+							form = $("#download").on("click change", "input", changeFunction);
+						changeFunction();
+					})
+				</script>
+			</div>
+		</div>
+	</div>
 	<div class="modal fade" id="using" tabindex="-1" role="dialog" aria-labelledby="using-title" aria-hidden="true" style="max-height: inherit;">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -843,13 +888,13 @@
 						<br />
 						<code>pnotify.custom.js</code> &amp; <code>pnotify.custom.min.js</code> (Minified)
 						<br />
-						<code>pnotify.custom.css</code>
+						<code>pnotify.custom.css</code> &amp; <code>pnotify.custom.min.css</code> (Minified)
 					</p>
 					<p>
 						So here's how you'd include them on your page:
 					</p>
 					<pre class="prettyprint">&lt;script type="text/javascript" src="pnotify.custom<em>.min</em>.js"&gt;&lt;/script&gt;
-&lt;link href="pnotify.custom.css" media="all" rel="stylesheet" type="text/css" /&gt;</pre>
+&lt;link href="pnotify.custom<em>.min</em>.css" media="all" rel="stylesheet" type="text/css" /&gt;</pre>
 					<p>
 						You also need to include jQuery (1.4 or higher) and either Bootstrap CSS or a jQuery UI Theme.
 						<small>If you want to use jQuery UI effect animations, you also need to include the jQuery UI JavaScript.</small>
@@ -1722,7 +1767,7 @@ height: 33px;
 				});">Custom Buttons</button>
 			</div>
 			<div class="panel-heading">
-				<h3 class="panel-title">Callback Module <small>Provides a way to manipulate the notice at given events.</small></h3>
+				<h3 class="panel-title">Callbacks Module <small>Provides a way to manipulate the notice at given events.</small></h3>
 			</div>
 			<div class="panel-body">
 				<button class="btn btn-default source" onclick="var dont_alert = function(){};
