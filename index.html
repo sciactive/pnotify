@@ -852,8 +852,8 @@
 					<div><small>It is a good idea to enable this on production services, so you get faster transfer times.</small></div>
 				</div>
 				<div class="modal-footer">
-					<a class="btn btn-primary" data-href="http://sciactive.com/pnotify/buildcustom.php?mode=js&amp;min={min}&amp;modules={modules}" href="#">Get the JavaScript!</a>
-					<a class="btn btn-primary" data-href="http://sciactive.com/pnotify/buildcustom.php?mode=css&amp;min={min}&amp;modules={modules}" href="#">Get the CSS!</a>
+					<a class="btn btn-primary" data-href="http://sciactive.com/pnotify/buildcustom.php?mode=js{min}&amp;modules={modules}" href="#">Get the JavaScript!</a>
+					<a class="btn btn-primary" data-href="http://sciactive.com/pnotify/buildcustom.php?mode=css{min}&amp;modules={modules}" href="#">Get the CSS!</a>
 				</div>
 				<script type="text/javascript">
 					$(function(){
@@ -865,7 +865,7 @@
 								modules = modules.join("-");
 								var minify = !!form.find("[data-type=minify]:checked").length;
 								form.find("a").each(function(){
-									$(this).attr("href", $(this).attr("data-href").replace("{min}", minify ? "true" : "").replace("{modules}", modules));
+									$(this).attr("href", $(this).attr("data-href").replace("{min}", minify ? "&min=true" : "").replace("{modules}", modules));
 								});
 							},
 							form = $("#download").on("click change", "input", changeFunction);
