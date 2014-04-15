@@ -35,7 +35,9 @@
 		// Display the notification as a desktop notification.
 		desktop: false,
 		// The URL of the icon to display. If false, no icon will show. If null, a default icon will show.
-		icon: null
+		icon: null,
+		// By using a tag, we can update the content of an existing desktop notification
+		tag: null,
 	};
 	PNotify.prototype.modules.desktop = {
 		init: function(notice, options){
@@ -44,15 +46,22 @@
 			permission = PNotify.desktop.checkPermission();
 			if (permission != 0)
 				return;
+			var opts = {
+					body:notice.options.text,
+				};
+			
 			if (options.icon === null) {
-				options.icon = "http://sciactive.com/pnotify/includes/desktop/"+notice.options.type+".png";
+				opts.icon = "includes/desktop/"+notice.options.type+".png";
 			} else if (options.icon === false) {
-				options.icon = null;
+				opts.icon = null;
+			} else {
+				opts.icon = options.icon;
 			}
-			notice.desktop = notify(notice.options.title, {
-				icon: options.icon,
-				body: notice.options.text
-			});
+			if(options.tag){
+				opts.tag = options.tag;
+			}
+
+			notice.desktop = notify(notice.options.title, opts);
 			if (!("close" in notice.desktop)) {
 				notice.desktop = function(){
 					notice.desktop.cancel();
@@ -68,8 +77,10 @@
 			};
 		},
 		update: function(notice, options, oldOpts){
-			if (permission != 0 || !options.desktop)
+			if (permission != 0 || !options.desktop || !options.tag){
 				return;
+			}
+			this.init(notice,options);
 		},
 		beforeOpen: function(notice, options){
 			if (permission != 0 || !options.desktop)
