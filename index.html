@@ -1203,8 +1203,8 @@ $(function(){
 					});
 					$("#style-fontawesome").click(function(){
 						PNotify.prototype.options.styling = "fontawesome";
-						$("#switcher-jqueryui").show();
-						$("#switcher-bootstrap").hide();
+						$("#switcher-jqueryui").hide();
+						$("#switcher-bootstrap").show();
 						new PNotify({
 							title: "Styling Change",
 							text: "From now on, notices will be styled with Bootstrap w/ Font Awesome Icons."
@@ -1563,7 +1563,9 @@ height: 33px;
 					desktop: {
 						desktop: true
 					}
-				})).get().click(function(){
+				})).get().click(function(e){
+					if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target))
+						return;
 					alert('Hey! You clicked the desktop notification!');
 				});">Desktop Notification Notice</button>
 				<button class="btn btn-default source" onclick="PNotify.desktop.permission(); (new PNotify({
@@ -1573,7 +1575,9 @@ height: 33px;
 					desktop: {
 						desktop: true
 					}
-				})).get().click(function(){
+				})).get().click(function(e){
+					if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target))
+						return;
 					alert('Hey! You clicked the desktop notification!');
 				});">Desktop Notification Info</button>
 				<button class="btn btn-default source" onclick="PNotify.desktop.permission(); (new PNotify({
@@ -1583,7 +1587,9 @@ height: 33px;
 					desktop: {
 						desktop: true
 					}
-				})).get().click(function(){
+				})).get().click(function(e){
+					if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target))
+						return;
 					alert('Hey! You clicked the desktop notification!');
 				});">Desktop Notification Success</button>
 				<button class="btn btn-default source" onclick="PNotify.desktop.permission(); (new PNotify({
@@ -1593,7 +1599,9 @@ height: 33px;
 					desktop: {
 						desktop: true
 					}
-				})).get().click(function(){
+				})).get().click(function(e){
+					if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target))
+						return;
 					alert('Hey! You clicked the desktop notification!');
 				});">Desktop Notification Error</button>
 				<button class="btn btn-default source" onclick="PNotify.desktop.permission(); (new PNotify({
@@ -1603,7 +1611,9 @@ height: 33px;
 						desktop: true,
 						icon: 'includes/le_happy_face_by_luchocas-32.png'
 					}
-				})).get().click(function(){
+				})).get().click(function(e){
+					if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target))
+						return;
 					alert('Hey! You clicked the desktop notification!');
 				});">Desktop Notification Custom</button>
 				<button class="btn btn-default source" onclick="PNotify.desktop.permission(); (new PNotify({
@@ -1613,9 +1623,27 @@ height: 33px;
 					desktop: {
 						desktop: true
 					}
-				})).get().click(function(){
+				})).get().click(function(e){
+					if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target))
+						return;
 					alert('Hey! You clicked the desktop notification!');
 				});">Sticky Desktop Notification</button>
+				<button class="btn btn-default source" onclick="PNotify.desktop.permission(); var notice = (new PNotify({
+					title: 'Dynamic Desktop Notice',
+					text: 'I\'m a dynamic desktop notice. I\'ll change my type and text in a few seconds. If you\'ve given me permission, I\'ll appear as a desktop notification. If you haven\'t, I\'ll still appear as a regular PNotify notice.',
+					desktop: {
+						desktop: true
+					}
+				})); notice.get().click(function(e){
+					if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target))
+						return;
+					alert('Hey! You clicked the desktop notification!');
+				}); setTimeout(function(){
+					notice.update({
+						type: 'info',
+						text: 'Now I\'m an info box!'
+					});
+				}, 4000);">Dynamic Desktop Notification</button>
 			</div>
 			<div class="panel-heading">
 				<h3 class="panel-title">Buttons Module <small>Provides a sticker and a closer button.</small></h3>

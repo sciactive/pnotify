@@ -36,34 +36,32 @@
 		desktop: false,
 		// The URL of the icon to display. If false, no icon will show. If null, a default icon will show.
 		icon: null,
-		// By using a tag, we can update the content of an existing desktop notification
-		tag: null,
+		// Using a tag lets you update an existing notice, or keep from duplicating notices between tabs.
+		// If you leave tag null, one will be generated, facilitating the "update" function.
+		// see: http://www.w3.org/TR/notifications/#tags-example
+		tag: null
 	};
 	PNotify.prototype.modules.desktop = {
-		init: function(notice, options){
-			if (!options.desktop)
-				return;
-			permission = PNotify.desktop.checkPermission();
-			if (permission != 0)
-				return;
-			var opts = {
-					body:notice.options.text,
-				};
-			
+		tag: null,
+		icon: null,
+		genNotice: function(notice, options){
 			if (options.icon === null) {
-				opts.icon = "includes/desktop/"+notice.options.type+".png";
+				this.icon = "http://sciactive.com/pnotify/includes/desktop/"+notice.options.type+".png";
 			} else if (options.icon === false) {
-				opts.icon = null;
+				this.icon = null;
 			} else {
-				opts.icon = options.icon;
+				this.icon = options.icon;
 			}
-			if(options.tag){
-				opts.tag = options.tag;
+			if (this.tag === null || options.tag !== null) {
+				this.tag = options.tag === null ? "PNotify-"+Math.round(Math.random() * 1000000) : options.tag;
 			}
-
-			notice.desktop = notify(notice.options.title, opts);
+			notice.desktop = notify(notice.options.title, {
+				icon: this.icon,
+				body: notice.options.text,
+				tag: this.tag
+			});
 			if (!("close" in notice.desktop)) {
-				notice.desktop = function(){
+				notice.desktop.close = function(){
 					notice.desktop.cancel();
 				};
 			}
@@ -76,11 +74,18 @@
 				}
 			};
 		},
-		update: function(notice, options, oldOpts){
-			if (permission != 0 || !options.desktop || !options.tag){
+		init: function(notice, options){
+			if (!options.desktop)
 				return;
-			}
-			this.init(notice,options);
+			permission = PNotify.desktop.checkPermission();
+			if (permission != 0)
+				return;
+			this.genNotice(notice, options);
+		},
+		update: function(notice, options, oldOpts){
+			if (permission != 0 || !options.desktop)
+				return;
+			this.genNotice(notice, options);
 		},
 		beforeOpen: function(notice, options){
 			if (permission != 0 || !options.desktop)
