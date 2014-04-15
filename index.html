@@ -23,7 +23,7 @@
 	<link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" media="all" rel="stylesheet" type="text/css" />
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
 	<!-- Theme Switcher Widget -->
-	<script type="text/javascript" src="//jqueryui.com/themeroller/themeswitchertool/"></script>
+	<script type="text/javascript" src="includes/themeswitcher/jquery.themeswitcher.min.js"></script>
 	<!-- Bootstrap -->
 	<link href="includes/bootstrap3/css/bootstrap.css" id="bootstrap-css" rel="stylesheet" type="text/css" />
 	<script type="text/javascript" src="includes/bootstrap/js/bootstrap.min.js"></script>
@@ -59,6 +59,9 @@
 			top: 60px;
 			right: 5px;
 			z-index: 100;
+		}
+		#switcher-jqueryui, #switcher-jqueryui * {
+			box-sizing: content-box;
 		}
 		@media (max-width: 980px) {
 			#switcher-container {
@@ -240,7 +243,7 @@
 			prettyPrint(); // Format source in help.
 
 			if ($.fn.themeswitcher)
-				$('#switcher-jqueryui').themeswitcher();
+				$('#switcher-jqueryui').themeswitcher({imgpath: "includes/themeswitcher/images/"});
 			else
 				$('#switcher-jqueryui').html("Couldn't load theme switcher widget.");
 			// Navbar scrollspy.
@@ -791,7 +794,7 @@
 				</script>
 			</div>
 		</div>
-		<div id="switcher-jqueryui" class="hide"></div>
+		<div id="switcher-jqueryui" style="display: none;"></div>
 	</div>
 	<section class="container page-banner">
 		<div class="intro-section">
