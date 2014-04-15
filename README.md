@@ -3,14 +3,14 @@ Introduction
 
 PNotify is a JavaScript notification plugin, developed by SciActive. Formerly known as Pines Notify. It is designed to provide an unparalleled level of flexibility, while still being very easy to implement and use.
 
-PNotify provides desktop notifications based on the [web notifications draft](http://www.w3.org/TR/notifications/). If desktop notifications are not available or not allowed, PNotify will fall back to displaying the notice as a regular, in-browser notice.
+PNotify provides [desktop notifications](http://sciactive.com/pnotify/#web-notifications) based on the [web notifications draft](http://www.w3.org/TR/notifications/). If desktop notifications are not available or not allowed, PNotify will fall back to displaying the notice as a regular, in-browser notice.
 
-See http://sciactive.com/pnotify/ for more information and examples.
+See http://sciactive.com/pnotify/ for download, more information, and examples.
 
 Requirements
 ============
 
-jQuery (1.4 or higher) and either Bootstrap CSS or a jQuery UI Theme.
+jQuery (1.6 or higher) and either Bootstrap CSS, a jQuery UI Theme, or Web Notifications support.
 
 Getting Started
 ===============
@@ -135,6 +135,7 @@ Desktop Module
 `desktop: {`
 * `desktop: false` - Display the notification as a desktop notification.
 * `icon: null` - The URL of the icon to display. If false, no icon will show. If null, a default icon will show.
+* `tag: null` - Using a tag lets you update an existing notice, or keep from duplicating notices between tabs. If you leave tag null, one will be generated, facilitating the "update" function.
 
 `}`
 
@@ -193,7 +194,7 @@ Reference Module
 Callbacks Module
 ================
 
-The callback options all expect one argument, a function, which will be called when that event occurs. They can be included in the options object passed to $.pnotify() just like any other options. If the function returns false on the "before_open" or "before_close" callback, that event will be canceled.
+The callback options all expect one argument, a function, which will be called when that event occurs. They can be included in the options object passed to PNotify() just like any other options. If the function returns false on the "before_open" or "before_close" callback, that event will be canceled.
 
 * `before_init` - This option is called before the notice has been initialized. It accepts one argument, the options object.
 * `after_init` - This option is called after the notice has been initialized. It accepts one argument, the notice object.
@@ -205,4 +206,4 @@ The callback options all expect one argument, a function, which will be called w
 Additional Info
 ===============
 
-For examples/demos see http://sciactive.com/pnotify/
+See http://sciactive.com/pnotify/ for download, more information, and examples.
