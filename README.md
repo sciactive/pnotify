@@ -165,8 +165,12 @@ Confirm Module
 
 `confirm: {`
 * `confirm: false` - Make a confirmation box.
+* `prompt: false` - Make a prompt.
+* `prompt_class: ""` - Classes to add to the input element of the prompt.
+* `prompt_default: ""` - The default value of the prompt.
+* `prompt_multi_line: false` - Whether the prompt should accept multiple lines of text.
 * `align: "right"` - Where to align the buttons. (right, center, left, justify)
-* `buttons: [{text: "Ok", addClass: "", click: function(notice){ notice.get().trigger("pnotify.confirm"); notice.remove(); }},{text: "Cancel", addClass: "", click: function(notice){ notice.get().trigger("pnotify.cancel"); notice.remove(); }}]` - The buttons to display, and their callbacks.
+* `buttons: [{text: "Ok", addClass: "", promptTrigger: true, click: function(notice, value){ notice.remove(); notice.get().trigger("pnotify.confirm", [notice, value]); }},{text: "Cancel", addClass: "", click: function(notice){ notice.remove(); notice.get().trigger("pnotify.cancel", notice); }}]` - The buttons to display, and their callbacks. If a button has promptTrigger set to true, it will be triggered when the user hits enter in a single line prompt.
 
 `}`
 

@@ -1805,6 +1805,84 @@ height: 33px;
 						history: false
 					}
 				});">Custom Buttons</button>
+				<button class="btn btn-default source" onclick="(new PNotify({
+					title: 'Input Needed',
+					text: 'What side would you like?',
+					icon: 'glyphicon glyphicon-question-sign',
+					hide: false,
+					confirm: {
+						prompt: true
+					},
+					buttons: {
+						closer: false,
+						sticker: false
+					},
+					history: {
+						history: false
+					}
+				})).get().on('pnotify.confirm', function(e, notice, val){
+					notice.cancelRemove().update({
+						title: 'You\'ve Chosen a Side', text: 'You want '+$('<div/>').text(val).html()+'.', icon: true, type: 'info', hide: true,
+						confirm: {
+							prompt: false
+						},
+						buttons: {
+							closer: true,
+							sticker: true
+						}
+					});
+				}).on('pnotify.cancel', function(e, notice){
+					notice.cancelRemove().update({
+						title: 'You Don\'t Want a Side', text: 'No soup for you!', icon: true, type: 'info', hide: true,
+						confirm: {
+							prompt: false
+						},
+						buttons: {
+							closer: true,
+							sticker: true
+						}
+					});
+				});">Prompt Dialog</button>
+				<button class="btn btn-default source" onclick="(new PNotify({
+					title: 'Input Needed',
+					text: 'Write me a poem, please.',
+					icon: 'glyphicon glyphicon-question-sign',
+					hide: false,
+					confirm: {
+						prompt: true,
+						prompt_multi_line: true,
+						prompt_default: 'Roses are red,\nViolets are blue,\n'
+					},
+					buttons: {
+						closer: false,
+						sticker: false
+					},
+					history: {
+						history: false
+					}
+				})).get().on('pnotify.confirm', function(e, notice, val){
+					notice.cancelRemove().update({
+						title: 'Your Poem', text: $('<div/>').text(val).html(), icon: true, type: 'info', hide: true,
+						confirm: {
+							prompt: false
+						},
+						buttons: {
+							closer: true,
+							sticker: true
+						}
+					});
+				}).on('pnotify.cancel', function(e, notice){
+					notice.cancelRemove().update({
+						title: 'You Don\'t Like Poetry', text: 'Roses are dead,\nViolets are dead,\nI suck at gardening.', icon: true, type: 'info', hide: true,
+						confirm: {
+							prompt: false
+						},
+						buttons: {
+							closer: true,
+							sticker: true
+						}
+					});
+				});">Multi Line Prompt Dialog</button>
 			</div>
 			<div class="panel-heading">
 				<h3 class="panel-title">Callbacks Module <small>Provides a way to manipulate the notice at given events.</small></h3>

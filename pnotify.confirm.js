@@ -3,6 +3,14 @@
 	PNotify.prototype.options.confirm = {
 		// Make a confirmation box.
 		confirm: false,
+		// Make a prompt.
+		prompt: false,
+		// Classes to add to the input element of the prompt.
+		prompt_class: "",
+		// The default value of the prompt.
+		prompt_default: "",
+		// Whether the prompt should accept multiple lines of text.
+		prompt_multi_line: false,
 		// Where to align the buttons. (right, center, left, justify)
 		align: "right",
 		// The buttons to display, and their callbacks.
@@ -10,59 +18,81 @@
 			{
 				text: "Ok",
 				addClass: "",
-				click: function(notice){
-					notice.get().trigger("pnotify.confirm");
+				// Whether to trigger this button when the user hits enter in a single line prompt.
+				promptTrigger: true,
+				click: function(notice, value){
 					notice.remove();
+					notice.get().trigger("pnotify.confirm", [notice, value]);
 				}
 			},
 			{
 				text: "Cancel",
 				addClass: "",
 				click: function(notice){
-					notice.get().trigger("pnotify.cancel");
 					notice.remove();
+					notice.get().trigger("pnotify.cancel", notice);
 				}
 			}
 		]
 	};
 	PNotify.prototype.modules.confirm = {
 		// The div that contains the buttons.
-		buttonContainer: null,
+		container: null,
+		// The input element of a prompt.
+		prompt: null,
 
 		init: function(notice, options){
-			this.buttonContainer = $('<div style="margin-top:5px;clear:both;text-align:'+options.align+';" />').appendTo(notice.container);
+			this.container = $('<div style="margin-top:5px;clear:both;" />').css('text-align', options.align).appendTo(notice.container);
 
-			if (options.confirm)
-				this.makeButtons(notice, options);
+			if (options.confirm || options.prompt)
+				this.makeDialog(notice, options);
 			else
-				this.buttonContainer.hide();
+				this.container.hide();
 		},
 
 		update: function(notice, options){
 			if (options.confirm) {
-				this.makeButtons(notice, options);
-				this.buttonContainer.show();
+				this.makeDialog(notice, options);
+				this.container.show();
 			} else {
-				this.buttonContainer.hide().empty();
+				this.container.hide().empty();
 			}
 		},
 
-		makeButtons: function(notice, options) {
-			var already = false, btn, elem;
-			this.buttonContainer.empty();
+		afterOpen: function(notice, options){
+			if (options.prompt)
+				this.prompt.focus();
+		},
+
+		makeDialog: function(notice, options) {
+			var already = false, that = this, btn, elem;
+			this.container.empty();
+			if (options.prompt) {
+				this.prompt = $('<'+(options.prompt_multi_line ? 'textarea rows="5"' : 'input type="text"')+' style="margin-bottom:5px;clear:both;" />')
+				.addClass(notice.styles.input+' '+options.prompt_class)
+				.val(options.prompt_default)
+				.appendTo(this.container);
+			}
 			for (var i in options.buttons) {
 				btn = options.buttons[i];
 				if (already)
-					this.buttonContainer.append(' ');
+					this.container.append(' ');
 				else
 					already = true;
-				elem = $('<button type="button" class="'+notice.styles.btn+' '+btn.addClass+'">'+btn.text+'</button>')
-				.appendTo(this.buttonContainer)
+				elem = $('<button type="button" />')
+				.addClass(notice.styles.btn+' '+btn.addClass)
+				.text(btn.text)
+				.appendTo(this.container)
 				.on("click", (function(btn){ return function(){
 					if (typeof btn.click == "function") {
-						btn.click(notice);
+						btn.click(notice, options.prompt ? that.prompt.val() : null);
 					}
 				}})(btn));
+				if (options.prompt && !options.prompt_multi_line && btn.promptTrigger)
+					this.prompt.keypress((function(elem){ return function(e){
+						if (e.keyCode == 13)
+							elem.click();
+					}})(elem));
 				if (notice.styles.text) {
 					elem.wrapInner('<span class="'+notice.styles.text+'"></span>');
 				}
@@ -95,15 +125,19 @@
 		btnhover: "ui-state-hover",
 		btnactive: "ui-state-active",
 		btnfocus: "ui-state-focus",
+		input: "",
 		text: "ui-button-text"
 	});
 	$.extend(PNotify.styling.bootstrap2, {
-		btn: "btn"
+		btn: "btn",
+		input: ""
 	});
 	$.extend(PNotify.styling.bootstrap3, {
-		btn: "btn btn-default"
+		btn: "btn btn-default",
+		input: "form-control"
 	});
 	$.extend(PNotify.styling.fontawesome, {
-		btn: "btn btn-default"
+		btn: "btn btn-default",
+		input: "form-control"
 	});
 })(jQuery);

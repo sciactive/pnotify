@@ -16,7 +16,7 @@ license GPL/LGPL/MPL
  * 	http://mozilla.org/MPL/MPL-1.1.html
  */
 
-// Uses AMD or browser globals to create a jQuery plugin.
+// Uses AMD or browser globals for jQuery.
 (function (factory) {
     if (typeof define === 'function' && define.amd) {
         // AMD. Register as an anonymous module.
@@ -25,7 +25,7 @@ license GPL/LGPL/MPL
         // Browser globals
         factory(jQuery);
     }
-}(function($) {
+}(function($){
 	var default_stack = {
 		dir1: "down",
 		dir2: "left",
@@ -168,11 +168,7 @@ license GPL/LGPL/MPL
 					if (that.options.mouse_reset && that.animating === "out") {
 						if (!that.timerHide)
 							return;
-						// If it's animating out, animate back in really quickly.
-						that.elem.stop(true);
-						that.state = "open";
-						that.animating = "in";
-						that.elem.css("height", "auto").animate({"width": that.options.width, "opacity": that.options.opacity}, "fast");
+						that.cancelRemove();
 					}
 					// Stop the close timer.
 					if (that.options.hide && that.options.mouse_reset) that.cancelRemove();
@@ -663,6 +659,13 @@ license GPL/LGPL/MPL
 		cancelRemove: function(){
 			if (this.timer)
 				window.clearTimeout(this.timer);
+			if (this.state === "closing") {
+				// If it's animating out, animate back in really quickly.
+				this.elem.stop(true);
+				this.state = "open";
+				this.animating = "in";
+				this.elem.css("height", "auto").animate({"width": this.options.width, "opacity": this.options.opacity}, "fast");
+			}
 			return this;
 		},
 		// Queue a removal timer.
