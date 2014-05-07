@@ -468,6 +468,11 @@ license GPL/LGPL/MPL
 				animation("in", callback, this.elem);
 			else
 				this.elem.show(animation, (typeof this.options.animation.options_in === "object" ? this.options.animation.options_in : {}), this.options.animate_speed, callback);
+			if (this.elem.parent().hasClass('ui-effects-wrapper'))
+				this.elem.parent().css({"position": "fixed", "overflow": "visible"});
+			if (animation !== "slide")
+				this.elem.css("overflow", "visible");
+			this.container.css("overflow", "hidden");
 		},
 
 		// Animate the notice out.
@@ -492,13 +497,21 @@ license GPL/LGPL/MPL
 				animation("out", callback, this.elem);
 			else
 				this.elem.hide(animation, (typeof this.options.animation.options_out === "object" ? this.options.animation.options_out : {}), this.options.animate_speed, callback);
+			if (this.elem.parent().hasClass('ui-effects-wrapper'))
+				this.elem.parent().css({"position": "fixed", "overflow": "visible"});
+			if (animation !== "slide")
+				this.elem.css("overflow", "visible");
+			this.container.css("overflow", "hidden");
 		},
 
 		// Position the notice. dont_skip_hidden causes the notice to
 		// position even if it's not visible.
 		position: function(dontSkipHidden){
 			// Get the notice's stack.
-			var s = this.options.stack;
+			var s = this.options.stack,
+				e = this.elem;
+			if (e.parent().hasClass('ui-effects-wrapper'))
+				e = this.elem.css({"left": "0", "top": "0", "right": "0", "bottom": "0"}).parent();
 			if (typeof s.context === "undefined")
 				s.context = body;
 			if (!s) return;
@@ -508,7 +521,7 @@ license GPL/LGPL/MPL
 				s.nextpos2 = s.firstpos2;
 			if (typeof s.addpos2 !== "number")
 				s.addpos2 = 0;
-			var hidden = this.elem.css("display") === "none";
+			var hidden = e.css("display") === "none";
 			// Skip this notice if it's not shown.
 			if (!hidden || dontSkipHidden) {
 				var curpos1, curpos2;
@@ -530,7 +543,7 @@ license GPL/LGPL/MPL
 						csspos1 = "left";
 						break;
 				}
-				curpos1 = parseInt(this.elem.css(csspos1).replace(/(?:\..*|[^0-9.])/g, ''));
+				curpos1 = parseInt(e.css(csspos1).replace(/(?:\..*|[^0-9.])/g, ''));
 				if (isNaN(curpos1))
 					curpos1 = 0;
 				// Remember the first pos1, so the first visible notice goes there.
@@ -554,7 +567,7 @@ license GPL/LGPL/MPL
 						csspos2 = "left";
 						break;
 				}
-				curpos2 = parseInt(this.elem.css(csspos2).replace(/(?:\..*|[^0-9.])/g, ''));
+				curpos2 = parseInt(e.css(csspos2).replace(/(?:\..*|[^0-9.])/g, ''));
 				if (isNaN(curpos2))
 					curpos2 = 0;
 				// Remember the first pos2, so the first visible notice goes there.
@@ -563,10 +576,10 @@ license GPL/LGPL/MPL
 					s.nextpos2 = s.firstpos2;
 				}
 				// Check that it's not beyond the viewport edge.
-				if ((s.dir1 === "down" && s.nextpos1 + this.elem.height() > (s.context.is(body) ? jwindow.height() : s.context.prop('scrollHeight')) ) ||
-					(s.dir1 === "up" && s.nextpos1 + this.elem.height() > (s.context.is(body) ? jwindow.height() : s.context.prop('scrollHeight')) ) ||
-					(s.dir1 === "left" && s.nextpos1 + this.elem.width() > (s.context.is(body) ? jwindow.width() : s.context.prop('scrollWidth')) ) ||
-					(s.dir1 === "right" && s.nextpos1 + this.elem.width() > (s.context.is(body) ? jwindow.width() : s.context.prop('scrollWidth')) ) ) {
+				if ((s.dir1 === "down" && s.nextpos1 + e.height() > (s.context.is(body) ? jwindow.height() : s.context.prop('scrollHeight')) ) ||
+					(s.dir1 === "up" && s.nextpos1 + e.height() > (s.context.is(body) ? jwindow.height() : s.context.prop('scrollHeight')) ) ||
+					(s.dir1 === "left" && s.nextpos1 + e.width() > (s.context.is(body) ? jwindow.width() : s.context.prop('scrollWidth')) ) ||
+					(s.dir1 === "right" && s.nextpos1 + e.width() > (s.context.is(body) ? jwindow.width() : s.context.prop('scrollWidth')) ) ) {
 					// If it is, it needs to go back to the first pos1, and over on pos2.
 					s.nextpos1 = s.firstpos1;
 					s.nextpos2 += s.addpos2 + (typeof s.spacing2 === "undefined" ? 25 : s.spacing2);
@@ -590,19 +603,19 @@ license GPL/LGPL/MPL
 					}
 				} else {
 					if(typeof s.nextpos2 === "number")
-						this.elem.css(csspos2, s.nextpos2+"px");
+						e.css(csspos2, s.nextpos2+"px");
 				}
 				// Keep track of the widest/tallest notice in the column/row, so we can push the next column/row.
 				switch (s.dir2) {
 					case "down":
 					case "up":
-						if (this.elem.outerHeight(true) > s.addpos2)
-							s.addpos2 = this.elem.height();
+						if (e.outerHeight(true) > s.addpos2)
+							s.addpos2 = e.height();
 						break;
 					case "left":
 					case "right":
-						if (this.elem.outerWidth(true) > s.addpos2)
-							s.addpos2 = this.elem.width();
+						if (e.outerWidth(true) > s.addpos2)
+							s.addpos2 = e.width();
 						break;
 				}
 				// Move the notice on dir1.
@@ -624,20 +637,20 @@ license GPL/LGPL/MPL
 								break;
 						}
 					} else
-						this.elem.css(csspos1, s.nextpos1+"px");
+						e.css(csspos1, s.nextpos1+"px");
 				}
 				// Run the animation.
 				if (animate.top || animate.bottom || animate.right || animate.left)
-					this.elem.animate(animate, {duration: this.options.position_animate_speed, queue: false});
+					e.animate(animate, {duration: this.options.position_animate_speed, queue: false});
 				// Calculate the next dir1 position.
 				switch (s.dir1) {
 					case "down":
 					case "up":
-						s.nextpos1 += this.elem.height() + (typeof s.spacing1 === "undefined" ? 25 : s.spacing1);
+						s.nextpos1 += e.height() + (typeof s.spacing1 === "undefined" ? 25 : s.spacing1);
 						break;
 					case "left":
 					case "right":
-						s.nextpos1 += this.elem.width() + (typeof s.spacing1 === "undefined" ? 25 : s.spacing1);
+						s.nextpos1 += e.width() + (typeof s.spacing1 === "undefined" ? 25 : s.spacing1);
 						break;
 				}
 			}

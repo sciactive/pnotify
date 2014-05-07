@@ -2169,15 +2169,15 @@ new PNotify({
 			<div class="panel-body">
 				<h4>Effects built in to jQuery</h4>
 				<button class="btn btn-default source" onclick="new PNotify({
-					title: 'Show Effect',
-					text: 'I use a different effect.',
-					animation: 'show'
-				});">Show</button>
-				<button class="btn btn-default source" onclick="new PNotify({
 					title: 'Fade Effect',
 					text: 'I use a different effect.',
 					animation: 'fade'
 				});">Fade</button>
+				<button class="btn btn-default source" onclick="new PNotify({
+					title: 'Show Effect',
+					text: 'I use a different effect.',
+					animation: 'show'
+				});">Show</button>
 				<button class="btn btn-default source" onclick="new PNotify({
 					title: 'Slide Effect',
 					text: 'I use a different effect.',
@@ -2191,8 +2191,8 @@ new PNotify({
 				<br style="margin-bottom: 5px;" />
 				<h4>Effects from jQuery UI</h4>
 				Presets:
-				<button class="btn btn-default source" onclick="$('#ui_effect_in').val('scale'); $('#ui_easing_in').val('easeOutElastic'); $('#ui_effect_out').val('same'); $('#ui_easing_out').val('same'); $('#ui_speed').val('700'); $('#ui_button').click();">Bouncy Fun</button>
-				<button class="btn btn-default source" onclick="$('#ui_effect_in').val('drop'); $('#ui_easing_in').val('easeOutBounce'); $('#ui_effect_out').val('same'); $('#ui_easing_out').val('easeOutCubic'); $('#ui_speed').val('700'); $('#ui_button').click();">Toss In</button>
+				<button class="btn btn-default source" onclick="$('#ui_effect_in').val('scale'); $('#ui_easing_in').val('easeOutElastic'); $('#ui_effect_out').val('same'); $('#ui_easing_out').val('easeInCubic'); $('#ui_speed').val('700'); $('#ui_button').click();">Bouncy Fun</button>
+				<button class="btn btn-default source" onclick="$('#ui_effect_in').val('drop'); $('#ui_easing_in').val('easeOutBounce'); $('#ui_effect_out').val('same'); $('#ui_easing_out').val('easeInExpo'); $('#ui_speed').val('700'); $('#ui_button').click();">Toss In</button>
 				<button class="btn btn-default source" onclick="$('#ui_effect_in').val('puff'); $('#ui_easing_in').val('easeOutBack'); $('#ui_effect_out').val('same'); $('#ui_easing_out').val('easeInBack'); $('#ui_speed').val('1000'); $('#ui_button').click();">Gentle Puff</button>
 				<br /><br />
 				<span style="display: inline-block; width: 30px;">In:</span>
