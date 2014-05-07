@@ -1,6 +1,15 @@
 // Reference
 // This file is for referencing while you are making a notify module.
-(function($){
+// Uses AMD or browser globals for jQuery.
+(function (factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as a module.
+        define('pnotify.reference', ['jquery', 'pnotify'], factory);
+    } else {
+        // Browser globals
+        factory(jQuery, PNotify);
+    }
+}(function($, PNotify){
 	// This if the default values of your options.
 	PNotify.prototype.options.reference = {
 		// Provide a thing for stuff. Turned off by default.
@@ -120,4 +129,4 @@
 	$.extend(PNotify.styling.fontawesome, {
 		athing: "fa fa-refresh"
 	});
-})(jQuery);
+}));

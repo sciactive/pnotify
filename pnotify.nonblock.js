@@ -1,5 +1,14 @@
 // Nonblock
-(function($){
+// Uses AMD or browser globals for jQuery.
+(function (factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as a module.
+        define('pnotify.nonblock', ['jquery', 'pnotify'], factory);
+    } else {
+        // Browser globals
+        factory(jQuery, PNotify);
+    }
+}(function($, PNotify){
 	// Some useful regexes.
 	var re_on = /^on/,
 		re_mouse_events = /^(dbl)?click$|^mouse(move|down|up|over|out|enter|leave)$|^contextmenu$/,
@@ -139,4 +148,4 @@
 			this.myOptions = options;
 		}
 	};
-})(jQuery);
+}));

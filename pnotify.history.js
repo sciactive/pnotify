@@ -1,5 +1,14 @@
 // History
-(function($){
+// Uses AMD or browser globals for jQuery.
+(function (factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as a module.
+        define('pnotify.history', ['jquery', 'pnotify'], factory);
+    } else {
+        // Browser globals
+        factory(jQuery, PNotify);
+    }
+}(function($, PNotify){
 	var history_menu,
 		history_handle_top;
 	$(function(){
@@ -177,4 +186,4 @@
 		hi_btnhov: "",
 		hi_hnd: "fa fa-chevron-down"
 	});
-})(jQuery);
+}));

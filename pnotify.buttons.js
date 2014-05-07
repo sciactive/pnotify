@@ -1,5 +1,14 @@
 // Buttons
-(function($){
+// Uses AMD or browser globals for jQuery.
+(function (factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as a module.
+        define('pnotify.buttons', ['jquery', 'pnotify'], factory);
+    } else {
+        // Browser globals
+        factory(jQuery, PNotify);
+    }
+}(function($, PNotify){
 	PNotify.prototype.options.buttons = {
 		// Provide a button for the user to manually close the notice.
 		closer: true,
@@ -120,4 +129,4 @@
 		pin_up: "fa fa-pause",
 		pin_down: "fa fa-play"
 	});
-})(jQuery);
+}));

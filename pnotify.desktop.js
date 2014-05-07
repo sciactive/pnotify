@@ -1,5 +1,14 @@
 // Desktop
-(function($){
+// Uses AMD or browser globals for jQuery.
+(function (factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as a module.
+        define('pnotify.desktop', ['jquery', 'pnotify'], factory);
+    } else {
+        // Browser globals
+        factory(jQuery, PNotify);
+    }
+}(function($, PNotify){
 	var permission;
 	var notify = function(title, options){
 		// Memoize based on feature detection.
@@ -130,5 +139,5 @@
 			}
 		}
 	};
-	permission = PNotify.desktop.checkPermission()
-})(jQuery);
+	permission = PNotify.desktop.checkPermission();
+}));

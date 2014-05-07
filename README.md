@@ -207,6 +207,27 @@ The callback options all expect one argument, a function, which will be called w
 * `before_close` - This option is called before the notice closes. It accepts one argument, the notice object.
 * `after_close` - This option is called after the notice closes. It accepts one argument, the notice object.
 
+Using PNotify with RequireJS
+============================
+
+When they detect AMD/RequireJS, PNotify core defines the named module "pnotify", and PNotify's modules each define names like "pnotify.module". The following example shows the use of the nonblock and desktop modules with RequireJS.
+
+```js
+requirejs(['pnotify', 'pnotify.nonblock', 'pnotify.desktop'], function(PNotify){
+	PNotify.desktop.permission();
+	new PNotify({
+		title: 'Desktop Notice',
+		text: 'If you\'ve given me permission, I\'ll appear as a desktop notification. If you haven\'t, I\'ll still appear as a regular PNotify notice.',
+		desktop: {
+			desktop: true
+		},
+		nonblock: {
+			nonblock: true
+		}
+	});
+});
+```
+
 Additional Info
 ===============
 

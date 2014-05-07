@@ -1,5 +1,14 @@
 // Callbacks
-(function($){
+// Uses AMD or browser globals for jQuery.
+(function (factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as a module.
+        define('pnotify.callbacks', ['jquery', 'pnotify'], factory);
+    } else {
+        // Browser globals
+        factory(jQuery, PNotify);
+    }
+}(function($, PNotify){
 	var _init   = PNotify.prototype.init,
 		_open   = PNotify.prototype.open,
 		_remove = PNotify.prototype.remove;
@@ -36,4 +45,4 @@
 			}
 		}
 	};
-})(jQuery);
+}));

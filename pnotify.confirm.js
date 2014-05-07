@@ -1,5 +1,14 @@
 // Confirm
-(function($){
+// Uses AMD or browser globals for jQuery.
+(function (factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as a module.
+        define('pnotify.confirm', ['jquery', 'pnotify'], factory);
+    } else {
+        // Browser globals
+        factory(jQuery, PNotify);
+    }
+}(function($, PNotify){
 	PNotify.prototype.options.confirm = {
 		// Make a confirmation box.
 		confirm: false,
@@ -140,4 +149,4 @@
 		btn: "btn btn-default",
 		input: "form-control"
 	});
-})(jQuery);
+}));

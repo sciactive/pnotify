@@ -19,8 +19,8 @@ license GPL/LGPL/MPL
 // Uses AMD or browser globals for jQuery.
 (function (factory) {
     if (typeof define === 'function' && define.amd) {
-        // AMD. Register as an anonymous module.
-        define(['jquery'], factory);
+        // AMD. Register as a module.
+        define('pnotify', ['jquery'], factory);
     } else {
         // Browser globals
         factory(jQuery);
@@ -774,4 +774,5 @@ license GPL/LGPL/MPL
 		do_when_ready();
 	else
 		$(do_when_ready);
+	return PNotify;
 }));
