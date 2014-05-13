@@ -1,6 +1,6 @@
 {
     "name": "pnotify",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "description": "JavaScript notification plugin.",
     "main": [
         "pnotify.core.js",
@@ -23,6 +23,8 @@
         "index.html",
         "README.md",
         "testing.html",
-        "buildcustom.php"
+        "buildcustom.php",
+        "pnotify.tooltip.js",
+        "pnotify.mobile.js"
     ]
 }

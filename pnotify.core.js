@@ -1,5 +1,5 @@
 /*
-PNotify 2.0.0 sciactive.com/pnotify/
+PNotify 2.0.1 sciactive.com/pnotify/
 (C) 2014 Hunter Perrin
 license GPL/LGPL/MPL
 */
@@ -55,7 +55,7 @@ license GPL/LGPL/MPL
 	};
 	$.extend(PNotify.prototype, {
 		// The current version of PNotify.
-		version: "2.0.0",
+		version: "2.0.1",
 
 		// === Options ===
 
