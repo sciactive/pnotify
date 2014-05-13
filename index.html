@@ -323,7 +323,7 @@
 			var notice = new PNotify({
 				title: "Please Wait",
 				type: 'info',
-				icon: 'picon picon-throbber',
+				icon: 'fa fa-spinner fa-spin',
 				hide: false,
 				buttons: {
 					closer: false,
@@ -931,6 +931,11 @@ $(function(){
 						include this line somewhere before your first notice:
 					</p>
 					<pre class="prettyprint">PNotify.prototype.options.styling = "jqueryui";</pre>
+					<p>
+						If you are using Bootstrap 3 with Font Awesome for all your styling,
+						include this line somewhere before your first notice:
+					</p>
+					<pre class="prettyprint">PNotify.prototype.options.styling = "fontawesome";</pre>
 					<p>
 						All of the demos on this page provide source code with
 						the "{}" button,

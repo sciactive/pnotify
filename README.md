@@ -52,6 +52,12 @@ If you are using jQuery UI for **all** your styling, include this line somewhere
 PNotify.prototype.options.styling = "jqueryui";
 ```
 
+If you are using Bootstrap 3 with Font Awesome for **all** your styling, include this line somewhere before your first notice:
+
+```js
+PNotify.prototype.options.styling = "fontawesome";
+```
+
 Stacks
 ======
 
