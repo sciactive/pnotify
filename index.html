@@ -280,9 +280,15 @@
 
 			// Make a loader.
 			var loader = new PNotify({
-				title: "Fake Load",
-				text: "<div class=\"progress_bar\" />",
-				icon: 'picon picon-throbber',
+				//title: "Lowering the Moon",
+				title: "Creating Series of Tubes",
+				text: '<div class="progress progress-striped active" style="margin:0">\
+	<div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0">\
+		<span class="sr-only">0%</span>\
+	</div>\
+</div>',
+				//icon: 'fa fa-moon-o fa-spin',
+				icon: 'fa fa-cog fa-spin',
 				hide: false,
 				buttons: {
 					closer: false,
@@ -292,20 +298,22 @@
 					history: false
 				},
 				before_open: function(PNotify){
-					progress = PNotify.get().find("div.progress_bar");
-					progress.progressbar({value: cur_value});
+					progress = PNotify.get().find("div.progress-bar");
+					progress.width(cur_value+"%").attr("aria-valuenow", cur_value).find("span").html(cur_value+"%");
 					// Pretend to do something.
 					var timer = setInterval(function(){
+						//if (cur_value == 50) {
+						//	loader.update({title: "Raising the Sun", icon: "fa fa-sun-o fa-spin"});
+						//}
 						if (cur_value >= 100) {
 							// Remove the interval.
 							window.clearInterval(timer);
 							loader.remove();
 							return;
 						}
-						//cur_value += Math.ceil(3 * ((100 - cur_value) / 100));
-						cur_value += .3;
-						progress.progressbar('option', 'value', cur_value);
-					}, 2);
+						cur_value += 1;
+						progress.width(cur_value+"%").attr("aria-valuenow", cur_value).find("span").html(cur_value+"%");
+					}, 65);
 				}
 			});
 		}
@@ -841,7 +849,7 @@
 					<div><label><input type="checkbox" data-type="module" name="nonblock" /> NonBlock</label></div>
 					<div style="margin-bottom: 10px;"><small>Lets the user click through to things underneath the notice.</small></div>
 					<div><label><input type="checkbox" data-type="module" name="confirm" /> Confirm</label></div>
-					<div style="margin-bottom: 10px;"><small>Provides confirmation dialogs.</small></div>
+					<div style="margin-bottom: 10px;"><small>Provides confirmation dialogs and prompts.</small></div>
 					<div><label><input type="checkbox" data-type="module" name="callbacks" /> Callbacks</label></div>
 					<div style="margin-bottom: 10px;"><small>Provides a way to manipulate the notice at given events.</small></div>
 					<div><label><input type="checkbox" data-type="module" name="history" /> History</label></div>
@@ -1718,7 +1726,7 @@ height: 33px;
 				});">Non-Blocking Notice</button>
 			</div>
 			<div class="panel-heading">
-				<h3 class="panel-title">Confirm Module <small>Provides confirmation dialogs.</small></h3>
+				<h3 class="panel-title">Confirm Module <small>Provides confirmation dialogs and prompts.</small></h3>
 			</div>
 			<div class="panel-body">
 				<button class="btn btn-default source" onclick="(new PNotify({
@@ -1937,21 +1945,18 @@ height: 33px;
 											before_close: null
 										});
 										PNotify.queueRemove();
-										PNotify.get().effect('bounce');
 										return false;
 									}
 								});
 								PNotify.queueRemove();
-								PNotify.get().effect('bounce');
 								return false;
 							}
 						});
 						PNotify.queueRemove();
-						PNotify.get().effect('bounce');
 						return false;
 					}
 				});">Notice to Error to Success to Info</button>
-				<button class="btn btn-default source" onclick="fake_load();">Pretend Loader</button>
+				<button class="btn btn-default source" onclick="fake_load();">Progress Loader</button>
 			</div>
 			<div class="panel-heading">
 				<h3 class="panel-title">History Module <small>Provides a way for the user to redisplay notices.</small></h3>
