@@ -709,17 +709,25 @@ license GPL/LGPL/MPL
 				clearTimeout(timer);
 			timer = null;
 			// Reset the next position data.
-			$.each(PNotify.notices, function(){
-				var s = this.options.stack;
-				if (!s) return;
-				s.nextpos1 = s.firstpos1;
-				s.nextpos2 = s.firstpos2;
-				s.addpos2 = 0;
-				s.animation = animate;
-			});
-			$.each(PNotify.notices, function(){
-				this.position();
-			});
+			if (PNotify.notices && PNotify.notices.length) {
+				$.each(PNotify.notices, function(){
+					var s = this.options.stack;
+					if (!s) return;
+					s.nextpos1 = s.firstpos1;
+					s.nextpos2 = s.firstpos2;
+					s.addpos2 = 0;
+					s.animation = animate;
+				});
+				$.each(PNotify.notices, function(){
+					this.position();
+				});
+			} else {
+				var s = PNotify.prototype.options.stack;
+				if (s) {
+					delete s.nextpos1;
+					delete s.nextpos2;
+				}
+			}
 		},
 		styling: {
 			jqueryui: {
