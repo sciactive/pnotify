@@ -175,7 +175,7 @@ license GPL/LGPL/MPL
 				},
 				"mouseleave": function(e){
 					// Start the close timer.
-					if (that.options.hide && that.options.mouse_reset) that.queueRemove();
+					if (that.options.hide && that.options.mouse_reset && message.animating !== "out") that.queueRemove();
 					PNotify.positionAll();
 				}
 			});
