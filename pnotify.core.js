@@ -175,7 +175,7 @@ license GPL/LGPL/MPL
 				},
 				"mouseleave": function(e){
 					// Start the close timer.
-					if (that.options.hide && that.options.mouse_reset) that.queueRemove();
+					if (that.options.hide && that.options.mouse_reset && that.animating !== "out") that.queueRemove();
 					PNotify.positionAll();
 				}
 			});
@@ -699,7 +699,7 @@ license GPL/LGPL/MPL
 		removeAll: function () {
 			$.each(PNotify.notices, function(){
 				if (this.remove)
-					this.remove();
+					this.remove(false);
 			});
 		},
 		positionAll: function (animate) {
