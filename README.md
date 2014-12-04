@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/sciactive/pnotify.png?label=ready&title=Ready)](https://waffle.io/sciactive/pnotify)
 Introduction
 ============
 
