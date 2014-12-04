@@ -123,7 +123,6 @@
 					.appendTo(history_menu);
 
 					// Get the top of the handle.
-					console.log(handle.offset());
 					history_handle_top = handle.offset().top + 2;
 					// Hide the history pull down up to the top of the handle.
 					history_menu.css({top: "-"+history_handle_top+"px"});
