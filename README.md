@@ -1,4 +1,4 @@
-[![Stories in Ready](https://badge.waffle.io/sciactive/pnotify.png?label=ready&title=Ready)](https://waffle.io/sciactive/pnotify)
+[![Stories in Ready](https://badge.waffle.io/sciactive/pnotify.png?label=ready&title=Ready)](http://waffle.io/sciactive/pnotify) [![Stories in Progress](https://badge.waffle.io/sciactive/pnotify.png?label=in progress&title=In Progress)](http://waffle.io/sciactive/pnotify)
 Introduction
 ============
 
