@@ -427,7 +427,7 @@ license GPL/LGPL/MPL
 			// This is the only thing that *should* be copied by reference.
 			this.options.stack = PNotify.prototype.options.stack;
 			var optArray = [options, moreOptions], curOpts;
-			for (var curIndex in optArray) {
+			for (var curIndex=0; curIndex < optArray.length; curIndex++) {
 				curOpts = optArray[curIndex];
 				if (typeof curOpts == "undefined")
 					break;
