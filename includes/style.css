@@ -32,16 +32,16 @@ Copyright (C) 2012 SciActive.com. All Rights Reserved.
 .page-points .row-fluid {
 	margin-bottom: 30px;
 }
-body .pf-form .pf-heading * {
-	margin-top: .1em !important;
-	margin-bottom: .1em !important;
-}
 #copyright {
 	text-align: center;
 	margin-top: 40px;
 }
 /* Mobile */
 @media (max-width: 768px) {
+	#page {
+		margin-top: 65px;
+		padding-top: 60px;
+	}
 	.page-banner {
 		padding: 80px 0 20px;
 	}

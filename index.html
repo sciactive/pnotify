@@ -18,17 +18,16 @@
 	<!-- Page Style -->
 	<link href="includes/style.css" rel="stylesheet" type="text/css" />
 	<!-- jQuery -->
-	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 	<!-- jQuery UI -->
-	<link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" media="all" rel="stylesheet" type="text/css" />
-	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+	<link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" media="all" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+	<!-- Bootstrap -->
+	<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" id="bootstrap-css" rel="stylesheet" type="text/css" />
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 	<!-- Theme Switcher Widget -->
 	<script type="text/javascript" src="includes/themeswitcher/jquery.themeswitcher.min.js"></script>
-	<!-- Bootstrap -->
-	<link href="includes/bootstrap3/css/bootstrap.css" id="bootstrap-css" rel="stylesheet" type="text/css" />
-	<script type="text/javascript" src="includes/bootstrap/js/bootstrap.min.js"></script>
-	<!-- Font Awesome -->
-	<link href="includes/font-awesome-4.0.3/css/font-awesome.css" rel="stylesheet" type="text/css" />
 	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
 	<!--[if lt IE 9]>
 	<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -755,33 +754,32 @@
 	<div id="switcher-container">
 		<div id="switcher-bootstrap">
 			<div class="btn-group">
-				<button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+				<a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);">
 					Theme: <span id="bootstrap-current">Normal</span>
 					<span class="caret"></span>
-				</button>
+				</a>
 				<ul class="dropdown-menu pull-right">
-					<li><a href="javascript:void(0);" data-theme="normal">Normal</a></li>
+					<li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">Normal</a></li>
 					<li class="divider"></li>
-					<li><a href="javascript:void(0);" data-theme="amelia">Amelia</a></li>
-					<li><a href="javascript:void(0);" data-theme="cerulean">Cerulean</a></li>
-					<li><a href="javascript:void(0);" data-theme="cosmo">Cosmo</a></li>
-					<li><a href="javascript:void(0);" data-theme="cupid">Cupid</a></li>
-					<li><a href="javascript:void(0);" data-theme="cyborg">Cyborg</a></li>
-					<li><a href="javascript:void(0);" data-theme="darkly">Darkly</a></li>
-					<li><a href="javascript:void(0);" data-theme="flatly">Flatly</a></li>
-					<li><a href="javascript:void(0);" data-theme="journal">Journal</a></li>
-					<li><a href="javascript:void(0);" data-theme="lumen">Lumen</a></li>
-					<li><a href="javascript:void(0);" data-theme="pinkiepie">Pinkie Pie</a></li>
-					<li><a href="javascript:void(0);" data-theme="readable">Readable</a></li>
-					<li><a href="javascript:void(0);" data-theme="simplex">Simplex</a></li>
-					<li><a href="javascript:void(0);" data-theme="shamrock">Shamrock</a></li>
-					<li><a href="javascript:void(0);" data-theme="slate">Slate</a></li>
-					<li><a href="javascript:void(0);" data-theme="spacelab">Spacelab</a></li>
-					<li><a href="javascript:void(0);" data-theme="superhero">Superhero</a></li>
-					<li><a href="javascript:void(0);" data-theme="united">United</a></li>
-					<li><a href="javascript:void(0);" data-theme="yeti">Yeti</a></li>
+					<li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.1/cerulean/bootstrap.min.css">Cerulean</a></li>
+					<li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.1/cosmo/bootstrap.min.css">Cosmo</a></li>
+					<li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.1/cyborg/bootstrap.min.css">Cyborg</a></li>
+					<li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.1/darkly/bootstrap.min.css">Darkly</a></li>
+					<li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.1/flatly/bootstrap.min.css">Flatly</a></li>
+					<li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.1/journal/bootstrap.min.css">Journal</a></li>
+					<li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.1/lumen/bootstrap.min.css">Lumen</a></li>
+					<li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.1/paper/bootstrap.min.css">Paper</a></li>
+					<li><a href="javascript:void(0);" data-theme="includes/bootstrap-pinkiepie.css">Pinkie Pie</a></li>
+					<li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.1/readable/bootstrap.min.css">Readable</a></li>
+					<li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.1/sandstone/bootstrap.min.css">Sandstone</a></li>
+					<li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.1/simplex/bootstrap.min.css">Simplex</a></li>
+					<li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.1/slate/bootstrap.min.css">Slate</a></li>
+					<li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.1/spacelab/bootstrap.min.css">Spacelab</a></li>
+					<li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.1/superhero/bootstrap.min.css">Superhero</a></li>
+					<li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.1/united/bootstrap.min.css">United</a></li>
+					<li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.1/yeti/bootstrap.min.css">Yeti</a></li>
 					<li class="divider"></li>
-					<li><a href="http://bootswatch.com/" target="_blank">Certain Themes by Bootswatch</a></li>
+					<li><a href="http://bootswatch.com/" target="_blank">Most Themes by Bootswatch</a></li>
 				</ul>
 				<script type="text/javascript">
 					$(function(){
@@ -793,9 +791,8 @@
 						};
 						reset();
 						$('#switcher-bootstrap').on('click', 'a[data-theme]', function(){
-							var $this = $(this),
-								theme = $this.attr('data-theme');
-							$('#bootstrap-current').text($this.text()); $('#bootstrap-css').attr('href', 'includes/bootstrap3/css/bootstrap'+(theme==='normal'?'':'-'+theme)+'.css');
+							var $this = $(this);
+							$('#bootstrap-current').text($this.text()); $('#bootstrap-css').attr('href', $this.attr('data-theme'));
 							reset();
 						});
 					});
