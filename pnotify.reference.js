@@ -2,7 +2,10 @@
 // This file is for referencing while you are making a notify module.
 // Uses AMD or browser globals for jQuery.
 (function (factory) {
-    if (typeof define === 'function' && define.amd) {
+    if (typeof(exports) === 'object' && typeof(module) !== 'undefined') {
+        // CommonJS
+        module.exports = factory(require('jquery'), require('pnotify'));
+    } else if (typeof define === 'function' && define.amd) {
         // AMD. Register as a module.
         define('pnotify.reference', ['jquery', 'pnotify'], factory);
     } else {
