@@ -164,6 +164,7 @@ license GPL/LGPL/MPL
 			this.elem = $("<div />", {
 				"class": "ui-pnotify "+this.options.addclass,
 				"css": {"display": "none"},
+				"aria-live": "assertive",
 				"mouseenter": function(e){
 					if (that.options.mouse_reset && that.animating === "out") {
 						if (!that.timerHide)
@@ -180,8 +181,10 @@ license GPL/LGPL/MPL
 				}
 			});
 			// Create a container for the notice contents.
-			this.container = $("<div />", {"class": this.styles.container+" ui-pnotify-container "+(this.options.type === "error" ? this.styles.error : (this.options.type === "info" ? this.styles.info : (this.options.type === "success" ? this.styles.success : this.styles.notice)))})
-			.appendTo(this.elem);
+			this.container = $("<div />", {
+				"class": this.styles.container+" ui-pnotify-container "+(this.options.type === "error" ? this.styles.error : (this.options.type === "info" ? this.styles.info : (this.options.type === "success" ? this.styles.success : this.styles.notice))),
+				"role": "alert"
+			}).appendTo(this.elem);
 			if (this.options.cornerclass !== "")
 				this.container.removeClass("ui-corner-all").addClass(this.options.cornerclass);
 			// Create a drop shadow.
