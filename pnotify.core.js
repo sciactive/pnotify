@@ -164,7 +164,7 @@ license GPL/LGPL/MPL
 			this.elem = $("<div />", {
 				"class": "ui-pnotify "+this.options.addclass,
 				"css": {"display": "none"},
-        "aria-live": "assertive",
+				"aria-live": "assertive",
 				"mouseenter": function(e){
 					if (that.options.mouse_reset && that.animating === "out") {
 						if (!that.timerHide)
@@ -212,7 +212,7 @@ license GPL/LGPL/MPL
 			// Add text.
 			this.text_container = $("<div />", {
 				"class": "ui-pnotify-text",
-        "role": "alert"
+				"role": "alert"
 			})
 			.appendTo(this.container);
 			if (this.options.text === false)
