@@ -177,7 +177,7 @@ license GPL/LGPL/MPL
 				"mouseleave": function(e){
 					// Start the close timer.
 					if (that.options.hide && that.options.mouse_reset && that.animating !== "out") that.queueRemove();
-					PNotify.positionAll();
+					// PNotify.positionAll();
 				}
 			});
 			// Create a container for the notice contents.
