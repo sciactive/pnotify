@@ -1,7 +1,6 @@
 // Desktop
-// Uses AMD or browser globals for jQuery.
 (function (factory) {
-    if (typeof(exports) === 'object' && typeof(module) !== 'undefined') {
+    if (typeof exports === 'object' && typeof module !== 'undefined') {
         // CommonJS
         module.exports = factory(require('jquery'), require('pnotify'));
     } else if (typeof define === 'function' && define.amd) {
