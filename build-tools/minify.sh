@@ -3,21 +3,22 @@
 DIR=$(dirname $0)
 
 echo Compressing JavaScript with Google Closure Compiler and CSS with cssminifier.com.
-head -n 5 "${DIR}/../pnotify.core.js" > "${DIR}/../pnotify.core.min.js"
-java -jar "${DIR}/compiler.jar" --js="${DIR}/../pnotify.core.js" >> "${DIR}/../pnotify.core.min.js"
-curl --data-urlencode input@"${DIR}/../pnotify.core.css" http://cssminifier.com/raw > "${DIR}/../pnotify.core.min.css"
+head -n 5 "${DIR}/../src/pnotify.core.js" > "${DIR}/../src/pnotify.core.min.js"
+java -jar "${DIR}/compiler.jar" --js="${DIR}/../src/pnotify.core.js" >> "${DIR}/../src/pnotify.core.min.js"
+curl --data-urlencode input@"${DIR}/../src/pnotify.core.css" http://cssminifier.com/raw > "${DIR}/../src/pnotify.core.min.css"
 
-java -jar "${DIR}/compiler.jar" --js="${DIR}/../pnotify.buttons.js" > "${DIR}/../pnotify.buttons.min.js"
-curl --data-urlencode input@"${DIR}/../pnotify.buttons.css" http://cssminifier.com/raw > "${DIR}/../pnotify.buttons.min.css"
-java -jar "${DIR}/compiler.jar" --js="${DIR}/../pnotify.callbacks.js" > "${DIR}/../pnotify.callbacks.min.js"
-java -jar "${DIR}/compiler.jar" --js="${DIR}/../pnotify.confirm.js" > "${DIR}/../pnotify.confirm.min.js"
-java -jar "${DIR}/compiler.jar" --js="${DIR}/../pnotify.desktop.js" > "${DIR}/../pnotify.desktop.min.js"
-java -jar "${DIR}/compiler.jar" --js="${DIR}/../pnotify.history.js" > "${DIR}/../pnotify.history.min.js"
-curl --data-urlencode input@"${DIR}/../pnotify.history.css" http://cssminifier.com/raw > "${DIR}/../pnotify.history.min.css"
-java -jar "${DIR}/compiler.jar" --js="${DIR}/../pnotify.nonblock.js" > "${DIR}/../pnotify.nonblock.min.js"
-java -jar "${DIR}/compiler.jar" --js="${DIR}/../pnotify.reference.js" > "${DIR}/../pnotify.reference.min.js"
-java -jar "${DIR}/compiler.jar" --js="${DIR}/../pnotify.tooltip.js" > "${DIR}/../pnotify.tooltip.min.js"
+java -jar "${DIR}/compiler.jar" --js="${DIR}/../src/pnotify.buttons.js" > "${DIR}/../src/pnotify.buttons.min.js"
+curl --data-urlencode input@"${DIR}/../src/pnotify.buttons.css" http://cssminifier.com/raw > "${DIR}/../src/pnotify.buttons.min.css"
+java -jar "${DIR}/compiler.jar" --js="${DIR}/../src/pnotify.callbacks.js" > "${DIR}/../src/pnotify.callbacks.min.js"
+java -jar "${DIR}/compiler.jar" --js="${DIR}/../src/pnotify.confirm.js" > "${DIR}/../src/pnotify.confirm.min.js"
+java -jar "${DIR}/compiler.jar" --js="${DIR}/../src/pnotify.desktop.js" > "${DIR}/../src/pnotify.desktop.min.js"
+java -jar "${DIR}/compiler.jar" --js="${DIR}/../src/pnotify.history.js" > "${DIR}/../src/pnotify.history.min.js"
+curl --data-urlencode input@"${DIR}/../src/pnotify.history.css" http://cssminifier.com/raw > "${DIR}/../src/pnotify.history.min.css"
+java -jar "${DIR}/compiler.jar" --js="${DIR}/../src/pnotify.nonblock.js" > "${DIR}/../src/pnotify.nonblock.min.js"
+java -jar "${DIR}/compiler.jar" --js="${DIR}/../src/pnotify.reference.js" > "${DIR}/../src/pnotify.reference.min.js"
+java -jar "${DIR}/compiler.jar" --js="${DIR}/../src/pnotify.tooltip.js" > "${DIR}/../src/pnotify.tooltip.min.js"
+java -jar "${DIR}/compiler.jar" --js="${DIR}/../src/pnotify.mobile.js" > "${DIR}/../src/pnotify.mobile.min.js"
 
-curl --data-urlencode input@"${DIR}/../pnotify.picon.css" http://cssminifier.com/raw > "${DIR}/../pnotify.picon.min.css"
+curl --data-urlencode input@"${DIR}/../src/pnotify.picon.css" http://cssminifier.com/raw > "${DIR}/../src/pnotify.picon.min.css"
 
 echo Done.

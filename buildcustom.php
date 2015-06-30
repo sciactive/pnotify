@@ -14,16 +14,6 @@ if (!$files || $files === array('')) {
 	exit;
 }
 sort($files);
-$cache_file = 'build-cache/pnotify.custom.'.implode('-', $files).'.'.$min.$ext;
-
-if (file_exists($cache_file)) {
-	$content = file_get_contents($cache_file);
-	header("Content-Disposition: $type; filename=pnotify.custom.$min$ext");
-	header("Content-Length: ".strlen($content));
-	header("Content-Type: $mime");
-	echo $content;
-	exit;
-}
 
 $content = file_get_contents("pnotify.core.$min$ext");
 foreach ($files as $cur_file) {
@@ -43,5 +33,3 @@ header("Content-Disposition: $type; filename=pnotify.custom.$min$ext");
 header("Content-Length: ".strlen($content));
 header("Content-Type: $mime");
 echo $content;
-
-file_put_contents($cache_file, $content);

@@ -2,16 +2,26 @@
     "name": "pnotify",
     "description": "JavaScript notification plugin.",
     "main": [
-        "pnotify.core.js",
-        "pnotify.buttons.js",
-        "pnotify.callbacks.js",
-        "pnotify.confirm.js",
-        "pnotify.desktop.js",
-        "pnotify.history.js",
-        "pnotify.nonblock.js",
-        "pnotify.core.css",
-        "pnotify.buttons.css",
-        "pnotify.history.css"
+	    "src/pnotify.core.js",
+        "src/pnotify.core.min.js",
+        "src/pnotify.buttons.js",
+        "src/pnotify.buttons.min.js",
+        "src/pnotify.callbacks.js",
+        "src/pnotify.callbacks.min.js",
+        "src/pnotify.confirm.js",
+        "src/pnotify.confirm.min.js",
+        "src/pnotify.desktop.js",
+        "src/pnotify.desktop.min.js",
+        "src/pnotify.history.js",
+        "src/pnotify.history.min.js",
+        "src/pnotify.nonblock.js",
+        "src/pnotify.nonblock.min.js",
+        "src/pnotify.core.css",
+        "src/pnotify.core.min.css",
+        "src/pnotify.buttons.css",
+        "src/pnotify.buttons.min.css",
+        "src/pnotify.history.css",
+        "src/pnotify.history.min.css"
     ],
     "ignore": [
         "build-cache/",
@@ -23,7 +33,10 @@
         "README.md",
         "testing.html",
         "buildcustom.php",
-        "pnotify.tooltip.js",
-        "pnotify.mobile.js"
+        "package.json",
+        "src/pnotify.tooltip.js",
+        "src/pnotify.tooltip.min.js",
+        "src/pnotify.mobile.js",
+        "src/pnotify.mobile.min.js"
     ]
 }
