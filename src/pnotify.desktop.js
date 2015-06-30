@@ -45,6 +45,8 @@
 	PNotify.prototype.options.desktop = {
 		// Display the notification as a desktop notification.
 		desktop: false,
+		// If desktop notifications are not supported or allowed, fall back to a regular notice.
+		fallback: true,
 		// The URL of the icon to display. If false, no icon will show. If null, a default icon will show.
 		icon: null,
 		// Using a tag lets you update an existing notice, or keep from duplicating notices between tabs.
@@ -71,7 +73,7 @@
 				body: notice.options.text,
 				tag: this.tag
 			});
-			if (!("close" in notice.desktop)) {
+			if (!("close" in notice.desktop) && ("cancel" in notice.desktop)) {
 				notice.desktop.close = function(){
 					notice.desktop.cancel();
 				};
@@ -89,22 +91,27 @@
 			if (!options.desktop)
 				return;
 			permission = PNotify.desktop.checkPermission();
-			if (permission != 0)
+			if (permission !== 0) {
+				// Keep the notice from opening if fallback is false.
+				if (!options.fallback) {
+					notice.options.auto_display = false;
+				}
 				return;
+			}
 			this.genNotice(notice, options);
 		},
 		update: function(notice, options, oldOpts){
-			if (permission != 0 || !options.desktop)
+			if ((permission !== 0 && options.fallback) || !options.desktop)
 				return;
 			this.genNotice(notice, options);
 		},
 		beforeOpen: function(notice, options){
-			if (permission != 0 || !options.desktop)
+			if ((permission !== 0 && options.fallback) || !options.desktop)
 				return;
 			notice.elem.css({'left': '-10000px', 'display': 'none'});
 		},
 		afterOpen: function(notice, options){
-			if (permission != 0 || !options.desktop)
+			if ((permission !== 0 && options.fallback) || !options.desktop)
 				return;
 			notice.elem.css({'left': '-10000px', 'display': 'none'});
 			if ("show" in notice.desktop) {
@@ -112,15 +119,17 @@
 			}
 		},
 		beforeClose: function(notice, options){
-			if (permission != 0 || !options.desktop)
+			if ((permission !== 0 && options.fallback) || !options.desktop)
 				return;
 			notice.elem.css({'left': '-10000px', 'display': 'none'});
 		},
 		afterClose: function(notice, options){
-			if (permission != 0 || !options.desktop)
+			if ((permission !== 0 && options.fallback) || !options.desktop)
 				return;
 			notice.elem.css({'left': '-10000px', 'display': 'none'});
-			notice.desktop.close();
+			if ("close" in notice.desktop) {
+				notice.desktop.close();
+			}
 		}
 	};
 	PNotify.desktop = {
@@ -133,9 +142,9 @@
 		},
 		checkPermission: function(){
 			if (typeof Notification !== "undefined" && "permission" in Notification) {
-				return (Notification.permission == "granted" ? 0 : 1);
+				return (Notification.permission === "granted" ? 0 : 1);
 			} else if ("webkitNotifications" in window) {
-				return window.webkitNotifications.checkPermission();
+				return window.webkitNotifications.checkPermission() == 0 ? 0 : 1;
 			} else {
 				return 1;
 			}

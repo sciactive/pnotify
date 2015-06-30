@@ -1654,6 +1654,18 @@ height: 33px;
 						text: 'Now I\'m an info box!'
 					});
 				}, 4000);">Dynamic Desktop Notification</button>
+				<button class="btn btn-default source" onclick="PNotify.desktop.permission(); (new PNotify({
+					title: 'Desktop Notice',
+					text: 'If you\'ve given me permission, I\'ll appear as a desktop notification. If you haven\'t, I won\'t appear at all, because my fallback is turned off.',
+					desktop: {
+						desktop: true,
+						fallback: false
+					}
+				})).get().click(function(e){
+					if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target))
+						return;
+					alert('Hey! You clicked the desktop notification!');
+				});" title="Disabling fallback makes the notice not appear at all if it can't appear as a desktop notice.">No Fallback Desktop Notice</button>
 			</div>
 			<div class="panel-heading">
 				<h3 class="panel-title">Buttons Module <small>Provides a sticker and a closer button.</small></h3>
