@@ -71,8 +71,8 @@ license GPL/LGPL/MPL
 			text: false,
 			// Whether to escape the content of the text. (Not allow HTML.)
 			text_escape: false,
-			// What styling classes to use. (Can be either jqueryui or bootstrap.)
-			styling: "bootstrap3",
+			// What styling classes to use. (Can be either "brighttheme", "jqueryui", "bootstrap2", "bootstrap3", or "fontawesome".)
+			styling: "brighttheme",
 			// Additional classes to be added to the notice. (For custom styling.)
 			addclass: "",
 			// Class to be added to the notice for corner styling.
@@ -735,6 +735,18 @@ license GPL/LGPL/MPL
 			}
 		},
 		styling: {
+			brighttheme: {
+				// Bright Theme doesn't require any UI libraries.
+				container: "brighttheme",
+				notice: "brighttheme-notice",
+				notice_icon: "brighttheme-icon-notice",
+				info: "brighttheme-info",
+				info_icon: "brighttheme-icon-info",
+				success: "brighttheme-success",
+				success_icon: "brighttheme-icon-success",
+				error: "brighttheme-error",
+				error_icon: "brighttheme-icon-error"
+			},
 			jqueryui: {
 				container: "ui-widget ui-widget-content ui-corner-all",
 				notice: "ui-state-highlight",

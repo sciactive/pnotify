@@ -19,6 +19,8 @@ java -jar "${DIR}/compiler.jar" --js="${DIR}/../src/pnotify.reference.js" > "${D
 java -jar "${DIR}/compiler.jar" --js="${DIR}/../src/pnotify.tooltip.js" > "${DIR}/../src/pnotify.tooltip.min.js"
 java -jar "${DIR}/compiler.jar" --js="${DIR}/../src/pnotify.mobile.js" > "${DIR}/../src/pnotify.mobile.min.js"
 
+curl --data-urlencode input@"${DIR}/../src/pnotify.brighttheme.css" http://cssminifier.com/raw > "${DIR}/../src/pnotify.brighttheme.min.css"
+
 curl --data-urlencode input@"${DIR}/../src/pnotify.picon.css" http://cssminifier.com/raw > "${DIR}/../src/pnotify.picon.min.css"
 
 echo Done.

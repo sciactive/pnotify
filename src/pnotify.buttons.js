@@ -112,6 +112,11 @@
 				this.closer.css("visibility", "visible");
 		}
 	};
+	$.extend(PNotify.styling.brighttheme, {
+		closer: "brighttheme-icon-closer",
+		pin_up: "brighttheme-icon-sticker",
+		pin_down: "brighttheme-icon-sticker brighttheme-icon-stuck"
+	});
 	$.extend(PNotify.styling.jqueryui, {
 		closer: "ui-icon ui-icon-close",
 		pin_up: "ui-icon ui-icon-pin-w",

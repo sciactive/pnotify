@@ -23,9 +23,9 @@
 	<link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" media="all" rel="stylesheet" type="text/css" />
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
 	<!-- Bootstrap -->
-	<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" id="bootstrap-css" rel="stylesheet" type="text/css" />
+	<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" id="bootstrap-css" rel="stylesheet" type="text/css" />
 	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-	<script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 	<!-- Theme Switcher Widget -->
 	<script type="text/javascript" src="includes/themeswitcher/jquery.themeswitcher.min.js"></script>
 	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -41,6 +41,7 @@
 	<!-- PNotify -->
 	<script type="text/javascript" src="src/pnotify.core.js"></script>
 	<link href="src/pnotify.core.css" rel="stylesheet" type="text/css" />
+	<link href="src/pnotify.brighttheme.css" rel="stylesheet" type="text/css" />
 	<script type="text/javascript" src="src/pnotify.buttons.js"></script>
 	<link href="src/pnotify.buttons.css" rel="stylesheet" type="text/css" />
 	<script type="text/javascript" src="src/pnotify.confirm.js"></script>
@@ -153,6 +154,7 @@
 	<script type="text/javascript">
 		var permanotice, tooltip, _alert;
 		$(function(){
+			PNotify.prototype.options.styling = "bootstrap3";
 			new PNotify({
 				title: "PNotify",
 				text: "Welcome. Try hovering over me. You can click things behind me, because I'm non-blocking.",
@@ -837,6 +839,11 @@
 				</div>
 				<div class="modal-body">
 					<div class="page-header" style="margin-top: 0;">
+						<h3 style="margin-top: 0;">Optional Styling</h3>
+					</div>
+					<div><label><input type="checkbox" data-type="module" name="brighttheme" checked /> Bright Theme</label></div>
+					<div style="margin-bottom: 10px;"><small>Provides a stand-alone theme. You can uncheck this if you're using Bootstrap or jQuery UI.</small></div>
+					<div class="page-header">
 						<h3 style="margin-top: 0;">Modules</h3>
 					</div>
 					<div><label><input type="checkbox" data-type="module" name="desktop" checked /> Desktop</label></div>
@@ -866,19 +873,19 @@
 				<script type="text/javascript">
 					$(function(){
 						var changeFunction = function(){
-								var modules = [];
-								form.find("[data-type=module]:checked").each(function(){
-									modules.push($(this).attr("name"));
-								});
-								modules = modules.join("-");
-								var minify = !!form.find("[data-type=minify]:checked").length;
-								form.find("a").each(function(){
-									$(this).attr("href", $(this).attr("data-href").replace("{min}", minify ? "&min=true" : "").replace("{modules}", modules));
-								});
-							},
-							form = $("#download").on("click change", "input", changeFunction);
+							var modules = [];
+							form.find("[data-type=module]:checked").each(function(){
+								modules.push($(this).attr("name"));
+							});
+							modules = modules.join("-");
+							var minify = !!form.find("[data-type=minify]:checked").length;
+							form.find("a").each(function(){
+								$(this).attr("href", $(this).attr("data-href").replace("{min}", minify ? "&min=true" : "").replace("{modules}", modules));
+							});
+						};
+						var form = $("#download").on("click change", "input", changeFunction);
 						changeFunction();
-					})
+					});
 				</script>
 			</div>
 		</div>
@@ -894,9 +901,9 @@
 					<p>
 						PNotify downloads come with the following files:<br />
 						<br />
-						<code>pnotify.custom.js</code> &amp; <code>pnotify.custom.min.js</code> (Minified)
+						<code>pnotify.custom.js</code> or <code>pnotify.custom.min.js</code> (Minified)
 						<br />
-						<code>pnotify.custom.css</code> &amp; <code>pnotify.custom.min.css</code> (Minified)
+						<code>pnotify.custom.css</code> or <code>pnotify.custom.min.css</code> (Minified)
 					</p>
 					<p>
 						So here's how you'd include them on your page:
@@ -919,18 +926,27 @@ $(function(){
 });
 &lt;/script&gt;</pre>
 					<p>
-						If you are using Bootstrap version 2, include this
-						line somewhere before your first notice:
+						If you are not using any UI library, you can use the
+						included styling, called Bright Theme. It is the default.
+					</p>
+					<p>
+						If you are using Bootstrap version 2, include this line
+						somewhere before your first notice:
 					</p>
 					<pre class="prettyprint">PNotify.prototype.options.styling = "bootstrap2";</pre>
 					<p>
-						If you are using jQuery UI for all your styling,
-						include this line somewhere before your first notice:
+						If you are using Bootstrap version 3, include this line
+						somewhere before your first notice:
+					</p>
+					<pre class="prettyprint">PNotify.prototype.options.styling = "bootstrap3";</pre>
+					<p>
+						If you are using jQuery UI, include this line somewhere
+						before your first notice:
 					</p>
 					<pre class="prettyprint">PNotify.prototype.options.styling = "jqueryui";</pre>
 					<p>
-						If you are using Bootstrap 3 with Font Awesome for all your styling,
-						include this line somewhere before your first notice:
+						If you are using Bootstrap 3 with Font Awesome, include
+						this line somewhere before your first notice:
 					</p>
 					<pre class="prettyprint">PNotify.prototype.options.styling = "fontawesome";</pre>
 					<p>
@@ -1113,12 +1129,21 @@ $(function(){
 				<h3 class="panel-title">Choose the Styling</h3>
 			</div>
 			<div class="panel-body">
-				PNotify supports two styling methods and three popular icon sets.
+				PNotify supports three styling methods and three popular icon sets.
 				<div class="btn-toolbar">
-					<div class="btn-group" data-toggle="buttons-radio">
-						<button class="btn btn-default active" id="style-bootstrap3">Bootstrap</button>
-						<button class="btn btn-default" id="style-jqueryui">jQuery UI</button>
-						<button class="btn btn-default" id="style-fontawesome">Font Awesome Icons</button>
+					<div class="btn-group" data-toggle="buttons">
+						<label class="btn btn-default active">
+							<input type="radio" name="styling" id="style-bootstrap3" autocomplete="off" checked> Bootstrap
+						</label>
+						<label class="btn btn-default">
+							<input type="radio" name="styling" id="style-jqueryui" autocomplete="off"> jQuery UI
+						</label>
+						<label class="btn btn-default">
+							<input type="radio" name="styling" id="style-brighttheme" autocomplete="off"> Bright Theme
+						</label>
+						<label class="btn btn-default">
+							<input type="radio" name="styling" id="style-fontawesome" autocomplete="off"> Font Awesome Icons
+						</label>
 					</div>
 					<button class="btn btn-default source" onclick="new PNotify({
 						title: 'Bootstrap Notice',
@@ -1167,6 +1192,29 @@ $(function(){
 						styling: 'jqueryui'
 					});
 					new PNotify({
+						title: 'Bright Theme Notice',
+						text: 'Look at my beautiful styling! ^_^',
+						styling: 'brighttheme'
+					});
+					new PNotify({
+						title: 'Bright Theme Info',
+						text: 'Look at my beautiful styling! ^_^',
+						type: 'info',
+						styling: 'brighttheme'
+					});
+					new PNotify({
+						title: 'Bright Theme Success',
+						text: 'Look at my beautiful styling! ^_^',
+						type: 'success',
+						styling: 'brighttheme'
+					});
+					new PNotify({
+						title: 'Bright Theme Error',
+						text: 'Look at my beautiful styling! ^_^',
+						type: 'error',
+						styling: 'brighttheme'
+					});
+					new PNotify({
 						title: 'Font Awesome Notice',
 						text: 'Look at my beautiful styling! ^_^',
 						styling: 'fontawesome'
@@ -1193,32 +1241,45 @@ $(function(){
 			</div>
 			<script type="text/javascript">
 				$(function(){
-					$("#style-bootstrap3").click(function(){
-						PNotify.prototype.options.styling = "bootstrap3";
-						$("#switcher-bootstrap").show();
-						$("#switcher-jqueryui").hide();
-						new PNotify({
-							title: "Styling Change",
-							text: "From now on, notices will be styled with Twitter Bootstrap."
-						});
-					});
-					$("#style-jqueryui").click(function(){
-						PNotify.prototype.options.styling = "jqueryui";
-						$("#switcher-jqueryui").show();
-						$("#switcher-bootstrap").hide();
-						new PNotify({
-							title: "Styling Change",
-							text: "From now on, notices will be styled with jQuery UI."
-						});
-					});
-					$("#style-fontawesome").click(function(){
-						PNotify.prototype.options.styling = "fontawesome";
-						$("#switcher-jqueryui").hide();
-						$("#switcher-bootstrap").show();
-						new PNotify({
-							title: "Styling Change",
-							text: "From now on, notices will be styled with Bootstrap w/ Font Awesome Icons."
-						});
+					$("input[name=styling]").change(function(){
+						switch ($("input[name=styling]:checked").attr("id")) {
+							case "style-brighttheme":
+								PNotify.prototype.options.styling = "brighttheme";
+								$("#switcher-bootstrap").hide();
+								$("#switcher-jqueryui").hide();
+								new PNotify({
+									title: "Styling Change",
+									text: "From now on, notices will be styled with Bright Theme, the stand alone theme."
+								});
+								break;
+							case "style-bootstrap3":
+								PNotify.prototype.options.styling = "bootstrap3";
+								$("#switcher-bootstrap").show();
+								$("#switcher-jqueryui").hide();
+								new PNotify({
+									title: "Styling Change",
+									text: "From now on, notices will be styled with Twitter Bootstrap."
+								});
+								break;
+							case "style-jqueryui":
+								PNotify.prototype.options.styling = "jqueryui";
+								$("#switcher-jqueryui").show();
+								$("#switcher-bootstrap").hide();
+								new PNotify({
+									title: "Styling Change",
+									text: "From now on, notices will be styled with jQuery UI."
+								});
+								break;
+							case "style-fontawesome":
+								PNotify.prototype.options.styling = "fontawesome";
+								$("#switcher-jqueryui").hide();
+								$("#switcher-bootstrap").show();
+								new PNotify({
+									title: "Styling Change",
+									text: "From now on, notices will be styled with Bootstrap w/ Font Awesome Icons."
+								});
+								break;
+						}
 					});
 				});
 			</script>

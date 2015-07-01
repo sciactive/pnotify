@@ -27,7 +27,7 @@ padding: .8em;
 height: 100%;
 margin: 0;
 }
-.ui-pnotify-sharp {
+.ui-pnotify-container.ui-pnotify-sharp {
 -webkit-border-radius: 0;
 -moz-border-radius: 0;
 border-radius: 0;

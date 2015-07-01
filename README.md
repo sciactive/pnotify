@@ -41,19 +41,27 @@ Now you can use PNotify like this:
 </script>
 ```
 
+If you are not using any UI library, you can use the included styling, called Bright Theme. It is the default.
+
 If you are using Bootstrap version 2, include this line somewhere before your first notice:
 
 ```js
 PNotify.prototype.options.styling = "bootstrap2";
 ```
 
-If you are using jQuery UI for **all** your styling, include this line somewhere before your first notice:
+If you are using Bootstrap version 3, include this line somewhere before your first notice:
+
+```js
+PNotify.prototype.options.styling = "bootstrap3";
+```
+
+If you are using jQuery UI, include this line somewhere before your first notice:
 
 ```js
 PNotify.prototype.options.styling = "jqueryui";
 ```
 
-If you are using Bootstrap 3 with Font Awesome for **all** your styling, include this line somewhere before your first notice:
+If you are using Bootstrap 3 with Font Awesome, include this line somewhere before your first notice:
 
 ```js
 PNotify.prototype.options.styling = "fontawesome";
@@ -116,7 +124,7 @@ Configuration Defaults / Options
 * `title_escape: false` - Whether to escape the content of the title. (Not allow HTML.)
 * `text: false` - The notice's text.
 * `text_escape: false` - Whether to escape the content of the text. (Not allow HTML.)
-* `styling: "bootstrap3"` - What styling classes to use. (Can be either jqueryui, bootstrap2, bootstrap3, fontawesome, or a custom style object. See the source for the properties in a style object.)
+* `styling: "brighttheme"` - What styling classes to use. (Can be either "brighttheme", "jqueryui", "bootstrap2", "bootstrap3", "fontawesome", or a custom style object. See the source in the end of pnotify.core.js for the properties in a style object.)
 * `addclass: ""` - Additional classes to be added to the notice. (For custom styling.)
 * `cornerclass: ""` - Class to be added to the notice for corner styling.
 * `auto_display: true` - Display the notice when it is created. Turn this off to add notifications to the history without displaying them.
