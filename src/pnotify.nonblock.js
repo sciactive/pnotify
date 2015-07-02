@@ -61,6 +61,9 @@
 		notice.elem.css("display", "block");
 		var jelement_below = $(element_below);
 		var cursor_style = jelement_below.css("cursor");
+		if (cursor_style === "auto" && element_below.tagName === "A") {
+			cursor_style = "pointer";
+		}
 		notice.elem.css("cursor", cursor_style !== "auto" ? cursor_style : "default");
 		// If the element changed, call mouseenter, mouseleave, etc.
 		if (!nonblock_last_elem || nonblock_last_elem.get(0) != element_below) {
