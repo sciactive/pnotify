@@ -163,6 +163,7 @@ Buttons Module
 * `closer_hover: true` - Only show the closer button on hover.
 * `sticker: true` - Provide a button for the user to manually stick the notice.
 * `sticker_hover: true` - Only show the sticker button on hover.
+* `show_on_nonblock: false` - Show the buttons even when the nonblock module is in use.
 * `labels: {close: "Close", stick: "Stick"}` - Lets you change the displayed text, facilitating internationalization.
 
 `}`

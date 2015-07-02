@@ -5,14 +5,14 @@
 	<title>PNotify</title>
 	<meta name="HandheldFriendly" content="true" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<meta name="description" content="JavaScript (jQuery) notification plugin." />
+	<meta name="description" content="JavaScript notification plugin." />
 	<meta property="og:title" content="PNotify" />
 	<meta property="og:type" content="website" />
 	<meta property="og:url" content="http://sciactive.com/pnotify/" />
 	<meta property="og:image" content="http://sciactive.com/pnotify/includes/github-icon.png" />
 	<meta property="og:site_name" content="PNotify" />
 	<meta property="fb:admins" content="508999194" />
-	<meta property="og:description" content="JavaScript (jQuery) notification plugin." />
+	<meta property="og:description" content="JavaScript notification plugin." />
 	<!-- Dev Notice -->
 	<link href="devnote.css" rel="stylesheet" type="text/css" />
 	<!-- Page Style -->
@@ -847,7 +847,7 @@
 						<h3 style="margin-top: 0;">Modules</h3>
 					</div>
 					<div><label><input type="checkbox" data-type="module" name="desktop" checked /> Desktop</label></div>
-					<div style="margin-bottom: 10px;"><small>Provides notifications that display even when the web page is hidden.</small></div>
+					<div style="margin-bottom: 10px;"><small>Provides notifications that display even when the web page is not visible.</small></div>
 					<div><label><input type="checkbox" data-type="module" name="buttons" checked /> Buttons</label></div>
 					<div style="margin-bottom: 10px;"><small>Provides a sticker and a closer button.</small></div>
 					<div><label><input type="checkbox" data-type="module" name="nonblock" /> NonBlock</label></div>
@@ -1799,6 +1799,17 @@ height: 33px;
 						nonblock_opacity: .2
 					}
 				});">Non-Blocking Notice</button>
+				<button class="btn btn-default source" onclick="new PNotify({
+					title: 'Non-Blocking Notice',
+					text: 'I\'m a non-blocking notice with buttons.',
+					nonblock: {
+						nonblock: true,
+						nonblock_opacity: .2
+					},
+					buttons: {
+						show_on_nonblock: true
+					}
+				});">Non-Blocking Notice with Buttons</button>
 			</div>
 			<div class="panel-heading">
 				<h3 class="panel-title">Confirm Module <small>Provides confirmation dialogs and prompts.</small></h3>
@@ -2596,7 +2607,7 @@ new PNotify({
 		<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 		<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 	</div>
-	<p id="copyright">&copy; 2011-2012 SciActive.com. All Rights Reserved.</p>
+	<p id="copyright">&copy; 2011-2015 Hunter Perrin. All Rights Reserved.</p>
 	<script>
 		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

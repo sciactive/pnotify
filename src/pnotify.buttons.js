@@ -21,6 +21,8 @@
 		sticker: true,
 		// Only show the sticker button on hover.
 		sticker_hover: true,
+		// Show the buttons even when the nonblock module is in use.
+		show_on_nonblock: false,
 		// The various displayed text, helps facilitating internationalization.
 		labels: {
 			close: "Close",
@@ -40,28 +42,38 @@
 			notice.elem.on({
 				"mouseenter": function(e){
 					// Show the buttons.
-					if (that.myOptions.sticker && !(notice.options.nonblock && notice.options.nonblock.nonblock)) that.sticker.trigger("pnotify_icon").css("visibility", "visible");
-					if (that.myOptions.closer && !(notice.options.nonblock && notice.options.nonblock.nonblock)) that.closer.css("visibility", "visible");
+					if (that.myOptions.sticker && (!(notice.options.nonblock && notice.options.nonblock.nonblock) || that.myOptions.show_on_nonblock)) {
+						that.sticker.trigger("pnotify_icon").css("visibility", "visible");
+					}
+					if (that.myOptions.closer && (!(notice.options.nonblock && notice.options.nonblock.nonblock) || that.myOptions.show_on_nonblock)) {
+						that.closer.css("visibility", "visible");
+					}
 				},
 				"mouseleave": function(e){
 					// Hide the buttons.
-					if (that.myOptions.sticker_hover)
+					if (that.myOptions.sticker_hover) {
 						that.sticker.css("visibility", "hidden");
-					if (that.myOptions.closer_hover)
+					}
+					if (that.myOptions.closer_hover) {
 						that.closer.css("visibility", "hidden");
+					}
 				}
 			});
 
 			// Provide a button to stick the notice.
 			this.sticker = $("<div />", {
 				"class": "ui-pnotify-sticker",
-				"css": {"cursor": "pointer", "visibility": options.sticker_hover ? "hidden" : "visible"},
+				"css": {
+					"cursor": "pointer",
+					"visibility": options.sticker_hover ? "hidden" : "visible"
+				},
 				"click": function(){
 					notice.options.hide = !notice.options.hide;
-					if (notice.options.hide)
+					if (notice.options.hide) {
 						notice.queueRemove();
-					else
+					} else {
 						notice.cancelRemove();
+					}
 					$(this).trigger("pnotify_icon");
 				}
 			})
@@ -70,8 +82,9 @@
 			})
 			.append($("<span />", {"class": notice.styles.pin_up, "title": options.labels.stick}))
 			.prependTo(notice.container);
-			if (!options.sticker || (notice.options.nonblock && notice.options.nonblock.nonblock))
+			if (!options.sticker || (notice.options.nonblock && notice.options.nonblock.nonblock && !options.show_on_nonblock)) {
 				this.sticker.css("display", "none");
+			}
 
 			// Provide a button to close the notice.
 			this.closer = $("<div />", {
@@ -85,31 +98,36 @@
 			})
 			.append($("<span />", {"class": notice.styles.closer, "title": options.labels.close}))
 			.prependTo(notice.container);
-			if (!options.closer || (notice.options.nonblock && notice.options.nonblock.nonblock))
+			if (!options.closer || (notice.options.nonblock && notice.options.nonblock.nonblock && !options.show_on_nonblock)) {
 				this.closer.css("display", "none");
+			}
 		},
 		update: function(notice, options){
 			this.myOptions = options;
 			// Update the sticker and closer buttons.
-			if (!options.closer || (notice.options.nonblock && notice.options.nonblock.nonblock))
+			if (!options.closer || (notice.options.nonblock && notice.options.nonblock.nonblock && !options.show_on_nonblock)) {
 				this.closer.css("display", "none");
-			else if (options.closer)
+			} else if (options.closer) {
 				this.closer.css("display", "block");
-			if (!options.sticker || (notice.options.nonblock && notice.options.nonblock.nonblock))
+			}
+			if (!options.sticker || (notice.options.nonblock && notice.options.nonblock.nonblock && !options.show_on_nonblock)) {
 				this.sticker.css("display", "none");
-			else if (options.sticker)
+			} else if (options.sticker) {
 				this.sticker.css("display", "block");
+			}
 			// Update the sticker icon.
 			this.sticker.trigger("pnotify_icon");
 			// Update the hover status of the buttons.
-			if (options.sticker_hover)
+			if (options.sticker_hover) {
 				this.sticker.css("visibility", "hidden");
-			else if (!(notice.options.nonblock && notice.options.nonblock.nonblock))
+			} else if (!(notice.options.nonblock && notice.options.nonblock.nonblock && !options.show_on_nonblock)) {
 				this.sticker.css("visibility", "visible");
-			if (options.closer_hover)
+			}
+			if (options.closer_hover) {
 				this.closer.css("visibility", "hidden");
-			else if (!(notice.options.nonblock && notice.options.nonblock.nonblock))
+			} else if (!(notice.options.nonblock && notice.options.nonblock.nonblock && !options.show_on_nonblock)) {
 				this.closer.css("visibility", "visible");
+			}
 		}
 	};
 	$.extend(PNotify.styling.brighttheme, {
