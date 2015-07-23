@@ -199,7 +199,7 @@
 				tooltip.get().mouseout(function(){
 					tooltip.remove();
 				});
-			}
+			};
 			// I put it in a function so I could show the source easily.
 			make_tooltip();
 
@@ -221,32 +221,33 @@
 						if (text.match(/^function (onclick|anonymous)[\n ]*\([^\)]*\)[\n ]*\{[\n\t ]*/))
 							text = text.replace(/^function (onclick|anonymous)[\n ]*\([^\)]*\)[\n ]*\{[\n\t ]*/, "").replace(/[\n\t ]*}[\n\t ]*$/, "");
 					}
-					var dialog = $("<div title=\""+button.text()+" - Source\" class=\"source-dialog\"></div>");
-					$("<pre class=\"prettyprint linenums\" />").text(js_beautify(text)).appendTo(dialog);
+					// Is there a better way to do this?
+					var dialog = $('<div class="modal fade"><div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><h4 class="modal-title">'+button.text()+' - Source</h4></div><div class="modal-body"></div><div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">Ok, got it.</button></div></div></div></div>');
+					$("<pre class=\"prettyprint\" />").text(js_beautify(text)).appendTo(dialog.find(".modal-body"));
+					// Check if the code is just calling a function. Include that function.
 					if (text.match(/^\w*\([^\)]*\);$/)) {
 						var f_name = text.replace(/\(.*/g, "");
 						text = window[f_name].toString();
-						$("<pre class=\"prettyprint\" />").text(js_beautify(text)).appendTo(dialog);
+						$("<pre class=\"prettyprint\" />").text(js_beautify(text)).appendTo(dialog.find(".modal-body"));
 					}
+					// Check if this is the tooltip button. Include the tooltip function.
 					if (text.match(/tooltip\.open\(\);/)) {
-						$("<pre class=\"prettyprint linenums\" />").text(js_beautify(make_tooltip.toString())).appendTo(dialog);
+						$("<pre class=\"prettyprint\" />").text(js_beautify(make_tooltip.toString())).appendTo(dialog.find(".modal-body"));
 					}
-					dialog.dialog({width: "auto", dialogClass: "sourcecode"});
-					// Make sure the dialog isn't more than 800x600.
-					// Can't just add max-height cause that means it can't be resized beyond.
-					if (dialog.width() > 800)
-						dialog.dialog("option", "width", 800).dialog("option", "position", "center");
-					if (dialog.height() > 600)
-						dialog.dialog("option", "height", 600).dialog("option", "position", "center");
-					prettyPrint();
+					dialog.on("shown.bs.modal", function(){
+						prettyPrint();
+					}).on("hidden.bs.modal", function(){
+						dialog.remove();
+					}).modal();
 				}).appendTo(contain);
 			});
 			prettyPrint(); // Format source in help.
 
-			if ($.fn.themeswitcher)
+			if ($.fn.themeswitcher) {
 				$('#switcher-jqueryui').themeswitcher({imgpath: "includes/themeswitcher/images/"});
-			else
+			} else {
 				$('#switcher-jqueryui').html("Couldn't load theme switcher widget.");
+			}
 			// Navbar scrollspy.
 			$('#navbar').scrollspy();
 		});
@@ -653,35 +654,33 @@
 				text: "Stacks are used to position notices and determine where new notices will go when they're created. Each notice that's placed into a stack will be positioned related to the other notices in that stack. There is no limit to the number of stacks, and no limit to the number of notices in each stack.",
 				type: "info",
 				icon: "fa fa-bars",
-				delay: 20000,
+				hide: false,
 				history: {
 					history: false
 				},
 				stack: false,
-				before_open: function(PNotify){
+				before_open: function(notice){
 					// Position this notice in the center of the screen.
-					PNotify.get().css({
-						"top": ($(window).height() / 2) - (PNotify.get().height() / 2),
-						"left": ($(window).width() / 2) - (PNotify.get().width() / 2)
+					notice.get().css({
+						"top": ($(window).height() / 2) - (notice.get().height() / 2),
+						"left": ($(window).width() / 2) - (notice.get().width() / 2)
 					});
 					// Make a modal screen overlay.
-					if (modal_overlay)
-						modal_overlay.fadeIn("fast");
-					else
+					if (modal_overlay) {
+						modal_overlay.appendTo("body").addClass("in");
+					} else {
 						modal_overlay = $("<div />", {
-							"class": "ui-widget-overlay",
-							"css": {
-								"display": "none",
-								"position": "fixed",
-								"top": "0",
-								"bottom": "0",
-								"right": "0",
-								"left": "0"
-							}
-						}).appendTo("body").fadeIn("fast");
+							"class": "modal-backdrop fade"
+						}).appendTo("body").click(function(){
+							notice.remove();
+						}).addClass("in");
+					}
 				},
 				before_close: function(){
-					modal_overlay.fadeOut("fast");
+					modal_overlay.removeClass("in");
+				},
+				after_close: function(){
+					modal_overlay.detach();
 				}
 			});
 		};

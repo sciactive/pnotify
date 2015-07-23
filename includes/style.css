@@ -71,15 +71,10 @@ Copyright (C) 2012 SciActive.com. All Rights Reserved.
 }
 
 /* Source View */
-.ui-dialog.sourcecode {
-	-webkit-box-shadow: 0px 6px 30px rgba(50, 50, 50, 0.75);
-	-moz-box-shadow: 0px 6px 30px rgba(50, 50, 50, 0.75);
-	-o-box-shadow: 0px 6px 30px rgba(50, 50, 50, 0.75);
-	box-shadow: 0px 6px 30px rgba(50, 50, 50, 0.75);
-}
 pre.prettyprint {
-	display: table;
-	min-width: 100%;
+	max-width: 100%;
+	overflow: auto;
+	white-space: pre;
 	-webkit-border-radius: 0;
 	-moz-border-radius: 0;
 	-o-border-radius: 0;
