@@ -659,7 +659,7 @@
                     history: false
                 },
                 stack: false,
-                before_open: function(notice){
+                after_open: function(notice){
                     // Position this notice in the center of the screen.
                     notice.get().css({
                         "top": ($(window).height() / 2) - (notice.get().height() / 2),
