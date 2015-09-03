@@ -11,7 +11,7 @@ See http://sciactive.com/pnotify/ for download, more information, and examples.
 Requirements
 ============
 
-jQuery (1.6 or higher) and either Bootstrap CSS, a jQuery UI Theme, or Web Notifications support.
+jQuery (1.6 or higher)
 
 Getting Started
 ===============
