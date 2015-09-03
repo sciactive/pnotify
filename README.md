@@ -2,11 +2,12 @@
 Introduction
 ============
 
-PNotify is a JavaScript notification plugin, developed by SciActive. Formerly known as Pines Notify. It is designed to provide an unparalleled level of flexibility, while still being very easy to implement and use.
+PNotify is a JavaScript notification plugin, developed by SciActive. PNotify can provide [desktop notifications](http://sciactive.com/pnotify/#web-notifications) based on the [web notifications draft](http://www.w3.org/TR/notifications/). If desktop notifications are not available or not allowed, PNotify will fall back to displaying the notice as a regular, in-browser notice.
 
-PNotify provides [desktop notifications](http://sciactive.com/pnotify/#web-notifications) based on the [web notifications draft](http://www.w3.org/TR/notifications/). If desktop notifications are not available or not allowed, PNotify will fall back to displaying the notice as a regular, in-browser notice.
+Demos
+=====
 
-See http://sciactive.com/pnotify/ for download, more information, and examples.
+http://sciactive.com/pnotify/
 
 Requirements
 ============
