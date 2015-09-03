@@ -32,12 +32,12 @@ Now you can use PNotify like this:
 
 ```html
 <script type="text/javascript">
-	$(function(){
-		new PNotify({
-			title: 'Regular Notice',
-			text: 'Check me out! I\'m a notice.'
-		});
-	});
+    $(function(){
+        new PNotify({
+            title: 'Regular Notice',
+            text: 'Check me out! I\'m a notice.'
+        });
+    });
 </script>
 ```
 
@@ -231,17 +231,17 @@ When they detect AMD/RequireJS, PNotify core defines the named module "pnotify",
 
 ```js
 requirejs(['pnotify', 'pnotify.nonblock', 'pnotify.desktop'], function(PNotify){
-	PNotify.desktop.permission();
-	new PNotify({
-		title: 'Desktop Notice',
-		text: 'If you\'ve given me permission, I\'ll appear as a desktop notification. If you haven\'t, I\'ll still appear as a regular PNotify notice.',
-		desktop: {
-			desktop: true
-		},
-		nonblock: {
-			nonblock: true
-		}
-	});
+    PNotify.desktop.permission();
+    new PNotify({
+        title: 'Desktop Notice',
+        text: 'If you\'ve given me permission, I\'ll appear as a desktop notification. If you haven\'t, I\'ll still appear as a regular PNotify notice.',
+        desktop: {
+            desktop: true
+        },
+        nonblock: {
+            nonblock: true
+        }
+    });
 });
 ```
 

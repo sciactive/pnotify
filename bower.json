@@ -2,7 +2,7 @@
     "name": "pnotify",
     "description": "JavaScript notification plugin.",
     "main": [
-	    "src/pnotify.core.js",
+        "src/pnotify.core.js",
         "src/pnotify.core.min.js",
         "src/pnotify.buttons.js",
         "src/pnotify.buttons.min.js",
