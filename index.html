@@ -694,7 +694,7 @@
     <style type="text/css">
         .pform_custom div.pf-element .pf-label, .pform_custom div.pf-element .pf-note {
             width: 130px; /* Width of labels. */
-            text-align: right;
+            font-weight: normal;
         }
         .pform_custom div.pf-element .pf-group {
             margin-left: 130px; /* Same as width of labels. */
@@ -1458,19 +1458,19 @@ $(function(){
                 <div id="form_notice" style="display: none;">
                     <form class="pf-form pform_custom" action="" method="post">
                         <div class="pf-element pf-heading">
-                            <h3>Login to Continue</h3>
+                            <h3 style="margin-top: 0;">Login to Continue</h3>
                             <p>Just an example.</p>
                         </div>
                         <div class="pf-element">
                             <label>
                                 <span class="pf-label">Username</span>
-                                <input class="pf-field" type="text" name="username" />
+                                <input class="pf-field form-control" type="text" name="username" />
                             </label>
                         </div>
                         <div class="pf-element">
                             <label>
                                 <span class="pf-label">Password</span>
-                                <input class="pf-field" type="password" name="password" />
+                                <input class="pf-field form-control" type="password" name="password" />
                             </label>
                         </div>
                         <div class="pf-element">
