@@ -86,6 +86,7 @@
             }
             for (var i in options.buttons) {
                 btn = options.buttons[i];
+				if(typeof btn === "function") continue;
                 if (already)
                     this.container.append(' ');
                 else
