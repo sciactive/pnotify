@@ -13,45 +13,84 @@
     <meta property="og:site_name" content="PNotify" />
     <meta property="fb:admins" content="508999194" />
     <meta property="og:description" content="JavaScript notification plugin." />
+
     <!-- Dev Notice -->
     <link href="devnote.css" rel="stylesheet" type="text/css" />
+
     <!-- Page Style -->
     <link href="includes/style.css" rel="stylesheet" type="text/css" />
+
+    <!-- Animate.css -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.4.0/animate.min.css" rel="stylesheet" type="text/css" />
+
     <!-- jQuery -->
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+
     <!-- jQuery UI -->
     <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" media="all" rel="stylesheet" type="text/css" />
-    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+
     <!-- Bootstrap -->
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" id="bootstrap-css" rel="stylesheet" type="text/css" />
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
     <!-- Theme Switcher Widget -->
     <script type="text/javascript" src="includes/themeswitcher/jquery.themeswitcher.min.js"></script>
+
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
-    <script src="https://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <!-- Oxygen Icons -->
-    <link href="oxygen/icons.css" rel="stylesheet" type="text/css" />
+
     <!-- JavaScript Source Formatting -->
     <link href="includes/google-code-prettify/prettify.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="includes/google-code-prettify/prettify.js"></script>
     <script type="text/javascript" src="includes/beautify.js"></script>
+
     <!-- PNotify -->
     <script type="text/javascript" src="src/pnotify.core.js"></script>
     <link href="src/pnotify.core.css" rel="stylesheet" type="text/css" />
     <link href="src/pnotify.brighttheme.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="src/pnotify.animate.js"></script>
     <script type="text/javascript" src="src/pnotify.buttons.js"></script>
     <link href="src/pnotify.buttons.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="src/pnotify.confirm.js"></script>
     <script type="text/javascript" src="src/pnotify.nonblock.js"></script>
+    <script type="text/javascript" src="src/pnotify.mobile.js"></script>
+    <link href="src/pnotify.mobile.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="src/pnotify.desktop.js"></script>
     <script type="text/javascript" src="src/pnotify.history.js"></script>
     <link href="src/pnotify.history.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="src/pnotify.callbacks.js"></script>
     <script type="text/javascript" src="src/pnotify.reference.js"></script>
-    <link href="src/pnotify.picon.css" rel="stylesheet" type="text/css" />
+
+    <!-- PForm (For the form notice.) -->
+    <link href="//sciactive.com/pform/css/pform.css" media="all" rel="stylesheet" type="text/css" />
+    <link href="//sciactive.com/pform/css/pform-bootstrap.css" media="all" rel="stylesheet" type="text/css" />
+    <!--[if lt IE 8]>
+    <link href="//sciactive.com/pform/css/pform-ie-lt-8.css" media="all" rel="stylesheet" type="text/css" />
+    <![endif]-->
+    <style type="text/css">
+        .pform_custom div.pf-element .pf-label, .pform_custom div.pf-element .pf-note {
+            width: 130px; /* Width of labels. */
+            font-weight: normal;
+        }
+        .pform_custom div.pf-element .pf-group {
+            margin-left: 130px; /* Same as width of labels. */
+        }
+        .pform_custom div.pf-buttons {
+            padding-left: 115px; /* Width of labels + margin to inputs - button spacing. */
+        }
+    </style>
+    <!--[if lt IE 7]>
+    <style type="text/css">
+        .pform_custom div.pf-buttons {
+            width: 225px; /* Custom form width - custom button div left padding - 20px (for IE's default padding.) */
+        }
+    </style>
+    <![endif]-->
+
+    <!-- Custom Styling -->
     <style type="text/css">
         /* Not PNotify specific, just make this page a little more presentable. */
         #switcher-container {
@@ -109,10 +148,12 @@
         .ui-pnotify.custom .ui-pnotify-icon {
             float: left;
         }
-        .ui-pnotify.custom .picon {
+        .ui-pnotify.custom .fa {
             margin: 3px;
             width: 33px;
             height: 33px;
+            font-size: 33px;
+            color: #FF0;
         }
 
         /* Alternate stack initial positioning. This one is done through code,
@@ -151,13 +192,20 @@
             left: auto;
         }
     </style>
+
+    <!-- Demo Code -->
     <script type="text/javascript">
         var permanotice, tooltip, _alert;
         $(function(){
             PNotify.prototype.options.styling = "bootstrap3";
+
+            // ---
+            // Notice that opens when the page opens.
+            // ---
             new PNotify({
                 title: "PNotify",
                 text: "Welcome. Try hovering over me. You can click things behind me, because I'm non-blocking.",
+                delay: 12000,
                 nonblock: {
                     nonblock: true
                 },
@@ -166,16 +214,18 @@
                     //PNotify.options.text;
 
                     // You can change the notice's options after the timer like this:
-                    PNotify.update({
-                        title: PNotify.options.title+" - Enjoy your Stay",
-                        before_close: null
-                    });
-                    PNotify.queueRemove();
-                    return false;
+                    //PNotify.update({
+                    //    title: PNotify.options.title+" - Enjoy your Stay",
+                    //    before_close: null
+                    //});
+                    //PNotify.queueRemove();
+                    //return false;
                 }
             });
 
-            // This notice is used as a tooltip.
+            // ---
+            // This notice is the tooltip demo.
+            // ---
             var make_tooltip = function(){
                 tooltip = new PNotify({
                     title: "Tooltip",
@@ -190,7 +240,7 @@
                     },
                     animate_speed: 100,
                     opacity: .9,
-                    icon: "ui-icon ui-icon-comment",
+                    icon: "fa fa-commenting",
                     // Setting stack to false causes PNotify to ignore this notice when positioning.
                     stack: false,
                     auto_display: false
@@ -203,14 +253,17 @@
             // I put it in a function so I could show the source easily.
             make_tooltip();
 
-            // This creates all those source buttons.
-            $(".source").each(function(){
+            // ---
+            // This creates all those source code view buttons.
+            // ---
+            $("body").on("mouseenter click", ".source", function(){
                 var button = $(this);
+                button.addClass("dropdown-toggle").attr("data-toggle", "dropdown");
                 // Wrap the button in a container.
                 var contain = $('<div class="btn-group" />');
                 contain = button.wrap(contain).parent();
                 // Add a source button.
-                $('<button class="btn btn-default" title="Show source code.">{}</button>').click(function(){
+                $('<ul class="dropdown-menu"><li><a href="javascript:void(0)">See the source</a></li></ul>').on("click", "a", function(){
                     $(this).blur();
                     var text = button.attr("onclick");
                     if (!text && button.attr("onmouseover"))
@@ -240,9 +293,13 @@
                         dialog.remove();
                     }).modal();
                 }).appendTo(contain);
+                button.removeClass("source");
             });
             prettyPrint(); // Format source in help.
 
+            // ---
+            // jQuery UI Theme Switcher widget.
+            // ---
             if ($.fn.themeswitcher) {
                 $('#switcher-jqueryui').themeswitcher({imgpath: "includes/themeswitcher/images/"});
             } else {
@@ -323,7 +380,7 @@
         function dyn_notice() {
             var percent = 0;
             var notice = new PNotify({
-                title: "Please Wait",
+                text: "Please Wait",
                 type: 'info',
                 icon: 'fa fa-spinner fa-spin',
                 hide: false,
@@ -354,7 +411,7 @@
                             closer: true,
                             sticker: true
                         };
-                        options.icon = 'picon picon-task-complete';
+                        options.icon = 'fa fa-check';
                         options.opacity = 1;
                         options.shadow = true;
                         options.width = PNotify.prototype.options.width;
@@ -362,35 +419,6 @@
                     notice.update(options);
                 }, 120);
             }, 2000);
-        }
-
-        function timed_notices(n) {
-            var start_time = new Date().getTime(),
-                end_time;
-            var options = {
-                title: "Notice Benchmark",
-                text: "Testing notice speed.",
-                animation: 'none',
-                delay: 0,
-                history: {
-                    history: false
-                },
-            };
-            for (var i = 0; i < n; i++) {
-                if (i + 1 == n) {
-                    options.after_close = function(PNotify){
-                        // Remove this callback.
-                        PNotify.update({
-                            after_close: null
-                        });
-                        end_time = new Date().getTime();
-                        alert("Testing complete:\n\nTotal Notices: "+n+
-                            "\nTotal Time: "+(end_time - start_time)+"ms ("+((end_time - start_time) / 1000)+"s)"+
-                            "\nAverage Time: "+((end_time - start_time) / n)+"ms ("+((end_time - start_time) / n / 1000)+"s)")
-                    };
-                }
-                new PNotify(options);
-            }
         }
 
         /*********** Custom Stacks ***********
@@ -685,31 +713,6 @@
             });
         };
     </script>
-    <!-- PForm (For the form notice.) -->
-    <link href="includes/pform.css" media="all" rel="stylesheet" type="text/css" />
-    <link href="includes/pform-bootstrap.css" media="all" rel="stylesheet" type="text/css" />
-    <!--[if lt IE 8]>
-    <link href="includes/pform-ie-lt-8.css" media="all" rel="stylesheet" type="text/css" />
-    <![endif]-->
-    <style type="text/css">
-        .pform_custom div.pf-element .pf-label, .pform_custom div.pf-element .pf-note {
-            width: 130px; /* Width of labels. */
-            font-weight: normal;
-        }
-        .pform_custom div.pf-element .pf-group {
-            margin-left: 130px; /* Same as width of labels. */
-        }
-        .pform_custom div.pf-buttons {
-            padding-left: 115px; /* Width of labels + margin to inputs - button spacing. */
-        }
-    </style>
-    <!--[if lt IE 7]>
-    <style type="text/css">
-        .pform_custom div.pf-buttons {
-            width: 225px; /* Custom form width - custom button div left padding - 20px (for IE's default padding.) */
-        }
-    </style>
-    <![endif]-->
 </head>
 <body id="page" data-spy="scroll" data-target=".navbar">
     <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -760,27 +763,26 @@
                     <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu pull-right">
-                    <li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">Normal</a></li>
+                    <li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">Normal</a></li>
                     <li class="divider"></li>
-                    <li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.1/cerulean/bootstrap.min.css">Cerulean</a></li>
-                    <li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.1/cosmo/bootstrap.min.css">Cosmo</a></li>
-                    <li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.1/cyborg/bootstrap.min.css">Cyborg</a></li>
-                    <li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.1/darkly/bootstrap.min.css">Darkly</a></li>
-                    <li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.1/flatly/bootstrap.min.css">Flatly</a></li>
-                    <li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.1/journal/bootstrap.min.css">Journal</a></li>
-                    <li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.1/lumen/bootstrap.min.css">Lumen</a></li>
-                    <li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.1/paper/bootstrap.min.css">Paper</a></li>
-                    <li><a href="javascript:void(0);" data-theme="includes/bootstrap-pinkiepie.css">Pinkie Pie</a></li>
-                    <li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.1/readable/bootstrap.min.css">Readable</a></li>
-                    <li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.1/sandstone/bootstrap.min.css">Sandstone</a></li>
-                    <li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.1/simplex/bootstrap.min.css">Simplex</a></li>
-                    <li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.1/slate/bootstrap.min.css">Slate</a></li>
-                    <li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.1/spacelab/bootstrap.min.css">Spacelab</a></li>
-                    <li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.1/superhero/bootstrap.min.css">Superhero</a></li>
-                    <li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.1/united/bootstrap.min.css">United</a></li>
-                    <li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.1/yeti/bootstrap.min.css">Yeti</a></li>
+                    <li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.5/cerulean/bootstrap.min.css">Cerulean</a></li>
+                    <li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.5/cosmo/bootstrap.min.css">Cosmo</a></li>
+                    <li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.5/cyborg/bootstrap.min.css">Cyborg</a></li>
+                    <li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.5/darkly/bootstrap.min.css">Darkly</a></li>
+                    <li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.5/flatly/bootstrap.min.css">Flatly</a></li>
+                    <li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.5/journal/bootstrap.min.css">Journal</a></li>
+                    <li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.5/lumen/bootstrap.min.css">Lumen</a></li>
+                    <li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.5/paper/bootstrap.min.css">Paper</a></li>
+                    <li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.5/readable/bootstrap.min.css">Readable</a></li>
+                    <li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.5/sandstone/bootstrap.min.css">Sandstone</a></li>
+                    <li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.5/simplex/bootstrap.min.css">Simplex</a></li>
+                    <li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.5/slate/bootstrap.min.css">Slate</a></li>
+                    <li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.5/spacelab/bootstrap.min.css">Spacelab</a></li>
+                    <li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.5/superhero/bootstrap.min.css">Superhero</a></li>
+                    <li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.5/united/bootstrap.min.css">United</a></li>
+                    <li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.5/yeti/bootstrap.min.css">Yeti</a></li>
                     <li class="divider"></li>
-                    <li><a href="https://bootswatch.com/" target="_blank">Most Themes by Bootswatch</a></li>
+                    <li><a href="http://bootswatch.com/" target="_blank">Themes by Bootswatch</a></li>
                 </ul>
                 <script type="text/javascript">
                     $(function(){
@@ -825,7 +827,7 @@
                 <a class="addthis_button_twitter_follow_native" tw:screen_name="SciActive"></a>
                 <a class="addthis_counter addthis_pill_style"></a>
             </div>
-            <script type="text/javascript" src="https://s7.addthis.com/js/250/addthis_widget.js#pubid=ra-4fa2edbb6da70bd1"></script>
+            <script type="text/javascript" src="//s7.addthis.com/js/250/addthis_widget.js#pubid=ra-4fa2edbb6da70bd1"></script>
             <!-- AddThis Button END -->
         </div>
     </section>
@@ -841,22 +843,26 @@
                         <h3 style="margin-top: 0;">Optional Styling</h3>
                     </div>
                     <div><label><input type="checkbox" data-type="module" name="brighttheme" checked /> Bright Theme</label></div>
-                    <div style="margin-bottom: 10px;"><small>Provides a stand-alone theme. You can uncheck this if you're using Bootstrap or jQuery UI.</small></div>
+                    <div style="margin-bottom: 10px;"><small>Stand-alone theme. You can uncheck this if you're using Bootstrap or jQuery UI.</small></div>
                     <div class="page-header">
                         <h3 style="margin-top: 0;">Modules</h3>
                     </div>
                     <div><label><input type="checkbox" data-type="module" name="desktop" checked /> Desktop</label></div>
-                    <div style="margin-bottom: 10px;"><small>Provides notifications that display even when the web page is not visible.</small></div>
+                    <div style="margin-bottom: 10px;"><small>Notifications that display even when the web page is not visible.</small></div>
                     <div><label><input type="checkbox" data-type="module" name="buttons" checked /> Buttons</label></div>
-                    <div style="margin-bottom: 10px;"><small>Provides a sticker and a closer button.</small></div>
+                    <div style="margin-bottom: 10px;"><small>Sticker and a closer buttons.</small></div>
                     <div><label><input type="checkbox" data-type="module" name="nonblock" /> NonBlock</label></div>
-                    <div style="margin-bottom: 10px;"><small>Lets the user click through to things underneath the notice.</small></div>
+                    <div style="margin-bottom: 10px;"><small>Click through to things underneath the notice.</small></div>
+                    <div><label><input type="checkbox" data-type="module" name="mobile" checked /> Mobile</label></div>
+                    <div style="margin-bottom: 10px;"><small>Notices on mobile phones and tablets.</small></div>
+                    <div><label><input type="checkbox" data-type="module" name="animate" /> Animate</label></div>
+                    <div style="margin-bottom: 10px;"><small>Fluid CSS animations using Animate.css. (Requires <a href="https://daneden.github.io/animate.css/" target="_blank">Animate.css</a>.)</small></div>
                     <div><label><input type="checkbox" data-type="module" name="confirm" /> Confirm</label></div>
-                    <div style="margin-bottom: 10px;"><small>Provides confirmation dialogs and prompts.</small></div>
+                    <div style="margin-bottom: 10px;"><small>Confirmation dialogs and prompts.</small></div>
                     <div><label><input type="checkbox" data-type="module" name="callbacks" /> Callbacks</label></div>
-                    <div style="margin-bottom: 10px;"><small>Provides a way to manipulate the notice at given events.</small></div>
+                    <div style="margin-bottom: 10px;"><small>Manipulate the notice during its lifecycle.</small></div>
                     <div><label><input type="checkbox" data-type="module" name="history" /> History</label></div>
-                    <div style="margin-bottom: 10px;"><small>Provides a way for the user to redisplay notices.</small></div>
+                    <div style="margin-bottom: 10px;"><small>Redisplay old notices.</small></div>
                     <div><label><input type="checkbox" data-type="module" name="reference" /> Reference</label></div>
                     <div><small>A reference for when you are coding your own module.</small></div>
                     <div class="page-header">
@@ -878,7 +884,7 @@
                             });
                             modules = modules.join("-");
                             var minify = !!form.find("[data-type=minify]:checked").length;
-                            form.find("a").each(function(){
+                            form.find("a[data-href]").each(function(){
                                 $(this).attr("href", $(this).attr("data-href").replace("{min}", minify ? "&min=true" : "").replace("{modules}", modules));
                             });
                         };
@@ -950,7 +956,7 @@ $(function(){
                     <pre class="prettyprint">PNotify.prototype.options.styling = "fontawesome";</pre>
                     <p>
                         All of the demos on this page provide source code with
-                        the "{}" button,
+                        the "See the source" dropdown,
                         <img style="margin-left: 3em;" src="includes/source-screen.png" alt="Source button screen shot." />
                     </p>
                 </div>
@@ -981,11 +987,7 @@ $(function(){
                         <h3><i class="glyphicon glyphicon-book" style="position: relative; top: 3px;"></i> About</h3>
                         <p>
                             PNotify is a JavaScript notification plugin, developed
-                            by <a href="https://sciactive.com">SciActive</a>.
-                            Formerly known as Pines Notify.
-                            It is designed to provide an unparalleled level of
-                            flexibility, while still being very easy to implement and
-                            use.
+                            by <a href="http://sciactive.com">SciActive</a>.
                             <br />
                             <br />
                             PNotify provides desktop notifications based on the
@@ -998,11 +1000,10 @@ $(function(){
                 </div>
                 <div class="col-sm-4">
                     <div class="alert-block">
-                        <h3><i class="glyphicon glyphicon-list-alt" style="position: relative; top: 3px;"></i> Cross-Browser</h3>
+                        <h3><i class="glyphicon glyphicon-phone" style="position: relative; top: 3px;"></i> Mobile Ready</h3>
                         <p>
-                            PNotify works in all major browsers and provides
-                            a consistent interface. It is tested thoroughly for
-                            consistency.
+                            PNotify works on your phone and tablet. You can swipe
+                            notices away to dismiss them.
                         </p>
                     </div>
                 </div>
@@ -1012,8 +1013,8 @@ $(function(){
                     <div class="alert-block">
                         <h3><i class="glyphicon glyphicon-asterisk" style="position: relative; top: 3px;"></i> Unobtrusive</h3>
                         <p>
-                            PNotify can provide <strong>non-blocking</strong> notices.
-                            This allows the user to click elements behind the notice without
+                            PNotify can provide <strong>non-blocking</strong> notices
+                            that allow the user to click elements behind the notice without
                             even having to dismiss it.
                         </p>
                         <p>
@@ -1025,13 +1026,9 @@ $(function(){
                     <div class="alert-block">
                         <h3><i class="glyphicon glyphicon-picture" style="position: relative; top: 3px;"></i> Themeable</h3>
                         <p>
-                            PNotify uses either Bootstrap or jQuery UI for styling, which
-                            means it is fully and easily themeable. Try out some of the
+                            PNotify can use Bootstrap or jQuery UI themes. Try out some of the
                             readymade themes using the selector in the top right corner
                             of this page.
-                        </p>
-                        <p>
-                            <a href="https://jqueryui.com/themeroller/">jQuery ThemeRoller Ready</a>
                         </p>
                     </div>
                 </div>
@@ -1076,7 +1073,8 @@ $(function(){
                     <ul>
                         <li>Rich graphical features and effects.
                             <ul>
-                                <li>jQuery UI, Bootstrap, PIcon, and any other CSS based icons.</li>
+                                <li>Bootstrap, Font Awesome, jQuery UI, and any other CSS based icons.</li>
+                                <li>Mobile styling and swipe away support.</li>
                                 <li>Timed hiding with visual effects.</li>
                                 <li>Standard and custom effects.</li>
                                 <li>Add custom classes for individual notice styling.</li>
@@ -1135,13 +1133,13 @@ $(function(){
                             <input type="radio" name="styling" id="style-bootstrap3" autocomplete="off" checked> Bootstrap
                         </label>
                         <label class="btn btn-default">
-                            <input type="radio" name="styling" id="style-jqueryui" autocomplete="off"> jQuery UI
-                        </label>
-                        <label class="btn btn-default">
                             <input type="radio" name="styling" id="style-brighttheme" autocomplete="off"> Bright Theme
                         </label>
                         <label class="btn btn-default">
                             <input type="radio" name="styling" id="style-fontawesome" autocomplete="off"> Font Awesome Icons
+                        </label>
+                        <label class="btn btn-default">
+                            <input type="radio" name="styling" id="style-jqueryui" autocomplete="off"> jQuery UI
                         </label>
                     </div>
                     <button class="btn btn-default source" onclick="new PNotify({
@@ -1166,29 +1164,6 @@ $(function(){
                         text: 'Look at my beautiful styling! ^_^',
                         type: 'error',
                         styling: 'bootstrap3'
-                    });
-                    new PNotify({
-                        title: 'jQuery UI Notice',
-                        text: 'Look at my beautiful styling! ^_^',
-                        styling: 'jqueryui'
-                    });
-                    new PNotify({
-                        title: 'jQuery UI Info',
-                        text: 'Look at my beautiful styling! ^_^',
-                        type: 'info',
-                        styling: 'jqueryui'
-                    });
-                    new PNotify({
-                        title: 'jQuery UI Success',
-                        text: 'Look at my beautiful styling! ^_^',
-                        type: 'success',
-                        styling: 'jqueryui'
-                    });
-                    new PNotify({
-                        title: 'jQuery UI Error',
-                        text: 'Look at my beautiful styling! ^_^',
-                        type: 'error',
-                        styling: 'jqueryui'
                     });
                     new PNotify({
                         title: 'Bright Theme Notice',
@@ -1235,12 +1210,36 @@ $(function(){
                         text: 'Look at my beautiful styling! ^_^',
                         type: 'error',
                         styling: 'fontawesome'
+                    });
+                    new PNotify({
+                        title: 'jQuery UI Notice',
+                        text: 'Look at my beautiful styling! ^_^',
+                        styling: 'jqueryui'
+                    });
+                    new PNotify({
+                        title: 'jQuery UI Info',
+                        text: 'Look at my beautiful styling! ^_^',
+                        type: 'info',
+                        styling: 'jqueryui'
+                    });
+                    new PNotify({
+                        title: 'jQuery UI Success',
+                        text: 'Look at my beautiful styling! ^_^',
+                        type: 'success',
+                        styling: 'jqueryui'
+                    });
+                    new PNotify({
+                        title: 'jQuery UI Error',
+                        text: 'Look at my beautiful styling! ^_^',
+                        type: 'error',
+                        styling: 'jqueryui'
                     });">Demo Each</button>
                 </div>
             </div>
             <script type="text/javascript">
                 $(function(){
                     $("input[name=styling]").change(function(){
+                        debugger;
                         switch ($("input[name=styling]:checked").attr("id")) {
                             case "style-brighttheme":
                                 PNotify.prototype.options.styling = "brighttheme";
@@ -1293,16 +1292,6 @@ $(function(){
                     text: 'Check me out! I\'m a notice.'
                 });">Regular Notice</button>
                 <button class="btn btn-default source" onclick="new PNotify({
-                    title: 'PIcon',
-                    text: 'I have an icon that uses the PIcon (Oxygen) styles.',
-                    icon: 'picon picon-mail-unread-new'
-                });">PIcon Notice</button>
-                <button class="btn btn-default source" onclick="new PNotify({
-                    title: 'jQuery UI Icon',
-                    text: 'I have an icon that uses the jQuery UI icon styles.',
-                    icon: 'ui-icon ui-icon-mail-closed'
-                });">jQuery UI Icon Notice</button>
-                <button class="btn btn-default source" onclick="new PNotify({
                     title: 'Bootstrap Icon',
                     text: 'I have an icon that uses the Bootstrap icon styles.',
                     icon: 'glyphicon glyphicon-envelope'
@@ -1312,6 +1301,11 @@ $(function(){
                     text: 'I have an icon that uses the Font Awesome icon styles.',
                     icon: 'fa fa-envelope-o'
                 });">Font Awesome Icon Notice</button>
+                <button class="btn btn-default source" onclick="new PNotify({
+                    title: 'jQuery UI Icon',
+                    text: 'I have an icon that uses the jQuery UI icon styles.',
+                    icon: 'ui-icon ui-icon-mail-closed'
+                });">jQuery UI Icon Notice</button>
                 <button class="btn btn-default source" onclick="new PNotify({
                     title: 'No Icon Notice',
                     text: 'I have no icon.',
@@ -1323,12 +1317,6 @@ $(function(){
                     text: 'Just to let you know, something happened.',
                     type: 'info'
                 });">Regular Info</button>
-                <button class="btn btn-default source" onclick="new PNotify({
-                    title: 'PIcon Info',
-                    text: 'Something is encrypted. Check out my icon, it shows that you\'re secure because our encryption uses padlocks.',
-                    type: 'info',
-                    icon: 'picon picon-document-encrypt'
-                });">PIcon Info</button>
                 <button class="btn btn-default source" onclick="new PNotify({
                     title: 'jQuery UI Icon Info',
                     text: 'Something is encrypted. Check out my icon, it shows that you\'re secure because our encryption uses padlocks.',
@@ -1348,12 +1336,6 @@ $(function(){
                     type: 'success'
                 });">Regular Success</button>
                 <button class="btn btn-default source" onclick="new PNotify({
-                    title: 'PIcon Success',
-                    text: 'We reached the moon first! See, we planted a flag.',
-                    type: 'success',
-                    icon: 'picon picon-flag-green'
-                });">PIcon Success</button>
-                <button class="btn btn-default source" onclick="new PNotify({
                     title: 'jQuery UI Icon Success',
                     text: 'We reached the moon first! See, we planted a flag.',
                     type: 'success',
@@ -1371,12 +1353,6 @@ $(function(){
                     text: 'Something terrible happened.',
                     type: 'error'
                 });">Regular Error</button>
-                <button class="btn btn-default source" onclick="new PNotify({
-                    title: 'PIcon Error',
-                    text: 'Oh no. Something\'s wrong with your network, and I\'m showing you visually using an appropriate icon to indicate the type of error that has occured. You know, network.',
-                    type: 'error',
-                    icon: 'picon picon-network-wireless'
-                });">PIcon Error</button>
                 <button class="btn btn-default source" onclick="new PNotify({
                     title: 'jQuery UI Icon Error',
                     text: 'Oh no. Something\'s wrong with your network, and I\'m showing you visually using an appropriate icon to indicate the type of error that has occured. You know, network.',
@@ -1490,7 +1466,7 @@ $(function(){
                     title: 'Click Notice',
                     text: 'I wish someone would click me.'
                 });
-                notice.get().click(function(e){
+                notice.get().css('cursor', 'pointer').click(function(e){
                     if ($(e.target).is('.ui-pnotify-closer *, .ui-pnotify-sticker *'))
                         return;
                     notice.update({type: 'success', text: 'Yay, you clicked me!&lt;div style=&quot;text-align: center;&quot;&gt;&lt;img src=&quot;https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Happy_smiley_face.png/240px-Happy_smiley_face.png&quot; /&gt;&lt;/div&gt;'});
@@ -1534,7 +1510,7 @@ $(function(){
                     title: 'Custom Styling',
                     text: 'I have an additional class that\'s used to give me special styling. I always wanted to be pretty. I also use the nonblock module.',
                     addclass: 'custom',
-                    icon: 'picon picon-32 picon-fill-color',
+                    icon: 'fa fa-file-image-o',
                     opacity: .8,
                     nonblock: {
                         nonblock: true
@@ -1580,10 +1556,12 @@ font-weight: bold;
 .ui-pnotify<strong>.custom</strong> .ui-pnotify-icon {
 float: left;
 }
-.ui-pnotify<strong>.custom</strong> .picon {
+.ui-pnotify<strong>.custom</strong> .fa {
 margin: 3px;
 width: 33px;
 height: 33px;
+font-size: 33px;
+color: #FF0;
 }</pre>
                                 <p>
                                     And here's the JavaScript to use this styling:
@@ -1592,7 +1570,7 @@ height: 33px;
     title: 'Custom Styling',
     text: 'I have an additional class that\'s used to give me special styling. I always wanted to be pretty.',
     <strong>addclass: 'custom'</strong>,
-    icon: 'picon picon-32 picon-fill-color',
+    icon: 'fa fa-file-image-o',
     opacity: .8,
     nonblock: {
         nonblock: true
@@ -1605,6 +1583,8 @@ height: 33px;
                         </div>
                     </div>
                 </div>
+                <hr style="clear: both;" />
+                <button class="btn btn-default source" onclick="PNotify.removeAll();">Remove All Notices</button>
             </div>
         </div>
     </div>
@@ -1617,7 +1597,7 @@ height: 33px;
         <div class="panel panel-default">
             <div class="panel-heading">
                 <div style="float: right;">Implements the <a href="http://www.w3.org/TR/notifications/" target="_blank">Web Notifications Draft</a>.</div>
-                <h3 class="panel-title">Desktop Module <small>Provides Web Notifications that display even when the web page is hidden.</small></h3>
+                <h3 class="panel-title">Desktop Module <small>Notifications that display even when the web page is not visible.</small></h3>
             </div>
             <div class="panel-body">
                 <p>
@@ -1728,7 +1708,7 @@ height: 33px;
                 });" title="Disabling fallback makes the notice not appear at all if it can't appear as a desktop notice.">No Fallback Desktop Notice</button>
             </div>
             <div class="panel-heading">
-                <h3 class="panel-title">Buttons Module <small>Provides a sticker and a closer button.</small></h3>
+                <h3 class="panel-title">Buttons Module <small>Sticker and a closer buttons.</small></h3>
             </div>
             <div class="panel-body">
                 <div class="alert alert-info">Since the Buttons module provides buttons by default, many of the demos on this page include the buttons.</div>
@@ -1787,7 +1767,7 @@ height: 33px;
                 <button class="btn btn-default source" onclick="if (permanotice.remove) permanotice.remove();">Remove Permanotice</button>
             </div>
             <div class="panel-heading">
-                <h3 class="panel-title">NonBlock Module <small>Lets the user click through to things underneath the notice.</small></h3>
+                <h3 class="panel-title">NonBlock Module <small>Click through to things underneath the notice.</small></h3>
             </div>
             <div class="panel-body">
                 <button class="btn btn-default source" onclick="new PNotify({
@@ -1811,7 +1791,276 @@ height: 33px;
                 });">Non-Blocking Notice with Buttons</button>
             </div>
             <div class="panel-heading">
-                <h3 class="panel-title">Confirm Module <small>Provides confirmation dialogs and prompts.</small></h3>
+                <h3 class="panel-title">Mobile Module <small>Notices on mobile phones and tablets.</small></h3>
+            </div>
+            <div class="panel-body">
+                <div class="alert alert-info">Since the Mobile module provides support by default, most of the demos on this page work on mobile.</div>
+                <button class="btn btn-default source" onclick="new PNotify({
+                    title: 'No Mobile Support Notice',
+                    text: 'If you\'re on a mobile device, I won\'t respond to your swipes.',
+                    mobile: {
+                        swipe_dismiss: false
+                    }
+                });">No Mobile Support Notice</button>
+                <button class="btn btn-default source" onclick="new PNotify({
+                    title: 'No Mobile Styling Notice',
+                    text: 'If you\'re on a mobile device, I\'ll look terrible.',
+                    mobile: {
+                        styling: false
+                    }
+                });">No Mobile Styling Notice</button>
+            </div>
+            <div class="panel-heading">
+                <h3 class="panel-title">Animate Module <small>Fluid CSS animations using <a href="https://daneden.github.io/animate.css/" target="_blank">Animate.css</a>.</small></h3>
+            </div>
+            <div class="panel-body">
+                Some good looking presets:<br />
+                <button class="btn btn-default source" onclick="
+                    new PNotify({
+                        title: 'Animate.css Effect',
+                        text: 'I use effects from Animate.css. Such smooth CSS3 transitions make me feel like butter.',
+                        animate: {
+                            animate: true,
+                            in_class: 'slideInDown',
+                            out_class: 'slideOutUp'
+                        }
+                    });
+                ">From the top!</button>
+                <button class="btn btn-default source" onclick="
+                    new PNotify({
+                        title: 'Animate.css Effect',
+                        text: 'I use effects from Animate.css. Such smooth CSS3 transitions make me feel like butter.',
+                        animate: {
+                            animate: true,
+                            in_class: 'zoomInLeft',
+                            out_class: 'zoomOutRight'
+                        }
+                    });
+                ">Zoom, Zoom</button>
+                <button class="btn btn-default source" onclick="
+                    new PNotify({
+                        title: 'Animate.css Effect',
+                        text: 'I use effects from Animate.css. Such smooth CSS3 transitions make me feel like butter.',
+                        animate: {
+                            animate: true,
+                            in_class: 'rotateInDownLeft',
+                            out_class: 'rotateOutUpRight'
+                        }
+                    });
+                ">Shuffling Cards</button>
+                <button class="btn btn-default source" onclick="
+                    new PNotify({
+                        title: 'Animate.css Effect',
+                        text: 'I use effects from Animate.css. Such smooth CSS3 transitions make me feel like butter.',
+                        animate: {
+                            animate: true,
+                            in_class: 'bounceInLeft',
+                            out_class: 'bounceOutRight'
+                        }
+                    });
+                ">Zippy</button>
+                <button class="btn btn-default source" onclick="
+                    new PNotify({
+                        title: 'Animate.css Effect',
+                        text: 'I use effects from Animate.css. Such smooth CSS3 transitions make me feel like butter.',
+                        animate: {
+                            animate: true,
+                            in_class: 'bounceInDown',
+                            out_class: 'hinge'
+                        }
+                    });
+                ">Off the Handle</button>
+                <br /><br />
+                Or build your own:<br />
+                Effect in
+                <select id="animate_in" class="form-control" style="display: inline; width: auto;">
+                    <option value="bounceIn">bounceIn</option>
+                    <option value="bounceInDown">bounceInDown</option>
+                    <option value="bounceInLeft">bounceInLeft</option>
+                    <option value="bounceInRight">bounceInRight</option>
+                    <option value="bounceInUp">bounceInUp</option>
+                    <option value="fadeIn">fadeIn</option>
+                    <option value="fadeInDown">fadeInDown</option>
+                    <option value="fadeInDownBig">fadeInDownBig</option>
+                    <option value="fadeInLeft">fadeInLeft</option>
+                    <option value="fadeInLeftBig">fadeInLeftBig</option>
+                    <option value="fadeInRight">fadeInRight</option>
+                    <option value="fadeInRightBig">fadeInRightBig</option>
+                    <option value="fadeInUp">fadeInUp</option>
+                    <option value="fadeInUpBig">fadeInUpBig</option>
+                    <option value="flipInX">flipInX</option>
+                    <option value="flipInY">flipInY</option>
+                    <option value="lightSpeedIn">lightSpeedIn</option>
+                    <option value="rotateIn">rotateIn</option>
+                    <option value="rotateInDownLeft">rotateInDownLeft</option>
+                    <option value="rotateInDownRight">rotateInDownRight</option>
+                    <option value="rotateInUpLeft">rotateInUpLeft</option>
+                    <option value="rotateInUpRight">rotateInUpRight</option>
+                    <option value="rollIn">rollIn</option>
+                    <option value="zoomIn">zoomIn</option>
+                    <option value="zoomInDown">zoomInDown</option>
+                    <option value="zoomInLeft">zoomInLeft</option>
+                    <option value="zoomInRight">zoomInRight</option>
+                    <option value="zoomInUp">zoomInUp</option>
+                    <option value="slideInDown">slideInDown</option>
+                    <option value="slideInLeft">slideInLeft</option>
+                    <option value="slideInRight">slideInRight</option>
+                    <option value="slideInUp">slideInUp</option>
+                </select>
+                Effect out
+                <select id="animate_out" class="form-control" style="display: inline; width: auto;">
+                    <option value="bounceOut">bounceOut</option>
+                    <option value="bounceOutDown">bounceOutDown</option>
+                    <option value="bounceOutLeft">bounceOutLeft</option>
+                    <option value="bounceOutRight">bounceOutRight</option>
+                    <option value="bounceOutUp">bounceOutUp</option>
+                    <option value="fadeOut">fadeOut</option>
+                    <option value="fadeOutDown">fadeOutDown</option>
+                    <option value="fadeOutDownBig">fadeOutDownBig</option>
+                    <option value="fadeOutLeft">fadeOutLeft</option>
+                    <option value="fadeOutLeftBig">fadeOutLeftBig</option>
+                    <option value="fadeOutRight">fadeOutRight</option>
+                    <option value="fadeOutRightBig">fadeOutRightBig</option>
+                    <option value="fadeOutUp">fadeOutUp</option>
+                    <option value="fadeOutUpBig">fadeOutUpBig</option>
+                    <option value="flipOutX">flipOutX</option>
+                    <option value="flipOutY">flipOutY</option>
+                    <option value="lightSpeedOut">lightSpeedOut</option>
+                    <option value="rotateOut">rotateOut</option>
+                    <option value="rotateOutDownLeft">rotateOutDownLeft</option>
+                    <option value="rotateOutDownRight">rotateOutDownRight</option>
+                    <option value="rotateOutUpLeft">rotateOutUpLeft</option>
+                    <option value="rotateOutUpRight">rotateOutUpRight</option>
+                    <option value="hinge">hinge</option>
+                    <option value="rollOut">rollOut</option>
+                    <option value="zoomOut">zoomOut</option>
+                    <option value="zoomOutDown">zoomOutDown</option>
+                    <option value="zoomOutLeft">zoomOutLeft</option>
+                    <option value="zoomOutRight">zoomOutRight</option>
+                    <option value="zoomOutUp">zoomOutUp</option>
+                    <option value="slideOutDown">slideOutDown</option>
+                    <option value="slideOutLeft">slideOutLeft</option>
+                    <option value="slideOutRight">slideOutRight</option>
+                    <option value="slideOutUp">slideOutUp</option>
+                </select>
+                <br />
+                <button class="btn btn-default source" onclick="
+                    var animate_in = $('#animate_in').val(),
+                        animate_out = $('#animate_out').val();
+                    new PNotify({
+                        title: 'Animate.css Effect',
+                        text: 'I use effects from Animate.css. Such smooth CSS3 transitions make me feel like butter.',
+                        animate: {
+                            animate: true,
+                            in_class: animate_in,
+                            out_class: animate_out
+                        }
+                    });
+                ">Notify!</button>
+                <br /><br />
+                Attention seekers:<br />
+                <button class="btn btn-default source" onclick="
+                    new PNotify({
+                        title: 'Attention Seeker',
+                        text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-default pull-right\'&gt;Bounce!&lt;/button&gt;',
+                        after_init: function(notice){
+                            notice.elem.on('click', 'button', function(){
+                                notice.attention('bounce');
+                            });
+                        }
+                    });
+                ">Bounce</button>
+                <button class="btn btn-default source" onclick="
+                    new PNotify({
+                        title: 'Attention Seeker',
+                        text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-default pull-right\'&gt;Flash!&lt;/button&gt;',
+                        after_init: function(notice){
+                            notice.elem.on('click', 'button', function(){
+                                notice.attention('flash');
+                            });
+                        }
+                    });
+                ">Flash</button>
+                <button class="btn btn-default source" onclick="
+                    new PNotify({
+                        title: 'Attention Seeker',
+                        text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-default pull-right\'&gt;Pulse!&lt;/button&gt;',
+                        after_init: function(notice){
+                            notice.elem.on('click', 'button', function(){
+                                notice.attention('pulse');
+                            });
+                        }
+                    });
+                ">Pulse</button>
+                <button class="btn btn-default source" onclick="
+                    new PNotify({
+                        title: 'Attention Seeker',
+                        text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-default pull-right\'&gt;Rubber Band!&lt;/button&gt;',
+                        after_init: function(notice){
+                            notice.elem.on('click', 'button', function(){
+                                notice.attention('rubberBand');
+                            });
+                        }
+                    });
+                ">Rubber Band</button>
+                <button class="btn btn-default source" onclick="
+                    new PNotify({
+                        title: 'Attention Seeker',
+                        text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-default pull-right\'&gt;Shake!&lt;/button&gt;',
+                        after_init: function(notice){
+                            notice.elem.on('click', 'button', function(){
+                                notice.attention('shake');
+                            });
+                        }
+                    });
+                ">Shake</button>
+                <button class="btn btn-default source" onclick="
+                    new PNotify({
+                        title: 'Attention Seeker',
+                        text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-default pull-right\'&gt;Swing!&lt;/button&gt;',
+                        after_init: function(notice){
+                            notice.elem.on('click', 'button', function(){
+                                notice.attention('swing');
+                            });
+                        }
+                    });
+                ">Swing</button>
+                <button class="btn btn-default source" onclick="
+                    new PNotify({
+                        title: 'Attention Seeker',
+                        text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-default pull-right\'&gt;Tada!&lt;/button&gt;',
+                        after_init: function(notice){
+                            notice.elem.on('click', 'button', function(){
+                                notice.attention('tada');
+                            });
+                        }
+                    });
+                ">Tada</button>
+                <button class="btn btn-default source" onclick="
+                    new PNotify({
+                        title: 'Attention Seeker',
+                        text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-default pull-right\'&gt;Wobble!&lt;/button&gt;',
+                        after_init: function(notice){
+                            notice.elem.on('click', 'button', function(){
+                                notice.attention('wobble');
+                            });
+                        }
+                    });
+                ">Wobble</button>
+                <button class="btn btn-default source" onclick="
+                    new PNotify({
+                        title: 'Attention Seeker',
+                        text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-default pull-right\'&gt;Jello!&lt;/button&gt;',
+                        after_init: function(notice){
+                            notice.elem.on('click', 'button', function(){
+                                notice.attention('jello');
+                            });
+                        }
+                    });
+                ">Jello</button>
+            </div>
+            <div class="panel-heading">
+                <h3 class="panel-title">Confirm Module <small>Confirmation dialogs and prompts.</small></h3>
             </div>
             <div class="panel-body">
                 <button class="btn btn-default source" onclick="(new PNotify({
@@ -1978,7 +2227,7 @@ height: 33px;
                 });">Multi Line Prompt Dialog</button>
             </div>
             <div class="panel-heading">
-                <h3 class="panel-title">Callbacks Module <small>Provides a way to manipulate the notice at given events.</small></h3>
+                <h3 class="panel-title">Callbacks Module <small>Manipulate the notice during its lifecycle.</small></h3>
             </div>
             <div class="panel-body">
                 <button class="btn btn-default source" onclick="var dont_alert = function(){};
@@ -2044,7 +2293,7 @@ height: 33px;
                 <button class="btn btn-default source" onclick="fake_load();">Progress Loader</button>
             </div>
             <div class="panel-heading">
-                <h3 class="panel-title">History Module <small>Provides a way for the user to redisplay notices.</small></h3>
+                <h3 class="panel-title">History Module <small>Redisplay old notices.</small></h3>
             </div>
             <div class="panel-body">
                 <button class="btn btn-default source" onclick="$(this).trigger('pnotify.history-last');">Display Last Notice</button>
@@ -2233,31 +2482,10 @@ new PNotify({
 
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 class="panel-title">Benchmarking</h3>
+                <h3 class="panel-title">Effects <small>These are available even without the Animate module, but don't look as good.</small></h3>
             </div>
             <div class="panel-body">
-                <button class="btn btn-default source" onclick="for (i=0; i!=10; i++) {new PNotify({
-                    title: 'Regular Notice',
-                    text: 'Check me out! I\'m a notice.'
-                });}">10 Notices</button>
-                <button class="btn btn-default source" onclick="for (i=0; i!=100; i++) {new PNotify({
-                    title: 'Regular Notice',
-                    text: 'Check me out! I\'m a notice.'
-                });}">100 Notices (Careful)</button>
-                <button class="btn btn-default source" onclick="timed_notices(100);">Time 100 Notices</button>
-                <button class="btn btn-default source" onclick="timed_notices(500);">Time 500 Notices</button>
-                <button class="btn btn-default source" onclick="timed_notices(1000);">Time 1000 Notices (Dangerous)</button>
-                <br style="margin-bottom: 5px;" />
-                <button class="btn btn-default source" onclick="PNotify.removeAll();">Remove All Notices</button>
-            </div>
-        </div>
-
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">Effects</h3>
-            </div>
-            <div class="panel-body">
-                <h4>Effects built in to jQuery</h4>
+                <h4>jQuery Effects</h4>
                 <button class="btn btn-default source" onclick="new PNotify({
                     title: 'Fade Effect',
                     text: 'I use a different effect.',
@@ -2279,146 +2507,7 @@ new PNotify({
                     animation: {effect_in: 'show', effect_out: 'slide'}
                 });">Different In and Out</button>
                 <br style="margin-bottom: 5px;" />
-                <h4>Effects from jQuery UI</h4>
-                Presets:
-                <button class="btn btn-default source" onclick="$('#ui_effect_in').val('scale'); $('#ui_easing_in').val('easeOutElastic'); $('#ui_effect_out').val('same'); $('#ui_easing_out').val('easeInCubic'); $('#ui_speed').val('700'); $('#ui_button').click();">Bouncy Fun</button>
-                <button class="btn btn-default source" onclick="$('#ui_effect_in').val('drop'); $('#ui_easing_in').val('easeOutBounce'); $('#ui_effect_out').val('same'); $('#ui_easing_out').val('easeInExpo'); $('#ui_speed').val('700'); $('#ui_button').click();">Toss In</button>
-                <button class="btn btn-default source" onclick="$('#ui_effect_in').val('puff'); $('#ui_easing_in').val('easeOutBack'); $('#ui_effect_out').val('same'); $('#ui_easing_out').val('easeInBack'); $('#ui_speed').val('1000'); $('#ui_button').click();">Gentle Puff</button>
-                <br /><br />
-                <span style="display: inline-block; width: 30px;">In:</span>
-                Effect
-                <select id="ui_effect_in">
-                    <option value="blind">Blind</option>
-                    <option value="bounce">Bounce</option>
-                    <option value="clip">Clip</option>
-                    <option value="drop">Drop</option>
-                    <option value="explode">Explode</option>
-                    <option value="fold">Fold</option>
-                    <option value="puff">Puff</option>
-                    <option value="scale">Scale</option>
-                    <option value="slide">Slide</option>
-                </select>
-                Easing
-                <select id="ui_easing_in">
-                    <option value="linear">Linear</option>
-                    <option value="swing">Swing</option>
-                    <option value="easeInQuad">easeInQuad</option>
-                    <option value="easeOutQuad">easeOutQuad</option>
-                    <option value="easeInOutQuad">easeInOutQuad</option>
-                    <option value="easeInCubic">easeInCubic</option>
-                    <option value="easeOutCubic">easeOutCubic</option>
-                    <option value="easeInOutCubic">easeInOutCubic</option>
-                    <option value="easeInQuart">easeInQuart</option>
-                    <option value="easeOutQuart">easeOutQuart</option>
-                    <option value="easeInOutQuart">easeInOutQuart</option>
-                    <option value="easeInQuint">easeInQuint</option>
-                    <option value="easeOutQuint">easeOutQuint</option>
-                    <option value="easeInOutQuint">easeInOutQuint</option>
-                    <option value="easeInSine">easeInSine</option>
-                    <option value="easeOutSine">easeOutSine</option>
-                    <option value="easeInOutSine">easeInOutSine</option>
-                    <option value="easeInExpo">easeInExpo</option>
-                    <option value="easeOutExpo">easeOutExpo</option>
-                    <option value="easeInOutExpo">easeInOutExpo</option>
-                    <option value="easeInCirc">easeInCirc</option>
-                    <option value="easeOutCirc">easeOutCirc</option>
-                    <option value="easeInOutCirc">easeInOutCirc</option>
-                    <option value="easeInElastic">easeInElastic</option>
-                    <option value="easeOutElastic">easeOutElastic</option>
-                    <option value="easeInOutElastic">easeInOutElastic</option>
-                    <option value="easeInBack">easeInBack</option>
-                    <option value="easeOutBack">easeOutBack</option>
-                    <option value="easeInOutBack">easeInOutBack</option>
-                    <option value="easeInBounce">easeInBounce</option>
-                    <option value="easeOutBounce">easeOutBounce</option>
-                    <option value="easeInOutBounce">easeInOutBounce</option>
-                </select>
-                <br style="margin-bottom: 4px;" />
-                <span style="display: inline-block; width: 30px;">Out:</span>
-                Effect
-                <select id="ui_effect_out">
-                    <option value="same">Same</option>
-                    <option value="blind">Blind</option>
-                    <option value="bounce">Bounce</option>
-                    <option value="clip">Clip</option>
-                    <option value="drop">Drop</option>
-                    <option value="explode">Explode</option>
-                    <option value="fold">Fold</option>
-                    <option value="puff">Puff</option>
-                    <option value="scale">Scale</option>
-                    <option value="slide">Slide</option>
-                </select>
-                Easing
-                <select id="ui_easing_out">
-                    <option value="same">Same</option>
-                    <option value="linear">Linear</option>
-                    <option value="swing">Swing</option>
-                    <option value="easeInQuad">easeInQuad</option>
-                    <option value="easeOutQuad">easeOutQuad</option>
-                    <option value="easeInOutQuad">easeInOutQuad</option>
-                    <option value="easeInCubic">easeInCubic</option>
-                    <option value="easeOutCubic">easeOutCubic</option>
-                    <option value="easeInOutCubic">easeInOutCubic</option>
-                    <option value="easeInQuart">easeInQuart</option>
-                    <option value="easeOutQuart">easeOutQuart</option>
-                    <option value="easeInOutQuart">easeInOutQuart</option>
-                    <option value="easeInQuint">easeInQuint</option>
-                    <option value="easeOutQuint">easeOutQuint</option>
-                    <option value="easeInOutQuint">easeInOutQuint</option>
-                    <option value="easeInSine">easeInSine</option>
-                    <option value="easeOutSine">easeOutSine</option>
-                    <option value="easeInOutSine">easeInOutSine</option>
-                    <option value="easeInExpo">easeInExpo</option>
-                    <option value="easeOutExpo">easeOutExpo</option>
-                    <option value="easeInOutExpo">easeInOutExpo</option>
-                    <option value="easeInCirc">easeInCirc</option>
-                    <option value="easeOutCirc">easeOutCirc</option>
-                    <option value="easeInOutCirc">easeInOutCirc</option>
-                    <option value="easeInElastic">easeInElastic</option>
-                    <option value="easeOutElastic">easeOutElastic</option>
-                    <option value="easeInOutElastic">easeInOutElastic</option>
-                    <option value="easeInBack">easeInBack</option>
-                    <option value="easeOutBack">easeOutBack</option>
-                    <option value="easeInOutBack">easeInOutBack</option>
-                    <option value="easeInBounce">easeInBounce</option>
-                    <option value="easeOutBounce">easeOutBounce</option>
-                    <option value="easeInOutBounce">easeInOutBounce</option>
-                </select>
-                <br style="margin-bottom: 4px;" />
-                Speed (ms):
-                <input type="text" size="8" id="ui_speed" value="600" />
-                <button class="btn btn-default source" style="margin-left: 2em;" onclick="
-                    var effect_in = $('#ui_effect_in').val(),
-                        easing_in = $('#ui_easing_in').val(),
-                        effect_out = $('#ui_effect_out').val(),
-                        easing_out = $('#ui_easing_out').val(),
-                        speed = $('#ui_speed').val();
-                    if (effect_out == 'same')
-                        effect_out = effect_in;
-                    if (easing_out == 'same')
-                        easing_out = easing_in;
-                    if (speed.match(/^\d+$/))
-                        speed = parseInt(speed);
-                    var options_in = {easing: easing_in},
-                        options_out = {easing: easing_out};
-                    if (effect_in == 'scale')
-                        options_in.percent = 100;
-                    if (effect_out == 'scale')
-                        options_out.percent = 0;
-                    new PNotify({
-                        title: 'jQuery UI Effect',
-                        text: 'I use an effect from jQuery UI.',
-                        animate_speed: speed,
-                        animation: {
-                            'effect_in': effect_in,
-                            'options_in': options_in,
-                            'effect_out': effect_out,
-                            'options_out': options_out
-                        }
-                    });
-                " id="ui_button">Notify!</button>
-                <br style="margin-bottom: 5px;" />
-                <h4>Custom Functions (Uses CSS3)</h4>
+                <h4>Define your own animation functions</h4>
                 <button class="btn btn-default source" onclick="new PNotify({
                     title: 'Custom Function',
                     text: 'I use a different effect.',
@@ -2510,6 +2599,19 @@ new PNotify({
                         }, 20);
                     }}
                 });">Two Functions</button>
+                <br /><br />
+                <div class="alert alert-info clearfix" style="margin-bottom: 0;">
+                    <h4><i class="fa fa-info-circle"></i> What about jQUery UI?</h4>
+                    <p>
+                        jQuery UI animations are powered by JavaScript, because
+                        they were designed well before we had CSS animations. As
+                        such, PNotify used to use a hacky workaround in order
+                        to support them. In recent versions, that has been
+                        removed in favor of the Animate module, which uses
+                        <a href="https://daneden.github.io/animate.css/" target="_blank">Animate.css</a>,
+                        which in turn uses fancy new CSS3 technology.
+                    </p>
+                </div>
             </div>
         </div>
 
@@ -2599,7 +2701,7 @@ new PNotify({
             /* * * DON'T EDIT BELOW THIS LINE * * */
             (function() {
                 var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-                dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+                dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
                 (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
             })();
         </script>

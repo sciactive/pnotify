@@ -1,17 +1,16 @@
 [![Stories in Ready](https://badge.waffle.io/sciactive/pnotify.png?label=ready&title=Ready)](http://waffle.io/sciactive/pnotify) [![Stories in Progress](https://badge.waffle.io/sciactive/pnotify.png?label=in progress&title=In Progress)](http://waffle.io/sciactive/pnotify)
-Introduction
-============
 
-PNotify is a JavaScript notification plugin, developed by SciActive. Formerly known as Pines Notify. It is designed to provide an unparalleled level of flexibility, while still being very easy to implement and use.
+PNotify is a JavaScript notification plugin, developed by SciActive. PNotify can provide [desktop notifications](http://sciactive.com/pnotify/#web-notifications) based on the [web notifications draft](http://www.w3.org/TR/notifications/). If desktop notifications are not available or not allowed, PNotify will fall back to displaying the notice as a regular, in-browser notice.
 
-PNotify provides [desktop notifications](http://sciactive.com/pnotify/#web-notifications) based on the [web notifications draft](http://www.w3.org/TR/notifications/). If desktop notifications are not available or not allowed, PNotify will fall back to displaying the notice as a regular, in-browser notice.
+Demos
+=====
 
-See http://sciactive.com/pnotify/ for download, more information, and examples.
+http://sciactive.com/pnotify/
 
 Requirements
 ============
 
-jQuery (1.6 or higher) and either Bootstrap CSS, a jQuery UI Theme, or Web Notifications support.
+jQuery (1.6 or higher)
 
 Getting Started
 ===============
@@ -169,13 +168,34 @@ Buttons Module
 `}`
 
 NonBlock Module
---------------
+---------------
 
 `nonblock: {`
 * `nonblock: false` - Create a non-blocking notice. It lets the user click elements underneath it.
 * `nonblock_opacity: .2` - The opacity of the notice (if it's non-blocking) when the mouse is over it.
 
 `}`
+
+Mobile Module
+-------------
+
+`mobile: {`
+* `swipe_dismiss: true` - Let the user swipe the notice away.
+* `styling: true` - Styles the notice to look good on mobile.
+
+`}`
+
+Animate Module
+--------------
+
+`animate: {`
+* `animate: false` - Use animate.css to animate the notice.
+* `in_class: ""` - The class to use to animate the notice in.
+* `out_class: ""` - The class to use to animate the notice out.
+
+`}`
+
+The Animate module also creates a method, `attention`, on notices which accepts an attention grabber class from Animate.css and callback to be called on completion of the animation.
 
 Confirm Module
 --------------
@@ -215,7 +235,7 @@ Reference Module
 Callbacks Module
 ================
 
-The callback options all expect one argument, a function, which will be called when that event occurs. They can be included in the options object passed to PNotify() just like any other options. If the function returns false on the "before_open" or "before_close" callback, that event will be canceled.
+The callback options all expect one argument, a function, which will be called when that event occurs. They can be included in the options object passed to PNotify() just like the core options. If the function returns false on the "before_open" or "before_close" callback, that event will be canceled.
 
 * `before_init` - This option is called before the notice has been initialized. It accepts one argument, the options object.
 * `after_init` - This option is called after the notice has been initialized. It accepts one argument, the notice object.

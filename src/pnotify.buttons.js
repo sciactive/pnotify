@@ -63,6 +63,7 @@
             // Provide a button to stick the notice.
             this.sticker = $("<div />", {
                 "class": "ui-pnotify-sticker",
+                "aria-role": "button",
                 "css": {
                     "cursor": "pointer",
                     "visibility": options.sticker_hover ? "hidden" : "visible"
@@ -89,6 +90,7 @@
             // Provide a button to close the notice.
             this.closer = $("<div />", {
                 "class": "ui-pnotify-closer",
+                "aria-role": "button",
                 "css": {"cursor": "pointer", "visibility": options.closer_hover ? "hidden" : "visible"},
                 "click": function(){
                     notice.remove(false);

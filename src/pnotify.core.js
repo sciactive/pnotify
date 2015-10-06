@@ -132,6 +132,8 @@ license GPL/LGPL/MPL
             for (var module in this.modules) {
                 curArg = ((typeof arg === "object" && module in arg) ? arg[module] : arg);
                 if (typeof this.modules[module][event] === 'function') {
+                    this.modules[module].notice = this;
+                    this.modules[module].options = typeof this.options[module] === 'object' ? this.options[module] : {};
                     this.modules[module][event](this, typeof this.options[module] === 'object' ? this.options[module] : {}, curArg);
                 }
             }
@@ -171,6 +173,7 @@ license GPL/LGPL/MPL
                 "class": "ui-pnotify "+this.options.addclass,
                 "css": {"display": "none"},
                 "aria-live": "assertive",
+                "aria-role": "alertdialog",
                 "mouseenter": function(e){
                     if (that.options.mouse_reset && that.animating === "out") {
                         if (!that.timerHide) {
@@ -227,7 +230,8 @@ license GPL/LGPL/MPL
 
             // Add text.
             this.text_container = $("<div />", {
-                "class": "ui-pnotify-text"
+                "class": "ui-pnotify-text",
+                "aria-role": "alert"
             })
             .appendTo(this.container);
             if (this.options.text === false) {
@@ -488,34 +492,35 @@ license GPL/LGPL/MPL
         },
 
         // Animate the notice in.
-        animateIn: function(callback){
-            // Declare that the notice is animating in. (Or has completed animating in.)
+        animateIn: function(callback, speed){
+            // Declare that the notice is animating in.
             this.animating = "in";
+            var that = this;
+            callback = (function(){
+                this.call();
+                // Declare that the notice has completed animating.
+                that.animating = false;
+            }).bind(callback);
+
+            var animate_speed = typeof speed !== "undefined" ? speed : this.options.animate_speed;
+
             var animation;
             if (typeof this.options.animation.effect_in !== "undefined") {
                 animation = this.options.animation.effect_in;
             } else {
                 animation = this.options.animation;
             }
-            if (animation === "none") {
-                this.elem.show();
-                callback();
-            } else if (animation === "show") {
-                this.elem.show(this.options.animate_speed, callback);
+            if (animation === "show") {
+                this.elem.show(animate_speed, callback);
             } else if (animation === "fade") {
-                this.elem.show().fadeTo(this.options.animate_speed, this.options.opacity, callback);
+                this.elem.show().fadeTo(animate_speed, this.options.opacity, callback);
             } else if (animation === "slide") {
-                this.elem.slideDown(this.options.animate_speed, callback);
+                this.elem.slideDown(animate_speed, callback);
             } else if (typeof animation === "function") {
                 animation("in", callback, this.elem);
             } else {
-                this.elem.show(animation, (typeof this.options.animation.options_in === "object" ? this.options.animation.options_in : {}), this.options.animate_speed, callback);
-            }
-            if (this.elem.parent().hasClass('ui-effects-wrapper')) {
-                this.elem.parent().css({
-                    "position": "fixed",
-                    "overflow": "visible"
-                });
+                this.elem.show();
+                callback();
             }
             if (animation !== "slide") {
                 this.elem.css("overflow", "visible");
@@ -525,18 +530,22 @@ license GPL/LGPL/MPL
 
         // Animate the notice out.
         animateOut: function(callback){
-            // Declare that the notice is animating out. (Or has completed animating out.)
+            // Declare that the notice is animating out.
             this.animating = "out";
+            var that = this;
+            callback = (function(){
+                this.call();
+                // Declare that the notice has completed animating.
+                that.animating = false;
+            }).bind(callback);
+
             var animation;
             if (typeof this.options.animation.effect_out !== "undefined") {
                 animation = this.options.animation.effect_out;
             } else {
                 animation = this.options.animation;
             }
-            if (animation === "none") {
-                this.elem.hide();
-                callback();
-            } else if (animation === "show") {
+            if (animation === "show") {
                 this.elem.hide(this.options.animate_speed, callback);
             } else if (animation === "fade") {
                 this.elem.fadeOut(this.options.animate_speed, callback);
@@ -545,13 +554,8 @@ license GPL/LGPL/MPL
             } else if (typeof animation === "function") {
                 animation("out", callback, this.elem);
             } else {
-                this.elem.hide(animation, (typeof this.options.animation.options_out === "object" ? this.options.animation.options_out : {}), this.options.animate_speed, callback);
-            }
-            if (this.elem.parent().hasClass('ui-effects-wrapper')) {
-                this.elem.parent().css({
-                    "position": "fixed",
-                    "overflow": "visible"
-                });
+                this.elem.hide();
+                callback();
             }
             if (animation !== "slide") {
                 this.elem.css("overflow", "visible");
@@ -563,32 +567,24 @@ license GPL/LGPL/MPL
         // position even if it's not visible.
         position: function(dontSkipHidden){
             // Get the notice's stack.
-            var s = this.options.stack,
-                e = this.elem;
-            if (e.parent().hasClass('ui-effects-wrapper')) {
-                e = this.elem.css({
-                    "left": "0",
-                    "top": "0",
-                    "right": "0",
-                    "bottom": "0"
-                }).parent();
+            var stack = this.options.stack,
+                elem = this.elem;
+            if (typeof stack.context === "undefined") {
+                stack.context = body;
             }
-            if (typeof s.context === "undefined") {
-                s.context = body;
-            }
-            if (!s) {
+            if (!stack) {
                 return;
             }
-            if (typeof s.nextpos1 !== "number") {
-                s.nextpos1 = s.firstpos1;
+            if (typeof stack.nextpos1 !== "number") {
+                stack.nextpos1 = stack.firstpos1;
             }
-            if (typeof s.nextpos2 !== "number") {
-                s.nextpos2 = s.firstpos2;
+            if (typeof stack.nextpos2 !== "number") {
+                stack.nextpos2 = stack.firstpos2;
             }
-            if (typeof s.addpos2 !== "number") {
-                s.addpos2 = 0;
+            if (typeof stack.addpos2 !== "number") {
+                stack.addpos2 = 0;
             }
-            var hidden = e.css("display") === "none";
+            var hidden = !elem.is(":visible");
             // Skip this notice if it's not shown.
             if (!hidden || dontSkipHidden) {
                 var curpos1, curpos2;
@@ -596,7 +592,7 @@ license GPL/LGPL/MPL
                 var animate = {};
                 // Calculate the current pos1 value.
                 var csspos1;
-                switch (s.dir1) {
+                switch (stack.dir1) {
                     case "down":
                         csspos1 = "top";
                         break;
@@ -610,18 +606,18 @@ license GPL/LGPL/MPL
                         csspos1 = "left";
                         break;
                 }
-                curpos1 = parseInt(e.css(csspos1).replace(/(?:\..*|[^0-9.])/g, ''));
+                curpos1 = parseInt(elem.css(csspos1).replace(/(?:\..*|[^0-9.])/g, ''));
                 if (isNaN(curpos1)) {
                     curpos1 = 0;
                 }
                 // Remember the first pos1, so the first visible notice goes there.
-                if (typeof s.firstpos1 === "undefined" && !hidden) {
-                    s.firstpos1 = curpos1;
-                    s.nextpos1 = s.firstpos1;
+                if (typeof stack.firstpos1 === "undefined" && !hidden) {
+                    stack.firstpos1 = curpos1;
+                    stack.nextpos1 = stack.firstpos1;
                 }
                 // Calculate the current pos2 value.
                 var csspos2;
-                switch (s.dir2) {
+                switch (stack.dir2) {
                     case "down":
                         csspos2 = "top";
                         break;
@@ -635,99 +631,99 @@ license GPL/LGPL/MPL
                         csspos2 = "left";
                         break;
                 }
-                curpos2 = parseInt(e.css(csspos2).replace(/(?:\..*|[^0-9.])/g, ''));
+                curpos2 = parseInt(elem.css(csspos2).replace(/(?:\..*|[^0-9.])/g, ''));
                 if (isNaN(curpos2)) {
                     curpos2 = 0;
                 }
                 // Remember the first pos2, so the first visible notice goes there.
-                if (typeof s.firstpos2 === "undefined" && !hidden) {
-                    s.firstpos2 = curpos2;
-                    s.nextpos2 = s.firstpos2;
+                if (typeof stack.firstpos2 === "undefined" && !hidden) {
+                    stack.firstpos2 = curpos2;
+                    stack.nextpos2 = stack.firstpos2;
                 }
                 // Check that it's not beyond the viewport edge.
-                if ((s.dir1 === "down" && s.nextpos1 + e.height() > (s.context.is(body) ? jwindow.height() : s.context.prop('scrollHeight')) ) ||
-                    (s.dir1 === "up" && s.nextpos1 + e.height() > (s.context.is(body) ? jwindow.height() : s.context.prop('scrollHeight')) ) ||
-                    (s.dir1 === "left" && s.nextpos1 + e.width() > (s.context.is(body) ? jwindow.width() : s.context.prop('scrollWidth')) ) ||
-                    (s.dir1 === "right" && s.nextpos1 + e.width() > (s.context.is(body) ? jwindow.width() : s.context.prop('scrollWidth')) ) ) {
+                if ((stack.dir1 === "down" && stack.nextpos1 + elem.height() > (stack.context.is(body) ? jwindow.height() : stack.context.prop('scrollHeight')) ) ||
+                    (stack.dir1 === "up" && stack.nextpos1 + elem.height() > (stack.context.is(body) ? jwindow.height() : stack.context.prop('scrollHeight')) ) ||
+                    (stack.dir1 === "left" && stack.nextpos1 + elem.width() > (stack.context.is(body) ? jwindow.width() : stack.context.prop('scrollWidth')) ) ||
+                    (stack.dir1 === "right" && stack.nextpos1 + elem.width() > (stack.context.is(body) ? jwindow.width() : stack.context.prop('scrollWidth')) ) ) {
                     // If it is, it needs to go back to the first pos1, and over on pos2.
-                    s.nextpos1 = s.firstpos1;
-                    s.nextpos2 += s.addpos2 + (typeof s.spacing2 === "undefined" ? 25 : s.spacing2);
-                    s.addpos2 = 0;
+                    stack.nextpos1 = stack.firstpos1;
+                    stack.nextpos2 += stack.addpos2 + (typeof stack.spacing2 === "undefined" ? 25 : stack.spacing2);
+                    stack.addpos2 = 0;
                 }
                 // Animate if we're moving on dir2.
-                if (s.animation && s.nextpos2 < curpos2) {
-                    switch (s.dir2) {
+                if (stack.animation && stack.nextpos2 < curpos2) {
+                    switch (stack.dir2) {
                         case "down":
-                            animate.top = s.nextpos2+"px";
+                            animate.top = stack.nextpos2+"px";
                             break;
                         case "up":
-                            animate.bottom = s.nextpos2+"px";
+                            animate.bottom = stack.nextpos2+"px";
                             break;
                         case "left":
-                            animate.right = s.nextpos2+"px";
+                            animate.right = stack.nextpos2+"px";
                             break;
                         case "right":
-                            animate.left = s.nextpos2+"px";
+                            animate.left = stack.nextpos2+"px";
                             break;
                     }
                 } else {
-                    if (typeof s.nextpos2 === "number") {
-                        e.css(csspos2, s.nextpos2+"px");
+                    if (typeof stack.nextpos2 === "number") {
+                        elem.css(csspos2, stack.nextpos2+"px");
                     }
                 }
                 // Keep track of the widest/tallest notice in the column/row, so we can push the next column/row.
-                switch (s.dir2) {
+                switch (stack.dir2) {
                     case "down":
                     case "up":
-                        if (e.outerHeight(true) > s.addpos2) {
-                            s.addpos2 = e.height();
+                        if (elem.outerHeight(true) > stack.addpos2) {
+                            stack.addpos2 = elem.height();
                         }
                         break;
                     case "left":
                     case "right":
-                        if (e.outerWidth(true) > s.addpos2) {
-                            s.addpos2 = e.width();
+                        if (elem.outerWidth(true) > stack.addpos2) {
+                            stack.addpos2 = elem.width();
                         }
                         break;
                 }
                 // Move the notice on dir1.
-                if (typeof s.nextpos1 === "number") {
+                if (typeof stack.nextpos1 === "number") {
                     // Animate if we're moving toward the first pos.
-                    if (s.animation && (curpos1 > s.nextpos1 || animate.top || animate.bottom || animate.right || animate.left)) {
-                        switch (s.dir1) {
+                    if (stack.animation && (curpos1 > stack.nextpos1 || animate.top || animate.bottom || animate.right || animate.left)) {
+                        switch (stack.dir1) {
                             case "down":
-                                animate.top = s.nextpos1+"px";
+                                animate.top = stack.nextpos1+"px";
                                 break;
                             case "up":
-                                animate.bottom = s.nextpos1+"px";
+                                animate.bottom = stack.nextpos1+"px";
                                 break;
                             case "left":
-                                animate.right = s.nextpos1+"px";
+                                animate.right = stack.nextpos1+"px";
                                 break;
                             case "right":
-                                animate.left = s.nextpos1+"px";
+                                animate.left = stack.nextpos1+"px";
                                 break;
                         }
                     } else {
-                        e.css(csspos1, s.nextpos1+"px");
+                        elem.css(csspos1, stack.nextpos1+"px");
                     }
                 }
                 // Run the animation.
                 if (animate.top || animate.bottom || animate.right || animate.left) {
-                    e.animate(animate, {
+                    elem.animate(animate, {
                         duration: this.options.position_animate_speed,
                         queue: false
                     });
                 }
                 // Calculate the next dir1 position.
-                switch (s.dir1) {
+                switch (stack.dir1) {
                     case "down":
                     case "up":
-                        s.nextpos1 += e.height() + (typeof s.spacing1 === "undefined" ? 25 : s.spacing1);
+                        stack.nextpos1 += elem.height() + (typeof stack.spacing1 === "undefined" ? 25 : stack.spacing1);
                         break;
                     case "left":
                     case "right":
-                        s.nextpos1 += e.width() + (typeof s.spacing1 === "undefined" ? 25 : s.spacing1);
+                        stack.nextpos1 += elem.width() + (typeof stack.spacing1 === "undefined" ? 25 : stack.spacing1);
                         break;
                 }
             }
@@ -758,11 +754,7 @@ license GPL/LGPL/MPL
                 // If it's animating out, animate back in really quickly.
                 this.elem.stop(true);
                 this.state = "open";
-                this.animating = "in";
-                this.elem.css("height", "auto").animate({
-                    "width": this.options.width,
-                    "opacity": this.options.opacity
-                }, "fast");
+                this.animateIn(function(){}, 100);
             }
             return this;
         },

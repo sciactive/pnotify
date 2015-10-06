@@ -85,6 +85,9 @@
                 .appendTo(this.container);
             }
             for (var i in options.buttons) {
+                if (!options.buttons.hasOwnProperty(i)) {
+                    continue;
+                }
                 btn = options.buttons[i];
                 if (already)
                     this.container.append(' ');
