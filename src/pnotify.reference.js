@@ -32,6 +32,11 @@
             var that = this; // This line will allow you to access instance variables
                              // like "this.thingElem" from within closures.
 
+            // The notice object is also available here:
+            this.notice;
+            // The module's options are also available here:
+            this.options;
+
             // Note that options only contains the options specific to our modules.
             // To access global options, we would use notice.options.
 
@@ -83,6 +88,11 @@
 
         // This is called when the notice is updating its options.
         update: function(notice, options /* the new options for our module */, oldOpts /* the old options for our module */){
+            // The notice object is also available here:
+            this.notice;
+            // The module's options are also available here:
+            this.options;
+
             // We need to remove the button if it's now disabled, and show it again if it's enabled.
             if (options.putThing && this.thingElem)
                 this.thingElem.show();

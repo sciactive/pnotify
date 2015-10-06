@@ -168,13 +168,34 @@ Buttons Module
 `}`
 
 NonBlock Module
---------------
+---------------
 
 `nonblock: {`
 * `nonblock: false` - Create a non-blocking notice. It lets the user click elements underneath it.
 * `nonblock_opacity: .2` - The opacity of the notice (if it's non-blocking) when the mouse is over it.
 
 `}`
+
+Mobile Module
+-------------
+
+`mobile: {`
+* `swipe_dismiss: true` - Let the user swipe the notice away.
+* `styling: true` - Styles the notice to look good on mobile.
+
+`}`
+
+Animate Module
+--------------
+
+`animate: {`
+* `animate: false` - Use animate.css to animate the notice.
+* `in_class: ""` - The class to use to animate the notice in.
+* `out_class: ""` - The class to use to animate the notice out.
+
+`}`
+
+The Animate module also creates a method, `attention`, on notices which accepts an attention grabber class from Animate.css and callback to be called on completion of the animation.
 
 Confirm Module
 --------------
@@ -214,7 +235,7 @@ Reference Module
 Callbacks Module
 ================
 
-The callback options all expect one argument, a function, which will be called when that event occurs. They can be included in the options object passed to PNotify() just like any other options. If the function returns false on the "before_open" or "before_close" callback, that event will be canceled.
+The callback options all expect one argument, a function, which will be called when that event occurs. They can be included in the options object passed to PNotify() just like the core options. If the function returns false on the "before_open" or "before_close" callback, that event will be canceled.
 
 * `before_init` - This option is called before the notice has been initialized. It accepts one argument, the options object.
 * `after_init` - This option is called after the notice has been initialized. It accepts one argument, the notice object.
