@@ -7,7 +7,7 @@
         "url": "https://github.com/sciactive/pnotify.git"
     },
     "author": "",
-    "license": "GPL LGPL and MPL",
+    "license": "Apache-2.0",
     "bugs": {
         "url": "https://github.com/sciactive/pnotify/issues"
     },

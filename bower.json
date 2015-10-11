@@ -39,5 +39,5 @@
         "src/pnotify.mobile.js",
         "src/pnotify.mobile.min.js"
     ],
-    "license": ["GPL-3.0", "LGPL-3.0", "MPL-1.1"]
+    "license": ["Apache-2.0"]
 }

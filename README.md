@@ -268,6 +268,6 @@ requirejs(['pnotify', 'pnotify.nonblock', 'pnotify.desktop'], function(PNotify){
 Licensing and Additional Info
 =============================
 
-PNotify is distributed under the [GPL](http://www.gnu.org/licenses/gpl.html), [LGPL](http://www.gnu.org/licenses/lgpl.html), and [MPL](http://www.mozilla.org/MPL/MPL-1.1.html). This triple copyleft licensing model avoids incompatibility with other open source licenses.
+PNotify is distributed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0).
 
 See http://sciactive.com/pnotify/ for download, more information, and examples.

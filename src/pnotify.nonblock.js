@@ -56,9 +56,9 @@
     var nonblock_last_elem;
     // This is used to pass events through the notice if it is non-blocking.
     var nonblock_pass = function(notice, e, e_name){
-        notice.elem.css("display", "none");
+        notice.elem.addClass("ui-pnotify-nonblock-hide");
         var element_below = document.elementFromPoint(e.clientX, e.clientY);
-        notice.elem.css("display", "block");
+        notice.elem.removeClass("ui-pnotify-nonblock-hide");
         var jelement_below = $(element_below);
         var cursor_style = jelement_below.css("cursor");
         if (cursor_style === "auto" && element_below.tagName === "A") {
@@ -82,9 +82,7 @@
 
     PNotify.prototype.options.nonblock = {
         // Create a non-blocking notice. It lets the user click elements underneath it.
-        nonblock: false,
-        // The opacity of the notice (if it's non-blocking) when the mouse is over it.
-        nonblock_opacity: .2
+        nonblock: false
     };
     PNotify.prototype.modules.nonblock = {
         // This lets us update the options available in the closures.
@@ -95,25 +93,34 @@
             this.myOptions = options;
             notice.elem.on({
                 "mouseenter": function(e){
-                    if (that.myOptions.nonblock) e.stopPropagation();
+                    if (that.myOptions.nonblock) {
+                        e.stopPropagation();
+                    }
                     if (that.myOptions.nonblock) {
                         // If it's non-blocking, animate to the other opacity.
-                        notice.elem.stop().animate({"opacity": that.myOptions.nonblock_opacity}, "fast");
+                        notice.elem.addClass("ui-pnotify-nonblock-fade");
                     }
                 },
                 "mouseleave": function(e){
-                    if (that.myOptions.nonblock) e.stopPropagation();
+                    if (that.myOptions.nonblock) {
+                        e.stopPropagation();
+                    }
                     nonblock_last_elem = null;
                     notice.elem.css("cursor", "auto");
                     // Animate back to the normal opacity.
-                    if (that.myOptions.nonblock && notice.animating !== "out")
-                        notice.elem.stop().animate({"opacity": notice.options.opacity}, "fast");
+                    if (that.myOptions.nonblock && notice.animating !== "out") {
+                        notice.elem.removeClass("ui-pnotify-nonblock-fade");
+                    }
                 },
                 "mouseover": function(e){
-                    if (that.myOptions.nonblock) e.stopPropagation();
+                    if (that.myOptions.nonblock) {
+                        e.stopPropagation();
+                    }
                 },
                 "mouseout": function(e){
-                    if (that.myOptions.nonblock) e.stopPropagation();
+                    if (that.myOptions.nonblock) {
+                        e.stopPropagation();
+                    }
                 },
                 "mousemove": function(e){
                     if (that.myOptions.nonblock) {

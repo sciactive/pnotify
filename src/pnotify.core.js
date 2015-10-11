@@ -1,7 +1,7 @@
 /*
 PNotify 2.1.0 sciactive.com/pnotify/
 (C) 2015 Hunter Perrin
-license GPL/LGPL/MPL
+license Apache-2.0
 */
 /*
  * ====== PNotify ======
@@ -9,11 +9,10 @@ license GPL/LGPL/MPL
  * http://sciactive.com/pnotify/
  *
  * Copyright 2009-2015 Hunter Perrin
+ * Copyright 2015 Google, Inc.
  *
- * Triple licensed under the GPL, LGPL, and MPL.
- * 	http://gnu.org/licenses/gpl.html
- * 	http://gnu.org/licenses/lgpl.html
- * 	http://mozilla.org/MPL/MPL-1.1.html
+ * Licensed under Apache License, Version 2.0.
+ * 	http://www.apache.org/licenses/LICENSE-2.0
  */
 
 (function (factory) {
@@ -93,15 +92,13 @@ license GPL/LGPL/MPL
             icon: true,
             // Opacity of the notice.
             opacity: 1,
-            // The animation to use when displaying and hiding the notice. "none",
-            // "show", "fade", and "slide" are built in to jQuery. Others require jQuery
-            // UI. Use an object with effect_in and effect_out to use different effects.
+            // The animation to use when displaying and hiding the notice. "none"
+            // and "fade" are supported through CSS. Others are supported
+            // through the Animate module and Animate.css.
             animation: "fade",
             // Speed at which the notice animates in and out. "slow", "def" or "normal",
             // "fast" or number of milliseconds.
             animate_speed: "slow",
-            // Specify a specific duration of position animation
-            position_animate_speed: 500,
             // Display a drop shadow.
             shadow: true,
             // After a delay, remove the notice.
@@ -171,7 +168,6 @@ license GPL/LGPL/MPL
             // Stop animation, reset the removal timer when the user mouses over.
             this.elem = $("<div />", {
                 "class": "ui-pnotify "+this.options.addclass,
-                "css": {"display": "none"},
                 "aria-live": "assertive",
                 "aria-role": "alertdialog",
                 "mouseenter": function(e){
@@ -194,6 +190,10 @@ license GPL/LGPL/MPL
                     PNotify.positionAll();
                 }
             });
+            // Maybe we need to fade in/out.
+            if (this.options.animation === "fade") {
+                this.elem.addClass("ui-pnotify-fade");
+            }
             // Create a container for the notice contents.
             this.container = $("<div />", {
                 "class": this.styles.container+" ui-pnotify-container "+(this.options.type === "error" ? this.styles.error : (this.options.type === "info" ? this.styles.info : (this.options.type === "success" ? this.styles.success : this.styles.notice))),
@@ -284,6 +284,13 @@ license GPL/LGPL/MPL
             var oldOpts = this.options;
             // Then update to the new options.
             this.parseOptions(oldOpts, options);
+            // Maybe we need to fade in/out.
+            if (this.options.animation === "fade") {
+                this.elem.addClass("ui-pnotify-fade");
+            } else {
+                // Maybe not.
+                this.elem.remvoveClass("ui-pnotify-fade");
+            }
             // Update the corner class.
             if (this.options.cornerclass !== oldOpts.cornerclass) {
                 this.container.removeClass("ui-corner-all "+oldOpts.cornerclass).addClass(this.options.cornerclass);
@@ -392,16 +399,6 @@ license GPL/LGPL/MPL
             if (this.options.stack.push !== "top") {
                 this.position(true);
             }
-            // First show it, then set its opacity, then hide it.
-            if (this.options.animation === "fade" || this.options.animation.effect_in === "fade") {
-                // If it's fading in, it should start at 0.
-                this.elem.show().fadeTo(0, 0).hide();
-            } else {
-                // Or else it should be set to the opacity.
-                if (this.options.opacity !== 1) {
-                    this.elem.show().fadeTo(0, this.options.opacity).hide();
-                }
-            }
             this.animateIn(function(){
                 that.queuePosition(true);
 
@@ -497,35 +494,26 @@ license GPL/LGPL/MPL
             this.animating = "in";
             var that = this;
             callback = (function(){
-                this.call();
+                if (this) {
+                    this.call();
+                }
                 // Declare that the notice has completed animating.
                 that.animating = false;
             }).bind(callback);
 
-            var animate_speed = typeof speed !== "undefined" ? speed : this.options.animate_speed;
-
-            var animation;
-            if (typeof this.options.animation.effect_in !== "undefined") {
-                animation = this.options.animation.effect_in;
+            if (this.options.animation === "fade") {
+                this.elem.one('webkitTransitionEnd mozTransitionEnd MSTransitionEnd oTransitionEnd transitionend', function(){
+                    debugger;
+                    if (that.elem.is(":visible")) {
+                        debugger;
+                        callback.call(that);
+                    }
+                });
+                this.elem.addClass("ui-pnotify-in");
             } else {
-                animation = this.options.animation;
-            }
-            if (animation === "show") {
-                this.elem.show(animate_speed, callback);
-            } else if (animation === "fade") {
-                this.elem.show().fadeTo(animate_speed, this.options.opacity, callback);
-            } else if (animation === "slide") {
-                this.elem.slideDown(animate_speed, callback);
-            } else if (typeof animation === "function") {
-                animation("in", callback, this.elem);
-            } else {
-                this.elem.show();
+                this.elem.addClass("ui-pnotify-in");
                 callback();
             }
-            if (animation !== "slide") {
-                this.elem.css("overflow", "visible");
-            }
-            this.container.css("overflow", "hidden");
         },
 
         // Animate the notice out.
@@ -534,33 +522,25 @@ license GPL/LGPL/MPL
             this.animating = "out";
             var that = this;
             callback = (function(){
-                this.call();
+                if (this) {
+                    this.call();
+                }
                 // Declare that the notice has completed animating.
                 that.animating = false;
             }).bind(callback);
 
-            var animation;
-            if (typeof this.options.animation.effect_out !== "undefined") {
-                animation = this.options.animation.effect_out;
+            if (this.options.animation === "fade") {
+                this.elem.one('webkitTransitionEnd mozTransitionEnd MSTransitionEnd oTransitionEnd transitionend', function(){
+                    debugger;
+                    if (!that.elem.is(":visible")) {
+                        debugger;
+                        callback.call(that);
+                    }
+                }).removeClass("ui-pnotify-in");
             } else {
-                animation = this.options.animation;
-            }
-            if (animation === "show") {
-                this.elem.hide(this.options.animate_speed, callback);
-            } else if (animation === "fade") {
-                this.elem.fadeOut(this.options.animate_speed, callback);
-            } else if (animation === "slide") {
-                this.elem.slideUp(this.options.animate_speed, callback);
-            } else if (typeof animation === "function") {
-                animation("out", callback, this.elem);
-            } else {
-                this.elem.hide();
+                this.elem.removeClass("ui-pnotify-in");
                 callback();
             }
-            if (animation !== "slide") {
-                this.elem.css("overflow", "visible");
-            }
-            this.container.css("overflow", "hidden");
         },
 
         // Position the notice. dont_skip_hidden causes the notice to
@@ -710,10 +690,7 @@ license GPL/LGPL/MPL
                 }
                 // Run the animation.
                 if (animate.top || animate.bottom || animate.right || animate.left) {
-                    elem.animate(animate, {
-                        duration: this.options.position_animate_speed,
-                        queue: false
-                    });
+                    elem.css(animate);
                 }
                 // Calculate the next dir1 position.
                 switch (stack.dir1) {
@@ -751,10 +728,9 @@ license GPL/LGPL/MPL
                 window.clearTimeout(this.timer);
             }
             if (this.state === "closing") {
-                // If it's animating out, animate back in really quickly.
-                this.elem.stop(true);
+                // If it's animating out, stop it.
                 this.state = "open";
-                this.animateIn(function(){}, 100);
+                this.addClass("ui-pnotify-in");
             }
             return this;
         },
