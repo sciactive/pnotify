@@ -41,6 +41,8 @@
 
         setUpAnimations: function(notice, options){
             if (options.animate) {
+                notice.options.animation = "none";
+                notice.elem.removeClass("ui-pnotify-fade-slow ui-pnotify-fade-normal ui-pnotify-fade-fast");
                 if (!notice._animateIn) {
                     notice._animateIn = notice.animateIn;
                 }
@@ -77,12 +79,14 @@
             this.notice.animating = "in";
             var that = this;
             callback = (function(){
-                this.call();
+                if (this) {
+                    this.call();
+                }
                 // Declare that the notice has completed animating.
                 that.notice.animating = false;
             }).bind(callback);
 
-            this.notice.elem.show().css("opacity", this.notice.options.opacity).one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', callback).removeClass(this.options.out_class).addClass(this.options.in_class);
+            this.notice.elem.show().one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', callback).removeClass(this.options.out_class).addClass("ui-pnotify-in").addClass(this.options.in_class);
         },
 
         animateOut: function(callback){
@@ -90,7 +94,10 @@
             this.notice.animating = "out";
             var that = this;
             callback = (function(){
-                this.call();
+                that.notice.elem.removeClass("ui-pnotify-in");
+                if (this) {
+                    this.call();
+                }
                 // Declare that the notice has completed animating.
                 that.notice.animating = false;
             }).bind(callback);

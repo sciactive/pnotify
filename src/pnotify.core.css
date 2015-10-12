@@ -5,28 +5,52 @@ Link    : http://sciactive.com/pnotify/
 */
 /* -- Notice */
 .ui-pnotify {
-    display: none !important;
-    top: 25px;
-    right: 25px;
-    position: fixed;
+    top: 36px;
+    right: 36px;
+    position: absolute;
     height: auto;
-    /* Ensures notices are above everything */
-    z-index: 9999;
-    transition: left .5s ease, top .5s ease, right .5s ease, bottom .5s ease;
+    z-index: 1;
 }
-.ui-pnotify.ui-pnotify-fade {
-    /*display: block !important;*/
-    transition: opacity .4s linear;
-    opacity: 0;
+body > .ui-pnotify {
+    /* Notices in the body context should be fixed to the viewport. */
+    position: fixed;
+    /* Ensures notices are above everything */
+    z-index: 100040;
 }
 .ui-pnotify.ui-pnotify-in {
     display: block !important;
+}
+.ui-pnotify.ui-pnotify-move {
+    transition: left .5s ease, top .5s ease, right .5s ease, bottom .5s ease;
+}
+.ui-pnotify.ui-pnotify-fade-slow {
+    transition: opacity .6s linear;
+    opacity: 0;
+}
+.ui-pnotify.ui-pnotify-fade-slow.ui-pnotify.ui-pnotify-move {
+    transition: opacity .6s linear, left .5s ease, top .5s ease, right .5s ease, bottom .5s ease;
+}
+.ui-pnotify.ui-pnotify-fade-normal {
+    transition: opacity .4s linear;
+    opacity: 0;
+}
+.ui-pnotify.ui-pnotify-fade-normal.ui-pnotify.ui-pnotify-move {
+    transition: opacity .4s linear, left .5s ease, top .5s ease, right .5s ease, bottom .5s ease;
+}
+.ui-pnotify.ui-pnotify-fade-fast {
+    transition: opacity .2s linear;
+    opacity: 0;
+}
+.ui-pnotify.ui-pnotify-fade-fast.ui-pnotify.ui-pnotify-move {
+    transition: opacity .2s linear, left .5s ease, top .5s ease, right .5s ease, bottom .5s ease;
+}
+.ui-pnotify.ui-pnotify-fade-in {
     opacity: 1;
 }
 .ui-pnotify .ui-pnotify-shadow {
-    -webkit-box-shadow: 0px 2px 10px rgba(50, 50, 50, 0.5);
-    -moz-box-shadow: 0px 2px 10px rgba(50, 50, 50, 0.5);
-    box-shadow: 0px 2px 10px rgba(50, 50, 50, 0.5);
+    -webkit-box-shadow: 0px 6px 28px 0px rgba(0,0,0,0.1);
+    -moz-box-shadow: 0px 6px 28px 0px rgba(0,0,0,0.1);
+    box-shadow: 0px 6px 28px 0px rgba(0,0,0,0.1);
 }
 .ui-pnotify-container {
     background-position: 0 0;
