@@ -53,7 +53,7 @@
         prompt: null,
 
         init: function(notice, options){
-            this.container = $('<div style="margin-top:5px;clear:both;" />').css('text-align', options.align).appendTo(notice.container);
+            this.container = $('<div class="ui-pnotify-action-bar" style="margin-top:5px;clear:both;" />').css('text-align', options.align).appendTo(notice.container);
 
             if (options.confirm || options.prompt)
                 this.makeDialog(notice, options);
@@ -80,21 +80,18 @@
             this.container.empty();
             if (options.prompt) {
                 this.prompt = $('<'+(options.prompt_multi_line ? 'textarea rows="5"' : 'input type="text"')+' style="margin-bottom:5px;clear:both;" />')
-                .addClass(notice.styles.input+' '+options.prompt_class)
+                .addClass((typeof notice.styles.input === "undefined" ? "" : notice.styles.input)+" "+(typeof options.prompt_class === "undefined" ? "" : options.prompt_class))
                 .val(options.prompt_default)
                 .appendTo(this.container);
             }
-            for (var i in options.buttons) {
-                if (!options.buttons.hasOwnProperty(i)) {
-                    continue;
-                }
+            for (var i = 0; i < options.buttons.length; i++) {
                 btn = options.buttons[i];
                 if (already)
                     this.container.append(' ');
                 else
                     already = true;
-                elem = $('<button type="button" />')
-                .addClass(notice.styles.btn+' '+btn.addClass)
+                elem = $('<button type="button" class="ui-pnotify-action-button" />')
+                .addClass((typeof notice.styles.btn === "undefined" ? "" : notice.styles.btn)+" "+(typeof btn.addClass === "undefined" ? "" : btn.addClass))
                 .text(btn.text)
                 .appendTo(this.container)
                 .on("click", (function(btn){ return function(){

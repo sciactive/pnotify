@@ -15,7 +15,7 @@
     // This if the default values of your options.
     PNotify.prototype.options.reference = {
         // Provide a thing for stuff. Turned off by default.
-        putThing: false,
+        put_thing: false,
         // If you are displaying any text, you should use a labels options to
         // support internationalization.
         labels: {
@@ -41,8 +41,9 @@
             // To access global options, we would use notice.options.
 
             // We want to check to make sure the notice should include our thing.
-            if (!options.putThing)
+            if (!options.put_thing) {
                 return;
+            }
 
             // We're going to create a button that will be appended to the notice.
             // It will be disabled by default, so we can enable it on mouseover.
@@ -94,18 +95,20 @@
             this.options;
 
             // We need to remove the button if it's now disabled, and show it again if it's enabled.
-            if (options.putThing && this.thingElem)
+            if (options.put_thing && this.thingElem) {
                 this.thingElem.show();
-            else if (!options.putThing && this.thingElem)
+            } else if (!options.put_thing && this.thingElem) {
                 this.thingElem.hide();
+            }
             // You may notice that if the user creates a notice without our button,
             // then updates it to enable our button, they will be out of luck.
             // Whatever, I don't want to write that much code.
 
             // Now we update the icon, which may have changed.
             // Note that as of right now, PNotify doesn't support updating styling.
-            if (this.thingElem)
+            if (this.thingElem) {
                 this.thingElem.find('i').attr("class", notice.styles.athing);
+            }
         },
         // I have nothing to put in these, just showing you that they exist. You
         // won't need to include them if you aren't using them.

@@ -55,6 +55,7 @@
     <script type="text/javascript" src="src/pnotify.buttons.js"></script>
     <link href="src/pnotify.buttons.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="src/pnotify.confirm.js"></script>
+    <link href="src/pnotify.nonblock.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="src/pnotify.nonblock.js"></script>
     <script type="text/javascript" src="src/pnotify.mobile.js"></script>
     <link href="src/pnotify.mobile.css" rel="stylesheet" type="text/css" />
@@ -122,6 +123,11 @@
         }
         .panel .btn {
             margin-top: 5px;
+        }
+
+        /* Translucent notice CSS */
+        .ui-pnotify.translucent.ui-pnotify-fade-in {
+            opacity: .8;
         }
 
         /* Custom styled notice CSS */
@@ -197,8 +203,6 @@
     <script type="text/javascript">
         var permanotice, tooltip, _alert;
         $(function(){
-            PNotify.prototype.options.styling = "bootstrap3";
-
             // ---
             // Notice that opens when the page opens.
             // ---
@@ -209,16 +213,16 @@
                 nonblock: {
                     nonblock: true
                 },
-                before_close: function(PNotify){
+                before_close: function(notice){
                     // You can access the notice's options with this. It is read only.
-                    //PNotify.options.text;
+                    //notice.options.text;
 
                     // You can change the notice's options after the timer like this:
-                    //PNotify.update({
-                    //    title: PNotify.options.title+" - Enjoy your Stay",
+                    //notice.update({
+                    //    title: notice.options.title+" - Enjoy your Stay",
                     //    before_close: null
                     //});
-                    //PNotify.queueRemove();
+                    //notice.queueRemove();
                     //return false;
                 }
             });
@@ -238,7 +242,7 @@
                     history: {
                         history: false
                     },
-                    animate_speed: 100,
+                    animate_speed: "fast",
                     opacity: .9,
                     icon: "fa fa-commenting",
                     // Setting stack to false causes PNotify to ignore this notice when positioning.
@@ -339,8 +343,7 @@
 
             // Make a loader.
             var loader = new PNotify({
-                //title: "Lowering the Moon",
-                title: "Creating Series of Tubes",
+                title: "Creating series of tubes",
                 text: '<div class="progress progress-striped active" style="margin:0">\
     <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0">\
         <span class="sr-only">0%</span>\
@@ -356,14 +359,20 @@
                 history: {
                     history: false
                 },
-                before_open: function(PNotify){
-                    progress = PNotify.get().find("div.progress-bar");
+                before_open: function(notice){
+                    progress = notice.get().find("div.progress-bar");
                     progress.width(cur_value+"%").attr("aria-valuenow", cur_value).find("span").html(cur_value+"%");
                     // Pretend to do something.
                     var timer = setInterval(function(){
-                        //if (cur_value == 50) {
-                        //	loader.update({title: "Raising the Sun", icon: "fa fa-sun-o fa-spin"});
-                        //}
+                        if (cur_value == 70) {
+                            loader.update({title: "Aligning discrete worms", icon: "fa fa-circle-o-notch fa-spin"});
+                        }
+                        if (cur_value == 80) {
+                            loader.update({title: "Connecting end points", icon: "fa fa-refresh fa-spin"});
+                        }
+                        if (cur_value == 90) {
+                            loader.update({title: "Dividing and conquering", icon: "fa fa-spinner fa-spin"});
+                        }
                         if (cur_value >= 100) {
                             // Remove the interval.
                             window.clearInterval(timer);
@@ -736,7 +745,6 @@
                     <li><a href="#demos-modules">Module Demos</a></li>
                     <li><a href="#stacks">Stacks</a></li>
                     <li><a href="#customization">Customization</a></li>
-                    <li><a href="#theming">Theming</a></li>
                     <li><a href="#comments">Comments</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
@@ -756,7 +764,7 @@
         </div>
     </nav>
     <div id="switcher-container">
-        <div id="switcher-bootstrap">
+        <div id="switcher-bootstrap" style="display: none;">
             <div class="btn-group">
                 <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);">
                     Theme: <span id="bootstrap-current">Normal</span>
@@ -807,7 +815,7 @@
     <section class="container page-banner">
         <div class="intro-section">
             <h1>PNotify</h1>
-            <p id="description">JavaScript notifications for Bootstrap, jQuery UI,<br /> and the <a href="#web-notifications">Web Notifications Draft</a>.</p>
+            <p id="description">Beautiful JavaScript notifications.</p>
         </div>
         <div class="intro-section">
             <a class="btn btn-primary btn-large" data-toggle="modal" href="#download">Download PNotify 2.1</a>
@@ -815,20 +823,7 @@
         </div>
         <div class="intro-section">
             <a style="margin: 0 8px;" data-toggle="modal" href="#using">Using PNotify</a>
-            <a style="margin: 0 8px;" href="https://github.com/sciactive/pnotify/issues?state=open" target="_blank">Issue Tracker</a>
             <a style="margin: 0 8px;" href="https://github.com/sciactive/pnotify/issues/new" target="_blank">Bug Report/Feature Request</a>
-        </div>
-        <div class="intro-section">
-            <!-- AddThis Button BEGIN -->
-            <div class="addthis_toolbox addthis_default_style " addthis:url="https://sciactive.com/pnotify/" style="display: table; margin: 0pt auto;">
-                <a class="addthis_button_facebook_like" fb:like:layout="button_count" style="margin-right: 12px;"></a>
-                <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
-                <a class="addthis_button_tweet"></a>
-                <a class="addthis_button_twitter_follow_native" tw:screen_name="SciActive"></a>
-                <a class="addthis_counter addthis_pill_style"></a>
-            </div>
-            <script type="text/javascript" src="//s7.addthis.com/js/250/addthis_widget.js#pubid=ra-4fa2edbb6da70bd1"></script>
-            <!-- AddThis Button END -->
         </div>
     </section>
     <div class="modal fade" id="download" tabindex="-1" role="dialog" aria-labelledby="download-title" aria-hidden="true" style="max-height: inherit;">
@@ -863,8 +858,6 @@
                     <div style="margin-bottom: 10px;"><small>Manipulate the notice during its lifecycle.</small></div>
                     <div><label><input type="checkbox" data-type="module" name="history" /> History</label></div>
                     <div style="margin-bottom: 10px;"><small>Redisplay old notices.</small></div>
-                    <div><label><input type="checkbox" data-type="module" name="reference" /> Reference</label></div>
-                    <div><small>A reference for when you are coding your own module.</small></div>
                     <div class="page-header">
                         <h3>Minification</h3>
                     </div>
@@ -935,11 +928,6 @@ $(function(){
                         included styling, called Bright Theme. It is the default.
                     </p>
                     <p>
-                        If you are using Bootstrap version 2, include this line
-                        somewhere before your first notice:
-                    </p>
-                    <pre class="prettyprint">PNotify.prototype.options.styling = "bootstrap2";</pre>
-                    <p>
                         If you are using Bootstrap version 3, include this line
                         somewhere before your first notice:
                     </p>
@@ -976,7 +964,7 @@ $(function(){
                             This is the development site. It's a playground for
                             bleeding edge features and code that probably won't
                             work. You should head over to the
-                            <a href="https://sciactive.com/pnotify/" class="btn btn-success">Main Site</a>
+                            <a href="https://sciactive.com/pnotify/">Main Site</a>
                         </p>
                     </div>
                 </div>
@@ -986,7 +974,7 @@ $(function(){
                     <div class="alert-block">
                         <h3><i class="glyphicon glyphicon-book" style="position: relative; top: 3px;"></i> About</h3>
                         <p>
-                            PNotify is a JavaScript notification plugin, developed
+                            PNotify is a JavaScript notification system, developed
                             by <a href="http://sciactive.com">SciActive</a>.
                             <br />
                             <br />
@@ -1037,12 +1025,7 @@ $(function(){
                         <h3><i class="glyphicon glyphicon-gift" style="position: relative; top: 3px;"></i> Completely Open</h3>
                         <p>
                             PNotify is distributed under the
-                            <a href="https://www.gnu.org/licenses/gpl.html" target="_blank">GPL</a>,
-                            <a href="https://www.gnu.org/licenses/lgpl.html" target="_blank">LGPL</a>,
-                            and
-                            <a href="https://www.mozilla.org/MPL/MPL-1.1.html" target="_blank">MPL</a>.
-                            This triple copyleft licensing model avoids
-                            incompatibility with other open source licenses.
+                            <a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">Apache License, Version 2.0</a>.
                         </p>
                     </div>
                 </div>
@@ -1130,10 +1113,10 @@ $(function(){
                 <div class="btn-toolbar">
                     <div class="btn-group" data-toggle="buttons">
                         <label class="btn btn-default active">
-                            <input type="radio" name="styling" id="style-bootstrap3" autocomplete="off" checked> Bootstrap
+                            <input type="radio" name="styling" id="style-brighttheme" autocomplete="off" checked> Bright Theme
                         </label>
                         <label class="btn btn-default">
-                            <input type="radio" name="styling" id="style-brighttheme" autocomplete="off"> Bright Theme
+                            <input type="radio" name="styling" id="style-bootstrap3" autocomplete="off"> Bootstrap
                         </label>
                         <label class="btn btn-default">
                             <input type="radio" name="styling" id="style-fontawesome" autocomplete="off"> Font Awesome Icons
@@ -1143,29 +1126,6 @@ $(function(){
                         </label>
                     </div>
                     <button class="btn btn-default source" onclick="new PNotify({
-                        title: 'Bootstrap Notice',
-                        text: 'Look at my beautiful styling! ^_^',
-                        styling: 'bootstrap3'
-                    });
-                    new PNotify({
-                        title: 'Bootstrap Info',
-                        text: 'Look at my beautiful styling! ^_^',
-                        type: 'info',
-                        styling: 'bootstrap3'
-                    });
-                    new PNotify({
-                        title: 'Bootstrap Success',
-                        text: 'Look at my beautiful styling! ^_^',
-                        type: 'success',
-                        styling: 'bootstrap3'
-                    });
-                    new PNotify({
-                        title: 'Bootstrap Error',
-                        text: 'Look at my beautiful styling! ^_^',
-                        type: 'error',
-                        styling: 'bootstrap3'
-                    });
-                    new PNotify({
                         title: 'Bright Theme Notice',
                         text: 'Look at my beautiful styling! ^_^',
                         styling: 'brighttheme'
@@ -1187,6 +1147,29 @@ $(function(){
                         text: 'Look at my beautiful styling! ^_^',
                         type: 'error',
                         styling: 'brighttheme'
+                    });
+                    new PNotify({
+                        title: 'Bootstrap Notice',
+                        text: 'Look at my beautiful styling! ^_^',
+                        styling: 'bootstrap3'
+                    });
+                    new PNotify({
+                        title: 'Bootstrap Info',
+                        text: 'Look at my beautiful styling! ^_^',
+                        type: 'info',
+                        styling: 'bootstrap3'
+                    });
+                    new PNotify({
+                        title: 'Bootstrap Success',
+                        text: 'Look at my beautiful styling! ^_^',
+                        type: 'success',
+                        styling: 'bootstrap3'
+                    });
+                    new PNotify({
+                        title: 'Bootstrap Error',
+                        text: 'Look at my beautiful styling! ^_^',
+                        type: 'error',
+                        styling: 'bootstrap3'
                     });
                     new PNotify({
                         title: 'Font Awesome Notice',
@@ -1239,12 +1222,12 @@ $(function(){
             <script type="text/javascript">
                 $(function(){
                     $("input[name=styling]").change(function(){
-                        debugger;
                         switch ($("input[name=styling]:checked").attr("id")) {
                             case "style-brighttheme":
                                 PNotify.prototype.options.styling = "brighttheme";
                                 $("#switcher-bootstrap").hide();
                                 $("#switcher-jqueryui").hide();
+                                $(".brighttheme-hideme").hide();
                                 new PNotify({
                                     title: "Styling Change",
                                     text: "From now on, notices will be styled with Bright Theme, the stand alone theme."
@@ -1254,6 +1237,7 @@ $(function(){
                                 PNotify.prototype.options.styling = "bootstrap3";
                                 $("#switcher-bootstrap").show();
                                 $("#switcher-jqueryui").hide();
+                                $(".brighttheme-hideme").show();
                                 new PNotify({
                                     title: "Styling Change",
                                     text: "From now on, notices will be styled with Twitter Bootstrap."
@@ -1263,6 +1247,7 @@ $(function(){
                                 PNotify.prototype.options.styling = "jqueryui";
                                 $("#switcher-jqueryui").show();
                                 $("#switcher-bootstrap").hide();
+                                $(".brighttheme-hideme").show();
                                 new PNotify({
                                     title: "Styling Change",
                                     text: "From now on, notices will be styled with jQuery UI."
@@ -1272,6 +1257,7 @@ $(function(){
                                 PNotify.prototype.options.styling = "fontawesome";
                                 $("#switcher-jqueryui").hide();
                                 $("#switcher-bootstrap").show();
+                                $(".brighttheme-hideme").show();
                                 new PNotify({
                                     title: "Styling Change",
                                     text: "From now on, notices will be styled with Bootstrap w/ Font Awesome Icons."
@@ -1369,8 +1355,9 @@ $(function(){
                 <button class="btn btn-default source" onclick="new PNotify({
                     title: 'See Through Notice',
                     text: 'No one ever pays attention to me. Why should they? I\'m practically invisible.',
-                    opacity: .8
-                });">Transparent Notice</button>
+                    addclass: 'translucent'
+                });
+                var source_note = 'translucent is a custom class defined (using ui-pnotify-fade-in) with opacity: .8.';">Translucent Notice</button>
                 <button class="btn btn-default source" onclick="new PNotify({
                     title: 'No Shadow Notice',
                     text: 'I don\'t have a shadow. (It\'s cause I\'m a vampire or something. Or is that reflections...)',
@@ -1383,11 +1370,6 @@ $(function(){
                     text: 'I don\'t care if you move your mouse over me, I\'ll disappear when I want.',
                     mouse_reset: false
                 });">No Mouse Reset Notice</button>
-                <button class="btn btn-default source" onclick="new PNotify({
-                    title: 'No Rounded Corners Notice',
-                    text: 'Warning: Contains sharp objects. Not suitable for browsers under the age of CSS3.',
-                    cornerclass: 'ui-pnotify-sharp'
-                });">No Rounded Corners</button>
                 <button class="btn btn-default source" onclick="new PNotify({
                     title: 'Fast Fading Notice',
                     text: 'I fade in and out really quickly.',
@@ -1505,6 +1487,11 @@ $(function(){
                     </script>
                 </div>
                 <button class="btn btn-default source" onclick="dyn_notice();">Dynamic Notice</button>
+                <button class="btn btn-default source brighttheme-hideme" style="display: none;" onclick="new PNotify({
+                    title: 'No Rounded Corners Notice',
+                    text: 'Warning: Contains sharp objects. Not suitable for browsers under the age of CSS3.',
+                    cornerclass: 'ui-pnotify-sharp'
+                });">No Rounded Corners</button>
                 <hr />
                 <button class="btn btn-default source" onclick="new PNotify({
                     title: 'Custom Styling',
@@ -1761,6 +1748,9 @@ color: #FF0;
                         buttons: {
                             closer: false,
                             sticker: false
+                        },
+                        mobile: {
+                            swipe_dismiss: false
                         }
                     });
                 }">Permanotice</button>
@@ -2108,7 +2098,7 @@ color: #FF0;
                                 }
                             },
                             {
-                                text: 'Mashed Potatoes',
+                                text: 'Mash',
                                 click: function(notice){
                                     notice.update({
                                         title: 'You\'ve Chosen a Side', text: 'You want mashed potatoes.', icon: true, type: 'info', hide: true,
@@ -2238,55 +2228,58 @@ color: #FF0;
                         alert('I\'m called before the notice initializes. I\'m passed the options used to make the notice. I can modify them. Watch me replace the word callback with tire iron!');
                         opts.text = opts.text.replace(/callback/g, 'tire iron');
                     },
-                    after_init: function(PNotify){
-                        alert('I\'m called after the notice initializes. I\'m passed the PNotify object for the current notice: '+PNotify+'\n\nThere are more callbacks you can assign, but this is the last notice you\'ll see. Check the code to see them all.');
+                    after_init: function(notice){
+                        alert('I\'m called after the notice initializes. I\'m passed the PNotify object for the current notice: '+notice+'\n\nThere are more callbacks you can assign, but this is the last notice you\'ll see. Check the code to see them all.');
                     },
-                    before_open: function(PNotify){
+                    before_open: function(notice){
                         var source_note = 'Return false to cancel opening.';
-                        dont_alert('I\'m called before the notice opens. I\'m passed the PNotify object for the current notice: '+PNotify);
+                        dont_alert('I\'m called before the notice opens. I\'m passed the PNotify object for the current notice: '+notice);
                     },
-                    after_open: function(PNotify){
-                        dont_alert('I\'m called after the notice opens. I\'m passed the PNotify object for the current notice: '+PNotify);
+                    after_open: function(notice){
+                        dont_alert('I\'m called after the notice opens. I\'m passed the PNotify object for the current notice: '+notice);
                     },
-                    before_close: function(PNotify, timer_hide){
+                    before_close: function(notice, timer_hide){
                         var source_note = 'Return false to cancel close. Use PNotify.queueRemove() to set the removal timer again.';
-                        dont_alert('I\'m called before the notice closes. I\'m passed the PNotify object for the current notice: '+PNotify);
+                        dont_alert('I\'m called before the notice closes. I\'m passed the PNotify object for the current notice: '+notice);
                         dont_alert('I also have an argument called timer_hide, which is true if the notice was closed because the timer ran down. Value: '+timer_hide);
                     },
-                    after_close: function(PNotify, timer_hide){
-                        dont_alert('I\'m called after the notice closes. I\'m passed the PNotify object for the current notice: '+PNotify);
+                    after_close: function(notice, timer_hide){
+                        dont_alert('I\'m called after the notice closes. I\'m passed the PNotify object for the current notice: '+notice);
                         dont_alert('I also have an argument called timer_hide, which is true if the notice was closed because the timer ran down. Value: '+timer_hide);
                     }
                 });">Notice with Callbacks</button>
                 <button class="btn btn-default source" onclick="new PNotify({
                     title: 'Notice',
                     text: 'Right now I\'m a notice.',
-                    before_close: function(PNotify){
-                        PNotify.update({
+                    before_close: function(notice){
+                        notice.update({
                             title: 'Error',
                             text: 'Uh oh. Now I\'ve become an error.',
                             type: 'error',
-                            before_close: function(PNotify){
-                                PNotify.update({
+                            before_close: function(notice){
+                                notice.update({
                                     title: 'Success',
                                     text: 'I fixed the error!',
                                     type: 'success',
-                                    before_close: function(PNotify){
-                                        PNotify.update({
+                                    before_close: function(notice){
+                                        notice.update({
                                             title: 'Info',
                                             text: 'Everything\'s cool now.',
                                             type: 'info',
                                             before_close: null
                                         });
-                                        PNotify.queueRemove();
+                                        notice.attention('swing');
+                                        notice.queueRemove();
                                         return false;
                                     }
                                 });
-                                PNotify.queueRemove();
+                                notice.attention('swing');
+                                notice.queueRemove();
                                 return false;
                             }
                         });
-                        PNotify.queueRemove();
+                        notice.attention('swing');
+                        notice.queueRemove();
                         return false;
                     }
                 });">Notice to Error to Success to Info</button>
@@ -2322,7 +2315,7 @@ color: #FF0;
                     text: 'The reference module is a basic module that demonstrates how to write a PNotify module by implementing many of its features. You can find it in pnotify.reference.js.',
                     type: 'info',
                     reference: {
-                        putThing: true
+                        put_thing: true
                     }
                 });">Reference Module Notice</button>
             </div>
@@ -2482,141 +2475,6 @@ new PNotify({
 
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 class="panel-title">Effects <small>These are available even without the Animate module, but don't look as good.</small></h3>
-            </div>
-            <div class="panel-body">
-                <h4>jQuery Effects</h4>
-                <button class="btn btn-default source" onclick="new PNotify({
-                    title: 'Fade Effect',
-                    text: 'I use a different effect.',
-                    animation: 'fade'
-                });">Fade</button>
-                <button class="btn btn-default source" onclick="new PNotify({
-                    title: 'Show Effect',
-                    text: 'I use a different effect.',
-                    animation: 'show'
-                });">Show</button>
-                <button class="btn btn-default source" onclick="new PNotify({
-                    title: 'Slide Effect',
-                    text: 'I use a different effect.',
-                    animation: 'slide'
-                });">Slide</button>
-                <button class="btn btn-default source" onclick="new PNotify({
-                    title: 'Show and Slide Effect',
-                    text: 'I use a different effect.',
-                    animation: {effect_in: 'show', effect_out: 'slide'}
-                });">Different In and Out</button>
-                <br style="margin-bottom: 5px;" />
-                <h4>Define your own animation functions</h4>
-                <button class="btn btn-default source" onclick="new PNotify({
-                    title: 'Custom Function',
-                    text: 'I use a different effect.',
-                    animation: function(status, callback, elem){
-                        var source_note = 'Always call the callback when the animation completes.';
-                        var cur_angle = 0,
-                            cur_opacity_scale = 0;
-                        if (status == 'out')
-                            cur_opacity_scale = 1;
-                        var timer = setInterval(function(){
-                            cur_angle += 10;
-                            if (cur_angle == 360) {
-                                cur_angle = 0;
-                                cur_opacity_scale = 1;
-                                if (status == 'out')
-                                    cur_opacity_scale = 0;
-                                clearInterval(timer);
-                            } else {
-                                cur_opacity_scale = cur_angle / 360;
-                                if (status == 'out')
-                                    cur_opacity_scale = 1 - cur_opacity_scale;
-                            }
-                            elem.css({
-                                '-moz-transform': ('rotate('+cur_angle+'deg) scale('+cur_opacity_scale+')'),
-                                '-webkit-transform': ('rotate('+cur_angle+'deg) scale('+cur_opacity_scale+')'),
-                                '-o-transform': ('rotate('+cur_angle+'deg) scale('+cur_opacity_scale+')'),
-                                '-ms-transform': ('rotate('+cur_angle+'deg) scale('+cur_opacity_scale+')'),
-                                'filter': ('progid:DXImageTransform.Microsoft.BasicImage(rotation='+(cur_angle / 360 * 4)+')')
-                            }).fadeTo(0, cur_opacity_scale);
-                            if (cur_angle == 0) {
-                                if (status == 'out')
-                                        elem.hide();
-                                callback();
-                            }
-                        }, 20);
-                    }
-                });">One Function</button>
-                <button class="btn btn-default source" onclick="new PNotify({
-                    title: 'Custom Functions',
-                    text: 'I use a different effect.',
-                    animation: {effect_in: function(status, callback, elem){
-                        var source_note = 'Always call the callback when the animation completes.';
-                        var cur_angle = 0,
-                            cur_opacity_scale = 0;
-                        var timer = setInterval(function(){
-                            cur_angle += 10;
-                            if (cur_angle == 360) {
-                                cur_angle = 0;
-                                cur_opacity_scale = 1;
-                                clearInterval(timer);
-                            } else {
-                                cur_opacity_scale = cur_angle / 360;
-                            }
-                            elem.css({
-                                '-moz-transform': ('rotate('+cur_angle+'deg) scale('+cur_opacity_scale+')'),
-                                '-webkit-transform': ('rotate('+cur_angle+'deg) scale('+cur_opacity_scale+')'),
-                                '-o-transform': ('rotate('+cur_angle+'deg) scale('+cur_opacity_scale+')'),
-                                '-ms-transform': ('rotate('+cur_angle+'deg) scale('+cur_opacity_scale+')'),
-                                'filter': ('progid:DXImageTransform.Microsoft.BasicImage(rotation='+(cur_angle / 360 * 4)+')')
-                            }).fadeTo(0, cur_opacity_scale);
-                            if (cur_angle == 0)
-                                callback();
-                        }, 20);
-                    }, effect_out: function(status, callback, elem){
-                        var source_note = 'Always call the callback when the animation completes.';
-                        var cur_angle = 0,
-                            cur_opacity_scale = 1;
-                        var timer = setInterval(function(){
-                            cur_angle += 10;
-                            if (cur_angle == 360) {
-                                cur_angle = 0;
-                                cur_opacity_scale = 0;
-                                clearInterval(timer);
-                            } else {
-                                cur_opacity_scale = cur_angle / 360;
-                                cur_opacity_scale = 1 - cur_opacity_scale;
-                            }
-                            elem.css({
-                                '-moz-transform': ('rotate('+cur_angle+'deg) scale('+cur_opacity_scale+')'),
-                                '-webkit-transform': ('rotate('+cur_angle+'deg) scale('+cur_opacity_scale+')'),
-                                '-o-transform': ('rotate('+cur_angle+'deg) scale('+cur_opacity_scale+')'),
-                                '-ms-transform': ('rotate('+cur_angle+'deg) scale('+cur_opacity_scale+')'),
-                                'filter': ('progid:DXImageTransform.Microsoft.BasicImage(rotation='+(cur_angle / 360 * 4)+')')
-                            }).fadeTo(0, cur_opacity_scale);
-                            if (cur_angle == 0) {
-                                elem.hide();
-                                callback();
-                            }
-                        }, 20);
-                    }}
-                });">Two Functions</button>
-                <br /><br />
-                <div class="alert alert-info clearfix" style="margin-bottom: 0;">
-                    <h4><i class="fa fa-info-circle"></i> What about jQUery UI?</h4>
-                    <p>
-                        jQuery UI animations are powered by JavaScript, because
-                        they were designed well before we had CSS animations. As
-                        such, PNotify used to use a hacky workaround in order
-                        to support them. In recent versions, that has been
-                        removed in favor of the Animate module, which uses
-                        <a href="https://daneden.github.io/animate.css/" target="_blank">Animate.css</a>,
-                        which in turn uses fancy new CSS3 technology.
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <div class="panel panel-default">
-            <div class="panel-heading">
                 <h3 class="panel-title">Consuming the Alert Function</h3>
             </div>
             <div class="panel-body">
@@ -2627,64 +2485,6 @@ new PNotify({
                     <li style="margin-bottom: 1em;">Repeat step 1.</li>
                     <li style="margin-bottom: 1em;"><button class="btn btn-default source" onclick="release_alert();">Release alert()</button></li>
                 </ol>
-            </div>
-        </div>
-    </div>
-
-    <div id="theming" class="container page-section">
-        <div class="page-header">
-            <h1>Theming</h1>
-        </div>
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">Theming PNotify Notices</h3>
-            </div>
-            <div class="panel-body">
-                <p>
-                    The PNotify plugin can use either
-                    <a href="https://jqueryui.com/" target="_blank">jQuery UI</a>
-                    or <a href="https://getbootstrap.com/" target="_blank">Twitter
-                    Bootstrap</a> to style its look and feel, including colors
-                    and background textures. We recommend using the
-                    <a href="https://jqueryui.com/themeroller/" target="_blank">ThemeRoller tool</a>
-                    or <a href="http://bootswatchr.com/" target="_blank">Bootswatchr</a>
-                    to create and download custom themes that are easy to build
-                    and maintain.
-                </p>
-                <p>
-                    If a deeper level of customization is needed, there are
-                    widget-specific classes referenced within the
-                    pnotify.core.css stylesheet that can be modified.
-                    These classes are highlighted in bold below.
-                </p>
-                <h4>Sample markup with jQuery UI classes</h4>
-                <div>
-                    <div style="margin: 0; clear: both; padding-left: 10px;">
-                        &lt;div class="<strong>ui-pnotify</strong> ui-widget ui-helper-clearfix" style="width: 300px; opacity: 1; display: block; right: 15px; top: 15px;"&gt;
-                        <div style="margin: 0; clear: both; padding-left: 10px;">
-                            &lt;div class="<strong>ui-pnotify-container ui-pnotify-shadow</strong> ui-corner-all ui-state-highlight" style="min-height: 16px;"&gt;
-                            <div style="margin: 0; clear: both; padding-left: 10px;">
-                                &lt;div class="<strong>ui-pnotify-closer</strong>" style="cursor: pointer; visibility: hidden;"&gt;
-                                <div style="margin: 0; clear: both; padding-left: 10px;">
-                                    &lt;span class="ui-icon ui-icon-circle-close"&gt;&lt;/span&gt;
-                                </div>
-                                &lt;/div&gt;<br />
-                                &lt;div class="<strong>ui-pnotify-icon</strong>"&gt;
-                                <div style="margin: 0; clear: both; padding-left: 10px;">
-                                    &lt;span class="ui-icon ui-icon-info"&gt;&lt;/span&gt;
-                                </div>
-                                &lt;/div&gt;<br />
-                                &lt;h4 class="<strong>ui-pnotify-title</strong>"&gt;PNotify&lt;/h4&gt;<br />
-                                &lt;div class="<strong>ui-pnotify-text</strong>"&gt;Welcome to PNotify.&lt;/div&gt;
-                            </div>
-                            &lt;/div&gt;
-                        </div>
-                        &lt;/div&gt;
-                    </div>
-                    <div class="alert alert-info">
-                        Note: This is a sample of markup generated by PNotify, not markup you should use to create a notice. You don't need markup for that.
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -2709,6 +2509,8 @@ new PNotify({
         <a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
     <p id="copyright">&copy; 2011-2015 Hunter Perrin. All Rights Reserved.</p>
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-4fa2edbb6da70bd1" async="async"></script>
+
     <script>
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

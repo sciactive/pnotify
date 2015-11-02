@@ -10,6 +10,11 @@
         right: 0;
         left: 0;
         width: auto !important;
+        font-size: 1.2em;
+        -webkit-font-smoothing: antialiased;
+        -moz-font-smoothing: antialiased;
+        -ms-font-smoothing: antialiased;
+        font-smoothing: antialiased;
     }
     .ui-pnotify-mobile-able.ui-pnotify .ui-pnotify-shadow {
         -webkit-box-shadow: none;

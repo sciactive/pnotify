@@ -1,31 +1,36 @@
 /*
-Color Scheme: http://paletton.com/palette.php?uid=c1T3n2J040kpFHu00%2B%2BbAO2MMv2S45O
+Color Scheme: http://paletton.com/palette.php?uid=c1T3n2J040kpEKzpEKzbEPSOEyiNk9W
 */
 .brighttheme {
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+}
+.brighttheme.ui-pnotify-container {
+    padding: 18px;
+}
+.brighttheme .ui-pnotify-title {
+    margin-bottom: 12px;
 }
 .brighttheme-notice {
     background-color: #FFFFA2;
-    border: 1px solid #FFFF00;
+    border: 0 solid #FFFF00;
     color: #4F4F00;
 }
 .brighttheme-info {
     background-color: #8FCEDD;
-    border: 1px solid #0286A5;
+    border: 0 solid #0286A5;
     color: #012831;
 }
 .brighttheme-success {
     background-color: #AFF29A;
-    border: 1px solid #35DB00;
+    border: 0 solid #35DB00;
     color: #104300;
 }
-
 .brighttheme-error {
     background-color: #FFABA2;
     background-image: repeating-linear-gradient(135deg, transparent, transparent 35px, rgba(255,255,255,.3) 35px, rgba(255,255,255,.3) 70px);
-    border: 1px solid #FF1800;
+    border: 0 solid #FF1800;
     color: #4F0800;
 }
 .brighttheme-icon-notice,
@@ -54,6 +59,7 @@ Color Scheme: http://paletton.com/palette.php?uid=c1T3n2J040kpFHu00%2B%2BbAO2MMv
 .brighttheme-icon-notice {
     background-color: #2E2E00;
     color: #FFFFA2;
+    margin-top: 2px;
 }
 .brighttheme-icon-notice:after {
     content: "!";
@@ -61,6 +67,7 @@ Color Scheme: http://paletton.com/palette.php?uid=c1T3n2J040kpFHu00%2B%2BbAO2MMv
 .brighttheme-icon-info {
     background-color: #012831;
     color: #8FCEDD;
+    margin-top: 2px;
 }
 .brighttheme-icon-info:after {
     content: "i";
@@ -68,6 +75,7 @@ Color Scheme: http://paletton.com/palette.php?uid=c1T3n2J040kpFHu00%2B%2BbAO2MMv
 .brighttheme-icon-success {
     background-color: #104300;
     color: #AFF29A;
+    margin-top: 2px;
 }
 .brighttheme-icon-success:after {
     content: "\002713";
@@ -82,6 +90,7 @@ Color Scheme: http://paletton.com/palette.php?uid=c1T3n2J040kpFHu00%2B%2BbAO2MMv
     font-size: 0;
     line-height: 0;
     color: #FFABA2;
+    margin-top: 1px;
 }
 .brighttheme-icon-error:after {
     position: absolute;
@@ -116,4 +125,41 @@ Color Scheme: http://paletton.com/palette.php?uid=c1T3n2J040kpFHu00%2B%2BbAO2MMv
     -o-transform: rotate(180deg);
     -ms-transform: rotate(180deg);
     transform: rotate(180deg);
+}
+
+.brighttheme .ui-pnotify-action-bar {
+    padding-top: 12px;
+}
+.brighttheme .ui-pnotify-action-bar textarea, .brighttheme .ui-pnotify-action-bar input {
+    display: block;
+    width: 100%;
+    margin-bottom: 12px !important;
+}
+.brighttheme .ui-pnotify-action-button {
+    text-transform: uppercase;
+    font-weight: bold;
+    padding: 4px 8px;
+    border: none;
+    background: transparent;
+}
+
+.brighttheme .ui-pnotify-action-button.btn-primary {
+    border: none;
+    border-radius: 0;
+}
+.brighttheme-notice .ui-pnotify-action-button.btn-primary {
+    background-color: #FFFF00;
+    color: #4F4F00;
+}
+.brighttheme-info .ui-pnotify-action-button.btn-primary {
+    background-color: #0286A5;
+    color: #012831;
+}
+.brighttheme-success .ui-pnotify-action-button.btn-primary {
+    background-color: #35DB00;
+    color: #104300;
+}
+.brighttheme-error .ui-pnotify-action-button.btn-primary {
+    background-color: #FF1800;
+    color: #4F0800;
 }

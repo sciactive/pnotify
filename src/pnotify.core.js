@@ -1,7 +1,7 @@
 /*
 PNotify 2.1.0 sciactive.com/pnotify/
-(C) 2015 Hunter Perrin
-license GPL/LGPL/MPL
+(C) 2015 Hunter Perrin; Google, Inc.
+license Apache-2.0
 */
 /*
  * ====== PNotify ======
@@ -9,11 +9,10 @@ license GPL/LGPL/MPL
  * http://sciactive.com/pnotify/
  *
  * Copyright 2009-2015 Hunter Perrin
+ * Copyright 2015 Google, Inc.
  *
- * Triple licensed under the GPL, LGPL, and MPL.
- * 	http://gnu.org/licenses/gpl.html
- * 	http://gnu.org/licenses/lgpl.html
- * 	http://mozilla.org/MPL/MPL-1.1.html
+ * Licensed under Apache License, Version 2.0.
+ * 	http://www.apache.org/licenses/LICENSE-2.0
  */
 
 (function (factory) {
@@ -32,8 +31,8 @@ license GPL/LGPL/MPL
         dir1: "down",
         dir2: "left",
         push: "bottom",
-        spacing1: 25,
-        spacing2: 25,
+        spacing1: 36,
+        spacing2: 36,
         context: $("body")
     };
     var posTimer, // Position all timer.
@@ -91,17 +90,13 @@ license GPL/LGPL/MPL
             // Set icon to true to use the default icon for the selected
             // style/type, false for no icon, or a string for your own icon class.
             icon: true,
-            // Opacity of the notice.
-            opacity: 1,
-            // The animation to use when displaying and hiding the notice. "none",
-            // "show", "fade", and "slide" are built in to jQuery. Others require jQuery
-            // UI. Use an object with effect_in and effect_out to use different effects.
+            // The animation to use when displaying and hiding the notice. "none"
+            // and "fade" are supported through CSS. Others are supported
+            // through the Animate module and Animate.css.
             animation: "fade",
-            // Speed at which the notice animates in and out. "slow", "def" or "normal",
-            // "fast" or number of milliseconds.
-            animate_speed: "slow",
-            // Specify a specific duration of position animation
-            position_animate_speed: 500,
+            // Speed at which the notice animates in and out. "slow", "normal",
+            // or "fast". Respectively, 600ms, 400ms, 200ms.
+            animate_speed: "normal",
             // Display a drop shadow.
             shadow: true,
             // After a delay, remove the notice.
@@ -194,6 +189,10 @@ license GPL/LGPL/MPL
                     PNotify.positionAll();
                 }
             });
+            // Maybe we need to fade in/out.
+            if (this.options.animation === "fade") {
+                this.elem.addClass("ui-pnotify-fade-"+this.options.animate_speed);
+            }
             // Create a container for the notice contents.
             this.container = $("<div />", {
                 "class": this.styles.container+" ui-pnotify-container "+(this.options.type === "error" ? this.styles.error : (this.options.type === "info" ? this.styles.info : (this.options.type === "success" ? this.styles.success : this.styles.notice))),
@@ -284,6 +283,11 @@ license GPL/LGPL/MPL
             var oldOpts = this.options;
             // Then update to the new options.
             this.parseOptions(oldOpts, options);
+            // Maybe we need to fade in/out.
+            this.elem.removeClass("ui-pnotify-fade-slow ui-pnotify-fade-normal ui-pnotify-fade-fast");
+            if (this.options.animation === "fade") {
+                this.elem.addClass("ui-pnotify-fade-"+this.options.animate_speed);
+            }
             // Update the corner class.
             if (this.options.cornerclass !== oldOpts.cornerclass) {
                 this.container.removeClass("ui-corner-all "+oldOpts.cornerclass).addClass(this.options.cornerclass);
@@ -360,10 +364,6 @@ license GPL/LGPL/MPL
             if (this.options.min_height !== oldOpts.min_height) {
                 this.container.animate({minHeight: this.options.min_height});
             }
-            // Update the opacity.
-            if (this.options.opacity !== oldOpts.opacity) {
-                this.elem.fadeTo(this.options.animate_speed, this.options.opacity);
-            }
             // Update the timed hiding.
             if (!this.options.hide) {
                 this.cancelRemove();
@@ -391,16 +391,6 @@ license GPL/LGPL/MPL
             // Try to put it in the right position.
             if (this.options.stack.push !== "top") {
                 this.position(true);
-            }
-            // First show it, then set its opacity, then hide it.
-            if (this.options.animation === "fade" || this.options.animation.effect_in === "fade") {
-                // If it's fading in, it should start at 0.
-                this.elem.show().fadeTo(0, 0).hide();
-            } else {
-                // Or else it should be set to the opacity.
-                if (this.options.opacity !== 1) {
-                    this.elem.show().fadeTo(0, this.options.opacity).hide();
-                }
             }
             this.animateIn(function(){
                 that.queuePosition(true);
@@ -437,8 +427,9 @@ license GPL/LGPL/MPL
                 that.runModules('afterClose');
                 that.queuePosition(true);
                 // If we're supposed to remove the notice from the DOM, do it.
-                if (that.options.remove)
+                if (that.options.remove) {
                     that.elem.detach();
+                }
                 // Run the modules.
                 that.runModules('beforeDestroy');
                 // Remove object from PNotify.notices to prevent memory leak (issue #49)
@@ -492,75 +483,62 @@ license GPL/LGPL/MPL
         },
 
         // Animate the notice in.
-        animateIn: function(callback, speed){
+        animateIn: function(callback){
             // Declare that the notice is animating in.
             this.animating = "in";
-            var that = this;
+            var that = this, timer;
             callback = (function(){
-                this.call();
-                // Declare that the notice has completed animating.
-                that.animating = false;
+                if (timer) {
+                    clearTimeout(timer);
+                }
+                if (that.elem.is(":visible")) {
+                    if (this) {
+                        this.call();
+                    }
+                    // Declare that the notice has completed animating.
+                    that.animating = false;
+                }
             }).bind(callback);
 
-            var animate_speed = typeof speed !== "undefined" ? speed : this.options.animate_speed;
-
-            var animation;
-            if (typeof this.options.animation.effect_in !== "undefined") {
-                animation = this.options.animation.effect_in;
+            if (this.options.animation === "fade") {
+                this.elem.one('webkitTransitionEnd mozTransitionEnd MSTransitionEnd oTransitionEnd transitionend', callback).addClass("ui-pnotify-in");
+                this.elem.css("opacity"); // This line is necessary for some reason. Some notices don't fade without it.
+                this.elem.addClass("ui-pnotify-fade-in");
+                // Just in case the event doesn't fire, call it after 650 ms.
+                timer = setTimeout(callback, 650);
             } else {
-                animation = this.options.animation;
-            }
-            if (animation === "show") {
-                this.elem.show(animate_speed, callback);
-            } else if (animation === "fade") {
-                this.elem.show().fadeTo(animate_speed, this.options.opacity, callback);
-            } else if (animation === "slide") {
-                this.elem.slideDown(animate_speed, callback);
-            } else if (typeof animation === "function") {
-                animation("in", callback, this.elem);
-            } else {
-                this.elem.show();
+                this.elem.addClass("ui-pnotify-in");
                 callback();
             }
-            if (animation !== "slide") {
-                this.elem.css("overflow", "visible");
-            }
-            this.container.css("overflow", "hidden");
         },
 
         // Animate the notice out.
         animateOut: function(callback){
             // Declare that the notice is animating out.
             this.animating = "out";
-            var that = this;
+            var that = this, timer;
             callback = (function(){
-                this.call();
-                // Declare that the notice has completed animating.
-                that.animating = false;
+                if (timer) {
+                    clearTimeout(timer);
+                }
+                if (that.elem.css("opacity") == "0" || !that.elem.is(":visible")) {
+                    that.elem.removeClass("ui-pnotify-in");
+                    if (this) {
+                        this.call();
+                    }
+                    // Declare that the notice has completed animating.
+                    that.animating = false;
+                }
             }).bind(callback);
 
-            var animation;
-            if (typeof this.options.animation.effect_out !== "undefined") {
-                animation = this.options.animation.effect_out;
+            if (this.options.animation === "fade") {
+                this.elem.one('webkitTransitionEnd mozTransitionEnd MSTransitionEnd oTransitionEnd transitionend', callback).removeClass("ui-pnotify-fade-in");
+                // Just in case the event doesn't fire, call it after 650 ms.
+                timer = setTimeout(callback, 650);
             } else {
-                animation = this.options.animation;
-            }
-            if (animation === "show") {
-                this.elem.hide(this.options.animate_speed, callback);
-            } else if (animation === "fade") {
-                this.elem.fadeOut(this.options.animate_speed, callback);
-            } else if (animation === "slide") {
-                this.elem.slideUp(this.options.animate_speed, callback);
-            } else if (typeof animation === "function") {
-                animation("out", callback, this.elem);
-            } else {
-                this.elem.hide();
+                this.elem.removeClass("ui-pnotify-in");
                 callback();
             }
-            if (animation !== "slide") {
-                this.elem.css("overflow", "visible");
-            }
-            this.container.css("overflow", "hidden");
         },
 
         // Position the notice. dont_skip_hidden causes the notice to
@@ -584,12 +562,12 @@ license GPL/LGPL/MPL
             if (typeof stack.addpos2 !== "number") {
                 stack.addpos2 = 0;
             }
-            var hidden = !elem.is(":visible");
+            var hidden = !elem.hasClass("ui-pnotify-in");
             // Skip this notice if it's not shown.
             if (!hidden || dontSkipHidden) {
+                // Add animate class by default.
+                elem.addClass("ui-pnotify-move");
                 var curpos1, curpos2;
-                // Store what will need to be animated.
-                var animate = {};
                 // Calculate the current pos1 value.
                 var csspos1;
                 switch (stack.dir1) {
@@ -641,33 +619,24 @@ license GPL/LGPL/MPL
                     stack.nextpos2 = stack.firstpos2;
                 }
                 // Check that it's not beyond the viewport edge.
-                if ((stack.dir1 === "down" && stack.nextpos1 + elem.height() > (stack.context.is(body) ? jwindow.height() : stack.context.prop('scrollHeight')) ) ||
-                    (stack.dir1 === "up" && stack.nextpos1 + elem.height() > (stack.context.is(body) ? jwindow.height() : stack.context.prop('scrollHeight')) ) ||
-                    (stack.dir1 === "left" && stack.nextpos1 + elem.width() > (stack.context.is(body) ? jwindow.width() : stack.context.prop('scrollWidth')) ) ||
-                    (stack.dir1 === "right" && stack.nextpos1 + elem.width() > (stack.context.is(body) ? jwindow.width() : stack.context.prop('scrollWidth')) ) ) {
+                if (
+                        (stack.dir1 === "down" && stack.nextpos1 + elem.height() > (stack.context.is(body) ? jwindow.height() : stack.context.prop('scrollHeight')) ) ||
+                        (stack.dir1 === "up" && stack.nextpos1 + elem.height() > (stack.context.is(body) ? jwindow.height() : stack.context.prop('scrollHeight')) ) ||
+                        (stack.dir1 === "left" && stack.nextpos1 + elem.width() > (stack.context.is(body) ? jwindow.width() : stack.context.prop('scrollWidth')) ) ||
+                        (stack.dir1 === "right" && stack.nextpos1 + elem.width() > (stack.context.is(body) ? jwindow.width() : stack.context.prop('scrollWidth')) )
+                    ) {
                     // If it is, it needs to go back to the first pos1, and over on pos2.
                     stack.nextpos1 = stack.firstpos1;
                     stack.nextpos2 += stack.addpos2 + (typeof stack.spacing2 === "undefined" ? 25 : stack.spacing2);
                     stack.addpos2 = 0;
                 }
-                // Animate if we're moving on dir2.
-                if (stack.animation && stack.nextpos2 < curpos2) {
-                    switch (stack.dir2) {
-                        case "down":
-                            animate.top = stack.nextpos2+"px";
-                            break;
-                        case "up":
-                            animate.bottom = stack.nextpos2+"px";
-                            break;
-                        case "left":
-                            animate.right = stack.nextpos2+"px";
-                            break;
-                        case "right":
-                            animate.left = stack.nextpos2+"px";
-                            break;
-                    }
-                } else {
-                    if (typeof stack.nextpos2 === "number") {
+                if (typeof stack.nextpos2 === "number") {
+                    if (!stack.animation) {
+                        elem.removeClass("ui-pnotify-move");
+                        elem.css(csspos2, stack.nextpos2+"px");
+                        elem.css(csspos2);
+                        elem.addClass("ui-pnotify-move");
+                    } else {
                         elem.css(csspos2, stack.nextpos2+"px");
                     }
                 }
@@ -688,32 +657,14 @@ license GPL/LGPL/MPL
                 }
                 // Move the notice on dir1.
                 if (typeof stack.nextpos1 === "number") {
-                    // Animate if we're moving toward the first pos.
-                    if (stack.animation && (curpos1 > stack.nextpos1 || animate.top || animate.bottom || animate.right || animate.left)) {
-                        switch (stack.dir1) {
-                            case "down":
-                                animate.top = stack.nextpos1+"px";
-                                break;
-                            case "up":
-                                animate.bottom = stack.nextpos1+"px";
-                                break;
-                            case "left":
-                                animate.right = stack.nextpos1+"px";
-                                break;
-                            case "right":
-                                animate.left = stack.nextpos1+"px";
-                                break;
-                        }
+                    if (!stack.animation) {
+                        elem.removeClass("ui-pnotify-move");
+                        elem.css(csspos1, stack.nextpos1+"px");
+                        elem.css(csspos1);
+                        elem.addClass("ui-pnotify-move");
                     } else {
                         elem.css(csspos1, stack.nextpos1+"px");
                     }
-                }
-                // Run the animation.
-                if (animate.top || animate.bottom || animate.right || animate.left) {
-                    elem.animate(animate, {
-                        duration: this.options.position_animate_speed,
-                        queue: false
-                    });
                 }
                 // Calculate the next dir1 position.
                 switch (stack.dir1) {
@@ -751,10 +702,13 @@ license GPL/LGPL/MPL
                 window.clearTimeout(this.timer);
             }
             if (this.state === "closing") {
-                // If it's animating out, animate back in really quickly.
-                this.elem.stop(true);
+                // If it's animating out, stop it.
                 this.state = "open";
-                this.animateIn(function(){}, 100);
+                this.animating = false;
+                this.elem.addClass("ui-pnotify-in");
+                if (this.options.animation === "fade") {
+                    this.elem.addClass("ui-pnotify-fade-in");
+                }
             }
             return this;
         },
@@ -834,17 +788,6 @@ license GPL/LGPL/MPL
                 success_icon: "ui-icon ui-icon-circle-check",
                 error: "ui-state-error",
                 error_icon: "ui-icon ui-icon-alert"
-            },
-            bootstrap2: {
-                container: "alert",
-                notice: "",
-                notice_icon: "icon-exclamation-sign",
-                info: "alert-info",
-                info_icon: "icon-info-sign",
-                success: "alert-success",
-                success_icon: "icon-ok-sign",
-                error: "alert-error",
-                error_icon: "icon-warning-sign"
             },
             bootstrap3: {
                 container: "alert",
