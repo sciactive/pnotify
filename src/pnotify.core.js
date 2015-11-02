@@ -54,7 +54,7 @@ license GPL/LGPL/MPL
             }, 10);
         });
     };
-    PNotify = function(options){
+    var PNotify = function(options){
         this.parseOptions(options);
         this.init();
     };
