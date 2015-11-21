@@ -1,6 +1,6 @@
 [![Stories in Ready](https://badge.waffle.io/sciactive/pnotify.png?label=ready&title=Ready)](http://waffle.io/sciactive/pnotify) [![Stories in Progress](https://badge.waffle.io/sciactive/pnotify.png?label=in progress&title=In Progress)](http://waffle.io/sciactive/pnotify)
 
-PNotify is a JavaScript notification plugin, developed by SciActive. PNotify can provide [desktop notifications](http://sciactive.com/pnotify/#web-notifications) based on the [web notifications draft](http://www.w3.org/TR/notifications/). If desktop notifications are not available or not allowed, PNotify will fall back to displaying the notice as a regular, in-browser notice.
+PNotify is a JavaScript notification plugin, developed by SciActive. PNotify can also provide [desktop notifications](http://sciactive.com/pnotify/#web-notifications) based on the [Web Notifications spec](http://www.w3.org/TR/notifications/). If desktop notifications are not available or not allowed, PNotify will fall back to displaying the notice as a regular, in-browser notice.
 
 Demos
 =====
@@ -15,7 +15,9 @@ jQuery (1.6 or higher)
 Getting Started
 ===============
 
-PNotify comes with the following files:
+You can include PNotify using Bower, NPM, or a custom download.
+
+PNotify custom download comes with the following files:
 
 * `pnotify.custom.js` & `pnotify.custom.min.js` (Minified)
 * `pnotify.custom.css` & `pnotify.custom.min.css` (Minified)
@@ -123,7 +125,7 @@ Configuration Defaults / Options
 * `title_escape: false` - Whether to escape the content of the title. (Not allow HTML.)
 * `text: false` - The notice's text.
 * `text_escape: false` - Whether to escape the content of the text. (Not allow HTML.)
-* `styling: "brighttheme"` - What styling classes to use. (Can be either "brighttheme", "jqueryui", "bootstrap2", "bootstrap3", "fontawesome", or a custom style object. See the source in the end of pnotify.core.js for the properties in a style object.)
+* `styling: "brighttheme"` - What styling classes to use. (Can be either "brighttheme", "jqueryui", "bootstrap2", "bootstrap3", "fontawesome", or a custom style object. See the source in the end of pnotify.js for the properties in a style object.)
 * `addclass: ""` - Additional classes to be added to the notice. (For custom styling.)
 * `cornerclass: ""` - Class to be added to the notice for corner styling.
 * `auto_display: true` - Display the notice when it is created. Turn this off to add notifications to the history without displaying them.

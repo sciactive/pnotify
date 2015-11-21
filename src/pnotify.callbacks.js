@@ -1,16 +1,16 @@
 // Callbacks
-(function (factory) {
-    if (typeof exports === 'object' && typeof module !== 'undefined') {
-        // CommonJS
-        module.exports = factory(require('jquery'), require('pnotify'));
-    } else if (typeof define === 'function' && define.amd) {
+(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
         // AMD. Register as a module.
         define('pnotify.callbacks', ['jquery', 'pnotify'], factory);
+    } else if (typeof exports === 'object' && typeof module !== 'undefined') {
+        // CommonJS
+        module.exports = factory(require('jquery'), require('./pnotify'));
     } else {
         // Browser globals
-        factory(jQuery, PNotify);
+        factory(root.jQuery, root.PNotify);
     }
-}(function($, PNotify){
+}(this, function($, PNotify){
     var _init   = PNotify.prototype.init,
         _open   = PNotify.prototype.open,
         _remove = PNotify.prototype.remove;

@@ -1,7 +1,7 @@
 {
     "name": "pnotify",
-    "version": "2.1.0",
-    "main": "src/pnotify.core.js",
+    "version": "2.2.0",
+    "main": "src/pnotify.js",
     "repository": {
         "type": "git",
         "url": "https://github.com/sciactive/pnotify.git"
@@ -11,5 +11,8 @@
     "bugs": {
         "url": "https://github.com/sciactive/pnotify/issues"
     },
-    "homepage": "https://github.com/sciactive/pnotify"
+    "homepage": "https://github.com/sciactive/pnotify",
+    "dependencies": {
+        "jquery": ">=1.6.0"
+    }
 }

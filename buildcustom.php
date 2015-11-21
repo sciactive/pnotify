@@ -7,7 +7,7 @@ $dir = !empty($_REQUEST['min']) ? 'dist' : 'src';
 $min = !empty($_REQUEST['min']) ? 'min.' : '';
 $files = explode('-', preg_replace("/[^a-z0-9-]/", '', substr($_REQUEST['modules'], 0, 1024)));
 if (!$files || $files === ['']) {
-    $content = file_get_contents($dir.'/pnotify.core.'.$min.$ext);
+    $content = file_get_contents($dir.'/pnotify.'.$ext);
     header("Content-Disposition: $type; filename=pnotify.custom.$min$ext");
     header("Content-Length: ".strlen($content));
     header("Content-Type: $mime");
@@ -16,11 +16,11 @@ if (!$files || $files === ['']) {
 }
 sort($files);
 
-$content = file_get_contents("$dir/pnotify.core.$min$ext");
+$content = file_get_contents("$dir/pnotify.$ext");
 foreach ($files as $cur_file) {
-    $filename = "$dir/pnotify.$cur_file.$min$ext";
+    $filename = "$dir/pnotify.$cur_file.$ext";
     if (!file_exists($filename)) {
-        $filename_other = "$dir/pnotify.$cur_file.$min".($ext === "css" ? "js" : "css");
+        $filename_other = "$dir/pnotify.$cur_file.".($ext === "css" ? "js" : "css");
         if (file_exists($filename_other)) {
             continue;
         }

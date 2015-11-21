@@ -1,5 +1,5 @@
 /*
-PNotify 2.1.0 sciactive.com/pnotify/
+PNotify 2.2.0 sciactive.com/pnotify/
 (C) 2015 Hunter Perrin; Google, Inc.
 license Apache-2.0
 */
@@ -15,18 +15,21 @@ license Apache-2.0
  * 	http://www.apache.org/licenses/LICENSE-2.0
  */
 
-(function (factory) {
-    if (typeof exports === 'object' && typeof module !== 'undefined') {
-        // CommonJS
-        module.exports = factory(require('jquery'));
-    } else if (typeof define === 'function' && define.amd) {
+(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
         // AMD. Register as a module.
-        define('pnotify', ['jquery'], factory);
+        define('pnotify-root', function(){
+            return root;
+        });
+        define('pnotify', ['jquery', 'pnotify-root'], factory);
+    } else if (typeof exports === 'object' && typeof module !== 'undefined') {
+        // CommonJS
+        module.exports = factory(require('jquery'), global || root);
     } else {
         // Browser globals
-        factory(jQuery);
+        root.PNotify = factory(root.jQuery, root);
     }
-}(function($){
+}(this, function($, root){
     var default_stack = {
         dir1: "down",
         dir2: "left",
@@ -37,12 +40,12 @@ license Apache-2.0
     };
     var posTimer, // Position all timer.
         body,
-        jwindow = $(window);
+        jwindow = $(root);
     // Set global variables.
     var do_when_ready = function(){
         body = $("body");
         PNotify.prototype.options.stack.context = body;
-        jwindow = $(window);
+        jwindow = $(root);
         // Reposition the notices when the window resizes.
         jwindow.bind('resize', function(){
             if (posTimer) {
@@ -53,13 +56,13 @@ license Apache-2.0
             }, 10);
         });
     };
-    PNotify = function(options){
+    var PNotify = function(options){
         this.parseOptions(options);
         this.init();
     };
     $.extend(PNotify.prototype, {
         // The current version of PNotify.
-        version: "2.1.0",
+        version: "2.2.0",
 
         // === Options ===
 
@@ -418,7 +421,7 @@ license Apache-2.0
 
             var that = this;
             if (this.timer) {
-                window.clearTimeout(this.timer);
+                root.clearTimeout(this.timer);
                 this.timer = null;
             }
             this.animateOut(function(){
@@ -699,7 +702,7 @@ license Apache-2.0
         // Cancel any pending removal timer.
         cancelRemove: function(){
             if (this.timer) {
-                window.clearTimeout(this.timer);
+                root.clearTimeout(this.timer);
             }
             if (this.state === "closing") {
                 // If it's animating out, stop it.
@@ -717,7 +720,7 @@ license Apache-2.0
             var that = this;
             // Cancel any current removal timer.
             this.cancelRemove();
-            this.timer = window.setTimeout(function(){
+            this.timer = root.setTimeout(function(){
                 that.remove(true);
             }, (isNaN(this.options.delay) ? 0 : this.options.delay));
             return this;
@@ -814,7 +817,7 @@ license Apache-2.0
         error_icon: "fa fa-warning"
     });
 
-    if (document.body) {
+    if (root.document.body) {
         do_when_ready();
     } else {
         $(do_when_ready);

@@ -1,16 +1,16 @@
 // Mobile
-(function (factory) {
-    if (typeof exports === 'object' && typeof module !== 'undefined') {
-        // CommonJS
-        module.exports = factory(require('jquery'), require('pnotify'));
-    } else if (typeof define === 'function' && define.amd) {
+(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
         // AMD. Register as a module.
         define('pnotify.mobile', ['jquery', 'pnotify'], factory);
+    } else if (typeof exports === 'object' && typeof module !== 'undefined') {
+        // CommonJS
+        module.exports = factory(require('jquery'), require('./pnotify'));
     } else {
         // Browser globals
-        factory(jQuery, PNotify);
+        factory(root.jQuery, root.PNotify);
     }
-}(function($, PNotify){
+}(this, function($, PNotify){
     PNotify.prototype.options.mobile = {
         // Let the user swipe the notice away.
         swipe_dismiss: true,

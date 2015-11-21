@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>RequireJS Test</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="../../src/pnotify.css">
+        <link rel="stylesheet" href="../../src/pnotify.brighttheme.css">
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.22/require.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
+        <script type="text/javascript" src="../../src/pnotify.js"></script>
+        <script type="text/javascript" src="../../src/pnotify.reference.js"></script>
+        <script type="text/javascript">
+            requirejs(['jquery', 'pnotify'], function($, PNotify){
+                $(function(){
+                    $("#button1").click(function(){
+                        new PNotify({
+                            title: "Yay!",
+                            text: "It works!"
+                        });
+                    });
+                });
+            });
+            requirejs(['jquery', 'pnotify', 'pnotify.reference'], function($, PNotify){
+                $(function(){
+                    $("#button2").click(function(){
+                        new PNotify({
+                            title: "Yay!",
+                            text: "It works!",
+                            reference: {
+                                put_thing: true
+                            }
+                        });
+                    });
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <div style="padding: 50vh 0; text-align: center;">
+            <button id="button1">Test PNotify with RequireJS</button><br>
+            <button id="button2">PNotify Module with RequireJS</button>
+        </div>
+    </body>
+</html>

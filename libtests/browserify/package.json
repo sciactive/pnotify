@@ -1,0 +1,20 @@
+{
+  "name": "pnotify-test-browserify",
+  "version": "0.0.0",
+  "description": "Just a test.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "browserify index.js -o bundle.js"
+  },
+  "author": "",
+  "license": "none",
+  "dependencies": {
+    "jquery": "~2.1.4",
+    "pnotify": "~2.2.0"
+  },
+  "browser": {
+    "pnotify": "../../src/pnotify.js",
+    "pnotify.reference": "../../src/pnotify.reference.js"
+  }
+}
