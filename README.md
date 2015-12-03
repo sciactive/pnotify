@@ -153,6 +153,7 @@ Desktop Module
 * `fallback: true` - If desktop notifications are not supported or allowed, fall back to a regular notice.
 * `icon: null` - The URL of the icon to display. If false, no icon will show. If null, a default icon will show.
 * `tag: null` - Using a tag lets you update an existing notice, or keep from duplicating notices between tabs. If you leave tag null, one will be generated, facilitating the "update" function.
+* `text: null` - Optionally display different text for the desktop
 
 `}`
 
