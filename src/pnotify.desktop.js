@@ -70,7 +70,7 @@
             }
             notice.desktop = notify(notice.options.title, {
                 icon: this.icon,
-                body: notice.options.text,
+                body: options.text || notice.options.text,
                 tag: this.tag
             });
             if (!("close" in notice.desktop) && ("cancel" in notice.desktop)) {
