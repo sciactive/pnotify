@@ -141,6 +141,7 @@ license Apache-2.0
 
         state: "initializing", // The state can be "initializing", "opening", "open", "closing", and "closed".
         timer: null, // Auto close timer.
+        animTimer: null, // Animation timer.
         styles: null,
         elem: null,
         container: null,
@@ -319,7 +320,7 @@ license Apache-2.0
                     this.title_container.html(this.options.title);
                 }
                 if (oldOpts.title === false) {
-                    this.title_container.slideDown(200)
+                    this.title_container.slideDown(200);
                 }
             }
             // Update the text.
@@ -332,7 +333,7 @@ license Apache-2.0
                     this.text_container.html(this.options.insert_brs ? String(this.options.text).replace(/\n/g, "<br />") : this.options.text);
                 }
                 if (oldOpts.text === false) {
-                    this.text_container.slideDown(200)
+                    this.text_container.slideDown(200);
                 }
             }
             // Change the notice type.
@@ -467,7 +468,7 @@ license Apache-2.0
             var optArray = [options, moreOptions], curOpts;
             for (var curIndex=0; curIndex < optArray.length; curIndex++) {
                 curOpts = optArray[curIndex];
-                if (typeof curOpts == "undefined") {
+                if (typeof curOpts === "undefined") {
                     break;
                 }
                 if (typeof curOpts !== 'object') {
@@ -489,10 +490,13 @@ license Apache-2.0
         animateIn: function(callback){
             // Declare that the notice is animating in.
             this.animating = "in";
-            var that = this, timer;
+            var that = this;
             callback = (function(){
-                if (timer) {
-                    clearTimeout(timer);
+                if (that.animTimer) {
+                    clearTimeout(that.animTimer);
+                }
+                if (that.animating !== "in") {
+                    return;
                 }
                 if (that.elem.is(":visible")) {
                     if (this) {
@@ -500,6 +504,8 @@ license Apache-2.0
                     }
                     // Declare that the notice has completed animating.
                     that.animating = false;
+                } else {
+                    that.animTimer = setTimeout(callback, 40);
                 }
             }).bind(callback);
 
@@ -508,7 +514,7 @@ license Apache-2.0
                 this.elem.css("opacity"); // This line is necessary for some reason. Some notices don't fade without it.
                 this.elem.addClass("ui-pnotify-fade-in");
                 // Just in case the event doesn't fire, call it after 650 ms.
-                timer = setTimeout(callback, 650);
+                this.animTimer = setTimeout(callback, 650);
             } else {
                 this.elem.addClass("ui-pnotify-in");
                 callback();
@@ -519,10 +525,13 @@ license Apache-2.0
         animateOut: function(callback){
             // Declare that the notice is animating out.
             this.animating = "out";
-            var that = this, timer;
+            var that = this;
             callback = (function(){
-                if (timer) {
-                    clearTimeout(timer);
+                if (that.animTimer) {
+                    clearTimeout(that.animTimer);
+                }
+                if (that.animating !== "out") {
+                    return;
                 }
                 if (that.elem.css("opacity") == "0" || !that.elem.is(":visible")) {
                     that.elem.removeClass("ui-pnotify-in");
@@ -531,13 +540,16 @@ license Apache-2.0
                     }
                     // Declare that the notice has completed animating.
                     that.animating = false;
+                } else {
+                    // In case this was called before the notice finished animating.
+                    that.animTimer = setTimeout(callback, 40);
                 }
             }).bind(callback);
 
             if (this.options.animation === "fade") {
                 this.elem.one('webkitTransitionEnd mozTransitionEnd MSTransitionEnd oTransitionEnd transitionend', callback).removeClass("ui-pnotify-fade-in");
                 // Just in case the event doesn't fire, call it after 650 ms.
-                timer = setTimeout(callback, 650);
+                this.animTimer = setTimeout(callback, 650);
             } else {
                 this.elem.removeClass("ui-pnotify-in");
                 callback();
@@ -703,6 +715,9 @@ license Apache-2.0
         cancelRemove: function(){
             if (this.timer) {
                 root.clearTimeout(this.timer);
+            }
+            if (this.animTimer) {
+                root.clearTimeout(this.animTimer);
             }
             if (this.state === "closing") {
                 // If it's animating out, stop it.
