@@ -18,10 +18,9 @@ license Apache-2.0
 (function (root, factory) {
     if (typeof define === 'function' && define.amd) {
         // AMD. Register as a module.
-        define('pnotify-root', function(){
-            return root;
+        define('pnotify', ['jquery'], function($){
+            return factory($, root);
         });
-        define('pnotify', ['jquery', 'pnotify-root'], factory);
     } else if (typeof exports === 'object' && typeof module !== 'undefined') {
         // CommonJS
         module.exports = factory(require('jquery'), global || root);
