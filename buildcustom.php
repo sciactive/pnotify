@@ -16,7 +16,13 @@ if (!$files || $files === ['']) {
 }
 sort($files);
 
-$content = file_get_contents("$dir/pnotify.$ext");
+if ($min === '') {
+    $content = "/* PNotify modules included in this custom build file:\n".
+    implode("\n", $files).
+    "\n*/\n";
+}
+
+$content .= file_get_contents("$dir/pnotify.$ext");
 foreach ($files as $cur_file) {
     $filename = "$dir/pnotify.$cur_file.$ext";
     if (!file_exists($filename)) {
