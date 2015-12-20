@@ -29,6 +29,7 @@ license Apache-2.0
         root.PNotify = factory(root.jQuery, root);
     }
 }(this, function($, root){
+var init = function(root){
     var default_stack = {
         dir1: "down",
         dir2: "left",
@@ -763,6 +764,7 @@ license Apache-2.0
     $.extend(PNotify, {
         // This holds all the notices.
         notices: [],
+        reload: init,
         removeAll: function(){
             $.each(PNotify.notices, function(){
                 if (this.remove) {
@@ -866,4 +868,6 @@ license Apache-2.0
         $(do_when_ready);
     }
     return PNotify;
+};
+return init(root);
 }));

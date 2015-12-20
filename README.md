@@ -257,6 +257,7 @@ The callback options all expect one argument, a function, which will be called w
 Utility Functions
 =================
 
+* `PNotify.reload(root)` - Reinitialize PNotify. PNotify, in a browser, is initialized with window as the root. Returns the created PNotify object.
 * `PNotify.removeAll()` - Remove all notices.
 * `PNotify.removeStack(stack)` - Remove all the notices in a stack.
 * `PNotify.positionAll(animate)` - Reposition the notices, optionally animating their movement.
