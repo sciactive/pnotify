@@ -25,35 +25,38 @@
         // The various displayed text, helps facilitating internationalization.
         labels: {
             close: "Close",
-            stick: "Stick"
+            stick: "Stick",
+            unstick: "Unstick"
+        },
+        // The classes to use for button icons. Leave them null to use the classes from the styling you're using.
+        classes: {
+            closer: null,
+            pin_up: null,
+            pin_down: null
         }
     };
     PNotify.prototype.modules.buttons = {
-        // This lets us update the options available in the closures.
-        myOptions: null,
-
         closer: null,
         sticker: null,
 
         init: function(notice, options){
             var that = this;
-            this.myOptions = options;
             notice.elem.on({
                 "mouseenter": function(e){
                     // Show the buttons.
-                    if (that.myOptions.sticker && (!(notice.options.nonblock && notice.options.nonblock.nonblock) || that.myOptions.show_on_nonblock)) {
-                        that.sticker.trigger("pnotify_icon").css("visibility", "visible");
+                    if (that.options.sticker && (!(notice.options.nonblock && notice.options.nonblock.nonblock) || that.options.show_on_nonblock)) {
+                        that.sticker.trigger("pnotify:buttons:toggleStick").css("visibility", "visible");
                     }
-                    if (that.myOptions.closer && (!(notice.options.nonblock && notice.options.nonblock.nonblock) || that.myOptions.show_on_nonblock)) {
+                    if (that.options.closer && (!(notice.options.nonblock && notice.options.nonblock.nonblock) || that.options.show_on_nonblock)) {
                         that.closer.css("visibility", "visible");
                     }
                 },
                 "mouseleave": function(e){
                     // Hide the buttons.
-                    if (that.myOptions.sticker_hover) {
+                    if (that.options.sticker_hover) {
                         that.sticker.css("visibility", "hidden");
                     }
-                    if (that.myOptions.closer_hover) {
+                    if (that.options.closer_hover) {
                         that.closer.css("visibility", "hidden");
                     }
                 }
@@ -63,6 +66,9 @@
             this.sticker = $("<div />", {
                 "class": "ui-pnotify-sticker",
                 "aria-role": "button",
+                "aria-pressed": notice.options.hide ? "false" : "true",
+                "tabindex": "0",
+                "title": notice.options.hide ? options.labels.stick : options.labels.unstick,
                 "css": {
                     "cursor": "pointer",
                     "visibility": options.sticker_hover ? "hidden" : "visible"
@@ -74,13 +80,21 @@
                     } else {
                         notice.cancelRemove();
                     }
-                    $(this).trigger("pnotify_icon");
+                    $(this).trigger("pnotify:buttons:toggleStick");
                 }
             })
-            .bind("pnotify_icon", function(){
-                $(this).children().removeClass(notice.styles.pin_up+" "+notice.styles.pin_down).addClass(notice.options.hide ? notice.styles.pin_up : notice.styles.pin_down);
+            .bind("pnotify:buttons:toggleStick", function(){
+                var pin_up = that.options.classes.pin_up === null ? notice.styles.pin_up : that.options.classes.pin_up;
+                var pin_down = that.options.classes.pin_down === null ? notice.styles.pin_down : that.options.classes.pin_down;
+                $(this)
+                .attr("title", notice.options.hide ? that.options.labels.stick : that.options.labels.unstick)
+                .children()
+                .attr("class", "")
+                .addClass(notice.options.hide ? pin_up : pin_down)
+                .attr("aria-pressed", notice.options.hide ? "false" : "true");
             })
-            .append($("<span />", {"class": notice.styles.pin_up, "title": options.labels.stick}))
+            .append("<span />")
+            .trigger("pnotify:buttons:toggleStick")
             .prependTo(notice.container);
             if (!options.sticker || (notice.options.nonblock && notice.options.nonblock.nonblock && !options.show_on_nonblock)) {
                 this.sticker.css("display", "none");
@@ -90,6 +104,8 @@
             this.closer = $("<div />", {
                 "class": "ui-pnotify-closer",
                 "aria-role": "button",
+                "tabindex": "0",
+                "title": options.labels.close,
                 "css": {"cursor": "pointer", "visibility": options.closer_hover ? "hidden" : "visible"},
                 "click": function(){
                     notice.remove(false);
@@ -97,14 +113,13 @@
                     that.closer.css("visibility", "hidden");
                 }
             })
-            .append($("<span />", {"class": notice.styles.closer, "title": options.labels.close}))
+            .append($("<span />", {"class": options.classes.closer === null ? notice.styles.closer : options.classes.closer}))
             .prependTo(notice.container);
             if (!options.closer || (notice.options.nonblock && notice.options.nonblock.nonblock && !options.show_on_nonblock)) {
                 this.closer.css("display", "none");
             }
         },
         update: function(notice, options){
-            this.myOptions = options;
             // Update the sticker and closer buttons.
             if (!options.closer || (notice.options.nonblock && notice.options.nonblock.nonblock && !options.show_on_nonblock)) {
                 this.closer.css("display", "none");
@@ -117,7 +132,9 @@
                 this.sticker.css("display", "block");
             }
             // Update the sticker icon.
-            this.sticker.trigger("pnotify_icon");
+            this.sticker.trigger("pnotify:buttons:toggleStick");
+            // Update the close icon.
+            this.closer.find("span").attr("class", "").addClass(options.classes.closer === null ? notice.styles.closer : options.classes.closer);
             // Update the hover status of the buttons.
             if (options.sticker_hover) {
                 this.sticker.css("visibility", "hidden");

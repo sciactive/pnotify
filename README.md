@@ -166,6 +166,7 @@ Buttons Module
 * `sticker_hover: true` - Only show the sticker button on hover.
 * `show_on_nonblock: false` - Show the buttons even when the nonblock module is in use.
 * `labels: {close: "Close", stick: "Stick"}` - Lets you change the displayed text, facilitating internationalization.
+* `classes: {closer: null, pin_up: null, pin_down: null}` - The classes to use for button icons. Leave them null to use the classes from the styling you're using.
 
 `}`
 

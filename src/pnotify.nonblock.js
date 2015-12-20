@@ -85,79 +85,72 @@
         nonblock: false
     };
     PNotify.prototype.modules.nonblock = {
-        // This lets us update the options available in the closures.
-        myOptions: null,
-
         init: function(notice, options){
             var that = this;
-            this.myOptions = options;
             notice.elem.on({
                 "mouseenter": function(e){
-                    if (that.myOptions.nonblock) {
+                    if (that.options.nonblock) {
                         e.stopPropagation();
                     }
-                    if (that.myOptions.nonblock) {
+                    if (that.options.nonblock) {
                         // If it's non-blocking, animate to the other opacity.
                         notice.elem.addClass("ui-pnotify-nonblock-fade");
                     }
                 },
                 "mouseleave": function(e){
-                    if (that.myOptions.nonblock) {
+                    if (that.options.nonblock) {
                         e.stopPropagation();
                     }
                     nonblock_last_elem = null;
                     notice.elem.css("cursor", "auto");
                     // Animate back to the normal opacity.
-                    if (that.myOptions.nonblock && notice.animating !== "out") {
+                    if (that.options.nonblock && notice.animating !== "out") {
                         notice.elem.removeClass("ui-pnotify-nonblock-fade");
                     }
                 },
                 "mouseover": function(e){
-                    if (that.myOptions.nonblock) {
+                    if (that.options.nonblock) {
                         e.stopPropagation();
                     }
                 },
                 "mouseout": function(e){
-                    if (that.myOptions.nonblock) {
+                    if (that.options.nonblock) {
                         e.stopPropagation();
                     }
                 },
                 "mousemove": function(e){
-                    if (that.myOptions.nonblock) {
+                    if (that.options.nonblock) {
                         e.stopPropagation();
                         nonblock_pass(notice, e, "onmousemove");
                     }
                 },
                 "mousedown": function(e){
-                    if (that.myOptions.nonblock) {
+                    if (that.options.nonblock) {
                         e.stopPropagation();
                         e.preventDefault();
                         nonblock_pass(notice, e, "onmousedown");
                     }
                 },
                 "mouseup": function(e){
-                    if (that.myOptions.nonblock) {
+                    if (that.options.nonblock) {
                         e.stopPropagation();
                         e.preventDefault();
                         nonblock_pass(notice, e, "onmouseup");
                     }
                 },
                 "click": function(e){
-                    if (that.myOptions.nonblock) {
+                    if (that.options.nonblock) {
                         e.stopPropagation();
                         nonblock_pass(notice, e, "onclick");
                     }
                 },
                 "dblclick": function(e){
-                    if (that.myOptions.nonblock) {
+                    if (that.options.nonblock) {
                         e.stopPropagation();
                         nonblock_pass(notice, e, "ondblclick");
                     }
                 }
             });
-        },
-        update: function(notice, options){
-            this.myOptions = options;
         }
     };
 }));
