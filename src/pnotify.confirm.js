@@ -84,7 +84,11 @@
                 .val(options.prompt_default)
                 .appendTo(this.container);
             }
+            var customButtons = (options.buttons[0] && options.buttons[0] !== PNotify.prototype.options.confirm.buttons[0]);
             for (var i = 0; i < options.buttons.length; i++) {
+                if (options.buttons[i] === null || (customButtons && PNotify.prototype.options.confirm.buttons[i] && PNotify.prototype.options.confirm.buttons[i] === options.buttons[i])) {
+                    continue;
+                }
                 btn = options.buttons[i];
                 if (already)
                     this.container.append(' ');

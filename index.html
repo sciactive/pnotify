@@ -2135,6 +2135,32 @@ color: #FF0;
                         history: false
                     }
                 });">Custom Buttons</button>
+                <button class="btn btn-default source" onclick="new PNotify({
+                    title: 'You Will Receive a Side',
+                    text: 'You have no choice.',
+                    icon: 'glyphicon glyphicon-info-sign',
+                    hide: false,
+                    confirm: {
+                        confirm: true,
+                        buttons: [
+                            {
+                                text: 'Ok',
+                                addClass: 'btn-primary',
+                                click: function(notice){
+                                    notice.remove();
+                                }
+                            },
+                            null
+                        ]
+                    },
+                    buttons: {
+                        closer: false,
+                        sticker: false
+                    },
+                    history: {
+                        history: false
+                    }
+                });">Alert Style Button</button>
                 <button class="btn btn-default source" onclick="(new PNotify({
                     title: 'Input Needed',
                     text: 'What side would you like?',
