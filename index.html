@@ -452,6 +452,7 @@
         var stack_bottomleft = {"dir1": "right", "dir2": "up", "push": "top"};
         var stack_custom = {"dir1": "right", "dir2": "down"};
         var stack_custom2 = {"dir1": "left", "dir2": "up", "push": "top"};
+        var stack_modal = {"dir1": "down", "dir2": "right", "push": "top", "modal": true, "overlay_close": true};
         var stack_bar_top = {"dir1": "down", "dir2": "right", "push": "top", "spacing1": 0, "spacing2": 0};
         var stack_bar_bottom = {"dir1": "up", "dir2": "right", "spacing1": 0, "spacing2": 0};
         /*********** Positioned Stack ***********
@@ -597,6 +598,32 @@
             }
             new PNotify(opts);
         };
+        function show_stack_modal(type) {
+            var opts = {
+                title: "Over Here",
+                text: "Check me out. I'm in a different stack.",
+                addclass: "stack-modal",
+                stack: stack_modal
+            };
+            switch (type) {
+                case 'error':
+                    opts.title = "Oh No";
+                    opts.text = "Watch out for that water tower!";
+                    opts.type = "error";
+                    break;
+                case 'info':
+                    opts.title = "Breaking News";
+                    opts.text = "Have you met Ted?";
+                    opts.type = "info";
+                    break;
+                case 'success':
+                    opts.title = "Good News Everyone";
+                    opts.text = "I've invented a device that bites shiny metal asses.";
+                    opts.type = "success";
+                    break;
+            }
+            new PNotify(opts);
+        };
         function show_stack_bar_top(type) {
             var opts = {
                 title: "Over Here",
@@ -653,13 +680,16 @@
             }
             new PNotify(opts);
         };
-        function show_stack_context(type) {
+        function show_stack_context(type, modal) {
             if (typeof stack_context === "undefined")
                 stack_context = {"dir1": "down", "dir2": "left", "context": $("#stack-context")};
+            if (typeof stack_context_modal === "undefined")
+                stack_context_modal = {"dir1": "down", "dir2": "left", "context": $("#stack-context"), "modal": true, "overlay_close": true};
             var opts = {
                 title: "Over Here",
                 text: "Check me out. I'm in a different stack.",
-                stack: stack_context
+                stack: modal ? stack_context_modal : stack_context,
+                addclass: modal ? "stack-modal" : ""
             };
             switch (type) {
                 case 'error':
@@ -681,12 +711,7 @@
             new PNotify(opts);
         };
         function show_stack_info() {
-            var modal_overlay;
-            if (typeof info_box != "undefined") {
-                info_box.open();
-                return;
-            }
-            info_box = new PNotify({
+            new PNotify({
                 title: "PNotify Stacks",
                 text: "Stacks are used to position notices and determine where new notices will go when they're created. Each notice that's placed into a stack will be positioned related to the other notices in that stack. There is no limit to the number of stacks, and no limit to the number of notices in each stack.",
                 type: "info",
@@ -695,30 +720,8 @@
                 history: {
                     history: false
                 },
-                stack: false,
-                after_open: function(notice){
-                    // Position this notice in the center of the screen.
-                    notice.get().css({
-                        "top": ($(window).height() / 2) - (notice.get().height() / 2),
-                        "left": ($(window).width() / 2) - (notice.get().width() / 2)
-                    });
-                    // Make a modal screen overlay.
-                    if (modal_overlay) {
-                        modal_overlay.appendTo("body").addClass("in");
-                    } else {
-                        modal_overlay = $("<div />", {
-                            "class": "modal-backdrop fade"
-                        }).appendTo("body").click(function(){
-                            notice.remove();
-                        }).addClass("in");
-                    }
-                },
-                before_close: function(){
-                    modal_overlay.removeClass("in");
-                },
-                after_close: function(){
-                    modal_overlay.detach();
-                }
+                addclass: "stack-modal",
+                stack: {"dir1": "down", "dir2": "right", "modal": true, "overlay_close": true}
             });
         };
     </script>
@@ -2083,6 +2086,28 @@ color: #FF0;
                 }).on('pnotify.cancel', function(){
                     alert('Oh ok. Chicken, I see.');
                 });">Confirm Dialog</button>
+                <button class="btn btn-default source" onclick="(new PNotify({
+                    title: 'Confirmation Needed',
+                    text: 'Are you sure?',
+                    icon: 'glyphicon glyphicon-question-sign',
+                    hide: false,
+                    confirm: {
+                        confirm: true
+                    },
+                    buttons: {
+                        closer: false,
+                        sticker: false
+                    },
+                    history: {
+                        history: false
+                    },
+                    addclass: 'stack-modal',
+                    stack: {'dir1': 'down', 'dir2': 'right', 'modal': true}
+                })).get().on('pnotify.confirm', function(){
+                    alert('Ok, cool.');
+                }).on('pnotify.cancel', function(){
+                    alert('Oh ok. Chicken, I see.');
+                });">Modal Confirm Dialog</button>
                 <button class="btn btn-default source" onclick="new PNotify({
                     title: 'Choose a Side',
                     text: 'You have three options to choose from.',
@@ -2403,6 +2428,12 @@ color: #FF0;
                 <h3 class="panel-title">Really Different Stacks</h3>
             </div>
             <div class="panel-body">
+                <button class="btn btn-default source" onclick="show_stack_modal('notice');">Notice</button>
+                <button class="btn btn-default source" onclick="show_stack_modal('info');">Info</button>
+                <button class="btn btn-default source" onclick="show_stack_modal('success');">Success</button>
+                <button class="btn btn-default source" onclick="show_stack_modal('error');">Error</button>
+                Modal stack. Moves down, then right. Pushes to stack top.
+                <hr />
                 <button class="btn btn-default source" onclick="show_stack_bar_top('notice');">Notice</button>
                 <button class="btn btn-default source" onclick="show_stack_bar_top('info');">Info</button>
                 <button class="btn btn-default source" onclick="show_stack_bar_top('success');">Success</button>
@@ -2433,6 +2464,17 @@ color: #FF0;
                         <button class="btn btn-default source" onclick="show_stack_context('success');">Success</button>
                         <br />
                         <button class="btn btn-default source" onclick="show_stack_context('error');">Error</button>
+                        <br />
+                        <br />
+                        Modal:
+                        <br />
+                        <button class="btn btn-default source" onclick="show_stack_context('notice', true);">Notice</button>
+                        <br />
+                        <button class="btn btn-default source" onclick="show_stack_context('info', true);">Info</button>
+                        <br />
+                        <button class="btn btn-default source" onclick="show_stack_context('success', true);">Success</button>
+                        <br />
+                        <button class="btn btn-default source" onclick="show_stack_context('error', true);">Error</button>
                     </div>
                     <div class="col-md-10">
                         <div id="stack-context" class="well" style="height: 350px; position: relative; overflow: auto;">

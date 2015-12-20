@@ -73,12 +73,18 @@ Stacks
 
 A stack is an object which PNotify uses to determine where to position notices. A stack has two mandatory properties, `dir1` and `dir2`. `dir1` is the first direction in which the notices are stacked. When the notices run out of room in the window, they will move over in the direction specified by `dir2`. The directions can be `"up"`, `"down"`, `"right"`, or `"left"`. Stacks are independent of each other, so a stack doesn't know and doesn't care if it overlaps (and blocks) another stack. The default stack, which can be changed like any other default, goes down, then left. Stack objects are used and manipulated by PNotify, and therefore, should be a variable when passed. So, calling something like `new PNotify({stack: {"dir1": "down", "dir2": "left"}});` will **NOT** work. It will create a notice, but that notice will be in its own stack and may overlap other notices.
 
+Modal Stacks
+------------
+
+You can set a stack as modal by setting the "modal" property to true. A modal stack creates an overlay behind it when any of its notices are open. When the last notice within it is removed, the overlay is hidden. If the "overlay_close" property is set to true, then clicking the overlay will cause all of the notices in that stack to be removed.
+
 Example Stacks
 --------------
 
 ```js
 var stack_topleft = {"dir1": "down", "dir2": "right", "push": "top"};
 var stack_bottomleft = {"dir1": "right", "dir2": "up", "push": "top"};
+var stack_modal = {"dir1": "down", "dir2": "right", "push": "top", "modal": true, "overlay_close": true};
 var stack_bar_top = {"dir1": "down", "dir2": "right", "push": "top", "spacing1": 0, "spacing2": 0};
 var stack_bar_bottom = {"dir1": "up", "dir2": "right", "spacing1": 0, "spacing2": 0};
 var stack_context = {"dir1": "down", "dir2": "left", "context": $("#stack-context")};
@@ -115,6 +121,7 @@ There are several CSS classes included which will position your notices for you:
 * `stack-topleft`
 * `stack-bottomleft`
 * `stack-bottomright`
+* `stack-modal`
 
 You can create your own custom position and movement by defining a custom stack.
 
@@ -143,7 +150,7 @@ Configuration Defaults / Options
 * `mouse_reset: true` - Reset the hide timer if the mouse moves over the notice.
 * `remove: true` - Remove the notice's elements from the DOM after it is removed.
 * `insert_brs: true` - Change new lines to br tags.
-* `stack: {"dir1": "down", "dir2": "left", "push": "bottom", "spacing1": 25, "spacing2": 25, context: $("body")}` - The stack on which the notices will be placed. Also controls the direction the notices stack.
+* `stack: {"dir1": "down", "dir2": "left", "push": "bottom", "spacing1": 25, "spacing2": 25, "context": $("body"), "modal": false}` - The stack on which the notices will be placed. Also controls the direction the notices stack.
 
 Desktop Module
 --------------
@@ -246,6 +253,16 @@ The callback options all expect one argument, a function, which will be called w
 * `after_open` - This option is called after the notice has been displayed. It accepts one argument, the notice object.
 * `before_close` - This option is called before the notice closes. It accepts one argument, the notice object.
 * `after_close` - This option is called after the notice closes. It accepts one argument, the notice object.
+
+Utility Functions
+=================
+
+* `PNotify.removeAll()` - Remove all notices.
+* `PNotify.removeStack(stack)` - Remove all the notices in a stack.
+* `PNotify.positionAll(animate)` - Reposition the notices, optionally animating their movement.
+* `notice.open()` - Open the notice.
+* `notice.remove()` - Remove the notice.
+* `notice.get()` - Get the notice's DOM element.
 
 Using PNotify with RequireJS
 ============================

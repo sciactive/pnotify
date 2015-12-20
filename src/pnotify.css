@@ -9,13 +9,26 @@ Link    : http://sciactive.com/pnotify/
     right: 36px;
     position: absolute;
     height: auto;
-    z-index: 1;
+    z-index: 2;
 }
 body > .ui-pnotify {
     /* Notices in the body context should be fixed to the viewport. */
     position: fixed;
     /* Ensures notices are above everything */
     z-index: 100040;
+}
+.ui-pnotify-modal-overlay {
+    background-color: rgba(0, 0, 0, .4);
+    top: 0;
+    left: 0;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+}
+body > .ui-pnotify-modal-overlay {
+    position: fixed;
+    z-index: 100039;
 }
 .ui-pnotify.ui-pnotify-in {
     display: block !important;
@@ -91,4 +104,9 @@ body > .ui-pnotify {
 .ui-pnotify.stack-bottomright, .ui-pnotify.stack-bottomleft {
     bottom: 25px;
     top: auto;
+}
+.ui-pnotify.stack-modal {
+    left: 50%;
+    right: auto;
+    margin-left: -150px;
 }

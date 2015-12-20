@@ -35,7 +35,8 @@ license Apache-2.0
         push: "bottom",
         spacing1: 36,
         spacing2: 36,
-        context: $("body")
+        context: $("body"),
+        modal: false
     };
     var posTimer, // Position all timer.
         body,
@@ -54,6 +55,17 @@ license Apache-2.0
                 PNotify.positionAll(true);
             }, 10);
         });
+    };
+    var createStackOverlay = function(stack) {
+        var overlay = $("<div />", {"class": "ui-pnotify-modal-overlay"});
+        overlay.prependTo(stack.context);
+        if (stack.overlay_close) {
+            // Close the notices on overlay click.
+            overlay.click(function(){
+                PNotify.removeStack(stack);
+            });
+        }
+        return overlay;
     };
     var PNotify = function(options){
         this.parseOptions(options);
@@ -579,6 +591,13 @@ license Apache-2.0
             var hidden = !elem.hasClass("ui-pnotify-in");
             // Skip this notice if it's not shown.
             if (!hidden || dontSkipHidden) {
+                if (stack.modal) {
+                    if (stack.overlay) {
+                        stack.overlay.show();
+                    } else {
+                        stack.overlay = createStackOverlay(stack);
+                    }
+                }
                 // Add animate class by default.
                 elem.addClass("ui-pnotify-move");
                 var curpos1, curpos2;
@@ -744,14 +763,21 @@ license Apache-2.0
     $.extend(PNotify, {
         // This holds all the notices.
         notices: [],
-        removeAll: function () {
+        removeAll: function(){
             $.each(PNotify.notices, function(){
                 if (this.remove) {
                     this.remove(false);
                 }
             });
         },
-        positionAll: function (animate) {
+        removeStack: function(stack){
+            $.each(PNotify.notices, function(){
+                if (this.remove && this.options.stack === stack) {
+                    this.remove(false);
+                }
+            });
+        },
+        positionAll: function(animate){
             // This timer is used for queueing this function so it doesn't run
             // repeatedly.
             if (posTimer) {
@@ -764,6 +790,9 @@ license Apache-2.0
                     var s = this.options.stack;
                     if (!s) {
                         return;
+                    }
+                    if (s.overlay) {
+                        s.overlay.hide();
                     }
                     s.nextpos1 = s.firstpos1;
                     s.nextpos2 = s.firstpos2;
