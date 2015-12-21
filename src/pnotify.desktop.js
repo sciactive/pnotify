@@ -108,12 +108,12 @@
         beforeOpen: function(notice, options){
             if ((permission !== 0 && options.fallback) || !options.desktop)
                 return;
-            notice.elem.css({'left': '-10000px', 'display': 'none'});
+            notice.elem.css({'left': '-10000px'}).removeClass('ui-pnotify-in');
         },
         afterOpen: function(notice, options){
             if ((permission !== 0 && options.fallback) || !options.desktop)
                 return;
-            notice.elem.css({'left': '-10000px', 'display': 'none'});
+            notice.elem.css({'left': '-10000px'}).removeClass('ui-pnotify-in');
             if ("show" in notice.desktop) {
                 notice.desktop.show();
             }
@@ -121,12 +121,12 @@
         beforeClose: function(notice, options){
             if ((permission !== 0 && options.fallback) || !options.desktop)
                 return;
-            notice.elem.css({'left': '-10000px', 'display': 'none'});
+            notice.elem.css({'left': '-10000px'}).removeClass('ui-pnotify-in');
         },
         afterClose: function(notice, options){
             if ((permission !== 0 && options.fallback) || !options.desktop)
                 return;
-            notice.elem.css({'left': '-10000px', 'display': 'none'});
+            notice.elem.css({'left': '-10000px'}).removeClass('ui-pnotify-in');
             if ("close" in notice.desktop) {
                 notice.desktop.close();
             }
