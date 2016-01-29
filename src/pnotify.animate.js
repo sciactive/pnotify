@@ -79,6 +79,7 @@
             this.notice.animating = "in";
             var that = this;
             callback = (function(){
+                that.notice.elem.removeClass(that.options.in_class);
                 if (this) {
                     this.call();
                 }
@@ -94,7 +95,7 @@
             this.notice.animating = "out";
             var that = this;
             callback = (function(){
-                that.notice.elem.removeClass("ui-pnotify-in");
+                that.notice.elem.removeClass("ui-pnotify-in").removeClass(that.options.out_class);
                 if (this) {
                     this.call();
                 }
