@@ -105,4 +105,5 @@
             this.notice.elem.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', callback).removeClass(this.options.in_class).addClass(this.options.out_class);
         }
     };
+    return PNotify;
 }));

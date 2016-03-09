@@ -187,4 +187,5 @@
         hi_btnhov: "",
         hi_hnd: "fa fa-chevron-down"
     });
+    return PNotify;
 }));

@@ -11,5 +11,5 @@
         factory(root.jQuery, root.PNotify);
     }
 }(this, function($, PNotify){
-
+    return PNotify;
 }));
