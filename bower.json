@@ -2,6 +2,7 @@
   "name": "pnotify",
   "description": "JavaScript notification plugin.",
   "main": [
+    "dist/pnotify.js",
     "dist/pnotify.animate.js",
     "dist/pnotify.brighttheme.css",
     "dist/pnotify.buttons.css",
@@ -9,7 +10,6 @@
     "dist/pnotify.callbacks.js",
     "dist/pnotify.confirm.js",
     "dist/pnotify.css",
-    "dist/pnotify.js",
     "dist/pnotify.desktop.js",
     "dist/pnotify.history.css",
     "dist/pnotify.history.js",
