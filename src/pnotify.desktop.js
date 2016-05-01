@@ -68,7 +68,7 @@
             if (this.tag === null || options.tag !== null) {
                 this.tag = options.tag === null ? "PNotify-"+Math.round(Math.random() * 1000000) : options.tag;
             }
-            notice.desktop = notify(notice.options.title, {
+            notice.desktop = notify(options.title || notice.options.title, {
                 icon: this.icon,
                 body: options.text || notice.options.text,
                 tag: this.tag
