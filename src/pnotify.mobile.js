@@ -10,7 +10,7 @@
         // Browser globals
         factory(root.jQuery, root.PNotify);
     }
-}(this, function($, PNotify){
+}(typeof window !== "undefined" ? window : this, function($, PNotify){
     PNotify.prototype.options.mobile = {
         // Let the user swipe the notice away.
         swipe_dismiss: true,

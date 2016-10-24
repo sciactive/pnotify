@@ -10,7 +10,7 @@
         // Browser globals
         factory(root.jQuery, root.PNotify);
     }
-}(this, function($, PNotify){
+}(typeof window !== "undefined" ? window : this, function($, PNotify){
     // Some useful regexes.
     var re_on = /^on/,
         re_mouse_events = /^(dbl)?click$|^mouse(move|down|up|over|out|enter|leave)$|^contextmenu$/,
