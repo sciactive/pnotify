@@ -235,7 +235,7 @@ var init = function(root){
                 "class": "ui-pnotify-title"
             })
             .appendTo(this.container);
-            if (this.options.title === false) {
+            if (this.options.title === false || this.options.title == '') {
                 this.title_container.hide();
             } else if (this.options.title_escape) {
                 this.title_container.text(this.options.title);
@@ -249,7 +249,7 @@ var init = function(root){
                 "aria-role": "alert"
             })
             .appendTo(this.container);
-            if (this.options.text === false) {
+            if (this.options.text === false || this.options.text == '') {
                 this.text_container.hide();
             } else if (this.options.text_escape) {
                 this.text_container.text(this.options.text);
