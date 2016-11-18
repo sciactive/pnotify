@@ -144,4 +144,6 @@
     $.extend(PNotify.styling.fontawesome, {
         athing: "fa fa-refresh"
     });
+    // Return PNotify for CommonJS modules.
+    return PNotify;
 }));

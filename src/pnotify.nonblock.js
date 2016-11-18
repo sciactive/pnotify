@@ -153,4 +153,5 @@
             });
         }
     };
+    return PNotify;
 }));
