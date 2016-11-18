@@ -173,4 +173,5 @@
         pin_up: "fa fa-pause",
         pin_down: "fa fa-play"
     });
+    return PNotify;
 }));

@@ -118,4 +118,5 @@
             }
         }
     };
+    return PNotify;
 }));

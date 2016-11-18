@@ -151,4 +151,5 @@
         }
     };
     permission = PNotify.desktop.checkPermission();
+    return PNotify;
 }));
