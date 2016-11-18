@@ -155,4 +155,5 @@
         btn: "btn btn-default",
         input: "form-control"
     });
+    return PNotify;
 }));

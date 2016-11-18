@@ -11,5 +11,5 @@
         factory(root.jQuery, root.PNotify);
     }
 }(typeof window !== "undefined" ? window : this, function($, PNotify){
-
+    return PNotify;
 }));
