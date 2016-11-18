@@ -10,7 +10,7 @@
         // Browser globals
         factory(root.jQuery, root.PNotify);
     }
-}(this, function($, PNotify){
+}(typeof window !== "undefined" ? window : this, function($, PNotify){
     PNotify.prototype.options.animate = {
         // Use animate.css to animate the notice.
         animate: false,
@@ -79,6 +79,7 @@
             this.notice.animating = "in";
             var that = this;
             callback = (function(){
+                that.notice.elem.removeClass(that.options.in_class);
                 if (this) {
                     this.call();
                 }
@@ -94,7 +95,7 @@
             this.notice.animating = "out";
             var that = this;
             callback = (function(){
-                that.notice.elem.removeClass("ui-pnotify-in");
+                that.notice.elem.removeClass("ui-pnotify-in " + that.options.out_class);
                 if (this) {
                     this.call();
                 }

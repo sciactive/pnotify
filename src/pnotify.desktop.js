@@ -10,7 +10,7 @@
         // Browser globals
         factory(root.jQuery, root.PNotify);
     }
-}(this, function($, PNotify){
+}(typeof window !== "undefined" ? window : this, function($, PNotify){
     var permission;
     var notify = function(title, options){
         // Memoize based on feature detection.

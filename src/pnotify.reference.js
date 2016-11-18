@@ -11,7 +11,7 @@
         // Browser globals
         factory(root.jQuery, root.PNotify);
     }
-}(this, function($, PNotify){
+}(typeof window !== "undefined" ? window : this, function($, PNotify){
     // This if the default values of your options.
     PNotify.prototype.options.reference = {
         // Provide a thing for stuff. Turned off by default.

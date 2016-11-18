@@ -28,7 +28,7 @@ license Apache-2.0
         // Browser globals
         root.PNotify = factory(root.jQuery, root);
     }
-}(this, function($, root){
+}(typeof window !== "undefined" ? window : this, function($, root){
 var init = function(root){
     var default_stack = {
         dir1: "down",
