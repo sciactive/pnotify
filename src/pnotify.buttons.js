@@ -10,7 +10,7 @@
         // Browser globals
         factory(root.jQuery, root.PNotify);
     }
-}(this, function($, PNotify){
+}(typeof window !== "undefined" ? window : this, function($, PNotify){
     PNotify.prototype.options.buttons = {
         // Provide a button for the user to manually close the notice.
         closer: true,
@@ -173,4 +173,5 @@
         pin_up: "fa fa-pause",
         pin_down: "fa fa-play"
     });
+    return PNotify;
 }));

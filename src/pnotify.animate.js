@@ -10,7 +10,7 @@
         // Browser globals
         factory(root.jQuery, root.PNotify);
     }
-}(this, function($, PNotify){
+}(typeof window !== "undefined" ? window : this, function($, PNotify){
     PNotify.prototype.options.animate = {
         // Use animate.css to animate the notice.
         animate: false,
@@ -106,4 +106,5 @@
             this.notice.elem.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', callback).removeClass(this.options.in_class).addClass(this.options.out_class);
         }
     };
+    return PNotify;
 }));

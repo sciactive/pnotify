@@ -10,7 +10,7 @@
         // Browser globals
         factory(root.jQuery, root.PNotify);
     }
-}(this, function($, PNotify){
+}(typeof window !== "undefined" ? window : this, function($, PNotify){
     PNotify.prototype.options.confirm = {
         // Make a confirmation box.
         confirm: false,
@@ -155,4 +155,5 @@
         btn: "btn btn-default",
         input: "form-control"
     });
+    return PNotify;
 }));

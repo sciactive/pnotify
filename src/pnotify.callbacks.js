@@ -10,7 +10,7 @@
         // Browser globals
         factory(root.jQuery, root.PNotify);
     }
-}(this, function($, PNotify){
+}(typeof window !== "undefined" ? window : this, function($, PNotify){
     var _init   = PNotify.prototype.init,
         _open   = PNotify.prototype.open,
         _remove = PNotify.prototype.remove;
@@ -47,4 +47,5 @@
             }
         }
     };
+    return PNotify;
 }));
