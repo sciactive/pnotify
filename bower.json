@@ -15,6 +15,7 @@
     "dist/pnotify.history.js",
     "dist/pnotify.mobile.css",
     "dist/pnotify.mobile.js",
+    "dist/pnotify.nonblock.css",
     "dist/pnotify.nonblock.js"
   ],
   "ignore": [
