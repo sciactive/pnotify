@@ -1,0 +1,20 @@
+{
+  "name": "sciactive/pnotify",
+  "description": "JavaScript notifications for Bootstrap, jQuery UI, and the Web Notifications Draft.",
+  "keywords": [
+    "css",
+    "js",
+    "jQuery",
+    "responsive",
+    "web notifications",
+    "jQuery UI",
+    "pnotify"
+  ],
+  "type": "library",
+  "license": "Apache-2.0",
+  "support": {
+    "issues": "https://github.com/sciactive/pnotify/issues"
+  },
+  "minimum-stability": "dev",
+  "require": {}
+}
