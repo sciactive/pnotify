@@ -16,5 +16,8 @@
     "issues": "https://github.com/sciactive/pnotify/issues"
   },
   "minimum-stability": "dev",
-  "require": {}
+  "require": {},
+  "replace": {
+    "rndwiga/pnotify": "*"
+  }
 }
