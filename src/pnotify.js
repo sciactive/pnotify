@@ -69,6 +69,18 @@ var init = function(root){
         return overlay;
     };
     var PNotify = function(options){
+        // === Class Variables ===
+        this.state = "initializing"; // The state can be "initializing", "opening", "open", "closing", and "closed".
+        this.timer = null; // Auto close timer.
+        this.animTimer = null; // Animation timer.
+        this.styles = null;
+        this.elem = null;
+        this.container = null;
+        this.title_container = null;
+        this.text_container = null;
+        this.animating = false; // Stores what is currently being animated (in or out).
+        this.timerHide = false; // Stores whether the notice was hidden by a timer.
+
         this.parseOptions(options);
         this.init();
     };
@@ -148,19 +160,6 @@ var init = function(root){
                 }
             }
         },
-
-        // === Class Variables ===
-
-        state: "initializing", // The state can be "initializing", "opening", "open", "closing", and "closed".
-        timer: null, // Auto close timer.
-        animTimer: null, // Animation timer.
-        styles: null,
-        elem: null,
-        container: null,
-        title_container: null,
-        text_container: null,
-        animating: false, // Stores what is currently being animated (in or out).
-        timerHide: false, // Stores whether the notice was hidden by a timer.
 
         // === Events ===
 
@@ -278,13 +277,14 @@ var init = function(root){
             }
 
 
-
-
             // Mark the stack so it won't animate the new notice.
             this.options.stack.animation = false;
 
             // Run the modules.
             this.runModules('init');
+
+            // We're now initialized, but haven't been opened yet.
+            this.state = "closed";
 
             // Display the notice.
             if (this.options.auto_display) {
@@ -452,7 +452,7 @@ var init = function(root){
                 // unless destroy is off
                 if (that.options.destroy) {
                     if (PNotify.notices !== null) {
-                        var idx = $.inArray(that,PNotify.notices);
+                        var idx = $.inArray(that, PNotify.notices);
                         if (idx !== -1) {
                             PNotify.notices.splice(idx,1);
                         }
@@ -503,7 +503,7 @@ var init = function(root){
             // Declare that the notice is animating in.
             this.animating = "in";
             var that = this;
-            callback = (function(){
+            finished = function(){
                 if (that.animTimer) {
                     clearTimeout(that.animTimer);
                 }
@@ -511,25 +511,25 @@ var init = function(root){
                     return;
                 }
                 if (that.elem.is(":visible")) {
-                    if (this) {
-                        this.call();
+                    if (callback) {
+                        callback.call();
                     }
                     // Declare that the notice has completed animating.
                     that.animating = false;
                 } else {
-                    that.animTimer = setTimeout(callback, 40);
+                    that.animTimer = setTimeout(finished, 40);
                 }
-            }).bind(callback);
+            };
 
             if (this.options.animation === "fade") {
-                this.elem.one('webkitTransitionEnd mozTransitionEnd MSTransitionEnd oTransitionEnd transitionend', callback).addClass("ui-pnotify-in");
+                this.elem.one('webkitTransitionEnd mozTransitionEnd MSTransitionEnd oTransitionEnd transitionend', finished).addClass("ui-pnotify-in");
                 this.elem.css("opacity"); // This line is necessary for some reason. Some notices don't fade without it.
                 this.elem.addClass("ui-pnotify-fade-in");
                 // Just in case the event doesn't fire, call it after 650 ms.
-                this.animTimer = setTimeout(callback, 650);
+                this.animTimer = setTimeout(finished, 650);
             } else {
                 this.elem.addClass("ui-pnotify-in");
-                callback();
+                finished();
             }
         },
 
@@ -538,7 +538,7 @@ var init = function(root){
             // Declare that the notice is animating out.
             this.animating = "out";
             var that = this;
-            callback = (function(){
+            finished = function(){
                 if (that.animTimer) {
                     clearTimeout(that.animTimer);
                 }
@@ -547,24 +547,37 @@ var init = function(root){
                 }
                 if (that.elem.css("opacity") == "0" || !that.elem.is(":visible")) {
                     that.elem.removeClass("ui-pnotify-in");
-                    if (this) {
-                        this.call();
+                    if (that.options.stack.overlay) {
+                        // Go through the modal stack to see if any are left open.
+                        // TODO: Rewrite this cause it sucks.
+                        var stillOpen = false;
+                        $.each(PNotify.notices, function(i, notice){
+                            if (notice != that && notice.options.stack === that.options.stack && notice.state != "closed") {
+                                stillOpen = true;
+                            }
+                        });
+                        if (!stillOpen) {
+                            that.options.stack.overlay.hide();
+                        }
+                    }
+                    if (callback) {
+                        callback.call();
                     }
                     // Declare that the notice has completed animating.
                     that.animating = false;
                 } else {
                     // In case this was called before the notice finished animating.
-                    that.animTimer = setTimeout(callback, 40);
+                    that.animTimer = setTimeout(finished, 40);
                 }
-            }).bind(callback);
+            };
 
             if (this.options.animation === "fade") {
-                this.elem.one('webkitTransitionEnd mozTransitionEnd MSTransitionEnd oTransitionEnd transitionend', callback).removeClass("ui-pnotify-fade-in");
+                this.elem.one('webkitTransitionEnd mozTransitionEnd MSTransitionEnd oTransitionEnd transitionend', finished).removeClass("ui-pnotify-fade-in");
                 // Just in case the event doesn't fire, call it after 650 ms.
-                this.animTimer = setTimeout(callback, 650);
+                this.animTimer = setTimeout(finished, 650);
             } else {
                 this.elem.removeClass("ui-pnotify-in");
-                callback();
+                finished();
             }
         },
 
@@ -766,16 +779,16 @@ var init = function(root){
         notices: [],
         reload: init,
         removeAll: function(){
-            $.each(PNotify.notices, function(){
-                if (this.remove) {
-                    this.remove(false);
+            $.each(PNotify.notices, function(i, notice){
+                if (notice.remove) {
+                    notice.remove(false);
                 }
             });
         },
         removeStack: function(stack){
-            $.each(PNotify.notices, function(){
-                if (this.remove && this.options.stack === stack) {
-                    this.remove(false);
+            $.each(PNotify.notices, function(i, notice){
+                if (notice.remove && notice.options.stack === stack) {
+                    notice.remove(false);
                 }
             });
         },
@@ -788,8 +801,8 @@ var init = function(root){
             posTimer = null;
             // Reset the next position data.
             if (PNotify.notices && PNotify.notices.length) {
-                $.each(PNotify.notices, function(){
-                    var s = this.options.stack;
+                $.each(PNotify.notices, function(i, notice){
+                    var s = notice.options.stack;
                     if (!s) {
                         return;
                     }
@@ -801,8 +814,8 @@ var init = function(root){
                     s.addpos2 = 0;
                     s.animation = animate;
                 });
-                $.each(PNotify.notices, function(){
-                    this.position();
+                $.each(PNotify.notices, function(i, notice){
+                    notice.position();
                 });
             } else {
                 var s = PNotify.prototype.options.stack;
