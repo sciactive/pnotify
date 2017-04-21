@@ -22,7 +22,7 @@ if ($min === '') {
     "\n*/\n";
 }
 
-$content .= file_get_contents("$dir/pnotify.$ext");
+$content .= file_get_contents("$dir/pnotify.$ext")."\n";
 foreach ($files as $cur_file) {
     $filename = "$dir/pnotify.$cur_file.$ext";
     if (!file_exists($filename)) {
@@ -34,7 +34,7 @@ foreach ($files as $cur_file) {
         echo "Your request could not be completed because a file you requested is invalid.";
         exit;
     }
-    $content .= file_get_contents($filename);
+    $content .= file_get_contents($filename)."\n";
 }
 
 

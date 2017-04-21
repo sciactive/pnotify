@@ -21,6 +21,7 @@ let pnotify_css = {
 	"buttons": "pnotify.buttons.css",
 	"history": "pnotify.history.css",
 	"mobile": "pnotify.mobile.css",
+	"nonblock": "pnotify.nonblock.css",
 }
 
 let root = __dirname + '/'
@@ -68,10 +69,20 @@ let compress_js = (module, filename) => {
 	const src_filename = "src/" + filename
 	const dst_filename = "dist/" + filename
 	echo("Compressing JavaScript "+module+" from "+src_filename+" to "+dst_filename)
+	echo("Generating source map for "+dst_filename+" in "+dst_filename+".map")
 
 	const intro = get_intro(src_filename)
   const UglifyJS = require('uglify-js')
-  ;(intro + UglifyJS.minify(src_filename).code).to(dst_filename)
+	const files = {}
+	files[src_filename] = cat(src_filename).stdout
+	const options = {
+		sourceRoot: "../",
+		outSourceMap: filename,
+		sourceMapUrl: filename+".map"
+	}
+	const result = UglifyJS.minify(src_filename, options)
+  ;(intro + result.code).to(dst_filename)
+	result.map.to(dst_filename+".map")
 }
 
 let compress_css = (module, filename) => {

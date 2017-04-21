@@ -48,21 +48,21 @@
     <script type="text/javascript" src="includes/beautify.js"></script>
 
     <!-- PNotify -->
-    <script type="text/javascript" src="src/pnotify.js"></script>
-    <link href="src/pnotify.css" rel="stylesheet" type="text/css" />
-    <link href="src/pnotify.brighttheme.css" rel="stylesheet" type="text/css" />
-    <script type="text/javascript" src="src/pnotify.animate.js"></script>
-    <script type="text/javascript" src="src/pnotify.buttons.js"></script>
-    <link href="src/pnotify.buttons.css" rel="stylesheet" type="text/css" />
-    <script type="text/javascript" src="src/pnotify.confirm.js"></script>
-    <link href="src/pnotify.nonblock.css" rel="stylesheet" type="text/css" />
-    <script type="text/javascript" src="src/pnotify.nonblock.js"></script>
-    <script type="text/javascript" src="src/pnotify.mobile.js"></script>
-    <link href="src/pnotify.mobile.css" rel="stylesheet" type="text/css" />
-    <script type="text/javascript" src="src/pnotify.desktop.js"></script>
-    <script type="text/javascript" src="src/pnotify.history.js"></script>
-    <link href="src/pnotify.history.css" rel="stylesheet" type="text/css" />
-    <script type="text/javascript" src="src/pnotify.callbacks.js"></script>
+    <script type="text/javascript" src="dist/pnotify.js"></script>
+    <link href="dist/pnotify.css" rel="stylesheet" type="text/css" />
+    <link href="dist/pnotify.brighttheme.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="dist/pnotify.animate.js"></script>
+    <script type="text/javascript" src="dist/pnotify.buttons.js"></script>
+    <link href="dist/pnotify.buttons.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="dist/pnotify.confirm.js"></script>
+    <link href="dist/pnotify.nonblock.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="dist/pnotify.nonblock.js"></script>
+    <script type="text/javascript" src="dist/pnotify.mobile.js"></script>
+    <link href="dist/pnotify.mobile.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="dist/pnotify.desktop.js"></script>
+    <script type="text/javascript" src="dist/pnotify.history.js"></script>
+    <link href="dist/pnotify.history.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="dist/pnotify.callbacks.js"></script>
     <script type="text/javascript" src="src/pnotify.reference.js"></script>
 
     <!-- PForm (For the form notice.) -->
@@ -754,7 +754,7 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Beyond PNotify <b class="caret"></b></a>
                         <ul class="dropdown-menu">
-                            <li><a href="https://sciactive.com/" target="_blank">SciActive</a></li>
+                            <li><a href="https://github.com/sciactive/" target="_blank">SciActive</a></li>
                             <li><a href="http://nymph.io/" target="_blank">Nymph</a></li>
                             <li class="divider"></li>
                             <li><a href="https://sciactive.com/pform/" target="_blank">PForm</a></li>
@@ -837,7 +837,10 @@
                     <h4 class="modal-title" id="download-title">Download a PNotify Bundle</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="page-header" style="margin-top: 0;">
+                    <p>
+                      You can download a PNotify bundle, but it is not the recommended way of getting PNotify. It will break the source maps. You should use NPM to get PNotify in your project. In PNotify 4, this bundler is going away.
+                    </p>
+                    <div class="page-header">
                         <h3 style="margin-top: 0;">Optional Styling</h3>
                     </div>
                     <div><label><input type="checkbox" data-type="module" name="brighttheme" checked /> Bright Theme</label></div>
@@ -965,7 +968,7 @@ $(function(){
                         <h3><i class="glyphicon glyphicon-book" style="position: relative; top: 3px;"></i> About</h3>
                         <p>
                             PNotify is a JavaScript notification system, developed
-                            by <a href="http://sciactive.com">SciActive</a>.
+                            by <a href="https://github.com/sciactive/">SciActive</a>.
                             <br />
                             <br />
                             PNotify provides desktop notifications based on the
