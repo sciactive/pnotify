@@ -1,18 +1,29 @@
 {
-    "name": "pnotify",
-    "version": "3.0.0",
-    "main": "dist/pnotify.js",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/sciactive/pnotify.git"
-    },
-    "author": "",
-    "license": "Apache-2.0",
-    "bugs": {
-        "url": "https://github.com/sciactive/pnotify/issues"
-    },
-    "homepage": "https://github.com/sciactive/pnotify",
-    "dependencies": {
-        "jquery": ">=1.6.0"
-    }
+  "name": "pnotify",
+  "version": "3.0.1",
+  "main": "dist/pnotify.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sciactive/pnotify.git"
+  },
+  "author": "Hunter Perrin",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/sciactive/pnotify/issues"
+  },
+  "homepage": "https://github.com/sciactive/pnotify",
+  "directories": {
+    "lib": "dist"
+  },
+  "dependencies": {
+    "jquery": ">=1.6.0"
+  },
+  "devDependencies": {
+    "clean-css": "^4.0.12",
+    "shelljs": "^0.7.7",
+    "uglify-js": "^2.8.22"
+  },
+  "scripts": {
+    "dist": "nodejs make.js dist"
+  }
 }
