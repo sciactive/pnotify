@@ -52,7 +52,11 @@
         // Using a tag lets you update an existing notice, or keep from duplicating notices between tabs.
         // If you leave tag null, one will be generated, facilitating the "update" function.
         // see: http://www.w3.org/TR/notifications/#tags-example
-        tag: null
+        tag: null,
+        // Optionally display a different title for the desktop.
+        title: null,
+        // Optionally display different text for the desktop.
+        text: null
     };
     PNotify.prototype.modules.desktop = {
         tag: null,
