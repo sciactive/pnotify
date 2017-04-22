@@ -6,7 +6,8 @@ PNotify is a JavaScript notification plugin, developed by SciActive. PNotify can
 Demos
 =====
 
-http://sciactive.com/pnotify/
+* http://sciactive.com/pnotify/ for the latest release
+* https://sciactive.github.io/pnotify/ for what's on master (gh-pages to be precise)
 
 Requirements
 ============
