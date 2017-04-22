@@ -163,17 +163,11 @@
       }
     }
   };
-  $.extend(PNotify.styling.jqueryui, {
-    hi_menu: "ui-state-default ui-corner-bottom",
-    hi_btn: "ui-state-default ui-corner-all",
-    hi_btnhov: "ui-state-hover",
-    hi_hnd: "ui-icon ui-icon-grip-dotted-horizontal"
-  });
-  $.extend(PNotify.styling.bootstrap2, {
-    hi_menu: "well",
-    hi_btn: "btn",
-    hi_btnhov: "",
-    hi_hnd: "icon-chevron-down"
+  $.extend(PNotify.styling.brighttheme, {
+    hi_menu: "whaaaaat",
+    hi_btn: "whaaaaat",
+    hi_btnhov: "whaaaaat",
+    hi_hnd: "whaaaaat"
   });
   $.extend(PNotify.styling.bootstrap3, {
     hi_menu: "well",

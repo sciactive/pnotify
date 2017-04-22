@@ -1,13 +1,12 @@
 {
   "name": "sciactive/pnotify",
-  "description": "JavaScript notifications for Bootstrap, jQuery UI, and the Web Notifications Draft.",
+  "description": "Beautiful JavaScript notifications.",
   "keywords": [
     "css",
     "js",
     "jQuery",
     "responsive",
     "web notifications",
-    "jQuery UI",
     "pnotify"
   ],
   "type": "library",

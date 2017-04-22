@@ -16,9 +16,11 @@ jQuery (1.6 or higher)
 Getting Started
 ===============
 
-You can include PNotify using Bower, NPM, or a custom download.
+You can include PNotify using NPM, Bower, or a custom download. NPM is the prefered method.
 
-PNotify custom download comes with the following files:
+    npm install pnotify
+
+The PNotify custom download comes with the following files:
 
 * `pnotify.custom.js` & `pnotify.custom.min.js` (Minified)
 * `pnotify.custom.css` & `pnotify.custom.min.css` (Minified)
@@ -34,33 +36,21 @@ Now you can use PNotify like this:
 
 ```html
 <script type="text/javascript">
-    $(function(){
-        new PNotify({
-            title: 'Regular Notice',
-            text: 'Check me out! I\'m a notice.'
-        });
+  $(function(){
+    new PNotify({
+      title: 'Regular Notice',
+      text: 'Check me out! I\'m a notice.'
     });
+  });
 </script>
 ```
 
 If you are not using any UI library, you can use the included styling, called Bright Theme. It is the default.
 
-If you are using Bootstrap version 2, include this line somewhere before your first notice:
-
-```js
-PNotify.prototype.options.styling = "bootstrap2";
-```
-
 If you are using Bootstrap version 3, include this line somewhere before your first notice:
 
 ```js
 PNotify.prototype.options.styling = "bootstrap3";
-```
-
-If you are using jQuery UI, include this line somewhere before your first notice:
-
-```js
-PNotify.prototype.options.styling = "jqueryui";
 ```
 
 If you are using Bootstrap 3 with Font Awesome, include this line somewhere before your first notice:
@@ -133,7 +123,7 @@ Configuration Defaults / Options
 * `title_escape: false` - Whether to escape the content of the title. (Not allow HTML.)
 * `text: false` - The notice's text.
 * `text_escape: false` - Whether to escape the content of the text. (Not allow HTML.)
-* `styling: "brighttheme"` - What styling classes to use. (Can be either "brighttheme", "jqueryui", "bootstrap2", "bootstrap3", "fontawesome", or a custom style object. See the source in the end of pnotify.js for the properties in a style object.)
+* `styling: "brighttheme"` - What styling classes to use. (Can be either "brighttheme", "bootstrap3", "fontawesome", or a custom style object. See the source in the end of pnotify.js for the properties in a style object.)
 * `addclass: ""` - Additional classes to be added to the notice. (For custom styling.)
 * `cornerclass: ""` - Class to be added to the notice for corner styling.
 * `auto_display: true` - Display the notice when it is created. Turn this off to add notifications to the history without displaying them.
@@ -141,16 +131,15 @@ Configuration Defaults / Options
 * `min_height: "16px"` - Minimum height of the notice. It will expand to fit content.
 * `type: "notice"` - Type of the notice. "notice", "info", "success", or "error".
 * `icon: true` - Set icon to true to use the default icon for the selected style/type, false for no icon, or a string for your own icon class.
-* `animation: "fade"` - The animation to use when displaying and hiding the notice. "none", "show", "fade", and "slide" are built in to jQuery. Others require jQuery UI. Use an object with effect_in and effect_out to use different effects.
-* `animate_speed: "slow"` - Speed at which the notice animates in and out. "slow", "def" or "normal", "fast" or number of milliseconds.
-* `position_animate_speed: 500` - Specify a specific duration of position animation.
-* `opacity: 1` - Opacity of the notice.
+* `animation: "fade"` - The animation to use when displaying and hiding the notice. "none" and "fade" are supported through CSS. Others are supported through the Animate module and Animate.css.
+* `animate_speed: "normal"` - Speed at which the notice animates in and out. "slow", "normal", or "fast". Respectively, 400ms, 250ms, 100ms.
 * `shadow: true` - Display a drop shadow.
 * `hide: true` - After a delay, remove the notice.
 * `delay: 8000` - Delay in milliseconds before the notice is removed.
 * `mouse_reset: true` - Reset the hide timer if the mouse moves over the notice.
 * `remove: true` - Remove the notice's elements from the DOM after it is removed.
 * `insert_brs: true` - Change new lines to br tags.
+* `destroy: true` - Whether to remove the notice from the global array when it is closed.
 * `stack: {"dir1": "down", "dir2": "left", "push": "bottom", "spacing1": 25, "spacing2": 25, "context": $("body"), "modal": false}` - The stack on which the notices will be placed. Also controls the direction the notices stack.
 
 Desktop Module
@@ -175,7 +164,7 @@ Buttons Module
 * `sticker: true` - Provide a button for the user to manually stick the notice.
 * `sticker_hover: true` - Only show the sticker button on hover.
 * `show_on_nonblock: false` - Show the buttons even when the nonblock module is in use.
-* `labels: {close: "Close", stick: "Stick"}` - Lets you change the displayed text, facilitating internationalization.
+* `labels: {close: "Close", stick: "Stick", unstick: "Unstick"}` - Lets you change the displayed text, facilitating internationalization.
 * `classes: {closer: null, pin_up: null, pin_down: null}` - The classes to use for button icons. Leave them null to use the classes from the styling you're using.
 
 `}`
@@ -185,7 +174,6 @@ NonBlock Module
 
 `nonblock: {`
 * `nonblock: false` - Create a non-blocking notice. It lets the user click elements underneath it.
-* `nonblock_opacity: .2` - The opacity of the notice (if it's non-blocking) when the mouse is over it.
 
 `}`
 
@@ -236,19 +224,10 @@ History Module
 
 `}`
 
-Reference Module
---------------
-
-`reference: {`
-* `putThing: false` - Provide a thing for stuff. Turned off by default.
-* `labels: {text: "Spin Around"}` - If you are displaying any text, you should use a labels options to support internationalization.
-
-`}`
-
 Callbacks Module
 ================
 
-The callback options all expect one argument, a function, which will be called when that event occurs. They can be included in the options object passed to PNotify() just like the core options. If the function returns false on the "before_open" or "before_close" callback, that event will be canceled.
+The callback options all expect one argument, a function, which will be called when that event occurs. Unlike other modules, they are included in the options object passed to PNotify() just like the core options. If the function returns false on the "before_open" or "before_close" callback, that event will be canceled.
 
 * `before_init` - This option is called before the notice has been initialized. It accepts one argument, the options object.
 * `after_init` - This option is called after the notice has been initialized. It accepts one argument, the notice object.
@@ -271,21 +250,21 @@ Utility Functions
 Using PNotify with RequireJS
 ============================
 
-When they detect AMD/RequireJS, PNotify core defines the named module "pnotify", and PNotify's modules each define names like "pnotify.module". The following example shows the use of the nonblock and desktop modules with RequireJS.
+When they detect AMD/RequireJS, PNotify core defines the named module "pnotify" and PNotify's modules each define names like "pnotify.name". The following example shows the use of the nonblock and desktop modules with RequireJS.
 
 ```js
 requirejs(['pnotify', 'pnotify.nonblock', 'pnotify.desktop'], function(PNotify){
-    PNotify.desktop.permission();
-    new PNotify({
-        title: 'Desktop Notice',
-        text: 'If you\'ve given me permission, I\'ll appear as a desktop notification. If you haven\'t, I\'ll still appear as a regular PNotify notice.',
-        desktop: {
-            desktop: true
-        },
-        nonblock: {
-            nonblock: true
-        }
-    });
+  PNotify.desktop.permission();
+  new PNotify({
+    title: 'Desktop Notice',
+    text: 'If you\'ve given me permission, I\'ll appear as a desktop notification. If you haven\'t, I\'ll still appear as a regular PNotify notice.',
+    desktop: {
+      desktop: true
+    },
+    nonblock: {
+      nonblock: true
+    }
+  });
 });
 ```
 

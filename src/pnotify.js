@@ -100,7 +100,7 @@ var init = function(root){
       text: false,
       // Whether to escape the content of the text. (Not allow HTML.)
       text_escape: false,
-      // What styling classes to use. (Can be either "brighttheme", "jqueryui", "bootstrap2", "bootstrap3", or "fontawesome".)
+      // What styling classes to use. (Can be either "brighttheme", "bootstrap3", or "fontawesome".)
       styling: "brighttheme",
       // Additional classes to be added to the notice. (For custom styling.)
       addclass: "",
@@ -122,7 +122,7 @@ var init = function(root){
       // through the Animate module and Animate.css.
       animation: "fade",
       // Speed at which the notice animates in and out. "slow", "normal",
-      // or "fast". Respectively, 600ms, 400ms, 200ms.
+      // or "fast". Respectively, 400ms, 250ms, 100ms.
       animate_speed: "normal",
       // Display a drop shadow.
       shadow: true,
@@ -136,7 +136,7 @@ var init = function(root){
       remove: true,
       // Change new lines to br tags.
       insert_brs: true,
-      // Whether to remove notices from the global array.
+      // Whether to remove the notice from the global array when it is closed.
       destroy: true,
       // The stack on which the notices will be placed. Also controls the
       // direction the notices stack.
@@ -838,18 +838,6 @@ var init = function(root){
         success_icon: "brighttheme-icon-success",
         error: "brighttheme-error",
         error_icon: "brighttheme-icon-error"
-      },
-      jqueryui: {
-        container: "ui-widget ui-widget-content ui-corner-all",
-        notice: "ui-state-highlight",
-        // (The actual jQUI notice icon looks terrible.)
-        notice_icon: "ui-icon ui-icon-info",
-        info: "",
-        info_icon: "ui-icon ui-icon-info",
-        success: "ui-state-default",
-        success_icon: "ui-icon ui-icon-circle-check",
-        error: "ui-state-error",
-        error_icon: "ui-icon ui-icon-alert"
       },
       bootstrap3: {
         container: "alert",

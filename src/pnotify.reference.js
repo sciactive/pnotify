@@ -129,11 +129,8 @@
     }
   };
   // This is where you would add any styling options you are using in your code.
-  $.extend(PNotify.styling.jqueryui, {
-    athing: "ui-icon ui-icon-refresh"
-  });
-  $.extend(PNotify.styling.bootstrap2, {
-    athing: "icon-refresh"
+  $.extend(PNotify.styling.brighttheme, {
+    athing: "bt-icon bt-icon-refresh"
   });
   $.extend(PNotify.styling.bootstrap3, {
     athing: "glyphicon glyphicon-refresh"

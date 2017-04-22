@@ -26,9 +26,6 @@
   <!-- jQuery -->
   <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 
-  <!-- jQuery UI -->
-  <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/themes/smoothness/jquery-ui.css" media="all" rel="stylesheet" type="text/css" />
-
   <!-- Bootstrap -->
   <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" id="bootstrap-css" rel="stylesheet" type="text/css" />
   <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
@@ -99,9 +96,6 @@
       top: 60px;
       right: 5px;
       z-index: 100;
-    }
-    #switcher-jqueryui, #switcher-jqueryui * {
-      box-sizing: content-box;
     }
     @media (max-width: 980px) {
       #switcher-container {
@@ -301,14 +295,6 @@
       });
       prettyPrint(); // Format source in help.
 
-      // ---
-      // jQuery UI Theme Switcher widget.
-      // ---
-      if ($.fn.themeswitcher) {
-        $('#switcher-jqueryui').themeswitcher({imgpath: "includes/themeswitcher/images/"});
-      } else {
-        $('#switcher-jqueryui').html("Couldn't load theme switcher widget.");
-      }
       // Navbar scrollspy.
       $('#navbar').scrollspy();
     });
@@ -815,7 +801,6 @@
         </script>
       </div>
     </div>
-    <div id="switcher-jqueryui" style="display: none;"></div>
   </div>
   <section class="container page-banner">
     <div class="intro-section">
@@ -846,7 +831,7 @@
             <h3 style="margin-top: 0;">Optional Styling</h3>
           </div>
           <div><label><input type="checkbox" data-type="module" name="brighttheme" checked /> Bright Theme</label></div>
-          <div style="margin-bottom: 10px;"><small>Stand-alone theme. You can uncheck this if you're using Bootstrap or jQuery UI.</small></div>
+          <div style="margin-bottom: 10px;"><small>Stand-alone theme. You can uncheck this if you're using Bootstrap or your own styling.</small></div>
           <div class="page-header">
             <h3 style="margin-top: 0;">Modules</h3>
           </div>
@@ -917,8 +902,7 @@
           <pre class="prettyprint">&lt;script type="text/javascript" src="pnotify.custom<em>.min</em>.js"&gt;&lt;/script&gt;
 &lt;link href="pnotify.custom<em>.min</em>.css" media="all" rel="stylesheet" type="text/css" /&gt;</pre>
           <p>
-            You also need to include jQuery (1.6 or higher) and either Bootstrap CSS or a jQuery UI Theme.
-            <small>If you want to use jQuery UI effect animations, you also need to include the jQuery UI JavaScript.</small>
+            You also need to include jQuery (1.6 or higher).
           </p>
           <p>
             Now you can use PNotify like this:
@@ -940,11 +924,6 @@ $(function(){
             somewhere before your first notice:
           </p>
           <pre class="prettyprint">PNotify.prototype.options.styling = "bootstrap3";</pre>
-          <p>
-            If you are using jQuery UI, include this line somewhere
-            before your first notice:
-          </p>
-          <pre class="prettyprint">PNotify.prototype.options.styling = "jqueryui";</pre>
           <p>
             If you are using Bootstrap 3 with Font Awesome, include
             this line somewhere before your first notice:
@@ -1009,7 +988,7 @@ $(function(){
           <div class="alert-block">
             <h3><i class="glyphicon glyphicon-picture" style="position: relative; top: 3px;"></i> Themeable</h3>
             <p>
-              PNotify can use Bootstrap or jQuery UI themes. Try out some of the
+              PNotify can use Bootstrap themes. Try out some of the
               readymade themes using the selector in the top right corner
               of this page.
             </p>
@@ -1062,7 +1041,7 @@ $(function(){
           <ul>
             <li>Rich graphical features and effects.
               <ul>
-                <li>Bootstrap, Font Awesome, jQuery UI, and any other CSS based icons.</li>
+                <li>Bootstrap, Font Awesome, and any other CSS based icons.</li>
                 <li>Mobile styling and swipe away support.</li>
                 <li>Timed hiding with visual effects.</li>
                 <li>Standard and custom effects.</li>
@@ -1086,7 +1065,7 @@ $(function(){
             </li>
             <li>Feature rich API.
               <ul>
-                <li>Desktop notifications based on the draft Web Notifications standard.</li>
+                <li>Desktop notifications based on the Web Notifications standard.</li>
                 <li>Supports dynamically updating text, title, icon, type...</li>
                 <li>Supports HTML (including forms) in title and text.
                   <ul>
@@ -1115,7 +1094,7 @@ $(function(){
         <h3 class="panel-title">Choose the Styling</h3>
       </div>
       <div class="panel-body">
-        PNotify supports three styling methods and three popular icon sets.
+        PNotify supports two styling methods and three popular icon sets.
         <div class="btn-toolbar">
           <div class="btn-group" data-toggle="buttons">
             <label class="btn btn-default active">
@@ -1126,9 +1105,6 @@ $(function(){
             </label>
             <label class="btn btn-default">
               <input type="radio" name="styling" id="style-fontawesome" autocomplete="off"> Font Awesome Icons
-            </label>
-            <label class="btn btn-default">
-              <input type="radio" name="styling" id="style-jqueryui" autocomplete="off"> jQuery UI
             </label>
           </div>
           <button class="btn btn-default source" onclick="new PNotify({
@@ -1199,29 +1175,6 @@ $(function(){
             text: 'Look at my beautiful styling! ^_^',
             type: 'error',
             styling: 'fontawesome'
-          });
-          new PNotify({
-            title: 'jQuery UI Notice',
-            text: 'Look at my beautiful styling! ^_^',
-            styling: 'jqueryui'
-          });
-          new PNotify({
-            title: 'jQuery UI Info',
-            text: 'Look at my beautiful styling! ^_^',
-            type: 'info',
-            styling: 'jqueryui'
-          });
-          new PNotify({
-            title: 'jQuery UI Success',
-            text: 'Look at my beautiful styling! ^_^',
-            type: 'success',
-            styling: 'jqueryui'
-          });
-          new PNotify({
-            title: 'jQuery UI Error',
-            text: 'Look at my beautiful styling! ^_^',
-            type: 'error',
-            styling: 'jqueryui'
           });">Demo Each</button>
         </div>
       </div>
@@ -1232,7 +1185,6 @@ $(function(){
               case "style-brighttheme":
                 PNotify.prototype.options.styling = "brighttheme";
                 $("#switcher-bootstrap").hide();
-                $("#switcher-jqueryui").hide();
                 $(".brighttheme-hideme").hide();
                 new PNotify({
                   title: "Styling Change",
@@ -1242,26 +1194,14 @@ $(function(){
               case "style-bootstrap3":
                 PNotify.prototype.options.styling = "bootstrap3";
                 $("#switcher-bootstrap").show();
-                $("#switcher-jqueryui").hide();
                 $(".brighttheme-hideme").show();
                 new PNotify({
                   title: "Styling Change",
                   text: "From now on, notices will be styled with Twitter Bootstrap."
                 });
                 break;
-              case "style-jqueryui":
-                PNotify.prototype.options.styling = "jqueryui";
-                $("#switcher-jqueryui").show();
-                $("#switcher-bootstrap").hide();
-                $(".brighttheme-hideme").show();
-                new PNotify({
-                  title: "Styling Change",
-                  text: "From now on, notices will be styled with jQuery UI."
-                });
-                break;
               case "style-fontawesome":
                 PNotify.prototype.options.styling = "fontawesome";
-                $("#switcher-jqueryui").hide();
                 $("#switcher-bootstrap").show();
                 $(".brighttheme-hideme").show();
                 new PNotify({
@@ -1282,110 +1222,66 @@ $(function(){
         <button class="btn btn-default source" onclick="new PNotify({
           title: 'Regular Notice',
           text: 'Check me out! I\'m a notice.'
-        });">Regular Notice</button>
-        <button class="btn btn-default source" onclick="new PNotify({
-          title: 'Bootstrap Icon',
-          text: 'I have an icon that uses the Bootstrap icon styles.',
-          icon: 'glyphicon glyphicon-envelope'
-        });">Bootstrap Icon Notice</button>
-        <button class="btn btn-default source" onclick="new PNotify({
-          title: 'Font Awesome Icon',
-          text: 'I have an icon that uses the Font Awesome icon styles.',
-          icon: 'fa fa-envelope-o'
-        });">Font Awesome Icon Notice</button>
-        <button class="btn btn-default source" onclick="new PNotify({
-          title: 'jQuery UI Icon',
-          text: 'I have an icon that uses the jQuery UI icon styles.',
-          icon: 'ui-icon ui-icon-mail-closed'
-        });">jQuery UI Icon Notice</button>
-        <button class="btn btn-default source" onclick="new PNotify({
-          title: 'No Icon Notice',
-          text: 'I have no icon.',
-          icon: false
-        });">No Icon Notice</button>
-        <hr />
+        });">Notice</button>
         <button class="btn btn-default source" onclick="new PNotify({
           title: 'New Thing',
           text: 'Just to let you know, something happened.',
           type: 'info'
-        });">Regular Info</button>
+        });">Info Message</button>
         <button class="btn btn-default source" onclick="new PNotify({
-          title: 'jQuery UI Icon Info',
-          text: 'Something is encrypted. Check out my icon, it shows that you\'re secure because our encryption uses padlocks.',
-          type: 'info',
-          icon: 'ui-icon ui-icon-locked'
-        });">jQuery UI Icon Info</button>
-        <button class="btn btn-default source" onclick="new PNotify({
-          title: 'No Icon Info',
-          text: 'I have no icon.',
-          type: 'info',
-          icon: false
-        });">No Icon Info</button>
-        <hr />
-        <button class="btn btn-default source" onclick="new PNotify({
-          title: 'Regular Success',
-          text: 'That thing that you were trying to do worked!',
+          title: 'Success!',
+          text: 'That thing that you were trying to do worked.',
           type: 'success'
-        });">Regular Success</button>
-        <button class="btn btn-default source" onclick="new PNotify({
-          title: 'jQuery UI Icon Success',
-          text: 'We reached the moon first! See, we planted a flag.',
-          type: 'success',
-          icon: 'ui-icon ui-icon-flag'
-        });">jQuery UI Icon Success</button>
-        <button class="btn btn-default source" onclick="new PNotify({
-          title: 'No Icon Success',
-          text: 'I have no icon.',
-          type: 'success',
-          icon: false
-        });">No Icon Success</button>
-        <hr />
+        });">Success Message</button>
         <button class="btn btn-default source" onclick="new PNotify({
           title: 'Oh No!',
           text: 'Something terrible happened.',
           type: 'error'
-        });">Regular Error</button>
+        });">Error Message</button>
         <button class="btn btn-default source" onclick="new PNotify({
-          title: 'jQuery UI Icon Error',
-          text: 'Oh no. Something\'s wrong with your network, and I\'m showing you visually using an appropriate icon to indicate the type of error that has occured. You know, network.',
-          type: 'error',
-          icon: 'ui-icon ui-icon-signal-diag'
-        });">jQuery UI Icon Error</button>
+          title: 'Bootstrap Icon',
+          text: 'I have an icon that uses the Bootstrap icon styles.',
+          icon: 'glyphicon glyphicon-envelope'
+        });">Bootstrap Icon</button>
         <button class="btn btn-default source" onclick="new PNotify({
-          title: 'No Icon Error',
+          title: 'Font Awesome Icon',
+          text: 'I have an icon that uses the Font Awesome icon styles.',
+          icon: 'fa fa-envelope-o'
+        });">Font Awesome Icon</button>
+        <button class="btn btn-default source" onclick="new PNotify({
+          title: 'No Icon Notice',
           text: 'I have no icon.',
-          type: 'error',
           icon: false
-        });">No Icon Error</button>
+        });">No Icon</button>
         <hr />
         <button class="btn btn-default source" onclick="new PNotify({
           title: 'See Through Notice',
           text: 'No one ever pays attention to me. Why should they? I\'m practically invisible.',
           addclass: 'translucent'
         });
-        var source_note = 'translucent is a custom class defined (using ui-pnotify-fade-in) with opacity: .8.';">Translucent Notice</button>
+        var source_note = 'translucent is a custom class defined (using ui-pnotify-fade-in) with opacity: .8.';">Translucent</button>
         <button class="btn btn-default source" onclick="new PNotify({
           title: 'No Shadow Notice',
           text: 'I don\'t have a shadow. (It\'s cause I\'m a vampire or something. Or is that reflections...)',
           shadow: false
         });">No Shadow Notice</button>
-        <button class="btn btn-default source" onclick="new PNotify('Check me out! I\'m a notice.');">Simple Notice</button>
-        <button class="btn btn-default source" onclick="new PNotify(Math.round(Math.random()*9999));">Number Notice</button>
+        <button class="btn btn-default source" onclick="new PNotify('Check me out! I\'m a notice.');">Simple</button>
+        <button class="btn btn-default source" onclick="new PNotify(Math.round(Math.random()*9999));">Number</button>
         <button class="btn btn-default source" onclick="new PNotify({
           title: 'No Mouse Reset Notice',
           text: 'I don\'t care if you move your mouse over me, I\'ll disappear when I want.',
           mouse_reset: false
-        });">No Mouse Reset Notice</button>
+        });">No Mouse Reset</button>
         <button class="btn btn-default source" onclick="new PNotify({
           title: 'Fast Fading Notice',
           text: 'I fade in and out really quickly.',
           animate_speed: 'fast'
-        });">Fast Fading Notice</button>
+        });">Fast Fading</button>
         <button class="btn btn-default source" onclick="new PNotify({
           title: 'No Effect Notice',
           text: 'I don\'t even bother to animate. I\'m too cool for that.',
           animation: 'none'
-        });">No Effect Notice</button>
+        });">No Effect</button>
         <button class="btn btn-default source" onclick="var notice = new PNotify({
           text: $('#form_notice').html(),
           icon: false,
@@ -1418,7 +1314,7 @@ $(function(){
             type: 'success'
           });
           return false;
-        });">Form Notice</button>
+        });">Forms</button>
         <div id="form_notice" style="display: none;">
           <form class="pf-form pform_custom" action="" method="post">
             <div class="pf-element pf-heading">
@@ -1458,7 +1354,7 @@ $(function(){
           if ($(e.target).is('.ui-pnotify-closer *, .ui-pnotify-sticker *'))
             return;
           notice.update({type: 'success', text: 'Yay, you clicked me!&lt;div style=&quot;text-align: center;&quot;&gt;&lt;img src=&quot;https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Happy_smiley_face.png/240px-Happy_smiley_face.png&quot; /&gt;&lt;/div&gt;'});
-        });">Click Notice</button>
+        });">Click on It</button>
         <button class="btn btn-default source" onclick="var notice = new PNotify({
           title: 'Click Close Notice',
           text: 'Click me anywhere to dismiss me.',
@@ -1469,20 +1365,20 @@ $(function(){
         });
         notice.get().click(function(){
           notice.remove();
-        });">Click Close Notice</button>
+        });">Click to Close</button>
         <button class="btn btn-default source" onclick="new PNotify({
           title: 'Big Notice',
           text: 'Check me out! I\'m tall and wide, even though my text isn\'t.',
           width: '500px',
           min_height: '400px'
-        });">Big Notice</button>
-        <button class="btn btn-default source" onclick="show_rich();">Rich Notice</button>
+        });">Huge</button>
+        <button class="btn btn-default source" onclick="show_rich();">Rich Text</button>
         <button class="btn btn-default source" onclick="new PNotify({
           title: '&lt;em&gt;Escaped Notice&lt;/em&gt;',
           title_escape: true,
           text: $('#evil_html').html(),
           text_escape: true
-        });">Escaped Notice</button>
+        });">Or Keep it Safe</button>
         <div id="evil_html" style="display: none;">
           <div>As you can see, I don't allow HTML in my content.</div>
           <div>This prevents things like cross site scripting attacks:</div>
@@ -1492,7 +1388,7 @@ $(function(){
             })()
           </script>
         </div>
-        <button class="btn btn-default source" onclick="dyn_notice();">Dynamic Notice</button>
+        <button class="btn btn-default source" onclick="dyn_notice();">Dynamic</button>
         <button class="btn btn-default source brighttheme-hideme" style="display: none;" onclick="new PNotify({
           title: 'No Rounded Corners Notice',
           text: 'Warning: Contains sharp objects. Not suitable for browsers under the age of CSS3.',
@@ -1508,7 +1404,7 @@ $(function(){
           nonblock: {
             nonblock: true
           }
-        });">Custom Styled Notice</button>
+        });">Custom Styles</button>
         <div style="float: right;"><a data-toggle="modal" href="#growl">How to style like Growl.</a></div>
         <div class="modal fade" id="growl" tabindex="-1" role="dialog" aria-labelledby="growl-title" aria-hidden="true">
           <div class="modal-dialog modal-lg">
@@ -1610,7 +1506,7 @@ color: #FF0;
           if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target))
             return;
           alert('Hey! You clicked the desktop notification!');
-        });">Desktop Notification Notice</button>
+        });">Notice</button>
         <button class="btn btn-default source" onclick="PNotify.desktop.permission(); (new PNotify({
           title: 'Desktop Info',
           text: 'If you\'ve given me permission, I\'ll appear as a desktop notification. If you haven\'t, I\'ll still appear as a regular PNotify notice.',
@@ -1622,7 +1518,7 @@ color: #FF0;
           if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target))
             return;
           alert('Hey! You clicked the desktop notification!');
-        });">Desktop Notification Info</button>
+        });">Info</button>
         <button class="btn btn-default source" onclick="PNotify.desktop.permission(); (new PNotify({
           title: 'Desktop Success',
           text: 'If you\'ve given me permission, I\'ll appear as a desktop notification. If you haven\'t, I\'ll still appear as a regular PNotify notice.',
@@ -1634,7 +1530,7 @@ color: #FF0;
           if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target))
             return;
           alert('Hey! You clicked the desktop notification!');
-        });">Desktop Notification Success</button>
+        });">Success</button>
         <button class="btn btn-default source" onclick="PNotify.desktop.permission(); (new PNotify({
           title: 'Desktop Error',
           text: 'If you\'ve given me permission, I\'ll appear as a desktop notification. If you haven\'t, I\'ll still appear as a regular PNotify notice.',
@@ -1646,7 +1542,7 @@ color: #FF0;
           if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target))
             return;
           alert('Hey! You clicked the desktop notification!');
-        });">Desktop Notification Error</button>
+        });">Error</button>
         <button class="btn btn-default source" onclick="PNotify.desktop.permission(); (new PNotify({
           title: 'Desktop Custom Icon',
           text: 'If you\'ve given me permission, I\'ll appear as a desktop notification. If you haven\'t, I\'ll still appear as a regular PNotify notice.',
@@ -1658,19 +1554,20 @@ color: #FF0;
           if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target))
             return;
           alert('Hey! You clicked the desktop notification!');
-        });">Desktop Notification Custom</button>
+        });">Custom</button>
         <button class="btn btn-default source" onclick="PNotify.desktop.permission(); (new PNotify({
-          title: 'Alternate Text Notice',
+          title: 'Alternate Text Notice - Browser',
           text: 'This text appears on the &lt;strong&gt;browser&lt;/strong&gt;.',
           desktop: {
             desktop: true,
+            title: 'Alternate Text Notice - Desktop',
             text: 'This text appears on the *desktop*.'
           }
         })).get().click(function(e){
           if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target))
             return;
           alert('Hey! You clicked the desktop notification!');
-        });">Alt Desktop Notification</button>
+        });">Alternate Text and Title</button>
         <button class="btn btn-default source" onclick="PNotify.desktop.permission(); (new PNotify({
           title: 'Sticky Desktop Notice',
           text: 'I\'m a sticky notice, so you\'ll have to close me yourself. (Some systems don\'t allow sticky notifications.) If you\'ve given me permission, I\'ll appear as a desktop notification. If you haven\'t, I\'ll still appear as a regular PNotify notice.',
@@ -1682,7 +1579,7 @@ color: #FF0;
           if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target))
             return;
           alert('Hey! You clicked the desktop notification!');
-        });">Sticky Desktop Notification</button>
+        });">Sticky</button>
         <button class="btn btn-default source" onclick="PNotify.desktop.permission(); var notice = (new PNotify({
           title: 'Dynamic Desktop Notice',
           text: 'I\'m a dynamic desktop notice. I\'ll change my type and text in a few seconds. If you\'ve given me permission, I\'ll appear as a desktop notification. If you haven\'t, I\'ll still appear as a regular PNotify notice.',
@@ -1698,7 +1595,7 @@ color: #FF0;
             type: 'info',
             text: 'Now I\'m an info box!'
           });
-        }, 4000);">Dynamic Desktop Notification</button>
+        }, 4000);">Dynamic</button>
         <button class="btn btn-default source" onclick="PNotify.desktop.permission(); (new PNotify({
           title: 'Desktop Notice',
           text: 'If you\'ve given me permission, I\'ll appear as a desktop notification. If you haven\'t, I won\'t appear at all, because my fallback is turned off.',
@@ -1710,7 +1607,7 @@ color: #FF0;
           if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target))
             return;
           alert('Hey! You clicked the desktop notification!');
-        });" title="Disabling fallback makes the notice not appear at all if it can't appear as a desktop notice.">No Fallback Desktop Notice</button>
+        });" title="Disabling fallback makes the notice not appear at all if it can't appear as a desktop notice.">No Fallback</button>
       </div>
       <div class="panel-heading">
         <h3 class="panel-title">Buttons Module <small>Sticker and a closer buttons.</small></h3>
@@ -1797,7 +1694,7 @@ color: #FF0;
             nonblock: true,
             nonblock_opacity: .2
           }
-        });">Non-Blocking Notice</button>
+        });">Non-Blocking</button>
         <button class="btn btn-default source" onclick="new PNotify({
           title: 'Non-Blocking Notice',
           text: 'I\'m a non-blocking notice with buttons.',
@@ -1808,7 +1705,7 @@ color: #FF0;
           buttons: {
             show_on_nonblock: true
           }
-        });">Non-Blocking Notice with Buttons</button>
+        });">Non-Blocking with Buttons</button>
       </div>
       <div class="panel-heading">
         <h3 class="panel-title">Mobile Module <small>Notices on mobile phones and tablets.</small></h3>
@@ -1821,14 +1718,14 @@ color: #FF0;
           mobile: {
             swipe_dismiss: false
           }
-        });">No Mobile Support Notice</button>
+        });">No Mobile Support</button>
         <button class="btn btn-default source" onclick="new PNotify({
           title: 'No Mobile Styling Notice',
           text: 'If you\'re on a mobile device, I\'ll look terrible.',
           mobile: {
             styling: false
           }
-        });">No Mobile Styling Notice</button>
+        });">No Mobile Styling</button>
       </div>
       <div class="panel-heading">
         <h3 class="panel-title">Animate Module <small>Fluid CSS animations using <a href="https://daneden.github.io/animate.css/" target="_blank">Animate.css</a>.</small></h3>

@@ -150,16 +150,6 @@
     pin_up: "brighttheme-icon-sticker",
     pin_down: "brighttheme-icon-sticker brighttheme-icon-stuck"
   });
-  $.extend(PNotify.styling.jqueryui, {
-    closer: "ui-icon ui-icon-close",
-    pin_up: "ui-icon ui-icon-pin-w",
-    pin_down: "ui-icon ui-icon-pin-s"
-  });
-  $.extend(PNotify.styling.bootstrap2, {
-    closer: "icon-remove",
-    pin_up: "icon-pause",
-    pin_down: "icon-play"
-  });
   $.extend(PNotify.styling.bootstrap3, {
     closer: "glyphicon glyphicon-remove",
     pin_up: "glyphicon glyphicon-pause",
