@@ -1,5 +1,5 @@
 /*
-PNotify 3.0.1 sciactive.com/pnotify/
+PNotify 3.2.0 sciactive.com/pnotify/
 (C) 2015 Hunter Perrin; Google, Inc.
 license Apache-2.0
 */
@@ -86,7 +86,7 @@ var init = function(root){
   };
   $.extend(PNotify.prototype, {
     // The current version of PNotify.
-    version: "3.0.1",
+    version: "3.2.0",
 
     // === Options ===
 
