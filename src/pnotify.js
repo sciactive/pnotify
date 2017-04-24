@@ -504,7 +504,7 @@ var init = function(root){
       // Declare that the notice is animating in.
       this.animating = "in";
       var that = this;
-      finished = function(){
+      var finished = function(){
         if (that.animTimer) {
           clearTimeout(that.animTimer);
         }
@@ -539,7 +539,7 @@ var init = function(root){
       // Declare that the notice is animating out.
       this.animating = "out";
       var that = this;
-      finished = function(){
+      var finished = function(){
         if (that.animTimer) {
           clearTimeout(that.animTimer);
         }
