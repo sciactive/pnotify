@@ -73,8 +73,6 @@ let compress_js = (module, filename) => {
 
   const intro = get_intro(src_filename)
   const UglifyJS = require('uglify-js')
-  const files = {}
-  files[src_filename] = cat(src_filename).stdout
   const options = {
     sourceRoot: "../",
     outSourceMap: filename,
