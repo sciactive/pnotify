@@ -31,3 +31,25 @@
   display: block;
   margin: 0 auto;
 }
+.ui-pnotify-history-brighttheme {
+  background-color: #8FCEDD;
+  border: 0 solid #0286A5;
+  color: #012831;
+}
+.ui-pnotify-history-brighttheme button {
+  text-transform: uppercase;
+  font-weight: bold;
+  padding: 4px 8px;
+  border: none;
+  background: transparent;
+}
+.ui-pnotify-history-brighttheme .ui-pnotify-history-pulldown::after {
+  display: block;
+  font-size: 16px;
+  line-height: 14px;
+  padding-bottom: 4px;
+  content: "⌄";
+  text-align: center;
+  font-weight: bold;
+  font-family: Arial,sans-serif;
+}

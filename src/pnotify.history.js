@@ -79,7 +79,7 @@
           history_menu = $("<div />", {
             "class": "ui-pnotify-history-container "+notice.styles.hi_menu,
             "mouseleave": function(){
-              history_menu.animate({top: "-"+history_handle_top+"px"}, {duration: 100, queue: false});
+              history_menu.css("top", "-"+history_handle_top+"px");
             }
           })
           .append($("<div />", {"class": "ui-pnotify-history-header", "text": options.labels.redisplay}))
@@ -117,7 +117,7 @@
           var handle = $("<span />", {
             "class": "ui-pnotify-history-pulldown "+notice.styles.hi_hnd,
             "mouseenter": function(){
-              history_menu.animate({top: "0"}, {duration: 100, queue: false});
+              history_menu.css("top", "0");
             }
           })
           .appendTo(history_menu);
@@ -125,7 +125,7 @@
           // Get the top of the handle.
           history_handle_top = handle.offset().top + 2;
           // Hide the history pull down up to the top of the handle.
-          history_menu.css({top: "-"+history_handle_top+"px"});
+          history_menu.css("top", "-"+history_handle_top+"px");
 
           // Apply the fixed styling.
           if (options.fixed) {
@@ -164,10 +164,10 @@
     }
   };
   $.extend(PNotify.styling.brighttheme, {
-    hi_menu: "whaaaaat",
-    hi_btn: "whaaaaat",
-    hi_btnhov: "whaaaaat",
-    hi_hnd: "whaaaaat"
+    hi_menu: "ui-pnotify-history-brighttheme",
+    hi_btn: "",
+    hi_btnhov: "",
+    hi_hnd: ""
   });
   $.extend(PNotify.styling.bootstrap3, {
     hi_menu: "well",
