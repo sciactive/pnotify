@@ -37,25 +37,25 @@ body > .ui-pnotify-modal-overlay {
   transition: left .5s ease, top .5s ease, right .5s ease, bottom .5s ease;
 }
 .ui-pnotify.ui-pnotify-fade-slow {
-  transition: opacity .6s linear;
-  opacity: 0;
-}
-.ui-pnotify.ui-pnotify-fade-slow.ui-pnotify.ui-pnotify-move {
-  transition: opacity .6s linear, left .5s ease, top .5s ease, right .5s ease, bottom .5s ease;
-}
-.ui-pnotify.ui-pnotify-fade-normal {
   transition: opacity .4s linear;
   opacity: 0;
 }
-.ui-pnotify.ui-pnotify-fade-normal.ui-pnotify.ui-pnotify-move {
+.ui-pnotify.ui-pnotify-fade-slow.ui-pnotify.ui-pnotify-move {
   transition: opacity .4s linear, left .5s ease, top .5s ease, right .5s ease, bottom .5s ease;
 }
+.ui-pnotify.ui-pnotify-fade-normal {
+  transition: opacity .25s linear;
+  opacity: 0;
+}
+.ui-pnotify.ui-pnotify-fade-normal.ui-pnotify.ui-pnotify-move {
+  transition: opacity .25s linear, left .5s ease, top .5s ease, right .5s ease, bottom .5s ease;
+}
 .ui-pnotify.ui-pnotify-fade-fast {
-  transition: opacity .2s linear;
+  transition: opacity .1s linear;
   opacity: 0;
 }
 .ui-pnotify.ui-pnotify-fade-fast.ui-pnotify.ui-pnotify-move {
-  transition: opacity .2s linear, left .5s ease, top .5s ease, right .5s ease, bottom .5s ease;
+  transition: opacity .1s linear, left .5s ease, top .5s ease, right .5s ease, bottom .5s ease;
 }
 .ui-pnotify.ui-pnotify-fade-in {
   opacity: 1;
