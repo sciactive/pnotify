@@ -117,6 +117,15 @@ There are several CSS classes included which will position your notices for you:
 
 You can create your own custom position and movement by defining a custom stack.
 
+If you just want to position a single notice programmatically, and don't want to add any other notices into the stack, you can use this method, where `myXPos` and `myYPos` are pixel values relative to the top left corner of the viewport.
+
+```js
+new PNotify({
+  text: "Notice that's positioned programmatically in its own stack.",
+  stack: {"dir1": "down", "dir2": "right", "firstpos1": myYPos, "firstpos2": myXPos}
+});
+```
+
 Configuration Defaults / Options
 ================================
 
