@@ -8,7 +8,7 @@
     module.exports = factory(require('jquery'), require('./pnotify'));
   } else {
     // Browser globals
-    factory(root.jQuery, root.PNotify);
+    factory(root.$, root.PNotify);
   }
 }(typeof window !== "undefined" ? window : this, function($, PNotify){
   PNotify.prototype.options.mobile = {

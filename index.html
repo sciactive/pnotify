@@ -23,13 +23,17 @@
   <!-- Animate.css -->
   <link href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.4.0/animate.min.css" rel="stylesheet" type="text/css" />
 
-  <!-- jQuery -->
-  <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <!-- Zepto -->
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.js"></script>
+  <!-- <script type="text/javascript">
+    // Bootstrap wants jQuery specifically.
+    jQuery = $;
+  </script> -->
 
   <!-- Bootstrap -->
   <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" id="bootstrap-css" rel="stylesheet" type="text/css" />
   <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-  <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  <!-- <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script> -->
 
   <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
   <!--[if lt IE 9]>
@@ -290,9 +294,6 @@
         button.removeClass("source");
       });
       prettyPrint(); // Format source in help.
-
-      // Navbar scrollspy.
-      $('#navbar').scrollspy();
     });
 
     function show_rich() {
@@ -896,7 +897,7 @@
           <pre class="prettyprint">&lt;script type="text/javascript" src="pnotify.custom<em>.min</em>.js"&gt;&lt;/script&gt;
 &lt;link href="pnotify.custom<em>.min</em>.css" media="all" rel="stylesheet" type="text/css" /&gt;</pre>
           <p>
-            You also need to include jQuery (1.6 or higher).
+            You also need to include Zepto (1.2 or higher) or jQuery (1.6 or higher).
           </p>
           <p>
             Now you can use PNotify like this:

@@ -8,7 +8,7 @@
     module.exports = factory(require('jquery'), require('./pnotify'));
   } else {
     // Browser globals
-    factory(root.jQuery, root.PNotify);
+    factory(root.$, root.PNotify);
   }
 }(typeof window !== "undefined" ? window : this, function($, PNotify){
   var history_menu,
@@ -91,11 +91,10 @@
             },
             "mouseleave": function(){
               $(this).removeClass(notice.styles.hi_btnhov);
-            },
-            "click": function(){
-              $(this).trigger("pnotify.history-all");
-              return false;
             }
+          }).click(function(){
+            $(this).trigger("pnotify.history-all");
+            return false;
           }))
           .append($("<button />", {
             "class": "ui-pnotify-history-last "+notice.styles.hi_btn,
@@ -105,11 +104,10 @@
             },
             "mouseleave": function(){
               $(this).removeClass(notice.styles.hi_btnhov);
-            },
-            "click": function(){
-              $(this).trigger("pnotify.history-last");
-              return false;
             }
+          }).click(function(){
+            $(this).trigger("pnotify.history-last");
+            return false;
           }))
           .appendTo("body");
 

@@ -8,7 +8,7 @@
     module.exports = factory(require('jquery'), require('./pnotify'));
   } else {
     // Browser globals
-    factory(root.jQuery, root.PNotify);
+    factory(root.$, root.PNotify);
   }
 }(typeof window !== "undefined" ? window : this, function($, PNotify){
   PNotify.prototype.options.buttons = {
@@ -69,16 +69,16 @@
         "css": {
           "cursor": "pointer",
           "visibility": options.sticker_hover ? "hidden" : "visible"
-        },
-        "click": function(){
-          notice.options.hide = !notice.options.hide;
-          if (notice.options.hide) {
-            notice.queueRemove();
-          } else {
-            notice.cancelRemove();
-          }
-          $(this).trigger("pnotify:buttons:toggleStick");
         }
+      })
+      .click(function(){
+        notice.options.hide = !notice.options.hide;
+        if (notice.options.hide) {
+          notice.queueRemove();
+        } else {
+          notice.cancelRemove();
+        }
+        $(this).trigger("pnotify:buttons:toggleStick");
       })
       .bind("pnotify:buttons:toggleStick", function(){
         var pin_up = that.options.classes.pin_up === null ? notice.styles.pin_up : that.options.classes.pin_up;
@@ -103,12 +103,12 @@
         "aria-role": "button",
         "tabindex": "0",
         "title": options.labels.close,
-        "css": {"cursor": "pointer", "visibility": options.closer_hover ? "hidden" : "visible"},
-        "click": function(){
-          notice.remove(false);
-          that.sticker.css("visibility", "hidden");
-          that.closer.css("visibility", "hidden");
-        }
+        "css": {"cursor": "pointer", "visibility": options.closer_hover ? "hidden" : "visible"}
+      })
+      .click(function(){
+        notice.remove(false);
+        that.sticker.css("visibility", "hidden");
+        that.closer.css("visibility", "hidden");
       })
       .append($("<span />", {"class": options.classes.closer === null ? notice.styles.closer : options.classes.closer}))
       .prependTo(notice.container);

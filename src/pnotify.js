@@ -26,7 +26,7 @@ license Apache-2.0
     module.exports = factory(require('jquery'), global || root);
   } else {
     // Browser globals
-    root.PNotify = factory(root.jQuery, root);
+    root.PNotify = factory(root.$, root);
   }
 }(typeof window !== "undefined" ? window : this, function($, root){
 var init = function(root){
@@ -267,9 +267,9 @@ var init = function(root){
 
       // Add the notice to the notice array.
       if (this.options.stack.push === "top") {
-        PNotify.notices = $.merge([this], PNotify.notices);
+        PNotify.notices = [this].concat(PNotify.notices);
       } else {
-        PNotify.notices = $.merge(PNotify.notices, [this]);
+        PNotify.notices = PNotify.notices.concat([this]);
       }
       // Now position all the notices if they are to push to the top.
       if (this.options.stack.push === "top") {
@@ -511,7 +511,7 @@ var init = function(root){
         if (that.animating !== "in") {
           return;
         }
-        if (that.elem.is(":visible")) {
+        if (that.elem.get(0).offsetWidth || that.elem.get(0).offsetHeight || that.elem.get(0).getClientRects().length) {
           if (callback) {
             callback.call();
           }
@@ -546,7 +546,7 @@ var init = function(root){
         if (that.animating !== "out") {
           return;
         }
-        if (that.elem.css("opacity") == "0" || !that.elem.is(":visible")) {
+        if (that.elem.css("opacity") == "0" || !(that.elem.get(0).offsetWidth || that.elem.get(0).offsetHeight || that.elem.get(0).getClientRects().length)) {
           that.elem.removeClass("ui-pnotify-in");
           if (that.options.stack.overlay) {
             // Go through the modal stack to see if any are left open.
@@ -668,10 +668,10 @@ var init = function(root){
         }
         // Check that it's not beyond the viewport edge.
         if (
-            (stack.dir1 === "down" && stack.nextpos1 + elem.height() > (stack.context.is(body) ? jwindow.height() : stack.context.prop('scrollHeight')) ) ||
-            (stack.dir1 === "up" && stack.nextpos1 + elem.height() > (stack.context.is(body) ? jwindow.height() : stack.context.prop('scrollHeight')) ) ||
-            (stack.dir1 === "left" && stack.nextpos1 + elem.width() > (stack.context.is(body) ? jwindow.width() : stack.context.prop('scrollWidth')) ) ||
-            (stack.dir1 === "right" && stack.nextpos1 + elem.width() > (stack.context.is(body) ? jwindow.width() : stack.context.prop('scrollWidth')) )
+            (stack.dir1 === "down" && stack.nextpos1 + elem.height() > (stack.context.is("body") ? jwindow.height() : stack.context.prop('scrollHeight')) ) ||
+            (stack.dir1 === "up" && stack.nextpos1 + elem.height() > (stack.context.is("body") ? jwindow.height() : stack.context.prop('scrollHeight')) ) ||
+            (stack.dir1 === "left" && stack.nextpos1 + elem.width() > (stack.context.is("body") ? jwindow.width() : stack.context.prop('scrollWidth')) ) ||
+            (stack.dir1 === "right" && stack.nextpos1 + elem.width() > (stack.context.is("body") ? jwindow.width() : stack.context.prop('scrollWidth')) )
           ) {
           // If it is, it needs to go back to the first pos1, and over on pos2.
           stack.nextpos1 = stack.firstpos1;
@@ -692,13 +692,13 @@ var init = function(root){
         switch (stack.dir2) {
           case "down":
           case "up":
-            if (elem.outerHeight(true) > stack.addpos2) {
+            if (elem.get(0).offsetHeight > stack.addpos2) {
               stack.addpos2 = elem.height();
             }
             break;
           case "left":
           case "right":
-            if (elem.outerWidth(true) > stack.addpos2) {
+            if (elem.get(0).offsetWidth > stack.addpos2) {
               stack.addpos2 = elem.width();
             }
             break;
