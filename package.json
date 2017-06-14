@@ -1,7 +1,7 @@
 {
   "name": "pnotify",
   "version": "3.2.0",
-  "main": "dist/pnotify.js",
+  "main": "lib/pnotify.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/sciactive/pnotify.git"
@@ -13,17 +13,25 @@
   },
   "homepage": "https://github.com/sciactive/pnotify",
   "directories": {
-    "lib": "dist"
+    "lib": "lib"
   },
   "dependencies": {
     "jquery": ">=1.6.0"
   },
   "devDependencies": {
+    "babel-core": "^6.25.0",
+    "babel-plugin-transform-es2015-modules-amd": "^6.24.1",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.24.1",
+    "babel-plugin-transform-es2015-modules-systemjs": "^6.24.1",
+    "babel-plugin-transform-es2015-modules-umd": "^6.24.1",
+    "babel-preset-env": "^1.5.2",
+    "babel-preset-stage-3": "^6.24.1",
     "clean-css": "^4.0.12",
-    "shelljs": "^0.7.7",
+    "shelljs": "^0.7.8",
+    "svelte": "^1.22.3",
     "uglify-js": "^2.8.22"
   },
   "scripts": {
-    "dist": "nodejs make.js dist"
+    "build": "nodejs make.js dist -- --format=iife"
   }
 }
