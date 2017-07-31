@@ -24,6 +24,6 @@
     "uglify-js": "^2.8.22"
   },
   "scripts": {
-    "dist": "nodejs make.js dist"
+    "dist": "node make.js dist"
   }
 }

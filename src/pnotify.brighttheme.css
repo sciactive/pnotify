@@ -112,19 +112,10 @@ Color Scheme: http://paletton.com/palette.php?uid=c1T3n2J040kpEKzpEKzbEPSOEyiNk9
 }
 .brighttheme-icon-sticker:after {
   top: -5px;
-  content: "\01D1BC";
-  -moz-transform: rotate(-90deg);
-  -webkit-transform: rotate(-90deg);
-  -o-transform: rotate(-90deg);
-  -ms-transform: rotate(-90deg);
-  transform: rotate(-90deg);
+  content: "\002016";
 }
 .brighttheme-icon-sticker.brighttheme-icon-stuck:after {
-  -moz-transform: rotate(180deg);
-  -webkit-transform: rotate(180deg);
-  -o-transform: rotate(180deg);
-  -ms-transform: rotate(180deg);
-  transform: rotate(180deg);
+  content: "\00003E";
 }
 
 .brighttheme .ui-pnotify-action-bar {
