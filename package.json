@@ -15,14 +15,10 @@
   "directories": {
     "lib": "lib"
   },
-  "dependencies": {
-    "jquery": ">=1.6.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "babel-core": "^6.25.0",
-    "babel-plugin-transform-es2015-modules-amd": "^6.24.1",
-    "babel-plugin-transform-es2015-modules-commonjs": "^6.24.1",
-    "babel-plugin-transform-es2015-modules-systemjs": "^6.24.1",
+    "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-es2015-modules-umd": "^6.24.1",
     "babel-preset-env": "^1.5.2",
     "babel-preset-stage-3": "^6.24.1",
