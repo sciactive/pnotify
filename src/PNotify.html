@@ -1,0 +1,857 @@
+<!--
+ ====== PNotify ======
+
+ http://sciactive.com/pnotify/
+
+ Copyright 2009-2017 Hunter Perrin
+ Copyright 2015 Google, Inc.
+
+ Licensed under Apache License, Version 2.0.
+ 	http://www.apache.org/licenses/LICENSE-2.0
+-->
+
+<div ref:elem
+    class="ui-pnotify {{addclass}} {{_animatingClass}} {{_moveClass}} {{animation === 'fade' ? 'ui-pnotify-fade-'+animate_speed : ''}}"
+    style="
+      {{typeof width === 'string' ? 'width: '+width+';' : ''}}
+      {{typeof min_height === 'string' ? 'min-height: '+min_height+';' : ''}}
+    "
+    aria-live="assertive"
+    aria-role="alertdialog"
+    on:mouseenter="mouseenter(event)"
+    on:mouseleave="mouseleave(event)">
+  <div ref:container
+      class="ui-pnotify-container {{_styles.container}} {{_styles[type]}} {{cornerclass}} {{shadow ? 'ui-pnotify-shadow' : ''}}"
+      role="alert">
+    {{#if icon !== false}}
+      <div class="ui-pnotify-icon">
+        <span class="{{icon === true ? _styles[type+'_icon'] : icon}}"></span>
+      </div>
+    {{/if}}
+    <h4 ref:titleContainer class="ui-pnotify-title" style="display: {{title === false ? 'none' : 'block'}}">
+      {{#if title_escape}}
+        {{title}}
+      {{else}}
+        {{{title}}}
+      {{/if}}
+    </h4>
+    <div ref:textContainer class="ui-pnotify-text" style="display: {{text === false ? 'none' : 'block'}}" aria-role="alert">
+      {{#if text_escape}}
+        {{text}}
+      {{else}}
+        {{{_text_processed}}}
+      {{/if}}
+    </div>
+  </div>
+</div>
+
+<script>
+  let PNotify;
+
+  let defaultStack = {
+    dir1: "down",
+    dir2: "left",
+    push: "bottom",
+    spacing1: 36,
+    spacing2: 36,
+    context: window && document.body,
+    modal: false
+  };
+  let posTimer; // Position all timer.
+  // Set global variables.
+  let onDocumentLoaded = () => {
+    defaultStack.context = document.body;
+    // Reposition the notices when the window resizes.
+    window.addEventListener('resize', () => {
+      if (posTimer) {
+        clearTimeout(posTimer);
+      }
+      posTimer = setTimeout(() => {
+        PNotify.positionAll(true);
+      }, 10);
+    });
+  };
+  let createStackOverlay = function(stack) {
+    const overlay = document.createElement("div");
+    overlay.classList.add("ui-pnotify-modal-overlay");
+    stack.context.prependChild(overlay);
+    // Close the notices on overlay click.
+    overlay.addEventListener('click', () => {
+      if (stack.overlay_close) {
+        PNotify.removeStack(stack);
+      }
+    });
+    return overlay;
+  };
+
+  export default {
+    setup: (Component) => {
+      PNotify = Component;
+      PNotify.VERSION = "4.0.0";
+
+      PNotify.defaults = {
+        // The notice's title.
+        title: false,
+        // Whether to escape the content of the title. (Not allow HTML.)
+        title_escape: false,
+        // The notice's text.
+        text: false,
+        // Whether to escape the content of the text. (Not allow HTML.)
+        text_escape: false,
+        // What styling classes to use. (Can be either "brighttheme", "bootstrap3", "fontawesome", or a styling object.)
+        styling: "brighttheme",
+        // Additional classes to be added to the notice. (For custom styling.)
+        addclass: "",
+        // Class to be added to the notice for corner styling.
+        cornerclass: "",
+        // Display the notice when it is created.
+        auto_display: true,
+        // Width of the notice.
+        width: "300px",
+        // Minimum height of the notice. It will expand to fit content.
+        min_height: "16px",
+        // Type of the notice. "notice", "info", "success", or "error".
+        type: "info",
+        // Set icon to true to use the default icon for the selected
+        // style/type, false for no icon, or a string for your own icon class.
+        icon: true,
+        // The animation to use when displaying and hiding the notice. "none"
+        // and "fade" are supported through CSS. Others are supported
+        // through the Animate module and Animate.css.
+        animation: "fade",
+        // Speed at which the notice animates in and out. "slow", "normal",
+        // or "fast". Respectively, 400ms, 250ms, 100ms.
+        animate_speed: "normal",
+        // Display a drop shadow.
+        shadow: true,
+        // After a delay, remove the notice.
+        hide: true,
+        // Delay in milliseconds before the notice is removed.
+        delay: 8000,
+        // Reset the hide timer if the mouse moves over the notice.
+        mouse_reset: true,
+        // Remove the notice's elements from the DOM after it is removed.
+        remove: true,
+        // Change new lines to br tags.
+        insert_brs: true,
+        // Whether to remove the notice from the global array when it is closed.
+        destroy: true,
+        // The stack on which the notices will be placed. Also controls the
+        // direction the notices stack.
+        stack: defaultStack
+      };
+
+      // An array of all active notices.
+      PNotify.notices = [];
+      // This object holds all the PNotify modules. They are used to provide
+      // additional functionality.
+      PNotify.modules = {};
+
+      PNotify.alert = (options) => {
+        return new PNotify({target: document.body, data: options});
+      };
+
+      PNotify.notice = (options) => {
+        options.type = "notice";
+        return new PNotify({target: document.body, data: options});
+      };
+
+      PNotify.info = (options) => {
+        options.type = "info";
+        return new PNotify({target: document.body, data: options});
+      };
+
+      PNotify.success = (options) => {
+        options.type = "success";
+        return new PNotify({target: document.body, data: options});
+      };
+
+      PNotify.error = (options) => {
+        options.type = "error";
+        return new PNotify({target: document.body, data: options});
+      };
+
+      PNotify.removeAll = () => {
+        for (let i = 0; i < PNotify.notices.length; i++) {
+          if (PNotify.notices[i].remove) {
+            PNotify.notices[i].remove(false);
+          }
+        }
+      };
+      PNotify.removeStack = (stack) => {
+        for (let i = 0; i < PNotify.notices.length; i++) {
+          if (PNotify.notices[i].remove && PNotify.notices[i].get("stack") === stack) {
+            PNotify.notices[i].remove(false);
+          }
+        }
+      };
+      PNotify.positionAll = (animate) => {
+        // This timer is used for queueing this function so it doesn't run
+        // repeatedly.
+        if (posTimer) {
+          clearTimeout(posTimer);
+        }
+        posTimer = null;
+        // Reset the next position data.
+        if (PNotify.notices.length > 0) {
+          for (let i = 0; i < PNotify.notices.length; i++) {
+            let notice = PNotify.notices[i],
+                s = notice.get("stack");
+            if (!s) {
+              return;
+            }
+            if (s.overlay) {
+              s.overlay.classList.add("ui-pnotify-modal-overlay-hidden");
+            }
+            s.nextpos1 = s.firstpos1;
+            s.nextpos2 = s.firstpos2;
+            s.addpos2 = 0;
+            s.animation = animate;
+          }
+          for (let i = 0; i < PNotify.notices.length; i++) {
+            PNotify.notices[i].position();
+          }
+        } else {
+          delete defaultStack.nextpos1;
+          delete defaultStack.nextpos2;
+        }
+      };
+
+      PNotify.styling = {
+        brighttheme: {
+          // Bright Theme doesn't require any UI libraries.
+          container: "brighttheme",
+          notice: "brighttheme-notice",
+          notice_icon: "brighttheme-icon-notice",
+          info: "brighttheme-info",
+          info_icon: "brighttheme-icon-info",
+          success: "brighttheme-success",
+          success_icon: "brighttheme-icon-success",
+          error: "brighttheme-error",
+          error_icon: "brighttheme-icon-error"
+        },
+        bootstrap3: {
+          container: "alert",
+          notice: "alert-warning",
+          notice_icon: "glyphicon glyphicon-exclamation-sign",
+          info: "alert-info",
+          info_icon: "glyphicon glyphicon-info-sign",
+          success: "alert-success",
+          success_icon: "glyphicon glyphicon-ok-sign",
+          error: "alert-danger",
+          error_icon: "glyphicon glyphicon-warning-sign"
+        }
+      };
+      /*
+       * uses icons from http://fontawesome.io/
+       * version 4.0.3
+       */
+      PNotify.styling.fontawesome = Object.assign({}, PNotify.styling.bootstrap3);
+      Object.assign(PNotify.styling.fontawesome, {
+        notice_icon: "fa fa-exclamation-circle",
+        info_icon: "fa fa-info",
+        success_icon: "fa fa-check",
+        error_icon: "fa fa-warning"
+      });
+
+      if (window && document.body) {
+        onDocumentLoaded();
+      } else {
+        document.addEventListener("DOMContentLoaded", onDocumentLoaded);
+      }
+    },
+
+    oncreate () {
+      // We don't want our module objects all referencing the main object.
+      const modules = {};
+      for (let m in PNotify.modules) {
+        modules[m] = Object.assign({}, PNotify.modules[m]);
+      }
+      this.set({"_modules": modules});
+
+      // Add the notice to the notice array.
+      if (this.get("stack").push === "top") {
+        PNotify.notices.splice(0, 0, this);
+        // Now position all the notices if they are to push to the top.
+        this.queuePosition(false, 1);
+      } else {
+        PNotify.notices.push(this);
+      }
+
+      // Mark the stack so it won't animate the new notice.
+      this.get("stack").animation = false;
+
+      // Run the modules.
+      this.runModules('init');
+
+      // We're now initialized, but haven't been opened yet.
+      this.set({"_state": "closed"});
+
+      // Display the notice.
+      if (this.get("auto_display")) {
+        this.open();
+      }
+    },
+
+    data () {
+      return Object.assign({
+        "_state": "initializing", // The state can be "initializing", "opening", "open", "closing", and "closed".
+        "_timer": null, // Auto close timer.
+        "_animTimer": null, // Animation timer.
+        "_animating": false, // Stores what is currently being animated (in or out).
+        "_animatingClass": "", // Stores the class that adds entry/exit animation effects.
+        "_moveClass": "", // Stores the class that adds movement animation effects.
+        "_timerHide": false, // Stores whether the notice was hidden by a timer.
+      }, PNotify.defaults);
+    },
+
+    computed: {
+      _text_processed: (text, insert_brs) => insert_brs ?  String(text).replace(/\n/g, '<br />') : text,
+      _styles: (styling) => typeof styling === "object" ? styling : PNotify.styling[styling]
+    },
+
+    methods: {
+      // This runs an event on all the modules.
+      runModules(event, arg) {
+        const modules = this.get("_modules");
+        for (let module in modules) {
+          let curArg = ((typeof arg === "object" && module in arg) ? arg[module] : arg);
+          if (typeof modules[module][event] === 'function') {
+            modules[module].notice = this;
+            modules[module].options = typeof this.get("modules")[module] === 'object' ? this.get("modules")[module] : {};
+            modules[module][event](this, typeof this.get("modules")[module] === 'object' ? this.get("modules")[module] : {}, curArg);
+          }
+        }
+      },
+
+      update(options) {
+        // Save old options.
+        const oldHide = this.get("hide");
+
+        // Run the modules.
+        this.runModules('update', options);
+
+        this.set(options);
+
+        // Update the timed hiding.
+        if (!this.get("hide")) {
+          this.cancelRemove();
+        } else if (!oldHide) {
+          this.queueRemove();
+        }
+        this.queuePosition(true);
+
+        return this;
+      },
+
+      mouseenter(e) {
+        // Stop animation, reset the removal timer when the user mouses over.
+        if (this.get("mouse_reset") && this.get("_animating") === "out") {
+          if (!this.get("_timerHide")) {
+            return;
+          }
+          this.cancelRemove();
+        }
+        // Stop the close timer.
+        if (this.get("hide") && this.get("mouse_reset")) {
+          this.cancelRemove();
+        }
+      },
+
+      mouseleave(e) {
+        // Start the close timer.
+        if (this.get("hide") && this.get("mouse_reset") && this.get("_animating") !== "out") {
+          this.queueRemove();
+        }
+        PNotify.positionAll();
+      },
+
+      // Display the notice.
+      open() {
+        this.set({"_state": "opening"});
+        // Run the modules.
+        this.runModules('beforeOpen');
+
+        let stack = this.get("stack");
+        // If the notice is not in the DOM, append it.
+        if (!this.refs.elem.parentNode) {
+          if (stack.context) {
+            stack.context.appendChild(this.refs.elem);
+          } else if (document.body) {
+            document.body.appendChild(this.refs.elem);
+          } else {
+            throw new Error("No context to open this notice in.");
+          }
+        }
+        // Try to put it in the right position.
+        if (stack.push !== "top") {
+          this.position(true);
+        }
+        this.animateIn(() => {
+          this.queuePosition(true);
+
+          // Now set it to hide.
+          if (this.get("hide")) {
+            this.queueRemove();
+          }
+
+          this.set({"_state": "open"});
+
+          // Run the modules.
+          this.runModules('afterOpen');
+        });
+
+        return this;
+      },
+
+      // Remove the notice.
+      remove(timerHide) {
+        this.set({"_state": "closing", "_timerHide": !!timerHide}); // Make sure it's a boolean.
+        // Run the modules.
+        this.runModules('beforeClose');
+
+        if (this.get("_timer") && clearTimeout) {
+          clearTimeout(this.get("_timer"));
+          this.set({"_timer": null});
+        }
+        this.animateOut(() => {
+          this.set({"_state": "closed"});
+          // Run the modules.
+          this.runModules('afterClose');
+          this.queuePosition(true);
+          // If we're supposed to remove the notice from the DOM, do it.
+          if (this.get("remove")) {
+            this.refs.elem.parentNode.removeChild(this.refs.elem);
+          }
+          // Run the modules.
+          this.runModules('beforeDestroy');
+          // Remove object from PNotify.notices to prevent memory leak (issue #49)
+          // unless destroy is off
+          if (this.get("destroy")) {
+            if (PNotify.notices !== null) {
+              const idx = PNotify.notices.indexOf(this);
+              if (idx !== -1) {
+                PNotify.notices.splice(idx, 1);
+              }
+            }
+          }
+          // Run the modules.
+          this.runModules('afterDestroy');
+        });
+
+        return this;
+      },
+
+      // Animate the notice in.
+      animateIn(callback) {
+        // Declare that the notice is animating in.
+        this.set({"_animating": "in"});
+        const finished = () => {
+          this.refs.elem.removeEventListener('transitionend', finished);
+          if (this.get("_animTimer")) {
+            clearTimeout(this.get("_animTimer"));
+          }
+          if (this.get("_animating") !== "in") {
+            return;
+          }
+          let visible = false;
+          const boundingRect = this.refs.elem.getBoundingClientRect();
+          for (let prop in boundingRect) {
+            if (boundingRect[prop] > 0) {
+              visible = true;
+              break;
+            }
+          }
+          if (visible) {
+            if (callback) {
+              callback.call();
+            }
+            // Declare that the notice has completed animating.
+            this.set({"_animating": false});
+          } else {
+            this.set({"_animTimer": setTimeout(finished, 40)});
+          }
+        };
+
+        if (this.get("animation") === "fade") {
+          this.refs.elem.addEventListener('transitionend', finished);
+          this.set({"_animatingClass": "ui-pnotify-in"});
+          this.refs.elem.style.opacity; // This line is necessary for some reason. Some notices don't fade without it.
+          this.set({"_animatingClass": "ui-pnotify-in ui-pnotify-fade-in"});
+          // Just in case the event doesn't fire, call it after 650 ms.
+          this.set({"_animTimer": setTimeout(finished, 650)});
+        } else {
+          this.set({"_animatingClass": "ui-pnotify-in"});
+          finished();
+        }
+      },
+
+      // Animate the notice out.
+      animateOut(callback) {
+        // Declare that the notice is animating out.
+        this.set({"_animating": "out"});
+        const finished = () => {
+          this.refs.elem.removeEventListener('transitionend', finished);
+          if (this.get("_animTimer")) {
+            clearTimeout(this.get("_animTimer"));
+          }
+          if (this.get("_animating") !== "out") {
+            return;
+          }
+          let visible = false;
+          const boundingRect = this.refs.elem.getBoundingClientRect();
+          for (let prop in boundingRect) {
+            if (boundingRect[prop] > 0) {
+              visible = true;
+              break;
+            }
+          }
+          if (this.refs.elem.style.opacity == "0" || !visible) {
+            this.set({"_animatingClass": ""});
+            const stack = this.get("stack");
+            if (stack.overlay) {
+              // Go through the modal stack to see if any are left open.
+              // TODO: Rewrite this cause it sucks.
+              let stillOpen = false;
+              for (let i = 0; i < PNotify.notices.length; i++) {
+                const notice = PNotify.notices[i];
+                if (notice != this && notice.get("stack") === stack && notice.get("_state") !== "closed") {
+                  stillOpen = true;
+                  break;
+                }
+              }
+              if (!stillOpen) {
+                stack.overlay.classList.add("ui-pnotify-modal-overlay-hidden");
+              }
+            }
+            if (callback) {
+              callback.call();
+            }
+            // Declare that the notice has completed animating.
+            this.set({"_animating": false});
+          } else {
+            // In case this was called before the notice finished animating.
+            this.set({"_animTimer": setTimeout(finished, 40)});
+          }
+        };
+
+        if (this.get("animation") === "fade") {
+          this.refs.elem.addEventListener('transitionend', finished);
+          this.set({"_animatingClass": "ui-pnotify-in"});
+          // Just in case the event doesn't fire, call it after 650 ms.
+          this.set({"_animTimer": setTimeout(finished, 650)});
+        } else {
+          this.set({"_animatingClass": ""});
+          finished();
+        }
+      },
+
+      // Position the notice. dont_skip_hidden causes the notice to
+      // position even if it's not visible.
+      position(dontSkipHidden) {
+        // Get the notice's stack.
+        let stack = this.get("stack"),
+            elem = this.refs.elem;
+        if (!stack) {
+          return;
+        }
+        if (!stack.context) {
+          stack.context = document.body;
+        }
+        if (typeof stack.nextpos1 !== "number") {
+          stack.nextpos1 = stack.firstpos1;
+        }
+        if (typeof stack.nextpos2 !== "number") {
+          stack.nextpos2 = stack.firstpos2;
+        }
+        if (typeof stack.addpos2 !== "number") {
+          stack.addpos2 = 0;
+        }
+        const hidden = !elem.classList.contains("ui-pnotify-in");
+        // Skip this notice if it's not shown.
+        if (!hidden || dontSkipHidden) {
+          if (stack.modal) {
+            if (stack.overlay) {
+              stack.overlay.classList.remove("ui-pnotify-modal-overlay-hidden");
+            } else {
+              stack.overlay = createStackOverlay(stack);
+            }
+          }
+          // Add animate class by default.
+          this.set({"_moveClass": "ui-pnotify-move"});
+          let curpos1, curpos2;
+          // Calculate the current pos1 value.
+          let csspos1;
+          switch (stack.dir1) {
+            case "down":
+              csspos1 = "top";
+              break;
+            case "up":
+              csspos1 = "bottom";
+              break;
+            case "left":
+              csspos1 = "right";
+              break;
+            case "right":
+              csspos1 = "left";
+              break;
+          }
+          curpos1 = parseInt(elem.style[csspos1].replace(/(?:\..*|[^0-9.])/g, ''));
+          if (isNaN(curpos1)) {
+            curpos1 = 0;
+          }
+          // Remember the first pos1, so the first visible notice goes there.
+          if (typeof stack.firstpos1 === "undefined" && !hidden) {
+            stack.firstpos1 = curpos1;
+            stack.nextpos1 = stack.firstpos1;
+          }
+          // Calculate the current pos2 value.
+          let csspos2;
+          switch (stack.dir2) {
+            case "down":
+              csspos2 = "top";
+              break;
+            case "up":
+              csspos2 = "bottom";
+              break;
+            case "left":
+              csspos2 = "right";
+              break;
+            case "right":
+              csspos2 = "left";
+              break;
+          }
+          curpos2 = parseInt(elem.style[csspos2].replace(/(?:\..*|[^0-9.])/g, ''));
+          if (isNaN(curpos2)) {
+            curpos2 = 0;
+          }
+          // Remember the first pos2, so the first visible notice goes there.
+          if (typeof stack.firstpos2 === "undefined" && !hidden) {
+            stack.firstpos2 = curpos2;
+            stack.nextpos2 = stack.firstpos2;
+          }
+          // Check that it's not beyond the viewport edge.
+          const boundingRect = elem.getBoundingClientRect();
+          if (
+              (stack.dir1 === "down" && stack.nextpos1 + boundingRect.height > (stack.context === document.body ? window.innerHeight : stack.context.scrollHeight) ) ||
+              (stack.dir1 === "up" && stack.nextpos1 + boundingRect.height > (stack.context === document.body ? window.innerHeight : stack.context.scrollHeight) ) ||
+              (stack.dir1 === "left" && stack.nextpos1 + boundingRect.width > (stack.context === document.body ? window.innerWidth : stack.context.scrollWidth) ) ||
+              (stack.dir1 === "right" && stack.nextpos1 + boundingRect.width > (stack.context === document.body ? window.innerWidth : stack.context.scrollWidth) )
+            ) {
+            // If it is, it needs to go back to the first pos1, and over on pos2.
+            stack.nextpos1 = stack.firstpos1;
+            stack.nextpos2 += stack.addpos2 + (typeof stack.spacing2 === "undefined" ? 25 : stack.spacing2);
+            stack.addpos2 = 0;
+          }
+          if (typeof stack.nextpos2 === "number") {
+            if (!stack.animation) {
+              this.set({"_moveClass": ""});
+              elem.style[csspos2] = stack.nextpos2+"px";
+              elem.style[csspos2]; // Read from the DOM for update.
+              this.set({"_moveClass": "ui-pnotify-move"});
+            } else {
+              elem.style[csspos2] = stack.nextpos2+"px";
+            }
+          }
+          // Keep track of the widest/tallest notice in the column/row, so we can push the next column/row.
+          switch (stack.dir2) {
+            case "down":
+            case "up":
+              if (elem.offsetHeight + parseFloat(elem.style.marginTop, 10) + parseFloat(elem.style.marginBottom, 10) > stack.addpos2) {
+                stack.addpos2 = boundingRect.height;
+              }
+              break;
+            case "left":
+            case "right":
+              if (elem.offsetWidth + parseFloat(elem.style.marginLeft, 10) + parseFloat(elem.style.marginRight, 10) > stack.addpos2) {
+                stack.addpos2 = boundingRect.width;
+              }
+              break;
+          }
+          // Move the notice on dir1.
+          if (typeof stack.nextpos1 === "number") {
+            if (!stack.animation) {
+              this.set({"_moveClass": ""});
+              elem.style[csspos1] = stack.nextpos1+"px";
+              elem.style[csspos1]; // Read from the DOM for update.
+              this.set({"_moveClass": "ui-pnotify-move"});
+            } else {
+              elem.style[csspos1] = stack.nextpos1+"px";
+            }
+          }
+          // Calculate the next dir1 position.
+          switch (stack.dir1) {
+            case "down":
+            case "up":
+              stack.nextpos1 += boundingRect.height + (typeof stack.spacing1 === "undefined" ? 25 : stack.spacing1);
+              break;
+            case "left":
+            case "right":
+              stack.nextpos1 += boundingRect.width + (typeof stack.spacing1 === "undefined" ? 25 : stack.spacing1);
+              break;
+          }
+        }
+        return this;
+      },
+
+      // Queue the position all function so it doesn't run repeatedly and
+      // use up resources.
+      queuePosition(animate, milliseconds) {
+        if (posTimer) {
+          clearTimeout(posTimer);
+        }
+        if (!milliseconds) {
+          milliseconds = 10;
+        }
+        posTimer = setTimeout(() => {
+          PNotify.positionAll(animate);
+        }, milliseconds);
+        return this;
+      },
+
+      // Cancel any pending removal timer.
+      cancelRemove() {
+        if (this.get("_timer")) {
+          clearTimeout(this.get("_timer"));
+        }
+        if (this.get("_animTimer")) {
+          clearTimeout(this.get("_animTimer"));
+        }
+        if (this.get("_state") === "closing") {
+          // If it's animating out, stop it.
+          this.set({
+            "_state": "open",
+            "_animating": false,
+            "_animatingClass": this.get("animation") === "fade" ? "ui-pnotify-in ui-pnotify-fade-in" : "ui-pnotify-in"
+          });
+        }
+        return this;
+      },
+
+      // Queue a removal timer.
+      queueRemove() {
+        // Cancel any current removal timer.
+        this.cancelRemove();
+        this.set({
+          "_timer": setTimeout(() => this.remove(true), (isNaN(this.get("delay")) ? 0 : this.get("delay")))
+        });
+        return this;
+      }
+    }
+  };
+</script>
+
+<style>
+  /* -- Notice */
+  .ui-pnotify {
+    top: 36px;
+    right: 36px;
+    position: absolute;
+    height: auto;
+    z-index: 2;
+    display: none;
+  }
+  body > .ui-pnotify {
+    /* Notices in the body context should be fixed to the viewport. */
+    position: fixed;
+    /* Ensures notices are above everything */
+    z-index: 100040;
+  }
+  .ui-pnotify.ui-pnotify-in {
+    display: block;
+  }
+  .ui-pnotify.ui-pnotify-move {
+    transition: left .5s ease, top .5s ease, right .5s ease, bottom .5s ease;
+  }
+  .ui-pnotify.ui-pnotify-fade-slow {
+    transition: opacity .4s linear;
+    opacity: 0;
+  }
+  .ui-pnotify.ui-pnotify-fade-slow.ui-pnotify.ui-pnotify-move {
+    transition: opacity .4s linear, left .5s ease, top .5s ease, right .5s ease, bottom .5s ease;
+  }
+  .ui-pnotify.ui-pnotify-fade-normal {
+    transition: opacity .25s linear;
+    opacity: 0;
+  }
+  .ui-pnotify.ui-pnotify-fade-normal.ui-pnotify.ui-pnotify-move {
+    transition: opacity .25s linear, left .5s ease, top .5s ease, right .5s ease, bottom .5s ease;
+  }
+  .ui-pnotify.ui-pnotify-fade-fast {
+    transition: opacity .1s linear;
+    opacity: 0;
+  }
+  .ui-pnotify.ui-pnotify-fade-fast.ui-pnotify.ui-pnotify-move {
+    transition: opacity .1s linear, left .5s ease, top .5s ease, right .5s ease, bottom .5s ease;
+  }
+  .ui-pnotify.ui-pnotify-fade-in {
+    opacity: 1;
+  }
+  .ui-pnotify .ui-pnotify-shadow {
+    -webkit-box-shadow: 0px 6px 28px 0px rgba(0,0,0,0.1);
+    -moz-box-shadow: 0px 6px 28px 0px rgba(0,0,0,0.1);
+    box-shadow: 0px 6px 28px 0px rgba(0,0,0,0.1);
+  }
+  .ui-pnotify-container {
+    background-position: 0 0;
+    padding: .8em;
+    height: 100%;
+    margin: 0;
+  }
+  .ui-pnotify-container:after {
+    content: " "; /* Older browser do not support empty content */
+    visibility: hidden;
+    display: block;
+    height: 0;
+    clear: both;
+  }
+  .ui-pnotify-container.ui-pnotify-sharp {
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+  }
+  .ui-pnotify-title {
+    display: block;
+    margin-bottom: .4em;
+    margin-top: 0;
+  }
+  .ui-pnotify-text {
+    display: block;
+  }
+  .ui-pnotify-icon, .ui-pnotify-icon span {
+    display: block;
+    float: left;
+    margin-right: .2em;
+  }
+  /* Alternate stack initial positioning. */
+  .ui-pnotify.stack-topleft, .ui-pnotify.stack-bottomleft {
+    left: 25px;
+    right: auto;
+  }
+  .ui-pnotify.stack-bottomright, .ui-pnotify.stack-bottomleft {
+    bottom: 25px;
+    top: auto;
+  }
+  .ui-pnotify.stack-modal {
+    left: 50%;
+    right: auto;
+    margin-left: -150px;
+  }
+  /* Overlay */
+  .ui-pnotify-modal-overlay {
+    background-color: rgba(0, 0, 0, .4);
+    top: 0;
+    left: 0;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+  }
+  body > .ui-pnotify-modal-overlay {
+    position: fixed;
+    z-index: 100039;
+  }
+  .ui-pnotify-modal-overlay-hidden {
+    display: none;
+  }
+</style>
