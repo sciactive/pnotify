@@ -39,9 +39,110 @@
 </div>
 
 <script>
+  let default_stack = {
+    dir1: "down",
+    dir2: "left",
+    push: "bottom",
+    spacing1: 36,
+    spacing2: 36,
+    context: window && window.document.body,
+    modal: false
+  };
+  let posTimer; // Position all timer.
+  // Set global variables.
+  let do_when_ready = function(){
+    PNotify.prototype.options.stack.context = window.document.body;
+    jwindow = $(root);
+    // Reposition the notices when the window resizes.
+    jwindow.bind('resize', function(){
+      if (posTimer) {
+        clearTimeout(posTimer);
+      }
+      posTimer = setTimeout(function(){
+        PNotify.positionAll(true);
+      }, 10);
+    });
+  };
+  let createStackOverlay = function(stack) {
+    var overlay = $("<div />", {"class": "ui-pnotify-modal-overlay"});
+    overlay.prependTo(stack.context);
+    if (stack.overlay_close) {
+      // Close the notices on overlay click.
+      overlay.click(function(){
+        PNotify.removeStack(stack);
+      });
+    }
+    return overlay;
+  };
+
   export default {
+    setup: (PNotify) {
+      PNotify.VERSION = "4.0.0";
+      PNotify.notices = [];
+      PNotify.modules = {};
+
+      PNotify.removeAll = () => {};
+      PNotify.removeStack = () => {};
+      PNotify.positionAll = () => {};
+      PNotify.styling = {
+        brighttheme: {
+          // Bright Theme doesn't require any UI libraries.
+          container: "brighttheme",
+          notice: "brighttheme-notice",
+          notice_icon: "brighttheme-icon-notice",
+          info: "brighttheme-info",
+          info_icon: "brighttheme-icon-info",
+          success: "brighttheme-success",
+          success_icon: "brighttheme-icon-success",
+          error: "brighttheme-error",
+          error_icon: "brighttheme-icon-error"
+        },
+        bootstrap3: {
+          container: "alert",
+          notice: "alert-warning",
+          notice_icon: "glyphicon glyphicon-exclamation-sign",
+          info: "alert-info",
+          info_icon: "glyphicon glyphicon-info-sign",
+          success: "alert-success",
+          success_icon: "glyphicon glyphicon-ok-sign",
+          error: "alert-danger",
+          error_icon: "glyphicon glyphicon-warning-sign"
+        }
+      };
+      /*
+       * uses icons from http://fontawesome.io/
+       * version 4.0.3
+       */
+      PNotify.styling.fontawesome = Object.assign({}, PNotify.styling.bootstrap3);
+      Object.assign(PNotify.styling.fontawesome, {
+        notice_icon: "fa fa-exclamation-circle",
+        info_icon: "fa fa-info",
+        success_icon: "fa fa-check",
+        error_icon: "fa fa-warning"
+      });
+
+      if (window && window.document.body) {
+        do_when_ready();
+      } else {
+        $(do_when_ready);
+      }
+    },
+
     oncreate () {
-      // First and foremost, we don't want our module objects all referencing the prototype.
+      this.set({
+        "_state": "initializing", // The state can be "initializing", "opening", "open", "closing", and "closed".
+        "_timer": null, // Auto close timer.
+        "_animTimer": null, // Animation timer.
+        "_styles": null,
+        "_elem": null,
+        "_container": null,
+        "_title_container": null,
+        "_text_container": null,
+        "_animating": false, // Stores what is currently being animated (in or out).
+        "_timerHide": false, // Stores whether the notice was hidden by a timer.
+      });
+
+      // We don't want our module objects all referencing the prototype.
       this.set({"_modules": Object.assign({}, PNotify.prototype.modules)});
 
       // Get our styling object.

@@ -10,6 +10,7 @@
         "Todo.src": "Todo"
       },
       "exactGlobals": true
-    }]
+    }],
+    "transform-object-assign"
   ]
 }
