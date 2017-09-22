@@ -4,8 +4,7 @@
 require('shelljs/make');
 
 let pnotify_src = {
-  'core': 'pnotify.js',
-  'lib': 'PNotifyLib.html',
+  'core': 'PNotify.html',
   'animate': 'pnotify.animate.js',
   'buttons': 'pnotify.buttons.js',
   'callbacks': 'pnotify.callbacks.js',
@@ -17,8 +16,7 @@ let pnotify_src = {
 };
 
 let pnotify_js = {
-  'core': 'pnotify.js',
-  'lib': 'PNotifyLib.js',
+  'core': 'PNotify.js',
   'animate': 'pnotify.animate.js',
   'buttons': 'pnotify.buttons.js',
   'callbacks': 'pnotify.callbacks.js',
@@ -30,7 +28,6 @@ let pnotify_js = {
 };
 
 let pnotify_css = {
-  'core': 'pnotify.css',
   'brighttheme': 'pnotify.brighttheme.css',
   'buttons': 'pnotify.buttons.css',
   'history': 'pnotify.history.css',
@@ -126,12 +123,10 @@ let compile_js = (module, filename, args) => {
     inputMap = null;
   }
   const babel = require('babel-core');
-  const plugins = [];
+  const plugins = ["transform-class-properties", "transform-object-assign"];
   if (['iife', 'es'].indexOf(format) === -1) {
     plugins.push('transform-es2015-modules-'+format);
   }
-  console.log("inputCode:",inputCode);
-  console.log("inputMap:",inputMap);
   const {code, map} = babel.transform(inputCode, {
     inputSourceMap: inputMap,
     moduleId: filename.replace(/\.(html|js)$/, ''),
