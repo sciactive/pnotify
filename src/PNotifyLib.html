@@ -52,23 +52,23 @@
   // Set global variables.
   let do_when_ready = function(){
     PNotify.prototype.options.stack.context = window.document.body;
-    jwindow = $(root);
     // Reposition the notices when the window resizes.
-    jwindow.bind('resize', function(){
+    window.addEventListener('resize', () => {
       if (posTimer) {
         clearTimeout(posTimer);
       }
-      posTimer = setTimeout(function(){
+      posTimer = setTimeout(() => {
         PNotify.positionAll(true);
       }, 10);
     });
   };
   let createStackOverlay = function(stack) {
-    var overlay = $("<div />", {"class": "ui-pnotify-modal-overlay"});
-    overlay.prependTo(stack.context);
+    let overlay = document.createElement('div');
+    overlay.classList.add("ui-pnotify-modal-overlay");
+    stack.context.insertBefore(overlay, stack.context.firstChild);
     if (stack.overlay_close) {
       // Close the notices on overlay click.
-      overlay.click(function(){
+      overlay.addEventListener("click", () => {
         PNotify.removeStack(stack);
       });
     }
@@ -143,7 +143,14 @@
       });
 
       // We don't want our module objects all referencing the prototype.
-      this.set({"_modules": Object.assign({}, PNotify.prototype.modules)});
+      const modules = {};
+      for (let module in PNotify.prototype.modules) {
+        if (!PNotify.prototype.modules.hasOwnProperty(module)) {
+          continue;
+        }
+        modules[module] = Object.assign({}, PNotify.prototype.modules[module]);
+      }
+      this.set({"_modules": modules});
 
       // Get our styling object.
       if (typeof this.get("styling") === "object") {
@@ -226,7 +233,9 @@
         destroy: true,
         // The stack on which the notices will be placed. Also controls the
         // direction the notices stack.
-        stack: default_stack
+        stack: default_stack,
+        // This is where options for modules should be defined.
+        modules: {}
       }
     },
 
@@ -235,6 +244,19 @@
     },
 
     methods: {
+      // This runs an event on all the modules.
+      runModules: function(event, arg){
+        let curArg, modules = this.get("_modules");
+        for (var module in modules) {
+          curArg = ((typeof arg === "object" && module in arg) ? arg[module] : arg);
+          if (typeof modules[module][event] === 'function') {
+            modules[module].notice = this;
+            modules[module].options = typeof this.get(module) === 'object' ? this.get(module) : {};
+            modules[module][event](this, typeof this.get(module) === 'object' ? this.get(module) : {}, curArg);
+          }
+        }
+      },
+
       update(options) {
         // Save old options.
         const oldHide = this.get("hide");

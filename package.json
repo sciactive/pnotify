@@ -1,6 +1,6 @@
 {
   "name": "pnotify",
-  "version": "3.2.1",
+  "version": "4.0.0-dev",
   "main": "lib/pnotify.js",
   "repository": {
     "type": "git",
@@ -17,15 +17,15 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "babel-core": "^6.25.0",
+    "babel-core": "^6.26.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-es2015-modules-umd": "^6.24.1",
     "babel-plugin-transform-object-assign": "^6.22.0",
     "babel-preset-env": "^1.5.2",
     "babel-preset-stage-3": "^6.24.1",
-    "clean-css": "^4.0.12",
+    "clean-css": "^4.1.9",
     "shelljs": "^0.7.8",
-    "svelte": "^1.29.0",
+    "svelte": "^1.40.0",
     "uglify-js": "^2.8.22"
   },
   "scripts": {

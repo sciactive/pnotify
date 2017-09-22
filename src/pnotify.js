@@ -81,7 +81,7 @@ var init = function(root){
   };
   $.extend(PNotify.prototype, {
     // The current version of PNotify.
-    version: "3.2.0",
+    version: "4.0.0-dev",
 
     // === Options ===
 
