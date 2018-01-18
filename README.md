@@ -284,3 +284,8 @@ Licensing and Additional Info
 PNotify is distributed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0).
 
 See http://sciactive.com/pnotify/ for download, more information, and examples.
+
+## Support on Beerpay
+Hey dude! Help me out for a couple of :beers:!
+
+[![Beerpay](https://beerpay.io/sciactive/pnotify/badge.svg?style=beer-square)](https://beerpay.io/sciactive/pnotify)  [![Beerpay](https://beerpay.io/sciactive/pnotify/make-wish.svg?style=flat-square)](https://beerpay.io/sciactive/pnotify?focus=wish)
