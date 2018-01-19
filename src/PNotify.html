@@ -792,6 +792,12 @@
 
 <style>
   /* -- Notice */
+  :global(body) > .ui-pnotify {
+    /* Notices in the body context should be fixed to the viewport. */
+    position: fixed;
+    /* Ensures notices are above everything */
+    z-index: 100040;
+  }
   .ui-pnotify {
     top: 36px;
     right: 36px;
@@ -799,12 +805,6 @@
     height: auto;
     z-index: 2;
     display: none;
-  }
-  body > .ui-pnotify {
-    /* Notices in the body context should be fixed to the viewport. */
-    position: fixed;
-    /* Ensures notices are above everything */
-    z-index: 100040;
   }
   .ui-pnotify.ui-pnotify-in {
     display: block;
@@ -896,7 +896,7 @@
     width: 100%;
     z-index: 1;
   }
-  body > .ui-pnotify-modal-overlay {
+  :global(body) > .ui-pnotify-modal-overlay {
     position: fixed;
     z-index: 100039;
   }

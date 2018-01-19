@@ -112,7 +112,8 @@ let compile_js = (module, filename, args) => {
     	},
     	onwarn: warning => {
     		console.warn(warning.message);
-    	}
+    	},
+      cascade: false
     });
     [inputCode, inputMap] = [code, map];
     inputMap.file = filename.replace(/\.html$/, '.js');
