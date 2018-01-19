@@ -17,7 +17,7 @@
       {{typeof min_height === 'string' ? 'min-height: '+min_height+';' : ''}}
     "
     aria-live="assertive"
-    aria-role="alertdialog"
+    role="alertdialog"
     on:mouseenter="mouseenter(event)"
     on:mouseleave="mouseleave(event)">
   <div ref:container
@@ -35,7 +35,7 @@
         {{{title}}}
       {{/if}}
     </h4>
-    <div ref:textContainer class="ui-pnotify-text" style="display: {{text === false ? 'none' : 'block'}}" aria-role="alert">
+    <div ref:textContainer class="ui-pnotify-text" style="display: {{text === false ? 'none' : 'block'}}" role="alert">
       {{#if text_escape}}
         {{text}}
       {{else}}
@@ -48,28 +48,18 @@
 <script>
   let PNotify;
 
-  let defaultStack = {
-    dir1: "down",
-    dir2: "left",
-    push: "bottom",
-    spacing1: 36,
-    spacing2: 36,
-    context: window && document.body,
-    modal: false
-  };
-
   let posTimer; // Position all timer.
 
   // These actions need to be done once the DOM is ready.
   let onDocumentLoaded = () => {
-    defaultStack.context = document.body;
+    PNotify.defaultStack.context = document.body;
     // Reposition the notices when the window resizes.
     window.addEventListener('resize', () => {
       if (posTimer) {
         clearTimeout(posTimer);
       }
       posTimer = setTimeout(() => {
-        PNotify.positionAll(true);
+        PNotify.positionAll();
       }, 10);
     });
   };
@@ -94,6 +84,16 @@
       PNotify = Component;
 
       PNotify.VERSION = "4.0.0-dev";
+
+      PNotify.defaultStack = {
+        dir1: "down",
+        dir2: "left",
+        push: "bottom",
+        spacing1: 36,
+        spacing2: 36,
+        context: window && document.body,
+        modal: false
+      };
 
       PNotify.defaults = {
         // The notice's title.
@@ -144,7 +144,7 @@
         destroy: true,
         // The stack on which the notices will be placed. Also controls the
         // direction the notices stack.
-        stack: defaultStack,
+        stack: PNotify.defaultStack,
         // This is where options for modules should be defined.
         modules: {}
       };
@@ -203,7 +203,7 @@
       };
 
       // Position all notices.
-      PNotify.positionAll = (animate) => {
+      PNotify.positionAll = () => {
         // This timer is used for queueing this function so it doesn't run
         // repeatedly.
         if (posTimer) {
@@ -216,7 +216,7 @@
             let notice = PNotify.notices[i],
                 s = notice.get("stack");
             if (!s) {
-              return;
+              continue;
             }
             if (s.overlay) {
               s.overlay.classList.add("ui-pnotify-modal-overlay-hidden");
@@ -224,14 +224,13 @@
             s.nextpos1 = s.firstpos1;
             s.nextpos2 = s.firstpos2;
             s.addpos2 = 0;
-            s.animation = animate;
           }
           for (let i = 0; i < PNotify.notices.length; i++) {
             PNotify.notices[i].position();
           }
         } else {
-          delete defaultStack.nextpos1;
-          delete defaultStack.nextpos2;
+          delete PNotify.defaultStack.nextpos1;
+          delete PNotify.defaultStack.nextpos2;
         }
       };
 
@@ -296,15 +295,8 @@
       // Add the notice to the notice array.
       if (stack && stack.push === "top") {
         PNotify.notices.splice(0, 0, this);
-        // Now position all the notices if they are to push to the top.
-        this.queuePosition(false, 1);
       } else {
         PNotify.notices.push(this);
-      }
-
-      // Mark the stack so it won't animate the new notice.
-      if (stack) {
-        stack.animation = false;
       }
 
       // Run the modules.
@@ -367,7 +359,7 @@
         } else if (!oldHide) {
           this.queueRemove();
         }
-        this.queuePosition(true);
+        this.queuePosition();
 
         return this;
       },
@@ -396,7 +388,12 @@
 
       // Display the notice.
       open() {
-        this.set({"_state": "opening"});
+        this.set({
+          "_state": "opening",
+          // This makes the notice visibity: hidden; so its dimensions can be
+          // determined.
+          "_animatingClass": "ui-pnotify-initial-hidden"
+        });
         // Run the modules.
         this.runModules('beforeOpen');
 
@@ -411,23 +408,30 @@
             throw new Error("No context to open this notice in.");
           }
         }
-        // Try to put it in the right position.
-        if (stack && stack.push !== "top") {
-          this.position(true);
-        }
-        this.animateIn(() => {
-          this.queuePosition(true);
 
-          // Now set it to hide.
-          if (this.get("hide")) {
-            this.queueRemove();
+        // Wait until the DOM is updated.
+        setTimeout(() => {
+          if (stack) {
+            // Mark the stack so it won't animate the new notice.
+            stack.animation = false;
+            // Now position all the notices.
+            PNotify.positionAll();
+            // Reset animation.
+            stack.animation = true;
           }
 
-          this.set({"_state": "open"});
+          this.animateIn(() => {
+            // Now set it to hide.
+            if (this.get("hide")) {
+              this.queueRemove();
+            }
 
-          // Run the modules.
-          this.runModules('afterOpen');
-        });
+            this.set({"_state": "open"});
+
+            // Run the modules.
+            this.runModules('afterOpen');
+          });
+        }, 0);
 
         return this;
       },
@@ -446,7 +450,7 @@
           this.set({"_state": "closed"});
           // Run the modules.
           this.runModules('afterClose');
-          this.queuePosition(true);
+          this.queuePosition();
           // If we're supposed to remove the notice from the DOM, do it.
           if (this.get("remove")) {
             this.refs.elem.parentNode.removeChild(this.refs.elem);
@@ -574,9 +578,8 @@
         }
       },
 
-      // Position the notice. dont_skip_hidden causes the notice to
-      // position even if it's not visible.
-      position(dontSkipHidden) {
+      // Position the notice.
+      position() {
         // Get the notice's stack.
         let stack = this.get("stack"),
             elem = this.refs.elem;
@@ -595,11 +598,9 @@
         if (typeof stack.addpos2 !== "number") {
           stack.addpos2 = 0;
         }
-        const hidden = !elem.classList.contains("ui-pnotify-in");
-        console.log("hidden: ", hidden);
-        console.log("dontSkipHidden: ", dontSkipHidden);
+        const hidden = !elem.classList.contains("ui-pnotify-in") && !elem.classList.contains("ui-pnotify-initial-hidden");
         // Skip this notice if it's not shown.
-        if (!hidden || dontSkipHidden) {
+        if (!hidden) {
           if (stack.modal) {
             if (stack.overlay) {
               stack.overlay.classList.remove("ui-pnotify-modal-overlay-hidden");
@@ -608,16 +609,11 @@
             }
           }
 
-          // If the notice is hidden, and there is no firstpos settings, we
-          // should skip it even if we're told not to, because it will just be
-          // positioned into the corner.
-          // if ((typeof stack.firstpos1 === "undefined" || typeof stack.firstpos2 === "undefined") && hidden) {
-          //   return;
-          // }
-
           const domRect = elem.getBoundingClientRect();
-          // Add animate class by default.
-          this.set({"_moveClass": "ui-pnotify-move"});
+          if (stack.animation) {
+            // Add animate class.
+            this.set({"_moveClass": "ui-pnotify-move"});
+          }
           let curpos1, curpos2;
 
           // Calculate the current pos1 value.
@@ -629,11 +625,11 @@
               break;
             case "up":
               csspos1 = "bottom";
-              curpos1 = elem.offsetParent ? ((stack.context === document.body ? window.innerHeight : stack.context.scrollHeight) - elem.scrollHeight - elem.offsetTop) : 0;
+              curpos1 = (stack.context === document.body ? window.innerHeight : stack.context.scrollHeight) - elem.scrollHeight - elem.offsetTop;
               break;
             case "left":
               csspos1 = "right";
-              curpos1 = elem.offsetParent ? ((stack.context === document.body ? window.innerWidth : stack.context.scrollWidth) - elem.scrollWidth - elem.offsetLeft) : 0;
+              curpos1 = (stack.context === document.body ? window.innerWidth : stack.context.scrollWidth) - elem.scrollWidth - elem.offsetLeft;
               break;
             case "right":
               csspos1 = "left";
@@ -655,11 +651,11 @@
               break;
             case "up":
               csspos2 = "bottom";
-              curpos2 = elem.offsetParent ? ((stack.context === document.body ? window.innerHeight : stack.context.scrollHeight) - elem.scrollHeight - elem.offsetTop) : 0;
+              curpos2 = (stack.context === document.body ? window.innerHeight : stack.context.scrollHeight) - elem.scrollHeight - elem.offsetTop;
               break;
             case "left":
               csspos2 = "right";
-              curpos2 = elem.offsetParent ? ((stack.context === document.body ? window.innerWidth : stack.context.scrollWidth) - elem.scrollWidth - elem.offsetLeft) : 0;
+              curpos2 = (stack.context === document.body ? window.innerWidth : stack.context.scrollWidth) - elem.scrollWidth - elem.offsetLeft;
               break;
             case "right":
               csspos2 = "left";
@@ -688,15 +684,10 @@
           }
 
           // Move the notice on dir2.
-          console.log("stack.nextpos2: ", stack.nextpos2);
           if (typeof stack.nextpos2 === "number") {
+            elem.style[csspos2] = stack.nextpos2+"px";
             if (!stack.animation) {
-              this.set({"_moveClass": ""});
-              elem.style[csspos2] = stack.nextpos2+"px";
               elem.style[csspos2]; // Read from the DOM for update.
-              this.set({"_moveClass": "ui-pnotify-move"});
-            } else {
-              elem.style[csspos2] = stack.nextpos2+"px";
             }
           }
 
@@ -717,17 +708,13 @@
           }
 
           // Move the notice on dir1.
-          console.log("stack.nextpos1: ", stack.nextpos1);
           if (typeof stack.nextpos1 === "number") {
+            elem.style[csspos1] = stack.nextpos1+"px";
             if (!stack.animation) {
-              this.set({"_moveClass": ""});
-              elem.style[csspos1] = stack.nextpos1+"px";
               elem.style[csspos1]; // Read from the DOM for update.
-              this.set({"_moveClass": "ui-pnotify-move"});
-            } else {
-              elem.style[csspos1] = stack.nextpos1+"px";
             }
           }
+
           // Calculate the next dir1 position.
           switch (stack.dir1) {
             case "down":
@@ -740,12 +727,13 @@
               break;
           }
         }
+
         return this;
       },
 
       // Queue the position all function so it doesn't run repeatedly and
       // use up resources.
-      queuePosition(animate, milliseconds) {
+      queuePosition(milliseconds) {
         if (posTimer) {
           clearTimeout(posTimer);
         }
@@ -753,7 +741,7 @@
           milliseconds = 10;
         }
         posTimer = setTimeout(() => {
-          PNotify.positionAll(animate);
+          PNotify.positionAll();
         }, milliseconds);
         return this;
       },
@@ -808,6 +796,10 @@
   }
   .ui-pnotify.ui-pnotify-in {
     display: block;
+  }
+  .ui-pnotify.ui-pnotify-initial-hidden {
+    display: block;
+    visibility: hidden;
   }
   .ui-pnotify.ui-pnotify-move {
     transition: left .5s ease, top .5s ease, right .5s ease, bottom .5s ease;

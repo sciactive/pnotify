@@ -108,10 +108,10 @@ let compile_js = (module, filename, args) => {
     	filename: src_filename,
     	name: filename.replace(/\.html$/, ''),
     	onerror: err => {
-    		console.error(err.message);
+    		console.error(err);
     	},
     	onwarn: warning => {
-    		console.warn(warning.message);
+    		console.warn(warning);
     	},
       cascade: false
     });
