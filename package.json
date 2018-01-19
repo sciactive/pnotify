@@ -20,18 +20,22 @@
     "babel-core": "^6.26.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-es2015-modules-amd": "^6.24.1",
-    "babel-plugin-transform-es2015-modules-commonjs": "^6.24.1",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.0",
     "babel-plugin-transform-es2015-modules-systemjs": "^6.24.1",
     "babel-plugin-transform-es2015-modules-umd": "^6.24.1",
     "babel-plugin-transform-object-assign": "^6.22.0",
-    "babel-preset-env": "^1.5.2",
+    "babel-preset-env": "^1.6.1",
     "babel-preset-stage-3": "^6.24.1",
     "clean-css": "^4.1.9",
-    "shelljs": "^0.7.8",
-    "svelte": "^1.40.0",
-    "uglify-js": "^2.8.22"
+    "shelljs": "^0.8.0",
+    "svelte": "^1.52.0",
+    "uglify-js": "^3.3.7"
   },
   "scripts": {
-    "build": "node make.js dist -- --format=iife"
+    "build": "npm run build-iife && npm run build-umd && npm run build-es",
+    "build-iife": "node make.js dist -- --format=iife",
+    "build-umd": "node make.js dist -- --format=umd",
+    "build-es": "node make.js dist -- --format=es",
+    "prepare": "npm run build"
   }
 }

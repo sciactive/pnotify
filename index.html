@@ -42,7 +42,7 @@
   <script type="text/javascript" src="includes/beautify.js"></script>
 
   <!-- PNotify -->
-  <script type="text/javascript" src="lib/PNotify.js"></script>
+  <script type="text/javascript" src="lib/iife/PNotify.js"></script>
   <link href="src/pnotify.brighttheme.css" rel="stylesheet" type="text/css" />
   <!--
   <script type="text/javascript" src="lib/pnotify.animate.js"></script>
@@ -241,7 +241,7 @@
           auto_display: false
         });
         // Remove the notice if the user mouses over it.
-        tooltip.refs.elem.mouseout(function(){
+        tooltip.refs.elem.addEventListener("mouseout", function(){
           tooltip.remove();
         });
       };
@@ -801,139 +801,12 @@
       <p id="description">Beautiful JavaScript notifications.</p>
     </div>
     <div class="intro-section">
-      <a class="btn btn-primary btn-large" data-toggle="modal" href="#download">Download PNotify 3</a>
       <a class="right-button btn btn-default btn-large" href="https://github.com/sciactive/pnotify" target="_blank" title="Fork me on GitHub">PNotify on GitHub <img src="includes/github-icon.png" alt="GitHub Icon" /></a>
     </div>
     <div class="intro-section">
-      <a style="margin: 0 8px;" data-toggle="modal" href="#using">Using PNotify</a>
       <a style="margin: 0 8px;" href="https://github.com/sciactive/pnotify/issues/new" target="_blank">Bug Report/Feature Request</a>
     </div>
   </section>
-  <div class="modal fade" id="download" tabindex="-1" role="dialog" aria-labelledby="download-title" aria-hidden="true" style="max-height: inherit;">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title" id="download-title">Download a PNotify Bundle</h4>
-        </div>
-        <div class="modal-body">
-          <p>
-            You can download a PNotify bundle, but it is not the recommended way of getting PNotify. It will break the source maps. You should use NPM to get PNotify in your project. In PNotify 4, this bundler is going away.
-          </p>
-          <div class="page-header">
-            <h3 style="margin-top: 0;">Optional Styling</h3>
-          </div>
-          <div><label><input type="checkbox" data-type="module" name="brighttheme" checked /> Bright Theme</label></div>
-          <div style="margin-bottom: 10px;"><small>Stand-alone theme. You can uncheck this if you're using Bootstrap or your own styling.</small></div>
-          <div class="page-header">
-            <h3 style="margin-top: 0;">Modules</h3>
-          </div>
-          <div><label><input type="checkbox" data-type="module" name="desktop" checked /> Desktop</label></div>
-          <div style="margin-bottom: 10px;"><small>Notifications that display even when the web page is not visible.</small></div>
-          <div><label><input type="checkbox" data-type="module" name="buttons" checked /> Buttons</label></div>
-          <div style="margin-bottom: 10px;"><small>Sticker and a closer buttons.</small></div>
-          <div><label><input type="checkbox" data-type="module" name="nonblock" /> NonBlock</label></div>
-          <div style="margin-bottom: 10px;"><small>Click through to things underneath the notice.</small></div>
-          <div><label><input type="checkbox" data-type="module" name="mobile" checked /> Mobile</label></div>
-          <div style="margin-bottom: 10px;"><small>Notices on mobile phones and tablets.</small></div>
-          <div><label><input type="checkbox" data-type="module" name="animate" /> Animate</label></div>
-          <div style="margin-bottom: 10px;"><small>Fluid CSS animations using Animate.css. (Requires <a href="https://daneden.github.io/animate.css/" target="_blank">Animate.css</a>.)</small></div>
-          <div><label><input type="checkbox" data-type="module" name="confirm" /> Confirm</label></div>
-          <div style="margin-bottom: 10px;"><small>Confirmation dialogs and prompts.</small></div>
-          <div><label><input type="checkbox" data-type="module" name="callbacks" /> Callbacks</label></div>
-          <div style="margin-bottom: 10px;"><small>Manipulate the notice during its lifecycle.</small></div>
-          <div><label><input type="checkbox" data-type="module" name="history" /> History</label></div>
-          <div style="margin-bottom: 10px;"><small>Redisplay old notices.</small></div>
-          <div class="page-header">
-            <h3>Minification</h3>
-          </div>
-          <div><label><input type="checkbox" data-type="minify" name="minify" checked /> Minify the Script and Stylesheet</label></div>
-          <div><small>It is a good idea to enable this on production services, so you get faster transfer times.</small></div>
-        </div>
-        <div class="modal-footer">
-          <a class="btn btn-primary" data-href="https://sciactive.com/pnotify/buildcustom.php?mode=js{min}&amp;modules={modules}&amp;cff=.js" href="#">Get the JavaScript!</a>
-          <a class="btn btn-primary" data-href="https://sciactive.com/pnotify/buildcustom.php?mode=css{min}&amp;modules={modules}&amp;cff=.css" href="#">Get the CSS!</a>
-        </div>
-        <script type="text/javascript">
-          $(function(){
-            var changeFunction = function(){
-              var modules = [];
-              form.find("[data-type=module]:checked").each(function(){
-                modules.push($(this).attr("name"));
-              });
-              modules = modules.join("-");
-              var minify = !!form.find("[data-type=minify]:checked").length;
-              form.find("a[data-href]").each(function(){
-                $(this).attr("href", $(this).attr("data-href").replace("{min}", minify ? "&min=true" : "").replace("{modules}", modules));
-              });
-            };
-            var form = $("#download").on("click change", "input", changeFunction);
-            changeFunction();
-          });
-        </script>
-      </div>
-    </div>
-  </div>
-  <div class="modal fade" id="using" tabindex="-1" role="dialog" aria-labelledby="using-title" aria-hidden="true" style="max-height: inherit;">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title" id="using-title">Using PNotify</h4>
-        </div>
-        <div class="modal-body">
-          <p>
-            PNotify downloads come with the following files:<br />
-            <br />
-            <code>pnotify.custom.js</code> or <code>pnotify.custom.min.js</code> (Minified)
-            <br />
-            <code>pnotify.custom.css</code> or <code>pnotify.custom.min.css</code> (Minified)
-          </p>
-          <p>
-            So here's how you'd include them on your page:
-          </p>
-          <pre class="prettyprint">&lt;script type="text/javascript" src="pnotify.custom<em>.min</em>.js"&gt;&lt;/script&gt;
-&lt;link href="pnotify.custom<em>.min</em>.css" media="all" rel="stylesheet" type="text/css" /&gt;</pre>
-          <p>
-            You also need to include jQuery (1.6 or higher).
-          </p>
-          <p>
-            Now you can use PNotify like this:
-          </p>
-          <pre class="prettyprint">&lt;script type="text/javascript"&gt;
-$(function(){
-  PNotify.notice({
-    title: 'Regular Notice',
-    text: 'Check me out! I\'m a notice.'
-  });
-});
-&lt;/script&gt;</pre>
-          <p>
-            If you are not using any UI library, you can use the
-            included styling, called Bright Theme. It is the default.
-          </p>
-          <p>
-            If you are using Bootstrap version 3, include this line
-            somewhere before your first notice:
-          </p>
-          <pre class="prettyprint">PNotify.defaults.styling = "bootstrap3";</pre>
-          <p>
-            If you are using Bootstrap 3 with Font Awesome, include
-            this line somewhere before your first notice:
-          </p>
-          <pre class="prettyprint">PNotify.defaults.styling = "fontawesome";</pre>
-          <p>
-            All of the demos on this page provide source code with
-            the "See the source" dropdown,
-            <img style="margin-left: 3em;" src="includes/source-screen.png" alt="Source button screen shot." />
-          </p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Ok, got it.</button>
-        </div>
-      </div>
-    </div>
-  </div>
   <section class="container page-points">
     <div class="container">
       <div class="row">

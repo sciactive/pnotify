@@ -3,7 +3,7 @@
 
  http://sciactive.com/pnotify/
 
- Copyright 2009-2017 Hunter Perrin
+ Copyright 2009-2018 Hunter Perrin
  Copyright 2015 Google, Inc.
 
  Licensed under Apache License, Version 2.0.
@@ -57,8 +57,10 @@
     context: window && document.body,
     modal: false
   };
+
   let posTimer; // Position all timer.
-  // Set global variables.
+
+  // These actions need to be done once the DOM is ready.
   let onDocumentLoaded = () => {
     defaultStack.context = document.body;
     // Reposition the notices when the window resizes.
@@ -71,6 +73,8 @@
       }, 10);
     });
   };
+
+  // Creates the background overlay for modal stacks.
   let createStackOverlay = function(stack) {
     const overlay = document.createElement("div");
     overlay.classList.add("ui-pnotify-modal-overlay");
@@ -86,7 +90,9 @@
 
   export default {
     setup: (Component) => {
+      // Add static properties to the PNotify object.
       PNotify = Component;
+
       PNotify.VERSION = "4.0.0-dev";
 
       PNotify.defaults = {
@@ -149,30 +155,36 @@
       // additional functionality.
       PNotify.modules = {};
 
+      // Helper function to create a new notice.
       PNotify.alert = (options) => {
         return new PNotify({target: document.body, data: options});
       };
 
+      // Helper function to create a new notice (notice type).
       PNotify.notice = (options) => {
         options.type = "notice";
         return new PNotify({target: document.body, data: options});
       };
 
+      // Helper function to create a new notice (info type).
       PNotify.info = (options) => {
         options.type = "info";
         return new PNotify({target: document.body, data: options});
       };
 
+      // Helper function to create a new notice (success type).
       PNotify.success = (options) => {
         options.type = "success";
         return new PNotify({target: document.body, data: options});
       };
 
+      // Helper function to create a new notice (error type).
       PNotify.error = (options) => {
         options.type = "error";
         return new PNotify({target: document.body, data: options});
       };
 
+      // Remove all visible notices.
       PNotify.removeAll = () => {
         for (let i = 0; i < PNotify.notices.length; i++) {
           if (PNotify.notices[i].remove) {
@@ -180,6 +192,8 @@
           }
         }
       };
+
+      // Remove all visible notices in a single stack.
       PNotify.removeStack = (stack) => {
         for (let i = 0; i < PNotify.notices.length; i++) {
           if (PNotify.notices[i].remove && PNotify.notices[i].get("stack") === stack) {
@@ -187,6 +201,8 @@
           }
         }
       };
+
+      // Position all notices.
       PNotify.positionAll = (animate) => {
         // This timer is used for queueing this function so it doesn't run
         // repeatedly.
@@ -256,6 +272,7 @@
         error_icon: "fa fa-warning"
       });
 
+      // Run the deferred actions once the DOM is ready.
       if (window && document.body) {
         onDocumentLoaded();
       } else {
@@ -274,8 +291,10 @@
       }
       this.set({"_modules": modules});
 
+      let stack = this.get("stack");
+
       // Add the notice to the notice array.
-      if (this.get("stack").push === "top") {
+      if (stack && stack.push === "top") {
         PNotify.notices.splice(0, 0, this);
         // Now position all the notices if they are to push to the top.
         this.queuePosition(false, 1);
@@ -284,7 +303,9 @@
       }
 
       // Mark the stack so it won't animate the new notice.
-      this.get("stack").animation = false;
+      if (stack) {
+        stack.animation = false;
+      }
 
       // Run the modules.
       this.runModules('init');
@@ -311,7 +332,9 @@
     },
 
     computed: {
+      // Add <br />s in place of line breaks.
       _text_processed: (text, insert_brs) => insert_brs ?  String(text).replace(/\n/g, '<br />') : text,
+      // Grab styles from the styling object or use the styles provided.
       _styles: (styling) => typeof styling === "object" ? styling : PNotify.styling[styling]
     },
 
@@ -380,7 +403,7 @@
         let stack = this.get("stack");
         // If the notice is not in the DOM, append it.
         if (!this.refs.elem.parentNode) {
-          if (stack.context) {
+          if (stack && stack.context) {
             stack.context.appendChild(this.refs.elem);
           } else if (document.body) {
             document.body.appendChild(this.refs.elem);
@@ -389,7 +412,7 @@
           }
         }
         // Try to put it in the right position.
-        if (stack.push !== "top") {
+        if (stack && stack.push !== "top") {
           this.position(true);
         }
         this.animateIn(() => {
@@ -514,7 +537,7 @@
           if (!this.refs.elem.style.opacity || this.refs.elem.style.opacity == "0" || !visible) {
             this.set({"_animatingClass": ""});
             const stack = this.get("stack");
-            if (stack.overlay) {
+            if (stack && stack.overlay) {
               // Go through the modal stack to see if any are left open.
               // TODO: Rewrite this cause it sucks.
               let stillOpen = false;
