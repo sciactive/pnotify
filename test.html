@@ -3,10 +3,24 @@
 <head>
   <title>PNotify Test</title>
   <script type="text/javascript" src="lib/iife/PNotify.js"></script>
-  <link href="src/PNotifyBrightTheme.css" rel="stylesheet" type="text/css" />
+    <!-- <link href="src/PNotifyBrightTheme.css" rel="stylesheet" type="text/css" /> -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" id="bootstrap-css" rel="stylesheet" type="text/css" /> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
-  <button onclick="PNotify.notice({title: 'Test notice.', text: 'This is a test notice.'})">Test Notice</button>
+    <h2>Bootstrap 3</h2>
+    <button onclick="PNotify.notice({title: 'Test notice.', text: 'This is a test notice.', icons: 'fontawesome', styling: 'bootstrap3'})">Test Notice</button>
+    <button onclick="PNotify.info({title: 'Test notice.', text: 'This is a test notice.', icons: 'fontawesome', styling: 'bootstrap3'})">Test Info</button>
+    <button onclick="PNotify.error({title: 'Test notice.', text: 'This is a test notice.', icons: 'fontawesome', styling: 'bootstrap3'})">Test Danger</button>
+    <button onclick="PNotify.success({title: 'Test notice.', text: 'This is a test notice.', icons: 'fontawesome', styling: 'bootstrap3'})">Test Success</button>
+    <hr />
+    <h2>Bootstrap 4</h2>
+    <button onclick="PNotify.notice({title: 'Test notice.', text: 'This is a test notice.', icons: 'fontawesome', styling: 'bootstrap4'})">Test Notice</button>
+    <button onclick="PNotify.card({title: 'Test notice.', text: 'This is a test notice.', icons: 'fontawesome', styling: 'bootstrap4'})">Test Card</button>
+    <button onclick="PNotify.info({title: 'Test notice.', text: 'This is a test notice.', icons: 'fontawesome', styling: 'bootstrap4'})">Test Info</button>
+    <button onclick="PNotify.error({title: 'Test notice.', text: 'This is a test notice.', icons: 'fontawesome', styling: 'bootstrap4'})">Test Danger</button>
+    <button onclick="PNotify.success({title: 'Test notice.', text: 'This is a test notice.', icons: 'fontawesome', styling: 'bootstrap4'})">Test Success</button>
 </body>
 </html>
