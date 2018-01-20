@@ -8,7 +8,7 @@ Demos
 =====
 
 * http://sciactive.com/pnotify/ for the latest release
-* https://sciactive.github.io/pnotify/ for what's on develop (may be broken)
+* https://sciactive.github.io/pnotify/ for what's on master (may be broken)
 
 # Whoa there!
 
@@ -226,14 +226,45 @@ The callback options all expect one argument, a function, which will be called w
 
 # Utility Functions and Properties
 
-* `PNotify.reload(root)` - Reinitialize PNotify. PNotify, in a browser, is initialized with window as the root. Returns the created PNotify object.
+## Global
+
+* `PNotify.VERSION` - PNotify version number.
+* `PNotify.alert(options)` - Create an alert.
+* `PNotify.notice(options)` - Create an alert with "notice" type.
+* `PNotify.info(options)` - Create an alert with "info" type.
+* `PNotify.success(options)` - Create an alert with "success" type.
+* `PNotify.error(options)` - Create an alert with "error" type.
 * `PNotify.removeAll()` - Remove all notices.
 * `PNotify.removeStack(stack)` - Remove all the notices in a stack.
 * `PNotify.positionAll()` - Reposition all notices.
+* `PNotify.defaults` - Defaults for options.
+* `PNotify.defaultStack` - The default stack object.
+* `PNotify.notices` - An array of all active notices.
+* `PNotify.modules` - This object holds all the PNotify modules.
+* `PNotify.styling` - Styling objects.
+
+## Per Notice
+
 * `notice.open()` - Open the notice.
-* `notice.remove()` - Remove the notice.
+* `notice.close()` - Close the notice.
+* `notice.remove()` - Alias for close().
+* `notice.update(options)` - Update the notice with new options.
 * `notice.refs.elem` - The notice's DOM element.
-* `notice.refs.elem` - The notice's DOM element.
+* `notice.refs.container` - The notice container DOM element.
+* `notice.refs.titleContainer` - The title container DOM element.
+* `notice.refs.textContainer` - The text container DOM element.
+
+## From the [Svelte Component API](https://svelte.technology/guide#component-api)
+
+* `notice.get(option)` - Get the value of an option.
+* `notice.set(options)` - You probably want to use `update(options)` instead. It has some special PNotify secret sauce to make sure your notice doesn't break.
+* `notice.observe(key, callback[, options])` - Observe an option. See the Svelte docs for more info.
+* `notice.destroy()` - Removes the component from the DOM and any observers/event listeners. You probably want to use `close()` instead. It will animate the notice out and call `destroy()` for you.
+
+### Events
+
+* `notice.on(eventName, callback)` - Assign a callback to an event. Callback receives an `event` argument.
+* `notice.fire(eventName, event)` - Fire an event.
 
 # Stacks
 

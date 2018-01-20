@@ -203,7 +203,7 @@
       PNotify.removeAll = () => {
         for (let i = 0; i < PNotify.notices.length; i++) {
           if (PNotify.notices[i].remove) {
-            PNotify.notices[i].remove(false);
+            PNotify.notices[i].close(false);
           }
         }
       };
@@ -212,7 +212,7 @@
       PNotify.removeStack = (stack) => {
         for (let i = 0; i < PNotify.notices.length; i++) {
           if (PNotify.notices[i].remove && PNotify.notices[i].get("stack") === stack) {
-            PNotify.notices[i].remove(false);
+            PNotify.notices[i].close(false);
           }
         }
       };
@@ -451,8 +451,12 @@
         return this;
       },
 
-      // Remove the notice.
       remove(timerHide) {
+        this.close(timerHide);
+      },
+
+      // Remove the notice.
+      close(timerHide) {
         this.set({"_state": "closing", "_timerHide": !!timerHide}); // Make sure it's a boolean.
         // Run the modules.
         this.runModules('beforeClose');
@@ -468,7 +472,8 @@
           this.queuePosition();
           // If we're supposed to remove the notice from the DOM, do it.
           if (this.get("remove")) {
-            this.refs.elem.parentNode.removeChild(this.refs.elem);
+            this.destroy();
+            //this.refs.elem.parentNode.removeChild(this.refs.elem);
           }
           // Run the modules.
           this.runModules('beforeDestroy');
@@ -785,7 +790,7 @@
         // Cancel any current removal timer.
         this.cancelRemove();
         this.set({
-          "_timer": setTimeout(() => this.remove(true), (isNaN(this.get("delay")) ? 0 : this.get("delay")))
+          "_timer": setTimeout(() => this.close(true), (isNaN(this.get("delay")) ? 0 : this.get("delay")))
         });
         return this;
       }
