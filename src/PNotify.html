@@ -18,8 +18,15 @@
     "
     aria-live="assertive"
     role="alertdialog"
-    on:mouseenter="mouseenter(event)"
-    on:mouseleave="mouseleave(event)">
+    on:mousein="fire('mousein', event)"
+    on:mouseout="fire('mouseout', event)"
+    on:mouseenter="fire('mouseenter', event)"
+    on:mouseleave="fire('mouseleave', event)"
+    on:mousedown="fire('mousedown', event)"
+    on:mouseup="fire('mouseup', event)"
+    on:focus="fire('focus', event)"
+    on:blur="fire('blur', event)"
+    on:click="fire('click', event)">
   <div ref:container
       class="ui-pnotify-container {{_styles.container}} {{_styles[type]}} {{cornerclass}} {{shadow ? 'ui-pnotify-shadow' : ''}}"
       role="alert">
@@ -305,6 +312,28 @@
       }
       this.set({"_modules": modules});
 
+      this.on("mouseenter", (e) => {
+        // Stop animation, reset the removal timer when the user mouses over.
+        if (this.get("mouse_reset") && this.get("_animating") === "out") {
+          if (!this.get("_timerHide")) {
+            return;
+          }
+          this.cancelRemove();
+        }
+        // Stop the close timer.
+        if (this.get("hide") && this.get("mouse_reset")) {
+          this.cancelRemove();
+        }
+      });
+
+      this.on("mouseleave", (e) => {
+        // Start the close timer.
+        if (this.get("hide") && this.get("mouse_reset") && this.get("_animating") !== "out") {
+          this.queueRemove();
+        }
+        PNotify.positionAll();
+      });
+
       let stack = this.get("stack");
 
       // Add the notice to the notice array.
@@ -379,28 +408,6 @@
         return this;
       },
 
-      mouseenter(e) {
-        // Stop animation, reset the removal timer when the user mouses over.
-        if (this.get("mouse_reset") && this.get("_animating") === "out") {
-          if (!this.get("_timerHide")) {
-            return;
-          }
-          this.cancelRemove();
-        }
-        // Stop the close timer.
-        if (this.get("hide") && this.get("mouse_reset")) {
-          this.cancelRemove();
-        }
-      },
-
-      mouseleave(e) {
-        // Start the close timer.
-        if (this.get("hide") && this.get("mouse_reset") && this.get("_animating") !== "out") {
-          this.queueRemove();
-        }
-        PNotify.positionAll();
-      },
-
       // Display the notice.
       open() {
         this.set({
@@ -472,8 +479,7 @@
           this.queuePosition();
           // If we're supposed to remove the notice from the DOM, do it.
           if (this.get("remove")) {
-            this.destroy();
-            //this.refs.elem.parentNode.removeChild(this.refs.elem);
+            this.refs.elem.parentNode.removeChild(this.refs.elem);
           }
           // Run the modules.
           this.runModules('beforeDestroy');

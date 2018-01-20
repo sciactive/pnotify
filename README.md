@@ -259,7 +259,7 @@ The callback options all expect one argument, a function, which will be called w
 * `notice.get(option)` - Get the value of an option.
 * `notice.set(options)` - You probably want to use `update(options)` instead. It has some special PNotify secret sauce to make sure your notice doesn't break.
 * `notice.observe(key, callback[, options])` - Observe an option. See the Svelte docs for more info.
-* `notice.destroy()` - Removes the component from the DOM and any observers/event listeners. You probably want to use `close()` instead. It will animate the notice out and call `destroy()` for you.
+* `notice.destroy()` - Removes the component from the DOM and any observers/event listeners. You probably want to use `close()` instead. It will animate the notice out and you can open it again. Once you destroy it, you can't open it again.
 
 ### Events
 

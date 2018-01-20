@@ -238,11 +238,12 @@
           icon: "fa fa-commenting",
           // Setting stack to false causes PNotify to ignore this notice when positioning.
           stack: false,
-          auto_display: false
+          auto_display: false,
+          destroy: false
         });
         // Remove the notice if the user mouses over it.
-        tooltip.refs.elem.addEventListener("mouseout", function(){
-          tooltip.remove();
+        tooltip.on("mouseout", function(){
+          tooltip.close();
         });
       };
       // I put it in a function so I could show the source easily.
@@ -343,7 +344,7 @@
           history: false
         },
         before_open: function(notice){
-          progress = notice.refs.elem.find("div.progress-bar");
+          progress = $(notice.refs.elem).find("div.progress-bar");
           progress.width(cur_value+"%").attr("aria-valuenow", cur_value).find("span").html(cur_value+"%");
           // Pretend to do something.
           var timer = setInterval(function(){
@@ -359,7 +360,7 @@
             if (cur_value >= 100) {
               // Remove the interval.
               window.clearInterval(timer);
-              loader.remove();
+              loader.close();
               return;
             }
             cur_value += 1;
@@ -472,7 +473,7 @@
           opts.type = "success";
           break;
       }
-      PNotify.notice(opts);
+      PNotify.alert(opts);
     };
     function show_stack_bottomleft(type) {
       var opts = {
@@ -498,7 +499,7 @@
           opts.type = "success";
           break;
       }
-      PNotify.notice(opts);
+      PNotify.alert(opts);
     };
     function show_stack_bottomright(type) {
       var opts = {
@@ -524,7 +525,7 @@
           opts.type = "success";
           break;
       }
-      PNotify.notice(opts);
+      PNotify.alert(opts);
     };
     function show_stack_custom(type) {
       var opts = {
@@ -550,7 +551,7 @@
           opts.type = "success";
           break;
       }
-      PNotify.notice(opts);
+      PNotify.alert(opts);
     };
     function show_stack_custom2(type) {
       var opts = {
@@ -576,7 +577,7 @@
           opts.type = "success";
           break;
       }
-      PNotify.notice(opts);
+      PNotify.alert(opts);
     };
     function show_stack_modal(type) {
       var opts = {
@@ -602,7 +603,7 @@
           opts.type = "success";
           break;
       }
-      PNotify.notice(opts);
+      PNotify.alert(opts);
     };
     function show_stack_bar_top(type) {
       var opts = {
@@ -630,7 +631,7 @@
           opts.type = "success";
           break;
       }
-      PNotify.notice(opts);
+      PNotify.alert(opts);
     };
     function show_stack_bar_bottom(type) {
       var opts = {
@@ -658,7 +659,7 @@
           opts.type = "success";
           break;
       }
-      PNotify.notice(opts);
+      PNotify.alert(opts);
     };
     function show_stack_context(type, modal) {
       if (typeof stack_context === "undefined") {
@@ -690,7 +691,7 @@
           opts.type = "success";
           break;
       }
-      PNotify.notice(opts);
+      PNotify.alert(opts);
     };
     function show_stack_info() {
       PNotify.info({
@@ -1146,8 +1147,8 @@
           },
           insert_brs: false
         });
-        notice.refs.elem.find('form.pf-form').on('click', '[name=cancel]', function(){
-          notice.remove();
+        $(notice.refs.elem).find('form.pf-form').on('click', '[name=cancel]', function(){
+          notice.close();
         }).submit(function(){
           var username = $(this).find('input[name=username]').val();
           if (!username) {
@@ -1203,7 +1204,8 @@
           title: 'Click Notice',
           text: 'I wish someone would click me.'
         });
-        notice.refs.elem.css('cursor', 'pointer').click(function(e){
+        notice.refs.elem.style.cursor = 'pointer';
+        notice.on('click', function(e){
           if ($(e.target).is('.ui-pnotify-closer *, .ui-pnotify-sticker *'))
             return;
           notice.update({type: 'success', text: 'Yay, you clicked me!&lt;div style=&quot;text-align: center;&quot;&gt;&lt;img src=&quot;https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Happy_smiley_face.png/240px-Happy_smiley_face.png&quot; /&gt;&lt;/div&gt;'});
@@ -1216,8 +1218,8 @@
             sticker: false
           }
         });
-        notice.refs.elem.click(function(){
-          notice.remove();
+        notice.on('click', function(){
+          notice.close();
         });">Click to Close</button>
         <button class="btn btn-default source" onclick="PNotify.notice({
           title: 'Big Notice',
@@ -1347,63 +1349,63 @@ color: #FF0;
           If your browser doesn't support Web Notifications, or you deny permission to show them, you will only see regular in-browser notices. You can check <a href="http://caniuse.com/notifications" target="_blank">here</a>.
         </p>
         <hr />
-        <button class="btn btn-default source" onclick="PNotify.desktop.permission(); (PNotify.notice({
+        <button class="btn btn-default source" onclick="PNotify.desktop.permission(); PNotify.notice({
           title: 'Desktop Notice',
           text: 'If you\'ve given me permission, I\'ll appear as a desktop notification. If you haven\'t, I\'ll still appear as a regular PNotify notice.',
           desktop: {
             desktop: true
           }
-        })).refs.elem.click(function(e){
+        }).on('click', function(e){
           if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target))
             return;
           alert('Hey! You clicked the desktop notification!');
         });">Notice</button>
-        <button class="btn btn-default source" onclick="PNotify.desktop.permission(); (PNotify.info({
+        <button class="btn btn-default source" onclick="PNotify.desktop.permission(); PNotify.info({
           title: 'Desktop Info',
           text: 'If you\'ve given me permission, I\'ll appear as a desktop notification. If you haven\'t, I\'ll still appear as a regular PNotify notice.',
           desktop: {
             desktop: true
           }
-        })).refs.elem.click(function(e){
+        }).on('click', function(e){
           if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target))
             return;
           alert('Hey! You clicked the desktop notification!');
         });">Info</button>
-        <button class="btn btn-default source" onclick="PNotify.desktop.permission(); (PNotify.success({
+        <button class="btn btn-default source" onclick="PNotify.desktop.permission(); PNotify.success({
           title: 'Desktop Success',
           text: 'If you\'ve given me permission, I\'ll appear as a desktop notification. If you haven\'t, I\'ll still appear as a regular PNotify notice.',
           desktop: {
             desktop: true
           }
-        })).refs.elem.click(function(e){
+        }).on('click', function(e){
           if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target))
             return;
           alert('Hey! You clicked the desktop notification!');
         });">Success</button>
-        <button class="btn btn-default source" onclick="PNotify.desktop.permission(); (PNotify.error({
+        <button class="btn btn-default source" onclick="PNotify.desktop.permission(); PNotify.error({
           title: 'Desktop Error',
           text: 'If you\'ve given me permission, I\'ll appear as a desktop notification. If you haven\'t, I\'ll still appear as a regular PNotify notice.',
           desktop: {
             desktop: true
           }
-        })).refs.elem.click(function(e){
+        }).on('click', function(e){
           if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target))
             return;
           alert('Hey! You clicked the desktop notification!');
         });">Error</button>
-        <button class="btn btn-default source" onclick="PNotify.desktop.permission(); (PNotify.notice({
+        <button class="btn btn-default source" onclick="PNotify.desktop.permission(); PNotify.notice({
           title: 'Desktop Custom Icon',
           text: 'If you\'ve given me permission, I\'ll appear as a desktop notification. If you haven\'t, I\'ll still appear as a regular PNotify notice.',
           desktop: {
             desktop: true,
             icon: 'includes/le_happy_face_by_luchocas-32.png'
           }
-        })).refs.elem.click(function(e){
+        }).on('click', function(e){
           if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target))
             return;
           alert('Hey! You clicked the desktop notification!');
         });">Custom</button>
-        <button class="btn btn-default source" onclick="PNotify.desktop.permission(); (PNotify.notice({
+        <button class="btn btn-default source" onclick="PNotify.desktop.permission(); PNotify.notice({
           title: 'Alternate Text Notice - Browser',
           text: 'This text appears on the &lt;strong&gt;browser&lt;/strong&gt;.',
           desktop: {
@@ -1411,47 +1413,49 @@ color: #FF0;
             title: 'Alternate Text Notice - Desktop',
             text: 'This text appears on the *desktop*.'
           }
-        })).refs.elem.click(function(e){
+        })).on('click', function(e){
           if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target))
             return;
           alert('Hey! You clicked the desktop notification!');
         });">Alternate Text and Title</button>
-        <button class="btn btn-default source" onclick="PNotify.desktop.permission(); (PNotify.notice({
+        <button class="btn btn-default source" onclick="PNotify.desktop.permission(); PNotify.notice({
           title: 'Sticky Desktop Notice',
           text: 'I\'m a sticky notice, so you\'ll have to close me yourself. (Some systems don\'t allow sticky notifications.) If you\'ve given me permission, I\'ll appear as a desktop notification. If you haven\'t, I\'ll still appear as a regular PNotify notice.',
           hide: false,
           desktop: {
             desktop: true
           }
-        })).refs.elem.click(function(e){
+        }).on('click', function(e){
           if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target))
             return;
           alert('Hey! You clicked the desktop notification!');
         });">Sticky</button>
-        <button class="btn btn-default source" onclick="PNotify.desktop.permission(); var notice = (PNotify.notice({
+        <button class="btn btn-default source" onclick="PNotify.desktop.permission(); var notice = PNotify.notice({
           title: 'Dynamic Desktop Notice',
           text: 'I\'m a dynamic desktop notice. I\'ll change my type and text in a few seconds. If you\'ve given me permission, I\'ll appear as a desktop notification. If you haven\'t, I\'ll still appear as a regular PNotify notice.',
           desktop: {
             desktop: true
           }
-        })); notice.refs.elem.click(function(e){
+        });
+        notice.on('click', function(e){
           if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target))
             return;
           alert('Hey! You clicked the desktop notification!');
-        }); setTimeout(function(){
+        });
+        setTimeout(function(){
           notice.update({
             type: 'info',
             text: 'Now I\'m an info box!'
           });
         }, 4000);">Dynamic</button>
-        <button class="btn btn-default source" onclick="PNotify.desktop.permission(); (PNotify.notice({
+        <button class="btn btn-default source" onclick="PNotify.desktop.permission(); PNotify.notice({
           title: 'Desktop Notice',
           text: 'If you\'ve given me permission, I\'ll appear as a desktop notification. If you haven\'t, I won\'t appear at all, because my fallback is turned off.',
           desktop: {
             desktop: true,
             fallback: false
           }
-        })).refs.elem.click(function(e){
+        }).on('click', function(e){
           if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target))
             return;
           alert('Hey! You clicked the desktop notification!');
@@ -1526,7 +1530,7 @@ color: #FF0;
             }
           });
         }">Permanotice</button>
-        <button class="btn btn-default source" onclick="if (permanotice.remove) permanotice.remove();">Remove Permanotice</button>
+        <button class="btn btn-default source" onclick="if (permanotice.remove) permanotice.close();">Remove Permanotice</button>
       </div>
       <div class="panel-heading">
         <h3 class="panel-title">NonBlock Module <small>Click through to things underneath the notice.</small></h3>
@@ -1823,7 +1827,7 @@ color: #FF0;
         <h3 class="panel-title">Confirm Module <small>Confirmation dialogs and prompts.</small></h3>
       </div>
       <div class="panel-body">
-        <button class="btn btn-default source" onclick="(PNotify.notice({
+        <button class="btn btn-default source" onclick="var notice = PNotify.notice({
           title: 'Confirmation Needed',
           text: 'Are you sure?',
           icon: 'glyphicon glyphicon-question-sign',
@@ -1838,12 +1842,14 @@ color: #FF0;
           history: {
             history: false
           }
-        })).refs.elem.on('pnotify.confirm', function(){
+        });
+        notice.on('pnotify.confirm', function(){
           alert('Ok, cool.');
-        }).on('pnotify.cancel', function(){
+        });
+        notice.on('pnotify.cancel', function(){
           alert('Oh ok. Chicken, I see.');
         });">Confirm Dialog</button>
-        <button class="btn btn-default source" onclick="(PNotify.notice({
+        <button class="btn btn-default source" onclick="var notice = PNotify.notice({
           title: 'Confirmation Needed',
           text: 'Are you sure?',
           icon: 'glyphicon glyphicon-question-sign',
@@ -1860,9 +1866,11 @@ color: #FF0;
           },
           addclass: 'stack-modal',
           stack: {'dir1': 'down', 'dir2': 'right', 'modal': true}
-        })).refs.elem.on('pnotify.confirm', function(){
+        });
+        notice.on('pnotify.confirm', function(){
           alert('Ok, cool.');
-        }).on('pnotify.cancel', function(){
+        });
+        notice.on('pnotify.cancel', function(){
           alert('Oh ok. Chicken, I see.');
         });">Modal Confirm Dialog</button>
         <button class="btn btn-default source" onclick="PNotify.notice({
@@ -1941,7 +1949,7 @@ color: #FF0;
                 text: 'Ok',
                 addClass: 'btn-primary',
                 click: function(notice){
-                  notice.remove();
+                  notice.close();
                 }
               },
               null
@@ -1955,7 +1963,7 @@ color: #FF0;
             history: false
           }
         });">Alert Style Button</button>
-        <button class="btn btn-default source" onclick="(PNotify.notice({
+        <button class="btn btn-default source" onclick="var notice = PNotify.notice({
           title: 'Input Needed',
           text: 'What side would you like?',
           icon: 'glyphicon glyphicon-question-sign',
@@ -1970,7 +1978,8 @@ color: #FF0;
           history: {
             history: false
           }
-        })).refs.elem.on('pnotify.confirm', function(e, notice, val){
+        });
+        notice.on('pnotify.confirm', function(e, val){
           notice.cancelRemove().update({
             title: 'You\'ve Chosen a Side', text: 'You want '+$('<div/>').text(val).html()+'.', icon: true, type: 'info', hide: true,
             confirm: {
@@ -1981,7 +1990,8 @@ color: #FF0;
               sticker: true
             }
           });
-        }).on('pnotify.cancel', function(e, notice){
+        });
+        notice.on('pnotify.cancel', function(e){
           notice.cancelRemove().update({
             title: 'You Don\'t Want a Side', text: 'No soup for you!', icon: true, type: 'info', hide: true,
             confirm: {
@@ -1993,7 +2003,7 @@ color: #FF0;
             }
           });
         });">Prompt Dialog</button>
-        <button class="btn btn-default source" onclick="(PNotify.notice({
+        <button class="btn btn-default source" onclick="var notice = PNotify.notice({
           title: 'Input Needed',
           text: 'Write me a poem, please.',
           icon: 'glyphicon glyphicon-question-sign',
@@ -2010,7 +2020,8 @@ color: #FF0;
           history: {
             history: false
           }
-        })).refs.elem.on('pnotify.confirm', function(e, notice, val){
+        });
+        notice.on('pnotify.confirm', function(e, val){
           notice.cancelRemove().update({
             title: 'Your Poem', text: $('<div/>').text(val).html(), icon: true, type: 'info', hide: true,
             confirm: {
@@ -2021,7 +2032,8 @@ color: #FF0;
               sticker: true
             }
           });
-        }).on('pnotify.cancel', function(e, notice){
+        });
+        notice.on('pnotify.cancel', function(e){
           notice.cancelRemove().update({
             title: 'You Don\'t Like Poetry', text: 'Roses are dead,\nViolets are dead,\nI suck at gardening.', icon: true, type: 'info', hide: true,
             confirm: {
@@ -2202,7 +2214,7 @@ color: #FF0;
         <button class="btn btn-default source" onclick="show_stack_bar_bottom('error');">Error</button>
         Bottom bar style. (Like New Microsoft Notification Bars.) Moves up, then right. Pushes to stack bottom.
         <hr />
-        <button class="btn btn-default source" onmouseover="tooltip.open();" onmousemove="tooltip.refs.elem.css({'top': event.clientY+12, 'left': event.clientX+12});" onmouseout="tooltip.remove();">Hover Over Me</button>
+        <button class="btn btn-default source" onmouseover="tooltip.open();" onmousemove="tooltip.refs.elem.style.top = (event.clientY+12)+'px'; tooltip.refs.elem.style.left = (event.clientX+12)+'px';" onmouseout="tooltip.close();">Hover Over Me</button>
         Tooltip
       </div>
       <div class="panel-heading">
