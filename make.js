@@ -29,7 +29,7 @@ let pnotify_js = {
 };
 
 let pnotify_css = {
-  'brighttheme': 'pnotify.brighttheme.css',
+  'brighttheme': 'PNotify.BrightTheme.css',
   'buttons': 'pnotify.buttons.css',
   'history': 'pnotify.history.css',
   'mobile': 'pnotify.mobile.css',

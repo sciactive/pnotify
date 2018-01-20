@@ -117,7 +117,7 @@
         // Minimum height of the notice. It will expand to fit content.
         min_height: "16px",
         // Type of the notice. "notice", "info", "success", or "error".
-        type: "info",
+        type: "notice",
         // Set icon to true to use the default icon for the selected
         // style/type, false for no icon, or a string for your own icon class.
         icon: true,
@@ -157,29 +157,44 @@
 
       // Helper function to create a new notice.
       PNotify.alert = (options) => {
+        if (typeof options !== "object") {
+          options = {"text": options};
+        }
         return new PNotify({target: document.body, data: options});
       };
 
       // Helper function to create a new notice (notice type).
       PNotify.notice = (options) => {
+        if (typeof options !== "object") {
+          options = {"text": options};
+        }
         options.type = "notice";
         return new PNotify({target: document.body, data: options});
       };
 
       // Helper function to create a new notice (info type).
       PNotify.info = (options) => {
+        if (typeof options !== "object") {
+          options = {"text": options};
+        }
         options.type = "info";
         return new PNotify({target: document.body, data: options});
       };
 
       // Helper function to create a new notice (success type).
       PNotify.success = (options) => {
+        if (typeof options !== "object") {
+          options = {"text": options};
+        }
         options.type = "success";
         return new PNotify({target: document.body, data: options});
       };
 
       // Helper function to create a new notice (error type).
       PNotify.error = (options) => {
+        if (typeof options !== "object") {
+          options = {"text": options};
+        }
         options.type = "error";
         return new PNotify({target: document.body, data: options});
       };
