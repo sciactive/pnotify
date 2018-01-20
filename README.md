@@ -20,7 +20,7 @@ But v4 isn't even in the alpha stage yet. The only thing that works is PNotify C
 
 # Getting Started
 
-You can include PNotify using NPM, Bower, or a custom download. NPM is the prefered method.
+You can get PNotify using NPM. (You can also use [jsDelivr](https://www.jsdelivr.com/package/npm/pnotify).)
 
 ```
 npm install pnotify
