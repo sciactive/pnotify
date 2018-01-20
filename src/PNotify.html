@@ -102,7 +102,11 @@
       options = {"text": options};
     }
 
-    options.type = type;
+    // only assign the type if it was requested, so we don't overwrite
+    // options.type if it has something assigned
+    if (type) {
+      options.type = type;
+    }
     
     return {target: document.body, data: options};
   }
@@ -201,11 +205,6 @@
         return new PNotify(getDefaultArgs(options, "notice"));
       };
 
-      // Helper function to create a new notice (card type).
-      PNotify.card = (options) => {
-        return new PNotify(getDefaultArgs(options, "card"));
-      };
-
       // Helper function to create a new notice (info type).
       PNotify.info = (options) => {
         return new PNotify(getDefaultArgs(options, "info"));
@@ -295,8 +294,7 @@
           notice: "alert-warning",
           info: "alert-info",
           success: "alert-success",
-          error: "alert-danger",
-          card: "card-body"
+          error: "alert-danger"
         }
       };
 
@@ -314,6 +312,8 @@
             success_icon: "glyphicon glyphicon-ok-sign",
             error_icon: "glyphicon glyphicon-warning-sign"
           },
+
+          // user must have font awesome loaded (v4.7)
           fontawesome: {
             notice_icon: "fa fa-exclamation",
             info_icon: "fa fa-info-circle",
@@ -321,17 +321,6 @@
             error_icon: "fa fa-exclamation-triangle"
           }
       }
-      /*
-       * uses icons from http://fontawesome.io/
-       * version 4.0.3
-       */
-      PNotify.styling.fontawesome = Object.assign({}, PNotify.styling.bootstrap3);
-      Object.assign(PNotify.styling.fontawesome, {
-        notice_icon: "fa fa-exclamation-circle",
-        info_icon: "fa fa-info",
-        success_icon: "fa fa-check",
-        error_icon: "fa fa-warning"
-      });
 
       // Run the deferred actions once the DOM is ready.
       if (window && document.body) {
@@ -407,6 +396,8 @@
       _text_processed: (text, insert_brs) => insert_brs ?  String(text).replace(/\n/g, '<br />') : text,
       // Grab styles from the styling object or use the styles provided.
       _styles: (styling) => typeof styling === "object" ? styling : PNotify.styling[styling],
+
+      // Grab the icons from the icons object or use provided icons
       _icons: (icons) => {
         return typeof icons === "object" ? icons : PNotify.icons[icons]
       }
