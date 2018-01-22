@@ -16,7 +16,7 @@ I guarantee **none of this README applies to you!** You want to check out the **
 
 This README is for **PNotify v4**. v4 isn't out yet, but it's got some huge changes. First of all, *jQuery is no longer required*. v4 doesn't require any libraries, actually. It's built using [Svelte](http://svelte.technology), which means it compiles down to vanilla JS.
 
-But v4 isn't even in the alpha stage yet. The only thing that works is PNotify Core. *None* of the modules work.
+But v4 isn't even in the alpha stage yet. The only thing that works is PNotify Core and the Buttons module. *None* of the other modules work.
 
 # Getting Started
 
@@ -140,7 +140,7 @@ new PNotify({
 
 ## Desktop Module
 
-`desktop: {`
+`Desktop: {`
 * `desktop: false` - Display the notification as a desktop notification.
 * `fallback: true` - If desktop notifications are not supported or allowed, fall back to a regular notice.
 * `icon: null` - The URL of the icon to display. If false, no icon will show. If null, a default icon will show.
@@ -152,7 +152,7 @@ new PNotify({
 
 ## Buttons Module
 
-`buttons: {`
+`Buttons: {`
 * `closer: true` - Provide a button for the user to manually close the notice.
 * `closer_hover: true` - Only show the closer button on hover.
 * `sticker: true` - Provide a button for the user to manually stick the notice.
@@ -165,14 +165,14 @@ new PNotify({
 
 ## NonBlock Module
 
-`nonblock: {`
+`NonBlock: {`
 * `nonblock: false` - Create a non-blocking notice. It lets the user click elements underneath it.
 
 `}`
 
 ## Mobile Module
 
-`mobile: {`
+`Mobile: {`
 * `swipe_dismiss: true` - Let the user swipe the notice away.
 * `styling: true` - Styles the notice to look good on mobile.
 
@@ -180,7 +180,9 @@ new PNotify({
 
 ## Animate Module
 
-`animate: {`
+The Animate module requires you to include [Animate.css](https://daneden.github.io/animate.css/) in your page.
+
+`Animate: {`
 * `animate: false` - Use animate.css to animate the notice.
 * `in_class: ""` - The class to use to animate the notice in.
 * `out_class: ""` - The class to use to animate the notice out.
@@ -191,7 +193,7 @@ The Animate module also creates a method, `attention`, on notices which accepts 
 
 ## Confirm Module
 
-`confirm: {`
+`Confirm: {`
 * `confirm: false` - Make a confirmation box.
 * `prompt: false` - Make a prompt.
 * `prompt_class: ""` - Classes to add to the input element of the prompt.
@@ -204,7 +206,7 @@ The Animate module also creates a method, `attention`, on notices which accepts 
 
 ## History Module
 
-`history: {`
+`History: {`
 * `history: true` - Place the notice in the history.
 * `menu: false` - Display a pull down menu to redisplay previous notices.
 * `fixed: true` - Make the pull down menu fixed to the top of the viewport.
@@ -213,16 +215,19 @@ The Animate module also creates a method, `attention`, on notices which accepts 
 
 `}`
 
-# Callbacks Module
+## Callbacks Module
 
-The callback options all expect one argument, a function, which will be called when that event occurs. Unlike other modules, they are included in the options object passed to PNotify() just like the core options. If the function returns false on the "before_open" or "before_close" callback, that event will be canceled.
+The callback options all expect one argument, a function, which will be called when that event occurs. If the function returns false on the "before_open" or "before_close" callback, that event will be canceled.
 
+`Callbacks: {`
 * `before_init` - This option is called before the notice has been initialized. It accepts one argument, the options object.
 * `after_init` - This option is called after the notice has been initialized. It accepts one argument, the notice object.
 * `before_open` - This option is called before the notice has been displayed. It accepts one argument, the notice object.
 * `after_open` - This option is called after the notice has been displayed. It accepts one argument, the notice object.
 * `before_close` - This option is called before the notice closes. It accepts one argument, the notice object.
 * `after_close` - This option is called after the notice closes. It accepts one argument, the notice object.
+
+`}`
 
 # Utility Functions and Properties
 

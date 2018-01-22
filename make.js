@@ -6,33 +6,33 @@ require('shelljs/make');
 
 let pnotify_src = {
   'core': 'PNotify.html',
-  'animate': 'pnotify.animate.js',
+  // 'animate': 'PNotifyAnimate.?',
   'buttons': 'PNotifyButtons.html',
-  'callbacks': 'pnotify.callbacks.js',
-  'confirm': 'pnotify.confirm.js',
-  'desktop': 'pnotify.desktop.js',
-  'history': 'pnotify.history.js',
-  'mobile': 'pnotify.mobile.js',
-  'nonblock': 'pnotify.nonblock.js',
+  // 'callbacks': 'PNotifyCallbacks.?',
+  // 'confirm': 'PNotifyConfirm.?',
+  // 'desktop': 'PNotifyDesktop.?',
+  // 'history': 'PNotifyHistory.?',
+  // 'mobile': 'PNotifyMobile.?',
+  // 'nonblock': 'PNotifyNonBlock.?',
 };
 
 let pnotify_js = {
   'core': 'PNotify.js',
-  'animate': 'pnotify.animate.js',
+  // 'animate': 'PNotifyAnimate.js',
   'buttons': 'PNotifyButtons.js',
-  'callbacks': 'pnotify.callbacks.js',
-  'confirm': 'pnotify.confirm.js',
-  'desktop': 'pnotify.desktop.js',
-  'history': 'pnotify.history.js',
-  'mobile': 'pnotify.mobile.js',
-  'nonblock': 'pnotify.nonblock.js',
+  // 'callbacks': 'PNotifyCallbacks.js',
+  // 'confirm': 'PNotifyConfirm.js',
+  // 'desktop': 'PNotifyDesktop.js',
+  // 'history': 'PNotifyHistory.js',
+  // 'mobile': 'PNotifyMobile.js',
+  // 'nonblock': 'PNotifyNonBlock.js',
 };
 
 let pnotify_css = {
   'brighttheme': 'PNotifyBrightTheme.css',
-  'history': 'pnotify.history.css',
-  'mobile': 'pnotify.mobile.css',
-  'nonblock': 'pnotify.nonblock.css',
+  // 'history': 'PNotifyHistory.css',
+  // 'mobile': 'PNotifyMobile.css',
+  // 'nonblock': 'PNotifyNonBlock.css',
 };
 
 let root = __dirname + '/';

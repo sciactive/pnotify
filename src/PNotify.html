@@ -12,10 +12,6 @@
 
 <div ref:elem
     class="ui-pnotify {{addclass}} {{_animatingClass}} {{_moveClass}} {{animation === 'fade' ? 'ui-pnotify-fade-'+animate_speed : ''}}"
-    style="
-      {{typeof width === 'string' ? 'width: '+width+';' : ''}}
-      {{typeof min_height === 'string' ? 'min-height: '+min_height+';' : ''}}
-    "
     aria-live="assertive"
     role="alertdialog"
     ui-pnotify
@@ -30,6 +26,10 @@
     on:click="fire('click', event)">
   <div ref:container
       class="ui-pnotify-container {{_styles.container}} {{_styles[type]}} {{cornerclass}} {{shadow ? 'ui-pnotify-shadow' : ''}}"
+      style="
+        {{typeof width === 'string' ? 'width: '+width+';' : ''}}
+        {{typeof min_height === 'string' ? 'min-height: '+min_height+';' : ''}}
+      "
       role="alert">
     {{#each _modulesPrependContainer as module}}
       <:Component {module} on:init="initModule(event.module)" />
