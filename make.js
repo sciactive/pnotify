@@ -7,7 +7,7 @@ require('shelljs/make');
 let pnotify_src = {
   'core': 'PNotify.html',
   'animate': 'pnotify.animate.js',
-  'buttons': 'pnotify.buttons.js',
+  'buttons': 'PNotifyButtons.html',
   'callbacks': 'pnotify.callbacks.js',
   'confirm': 'pnotify.confirm.js',
   'desktop': 'pnotify.desktop.js',
@@ -19,7 +19,7 @@ let pnotify_src = {
 let pnotify_js = {
   'core': 'PNotify.js',
   'animate': 'pnotify.animate.js',
-  'buttons': 'pnotify.buttons.js',
+  'buttons': 'PNotifyButtons.js',
   'callbacks': 'pnotify.callbacks.js',
   'confirm': 'pnotify.confirm.js',
   'desktop': 'pnotify.desktop.js',
@@ -29,8 +29,7 @@ let pnotify_js = {
 };
 
 let pnotify_css = {
-  'brighttheme': 'PNotify.BrightTheme.css',
-  'buttons': 'pnotify.buttons.css',
+  'brighttheme': 'PNotifyBrightTheme.css',
   'history': 'pnotify.history.css',
   'mobile': 'pnotify.mobile.css',
   'nonblock': 'pnotify.nonblock.css',

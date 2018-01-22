@@ -18,6 +18,7 @@
     "
     aria-live="assertive"
     role="alertdialog"
+    ui-pnotify
     on:mousein="fire('mousein', event)"
     on:mouseout="fire('mouseout', event)"
     on:mouseenter="fire('mouseenter', event)"
@@ -30,6 +31,9 @@
   <div ref:container
       class="ui-pnotify-container {{_styles.container}} {{_styles[type]}} {{cornerclass}} {{shadow ? 'ui-pnotify-shadow' : ''}}"
       role="alert">
+    {{#each _modulesPrependContainer as module}}
+      <:Component {module} on:init="initModule(event.module)" />
+    {{/each}}
     {{#if icon !== false}}
       <div class="ui-pnotify-icon">
         <span class="{{icon === true ? _styles[type+'_icon'] : icon}}"></span>
@@ -158,9 +162,13 @@
 
       // An array of all active notices.
       PNotify.notices = [];
+
       // This object holds all the PNotify modules. They are used to provide
       // additional functionality.
       PNotify.modules = {};
+
+      // Modules can add themselves to these to be rendered in the template.
+      PNotify.modulesPrependContainer = [];
 
       // Helper function to create a new notice.
       PNotify.alert = (options) => {
@@ -302,16 +310,6 @@
     },
 
     oncreate () {
-      // We don't want our module objects all referencing the main object.
-      const modules = {};
-      for (let m in PNotify.modules) {
-        if (!PNotify.modules.hasOwnProperty(m)) {
-          continue;
-        }
-        modules[m] = Object.assign({}, PNotify.modules[m]);
-      }
-      this.set({"_modules": modules});
-
       this.on("mouseenter", (e) => {
         // Stop animation, reset the removal timer when the user mouses over.
         if (this.get("mouse_reset") && this.get("_animating") === "out") {
@@ -356,7 +354,7 @@
     },
 
     data () {
-      return Object.assign({
+      const data = Object.assign({
         "_state": "initializing", // The state can be "initializing", "opening", "open", "closing", and "closed".
         "_timer": null, // Auto close timer.
         "_animTimer": null, // Animation timer.
@@ -364,38 +362,72 @@
         "_animatingClass": "", // Stores the class that adds entry/exit animation effects.
         "_moveClass": "", // Stores the class that adds movement animation effects.
         "_timerHide": false, // Stores whether the notice was hidden by a timer.
+        "_modules": {}, // Stores the instances of the modules.
+        "_modulesPrependContainer": PNotify.modulesPrependContainer,
       }, PNotify.defaults);
+      data.modules = Object.assign({}, PNotify.defaults.modules);
+      return data;
     },
 
     computed: {
       // Add <br />s in place of line breaks.
       _text_processed: (text, insert_brs) => insert_brs ?  String(text).replace(/\n/g, '<br />') : text,
       // Grab styles from the styling object or use the styles provided.
-      _styles: (styling) => typeof styling === "object" ? styling : PNotify.styling[styling]
+      _styles: (styling) => typeof styling === "object" ? styling : PNotify.styling[styling],
     },
 
     methods: {
       // This runs an event on all the modules.
-      runModules(event, arg) {
-        const modules = this.get("_modules");
-        for (let module in modules) {
-          let curArg = ((typeof arg === "object" && module in arg) ? arg[module] : arg);
-          if (typeof modules[module][event] === 'function') {
-            modules[module].notice = this;
-            modules[module].options = typeof this.get("modules")[module] === 'object' ? this.get("modules")[module] : {};
-            modules[module][event](this, typeof this.get("modules")[module] === 'object' ? this.get("modules")[module] : {}, curArg);
+      runModules(event) {
+        if (event === "init") {
+          // Initializing a module should only be done if it has an init
+          // function, which means it's not rendered in the template.
+          for (let key in PNotify.modules) {
+            if (typeof PNotify.modules[key].init === 'function') {
+              const module = PNotify.modules[key].init();
+              this.initModule(module);
+            }
+          }
+        } else {
+          const _modules = this.get("_modules");
+          for (let module in _modules) {
+            const moduleOptions = Object.assign({
+              "_notice": this,
+              "_options": this.get()
+            }, this.get("modules")[module]);
+            _modules[module].set(moduleOptions);
+            if (typeof _modules[module][event] === 'function') {
+              _modules[module][event]();
+            }
           }
         }
+      },
+
+      // This passes module options to a module.
+      initModule(module) {
+        const modules = this.get("modules");
+        if (!modules.hasOwnProperty(module.constructor.key)) {
+          modules[module.constructor.key] = {};
+        }
+        const moduleOptions = Object.assign({
+          "_notice": this,
+          "_options": this.get()
+        }, modules[module.constructor.key]);
+        module.fire("initModule", moduleOptions);
+
+        // Now save the module instance.
+        const _modules = this.get("_modules");
+        _modules[module.constructor.key] = module;
       },
 
       update(options) {
         // Save old options.
         const oldHide = this.get("hide");
 
-        // Run the modules.
-        this.runModules('update', options);
-
         this.set(options);
+
+        // Run the modules.
+        this.runModules('update');
 
         // Update the timed hiding.
         if (!this.get("hide")) {

@@ -43,21 +43,17 @@
 
   <!-- PNotify -->
   <script type="text/javascript" src="lib/iife/PNotify.js"></script>
-  <link href="src/pnotify.brighttheme.css" rel="stylesheet" type="text/css" />
+  <link href="src/PNotifyBrightTheme.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="lib/iife/PNotifyButtons.js"></script>
   <!--
-  <script type="text/javascript" src="lib/pnotify.animate.js"></script>
-  <script type="text/javascript" src="lib/pnotify.buttons.js"></script>
-  <link href="src/pnotify.buttons.css" rel="stylesheet" type="text/css" />
-  <script type="text/javascript" src="lib/pnotify.confirm.js"></script>
-  <link href="src/pnotify.nonblock.css" rel="stylesheet" type="text/css" />
-  <script type="text/javascript" src="lib/pnotify.nonblock.js"></script>
-  <script type="text/javascript" src="lib/pnotify.mobile.js"></script>
-  <link href="src/pnotify.mobile.css" rel="stylesheet" type="text/css" />
-  <script type="text/javascript" src="lib/pnotify.desktop.js"></script>
-  <script type="text/javascript" src="lib/pnotify.history.js"></script>
-  <link href="src/pnotify.history.css" rel="stylesheet" type="text/css" />
-  <script type="text/javascript" src="lib/pnotify.callbacks.js"></script>
-  <script type="text/javascript" src="lib/pnotify.reference.js"></script>
+  <script type="text/javascript" src="lib/iife/PNotifyAnimate.js"></script>
+  <script type="text/javascript" src="lib/iife/PNotifyConfirm.js"></script>
+  <script type="text/javascript" src="lib/iife/PNotifyNonBlock.js"></script>
+  <script type="text/javascript" src="lib/iife/PNotifyMobile.js"></script>
+  <script type="text/javascript" src="lib/iife/PNotifyDesktop.js"></script>
+  <script type="text/javascript" src="lib/iife/PNotifyHistory.js"></script>
+  <script type="text/javascript" src="lib/iife/PNotifyCallbacks.js"></script>
+  <script type="text/javascript" src="lib/iife/PNotifyReference.js"></script>
   -->
 
   <!-- PForm (For the form notice.) -->
@@ -202,8 +198,10 @@
         title: "PNotify",
         text: "Welcome. Try hovering over me. You can click things behind me, because I'm non-blocking.",
         delay: 12000,
-        nonblock: {
-          nonblock: true
+        modules: {
+          NonBlock: {
+            nonblock: true
+          }
         },
         before_close: function(notice){
           // You can access the notice's options with this. It is read only.
@@ -227,19 +225,21 @@
           title: "Tooltip",
           text: "I'm not in a stack. I'm positioned like a tooltip with JavaScript.",
           hide: false,
-          buttons: {
-            closer: false,
-            sticker: false
-          },
-          history: {
-            history: false
-          },
           animate_speed: "fast",
           icon: "fa fa-commenting",
           // Setting stack to false causes PNotify to ignore this notice when positioning.
           stack: false,
           auto_display: false,
-          destroy: false
+          destroy: false,
+          modules: {
+            Buttons: {
+              closer: false,
+              sticker: false
+            },
+            History: {
+              history: false
+            }
+          }
         });
         // Remove the notice if the user mouses over it.
         tooltip.on("mouseout", function(){
@@ -336,12 +336,14 @@
         //icon: 'fa fa-moon-o fa-spin',
         icon: 'fa fa-cog fa-spin',
         hide: false,
-        buttons: {
-          closer: false,
-          sticker: false
-        },
-        history: {
-          history: false
+        modules: {
+          Buttons: {
+            closer: false,
+            sticker: false
+          },
+          History: {
+            history: false
+          }
         },
         before_open: function(notice){
           progress = $(notice.refs.elem).find("div.progress-bar");
@@ -376,12 +378,14 @@
         text: "Please Wait",
         icon: 'fa fa-spinner fa-spin',
         hide: false,
-        buttons: {
-          closer: false,
-          sticker: false
-        },
         shadow: false,
-        width: "170px"
+        width: "170px",
+        modules: {
+          Buttons: {
+            closer: false,
+            sticker: false
+          }
+        }
       });
 
       setTimeout(function(){
@@ -398,13 +402,15 @@
             options.title = "Done!";
             options.type = "success";
             options.hide = true;
-            options.buttons = {
-              closer: true,
-              sticker: true
-            };
             options.icon = 'fa fa-check';
             options.shadow = true;
             options.width = PNotify.defaults.width;
+            options.modules = {
+              Buttons: {
+                closer: true,
+                sticker: true
+              }
+            };
           }
           notice.update(options);
         }, 120);
@@ -699,11 +705,13 @@
         text: "Stacks are used to position notices and determine where new notices will go when they're created. Each notice that's placed into a stack will be positioned related to the other notices in that stack. There is no limit to the number of stacks, and no limit to the number of notices in each stack.",
         icon: "fa fa-bars",
         hide: false,
-        history: {
-          history: false
-        },
         addclass: "stack-modal",
-        stack: {"dir1": "down", "dir2": "right", "modal": true, "overlay_close": true}
+        stack: {"dir1": "down", "dir2": "right", "modal": true, "overlay_close": true},
+        modules: {
+          History: {
+            history: false
+          }
+        }
       });
     };
   </script>
@@ -1141,11 +1149,13 @@
           icon: false,
           width: 'auto',
           hide: false,
-          buttons: {
-            closer: false,
-            sticker: false
-          },
-          insert_brs: false
+          insert_brs: false,
+          modules: {
+            Buttons: {
+              closer: false,
+              sticker: false
+            }
+          }
         });
         $(notice.refs.elem).find('form.pf-form').on('click', '[name=cancel]', function(){
           notice.close();
@@ -1161,11 +1171,13 @@
             icon: true,
             width: PNotify.defaults.width,
             hide: true,
-            buttons: {
-              closer: true,
-              sticker: true
-            },
-            type: 'success'
+            type: 'success',
+            modules: {
+              Buttons: {
+                closer: true,
+                sticker: true
+              }
+            }
           });
           return false;
         });">Forms</button>
@@ -1213,9 +1225,11 @@
         <button class="btn btn-default source" onclick="var notice = PNotify.notice({
           title: 'Click Close Notice',
           text: 'Click me anywhere to dismiss me.',
-          buttons: {
-            closer: false,
-            sticker: false
+          modules: {
+            Buttons: {
+              closer: false,
+              sticker: false
+            }
           }
         });
         notice.on('click', function(){
@@ -1255,8 +1269,10 @@
           text: 'I have an additional class that\'s used to give me special styling. I always wanted to be pretty. I also use the nonblock module.',
           addclass: 'custom',
           icon: 'fa fa-file-image-o',
-          nonblock: {
-            nonblock: true
+          modules: {
+            NonBlock: {
+              nonblock: true
+            }
           }
         });">Custom Styles</button>
         <div style="float: right;"><a data-toggle="modal" href="#growl">How to style like Growl.</a></div>
@@ -1314,8 +1330,10 @@ color: #FF0;
   text: 'I have an additional class that\'s used to give me special styling. I always wanted to be pretty.',
   <strong>addclass: 'custom'</strong>,
   icon: 'fa fa-file-image-o',
-  nonblock: {
-    nonblock: true
+  modules: {
+    NonBlock: {
+      nonblock: true
+    }
   }
 });</pre>
               </div>
@@ -1352,8 +1370,10 @@ color: #FF0;
         <button class="btn btn-default source" onclick="PNotify.desktop.permission(); PNotify.notice({
           title: 'Desktop Notice',
           text: 'If you\'ve given me permission, I\'ll appear as a desktop notification. If you haven\'t, I\'ll still appear as a regular PNotify notice.',
-          desktop: {
-            desktop: true
+          modules: {
+            Desktop: {
+              desktop: true
+            }
           }
         }).on('click', function(e){
           if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target))
@@ -1363,8 +1383,10 @@ color: #FF0;
         <button class="btn btn-default source" onclick="PNotify.desktop.permission(); PNotify.info({
           title: 'Desktop Info',
           text: 'If you\'ve given me permission, I\'ll appear as a desktop notification. If you haven\'t, I\'ll still appear as a regular PNotify notice.',
-          desktop: {
-            desktop: true
+          modules: {
+            Desktop: {
+              desktop: true
+            }
           }
         }).on('click', function(e){
           if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target))
@@ -1374,8 +1396,10 @@ color: #FF0;
         <button class="btn btn-default source" onclick="PNotify.desktop.permission(); PNotify.success({
           title: 'Desktop Success',
           text: 'If you\'ve given me permission, I\'ll appear as a desktop notification. If you haven\'t, I\'ll still appear as a regular PNotify notice.',
-          desktop: {
-            desktop: true
+          modules: {
+            Desktop: {
+              desktop: true
+            }
           }
         }).on('click', function(e){
           if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target))
@@ -1385,8 +1409,10 @@ color: #FF0;
         <button class="btn btn-default source" onclick="PNotify.desktop.permission(); PNotify.error({
           title: 'Desktop Error',
           text: 'If you\'ve given me permission, I\'ll appear as a desktop notification. If you haven\'t, I\'ll still appear as a regular PNotify notice.',
-          desktop: {
-            desktop: true
+          modules: {
+            Desktop: {
+              desktop: true
+            }
           }
         }).on('click', function(e){
           if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target))
@@ -1396,9 +1422,11 @@ color: #FF0;
         <button class="btn btn-default source" onclick="PNotify.desktop.permission(); PNotify.notice({
           title: 'Desktop Custom Icon',
           text: 'If you\'ve given me permission, I\'ll appear as a desktop notification. If you haven\'t, I\'ll still appear as a regular PNotify notice.',
-          desktop: {
-            desktop: true,
-            icon: 'includes/le_happy_face_by_luchocas-32.png'
+          modules: {
+            Desktop: {
+              desktop: true,
+              icon: 'includes/le_happy_face_by_luchocas-32.png'
+            }
           }
         }).on('click', function(e){
           if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target))
@@ -1408,10 +1436,12 @@ color: #FF0;
         <button class="btn btn-default source" onclick="PNotify.desktop.permission(); PNotify.notice({
           title: 'Alternate Text Notice - Browser',
           text: 'This text appears on the &lt;strong&gt;browser&lt;/strong&gt;.',
-          desktop: {
-            desktop: true,
-            title: 'Alternate Text Notice - Desktop',
-            text: 'This text appears on the *desktop*.'
+          modules: {
+            Desktop: {
+              desktop: true,
+              title: 'Alternate Text Notice - Desktop',
+              text: 'This text appears on the *desktop*.'
+            }
           }
         })).on('click', function(e){
           if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target))
@@ -1422,8 +1452,10 @@ color: #FF0;
           title: 'Sticky Desktop Notice',
           text: 'I\'m a sticky notice, so you\'ll have to close me yourself. (Some systems don\'t allow sticky notifications.) If you\'ve given me permission, I\'ll appear as a desktop notification. If you haven\'t, I\'ll still appear as a regular PNotify notice.',
           hide: false,
-          desktop: {
-            desktop: true
+          modules: {
+            Desktop: {
+              desktop: true
+            }
           }
         }).on('click', function(e){
           if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target))
@@ -1433,8 +1465,10 @@ color: #FF0;
         <button class="btn btn-default source" onclick="PNotify.desktop.permission(); var notice = PNotify.notice({
           title: 'Dynamic Desktop Notice',
           text: 'I\'m a dynamic desktop notice. I\'ll change my type and text in a few seconds. If you\'ve given me permission, I\'ll appear as a desktop notification. If you haven\'t, I\'ll still appear as a regular PNotify notice.',
-          desktop: {
-            desktop: true
+          modules: {
+            Desktop: {
+              desktop: true
+            }
           }
         });
         notice.on('click', function(e){
@@ -1451,9 +1485,11 @@ color: #FF0;
         <button class="btn btn-default source" onclick="PNotify.desktop.permission(); PNotify.notice({
           title: 'Desktop Notice',
           text: 'If you\'ve given me permission, I\'ll appear as a desktop notification. If you haven\'t, I won\'t appear at all, because my fallback is turned off.',
-          desktop: {
-            desktop: true,
-            fallback: false
+          modules: {
+            Desktop: {
+              desktop: true,
+              fallback: false
+            }
           }
         }).on('click', function(e){
           if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target))
@@ -1490,11 +1526,13 @@ color: #FF0;
           title: 'Custom Icon Button Notice',
           text: 'Check me out! My sticker and close buttons have custom icons!',
           hide: false,
-          buttons: {
-            classes: {
-              closer: 'fa fa-bomb',
-              pin_up: 'fa fa-anchor',
-              pin_down: 'fa fa-hourglass'
+          modules: {
+            Buttons: {
+              classes: {
+                closer: 'fa fa-bomb',
+                pin_up: 'fa fa-anchor',
+                pin_down: 'fa fa-hourglass'
+              }
             }
           }
         });">Custom Icons</button>
@@ -1502,16 +1540,20 @@ color: #FF0;
           title: 'No Sticky Button Notice',
           text: 'Check me out! I\'m a sticky notice with no unsticky button. You\'ll have to close me yourself.',
           hide: false,
-          buttons: {
-            sticker: false
+          modules: {
+            Buttons: {
+              sticker: false
+            }
           }
         });">No Sticky Button</button>
         <button class="btn btn-default source" onclick="PNotify.notice({
           title: 'Permanent Buttons Notice',
           text: 'My buttons are really lonely, so they\'re gonna hang out with us.',
-          buttons: {
-            closer_hover: false,
-            sticker_hover: false
+          modules: {
+            Buttons: {
+              closer_hover: false,
+              sticker_hover: false
+            }
           }
         });">Permanent Buttons</button>
         <button class="btn btn-default source" onclick="if (permanotice) {
@@ -1521,12 +1563,14 @@ color: #FF0;
             title: 'Now Look Here',
             text: 'There\'s something you need to know, and I won\'t go away until you come to grips with it.',
             hide: false,
-            buttons: {
-              closer: false,
-              sticker: false
-            },
-            mobile: {
-              swipe_dismiss: false
+            modules: {
+              Buttons: {
+                closer: false,
+                sticker: false
+              },
+              Mobile: {
+                swipe_dismiss: false
+              }
             }
           });
         }">Permanotice</button>
@@ -1539,18 +1583,22 @@ color: #FF0;
         <button class="btn btn-default source" onclick="PNotify.notice({
           title: 'Non-Blocking Notice',
           text: 'I\'m a special kind of notice called &quot;non-blocking&quot;. When you hover over me I\'ll fade to show the elements underneath. Feel free to click any of them just like I wasn\'t even here.\n\nNote: HTML links don\'t trigger in some browsers, due to security settings.',
-          nonblock: {
-            nonblock: true
+          modules: {
+            NonBlock: {
+              nonblock: true
+            }
           }
         });">Non-Blocking</button>
         <button class="btn btn-default source" onclick="PNotify.notice({
           title: 'Non-Blocking Notice',
           text: 'I\'m a non-blocking notice with buttons.',
-          nonblock: {
-            nonblock: true
-          },
-          buttons: {
-            show_on_nonblock: true
+          modules: {
+            NonBlock: {
+              nonblock: true
+            },
+            Buttons: {
+              show_on_nonblock: true
+            }
           }
         });">Non-Blocking with Buttons</button>
       </div>
@@ -1562,15 +1610,19 @@ color: #FF0;
         <button class="btn btn-default source" onclick="PNotify.notice({
           title: 'No Mobile Support Notice',
           text: 'If you\'re on a mobile device, I won\'t respond to your swipes.',
-          mobile: {
-            swipe_dismiss: false
+          modules: {
+            Mobile: {
+              swipe_dismiss: false
+            }
           }
         });">No Mobile Support</button>
         <button class="btn btn-default source" onclick="PNotify.notice({
           title: 'No Mobile Styling Notice',
           text: 'If you\'re on a mobile device, I\'ll look terrible.',
-          mobile: {
-            styling: false
+          modules: {
+            Mobile: {
+              styling: false
+            }
           }
         });">No Mobile Styling</button>
       </div>
@@ -1583,10 +1635,12 @@ color: #FF0;
           PNotify.notice({
             title: 'Animate.css Effect',
             text: 'I use effects from Animate.css. Such smooth CSS3 transitions make me feel like butter.',
-            animate: {
-              animate: true,
-              in_class: 'slideInDown',
-              out_class: 'slideOutUp'
+            modules: {
+              Animate: {
+                animate: true,
+                in_class: 'slideInDown',
+                out_class: 'slideOutUp'
+              }
             }
           });
         ">From the top!</button>
@@ -1594,10 +1648,12 @@ color: #FF0;
           PNotify.notice({
             title: 'Animate.css Effect',
             text: 'I use effects from Animate.css. Such smooth CSS3 transitions make me feel like butter.',
-            animate: {
-              animate: true,
-              in_class: 'zoomInLeft',
-              out_class: 'zoomOutRight'
+            modules: {
+              Animate: {
+                animate: true,
+                in_class: 'zoomInLeft',
+                out_class: 'zoomOutRight'
+              }
             }
           });
         ">Zoom, Zoom</button>
@@ -1605,10 +1661,12 @@ color: #FF0;
           PNotify.notice({
             title: 'Animate.css Effect',
             text: 'I use effects from Animate.css. Such smooth CSS3 transitions make me feel like butter.',
-            animate: {
-              animate: true,
-              in_class: 'rotateInDownLeft',
-              out_class: 'rotateOutUpRight'
+            modules: {
+              Animate: {
+                animate: true,
+                in_class: 'rotateInDownLeft',
+                out_class: 'rotateOutUpRight'
+              }
             }
           });
         ">Shuffling Cards</button>
@@ -1616,10 +1674,12 @@ color: #FF0;
           PNotify.notice({
             title: 'Animate.css Effect',
             text: 'I use effects from Animate.css. Such smooth CSS3 transitions make me feel like butter.',
-            animate: {
-              animate: true,
-              in_class: 'bounceInLeft',
-              out_class: 'bounceOutRight'
+            modules: {
+              Animate: {
+                animate: true,
+                in_class: 'bounceInLeft',
+                out_class: 'bounceOutRight'
+              }
             }
           });
         ">Zippy</button>
@@ -1627,10 +1687,12 @@ color: #FF0;
           PNotify.notice({
             title: 'Animate.css Effect',
             text: 'I use effects from Animate.css. Such smooth CSS3 transitions make me feel like butter.',
-            animate: {
-              animate: true,
-              in_class: 'bounceInDown',
-              out_class: 'hinge'
+            modules: {
+              Animate: {
+                animate: true,
+                in_class: 'bounceInDown',
+                out_class: 'hinge'
+              }
             }
           });
         ">Off the Handle</button>
@@ -1714,10 +1776,12 @@ color: #FF0;
           PNotify.notice({
             title: 'Animate.css Effect',
             text: 'I use effects from Animate.css. Such smooth CSS3 transitions make me feel like butter.',
-            animate: {
-              animate: true,
-              in_class: animate_in,
-              out_class: animate_out
+            modules: {
+              Animate: {
+                animate: true,
+                in_class: animate_in,
+                out_class: animate_out
+              }
             }
           });
         ">Notify!</button>
@@ -1832,15 +1896,17 @@ color: #FF0;
           text: 'Are you sure?',
           icon: 'glyphicon glyphicon-question-sign',
           hide: false,
-          confirm: {
-            confirm: true
-          },
-          buttons: {
-            closer: false,
-            sticker: false
-          },
-          history: {
-            history: false
+          modules: {
+            Confirm: {
+              confirm: true
+            },
+            Buttons: {
+              closer: false,
+              sticker: false
+            },
+            History: {
+              history: false
+            }
           }
         });
         notice.on('pnotify.confirm', function(){
@@ -1854,18 +1920,20 @@ color: #FF0;
           text: 'Are you sure?',
           icon: 'glyphicon glyphicon-question-sign',
           hide: false,
-          confirm: {
-            confirm: true
-          },
-          buttons: {
-            closer: false,
-            sticker: false
-          },
-          history: {
-            history: false
-          },
           addclass: 'stack-modal',
-          stack: {'dir1': 'down', 'dir2': 'right', 'modal': true}
+          stack: {'dir1': 'down', 'dir2': 'right', 'modal': true},
+          modules: {
+            Confirm: {
+              confirm: true
+            },
+            Buttons: {
+              closer: false,
+              sticker: false
+            },
+            History: {
+              history: false
+            },
+          }
         });
         notice.on('pnotify.confirm', function(){
           alert('Ok, cool.');
@@ -1878,63 +1946,71 @@ color: #FF0;
           text: 'You have three options to choose from.',
           icon: 'glyphicon glyphicon-question-sign',
           hide: false,
-          confirm: {
-            confirm: true,
-            buttons: [
-              {
-                text: 'Fries',
-                addClass: 'btn-primary',
-                click: function(notice){
-                  notice.update({
-                    title: 'You\'ve Chosen a Side', text: 'You want fries.', icon: true, type: 'info', hide: true,
-                    confirm: {
-                      confirm: false
-                    },
-                    buttons: {
-                      closer: true,
-                      sticker: true
-                    }
-                  });
+          modules: {
+            Confirm: {
+              confirm: true,
+              buttons: [
+                {
+                  text: 'Fries',
+                  addClass: 'btn-primary',
+                  click: function(notice){
+                    notice.update({
+                      title: 'You\'ve Chosen a Side', text: 'You want fries.', icon: true, type: 'info', hide: true,
+                      modules: {
+                        Confirm: {
+                          confirm: false
+                        },
+                        Buttons: {
+                          closer: true,
+                          sticker: true
+                        }
+                      }
+                    });
+                  }
+                },
+                {
+                  text: 'Mash',
+                  click: function(notice){
+                    notice.update({
+                      title: 'You\'ve Chosen a Side', text: 'You want mashed potatoes.', icon: true, type: 'info', hide: true,
+                      modules: {
+                        Confirm: {
+                          confirm: false
+                        },
+                        Buttons: {
+                          closer: true,
+                          sticker: true
+                        }
+                      }
+                    });
+                  }
+                },
+                {
+                  text: 'Fruit',
+                  click: function(notice){
+                    notice.update({
+                      title: 'You\'ve Chosen a Side', text: 'You want fruit.', icon: true, type: 'info', hide: true,
+                      modules: {
+                        Confirm: {
+                          confirm: false
+                        },
+                        Buttons: {
+                          closer: true,
+                          sticker: true
+                        }
+                      }
+                    });
+                  }
                 }
-              },
-              {
-                text: 'Mash',
-                click: function(notice){
-                  notice.update({
-                    title: 'You\'ve Chosen a Side', text: 'You want mashed potatoes.', icon: true, type: 'info', hide: true,
-                    confirm: {
-                      confirm: false
-                    },
-                    buttons: {
-                      closer: true,
-                      sticker: true
-                    }
-                  });
-                }
-              },
-              {
-                text: 'Fruit',
-                click: function(notice){
-                  notice.update({
-                    title: 'You\'ve Chosen a Side', text: 'You want fruit.', icon: true, type: 'info', hide: true,
-                    confirm: {
-                      confirm: false
-                    },
-                    buttons: {
-                      closer: true,
-                      sticker: true
-                    }
-                  });
-                }
-              }
-            ]
-          },
-          buttons: {
-            closer: false,
-            sticker: false
-          },
-          history: {
-            history: false
+              ]
+            },
+            Buttons: {
+              closer: false,
+              sticker: false
+            },
+            History: {
+              history: false
+            }
           }
         });">Custom Buttons</button>
         <button class="btn btn-default source" onclick="PNotify.notice({
@@ -1942,25 +2018,27 @@ color: #FF0;
           text: 'You have no choice.',
           icon: 'glyphicon glyphicon-info-sign',
           hide: false,
-          confirm: {
-            confirm: true,
-            buttons: [
-              {
-                text: 'Ok',
-                addClass: 'btn-primary',
-                click: function(notice){
-                  notice.close();
-                }
-              },
-              null
-            ]
-          },
-          buttons: {
-            closer: false,
-            sticker: false
-          },
-          history: {
-            history: false
+          modules: {
+            Confirm: {
+              confirm: true,
+              buttons: [
+                {
+                  text: 'Ok',
+                  addClass: 'btn-primary',
+                  click: function(notice){
+                    notice.close();
+                  }
+                },
+                null
+              ]
+            },
+            Buttons: {
+              closer: false,
+              sticker: false
+            },
+            History: {
+              history: false
+            }
           }
         });">Alert Style Button</button>
         <button class="btn btn-default source" onclick="var notice = PNotify.notice({
@@ -1968,38 +2046,44 @@ color: #FF0;
           text: 'What side would you like?',
           icon: 'glyphicon glyphicon-question-sign',
           hide: false,
-          confirm: {
-            prompt: true
-          },
-          buttons: {
-            closer: false,
-            sticker: false
-          },
-          history: {
-            history: false
+          modules: {
+            Confirm: {
+              prompt: true
+            },
+            Buttons: {
+              closer: false,
+              sticker: false
+            },
+            History: {
+              history: false
+            }
           }
         });
         notice.on('pnotify.confirm', function(e, val){
           notice.cancelRemove().update({
             title: 'You\'ve Chosen a Side', text: 'You want '+$('<div/>').text(val).html()+'.', icon: true, type: 'info', hide: true,
-            confirm: {
-              prompt: false
-            },
-            buttons: {
-              closer: true,
-              sticker: true
+            modules: {
+              Confirm: {
+                prompt: false
+              },
+              Buttons: {
+                closer: true,
+                sticker: true
+              }
             }
           });
         });
         notice.on('pnotify.cancel', function(e){
           notice.cancelRemove().update({
             title: 'You Don\'t Want a Side', text: 'No soup for you!', icon: true, type: 'info', hide: true,
-            confirm: {
-              prompt: false
-            },
-            buttons: {
-              closer: true,
-              sticker: true
+            modules: {
+              Confirm: {
+                prompt: false
+              },
+              Buttons: {
+                closer: true,
+                sticker: true
+              }
             }
           });
         });">Prompt Dialog</button>
@@ -2008,40 +2092,46 @@ color: #FF0;
           text: 'Write me a poem, please.',
           icon: 'glyphicon glyphicon-question-sign',
           hide: false,
-          confirm: {
-            prompt: true,
-            prompt_multi_line: true,
-            prompt_default: 'Roses are red,\nViolets are blue,\n'
-          },
-          buttons: {
-            closer: false,
-            sticker: false
-          },
-          history: {
-            history: false
+          modules: {
+            Confirm: {
+              prompt: true,
+              prompt_multi_line: true,
+              prompt_default: 'Roses are red,\nViolets are blue,\n'
+            },
+            Buttons: {
+              closer: false,
+              sticker: false
+            },
+            History: {
+              history: false
+            }
           }
         });
         notice.on('pnotify.confirm', function(e, val){
           notice.cancelRemove().update({
             title: 'Your Poem', text: $('<div/>').text(val).html(), icon: true, type: 'info', hide: true,
-            confirm: {
-              prompt: false
-            },
-            buttons: {
-              closer: true,
-              sticker: true
+            modules: {
+              Confirm: {
+                prompt: false
+              },
+              Buttons: {
+                closer: true,
+                sticker: true
+              }
             }
           });
         });
         notice.on('pnotify.cancel', function(e){
           notice.cancelRemove().update({
             title: 'You Don\'t Like Poetry', text: 'Roses are dead,\nViolets are dead,\nI suck at gardening.', icon: true, type: 'info', hide: true,
-            confirm: {
-              prompt: false
-            },
-            buttons: {
-              closer: true,
-              sticker: true
+            modules: {
+              Confirm: {
+                prompt: false
+              },
+              Buttons: {
+                closer: true,
+                sticker: true
+              }
             }
           });
         });">Multi Line Prompt Dialog</button>
@@ -2124,15 +2214,19 @@ color: #FF0;
         <button class="btn btn-default source" onclick="PNotify.notice({
           title: 'Pull Down Menu Notice',
           text: 'I\'ll create a menu in the upper right corner that provides history functions.',
-          history: {
-            menu: true
+          modules: {
+            History: {
+              menu: true
+            }
           }
         });">Pull Down Menu</button>
         <button class="btn btn-default source" onclick="PNotify.notice({
           title: 'No History Notice',
           text: 'I\'m not part of the notice history, so if you redisplay the last message, it won\'t be me.',
-          history: {
-            history: false
+          modules: {
+            History: {
+              history: false
+            }
           }
         });">No History Notice</button>
       </div>
@@ -2143,8 +2237,10 @@ color: #FF0;
         <button class="btn btn-default source" onclick="PNotify.info({
           title: 'Reference Module',
           text: 'The reference module is a basic module that demonstrates how to write a PNotify module by implementing many of its features. You can find it in pnotify.reference.js.',
-          reference: {
-            put_thing: true
+          modules: {
+            Reference: {
+              put_thing: true
+            }
           }
         });">Reference Module Notice</button>
       </div>

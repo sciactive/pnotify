@@ -1,0 +1,128 @@
+{{#if _show_closer}}
+  <div
+      class="ui-pnotify-closer {{(!closer_hover || _mouseIsIn) ? '' : 'ui-pnotify-hidden'}}"
+      role="button"
+      tabindex="0"
+      title="{{labels.closer}}"
+      on:click="handleCloserClick()">
+    <span class="{{_closer_class}}"></span>
+  </div>
+{{/if}}
+{{#if _show_sticker}}
+  <div
+      class="ui-pnotify-sticker {{(!sticker_hover || _mouseIsIn) ? '' : 'ui-pnotify-hidden'}}"
+      role="button"
+      aria-pressed="{{_options.hide}}"
+      tabindex="0"
+      title="{{_options.hide ? labels.stick : labels.unstick}}"
+      on:click="handleStickerClick()">
+    <span class="{{_options.hide ? _pin_up_class : _pin_down_class}}"></span>
+  </div>
+{{/if}}
+
+<script>
+  import PNotify from "./PNotify.html";
+
+  export default {
+    setup: (Component) => {
+      Component.key = "Buttons";
+
+      Component.defaults = {
+        // Provide a button for the user to manually close the notice.
+        closer: true,
+        // Only show the closer button on hover.
+        closer_hover: true,
+        // Provide a button for the user to manually stick the notice.
+        sticker: true,
+        // Only show the sticker button on hover.
+        sticker_hover: true,
+        // Show the buttons even when the nonblock module is in use.
+        show_on_nonblock: false,
+        // The various displayed text, helps facilitating internationalization.
+        labels: {
+          close: "Close",
+          stick: "Stick",
+          unstick: "Unstick"
+        },
+        // The classes to use for button icons. Leave them null to use the classes from the styling you're using.
+        classes: {
+          closer: null,
+          pin_up: null,
+          pin_down: null
+        }
+      };
+
+      // Register the module with PNotify.
+      PNotify.modules.Buttons = Component;
+      // Prepend this module to the container.
+      PNotify.modulesPrependContainer.push(Component);
+
+      // Add button icons to styling objects.
+      Object.assign(PNotify.styling.brighttheme, {
+        closer: "brighttheme-icon-closer",
+        pin_up: "brighttheme-icon-sticker",
+        pin_down: "brighttheme-icon-sticker brighttheme-icon-stuck"
+      });
+      Object.assign(PNotify.styling.bootstrap3, {
+        closer: "glyphicon glyphicon-remove",
+        pin_up: "glyphicon glyphicon-pause",
+        pin_down: "glyphicon glyphicon-play"
+      });
+      Object.assign(PNotify.styling.fontawesome, {
+        closer: "fa fa-times",
+        pin_up: "fa fa-pause",
+        pin_down: "fa fa-play"
+      });
+    },
+
+    oncreate () {
+      this.on("initModule", (options) => {
+        this.set(options);
+        this.get("_notice").on("mouseenter", () => this.set({"_mouseIsIn": true}));
+        this.get("_notice").on("mouseleave", () => this.set({"_mouseIsIn": false}));
+      });
+      this.fire("init", {module: this});
+    },
+
+    data () {
+      return Object.assign({
+        "_notice": null, // The PNotify notice.
+        "_options": {}, // The options for the notice.
+        "_mouseIsIn": false,
+      }, PNotify.modules.Buttons.defaults);
+    },
+
+    computed: {
+      // Whether to show the sticker icon.
+      _show_sticker: (sticker, show_on_nonblock, _options) => sticker && (!(_options.modules && _options.modules.NonBlock && _options.modules.NonBlock.nonblock) || show_on_nonblock),
+      // Whether to show the closer icon.
+      _show_closer: (closer, show_on_nonblock, _options) => closer && (!(_options.modules && _options.modules.NonBlock && _options.modules.NonBlock.nonblock) || show_on_nonblock),
+      _pin_up_class: (classes, _notice) => _notice ? (classes.pin_up === null ? _notice.get("_styles").pin_up : classes.pin_up) : '',
+      _pin_down_class: (classes, _notice) => _notice ? (classes.pin_down === null ? _notice.get("_styles").pin_down : classes.pin_down) : '',
+      _closer_class: (classes, _notice) => _notice ? (classes.closer === null ? _notice.get("_styles").closer : classes.closer) : '',
+    },
+
+    methods: {
+      handleStickerClick() {
+        const _notice = this.get("_notice");
+        _notice.update({hide: !_notice.get("hide")});
+      },
+
+      handleCloserClick() {
+        this.get("_notice").remove(false);
+        this.set({"_mouseIsIn": false});
+      }
+    }
+  }
+</script>
+
+<style>
+  .ui-pnotify-closer, .ui-pnotify-sticker {
+    float: right;
+    margin-left: .5em;
+    cursor: pointer;
+  }
+  .ui-pnotify-hidden {
+    visibility: hidden;
+  }
+</style>
