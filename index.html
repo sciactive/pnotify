@@ -45,8 +45,8 @@
   <script type="text/javascript" src="lib/iife/PNotify.js"></script>
   <link href="src/PNotifyBrightTheme.css" rel="stylesheet" type="text/css" />
   <script type="text/javascript" src="lib/iife/PNotifyButtons.js"></script>
-  <!--
   <script type="text/javascript" src="lib/iife/PNotifyAnimate.js"></script>
+  <!--
   <script type="text/javascript" src="lib/iife/PNotifyConfirm.js"></script>
   <script type="text/javascript" src="lib/iife/PNotifyNonBlock.js"></script>
   <script type="text/javascript" src="lib/iife/PNotifyMobile.js"></script>
@@ -897,8 +897,8 @@
           <p>
             This is the development site. It's a playground for
             bleeding edge features and code that probably won't
-            work. The newer features listed in the download dialog
-            won't work.
+            work. Most of the modules haven't been migrated to
+            v4 yet.
           </p>
         </div>
       </div>
@@ -1787,102 +1787,84 @@ color: #FF0;
         <br /><br />
         Attention seekers:<br />
         <button class="btn btn-default source" onclick="
-          PNotify.notice({
+          var notice = PNotify.notice({
             title: 'Attention Seeker',
-            text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-default pull-right\'&gt;Bounce!&lt;/button&gt;',
-            after_init: function(notice){
-              notice.elem.on('click', 'button', function(){
-                notice.attention('bounce');
-              });
-            }
+            text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-default pull-right\'&gt;Bounce!&lt;/button&gt;'
+          });
+          $(notice.refs.elem).on('click', 'button', function(){
+            notice.attention('bounce');
           });
         ">Bounce</button>
         <button class="btn btn-default source" onclick="
-          PNotify.notice({
+          var notice = PNotify.notice({
             title: 'Attention Seeker',
-            text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-default pull-right\'&gt;Flash!&lt;/button&gt;',
-            after_init: function(notice){
-              notice.elem.on('click', 'button', function(){
-                notice.attention('flash');
-              });
-            }
+            text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-default pull-right\'&gt;Flash!&lt;/button&gt;'
+          });
+          $(notice.refs.elem).on('click', 'button', function(){
+            notice.attention('flash');
           });
         ">Flash</button>
         <button class="btn btn-default source" onclick="
-          PNotify.notice({
+          var notice = PNotify.notice({
             title: 'Attention Seeker',
-            text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-default pull-right\'&gt;Pulse!&lt;/button&gt;',
-            after_init: function(notice){
-              notice.elem.on('click', 'button', function(){
-                notice.attention('pulse');
-              });
-            }
+            text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-default pull-right\'&gt;Pulse!&lt;/button&gt;'
+          });
+          $(notice.refs.elem).on('click', 'button', function(){
+            notice.attention('pulse');
           });
         ">Pulse</button>
         <button class="btn btn-default source" onclick="
-          PNotify.notice({
+          var notice = PNotify.notice({
             title: 'Attention Seeker',
-            text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-default pull-right\'&gt;Rubber Band!&lt;/button&gt;',
-            after_init: function(notice){
-              notice.elem.on('click', 'button', function(){
-                notice.attention('rubberBand');
-              });
-            }
+            text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-default pull-right\'&gt;Rubber Band!&lt;/button&gt;'
+          });
+          $(notice.refs.elem).on('click', 'button', function(){
+            notice.attention('rubberBand');
           });
         ">Rubber Band</button>
         <button class="btn btn-default source" onclick="
-          PNotify.notice({
+          var notice = PNotify.notice({
             title: 'Attention Seeker',
-            text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-default pull-right\'&gt;Shake!&lt;/button&gt;',
-            after_init: function(notice){
-              notice.elem.on('click', 'button', function(){
-                notice.attention('shake');
-              });
-            }
+            text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-default pull-right\'&gt;Shake!&lt;/button&gt;'
+          });
+          $(notice.refs.elem).on('click', 'button', function(){
+            notice.attention('shake');
           });
         ">Shake</button>
         <button class="btn btn-default source" onclick="
-          PNotify.notice({
+          var notice = PNotify.notice({
             title: 'Attention Seeker',
-            text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-default pull-right\'&gt;Swing!&lt;/button&gt;',
-            after_init: function(notice){
-              notice.elem.on('click', 'button', function(){
-                notice.attention('swing');
-              });
-            }
+            text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-default pull-right\'&gt;Swing!&lt;/button&gt;'
+          });
+          $(notice.refs.elem).on('click', 'button', function(){
+            notice.attention('swing');
           });
         ">Swing</button>
         <button class="btn btn-default source" onclick="
-          PNotify.notice({
+          var notice = PNotify.notice({
             title: 'Attention Seeker',
-            text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-default pull-right\'&gt;Tada!&lt;/button&gt;',
-            after_init: function(notice){
-              notice.elem.on('click', 'button', function(){
-                notice.attention('tada');
-              });
-            }
+            text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-default pull-right\'&gt;Tada!&lt;/button&gt;'
+          });
+          $(notice.refs.elem).on('click', 'button', function(){
+            notice.attention('tada');
           });
         ">Tada</button>
         <button class="btn btn-default source" onclick="
-          PNotify.notice({
+          var notice = PNotify.notice({
             title: 'Attention Seeker',
-            text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-default pull-right\'&gt;Wobble!&lt;/button&gt;',
-            after_init: function(notice){
-              notice.elem.on('click', 'button', function(){
-                notice.attention('wobble');
-              });
-            }
+            text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-default pull-right\'&gt;Wobble!&lt;/button&gt;'
+          });
+          $(notice.refs.elem).on('click', 'button', function(){
+            notice.attention('wobble');
           });
         ">Wobble</button>
         <button class="btn btn-default source" onclick="
-          PNotify.notice({
+          var notice = PNotify.notice({
             title: 'Attention Seeker',
-            text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-default pull-right\'&gt;Jello!&lt;/button&gt;',
-            after_init: function(notice){
-              notice.elem.on('click', 'button', function(){
-                notice.attention('jello');
-              });
-            }
+            text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-default pull-right\'&gt;Jello!&lt;/button&gt;'
+          });
+          $(notice.refs.elem).on('click', 'button', function(){
+            notice.attention('jello');
           });
         ">Jello</button>
       </div>

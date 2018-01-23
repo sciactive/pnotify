@@ -16,7 +16,7 @@ I guarantee **none of this README applies to you!** You want to check out the **
 
 This README is for **PNotify v4**. v4 isn't out yet, but it's got some huge changes. First of all, *jQuery is no longer required*. v4 doesn't require any libraries, actually. It's built using [Svelte](http://svelte.technology), which means it compiles down to vanilla JS.
 
-But v4 isn't even in the alpha stage yet. The only thing that works is PNotify Core and the Buttons module. *None* of the other modules work.
+But v4 isn't even in the alpha stage yet. The only thing that works is PNotify Core and the Buttons and Animate modules. *None* of the other modules work.
 
 # Getting Started
 

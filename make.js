@@ -6,7 +6,7 @@ require('shelljs/make');
 
 let pnotify_src = {
   'core': 'PNotify.html',
-  // 'animate': 'PNotifyAnimate.?',
+  'animate': 'PNotifyAnimate.html',
   'buttons': 'PNotifyButtons.html',
   // 'callbacks': 'PNotifyCallbacks.?',
   // 'confirm': 'PNotifyConfirm.?',
@@ -18,7 +18,7 @@ let pnotify_src = {
 
 let pnotify_js = {
   'core': 'PNotify.js',
-  // 'animate': 'PNotifyAnimate.js',
+  'animate': 'PNotifyAnimate.js',
   'buttons': 'PNotifyButtons.js',
   // 'callbacks': 'PNotifyCallbacks.js',
   // 'confirm': 'PNotifyConfirm.js',

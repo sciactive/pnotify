@@ -384,7 +384,7 @@
           // function, which means it's not rendered in the template.
           for (let key in PNotify.modules) {
             if (typeof PNotify.modules[key].init === 'function') {
-              const module = PNotify.modules[key].init();
+              const module = PNotify.modules[key].init(this);
               this.initModule(module);
             }
           }
