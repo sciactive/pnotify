@@ -162,15 +162,15 @@
     }
     [ui-pnotify].ui-pnotify.stack-custom {
       /* Custom values have to be in pixels, because the code parses them. */
-      top: 200px;
-      left: 200px;
+      top: 100px;
+      left: 100px;
       right: auto;
     }
     [ui-pnotify].ui-pnotify.stack-custom2 {
       top: auto;
       left: auto;
-      bottom: 200px;
-      right: 200px;
+      bottom: 100px;
+      right: 100px;
     }
     /* This one is totally different. It stacks at the top and looks
       like a Microsoft-esque browser notice bar. */
@@ -420,45 +420,10 @@
       }, 2000);
     }
 
-    /*********** Custom Stacks ***********
-    * A stack is an object which PNotify uses to determine where
-    * to position notices. A stack has two mandatory variables, dir1
-    * and dir2. dir1 is the first direction in which the notices are
-    * stacked. When the notices run out of room in the window, they
-    * will move over in the direction specified by dir2. The directions
-    * can be "up", "down", "right", or "left". Stacks are independent
-    * of each other, so a stack doesn't know and doesn't care if it
-    * overlaps (and blocks) another stack. The default stack, which can
-    * be changed like any other default, goes down, then left. Stack
-    * objects are used and manipulated by PNotify, and therefore,
-    * should be a variable when passed. So, calling something like
-    *
-    * PNotify.notice({stack: {"dir1": "down", "dir2": "left"}});
-    *
-    * will **NOT** work. It will create a notice, but that notice will
-    * be in its own stack and may overlap other notices.
-    */
-    var stack_topleft = {"dir1": "down", "dir2": "right", "push": "top"};
-    var stack_bottomleft = {"dir1": "right", "dir2": "up", "push": "top"};
-    var stack_custom = {"dir1": "right", "dir2": "down"};
-    var stack_custom2 = {"dir1": "left", "dir2": "up", "push": "top"};
-    var stack_modal = {"dir1": "down", "dir2": "right", "push": "top", "modal": true, "overlay_close": true};
-    var stack_bar_top = {"dir1": "down", "dir2": "right", "push": "top", "spacing1": 0, "spacing2": 0, "firstpos1": 0, "firstpos2": 0};
-    var stack_bar_bottom = {"dir1": "up", "dir2": "right", "spacing1": 0, "spacing2": 0, "firstpos1": 0, "firstpos2": 0};
-    /*********** Positioned Stack ***********
-    * This stack is initially positioned through code instead of CSS.
-    * This is done through two extra variables. firstpos1 and firstpos2
-    * are pixel values, relative to a viewport edge. dir1 and dir2,
-    * respectively, determine which edge. It is calculated as follows:
-    *
-    * - dir = "up" - firstpos is relative to the bottom of viewport.
-    * - dir = "down" - firstpos is relative to the top of viewport.
-    * - dir = "right" - firstpos is relative to the left of viewport.
-    * - dir = "left" - firstpos is relative to the right of viewport.
-    */
-    var stack_bottomright = {"dir1": "up", "dir2": "left", "firstpos1": 25, "firstpos2": 25};
-
     function show_stack_topleft(type) {
+      if (typeof stack_topleft === "undefined") {
+        stack_topleft = {"dir1": "down", "dir2": "right", "push": "top"};
+      }
       var opts = {
         title: "Over Here",
         text: "Check me out. I'm in a different stack.",
@@ -484,7 +449,11 @@
       }
       PNotify.alert(opts);
     };
+
     function show_stack_bottomleft(type) {
+      if (typeof stack_bottomleft === "undefined") {
+        stack_bottomleft = {"dir1": "right", "dir2": "up", "push": "top"};
+      }
       var opts = {
         title: "Over Here",
         text: "Check me out. I'm in a different stack.",
@@ -510,7 +479,11 @@
       }
       PNotify.alert(opts);
     };
+
     function show_stack_bottomright(type) {
+      if (typeof stack_bottomright === "undefined") {
+        stack_bottomright = {"dir1": "up", "dir2": "left", "firstpos1": 25, "firstpos2": 25};
+      }
       var opts = {
         title: "Over Here",
         text: "Check me out. I'm in a different stack.",
@@ -536,7 +509,40 @@
       }
       PNotify.alert(opts);
     };
+
+    function show_stack_topcenter(type) {
+      if (typeof stack_topcenter === "undefined") {
+        stack_topcenter = {"dir1": "down"};
+      }
+      var opts = {
+        title: "Over Here",
+        text: "Check me out. I'm in a different stack.",
+        stack: stack_topcenter
+      };
+      switch (type) {
+        case 'error':
+          opts.title = "Oh No";
+          opts.text = "Watch out for that water tower!";
+          opts.type = "error";
+          break;
+        case 'info':
+          opts.title = "Breaking News";
+          opts.text = "Have you met Ted?";
+          opts.type = "info";
+          break;
+        case 'success':
+          opts.title = "Good News Everyone";
+          opts.text = "I've invented a device that bites shiny metal asses.";
+          opts.type = "success";
+          break;
+      }
+      PNotify.alert(opts);
+    };
+
     function show_stack_custom(type) {
+      if (typeof stack_custom === "undefined") {
+        stack_custom = {"dir1": "right", "dir2": "down"};
+      }
       var opts = {
         title: "Over Here",
         text: "Check me out. I'm in a different stack.",
@@ -562,7 +568,11 @@
       }
       PNotify.alert(opts);
     };
+
     function show_stack_custom2(type) {
+      if (typeof stack_custom2 === "undefined") {
+        stack_custom2 = {"dir1": "left", "dir2": "up", "push": "top"};
+      }
       var opts = {
         title: "Over Here",
         text: "Check me out. I'm in a different stack.",
@@ -588,11 +598,14 @@
       }
       PNotify.alert(opts);
     };
+
     function show_stack_modal(type) {
+      if (typeof stack_modal === "undefined") {
+        stack_modal = {"dir1": "down", "push": "top", "modal": true, "overlay_close": true};
+      }
       var opts = {
         title: "Over Here",
         text: "Check me out. I'm in a different stack.",
-        addclass: "stack-modal",
         stack: stack_modal
       };
       switch (type) {
@@ -614,7 +627,41 @@
       }
       PNotify.alert(opts);
     };
+
+    function show_stack_modal_left(type) {
+      if (typeof stack_modal_left === "undefined") {
+        stack_modal_left = {"dir1": "down", "dir2": "right", "push": "top", "modal": true, "overlay_close": true};
+      }
+      var opts = {
+        title: "Over Here",
+        text: "Check me out. I'm in a different stack.",
+        addclass: "stack-topleft",
+        stack: stack_modal_left
+      };
+      switch (type) {
+        case 'error':
+          opts.title = "Oh No";
+          opts.text = "Watch out for that water tower!";
+          opts.type = "error";
+          break;
+        case 'info':
+          opts.title = "Breaking News";
+          opts.text = "Have you met Ted?";
+          opts.type = "info";
+          break;
+        case 'success':
+          opts.title = "Good News Everyone";
+          opts.text = "I've invented a device that bites shiny metal asses.";
+          opts.type = "success";
+          break;
+      }
+      PNotify.alert(opts);
+    };
+
     function show_stack_bar_top(type) {
+      if (typeof stack_bar_top === "undefined") {
+        stack_bar_top = {"dir1": "down", "push": "top", "spacing1": 0, "spacing2": 0, "firstpos1": 0, "firstpos2": 0};
+      }
       var opts = {
         title: "Over Here",
         text: "Check me out. I'm in a different stack.",
@@ -643,7 +690,11 @@
       }
       PNotify.alert(opts);
     };
+
     function show_stack_bar_bottom(type) {
+      if (typeof stack_bar_bottom === "undefined") {
+        stack_bar_bottom = {"dir1": "up", "spacing1": 0, "spacing2": 0, "firstpos1": 0, "firstpos2": 0};
+      }
       var opts = {
         title: "Over Here",
         text: "Check me out. I'm in a different stack.",
@@ -672,18 +723,18 @@
       }
       PNotify.alert(opts);
     };
+
     function show_stack_context(type, modal) {
       if (typeof stack_context === "undefined") {
-        stack_context = {"dir1": "down", "dir2": "left", "context": $("#stack-context")};
+        stack_context = {"dir1": "down", "dir2": "left", "context": document.getElementById("stack-context")};
       }
       if (typeof stack_context_modal === "undefined") {
-        stack_context_modal = {"dir1": "down", "dir2": "left", "context": $("#stack-context"), "modal": true, "overlay_close": true};
+        stack_context_modal = {"dir1": "down", "context": document.getElementById("stack-context"), "modal": true, "overlay_close": true};
       }
       var opts = {
         title: "Over Here",
         text: "Check me out. I'm in a different stack.",
-        stack: modal ? stack_context_modal : stack_context,
-        addclass: modal ? "stack-modal" : ""
+        stack: modal ? stack_context_modal : stack_context
       };
       switch (type) {
         case 'error':
@@ -710,7 +761,6 @@
         text: "Stacks are used to position notices and determine where new notices will go when they're created. Each notice that's placed into a stack will be positioned related to the other notices in that stack.",
         icon: "fa fa-bars",
         hide: false,
-        addclass: "stack-modal",
         stack: {"dir1": "down", "dir2": "right", "modal": true, "overlay_close": true},
         modules: {
           History: {
@@ -1906,7 +1956,6 @@ color: #FF0;
           text: 'Are you sure?',
           icon: 'glyphicon glyphicon-question-sign',
           hide: false,
-          addclass: 'stack-modal',
           stack: {'dir1': 'down', 'dir2': 'right', 'modal': true},
           modules: {
             Confirm: {
@@ -2262,6 +2311,12 @@ color: #FF0;
         <button class="btn btn-default source" onclick="show_stack_bottomright('error');">Error</button>
         Bottom Right. Moves up, then left. Pushes to stack bottom.
         <hr />
+        <button class="btn btn-default source" onclick="show_stack_topcenter('notice');">Notice</button>
+        <button class="btn btn-default source" onclick="show_stack_topcenter('info');">Info</button>
+        <button class="btn btn-default source" onclick="show_stack_topcenter('success');">Success</button>
+        <button class="btn btn-default source" onclick="show_stack_topcenter('error');">Error</button>
+        Top Center. Moves down. Pushes to stack bottom.
+        <hr />
         <button class="btn btn-default source" onclick="show_stack_custom('notice');">Notice</button>
         <button class="btn btn-default source" onclick="show_stack_custom('info');">Info</button>
         <button class="btn btn-default source" onclick="show_stack_custom('success');">Success</button>
@@ -2282,6 +2337,12 @@ color: #FF0;
         <button class="btn btn-default source" onclick="show_stack_modal('info');">Info</button>
         <button class="btn btn-default source" onclick="show_stack_modal('success');">Success</button>
         <button class="btn btn-default source" onclick="show_stack_modal('error');">Error</button>
+        Modal stack, centered. Moves down. Pushes to stack top.
+        <hr />
+        <button class="btn btn-default source" onclick="show_stack_modal_left('notice');">Notice</button>
+        <button class="btn btn-default source" onclick="show_stack_modal_left('info');">Info</button>
+        <button class="btn btn-default source" onclick="show_stack_modal_left('success');">Success</button>
+        <button class="btn btn-default source" onclick="show_stack_modal_left('error');">Error</button>
         Modal stack. Moves down, then right. Pushes to stack top.
         <hr />
         <button class="btn btn-default source" onclick="show_stack_bar_top('notice');">Notice</button>

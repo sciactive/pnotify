@@ -80,6 +80,10 @@
     const overlay = document.createElement("div");
     overlay.classList.add("ui-pnotify-modal-overlay");
     stack.context.insertBefore(overlay, stack.context.firstChild);
+    if (stack.context !== document.body) {
+      overlay.style.height = stack.context.scrollHeight+"px";
+      overlay.style.width = stack.context.scrollWidth+"px";
+    }
     // Close the notices on overlay click.
     overlay.addEventListener('click', () => {
       if (stack.overlay_close) {
@@ -452,8 +456,15 @@
         this.runModules('beforeOpen');
 
         let stack = this.get("stack");
-        // If the notice is not in the DOM, append it.
-        if (!this.refs.elem.parentNode) {
+        // If the notice is not in the DOM, or in the wrong context, append it.
+        if (
+            !this.refs.elem.parentNode
+            || (
+              stack
+              && stack.context
+              && stack.context !== this.refs.elem.parentNode
+            )
+          ) {
           if (stack && stack.context) {
             stack.context.appendChild(this.refs.elem);
           } else if (document.body) {
@@ -672,25 +683,27 @@
             // Add animate class.
             this.set({"_moveClass": "ui-pnotify-move"});
           }
-          let curpos1, curpos2;
+
+          let csspos1 = {
+            "down": "top",
+            "up": "bottom",
+            "left": "right",
+            "right": "left"
+          }[stack.dir1];
 
           // Calculate the current pos1 value.
-          let csspos1;
+          let curpos1;
           switch (stack.dir1) {
             case "down":
-              csspos1 = "top";
               curpos1 = elem.offsetTop;
               break;
             case "up":
-              csspos1 = "bottom";
               curpos1 = (stack.context === document.body ? window.innerHeight : stack.context.scrollHeight) - elem.scrollHeight - elem.offsetTop;
               break;
             case "left":
-              csspos1 = "right";
               curpos1 = (stack.context === document.body ? window.innerWidth : stack.context.scrollWidth) - elem.scrollWidth - elem.offsetLeft;
               break;
             case "right":
-              csspos1 = "left";
               curpos1 = elem.offsetLeft;
               break;
           }
@@ -700,69 +713,94 @@
             stack.nextpos1 = stack.firstpos1;
           }
 
-          // Calculate the current pos2 value.
-          let csspos2;
-          switch (stack.dir2) {
-            case "down":
-              csspos2 = "top";
-              curpos2 = elem.offsetTop;
-              break;
-            case "up":
-              csspos2 = "bottom";
-              curpos2 = (stack.context === document.body ? window.innerHeight : stack.context.scrollHeight) - elem.scrollHeight - elem.offsetTop;
-              break;
-            case "left":
-              csspos2 = "right";
-              curpos2 = (stack.context === document.body ? window.innerWidth : stack.context.scrollWidth) - elem.scrollWidth - elem.offsetLeft;
-              break;
-            case "right":
-              csspos2 = "left";
-              curpos2 = elem.offsetLeft;
-              break;
-          }
-          // Remember the first pos2, so the first notice goes there.
-          if (typeof stack.firstpos2 === "undefined" && (curpos2 !== 0 || !hidden)) {
-            stack.firstpos2 = curpos2;
-            stack.nextpos2 = stack.firstpos2;
-          }
+          if (stack.dir2) {
+            let csspos2 = {
+              "down": "top",
+              "up": "bottom",
+              "left": "right",
+              "right": "left"
+            }[stack.dir2];
 
-          // Check that it's not beyond the viewport edge.
-          const endY = stack.nextpos1 + elem.offsetHeight + (typeof stack.spacing1 === "undefined" ? 25 : stack.spacing1),
-                endX = stack.nextpos1 + elem.offsetWidth + (typeof stack.spacing1 === "undefined" ? 25 : stack.spacing1),
-                spaceY = (stack.context === document.body ? window.innerHeight : stack.context.scrollHeight),
-                spaceX = (stack.context === document.body ? window.innerWidth : stack.context.scrollWidth);
-          if (
-              ((stack.dir1 === "down" || stack.dir1 === "up") && endY > spaceY) ||
-              ((stack.dir1 === "left" || stack.dir1 === "right") && endX > spaceX)
-            ) {
-            // If it is, it needs to go back to the first pos1, and over on pos2.
-            stack.nextpos1 = stack.firstpos1;
-            stack.nextpos2 += stack.addpos2 + (typeof stack.spacing2 === "undefined" ? 25 : stack.spacing2);
-            stack.addpos2 = 0;
-          }
-
-          // Move the notice on dir2.
-          if (typeof stack.nextpos2 === "number") {
-            elem.style[csspos2] = stack.nextpos2+"px";
-            if (!stack.animation) {
-              elem.style[csspos2]; // Read from the DOM for update.
+            // Calculate the current pos2 value.
+            let curpos2;
+            switch (stack.dir2) {
+              case "down":
+                curpos2 = elem.offsetTop;
+                break;
+              case "up":
+                curpos2 = (stack.context === document.body ? window.innerHeight : stack.context.scrollHeight) - elem.scrollHeight - elem.offsetTop;
+                break;
+              case "left":
+                curpos2 = (stack.context === document.body ? window.innerWidth : stack.context.scrollWidth) - elem.scrollWidth - elem.offsetLeft;
+                break;
+              case "right":
+                curpos2 = elem.offsetLeft;
+                break;
             }
-          }
+            // Remember the first pos2, so the first notice goes there.
+            if (typeof stack.firstpos2 === "undefined" && (curpos2 !== 0 || !hidden)) {
+              stack.firstpos2 = curpos2;
+              stack.nextpos2 = stack.firstpos2;
+            }
 
-          // Keep track of the widest/tallest notice in the column/row, so we can push the next column/row.
-          switch (stack.dir2) {
-            case "down":
-            case "up":
-              if (elem.offsetHeight + (parseFloat(elem.style.marginTop, 10) || 0) + (parseFloat(elem.style.marginBottom, 10) || 0) > stack.addpos2) {
-                stack.addpos2 = elem.offsetHeight;
+            // Check that it's not beyond the viewport edge.
+            const endY = stack.nextpos1 + elem.offsetHeight + (typeof stack.spacing1 === "undefined" ? 25 : stack.spacing1),
+                  endX = stack.nextpos1 + elem.offsetWidth + (typeof stack.spacing1 === "undefined" ? 25 : stack.spacing1),
+                  spaceY = (stack.context === document.body ? window.innerHeight : stack.context.scrollHeight),
+                  spaceX = (stack.context === document.body ? window.innerWidth : stack.context.scrollWidth);
+            if (
+                ((stack.dir1 === "down" || stack.dir1 === "up") && endY > spaceY)
+                || ((stack.dir1 === "left" || stack.dir1 === "right") && endX > spaceX)
+              ) {
+              // If it is, it needs to go back to the first pos1, and over on pos2.
+              stack.nextpos1 = stack.firstpos1;
+              stack.nextpos2 += stack.addpos2 + (typeof stack.spacing2 === "undefined" ? 25 : stack.spacing2);
+              stack.addpos2 = 0;
+            }
+
+            // Move the notice on dir2.
+            if (typeof stack.nextpos2 === "number") {
+              elem.style[csspos2] = stack.nextpos2+"px";
+              if (!stack.animation) {
+                elem.style[csspos2]; // Read from the DOM for update.
               }
-              break;
-            case "left":
-            case "right":
-              if (elem.offsetWidth + (parseFloat(elem.style.marginLeft, 10) || 0) + (parseFloat(elem.style.marginRight, 10) || 0) > stack.addpos2) {
-                stack.addpos2 = elem.offsetWidth;
-              }
-              break;
+            }
+
+            // Keep track of the widest/tallest notice in the column/row, so we can push the next column/row.
+            switch (stack.dir2) {
+              case "down":
+              case "up":
+                if (elem.offsetHeight + (parseFloat(elem.style.marginTop, 10) || 0) + (parseFloat(elem.style.marginBottom, 10) || 0) > stack.addpos2) {
+                  stack.addpos2 = elem.offsetHeight;
+                }
+                break;
+              case "left":
+              case "right":
+                if (elem.offsetWidth + (parseFloat(elem.style.marginLeft, 10) || 0) + (parseFloat(elem.style.marginRight, 10) || 0) > stack.addpos2) {
+                  stack.addpos2 = elem.offsetWidth;
+                }
+                break;
+            }
+          } else {
+            // Center the notice, because the stack has no dir2.
+            let cssMiddle, cssposCross;
+            switch (stack.dir1) {
+              case "down":
+              case "up":
+                cssposCross = ["left", "right"];
+                cssMiddle = (stack.context.scrollWidth / 2) - (elem.offsetWidth / 2);
+                break;
+              case "left":
+              case "right":
+                cssposCross = ["top", "bottom"];
+                cssMiddle = (stack.context.scrollHeight / 2) - (elem.offsetHeight / 2);
+                break;
+            }
+            elem.style[cssposCross[0]] = cssMiddle+"px";
+            elem.style[cssposCross[1]] = "auto";
+            if (!stack.animation) {
+              elem.style[cssposCross[0]]; // Read from the DOM for update.
+            }
           }
 
           // Move the notice on dir1.
@@ -930,13 +968,6 @@
   .ui-pnotify.stack-bottomright, .ui-pnotify.stack-bottomleft {
     bottom: 25px;
     top: auto;
-  }
-  .ui-pnotify.stack-modal {
-    left: 50%;
-    right: auto;
-  }
-  .ui-pnotify.stack-modal.ui-pnotify-initial-hidden {
-    margin-left: -150px;
   }
   /* Overlay */
   :global(.ui-pnotify-modal-overlay) {

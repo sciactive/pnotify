@@ -275,8 +275,10 @@ The callback options all expect one argument, a function, which will be called w
 
 A stack is an object which PNotify uses to determine where to position notices.
 
-* A stack has two mandatory properties, `dir1` and `dir2`.
+* A stack has one mandatory properties, `dir1`.
+* You can also include a `dir2`.
 * `dir1` is the first direction in which the notices are stacked. When the notices run out of room in the window, they will move over in the direction specified by `dir2`.
+* If there is no `dir2`, the notices will be centered along the axis of `dir1`.
 * The directions can be `"up"`, `"down"`, `"right"`, or `"left"`.
 * Stacks are independent of each other, so a stack doesn't know and doesn't care if it overlaps (and blocks) another stack.
 * Stack objects are used and manipulated by PNotify, and therefore, should be a variable when passed.
@@ -372,7 +374,6 @@ There are several CSS classes included which will position your notices for you:
 * `stack-topleft`
 * `stack-bottomleft`
 * `stack-bottomright`
-* `stack-modal`
 
 You can create your own custom position and movement by defining a custom stack.
 
