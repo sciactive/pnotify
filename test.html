@@ -3,29 +3,71 @@
 <head>
   <title>PNotify Test</title>
   <script type="text/javascript" src="lib/iife/PNotify.js"></script>
-    <!-- <link href="src/PNotifyBrightTheme.css" rel="stylesheet" type="text/css" /> -->
-    <!-- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" id="bootstrap-css" rel="stylesheet" type="text/css" /> -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="lib/iife/PNotifyStyleMaterial.js"></script>
+  <script type="text/javascript" src="lib/iife/PNotifyButtons.js"></script>
+  <link href="src/PNotifyBrightTheme.css" rel="stylesheet" type="text/css" />
+  <link href="about:blank" id="bootstrap-css" rel="stylesheet" type="text/css" />
+  <link href="about:blank" id="fontawesome-css" rel="stylesheet" type="text/css" />
+
+  <script type="text/javascript">
+    function loadStylingDeps() {
+      var styling = document.getElementById("styling").value;
+      var icons = document.getElementById("icons").value;
+      var output = document.getElementById("output");
+      output.innerText = "";
+
+      if (styling === "bootstrap4" && icons === "bootstrap3") {
+        output.innerText = "You can't use both Bootstrap 3 and Bootstrap 4.";
+        return;
+      }
+
+      PNotify.removeAll();
+
+      if (styling === "bootstrap3" || icons === "bootstrap3") {
+        document.getElementById("bootstrap-css").href = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css";
+        output.innerText += " Loaded Bootstrap 3.";
+      } else if (styling === "bootstrap4") {
+        document.getElementById("bootstrap-css").href = "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css";
+        output.innerText += " Loaded Bootstrap 4.";
+      } else {
+        document.getElementById("bootstrap-css").href = "about:blank";
+      }
+
+      if (icons === "fontawesome4") {
+        document.getElementById("fontawesome-css").href = "https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css";
+        output.innerText += " Loaded Font Awesome 4.";
+      } else if (icons === "fontawesome5") {
+        document.getElementById("fontawesome-css").href = "https://use.fontawesome.com/releases/v5.0.4/css/all.css";
+        output.innerText += " Loaded Font Awesome 5.";
+      } else {
+        document.getElementById("fontawesome-css").href = "about:blank";
+      }
+    }
+  </script>
 </head>
 
 <body>
-    <h2>Brighttheme</h2>
-    <button onclick="PNotify.notice({title: 'Test notice.', text: 'This is a test notice.', hide: false, icons: 'brighttheme', styling: 'brighttheme'})">Test Notice</button>
-    <button onclick="PNotify.info({title: 'Test notice.', text: 'This is a test notice.', icons: 'brighttheme', styling: 'brighttheme'})">Test Info</button>
-    <button onclick="PNotify.error({title: 'Test notice.', text: 'This is a test notice.', icons: 'brighttheme', styling: 'brighttheme'})">Test Danger</button>
-    <button onclick="PNotify.success({title: 'Test notice.', text: 'This is a test notice.', icons: 'brighttheme', styling: 'brighttheme'})">Test Success</button>
+  <div style="padding: 30px;">
+    Styling: <select id="styling" onchange="loadStylingDeps()">
+      <option value="brighttheme">Bright Theme</option>
+      <option value="material">Material</option>
+      <option value="bootstrap3">Bootstrap 3</option>
+      <option value="bootstrap4">Bootstrap 4</option>
+    </select>
+    Icons: <select id="icons" onchange="loadStylingDeps()">
+      <option value="brighttheme">Bright Theme</option>
+      <option value="material">Material</option>
+      <option value="bootstrap3">Bootstrap 3</option>
+      <option value="fontawesome4">Font Awesome 4</option>
+      <option value="fontawesome5">Font Awesome 5</option>
+    </select>
+    <span id="output"></span>
     <hr />
-    <h2>Bootstrap 3</h2>
-    <button onclick="PNotify.notice({title: 'Test notice.', text: 'This is a test notice.', icons: 'fontawesome', styling: 'bootstrap3', hide: false})">Test Notice</button>
-    <button onclick="PNotify.info({title: 'Test notice.', text: 'This is a test notice.', icons: 'fontawesome', styling: 'bootstrap3'})">Test Info</button>
-    <button onclick="PNotify.error({title: 'Test notice.', text: 'This is a test notice.', icons: 'fontawesome', styling: 'bootstrap3'})">Test Danger</button>
-    <button onclick="PNotify.success({title: 'Test notice.', text: 'This is a test notice.', icons: 'fontawesome', styling: 'bootstrap3'})">Test Success</button>
-    <hr />
-    <h2>Bootstrap 4</h2>
-    <button onclick="PNotify.notice({title: 'Test notice.', text: 'This is a test notice.', icons: 'fontawesome', styling: 'bootstrap4', hide: false})">Test Notice</button>
-    <button onclick="PNotify.info({title: 'Test notice.', text: 'This is a test notice.', icons: 'fontawesome', styling: 'bootstrap4'})">Test Info</button>
-    <button onclick="PNotify.error({title: 'Test notice.', text: 'This is a test notice.', icons: 'fontawesome', styling: 'bootstrap4'})">Test Danger</button>
-    <button onclick="PNotify.success({title: 'Test notice.', text: 'This is a test notice.', icons: 'fontawesome', styling: 'bootstrap4'})">Test Success</button>
+    <h2>Test Notices</h2>
+    <button onclick="PNotify.notice({title: 'Test Notice', text: 'This is a test notice.', icons: document.getElementById('icons').value, styling: document.getElementById('styling').value})">Test Notice</button>
+    <button onclick="PNotify.info({title: 'Test Notice', text: 'This is a test notice.', icons: document.getElementById('icons').value, styling: document.getElementById('styling').value})">Test Info</button>
+    <button onclick="PNotify.error({title: 'Test Notice', text: 'This is a test notice.', icons: document.getElementById('icons').value, styling: document.getElementById('styling').value})">Test Danger</button>
+    <button onclick="PNotify.success({title: 'Test Notice', text: 'This is a test notice.', icons: document.getElementById('icons').value, styling: document.getElementById('styling').value})">Test Success</button>
+  </div>
 </body>
 </html>

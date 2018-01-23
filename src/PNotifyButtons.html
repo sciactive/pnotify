@@ -57,21 +57,26 @@
       // Prepend this module to the container.
       PNotify.modulesPrependContainer.push(Component);
 
-      // Add button icons to styling objects.
-      Object.assign(PNotify.styling.brighttheme, {
+      // Add button icons to icons objects.
+      Object.assign(PNotify.icons.brighttheme, {
         closer: "brighttheme-icon-closer",
         pin_up: "brighttheme-icon-sticker",
         pin_down: "brighttheme-icon-sticker brighttheme-icon-stuck"
       });
-      Object.assign(PNotify.styling.bootstrap3, {
+      Object.assign(PNotify.icons.bootstrap3, {
         closer: "glyphicon glyphicon-remove",
         pin_up: "glyphicon glyphicon-pause",
         pin_down: "glyphicon glyphicon-play"
       });
-      Object.assign(PNotify.styling.fontawesome, {
+      Object.assign(PNotify.icons.fontawesome4, {
         closer: "fa fa-times",
         pin_up: "fa fa-pause",
         pin_down: "fa fa-play"
+      });
+      Object.assign(PNotify.icons.fontawesome5, {
+        closer: "fas fa-times",
+        pin_up: "fas fa-pause",
+        pin_down: "fas fa-play"
       });
     },
 
@@ -97,9 +102,10 @@
       _show_sticker: (sticker, show_on_nonblock, _options) => sticker && (!(_options.modules && _options.modules.NonBlock && _options.modules.NonBlock.nonblock) || show_on_nonblock),
       // Whether to show the closer icon.
       _show_closer: (closer, show_on_nonblock, _options) => closer && (!(_options.modules && _options.modules.NonBlock && _options.modules.NonBlock.nonblock) || show_on_nonblock),
-      _pin_up_class: (classes, _notice) => _notice ? (classes.pin_up === null ? _notice.get("_styles").pin_up : classes.pin_up) : '',
-      _pin_down_class: (classes, _notice) => _notice ? (classes.pin_down === null ? _notice.get("_styles").pin_down : classes.pin_down) : '',
-      _closer_class: (classes, _notice) => _notice ? (classes.closer === null ? _notice.get("_styles").closer : classes.closer) : '',
+      // These are button icon classes.
+      _pin_up_class: (classes, _notice) => _notice ? (classes.pin_up === null ? _notice.get("_icons").pin_up : classes.pin_up) : '',
+      _pin_down_class: (classes, _notice) => _notice ? (classes.pin_down === null ? _notice.get("_icons").pin_down : classes.pin_down) : '',
+      _closer_class: (classes, _notice) => _notice ? (classes.closer === null ? _notice.get("_icons").closer : classes.closer) : '',
     },
 
     methods: {

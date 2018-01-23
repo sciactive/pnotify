@@ -76,24 +76,27 @@ Now you can use PNotify like this:
 
 ## Using a UI Library
 
-If you are not using any UI library, you can use the default styling, called Bright Theme. It is the default.
+If you are not using any UI library, you can use the default styling, called Bright Theme by including the PNotifyBrightTheme.css file. It is the default.
 
-If you are using the Material Style module, include this line somewhere before your first notice:
+If you are using a UI or icon library, include the appropriate lines below somewhere before your first notice:
 
 ```js
+//  The Material Style module. (PNotifyStyleMaterial.js)
 PNotify.defaults.styling = "material";
-```
+PNotify.defaults.icons = "material";
 
-If you are using Bootstrap version 3, include this line somewhere before your first notice:
-
-```js
+// Bootstrap version 3
 PNotify.defaults.styling = "bootstrap3";
-```
+PNotify.defaults.icons = "bootstrap3";
 
-If you are using Bootstrap 3 with Font Awesome, include this line somewhere before your first notice:
+// Bootstrap version 4
+PNotify.defaults.styling = "bootstrap4";
 
-```js
-PNotify.defaults.styling = "fontawesome";
+// Font Awesome 4
+PNotify.defaults.icons = "fontawesome4";
+
+// Font Awesome 5
+PNotify.defaults.icons = "fontawesome5";
 ```
 
 # Creating Notices
@@ -142,7 +145,8 @@ new PNotify({
 * `title_escape: false` - Whether to escape the content of the title. (Not allow HTML.)
 * `text: false` - The notice's text.
 * `text_escape: false` - Whether to escape the content of the text. (Not allow HTML.)
-* `styling: "brighttheme"` - What styling classes to use. (Can be either "brighttheme", "bootstrap3", "fontawesome", or a custom style object. See the source in the end of pnotify.js for the properties in a style object.)
+* `styling: "brighttheme"` - What styling classes to use. What styling classes to use. (Can be "brighttheme", "bootstrap3", "bootstrap4", or a styling object. See the source in PNotifyStyleMaterial.html for the properties in a style object.)
+* `icons: "brighttheme"` - What icons to use (Can be "brighttheme", "bootstrap3", "fontawesome4", "fontawesome5", or an icon object. See the source in PNotifyStyleMaterial.html for the properties in an icon object.)
 * `addclass: ""` - Additional classes to be added to the notice. (For custom styling.)
 * `cornerclass: ""` - Class to be added to the notice for corner styling.
 * `auto_display: true` - Display the notice when it is created. Turn this off to add notifications to the history without displaying them.

@@ -10,16 +10,25 @@
       // Prepend this module to the container.
       PNotify.modulesPrependContainer.push(Component);
 
-      PNotify.styling.material = Object.assign({}, PNotify.styling.brighttheme, {
+      if (!PNotify.styling.material) {
+        PNotify.styling.material = {};
+      }
+      PNotify.styling.material = Object.assign(PNotify.styling.material, {
         container: "pnotify-material",
         notice: "pnotify-material-notice",
-        notice_icon: "material-icons pnotify-material-icon-notice",
         info: "pnotify-material-info",
-        info_icon: "material-icons pnotify-material-icon-info",
         success: "pnotify-material-success",
-        success_icon: "material-icons pnotify-material-icon-success",
         error: "pnotify-material-error",
-        error_icon: "material-icons pnotify-material-icon-error",
+      });
+
+      if (!PNotify.icons.material) {
+        PNotify.icons.material = {};
+      }
+      PNotify.icons.material = Object.assign(PNotify.icons.material, {
+        notice: "material-icons pnotify-material-icon-notice",
+        info: "material-icons pnotify-material-icon-info",
+        success: "material-icons pnotify-material-icon-success",
+        error: "material-icons pnotify-material-icon-error",
         closer: "material-icons pnotify-material-icon-closer",
         pin_up: "material-icons pnotify-material-icon-sticker",
         pin_down: "material-icons pnotify-material-icon-sticker pnotify-material-icon-stuck"
