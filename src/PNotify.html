@@ -11,7 +11,7 @@
 -->
 
 <div ref:elem
-    class="ui-pnotify {{addclass}} {{_animatingClass}} {{_moveClass}} {{animation === 'fade' ? 'ui-pnotify-fade-'+animate_speed : ''}}"
+    class="ui-pnotify {{_styles.element}} {{addclass}} {{_animatingClass}} {{_moveClass}} {{animation === 'fade' ? 'ui-pnotify-fade-'+animate_speed : ''}}"
     aria-live="assertive"
     role="alertdialog"
     ui-pnotify
@@ -35,18 +35,18 @@
       <:Component {module} on:init="initModule(event.module)" />
     {{/each}}
     {{#if icon !== false}}
-      <div class="ui-pnotify-icon">
-        <span class="{{icon === true ? _styles[type+'_icon'] : icon}}"></span>
-      </div>
+    <div class="ui-pnotify-icon {{_styles.icon}}">
+      <span class="{{icon === true ? _icons[type] : icon}}"></span>
+    </div>
     {{/if}}
-    <h4 ref:titleContainer class="ui-pnotify-title" style="display: {{title === false ? 'none' : 'block'}}">
+    <h4 ref:titleContainer class="ui-pnotify-title {{_styles.title}}" style="display: {{title === false ? 'none' : 'block'}}">
       {{#if title_escape}}
         {{title}}
       {{else}}
         {{{title}}}
       {{/if}}
     </h4>
-    <div ref:textContainer class="ui-pnotify-text" style="display: {{text === false ? 'none' : 'block'}}" role="alert">
+    <div ref:textContainer class="ui-pnotify-text {{_styles.text}}" style="display: {{text === false ? 'none' : 'block'}}" role="alert">
       {{#if text_escape}}
         {{text}}
       {{else}}
@@ -79,7 +79,7 @@
   };
 
   // Creates the background overlay for modal stacks.
-  let createStackOverlay = function(stack) {
+  let createStackOverlay = (stack) => {
     const overlay = document.createElement("div");
     overlay.classList.add("ui-pnotify-modal-overlay");
     stack.context.insertBefore(overlay, stack.context.firstChild);
@@ -95,6 +95,21 @@
     });
     return overlay;
   };
+
+  // Default arguments for the new notice helper functions.
+  const getDefaultArgs = (options, type) => {
+    if (typeof options !== "object") {
+      options = {"text": options};
+    }
+
+    // Only assign the type if it was requested, so we don't overwrite
+    // options.type if it has something assigned.
+    if (type) {
+      options.type = type;
+    }
+
+    return {target: document.body, data: options};
+  }
 
   export default {
     setup: (Component) => {
@@ -122,8 +137,10 @@
         text: false,
         // Whether to escape the content of the text. (Not allow HTML.)
         text_escape: false,
-        // What styling classes to use. (Can be either "brighttheme", "bootstrap3", "fontawesome", or a styling object.)
+        // What styling classes to use. (Can be "brighttheme", "bootstrap3", "bootstrap4", or a styling object.)
         styling: "brighttheme",
+        // What icons to use (Can be "brighttheme", "bootstrap3", "fontawesome4", "fontawesome5", or an icon object.)
+        icons: "brighttheme",
         // Additional classes to be added to the notice. (For custom styling.)
         addclass: "",
         // Class to be added to the notice for corner styling.
@@ -179,48 +196,15 @@
       PNotify.modulesAppendContainer = [];
 
       // Helper function to create a new notice.
-      PNotify.alert = (options) => {
-        if (typeof options !== "object") {
-          options = {"text": options};
-        }
-        return new PNotify({target: document.body, data: options});
-      };
-
+      PNotify.alert = (options) => new PNotify(getDefaultArgs(options));
       // Helper function to create a new notice (notice type).
-      PNotify.notice = (options) => {
-        if (typeof options !== "object") {
-          options = {"text": options};
-        }
-        options.type = "notice";
-        return new PNotify({target: document.body, data: options});
-      };
-
+      PNotify.notice = (options) => new PNotify(getDefaultArgs(options, "notice"));
       // Helper function to create a new notice (info type).
-      PNotify.info = (options) => {
-        if (typeof options !== "object") {
-          options = {"text": options};
-        }
-        options.type = "info";
-        return new PNotify({target: document.body, data: options});
-      };
-
+      PNotify.info = (options) => new PNotify(getDefaultArgs(options, "info"));
       // Helper function to create a new notice (success type).
-      PNotify.success = (options) => {
-        if (typeof options !== "object") {
-          options = {"text": options};
-        }
-        options.type = "success";
-        return new PNotify({target: document.body, data: options});
-      };
-
+      PNotify.success = (options) => new PNotify(getDefaultArgs(options, "success"));
       // Helper function to create a new notice (error type).
-      PNotify.error = (options) => {
-        if (typeof options !== "object") {
-          options = {"text": options};
-        }
-        options.type = "error";
-        return new PNotify({target: document.body, data: options});
-      };
+      PNotify.error = (options) => new PNotify(getDefaultArgs(options, "error"));
 
       // Remove all visible notices.
       PNotify.removeAll = () => {
@@ -277,37 +261,57 @@
           // Bright Theme doesn't require any UI libraries.
           container: "brighttheme",
           notice: "brighttheme-notice",
-          notice_icon: "brighttheme-icon-notice",
           info: "brighttheme-info",
-          info_icon: "brighttheme-icon-info",
           success: "brighttheme-success",
-          success_icon: "brighttheme-icon-success",
-          error: "brighttheme-error",
-          error_icon: "brighttheme-icon-error"
+          error: "brighttheme-error"
         },
         bootstrap3: {
           container: "alert",
           notice: "alert-warning",
-          notice_icon: "glyphicon glyphicon-exclamation-sign",
           info: "alert-info",
-          info_icon: "glyphicon glyphicon-info-sign",
           success: "alert-success",
-          success_icon: "glyphicon glyphicon-ok-sign",
+          error: "alert-danger"
+        },
+        bootstrap4: {
+          container: "alert",
+          notice: "alert-warning",
+          info: "alert-info",
+          success: "alert-success",
           error: "alert-danger",
-          error_icon: "glyphicon glyphicon-warning-sign"
+          icon: "ui-pnotify-icon-bs4",
+          title: "ui-pnotify-title-bs4"
         }
       };
-      /*
-       * uses icons from http://fontawesome.io/
-       * version 4.0.3
-       */
-      PNotify.styling.fontawesome = Object.assign({}, PNotify.styling.bootstrap3);
-      Object.assign(PNotify.styling.fontawesome, {
-        notice_icon: "fa fa-exclamation-circle",
-        info_icon: "fa fa-info",
-        success_icon: "fa fa-check",
-        error_icon: "fa fa-warning"
-      });
+
+      // icons are separate from the style, since bs4 doesn't come with any
+      PNotify.icons = {
+          brighttheme: {
+            notice: "brighttheme-icon-notice",
+            info: "brighttheme-icon-info",
+            success: "brighttheme-icon-success",
+            error: "brighttheme-icon-error"
+          },
+          bootstrap3: {
+            notice: "glyphicon glyphicon-exclamation-sign",
+            info: "glyphicon glyphicon-info-sign",
+            success: "glyphicon glyphicon-ok-sign",
+            error: "glyphicon glyphicon-warning-sign"
+          },
+          // User must have Font Awesome v4.0+
+          fontawesome4: {
+            notice: "fa fa-exclamation-circle",
+            info: "fa fa-info-circle",
+            success: "fa fa-check-circle",
+            error: "fa fa-exclamation-triangle"
+          },
+          // User must have Font Awesome v5.0+
+          fontawesome5: {
+            notice: "fas fa-exclamation-circle",
+            info: "fas fa-info-circle",
+            success: "fas fa-check-circle",
+            error: "fas fa-exclamation-triangle"
+          }
+      }
 
       // Run the deferred actions once the DOM is ready.
       if (window && document.body) {
@@ -383,6 +387,8 @@
       _text_processed: (text, insert_brs) => insert_brs ?  String(text).replace(/\n/g, '<br />') : text,
       // Grab styles from the styling object or use the styles provided.
       _styles: (styling) => typeof styling === "object" ? styling : PNotify.styling[styling],
+      // Grab the icons from the icons object or use provided icons
+      _icons: (icons) => typeof icons === "object" ? icons : PNotify.icons[icons],
     },
 
     methods: {
@@ -957,6 +963,10 @@
     margin-bottom: .4em;
     margin-top: 0;
   }
+  /* Bootstrap 4: make title text a tad smaller. */
+  .ui-pnotify-title-bs4 {
+    font-size: 1.2rem;
+  }
   .ui-pnotify-text {
     display: block;
   }
@@ -964,6 +974,11 @@
     display: block;
     float: left;
     margin-right: .2em;
+  }
+  /* Bootstrap 4: correct positioning of icon. */
+  .ui-pnotify-icon-bs4 {
+    position: relative;
+    top: 5px;
   }
   /* Alternate stack initial positioning. */
   .ui-pnotify.stack-topleft, .ui-pnotify.stack-bottomleft {
