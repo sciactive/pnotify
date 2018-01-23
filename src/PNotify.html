@@ -934,10 +934,12 @@
   .ui-pnotify.stack-modal {
     left: 50%;
     right: auto;
+  }
+  .ui-pnotify.stack-modal.ui-pnotify-initial-hidden {
     margin-left: -150px;
   }
   /* Overlay */
-  .ui-pnotify-modal-overlay {
+  :global(.ui-pnotify-modal-overlay) {
     background-color: rgba(0, 0, 0, .4);
     top: 0;
     left: 0;
@@ -946,11 +948,11 @@
     width: 100%;
     z-index: 1;
   }
-  :global(body) > .ui-pnotify-modal-overlay {
+  :global(body) > :global(.ui-pnotify-modal-overlay) {
     position: fixed;
     z-index: 100039;
   }
-  .ui-pnotify-modal-overlay-hidden {
+  :global(.ui-pnotify-modal-overlay-hidden) {
     display: none;
   }
 </style>

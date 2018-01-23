@@ -114,12 +114,12 @@
     }
 
     /* Translucent notice CSS */
-    .ui-pnotify.translucent.ui-pnotify-fade-in {
+    [ui-pnotify].ui-pnotify.translucent.ui-pnotify-fade-in {
       opacity: 0.8;
     }
 
     /* Custom styled notice CSS */
-    .ui-pnotify.custom .ui-pnotify-container {
+    [ui-pnotify].ui-pnotify.custom .ui-pnotify-container {
       background-color: #404040 !important;
       background-image: none !important;
       border: none !important;
@@ -127,7 +127,7 @@
       -webkit-border-radius: 10px;
       border-radius: 10px;
     }
-    .ui-pnotify.custom .ui-pnotify-title, .ui-pnotify.custom .ui-pnotify-text {
+    [ui-pnotify].ui-pnotify.custom .ui-pnotify-title, .ui-pnotify.custom .ui-pnotify-text {
       font-family: Arial, Helvetica, sans-serif !important;
       text-shadow: 2px 2px 3px black !important;
       font-size: 10pt !important;
@@ -136,13 +136,13 @@
       line-height: 1 !important;
       text-rendering: geometricPrecision !important;
     }
-    .ui-pnotify.custom .ui-pnotify-title {
+    [ui-pnotify].ui-pnotify.custom .ui-pnotify-title {
       font-weight: bold;
     }
-    .ui-pnotify.custom .ui-pnotify-icon {
+    [ui-pnotify].ui-pnotify.custom .ui-pnotify-icon {
       float: left;
     }
-    .ui-pnotify.custom .fa {
+    [ui-pnotify].ui-pnotify.custom .fa {
       margin: 3px;
       width: 33px;
       height: 33px;
@@ -153,20 +153,20 @@
     /* Alternate stack initial positioning. This one is done through code,
       to show how it is done. Look down at the stack_bottomright variable
       in the JavaScript below. */
-    .ui-pnotify.stack-bottomright {
+    [ui-pnotify].ui-pnotify.stack-bottomright {
       /* These are just CSS default values to reset the PNotify CSS. */
       right: auto;
       top: auto;
       left: auto;
       bottom: auto;
     }
-    .ui-pnotify.stack-custom {
+    [ui-pnotify].ui-pnotify.stack-custom {
       /* Custom values have to be in pixels, because the code parses them. */
       top: 200px;
       left: 200px;
       right: auto;
     }
-    .ui-pnotify.stack-custom2 {
+    [ui-pnotify].ui-pnotify.stack-custom2 {
       top: auto;
       left: auto;
       bottom: 200px;
@@ -174,12 +174,15 @@
     }
     /* This one is totally different. It stacks at the top and looks
       like a Microsoft-esque browser notice bar. */
-    .ui-pnotify.stack-bar-top {
+    [ui-pnotify].ui-pnotify.stack-bar-top {
       right: 0;
       top: 0;
+      width: 100%;
     }
-    .ui-pnotify.stack-bar-bottom {
+    [ui-pnotify].ui-pnotify.stack-bar-bottom {
+      width: 70%;
       margin-left: 15%;
+      margin-right: 15%;
       right: auto;
       bottom: 0;
       top: auto;
@@ -440,8 +443,8 @@
     var stack_custom = {"dir1": "right", "dir2": "down"};
     var stack_custom2 = {"dir1": "left", "dir2": "up", "push": "top"};
     var stack_modal = {"dir1": "down", "dir2": "right", "push": "top", "modal": true, "overlay_close": true};
-    var stack_bar_top = {"dir1": "down", "dir2": "right", "push": "top", "spacing1": 0, "spacing2": 0};
-    var stack_bar_bottom = {"dir1": "up", "dir2": "right", "spacing1": 0, "spacing2": 0};
+    var stack_bar_top = {"dir1": "down", "dir2": "right", "push": "top", "spacing1": 0, "spacing2": 0, "firstpos1": 0, "firstpos2": 0};
+    var stack_bar_bottom = {"dir1": "up", "dir2": "right", "spacing1": 0, "spacing2": 0, "firstpos1": 0, "firstpos2": 0};
     /*********** Positioned Stack ***********
     * This stack is initially positioned through code instead of CSS.
     * This is done through two extra variables. firstpos1 and firstpos2
@@ -617,6 +620,7 @@
         text: "Check me out. I'm in a different stack.",
         addclass: "stack-bar-top",
         cornerclass: "",
+        shadow: false,
         width: "100%",
         stack: stack_bar_top
       };
@@ -645,7 +649,8 @@
         text: "Check me out. I'm in a different stack.",
         addclass: "stack-bar-bottom",
         cornerclass: "",
-        width: "70%",
+        shadow: false,
+        width: "100%",
         stack: stack_bar_bottom
       };
       switch (type) {
@@ -702,7 +707,7 @@
     function show_stack_info() {
       PNotify.info({
         title: "PNotify Stacks",
-        text: "Stacks are used to position notices and determine where new notices will go when they're created. Each notice that's placed into a stack will be positioned related to the other notices in that stack. There is no limit to the number of stacks, and no limit to the number of notices in each stack.",
+        text: "Stacks are used to position notices and determine where new notices will go when they're created. Each notice that's placed into a stack will be positioned related to the other notices in that stack.",
         icon: "fa fa-bars",
         hide: false,
         addclass: "stack-modal",
