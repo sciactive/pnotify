@@ -1,0 +1,130 @@
+<script>
+  import PNotify from "./PNotify.html";
+
+  export default {
+    setup (Component) {
+      Component.key = "StyleMaterial";
+
+      // Register the module with PNotify.
+      PNotify.modules.StyleMaterial = Component;
+      // Prepend this module to the container.
+      PNotify.modulesPrependContainer.push(Component);
+
+      PNotify.styling.material = Object.assign({}, PNotify.styling.brighttheme, {
+        container: "pnotify-material",
+        notice: "pnotify-material-notice",
+        notice_icon: "material-icons pnotify-material-icon-notice",
+        info: "pnotify-material-info",
+        info_icon: "material-icons pnotify-material-icon-info",
+        success: "pnotify-material-success",
+        success_icon: "material-icons pnotify-material-icon-success",
+        error: "pnotify-material-error",
+        error_icon: "material-icons pnotify-material-icon-error",
+        closer: "material-icons pnotify-material-icon-closer",
+        pin_up: "material-icons pnotify-material-icon-sticker",
+        pin_down: "material-icons pnotify-material-icon-sticker pnotify-material-icon-stuck"
+      });
+    }
+  }
+</script>
+
+<style>
+  /*
+  Color Scheme: https://www.google.com/design/spec/style/color.html#color-color-palette
+  */
+  @import url(https://fonts.googleapis.com/css?family=Material+Icons);
+  :global([ui-pnotify] .pnotify-material) {
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    font-size: 14px;
+  }
+  :global([ui-pnotify] .pnotify-material.ui-pnotify-shadow) {
+    -webkit-box-shadow: 0px 6px 24px 0px rgba(0,0,0,0.2);
+    -moz-box-shadow: 0px 6px 24px 0px rgba(0,0,0,0.2);
+    box-shadow: 0px 6px 24px 0px rgba(0,0,0,0.2);
+  }
+  :global([ui-pnotify] .pnotify-material.ui-pnotify-container) {
+    padding: 24px;
+  }
+  :global([ui-pnotify] .pnotify-material .ui-pnotify-title) {
+    margin-bottom: 20px;
+    font-size: 20px;
+  }
+  :global([ui-pnotify] .pnotify-material-notice) {
+    /* https://material.io/color/#!/?view.left=0&view.right=0&primary.color=FFEE58 */
+    background-color: #FFEE58;
+    border: none;
+    color: #000;
+  }
+  :global([ui-pnotify] .pnotify-material-info) {
+    /* https://material.io/color/#!/?view.left=0&view.right=0&primary.color=26C6DA */
+    background-color: #26C6DA;
+    border: none;
+    color: #000;
+  }
+  :global([ui-pnotify] .pnotify-material-success) {
+    /* https://material.io/color/#!/?view.left=0&view.right=0&primary.color=66BB6A */
+    background-color: #66BB6A;
+    border: none;
+    color: #fff;
+  }
+
+  :global([ui-pnotify] .pnotify-material-error) {
+    /* https://material.io/color/#!/?view.left=0&view.right=0&primary.color=EF5350 */
+    background-color: #EF5350;
+    border: none;
+    color: #fff;
+  }
+  :global([ui-pnotify] .pnotify-material-icon-notice),
+  :global([ui-pnotify] .pnotify-material-icon-info),
+  :global([ui-pnotify] .pnotify-material-icon-success),
+  :global([ui-pnotify] .pnotify-material-icon-error),
+  :global([ui-pnotify] .pnotify-material-icon-closer),
+  :global([ui-pnotify] .pnotify-material-icon-sticker) {
+    position: relative;
+  }
+  :global([ui-pnotify] .pnotify-material-icon-closer),
+  :global([ui-pnotify] .pnotify-material-icon-sticker) {
+    height: 20px;
+    width: 20px;
+    font-size: 20px;
+    line-height: 20px;
+    position: relative;
+  }
+  :global([ui-pnotify] .pnotify-material-icon-notice:after),
+  :global([ui-pnotify] .pnotify-material-icon-info:after),
+  :global([ui-pnotify] .pnotify-material-icon-success:after),
+  :global([ui-pnotify] .pnotify-material-icon-error:after),
+  :global([ui-pnotify] .pnotify-material-icon-closer:after),
+  :global([ui-pnotify] .pnotify-material-icon-sticker:after) {
+    font-family: 'Material Icons';
+  }
+  :global([ui-pnotify] .pnotify-material-icon-notice:after) {
+    content: "announcement";
+  }
+  :global([ui-pnotify] .pnotify-material-icon-info:after) {
+    content: "info";
+  }
+  :global([ui-pnotify] .pnotify-material-icon-success:after) {
+    content: "check_circle";
+  }
+  :global([ui-pnotify] .pnotify-material-icon-error:after) {
+    content: "error";
+  }
+  :global([ui-pnotify] .pnotify-material-icon-closer),
+  :global([ui-pnotify] .pnotify-material-icon-sticker) {
+    display: inline-block;
+  }
+  :global([ui-pnotify] .pnotify-material-icon-closer:after) {
+    top: -4px;
+    content: "close";
+  }
+  :global([ui-pnotify] .pnotify-material-icon-sticker:after) {
+    top: -5px;
+    content: "pause";
+  }
+  :global([ui-pnotify] .pnotify-material-icon-sticker.pnotify-material-icon-stuck:after) {
+    content: "play_arrow";
+  }
+</style>

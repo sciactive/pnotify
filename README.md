@@ -56,7 +56,13 @@ Now you can use PNotify like this:
 
 ## Using a UI Library
 
-If you are not using any UI library, you can use the included styling, called Bright Theme. It is the default.
+If you are not using any UI library, you can use the default styling, called Bright Theme. It is the default.
+
+If you are using the Material Style module, include this line somewhere before your first notice:
+
+```js
+PNotify.defaults.styling = "material";
+```
 
 If you are using Bootstrap version 3, include this line somewhere before your first notice:
 

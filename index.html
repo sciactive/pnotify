@@ -54,6 +54,7 @@
   <script type="text/javascript" src="lib/iife/PNotifyDesktop.js"></script>
   <script type="text/javascript" src="lib/iife/PNotifyHistory.js"></script>
   -->
+  <script type="text/javascript" src="lib/iife/PNotifyStyleMaterial.js"></script>
   <script type="text/javascript" src="lib/iife/PNotifyReference.js"></script>
 
   <!-- PForm (For the form notice.) -->
@@ -1031,7 +1032,7 @@
         <h3 class="panel-title">Choose the Styling</h3>
       </div>
       <div class="panel-body">
-        PNotify supports two styling methods and three popular icon sets.
+        PNotify supports multiple styling methods and icon sets.
         <div class="btn-toolbar">
           <div class="btn-group" data-toggle="buttons">
             <label class="btn btn-default active">
@@ -1042,6 +1043,9 @@
             </label>
             <label class="btn btn-default">
               <input type="radio" name="styling" id="style-fontawesome" autocomplete="off"> Font Awesome Icons
+            </label>
+            <label class="btn btn-default">
+              <input type="radio" name="styling" id="style-material" autocomplete="off"> Material
             </label>
           </div>
           <button class="btn btn-default source" onclick="PNotify.notice({
@@ -1103,6 +1107,26 @@
             title: 'Font Awesome Error',
             text: 'Look at my beautiful styling! ^_^',
             styling: 'fontawesome'
+          });
+          PNotify.notice({
+            title: 'Material Notice',
+            text: 'Look at my beautiful styling! ^_^',
+            styling: 'material'
+          });
+          PNotify.info({
+            title: 'Material Info',
+            text: 'Look at my beautiful styling! ^_^',
+            styling: 'material'
+          });
+          PNotify.success({
+            title: 'Material Success',
+            text: 'Look at my beautiful styling! ^_^',
+            styling: 'material'
+          });
+          PNotify.error({
+            title: 'Material Error',
+            text: 'Look at my beautiful styling! ^_^',
+            styling: 'material'
           });">Demo Each</button>
         </div>
       </div>
@@ -1113,7 +1137,7 @@
               case "style-brighttheme":
                 PNotify.defaults.styling = "brighttheme";
                 $("#switcher-bootstrap").hide();
-                $(".brighttheme-hideme").hide();
+                $(".sharpthemes-hideme").hide();
                 PNotify.notice({
                   title: "Styling Change",
                   text: "From now on, notices will be styled with Bright Theme, the stand alone theme."
@@ -1122,7 +1146,7 @@
               case "style-bootstrap3":
                 PNotify.defaults.styling = "bootstrap3";
                 $("#switcher-bootstrap").show();
-                $(".brighttheme-hideme").show();
+                $(".sharpthemes-hideme").show();
                 PNotify.notice({
                   title: "Styling Change",
                   text: "From now on, notices will be styled with Twitter Bootstrap."
@@ -1131,10 +1155,19 @@
               case "style-fontawesome":
                 PNotify.defaults.styling = "fontawesome";
                 $("#switcher-bootstrap").show();
-                $(".brighttheme-hideme").show();
+                $(".sharpthemes-hideme").show();
                 PNotify.notice({
                   title: "Styling Change",
                   text: "From now on, notices will be styled with Bootstrap w/ Font Awesome Icons."
+                });
+                break;
+              case "style-material":
+                PNotify.defaults.styling = "material";
+                $("#switcher-bootstrap").hide();
+                $(".sharpthemes-hideme").hide();
+                PNotify.notice({
+                  title: "Styling Change",
+                  text: "From now on, notices will be styled with Material Style Module."
                 });
                 break;
             }
@@ -1321,7 +1354,7 @@
           </script>
         </div>
         <button class="btn btn-default source" onclick="dyn_notice();">Dynamic</button>
-        <button class="btn btn-default source brighttheme-hideme" style="display: none;" onclick="PNotify.notice({
+        <button class="btn btn-default source sharpthemes-hideme" style="display: none;" onclick="PNotify.notice({
           title: 'No Rounded Corners Notice',
           text: 'Warning: Contains sharp objects. Not suitable for browsers under the age of CSS3.',
           cornerclass: 'ui-pnotify-sharp'
@@ -2304,7 +2337,7 @@ color: #FF0;
       <div class="panel-body">
         <button class="btn btn-default source" onclick="PNotify.info({
           title: 'Reference Module',
-          text: 'The reference module is a basic module that demonstrates how to write a PNotify module by implementing many of its features. You can find it in pnotify.reference.js.',
+          text: 'The reference module is a basic module that demonstrates how to write a PNotify module by implementing many of its features. You can find it in PNotifyReference.html.',
           modules: {
             Reference: {
               put_thing: true
