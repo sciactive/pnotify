@@ -1039,94 +1039,110 @@
               <input type="radio" name="styling" id="style-brighttheme" autocomplete="off" checked> Bright Theme
             </label>
             <label class="btn btn-default">
+              <input type="radio" name="styling" id="style-material" autocomplete="off"> Material
+            </label>
+            <label class="btn btn-default">
               <input type="radio" name="styling" id="style-bootstrap3" autocomplete="off"> Bootstrap
             </label>
             <label class="btn btn-default">
               <input type="radio" name="styling" id="style-fontawesome" autocomplete="off"> Font Awesome Icons
             </label>
-            <label class="btn btn-default">
-              <input type="radio" name="styling" id="style-material" autocomplete="off"> Material
-            </label>
           </div>
           <button class="btn btn-default source" onclick="PNotify.notice({
             title: 'Bright Theme Notice',
             text: 'Look at my beautiful styling! ^_^',
-            styling: 'brighttheme'
+            styling: 'brighttheme',
+            icons: 'brighttheme'
           });
           PNotify.info({
             title: 'Bright Theme Info',
             text: 'Look at my beautiful styling! ^_^',
-            styling: 'brighttheme'
+            styling: 'brighttheme',
+            icons: 'brighttheme'
           });
           PNotify.success({
             title: 'Bright Theme Success',
             text: 'Look at my beautiful styling! ^_^',
-            styling: 'brighttheme'
+            styling: 'brighttheme',
+            icons: 'brighttheme'
           });
           PNotify.error({
             title: 'Bright Theme Error',
             text: 'Look at my beautiful styling! ^_^',
-            styling: 'brighttheme'
-          });
-          PNotify.notice({
-            title: 'Bootstrap Notice',
-            text: 'Look at my beautiful styling! ^_^',
-            styling: 'bootstrap3'
-          });
-          PNotify.info({
-            title: 'Bootstrap Info',
-            text: 'Look at my beautiful styling! ^_^',
-            styling: 'bootstrap3'
-          });
-          PNotify.success({
-            title: 'Bootstrap Success',
-            text: 'Look at my beautiful styling! ^_^',
-            styling: 'bootstrap3'
-          });
-          PNotify.error({
-            title: 'Bootstrap Error',
-            text: 'Look at my beautiful styling! ^_^',
-            styling: 'bootstrap3'
-          });
-          PNotify.notice({
-            title: 'Font Awesome Notice',
-            text: 'Look at my beautiful styling! ^_^',
-            styling: 'fontawesome'
-          });
-          PNotify.info({
-            title: 'Font Awesome Info',
-            text: 'Look at my beautiful styling! ^_^',
-            styling: 'fontawesome'
-          });
-          PNotify.success({
-            title: 'Font Awesome Success',
-            text: 'Look at my beautiful styling! ^_^',
-            styling: 'fontawesome'
-          });
-          PNotify.error({
-            title: 'Font Awesome Error',
-            text: 'Look at my beautiful styling! ^_^',
-            styling: 'fontawesome'
+            styling: 'brighttheme',
+            icons: 'brighttheme'
           });
           PNotify.notice({
             title: 'Material Notice',
             text: 'Look at my beautiful styling! ^_^',
-            styling: 'material'
+            styling: 'material',
+            icons: 'material'
           });
           PNotify.info({
             title: 'Material Info',
             text: 'Look at my beautiful styling! ^_^',
-            styling: 'material'
+            styling: 'material',
+            icons: 'material'
           });
           PNotify.success({
             title: 'Material Success',
             text: 'Look at my beautiful styling! ^_^',
-            styling: 'material'
+            styling: 'material',
+            icons: 'material'
           });
           PNotify.error({
             title: 'Material Error',
             text: 'Look at my beautiful styling! ^_^',
-            styling: 'material'
+            styling: 'material',
+            icons: 'material'
+          });
+          PNotify.notice({
+            title: 'Bootstrap Notice',
+            text: 'Look at my beautiful styling! ^_^',
+            styling: 'bootstrap3',
+            icons: 'bootstrap3'
+          });
+          PNotify.info({
+            title: 'Bootstrap Info',
+            text: 'Look at my beautiful styling! ^_^',
+            styling: 'bootstrap3',
+            icons: 'bootstrap3'
+          });
+          PNotify.success({
+            title: 'Bootstrap Success',
+            text: 'Look at my beautiful styling! ^_^',
+            styling: 'bootstrap3',
+            icons: 'bootstrap3'
+          });
+          PNotify.error({
+            title: 'Bootstrap Error',
+            text: 'Look at my beautiful styling! ^_^',
+            styling: 'bootstrap3',
+            icons: 'bootstrap3'
+          });
+          PNotify.notice({
+            title: 'Font Awesome Notice',
+            text: 'Look at my beautiful styling! ^_^',
+            styling: 'bootstrap3',
+            icons: 'fontawesome4'
+          });
+          PNotify.info({
+            title: 'Font Awesome Info',
+            text: 'Look at my beautiful styling! ^_^',
+            styling: 'bootstrap3',
+            icons: 'fontawesome4'
+          });
+          PNotify.success({
+            title: 'Font Awesome Success',
+            text: 'Look at my beautiful styling! ^_^',
+            styling: 'bootstrap3',
+            icons: 'fontawesome4'
+          });
+          PNotify.error({
+            title: 'Font Awesome Error',
+            text: 'Look at my beautiful styling! ^_^',
+            styling: 'bootstrap3',
+            icons: 'fontawesome4'
           });">Demo Each</button>
         </div>
       </div>
@@ -1136,6 +1152,7 @@
             switch ($("input[name=styling]:checked").attr("id")) {
               case "style-brighttheme":
                 PNotify.defaults.styling = "brighttheme";
+                PNotify.defaults.icons = "brighttheme";
                 $("#switcher-bootstrap").hide();
                 $(".sharpthemes-hideme").hide();
                 PNotify.notice({
@@ -1143,8 +1160,19 @@
                   text: "From now on, notices will be styled with Bright Theme, the stand alone theme."
                 });
                 break;
+              case "style-material":
+                PNotify.defaults.styling = "material";
+                PNotify.defaults.icons = "material";
+                $("#switcher-bootstrap").hide();
+                $(".sharpthemes-hideme").hide();
+                PNotify.notice({
+                  title: "Styling Change",
+                  text: "From now on, notices will be styled with Material Style Module."
+                });
+                break;
               case "style-bootstrap3":
                 PNotify.defaults.styling = "bootstrap3";
+                PNotify.defaults.icons = "bootstrap3";
                 $("#switcher-bootstrap").show();
                 $(".sharpthemes-hideme").show();
                 PNotify.notice({
@@ -1153,21 +1181,13 @@
                 });
                 break;
               case "style-fontawesome":
-                PNotify.defaults.styling = "fontawesome";
+                PNotify.defaults.styling = "bootstrap3";
+                PNotify.defaults.icons = "fontawesome4";
                 $("#switcher-bootstrap").show();
                 $(".sharpthemes-hideme").show();
                 PNotify.notice({
                   title: "Styling Change",
                   text: "From now on, notices will be styled with Bootstrap w/ Font Awesome Icons."
-                });
-                break;
-              case "style-material":
-                PNotify.defaults.styling = "material";
-                $("#switcher-bootstrap").hide();
-                $(".sharpthemes-hideme").hide();
-                PNotify.notice({
-                  title: "Styling Change",
-                  text: "From now on, notices will be styled with Material Style Module."
                 });
                 break;
             }
@@ -1200,12 +1220,12 @@
           title: 'Bootstrap Icon',
           text: 'I have an icon that uses the Bootstrap icon styles.',
           icon: 'glyphicon glyphicon-envelope'
-        });">Bootstrap Icon</button>
+        });">Specific Icon (Bootstrap)</button>
         <button class="btn btn-default source" onclick="PNotify.notice({
           title: 'Font Awesome Icon',
           text: 'I have an icon that uses the Font Awesome icon styles.',
           icon: 'fa fa-envelope-o'
-        });">Font Awesome Icon</button>
+        });">Specific Icon (Font Awesome)</button>
         <button class="btn btn-default source" onclick="PNotify.notice({
           title: 'No Icon Notice',
           text: 'I have no icon.',
