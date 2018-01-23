@@ -35,9 +35,9 @@
       <:Component {module} on:init="initModule(event.module)" />
     {{/each}}
     {{#if icon !== false}}
-      <div class="ui-pnotify-icon">
-        <span class="{{icon === true ? _icons[type+'_icon'] : icon}}"></span>
-      </div>
+    <div class="{{_styles.icon}}">
+      <span class="{{icon === true ? _icons[type+'_icon'] : icon}}"></span>
+    </div>
     {{/if}}
     <h4 ref:titleContainer class="{{_styles.title}}" style="display: {{title === false ? 'none' : 'block'}}">
       {{#if title_escape}}
@@ -274,6 +274,7 @@
         brighttheme: {
           // Bright Theme doesn't require any UI libraries.
           container: "brighttheme",
+          icon: "ui-pnotify-icon",
           title: "ui-pnotify-title",
           notice: "brighttheme-notice",
           info: "brighttheme-info",
@@ -282,6 +283,7 @@
         },
         bootstrap3: {
           container: "alert",
+          icon: "ui-pnotify-icon",
           title: "ui-pnotify-title",
           notice: "alert-warning",
           info: "alert-info",
@@ -289,8 +291,9 @@
           error: "alert-danger"
         },
         bootstrap4: {
-          container: "card",
-          title: "card-title",
+          container: "alert",
+          icon: "ui-pnotify-icon ui-pnotify-icon-bs4",
+          title: "ui-pnotify-title ui-pnotify-title-bs4",
           notice: "alert-warning",
           info: "alert-info",
           success: "alert-success",
@@ -315,9 +318,9 @@
 
           // user must have font awesome loaded (v4.7)
           fontawesome: {
-            notice_icon: "fa fa-exclamation",
+            notice_icon: "fa fa-exclamation-circle",
             info_icon: "fa fa-info-circle",
-            success_icon: "fa fa-check",
+            success_icon: "fa fa-check-circle-o",
             error_icon: "fa fa-exclamation-triangle"
           }
       }
@@ -975,6 +978,10 @@
     margin-bottom: .4em;
     margin-top: 0;
   }
+  /* make title text a tad smaller */
+  .ui-pnotify-title-bs4 {
+    font-size: 1.2rem;
+  }
   .ui-pnotify-text {
     display: block;
   }
@@ -982,6 +989,12 @@
     display: block;
     float: left;
     margin-right: .2em;
+  }
+
+  /* correct positioning for bs4 styles */
+  .ui-pnotify-icon-bs4 {
+    position: relative;
+    top: 5px;
   }
   /* Alternate stack initial positioning. */
   .ui-pnotify.stack-topleft, .ui-pnotify.stack-bottomleft {
