@@ -107,6 +107,14 @@
     if (type) {
       options.type = type;
     }
+
+    if (!options.styling) {
+      options.styling = PNotify.defaults.styling;
+    }
+
+    if (!options.icons) {
+      options.icons = PNotify.defaults.icons;
+    }
     
     return {target: document.body, data: options};
   }
