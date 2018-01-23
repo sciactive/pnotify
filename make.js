@@ -8,7 +8,7 @@ let pnotify_src = {
   'core': 'PNotify.html',
   'animate': 'PNotifyAnimate.html',
   'buttons': 'PNotifyButtons.html',
-  // 'callbacks': 'PNotifyCallbacks.?',
+  'callbacks': 'PNotifyCallbacks.html',
   // 'confirm': 'PNotifyConfirm.?',
   // 'desktop': 'PNotifyDesktop.?',
   // 'history': 'PNotifyHistory.?',
@@ -20,7 +20,7 @@ let pnotify_js = {
   'core': 'PNotify.js',
   'animate': 'PNotifyAnimate.js',
   'buttons': 'PNotifyButtons.js',
-  // 'callbacks': 'PNotifyCallbacks.js',
+  'callbacks': 'PNotifyCallbacks.js',
   // 'confirm': 'PNotifyConfirm.js',
   // 'desktop': 'PNotifyDesktop.js',
   // 'history': 'PNotifyHistory.js',
@@ -98,8 +98,8 @@ let compile_js = (module, filename, args) => {
   echo('Compiling JavaScript '+module+' from '+src_filename+' to '+dst_filename);
   echo('Generating source map for '+dst_filename+' in '+dst_filename+'.map');
 
-  let inputCode, inputMap;
-  if (filename.slice(-4) === 'html') {
+  let inputCode, inputMap, isSvelte = filename.slice(-4) === 'html';
+  if (isSvelte) {
     // Use Svelte to compile the code first.
     const svelte = require('svelte');
     const {code, map} = svelte.compile(fs.readFileSync(src_filename, "utf8"), {
@@ -140,7 +140,7 @@ let compile_js = (module, filename, args) => {
       'stage-3'
     ],
     plugins: plugins,
-    sourceType: format === 'iife' ? 'script' : 'module'
+    sourceType: (format === 'iife' && isSvelte) ? 'script' : 'module'
   });
 
   code.to(dst_filename);

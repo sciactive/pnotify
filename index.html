@@ -46,13 +46,13 @@
   <link href="src/PNotifyBrightTheme.css" rel="stylesheet" type="text/css" />
   <script type="text/javascript" src="lib/iife/PNotifyButtons.js"></script>
   <script type="text/javascript" src="lib/iife/PNotifyAnimate.js"></script>
+  <script type="text/javascript" src="lib/iife/PNotifyCallbacks.js"></script>
   <!--
   <script type="text/javascript" src="lib/iife/PNotifyConfirm.js"></script>
   <script type="text/javascript" src="lib/iife/PNotifyNonBlock.js"></script>
   <script type="text/javascript" src="lib/iife/PNotifyMobile.js"></script>
   <script type="text/javascript" src="lib/iife/PNotifyDesktop.js"></script>
   <script type="text/javascript" src="lib/iife/PNotifyHistory.js"></script>
-  <script type="text/javascript" src="lib/iife/PNotifyCallbacks.js"></script>
   <script type="text/javascript" src="lib/iife/PNotifyReference.js"></script>
   -->
 
@@ -206,17 +206,24 @@
             nonblock: true
           }
         },
-        before_close: function(notice){
-          // You can access the notice's options with this. It is read only.
-          //notice.options.text;
+        modules: {
+          Callbacks: {
+            before_close: function(notice){
+              // You can access the notice's options like this.
+              // notice.get("text");
 
-          // You can change the notice's options after the timer like this:
-          //notice.update({
-          //    title: notice.options.title+" - Enjoy your Stay",
-          //    before_close: null
-          //});
-          //notice.queueRemove();
-          //return false;
+              // You can change the notice's options like this:
+              // notice.update({
+              //   title: notice.options.title+" - Enjoy your Stay",
+              //   modules: {
+              //     Callbacks: {}
+              //   }
+              // });
+
+              // notice.queueRemove();
+              // return false;
+            }
+          }
         }
       });
 
@@ -346,31 +353,33 @@
           },
           History: {
             history: false
+          },
+          Callbacks: {
+            before_open: function(notice){
+              progress = $(notice.refs.elem).find("div.progress-bar");
+              progress.width(cur_value+"%").attr("aria-valuenow", cur_value).find("span").html(cur_value+"%");
+              // Pretend to do something.
+              var timer = setInterval(function(){
+                if (cur_value == 70) {
+                  loader.update({title: "Aligning discrete worms", icon: "fa fa-circle-o-notch fa-spin"});
+                }
+                if (cur_value == 80) {
+                  loader.update({title: "Connecting end points", icon: "fa fa-refresh fa-spin"});
+                }
+                if (cur_value == 90) {
+                  loader.update({title: "Dividing and conquering", icon: "fa fa-spinner fa-spin"});
+                }
+                if (cur_value >= 100) {
+                  // Remove the interval.
+                  window.clearInterval(timer);
+                  loader.close();
+                  return;
+                }
+                cur_value += 1;
+                progress.width(cur_value+"%").attr("aria-valuenow", cur_value).find("span").html(cur_value+"%");
+              }, 65);
+            }
           }
-        },
-        before_open: function(notice){
-          progress = $(notice.refs.elem).find("div.progress-bar");
-          progress.width(cur_value+"%").attr("aria-valuenow", cur_value).find("span").html(cur_value+"%");
-          // Pretend to do something.
-          var timer = setInterval(function(){
-            if (cur_value == 70) {
-              loader.update({title: "Aligning discrete worms", icon: "fa fa-circle-o-notch fa-spin"});
-            }
-            if (cur_value == 80) {
-              loader.update({title: "Connecting end points", icon: "fa fa-refresh fa-spin"});
-            }
-            if (cur_value == 90) {
-              loader.update({title: "Dividing and conquering", icon: "fa fa-spinner fa-spin"});
-            }
-            if (cur_value >= 100) {
-              // Remove the interval.
-              window.clearInterval(timer);
-              loader.close();
-              return;
-            }
-            cur_value += 1;
-            progress.width(cur_value+"%").attr("aria-valuenow", cur_value).find("span").html(cur_value+"%");
-          }, 65);
         }
       });
     }
@@ -2179,63 +2188,87 @@ color: #FF0;
         PNotify.notice({
           title: 'I\'m Here',
           text: 'I have a callback for each of my events. I\'ll call all my callbacks while I change states.',
-          before_init: function(opts){
-            alert('I\'m called before the notice initializes. I\'m passed the options used to make the notice. I can modify them. Watch me replace the word callback with tire iron!');
-            opts.text = opts.text.replace(/callback/g, 'tire iron');
-          },
-          after_init: function(notice){
-            alert('I\'m called after the notice initializes. I\'m passed the PNotify object for the current notice: '+notice+'\n\nThere are more callbacks you can assign, but this is the last notice you\'ll see. Check the code to see them all.');
-          },
-          before_open: function(notice){
-            var source_note = 'Return false to cancel opening.';
-            dont_alert('I\'m called before the notice opens. I\'m passed the PNotify object for the current notice: '+notice);
-          },
-          after_open: function(notice){
-            dont_alert('I\'m called after the notice opens. I\'m passed the PNotify object for the current notice: '+notice);
-          },
-          before_close: function(notice, timer_hide){
-            var source_note = 'Return false to cancel close. Use PNotify.queueRemove() to set the removal timer again.';
-            dont_alert('I\'m called before the notice closes. I\'m passed the PNotify object for the current notice: '+notice);
-            dont_alert('I also have an argument called timer_hide, which is true if the notice was closed because the timer ran down. Value: '+timer_hide);
-          },
-          after_close: function(notice, timer_hide){
-            dont_alert('I\'m called after the notice closes. I\'m passed the PNotify object for the current notice: '+notice);
-            dont_alert('I also have an argument called timer_hide, which is true if the notice was closed because the timer ran down. Value: '+timer_hide);
+          modules: {
+            Callbacks: {
+              before_init: function(opts){
+                console.log('before_init', opts);
+                alert('I\'m called before the notice initializes. I\'m passed the options used to make the notice. I can modify them. Watch me replace the word callback with tire iron!');
+                opts.text = opts.text.replace(/callback/g, 'tire iron');
+              },
+              after_init: function(notice){
+                console.log('after_init', notice);
+                alert('I\'m called after the notice initializes. I\'m passed the PNotify object for the current notice: '+notice+'\n\nThere are more callbacks you can assign, but this is the last notice you\'ll see. Check the code to see them all.');
+              },
+              before_open: function(notice){
+                console.log('before_open', notice);
+                var source_note = 'Return false to cancel opening.';
+                dont_alert('I\'m called before the notice opens. I\'m passed the PNotify object for the current notice: '+notice);
+              },
+              after_open: function(notice){
+                console.log('after_open', notice);
+                dont_alert('I\'m called after the notice opens. I\'m passed the PNotify object for the current notice: '+notice);
+              },
+              before_close: function(notice, timer_hide){
+                console.log('before_close', notice, timer_hide);
+                var source_note = 'Return false to cancel close. Use PNotify.queueRemove() to set the removal timer again.';
+                dont_alert('I\'m called before the notice closes. I\'m passed the PNotify object for the current notice: '+notice);
+                dont_alert('I also have an argument called timer_hide, which is true if the notice was closed because the timer ran down. Value: '+timer_hide);
+              },
+              after_close: function(notice, timer_hide){
+                console.log('after_close', notice, timer_hide);
+                dont_alert('I\'m called after the notice closes. I\'m passed the PNotify object for the current notice: '+notice);
+                dont_alert('I also have an argument called timer_hide, which is true if the notice was closed because the timer ran down. Value: '+timer_hide);
+              }
+            }
           }
         });">Notice with Callbacks</button>
         <button class="btn btn-default source" onclick="PNotify.notice({
           title: 'Notice',
           text: 'Right now I\'m a notice.',
-          before_close: function(notice){
-            notice.update({
-              title: 'Error',
-              text: 'Uh oh. Now I\'ve become an error.',
-              type: 'error',
+          modules: {
+            Callbacks: {
               before_close: function(notice){
                 notice.update({
-                  title: 'Success',
-                  text: 'I fixed the error!',
-                  type: 'success',
-                  before_close: function(notice){
-                    notice.update({
-                      title: 'Info',
-                      text: 'Everything\'s cool now.',
-                      type: 'info',
-                      before_close: null
-                    });
-                    notice.attention('swing');
-                    notice.queueRemove();
-                    return false;
+                  title: 'Error',
+                  text: 'Uh oh. Now I\'ve become an error.',
+                  type: 'error',
+                  modules: {
+                    Callbacks: {
+                      before_close: function(notice){
+                        notice.update({
+                          title: 'Success',
+                          text: 'I fixed the error!',
+                          type: 'success',
+                          modules: {
+                            Callbacks: {
+                              before_close: function(notice){
+                                notice.update({
+                                  title: 'Info',
+                                  text: 'Everything\'s cool now.',
+                                  type: 'info',
+                                  modules: {
+                                    Callbacks: {}
+                                  }
+                                });
+                                notice.attention('swing');
+                                notice.queueRemove();
+                                return false;
+                              }
+                            }
+                          }
+                        });
+                        notice.attention('swing');
+                        notice.queueRemove();
+                        return false;
+                      }
+                    }
                   }
                 });
                 notice.attention('swing');
                 notice.queueRemove();
                 return false;
               }
-            });
-            notice.attention('swing');
-            notice.queueRemove();
-            return false;
+            }
           }
         });">Notice to Error to Success to Info</button>
         <button class="btn btn-default source" onclick="fake_load();">Progress Loader</button>
