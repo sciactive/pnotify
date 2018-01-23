@@ -306,9 +306,11 @@ const stack_bottomleft = {
   "dir2": "up",
   "push": "top"
 };
+const stack_topcenter = {
+  "dir1": "down"
+};
 const stack_modal = {
   "dir1": "down",
-  "dir2": "right",
   "push": "top",
   "modal": true,
   "overlay_close": true
