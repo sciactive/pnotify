@@ -53,6 +53,9 @@
         {{{_text_processed}}}
       {{/if}}
     </div>
+    {{#each _modulesAppendContainer as module}}
+      <:Component {module} on:init="initModule(event.module)" />
+    {{/each}}
   </div>
 </div>
 
@@ -173,6 +176,7 @@
 
       // Modules can add themselves to these to be rendered in the template.
       PNotify.modulesPrependContainer = [];
+      PNotify.modulesAppendContainer = [];
 
       // Helper function to create a new notice.
       PNotify.alert = (options) => {
@@ -368,6 +372,7 @@
         "_timerHide": false, // Stores whether the notice was hidden by a timer.
         "_modules": {}, // Stores the instances of the modules.
         "_modulesPrependContainer": PNotify.modulesPrependContainer,
+        "_modulesAppendContainer": PNotify.modulesAppendContainer,
       }, PNotify.defaults);
       data.modules = Object.assign({}, PNotify.defaults.modules);
       return data;

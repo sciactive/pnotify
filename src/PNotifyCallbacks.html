@@ -28,6 +28,8 @@
 
   export default {
     setup: (Component) => {
+      Component.key = "Callbacks";
+
       let _alert   = PNotify.alert,
           _notice  = PNotify.notice,
           _info    = PNotify.info,
@@ -56,6 +58,9 @@
       PNotify.error = (options) => {
         return init(_error, options);
       };
+
+      // Register the module with PNotify.
+      PNotify.modules.Callbacks = Component;
     }
   }
 </script>

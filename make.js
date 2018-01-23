@@ -14,6 +14,7 @@ let pnotify_src = {
   // 'history': 'PNotifyHistory.?',
   // 'mobile': 'PNotifyMobile.?',
   // 'nonblock': 'PNotifyNonBlock.?',
+  'reference': 'PNotifyReference.html',
 };
 
 let pnotify_js = {
@@ -26,6 +27,7 @@ let pnotify_js = {
   // 'history': 'PNotifyHistory.js',
   // 'mobile': 'PNotifyMobile.js',
   // 'nonblock': 'PNotifyNonBlock.js',
+  'reference': 'PNotifyReference.js',
 };
 
 let pnotify_css = {
