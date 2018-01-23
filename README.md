@@ -4,8 +4,7 @@
 
 PNotify is a JavaScript notification plugin. PNotify can provide [desktop notifications](http://sciactive.com/pnotify/#web-notifications) based on the [Web Notifications spec](http://www.w3.org/TR/notifications/). If desktop notifications are not available or not permitted, PNotify will fall back to an in-browser notice.
 
-Demos
-=====
+# Demos
 
 * http://sciactive.com/pnotify/ for the latest release
 * https://sciactive.github.io/pnotify/ for what's in development (may be broken)
@@ -14,9 +13,30 @@ Demos
 
 I guarantee **none of this README applies to you!** You want to check out the **[README on the master branch](https://github.com/sciactive/pnotify/blob/master/README.md)**.
 
-This README is for **PNotify v4**. v4 isn't out yet, but it's got some huge changes. First of all, *jQuery is no longer required*. v4 doesn't require any libraries, actually. It's built using [Svelte](http://svelte.technology), which means it compiles down to vanilla JS.
+This README is for **PNotify v4**. v4 isn't out yet, but it's got some huge changes.
 
-But v4 isn't even in the alpha stage yet. The only thing that works is PNotify Core and the Buttons, Animate, and Callbacks modules. The other modules don't work.
+* jQuery is no longer required. v4 doesn't require any libraries, actually.
+* It's built using [Svelte](http://svelte.technology), which means it compiles down to vanilla JS.
+* PNotify now has an ES6 module build.
+
+But v4 isn't even in the alpha stage yet.
+
+Things that work:
+
+* PNotify Core
+* Bright Theme styling (CSS)
+* Material styling (module)
+* Buttons module
+* Animate module
+* Callbacks module
+
+Things that don't work:
+
+* Confirm module
+* Desktop module
+* History module
+* Mobile module
+* NonBlock module
 
 # Getting Started
 
@@ -142,7 +162,7 @@ new PNotify({
 * `stack: PNotify.defaultStack` - The stack on which the notices will be placed. Also controls the direction the notices stack.
 * `modules: {}` - This is where options for modules should be defined.
 
-`PNotify.defaultStack` = `{"dir1": "down", "dir2": "left", "push": "bottom", "spacing1": 25, "spacing2": 25, "context": $("body"), "modal": false}`;
+`PNotify.defaultStack` = `{"dir1": "down", "dir2": "left", "push": "bottom", "spacing1": 25, "spacing2": 25, "context": document.body, "modal": false}`;
 
 ## Desktop Module
 
@@ -281,7 +301,7 @@ The callback options all expect one argument, a function, which will be called w
 
 A stack is an object which PNotify uses to determine where to position notices.
 
-* A stack has one mandatory properties, `dir1`.
+* A stack has one mandatory property, `dir1`.
 * You can also include a `dir2`.
 * `dir1` is the first direction in which the notices are stacked. When the notices run out of room in the window, they will move over in the direction specified by `dir2`.
 * If there is no `dir2`, the notices will be centered along the axis of `dir1`.
