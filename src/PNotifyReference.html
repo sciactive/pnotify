@@ -10,7 +10,7 @@
       type="button"
       disabled="{{!_mouseIsIn}}"
       on:click="doSomething()">
-    <i class="{{_notice.get('_styles').athing}}" />&nbsp;{{labels.text}}
+    <i class="{{_notice.get('_icons').athing}}" />&nbsp;{{labels.text}}
   </button>
   <!-- Since our button is floated, we have to add a clearing div. -->
   <div class="ui-pnotify-reference-clearing" />
@@ -40,15 +40,24 @@
       // Append this module to the container.
       PNotify.modulesAppendContainer.push(Component);
 
-      // This is where you would add any styling options you are using in your code.
-      Object.assign(PNotify.styling.brighttheme, {
+      // This is where you would add any styling or icons classes you are using in your code.
+      Object.assign(PNotify.icons.brighttheme, {
         athing: "bt-icon bt-icon-refresh"
       });
-      Object.assign(PNotify.styling.bootstrap3, {
+      Object.assign(PNotify.icons.bootstrap3, {
         athing: "glyphicon glyphicon-refresh"
       });
-      Object.assign(PNotify.styling.fontawesome, {
+      Object.assign(PNotify.icons.fontawesome4, {
         athing: "fa fa-refresh"
+      });
+      Object.assign(PNotify.icons.fontawesome5, {
+        athing: "fas fa-refresh"
+      });
+      if (!PNotify.icons.material) {
+        PNotify.icons.material = {};
+      }
+      Object.assign(PNotify.icons.material, {
+        athing: "material-icons pnotify-material-icon-refresh"
       });
     },
 

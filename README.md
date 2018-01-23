@@ -166,7 +166,7 @@ new PNotify({
 * `stack: PNotify.defaultStack` - The stack on which the notices will be placed. Also controls the direction the notices stack.
 * `modules: {}` - This is where options for modules should be defined.
 
-`PNotify.defaultStack` = `{"dir1": "down", "dir2": "left", "push": "bottom", "spacing1": 25, "spacing2": 25, "context": document.body, "modal": false}`;
+`PNotify.defaultStack` = `{"dir1": "down", "dir2": "left", "firstpos1": 25, "firstpos2": 25, "spacing1": 36, "spacing2": 36, "push": "bottom", "context": document.body}`;
 
 ## Desktop Module
 
@@ -305,21 +305,28 @@ The callback options all expect one argument, a function, which will be called w
 
 A stack is an object which PNotify uses to determine where to position notices.
 
-* A stack has one mandatory property, `dir1`.
-* You can also include a `dir2`.
+* A stack can include a `dir1` property, wich can be `"up"`, `"down"`, `"right"`, or `"left"`.
+* If you include `dir1`, you can also include `firstpos1`, a number of pixels from the edge of the container the first notice will appear.
+* You can also include a `dir2`, which should be a perpendicular direction to `dir1`.
+* If you include `dir2`, you can also include `firstpos2`, a number of pixels from the edge of the container the first notice will appear.
 * `dir1` is the first direction in which the notices are stacked. When the notices run out of room in the window, they will move over in the direction specified by `dir2`.
-* If there is no `dir2`, the notices will be centered along the axis of `dir1`.
-* The directions can be `"up"`, `"down"`, `"right"`, or `"left"`.
+* If there is no `dir1` property, the notice will be centered.
+* If there is a `dir1` and no `dir2`, the notices will be centered along the axis of `dir1`.
+* The `firstpos*` values are relative to an edge determined by the `dir*` value.
+  * `dir*` is `"up"` - `firstpos*` is relative to the bottom edge.
+  * `dir*` is `"down"` - `firstpos*` is relative to the top edge.
+  * `dir*` is `"left"` - `firstpos*` is relative to the right edge.
+  * `dir*` is `"right"` - `firstpos*` is relative to the left edge.
 * Stacks are independent of each other, so a stack doesn't know and doesn't care if it overlaps (and blocks) another stack.
 * Stack objects are used and manipulated by PNotify, and therefore, should be a variable when passed.
 
-> :warning: Calling something like `PNotify.alert({stack: {"dir1": "down", "dir2": "left"}});` will **NOT** work. It will create a notice, but that notice will be in its own stack and will overlap other notices.
+> :warning: Calling something like `PNotify.alert({text: "notice", stack: {"dir1": "down", "firstpos1": 25}});` may not do what you want. It will create a notice, but that notice will be in its own stack and will overlap other notices.
 
 ## Modal Stacks
 
 You can set a stack as modal by setting the `modal` property to true. A modal stack creates an overlay behind it when any of its notices are open. When the last notice within it is removed, the overlay is hidden.
 
-If the "overlay_close" property is set to true, then clicking the overlay will cause all of the notices in that stack to be removed.
+If the `overlay_close` property is set to true, then clicking the overlay will cause all of the notices in that stack to be removed.
 
 ## Example Stacks
 
@@ -329,97 +336,61 @@ These are some example stacks that are used on the demo page.
 const stack_topleft = {
   "dir1": "down",
   "dir2": "right",
+  "firstpos1": 25,
+  "firstpos2": 25,
   "push": "top"
 };
 const stack_bottomleft = {
   "dir1": "right",
   "dir2": "up",
+  "firstpos1": 25,
+  "firstpos2": 25,
   "push": "top"
 };
 const stack_topcenter = {
-  "dir1": "down"
+  "dir1": "down",
+  "firstpos1": 25
 };
 const stack_modal = {
   "dir1": "down",
+  "firstpos1": 25,
   "push": "top",
   "modal": true,
   "overlay_close": true
 };
 const stack_bar_top = {
   "dir1": "down",
-  "dir2": "right",
-  "push": "top",
+  "firstpos1": 0,
   "spacing1": 0,
-  "spacing2": 0
+  "push": "top"
 };
 const stack_bar_bottom = {
   "dir1": "up",
-  "dir2": "right",
-  "spacing1": 0,
-  "spacing2": 0
+  "firstpos1": 0,
+  "spacing1": 0
 };
 const stack_context = {
   "dir1": "down",
   "dir2": "left",
+  "firstpos1": 25,
+  "firstpos2": 25,
   "context": document.getElementById("stack-context")
 };
 ```
-
-This stack is initially positioned through code instead of CSS.
-
-```js
-const stack_bottomright = {
-  "dir1": "up",
-  "dir2": "left",
-  "firstpos1": 25,
-  "firstpos2": 25
-};
-```
-
-This is done through two extra variables. `firstpos1` and `firstpos2` are pixel values, relative to a viewport edge. `dir1` and `dir2`, respectively, determine which edge. It is calculated as follows:
-
-* `dir = "up"` - firstpos is relative to the bottom of viewport.
-* `dir = "down"` - firstpos is relative to the top of viewport.
-* `dir = "right"` - firstpos is relative to the left of viewport.
-* `dir = "left"` - firstpos is relative to the right of viewport.
-
-To create a stack in the top left, define the stack:
-
-```js
-const stack_topleft = {
-  "dir1": "down",
-  "dir2": "right"
-};
-```
-
-and then add two options to your pnotify call:
-
-```js
-{
-  addclass: "stack-topleft", // This is one of the included classes.
-  stack: stack_topleft
-}
-```
-
-There are several CSS classes included which will position your notices for you:
-
-* `stack-topleft`
-* `stack-bottomleft`
-* `stack-bottomright`
-
-You can create your own custom position and movement by defining a custom stack.
 
 If you just want to position a single notice programmatically, and don't want to add any other notices into the stack, you can use something like this:
 
 ```js
 new PNotify({
-  text: "Notice that's positioned programmatically in its own stack.",
+  text: "Notice that's positioned in its own stack.",
   stack: {
     "dir1": "down", "dir2": "right",
     "firstpos1": 90, "firstpos2": 90
   }
 });
 ```
+
+This will create a notice that is positioned 90px from the top edge and 90px from the left edge of the viewport.
 
 # Licensing and Additional Info
 

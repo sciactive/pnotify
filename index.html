@@ -151,43 +151,13 @@
       color: #FF0;
     }
 
-    /* Alternate stack initial positioning. This one is done through code,
-      to show how it is done. Look down at the stack_bottomright variable
-      in the JavaScript below. */
-    [ui-pnotify].ui-pnotify.stack-bottomright {
-      /* These are just CSS default values to reset the PNotify CSS. */
-      right: auto;
-      top: auto;
-      left: auto;
-      bottom: auto;
-    }
-    [ui-pnotify].ui-pnotify.stack-custom {
-      /* Custom values have to be in pixels, because the code parses them. */
-      top: 100px;
-      left: 100px;
-      right: auto;
-    }
-    [ui-pnotify].ui-pnotify.stack-custom2 {
-      top: auto;
-      left: auto;
-      bottom: 100px;
-      right: 100px;
-    }
-    /* This one is totally different. It stacks at the top and looks
+    /* This stack is totally different. It stacks at the top and looks
       like a Microsoft-esque browser notice bar. */
     [ui-pnotify].ui-pnotify.stack-bar-top {
-      right: 0;
-      top: 0;
       width: 100%;
     }
     [ui-pnotify].ui-pnotify.stack-bar-bottom {
       width: 70%;
-      margin-left: 15%;
-      margin-right: 15%;
-      right: auto;
-      bottom: 0;
-      top: auto;
-      left: auto;
     }
   </style>
 
@@ -432,12 +402,11 @@
 
     function show_stack_topleft(type) {
       if (typeof stack_topleft === "undefined") {
-        stack_topleft = {"dir1": "down", "dir2": "right", "push": "top"};
+        stack_topleft = {"dir1": "down", "dir2": "right", "firstpos1": 25, "firstpos2": 25, "push": "top"};
       }
       var opts = {
         title: "Over Here",
         text: "Check me out. I'm in a different stack.",
-        addclass: "stack-topleft",
         stack: stack_topleft
       };
       switch (type) {
@@ -462,12 +431,11 @@
 
     function show_stack_bottomleft(type) {
       if (typeof stack_bottomleft === "undefined") {
-        stack_bottomleft = {"dir1": "right", "dir2": "up", "push": "top"};
+        stack_bottomleft = {"dir1": "right", "dir2": "up", "firstpos1": 25, "firstpos2": 25, "push": "top"};
       }
       var opts = {
         title: "Over Here",
         text: "Check me out. I'm in a different stack.",
-        addclass: "stack-bottomleft",
         stack: stack_bottomleft
       };
       switch (type) {
@@ -497,7 +465,6 @@
       var opts = {
         title: "Over Here",
         text: "Check me out. I'm in a different stack.",
-        addclass: "stack-bottomright",
         stack: stack_bottomright
       };
       switch (type) {
@@ -522,7 +489,7 @@
 
     function show_stack_topcenter(type) {
       if (typeof stack_topcenter === "undefined") {
-        stack_topcenter = {"dir1": "down"};
+        stack_topcenter = {"dir1": "down", "firstpos1": 25};
       }
       var opts = {
         title: "Over Here",
@@ -549,69 +516,9 @@
       PNotify.alert(opts);
     };
 
-    function show_stack_custom(type) {
-      if (typeof stack_custom === "undefined") {
-        stack_custom = {"dir1": "right", "dir2": "down"};
-      }
-      var opts = {
-        title: "Over Here",
-        text: "Check me out. I'm in a different stack.",
-        addclass: "stack-custom",
-        stack: stack_custom
-      };
-      switch (type) {
-        case 'error':
-          opts.title = "Oh No";
-          opts.text = "Watch out for that water tower!";
-          opts.type = "error";
-          break;
-        case 'info':
-          opts.title = "Breaking News";
-          opts.text = "Have you met Ted?";
-          opts.type = "info";
-          break;
-        case 'success':
-          opts.title = "Good News Everyone";
-          opts.text = "I've invented a device that bites shiny metal asses.";
-          opts.type = "success";
-          break;
-      }
-      PNotify.alert(opts);
-    };
-
-    function show_stack_custom2(type) {
-      if (typeof stack_custom2 === "undefined") {
-        stack_custom2 = {"dir1": "left", "dir2": "up", "push": "top"};
-      }
-      var opts = {
-        title: "Over Here",
-        text: "Check me out. I'm in a different stack.",
-        addclass: "stack-custom2",
-        stack: stack_custom2
-      };
-      switch (type) {
-        case 'error':
-          opts.title = "Oh No";
-          opts.text = "Watch out for that water tower!";
-          opts.type = "error";
-          break;
-        case 'info':
-          opts.title = "Breaking News";
-          opts.text = "Have you met Ted?";
-          opts.type = "info";
-          break;
-        case 'success':
-          opts.title = "Good News Everyone";
-          opts.text = "I've invented a device that bites shiny metal asses.";
-          opts.type = "success";
-          break;
-      }
-      PNotify.alert(opts);
-    };
-
     function show_stack_modal(type) {
       if (typeof stack_modal === "undefined") {
-        stack_modal = {"dir1": "down", "push": "top", "modal": true, "overlay_close": true};
+        stack_modal = {"dir1": "up", "firstpos1": 25, "push": "top", "modal": true, "overlay_close": true};
       }
       var opts = {
         title: "Over Here",
@@ -640,12 +547,11 @@
 
     function show_stack_modal_left(type) {
       if (typeof stack_modal_left === "undefined") {
-        stack_modal_left = {"dir1": "down", "dir2": "right", "push": "top", "modal": true, "overlay_close": true};
+        stack_modal_left = {"dir1": "down", "dir2": "right", "firstpos1": 25, "firstpos2": 25, "push": "top", "modal": true, "overlay_close": true};
       }
       var opts = {
         title: "Over Here",
         text: "Check me out. I'm in a different stack.",
-        addclass: "stack-topleft",
         stack: stack_modal_left
       };
       switch (type) {
@@ -670,7 +576,7 @@
 
     function show_stack_bar_top(type) {
       if (typeof stack_bar_top === "undefined") {
-        stack_bar_top = {"dir1": "down", "push": "top", "spacing1": 0, "spacing2": 0, "firstpos1": 0, "firstpos2": 0};
+        stack_bar_top = {"dir1": "down", "firstpos1": 0, "spacing1": 0, "push": "top"};
       }
       var opts = {
         title: "Over Here",
@@ -703,7 +609,7 @@
 
     function show_stack_bar_bottom(type) {
       if (typeof stack_bar_bottom === "undefined") {
-        stack_bar_bottom = {"dir1": "up", "spacing1": 0, "spacing2": 0, "firstpos1": 0, "firstpos2": 0};
+        stack_bar_bottom = {"dir1": "up", "firstpos1": 0, "spacing1": 0};
       }
       var opts = {
         title: "Over Here",
@@ -736,10 +642,10 @@
 
     function show_stack_context(type, modal) {
       if (typeof stack_context === "undefined") {
-        stack_context = {"dir1": "down", "dir2": "left", "context": document.getElementById("stack-context")};
+        stack_context = {"dir1": "down", "dir2": "left", "firstpos1": 25, "firstpos2": 25, "context": document.getElementById("stack-context")};
       }
       if (typeof stack_context_modal === "undefined") {
-        stack_context_modal = {"dir1": "down", "context": document.getElementById("stack-context"), "modal": true, "overlay_close": true};
+        stack_context_modal = {"dir1": "down", "firstpos1": 25, "context": document.getElementById("stack-context"), "modal": true, "overlay_close": true};
       }
       var opts = {
         title: "Over Here",
@@ -771,7 +677,7 @@
         text: "Stacks are used to position notices and determine where new notices will go when they're created. Each notice that's placed into a stack will be positioned related to the other notices in that stack.",
         icon: "fa fa-bars",
         hide: false,
-        stack: {"dir1": "down", "dir2": "right", "modal": true, "overlay_close": true},
+        stack: {"modal": true, "overlay_close": true},
         modules: {
           History: {
             history: false
@@ -873,7 +779,7 @@
     <div class="intro-section">
       <h1>PNotify</h1>
       <h3>v4 <abbr title="almost everything is broken">Pre-Alpha</abbr></h3>
-      <p id="description">Beautiful JavaScript notifications. Now with <a href="nodependencies.html">zero dependencies</a>!</p>
+      <p id="description">Beautiful JavaScript notifications. Now with <a href="index-nodependencies.html" target="_blank">zero dependencies</a>!</p>
     </div>
     <div class="intro-section">
       <a class="right-button btn btn-default btn-large" href="https://github.com/sciactive/pnotify" target="_blank" title="Fork me on GitHub">PNotify on GitHub <img src="includes/github-icon.png" alt="GitHub Icon" /></a>
@@ -1048,102 +954,7 @@
               <input type="radio" name="styling" id="style-fontawesome" autocomplete="off"> Font Awesome Icons
             </label>
           </div>
-          <button class="btn btn-default source" onclick="PNotify.notice({
-            title: 'Bright Theme Notice',
-            text: 'Look at my beautiful styling! ^_^',
-            styling: 'brighttheme',
-            icons: 'brighttheme'
-          });
-          PNotify.info({
-            title: 'Bright Theme Info',
-            text: 'Look at my beautiful styling! ^_^',
-            styling: 'brighttheme',
-            icons: 'brighttheme'
-          });
-          PNotify.success({
-            title: 'Bright Theme Success',
-            text: 'Look at my beautiful styling! ^_^',
-            styling: 'brighttheme',
-            icons: 'brighttheme'
-          });
-          PNotify.error({
-            title: 'Bright Theme Error',
-            text: 'Look at my beautiful styling! ^_^',
-            styling: 'brighttheme',
-            icons: 'brighttheme'
-          });
-          PNotify.notice({
-            title: 'Material Notice',
-            text: 'Look at my beautiful styling! ^_^',
-            styling: 'material',
-            icons: 'material'
-          });
-          PNotify.info({
-            title: 'Material Info',
-            text: 'Look at my beautiful styling! ^_^',
-            styling: 'material',
-            icons: 'material'
-          });
-          PNotify.success({
-            title: 'Material Success',
-            text: 'Look at my beautiful styling! ^_^',
-            styling: 'material',
-            icons: 'material'
-          });
-          PNotify.error({
-            title: 'Material Error',
-            text: 'Look at my beautiful styling! ^_^',
-            styling: 'material',
-            icons: 'material'
-          });
-          PNotify.notice({
-            title: 'Bootstrap Notice',
-            text: 'Look at my beautiful styling! ^_^',
-            styling: 'bootstrap3',
-            icons: 'bootstrap3'
-          });
-          PNotify.info({
-            title: 'Bootstrap Info',
-            text: 'Look at my beautiful styling! ^_^',
-            styling: 'bootstrap3',
-            icons: 'bootstrap3'
-          });
-          PNotify.success({
-            title: 'Bootstrap Success',
-            text: 'Look at my beautiful styling! ^_^',
-            styling: 'bootstrap3',
-            icons: 'bootstrap3'
-          });
-          PNotify.error({
-            title: 'Bootstrap Error',
-            text: 'Look at my beautiful styling! ^_^',
-            styling: 'bootstrap3',
-            icons: 'bootstrap3'
-          });
-          PNotify.notice({
-            title: 'Font Awesome Notice',
-            text: 'Look at my beautiful styling! ^_^',
-            styling: 'bootstrap3',
-            icons: 'fontawesome4'
-          });
-          PNotify.info({
-            title: 'Font Awesome Info',
-            text: 'Look at my beautiful styling! ^_^',
-            styling: 'bootstrap3',
-            icons: 'fontawesome4'
-          });
-          PNotify.success({
-            title: 'Font Awesome Success',
-            text: 'Look at my beautiful styling! ^_^',
-            styling: 'bootstrap3',
-            icons: 'fontawesome4'
-          });
-          PNotify.error({
-            title: 'Font Awesome Error',
-            text: 'Look at my beautiful styling! ^_^',
-            styling: 'bootstrap3',
-            icons: 'fontawesome4'
-          });">Demo Each</button>
+          <a class="btn btn-default" href="index-styling.html" target="_blank">Demo All Styles/Icons</a>
         </div>
       </div>
       <script type="text/javascript">
@@ -2018,7 +1829,7 @@ color: #FF0;
           text: 'Are you sure?',
           icon: 'glyphicon glyphicon-question-sign',
           hide: false,
-          stack: {'dir1': 'down', 'dir2': 'right', 'modal': true},
+          stack: {'dir1': 'down', 'modal': true, 'firstpos1': 25},
           modules: {
             Confirm: {
               confirm: true
@@ -2402,18 +2213,6 @@ color: #FF0;
         <button class="btn btn-default source" onclick="show_stack_topcenter('success');">Success</button>
         <button class="btn btn-default source" onclick="show_stack_topcenter('error');">Error</button>
         Top Center. Moves down. Pushes to stack bottom.
-        <hr />
-        <button class="btn btn-default source" onclick="show_stack_custom('notice');">Notice</button>
-        <button class="btn btn-default source" onclick="show_stack_custom('info');">Info</button>
-        <button class="btn btn-default source" onclick="show_stack_custom('success');">Success</button>
-        <button class="btn btn-default source" onclick="show_stack_custom('error');">Error</button>
-        Custom. Moves right, then down. Pushes to stack bottom.
-        <hr />
-        <button class="btn btn-default source" onclick="show_stack_custom2('notice');">Notice</button>
-        <button class="btn btn-default source" onclick="show_stack_custom2('info');">Info</button>
-        <button class="btn btn-default source" onclick="show_stack_custom2('success');">Success</button>
-        <button class="btn btn-default source" onclick="show_stack_custom2('error');">Error</button>
-        Custom. Moves left, then up. Pushes to stack top.
       </div>
       <div class="panel-heading">
         <h3 class="panel-title">Really Different Stacks</h3>
@@ -2423,7 +2222,7 @@ color: #FF0;
         <button class="btn btn-default source" onclick="show_stack_modal('info');">Info</button>
         <button class="btn btn-default source" onclick="show_stack_modal('success');">Success</button>
         <button class="btn btn-default source" onclick="show_stack_modal('error');">Error</button>
-        Modal stack, centered. Moves down. Pushes to stack top.
+        Modal stack, centered. Moves up. Pushes to stack top.
         <hr />
         <button class="btn btn-default source" onclick="show_stack_modal_left('notice');">Notice</button>
         <button class="btn btn-default source" onclick="show_stack_modal_left('info');">Info</button>
@@ -2499,8 +2298,7 @@ color: #FF0;
                 <pre class="code">PNotify.notice({
   title: "Over Here",
   text: "Check me out. I'm in a different stack.",
-  addclass: "stack-custom",
-  stack: {"dir1":"down", "dir2":"right", "push":"top"}
+  stack: {"dir1":"down", "dir2":"right", "firstpos1":25, "firstpos2":25, "push":"top"}
 })</pre>
               </div>
             </div>
@@ -2509,11 +2307,10 @@ color: #FF0;
             <div class="panel panel-success">
               <div class="panel-heading"><h4 class="panel-title">Good</h4></div>
               <div class="panel-body">
-                <pre class="code">var myStack = {"dir1":"down", "dir2":"right", "push":"top"};
+                <pre class="code">var myStack = {"dir1":"down", "dir2":"right", "firstpos1":25, "firstpos2":25, "push":"top"};
 PNotify.notice({
   title: "Over Here",
   text: "Check me out. I'm in a different stack.",
-  addclass: "stack-custom",
   stack: myStack
 })</pre>
               </div>
