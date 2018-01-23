@@ -8,7 +8,7 @@ Demos
 =====
 
 * http://sciactive.com/pnotify/ for the latest release
-* https://sciactive.github.io/pnotify/ for what's on master (may be broken)
+* https://sciactive.github.io/pnotify/ for what's in development (may be broken)
 
 # Whoa there!
 
