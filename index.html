@@ -50,9 +50,9 @@
   <script type="text/javascript" src="lib/iife/PNotifyButtons.js"></script>
   <script type="text/javascript" src="lib/iife/PNotifyAnimate.js"></script>
   <script type="text/javascript" src="lib/iife/PNotifyCallbacks.js"></script>
+  <script type="text/javascript" src="lib/iife/PNotifyNonBlock.js"></script>
   <!--
   <script type="text/javascript" src="lib/iife/PNotifyConfirm.js"></script>
-  <script type="text/javascript" src="lib/iife/PNotifyNonBlock.js"></script>
   <script type="text/javascript" src="lib/iife/PNotifyMobile.js"></script>
   <script type="text/javascript" src="lib/iife/PNotifyDesktop.js"></script>
   <script type="text/javascript" src="lib/iife/PNotifyHistory.js"></script>
@@ -162,9 +162,7 @@
         modules: {
           NonBlock: {
             nonblock: true
-          }
-        },
-        modules: {
+          },
           Callbacks: {
             before_close: function(notice){
               // You can access the notice's options like this.

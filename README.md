@@ -29,6 +29,7 @@ Things that work:
 * Buttons module
 * Animate module
 * Callbacks module
+* NonBlock module
 
 Things that don't work:
 
@@ -36,7 +37,6 @@ Things that don't work:
 * Desktop module
 * History module
 * Mobile module
-* NonBlock module
 
 # Getting Started
 
@@ -288,6 +288,9 @@ The callback options all expect one argument, a function, which will be called w
 * `notice.refs.container` - The notice container DOM element.
 * `notice.refs.titleContainer` - The title container DOM element.
 * `notice.refs.textContainer` - The text container DOM element.
+* `notice.addModuleClass(className)` - This is for modules to add classes to the notice.
+* `notice.removeModuleClass(className)` - This is for modules to remove classes from the notice.
+* `notice.hasModuleClass(className)` - This is for modules to test classes on the notice.
 
 ## From the [Svelte Component API](https://svelte.technology/guide#component-api)
 

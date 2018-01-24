@@ -11,21 +11,23 @@
 -->
 
 <div ref:elem
-    class="ui-pnotify {{_styles.element}} {{addclass}} {{_animatingClass}} {{_moveClass}} {{animation === 'fade' ? 'ui-pnotify-fade-'+animate_speed : ''}}"
+    class="ui-pnotify {{_styles.element ? _styles.element : ''}} {{addclass}} {{_animatingClass}} {{_moveClass}} {{animation === 'fade' ? 'ui-pnotify-fade-'+animate_speed : ''}} {{_moduleClasses.join(' ')}}"
     aria-live="assertive"
     role="alertdialog"
     ui-pnotify
-    on:mousein="fire('mousein', event)"
+    on:mouseover="fire('mouseover', event)"
     on:mouseout="fire('mouseout', event)"
     on:mouseenter="fire('mouseenter', event)"
     on:mouseleave="fire('mouseleave', event)"
+    on:mousemove="fire('mousemove', event)"
     on:mousedown="fire('mousedown', event)"
     on:mouseup="fire('mouseup', event)"
+    on:click="fire('click', event)"
+    on:dblclick="fire('dblclick', event)"
     on:focus="fire('focus', event)"
-    on:blur="fire('blur', event)"
-    on:click="fire('click', event)">
+    on:blur="fire('blur', event)">
   <div ref:container
-      class="ui-pnotify-container {{_styles.container}} {{_styles[type]}} {{cornerclass}} {{shadow ? 'ui-pnotify-shadow' : ''}}"
+      class="ui-pnotify-container {{_styles.container ? _styles.container : ''}} {{_styles[type] ? _styles[type] : ''}} {{cornerclass}} {{shadow ? 'ui-pnotify-shadow' : ''}}"
       style="
         {{typeof width === 'string' ? 'width: '+width+';' : ''}}
         {{typeof min_height === 'string' ? 'min-height: '+min_height+';' : ''}}
@@ -35,18 +37,18 @@
       <:Component {module} on:init="initModule(event.module)" />
     {{/each}}
     {{#if icon !== false}}
-      <div class="ui-pnotify-icon {{_styles.icon}}">
-        <span class="{{icon === true ? _icons[type] : icon}}"></span>
+      <div class="ui-pnotify-icon {{_styles.icon ? _styles.icon : ''}}">
+        <span class="{{icon === true ? (_icons[type] ? _icons[type] : '') : icon}}"></span>
       </div>
     {{/if}}
-    <h4 ref:titleContainer class="ui-pnotify-title {{_styles.title}}" style="display: {{title === false ? 'none' : 'block'}}">
+    <h4 ref:titleContainer class="ui-pnotify-title {{_styles.title ? _styles.title : ''}}" style="display: {{title === false ? 'none' : 'block'}}">
       {{#if title_escape}}
         {{title}}
       {{else}}
         {{{title}}}
       {{/if}}
     </h4>
-    <div ref:textContainer class="ui-pnotify-text {{_styles.text}}" style="display: {{text === false ? 'none' : 'block'}}" role="alert">
+    <div ref:textContainer class="ui-pnotify-text {{_styles.text ? _styles.text : ''}}" style="display: {{text === false ? 'none' : 'block'}}" role="alert">
       {{#if text_escape}}
         {{text}}
       {{else}}
@@ -376,6 +378,7 @@
         "_animatingClass": "", // Stores the class that adds entry/exit animation effects.
         "_moveClass": "", // Stores the class that adds movement animation effects.
         "_timerHide": false, // Stores whether the notice was hidden by a timer.
+        "_moduleClasses": [], // Modules can add classes here to be added to the notice element. (They should play nice and not remove classes that aren't theirs.)
         "_modules": {}, // Stores the instances of the modules.
         "_modulesPrependContainer": PNotify.modulesPrependContainer,
         "_modulesAppendContainer": PNotify.modulesAppendContainer,
@@ -921,6 +924,28 @@
           "_timer": setTimeout(() => this.close(true), (isNaN(this.get("delay")) ? 0 : this.get("delay")))
         });
         return this;
+      },
+
+      addModuleClass(className) {
+        const moduleClasses = this.get("_moduleClasses");
+        if (moduleClasses.indexOf(className) === -1) {
+          moduleClasses.push(className);
+          this.set({"_moduleClasses": moduleClasses});
+        }
+      },
+
+      removeModuleClass(className) {
+        const moduleClasses = this.get("_moduleClasses");
+        const idx = moduleClasses.indexOf(className);
+        if (idx !== -1) {
+          moduleClasses.splice(idx, 1);
+          this.set({"_moduleClasses": moduleClasses});
+        }
+      },
+
+      hasModuleClass(className) {
+        const moduleClasses = this.get("_moduleClasses");
+        return moduleClasses.indexOf(className) !== -1;
       }
     }
   };
