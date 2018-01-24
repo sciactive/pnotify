@@ -271,7 +271,8 @@
           notice: "alert-warning",
           info: "alert-info",
           success: "alert-success",
-          error: "alert-danger"
+          error: "alert-danger",
+          icon: "ui-pnotify-icon-bs3"
         },
         bootstrap4: {
           container: "alert",
@@ -1013,10 +1014,15 @@
     float: left;
     margin-right: .2em;
   }
-  /* Bootstrap 4: correct positioning of icon. */
-  .ui-pnotify-icon-bs4 {
+  /* Bootstrap 3: correct positioning of icon. */
+  .ui-pnotify-icon-bs3 > span {
     position: relative;
-    top: 5px;
+    top: 2px;
+  }
+  /* Bootstrap 4: correct positioning of icon. */
+  .ui-pnotify-icon-bs4 > span {
+    position: relative;
+    top: 4px;
   }
   /* Overlay */
   :global(.ui-pnotify-modal-overlay) {
