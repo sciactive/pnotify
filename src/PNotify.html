@@ -35,9 +35,9 @@
       <:Component {module} on:init="initModule(event.module)" />
     {{/each}}
     {{#if icon !== false}}
-    <div class="ui-pnotify-icon {{_styles.icon}}">
-      <span class="{{icon === true ? _icons[type] : icon}}"></span>
-    </div>
+      <div class="ui-pnotify-icon {{_styles.icon}}">
+        <span class="{{icon === true ? _icons[type] : icon}}"></span>
+      </div>
     {{/if}}
     <h4 ref:titleContainer class="ui-pnotify-title {{_styles.title}}" style="display: {{title === false ? 'none' : 'block'}}">
       {{#if title_escape}}
@@ -439,6 +439,7 @@
       update(options) {
         // Save old options.
         const oldHide = this.get("hide");
+        const oldIcon = this.get("icon");
 
         this.set(options);
 
@@ -452,6 +453,21 @@
           this.queueRemove();
         }
         this.queuePosition();
+
+        // Font Awesome 5 replaces our lovely element with a gross SVG. In order
+        // to make it play nice with Svelte, we have to clear the element and
+        // make it again.
+        const icon = this.get("icon");
+        if (
+            icon !== oldIcon
+            && (
+              (icon === true && this.get("icons") === "fontawesome5")
+              || (typeof icon === "string" && icon.match(/(^| )fa[srlb]($| )/))
+            )
+          ) {
+          this.set({"icon": false});
+          this.set({"icon": icon});
+        }
 
         return this;
       },
