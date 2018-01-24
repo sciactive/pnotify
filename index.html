@@ -817,7 +817,7 @@
   <section class="container page-points">
     <div class="container">
       <div class="card-group">
-        <div class="card w-75 border-bottom-0" style="border-bottom-left-radius: 0;">
+        <div class="card border-bottom-0" style="border-bottom-left-radius: 0; flex-grow: 2;">
           <h5 class="card-header"><i class="fas fa-book"></i> About</h5>
           <div class="card-body">
             PNotify is a JavaScript notification system, developed
@@ -831,7 +831,7 @@
             regular, in-browser notice.
           </div>
         </div>
-        <div class="card w-25 border-bottom-0" style="border-bottom-right-radius: 0;">
+        <div class="card border-bottom-0" style="border-bottom-right-radius: 0;">
           <h5 class="card-header"><i class="fas fa-mobile"></i> Mobile Ready</h5>
           <div class="card-body">
             PNotify works on your phone and tablet. You can swipe
@@ -950,8 +950,9 @@
   </div>
   <div class="clearfix">&nbsp;</div>
   <div id="demos-simple" class="container page-section">
-    <div class="page-header">
-      <h1>Simple Demos <small>These demos only use core PNotify features.</small></h1>
+    <div class="my-3">
+      <h2>Simple Demos <small>These demos only use core PNotify features.</small></h2>
+      <hr />
     </div>
     <div class="card border-primary text-primary">
       <h5 class="card-header">Choose the Styling</h5>
@@ -1284,8 +1285,9 @@ color: #FF0;
 
   <div id="web-notifications"></div>
   <div id="demos-modules" class="container page-section">
-    <div class="page-header">
-      <h1>Module Demos</h1>
+    <div class="my-3">
+      <h2>Module Demos</h2>
+      <hr />
     </div>
     <div class="card">
       <div class="card-header">
@@ -2170,8 +2172,9 @@ color: #FF0;
   </div>
 
   <div id="stacks" class="container page-section">
-    <div class="page-header">
-      <h1>Stacks <small>PNotify core comes with several default stacks.</small></h1>
+    <div class="my-3">
+      <h2>Stacks <small>Position, order, and group notices.</small></h2>
+      <hr />
     </div>
     <div class="card">
       <h5 class="card-header">Examples of Custom Stacks</h5>
@@ -2259,7 +2262,10 @@ color: #FF0;
           <div class="col-md-10">
             <div class="card">
               <div id="stack-context" class="card-body" style="height: 350px; position: relative; overflow: auto;">
-                <div class="page-header"><h3>Stack Context</h3></div>
+                <div class="my-3">
+                  <h3>Stack Context</h3>
+                  <hr />
+                </div>
                 <p>I'm the stack context where notices will be
                   placed. I'm position: relative, so the notices
                   will be positioned relative to me. My overflow
@@ -2281,7 +2287,7 @@ color: #FF0;
             <div class="card border-danger">
               <h6 class="card-header">Bad</h6>
               <div class="card-body text-danger">
-                <pre class="code">PNotify.notice({
+                <pre class="code prettyprint">PNotify.notice({
   title: "Over Here",
   text: "Check me out. I'm in a different stack.",
   stack: {"dir1":"down", "dir2":"right", "firstpos1":25, "firstpos2":25, "push":"top"}
@@ -2293,7 +2299,7 @@ color: #FF0;
             <div class="card border-success">
               <h6 class="card-header">Good</h6>
               <div class="card-body text-success">
-                <pre class="code">var myStack = {"dir1":"down", "dir2":"right", "firstpos1":25, "firstpos2":25, "push":"top"};
+                <pre class="code prettyprint">var myStack = {"dir1":"down", "dir2":"right", "firstpos1":25, "firstpos2":25, "push":"top"};
 PNotify.notice({
   title: "Over Here",
   text: "Check me out. I'm in a different stack.",
@@ -2308,8 +2314,9 @@ PNotify.notice({
   </div>
 
   <div id="customization" class="container page-section">
-    <div class="page-header">
-      <h1>Customization and Tools</h1>
+    <div class="my-3">
+      <h2>Customization and Tools</h2>
+      <hr />
     </div>
     <div class="card">
       <h5 class="card-header">Timer</h5>
@@ -2344,8 +2351,9 @@ PNotify.notice({
   </div>
 
   <div id="comments" class="container page-section" style="margin-bottom: 20px;">
-    <div class="page-header">
-      <h1>Comments</h1>
+    <div class="my-3">
+      <h2>Comments</h2>
+      <hr />
     </div>
     <div id="commentContainer">
       <div style="text-align: center;">
