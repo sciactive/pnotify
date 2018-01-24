@@ -27,7 +27,7 @@
   <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
   <!-- Bootstrap -->
-  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" id="bootstrap-css" crossorigin="anonymous">
   <script defer src="//use.fontawesome.com/releases/v5.0.4/js/all.js"></script>
   <script src="//code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
@@ -91,14 +91,13 @@
     /* Not PNotify specific, just make this page a little more presentable. */
     #switcher-container {
       position: fixed;
-      top: 60px;
-      right: 5px;
-      z-index: 100;
+      bottom: 5px;
+      left: 5px;
+      z-index: 1021;
     }
-    @media (max-width: 980px) {
+    @media (max-width: 460px) {
       #switcher-container {
-        position: absolute;
-        top: 55px;
+        position: static;
       }
     }
 
@@ -722,81 +721,82 @@
   </script>
 </head>
 <body id="page" data-spy="scroll" data-target=".navbar" data-offset="0" style="position: relative;">
-  <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="https://sciactive.com/pnotify/">PNotify</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+  <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+      <a class="navbar-brand" href="https://sciactive.com/pnotify/">PNotify</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item"><a class="nav-link" href="#page">Overview</a></li>
-        <li class="nav-item"><a class="nav-link" href="#demos-simple">Simple Demos</a></li>
-        <li class="nav-item"><a class="nav-link" href="#demos-modules">Module Demos</a></li>
-        <li class="nav-item"><a class="nav-link" href="#stacks">Stacks</a></li>
-        <li class="nav-item"><a class="nav-link" href="#customization">Customization</a></li>
-        <li class="nav-item"><a class="nav-link" href="#comments">Comments</a></li>
-      </ul>
-      <ul class="navbar-nav">
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Beyond PNotify
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="https://github.com/sciactive/" target="_blank">SciActive</a>
-            <a class="dropdown-item" href="http://nymph.io/" target="_blank">Nymph</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="https://sciactive.com/pform/" target="_blank">PForm</a>
-            <a class="dropdown-item" href="http://hookphp.org/" target="_blank">HookPHP</a>
-            <a class="dropdown-item" href="http://requirephp.org/" target="_blank">RequirePHP</a>
-          </div>
-        </li>
-      </ul>
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item"><a class="nav-link" href="#page">Overview</a></li>
+          <li class="nav-item"><a class="nav-link" href="#demos-simple">Simple Demos</a></li>
+          <li class="nav-item"><a class="nav-link" href="#demos-modules">Module Demos</a></li>
+          <li class="nav-item"><a class="nav-link" href="#stacks">Stacks</a></li>
+          <li class="nav-item"><a class="nav-link" href="#customization">Customization</a></li>
+          <li class="nav-item"><a class="nav-link" href="#comments">Comments</a></li>
+        </ul>
+        <ul class="navbar-nav">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Beyond PNotify
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="https://github.com/sciactive/" target="_blank">SciActive</a>
+              <a class="dropdown-item" href="http://nymph.io/" target="_blank">Nymph</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="https://sciactive.com/pform/" target="_blank">PForm</a>
+              <a class="dropdown-item" href="http://hookphp.org/" target="_blank">HookPHP</a>
+              <a class="dropdown-item" href="http://requirephp.org/" target="_blank">RequirePHP</a>
+            </div>
+          </li>
+        </ul>
+      </div>
     </div>
   </nav>
   <div id="switcher-container">
     <div id="switcher-bootstrap" style="display: none;">
-      <div class="btn-group">
-        <a class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);">
+      <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="bootswatch-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Theme: <span id="bootstrap-current">Normal</span>
-          <span class="caret"></span>
-        </a>
-        <ul class="dropdown-menu pull-right">
-          <li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">Normal</a></li>
-          <li class="divider"></li>
-          <li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.5/cerulean/bootstrap.min.css">Cerulean</a></li>
-          <li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.5/cosmo/bootstrap.min.css">Cosmo</a></li>
-          <li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.5/cyborg/bootstrap.min.css">Cyborg</a></li>
-          <li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.5/darkly/bootstrap.min.css">Darkly</a></li>
-          <li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.5/flatly/bootstrap.min.css">Flatly</a></li>
-          <li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.5/journal/bootstrap.min.css">Journal</a></li>
-          <li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.5/lumen/bootstrap.min.css">Lumen</a></li>
-          <li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.5/paper/bootstrap.min.css">Paper</a></li>
-          <li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.5/readable/bootstrap.min.css">Readable</a></li>
-          <li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.5/sandstone/bootstrap.min.css">Sandstone</a></li>
-          <li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.5/simplex/bootstrap.min.css">Simplex</a></li>
-          <li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.5/slate/bootstrap.min.css">Slate</a></li>
-          <li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.5/spacelab/bootstrap.min.css">Spacelab</a></li>
-          <li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.5/superhero/bootstrap.min.css">Superhero</a></li>
-          <li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.5/united/bootstrap.min.css">United</a></li>
-          <li><a href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/3.3.5/yeti/bootstrap.min.css">Yeti</a></li>
-          <li class="divider"></li>
-          <li><a href="http://bootswatch.com/" target="_blank">Themes by Bootswatch</a></li>
-        </ul>
+        </button>
+        <div class="dropdown-menu" aria-labelledby="bootswatch-dropdown" style="max-height: 450px; overflow-y: auto;">
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">Normal</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/cerulean/bootstrap.min.css">Cerulean</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/cosmo/bootstrap.min.css">Cosmo</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/cyborg/bootstrap.min.css">Cyborg</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/darkly/bootstrap.min.css">Darkly</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/flatly/bootstrap.min.css">Flatly</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/journal/bootstrap.min.css">Journal</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/litera/bootstrap.min.css">Litera</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/lumen/bootstrap.min.css">Lumen</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/lux/bootstrap.min.css">LUX</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/materia/bootstrap.min.css">Materia</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/minty/bootstrap.min.css">Minty</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/pulse/bootstrap.min.css">Pulse</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/sandstone/bootstrap.min.css">Sandstone</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/simplex/bootstrap.min.css">Simplex</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/sketchy/bootstrap.min.css">Sketchy</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/slate/bootstrap.min.css">Slate</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/solar/bootstrap.min.css">Solar</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/spacelab/bootstrap.min.css">Spacelab</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/superhero/bootstrap.min.css">Superhero</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/united/bootstrap.min.css">United</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/yeti/bootstrap.min.css">Yeti</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="http://bootswatch.com/" target="_blank">Themes by Bootswatch</a>
+        </div>
         <script type="text/javascript">
           $(function(){
-            var reset = function(){
-              setTimeout(function(){
-                var y = $(".navbar").height() + 10;
-                $("#switcher-container").css('top', y+'px');
-              }, 500);
-            };
-            reset();
             $('#switcher-bootstrap').on('click', 'a[data-theme]', function(){
               var $this = $(this);
               $('#bootstrap-current').text($this.text()); $('#bootstrap-css').attr('href', $this.attr('data-theme'));
-              reset();
+              setTimeout(function(){
+                PNotify.positionAll();
+              }, 500);
             });
           });
         </script>
@@ -810,8 +810,8 @@
       <p id="description">Beautiful JavaScript notifications. Now with <a href="index-nodependencies.html" target="_blank">zero dependencies</a>!</p>
     </div>
     <div class="intro-section">
-      <a class="right-button btn btn-outline-primary btn-lg" href="https://github.com/sciactive/pnotify" target="_blank" title="Fork me on GitHub">PNotify on GitHub <i class="fab fa-github"></i></a>
-      <a class="right-button btn btn-outline-primary btn-lg" href="https://github.com/sciactive/pnotify/issues/new" target="_blank" title="Fork me on GitHub">Bug Report/Feature Request</a>
+      <a class="right-button btn btn-outline-dark btn-lg" href="https://github.com/sciactive/pnotify" target="_blank" title="Fork me on GitHub">PNotify on GitHub <i class="fab fa-github"></i></a>
+      <a class="right-button btn btn-outline-dark btn-lg" href="https://github.com/sciactive/pnotify/issues/new" target="_blank" title="Fork me on GitHub">Bug Report/Feature Request</a>
     </div>
   </section>
   <section class="container page-points">
