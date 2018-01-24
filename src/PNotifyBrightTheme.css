@@ -44,6 +44,7 @@ Color Scheme: http://paletton.com/palette.php?uid=c1T3n2J040kpEKzpEKzbEPSOEyiNk9
 [ui-pnotify] .brighttheme-icon-success,
 [ui-pnotify] .brighttheme-icon-closer,
 [ui-pnotify] .brighttheme-icon-sticker {
+  position: relative;
   width: 16px;
   height: 16px;
   font-size: 12px;
