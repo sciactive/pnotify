@@ -261,7 +261,7 @@
                   </div>\
                   <div class="modal-body"></div>\
                   <div class="modal-footer">\
-                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Ok, got it.</button>\
+                    <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Ok, got it.</button>\
                   </div>\
                 </div>\
               </div>\
@@ -810,8 +810,8 @@
       <p id="description">Beautiful JavaScript notifications. Now with <a href="index-nodependencies.html" target="_blank">zero dependencies</a>!</p>
     </div>
     <div class="intro-section">
-      <a class="right-button btn btn-outline-dark btn-lg" href="https://github.com/sciactive/pnotify" target="_blank" title="Fork me on GitHub">PNotify on GitHub <i class="fab fa-github"></i></a>
-      <a class="right-button btn btn-outline-dark btn-lg" href="https://github.com/sciactive/pnotify/issues/new" target="_blank" title="Fork me on GitHub">Bug Report/Feature Request</a>
+      <a class="right-button btn btn-primary btn-lg" href="https://github.com/sciactive/pnotify" target="_blank" title="Fork me on GitHub">PNotify on GitHub <i class="fab fa-github"></i></a>
+      <a class="right-button btn btn-secondary btn-lg" href="https://github.com/sciactive/pnotify/issues/new" target="_blank" title="Fork me on GitHub">Bug Report/Feature Request</a>
     </div>
   </section>
   <section class="container page-points">
@@ -848,7 +848,7 @@
             even having to dismiss it.
           </div>
           <div class="card-body">
-            <a class="btn btn-outline-secondary" data-toggle="modal" href="#feature-modal" >See All Features</a>
+            <a class="btn btn-outline-dark" data-toggle="modal" href="#feature-modal" >See All Features</a>
           </div>
         </div>
         <div class="card">
@@ -943,7 +943,7 @@
           </ul>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
@@ -954,24 +954,24 @@
       <h2>Simple Demos <small>These demos only use core PNotify features.</small></h2>
       <hr />
     </div>
-    <div class="card border-primary text-primary">
-      <h5 class="card-header">Choose the Styling</h5>
+    <div class="card border-info">
+      <h5 class="card-header bg-info text-light">Choose the Styling</h5>
       <div class="card-body">
         PNotify supports multiple styling methods and icon sets.
         <div class="btn-toolbar" role="toolbar">
           <div class="btn-group btn-group-toggle" data-toggle="buttons" role="group">
-            <label class="btn btn-outline-primary active">
+            <label class="btn btn-outline-info active">
               <input type="radio" name="styling" id="style-brighttheme" autocomplete="off" checked> Bright Theme
             </label>
-            <label class="btn btn-outline-primary">
+            <label class="btn btn-outline-info">
               <input type="radio" name="styling" id="style-material" autocomplete="off"> Material
             </label>
-            <label class="btn btn-outline-primary">
+            <label class="btn btn-outline-info">
               <input type="radio" name="styling" id="style-bootstrap4" autocomplete="off"> Bootstrap
             </label>
           </div>
           <div class="btn-group ml-3" role="group">
-            <a class="btn btn-outline-primary" href="index-styling.html" target="_blank">Demo All Styles/Icons</a>
+            <a class="btn btn-outline-info" href="index-styling.html" target="_blank">Demo All Styles/Icons</a>
           </div>
         </div>
       </div>
@@ -1019,62 +1019,62 @@
     <div class="card mt-3">
       <h5 class="card-header">PNotify Core</h5>
       <div class="card-body">
-        <button class="btn btn-light my-1 source" onclick="PNotify.notice({
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.notice({
           title: 'Regular Notice',
           text: 'Check me out! I\'m a notice.'
         });">Notice</button>
-        <button class="btn btn-light my-1 source" onclick="PNotify.info({
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.info({
           title: 'New Thing',
           text: 'Just to let you know, something happened.'
         });">Info Message</button>
-        <button class="btn btn-light my-1 source" onclick="PNotify.success({
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.success({
           title: 'Success!',
           text: 'That thing that you were trying to do worked.'
         });">Success Message</button>
-        <button class="btn btn-light my-1 source" onclick="PNotify.error({
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.error({
           title: 'Oh No!',
           text: 'Something terrible happened.'
         });">Error Message</button>
-        <button class="btn btn-light my-1 source" onclick="PNotify.notice({
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.notice({
           title: 'Font Awesome Icon',
           text: 'I have an icon that uses the Font Awesome icon styles.',
           icon: 'far fa-envelope'
         });">Specific Icon (Font Awesome)</button>
-        <button class="btn btn-light my-1 source" onclick="PNotify.notice({
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.notice({
           title: 'No Icon Notice',
           text: 'I have no icon.',
           icon: false
         });">No Icon</button>
         <hr />
-        <button class="btn btn-light my-1 source" onclick="PNotify.notice({
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.notice({
           title: 'See Through Notice',
           text: 'No one ever pays attention to me. Why should they? I\'m practically invisible.',
           addclass: 'translucent'
         });
         var source_note = 'translucent is a custom class defined (using ui-pnotify-fade-in) with opacity: 0.8.';">Translucent</button>
-        <button class="btn btn-light my-1 source" onclick="PNotify.notice({
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.notice({
           title: 'No Shadow Notice',
           text: 'I don\'t have a shadow. (It\'s cause I\'m a vampire or something. Or is that reflections...)',
           shadow: false
         });">No Shadow Notice</button>
-        <button class="btn btn-light my-1 source" onclick="PNotify.notice('Check me out! I\'m a notice.');">Simple</button>
-        <button class="btn btn-light my-1 source" onclick="PNotify.notice(Math.round(Math.random()*9999));">Number</button>
-        <button class="btn btn-light my-1 source" onclick="PNotify.notice({
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.notice('Check me out! I\'m a notice.');">Simple</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.notice(Math.round(Math.random()*9999));">Number</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.notice({
           title: 'No Mouse Reset Notice',
           text: 'I don\'t care if you move your mouse over me, I\'ll disappear when I want.',
           mouse_reset: false
         });">No Mouse Reset</button>
-        <button class="btn btn-light my-1 source" onclick="PNotify.notice({
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.notice({
           title: 'Fast Fading Notice',
           text: 'I fade in and out really quickly.',
           animate_speed: 'fast'
         });">Fast Fading</button>
-        <button class="btn btn-light my-1 source" onclick="PNotify.notice({
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.notice({
           title: 'No Effect Notice',
           text: 'I don\'t even bother to animate. I\'m too cool for that.',
           animation: 'none'
         });">No Effect</button>
-        <button class="btn btn-light my-1 source" onclick="var notice = PNotify.notice({
+        <button class="btn btn-outline-dark my-1 source" onclick="var notice = PNotify.notice({
           text: $('#form_notice').html(),
           icon: false,
           width: 'auto',
@@ -1138,11 +1138,11 @@
             </div>
             <div class="pf-element pf-buttons pf-centered">
               <input class="pf-button btn btn-primary" type="submit" name="submit" value="Submit" />
-              <input class="pf-button btn btn-outline-secondary" type="button" name="cancel" value="Cancel" />
+              <input class="pf-button btn btn-outline-dark" type="button" name="cancel" value="Cancel" />
             </div>
           </form>
         </div>
-        <button class="btn btn-light my-1 source" onclick="var notice = PNotify.notice({
+        <button class="btn btn-outline-dark my-1 source" onclick="var notice = PNotify.notice({
           title: 'Click Notice',
           text: 'I wish someone would click me.'
         });
@@ -1152,7 +1152,7 @@
             return;
           notice.update({type: 'success', text: 'Yay, you clicked me!&lt;div style=&quot;text-align: center;&quot;&gt;&lt;img src=&quot;https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Happy_smiley_face.png/240px-Happy_smiley_face.png&quot; /&gt;&lt;/div&gt;'});
         });">Click on It</button>
-        <button class="btn btn-light my-1 source" onclick="var notice = PNotify.notice({
+        <button class="btn btn-outline-dark my-1 source" onclick="var notice = PNotify.notice({
           title: 'Click Close Notice',
           text: 'Click me anywhere to dismiss me.',
           modules: {
@@ -1165,14 +1165,14 @@
         notice.on('click', function(){
           notice.close();
         });">Click to Close</button>
-        <button class="btn btn-light my-1 source" onclick="PNotify.notice({
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.notice({
           title: 'Big Notice',
           text: 'Check me out! I\'m tall and wide, even though my text isn\'t.',
           width: '500px',
           min_height: '400px'
         });">Huge</button>
-        <button class="btn btn-light my-1 source" onclick="show_rich();">Rich Text</button>
-        <button class="btn btn-light my-1 source" onclick="PNotify.notice({
+        <button class="btn btn-outline-dark my-1 source" onclick="show_rich();">Rich Text</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.notice({
           title: '&lt;em&gt;Escaped Notice&lt;/em&gt;',
           title_escape: true,
           text: $('#evil_html').html(),
@@ -1187,16 +1187,16 @@
             })()
           </script>
         </div>
-        <button class="btn btn-light my-1 source" onclick="dyn_notice();">Dynamic</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="dyn_notice();">Dynamic</button>
         <div class="sharpthemes-hideme" style="display: inline-block;">
-          <button class="btn btn-light my-1 source" onclick="PNotify.notice({
+          <button class="btn btn-outline-dark my-1 source" onclick="PNotify.notice({
             title: 'No Rounded Corners Notice',
             text: 'Warning: Contains sharp objects. Not suitable for browsers under the age of CSS3.',
             cornerclass: 'ui-pnotify-sharp'
           });">No Rounded Corners</button>
         </div>
         <hr />
-        <button class="btn btn-light my-1 source" onclick="PNotify.notice({
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.notice({
           title: 'Custom Styling',
           text: 'I have an additional class that\'s used to give me special styling. I always wanted to be pretty. I also use the nonblock module.',
           addclass: 'custom',
@@ -1272,13 +1272,13 @@ color: #FF0;
 });</pre>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Ok, got it.</button>
+                <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Ok, got it.</button>
               </div>
             </div>
           </div>
         </div>
         <hr style="clear: both;" />
-        <button class="btn btn-light my-1 source" onclick="PNotify.removeAll();">Remove All Notices</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.removeAll();">Remove All Notices</button>
       </div>
     </div>
   </div>
@@ -1302,7 +1302,7 @@ color: #FF0;
           If your browser doesn't support Web Notifications, or you deny permission to show them, you will only see regular in-browser notices. You can check <a href="http://caniuse.com/notifications" target="_blank">here</a>.
         </p>
         <hr />
-        <button class="btn btn-light my-1 source" onclick="PNotify.desktop.permission(); PNotify.notice({
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.desktop.permission(); PNotify.notice({
           title: 'Desktop Notice',
           text: 'If you\'ve given me permission, I\'ll appear as a desktop notification. If you haven\'t, I\'ll still appear as a regular PNotify notice.',
           modules: {
@@ -1315,7 +1315,7 @@ color: #FF0;
             return;
           alert('Hey! You clicked the desktop notification!');
         });">Notice</button>
-        <button class="btn btn-light my-1 source" onclick="PNotify.desktop.permission(); PNotify.info({
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.desktop.permission(); PNotify.info({
           title: 'Desktop Info',
           text: 'If you\'ve given me permission, I\'ll appear as a desktop notification. If you haven\'t, I\'ll still appear as a regular PNotify notice.',
           modules: {
@@ -1328,7 +1328,7 @@ color: #FF0;
             return;
           alert('Hey! You clicked the desktop notification!');
         });">Info</button>
-        <button class="btn btn-light my-1 source" onclick="PNotify.desktop.permission(); PNotify.success({
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.desktop.permission(); PNotify.success({
           title: 'Desktop Success',
           text: 'If you\'ve given me permission, I\'ll appear as a desktop notification. If you haven\'t, I\'ll still appear as a regular PNotify notice.',
           modules: {
@@ -1341,7 +1341,7 @@ color: #FF0;
             return;
           alert('Hey! You clicked the desktop notification!');
         });">Success</button>
-        <button class="btn btn-light my-1 source" onclick="PNotify.desktop.permission(); PNotify.error({
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.desktop.permission(); PNotify.error({
           title: 'Desktop Error',
           text: 'If you\'ve given me permission, I\'ll appear as a desktop notification. If you haven\'t, I\'ll still appear as a regular PNotify notice.',
           modules: {
@@ -1354,7 +1354,7 @@ color: #FF0;
             return;
           alert('Hey! You clicked the desktop notification!');
         });">Error</button>
-        <button class="btn btn-light my-1 source" onclick="PNotify.desktop.permission(); PNotify.notice({
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.desktop.permission(); PNotify.notice({
           title: 'Desktop Custom Icon',
           text: 'If you\'ve given me permission, I\'ll appear as a desktop notification. If you haven\'t, I\'ll still appear as a regular PNotify notice.',
           modules: {
@@ -1368,7 +1368,7 @@ color: #FF0;
             return;
           alert('Hey! You clicked the desktop notification!');
         });">Custom</button>
-        <button class="btn btn-light my-1 source" onclick="PNotify.desktop.permission(); PNotify.notice({
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.desktop.permission(); PNotify.notice({
           title: 'Alternate Text Notice - Browser',
           text: 'This text appears on the &lt;strong&gt;browser&lt;/strong&gt;.',
           modules: {
@@ -1383,7 +1383,7 @@ color: #FF0;
             return;
           alert('Hey! You clicked the desktop notification!');
         });">Alternate Text and Title</button>
-        <button class="btn btn-light my-1 source" onclick="PNotify.desktop.permission(); PNotify.notice({
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.desktop.permission(); PNotify.notice({
           title: 'Sticky Desktop Notice',
           text: 'I\'m a sticky notice, so you\'ll have to close me yourself. (Some systems don\'t allow sticky notifications.) If you\'ve given me permission, I\'ll appear as a desktop notification. If you haven\'t, I\'ll still appear as a regular PNotify notice.',
           hide: false,
@@ -1397,7 +1397,7 @@ color: #FF0;
             return;
           alert('Hey! You clicked the desktop notification!');
         });">Sticky</button>
-        <button class="btn btn-light my-1 source" onclick="PNotify.desktop.permission(); var notice = PNotify.notice({
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.desktop.permission(); var notice = PNotify.notice({
           title: 'Dynamic Desktop Notice',
           text: 'I\'m a dynamic desktop notice. I\'ll change my type and text in a few seconds. If you\'ve given me permission, I\'ll appear as a desktop notification. If you haven\'t, I\'ll still appear as a regular PNotify notice.',
           modules: {
@@ -1417,7 +1417,7 @@ color: #FF0;
             text: 'Now I\'m an info box!'
           });
         }, 4000);">Dynamic</button>
-        <button class="btn btn-light my-1 source" onclick="PNotify.desktop.permission(); PNotify.notice({
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.desktop.permission(); PNotify.notice({
           title: 'Desktop Notice',
           text: 'If you\'ve given me permission, I\'ll appear as a desktop notification. If you haven\'t, I won\'t appear at all, because my fallback is turned off.',
           modules: {
@@ -1435,27 +1435,27 @@ color: #FF0;
       <h5 class="card-header">Buttons Module <small>Sticker and a closer buttons.</small></h5>
       <div class="card-body">
         <div class="alert alert-info">Since the Buttons module provides buttons by default, many of the demos on this page include the buttons.</div>
-        <button class="btn btn-light my-1 source" onclick="PNotify.notice({
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.notice({
           title: 'Sticky Notice',
           text: 'Check me out! I\'m a sticky notice. You\'ll have to close me yourself.',
           hide: false
         });">Sticky Notice</button>
-        <button class="btn btn-light my-1 source" onclick="PNotify.info({
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.info({
           title: 'Sticky Info',
           text: 'Sticky info, you know, like a newspaper covered in honey.',
           hide: false
         });">Sticky Info</button>
-        <button class="btn btn-light my-1 source" onclick="PNotify.success({
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.success({
           title: 'Sticky Success',
           text: 'Sticky success... I\'m not even gonna make a joke.',
           hide: false
         });">Sticky Success</button>
-        <button class="btn btn-light my-1 source" onclick="PNotify.error({
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.error({
           title: 'Uh Oh!',
           text: 'Something really terrible happened. You really need to read this, so I won\'t close automatically.',
           hide: false
         });">Sticky Error</button>
-        <button class="btn btn-light my-1 source" onclick="PNotify.notice({
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.notice({
           title: 'Custom Icon Button Notice',
           text: 'Check me out! My sticker and close buttons have custom icons!',
           hide: false,
@@ -1469,7 +1469,7 @@ color: #FF0;
             }
           }
         });">Custom Icons</button>
-        <button class="btn btn-light my-1 source" onclick="PNotify.notice({
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.notice({
           title: 'No Sticky Button Notice',
           text: 'Check me out! I\'m a sticky notice with no unsticky button. You\'ll have to close me yourself.',
           hide: false,
@@ -1479,7 +1479,7 @@ color: #FF0;
             }
           }
         });">No Sticky Button</button>
-        <button class="btn btn-light my-1 source" onclick="PNotify.notice({
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.notice({
           title: 'Permanent Buttons Notice',
           text: 'My buttons are really lonely, so they\'re gonna hang out with us.',
           modules: {
@@ -1489,7 +1489,7 @@ color: #FF0;
             }
           }
         });">Permanent Buttons</button>
-        <button class="btn btn-light my-1 source" onclick="if (permanotice) {
+        <button class="btn btn-outline-dark my-1 source" onclick="if (permanotice) {
           permanotice.open();
         } else {
           permanotice = PNotify.notice({
@@ -1507,11 +1507,11 @@ color: #FF0;
             }
           });
         }">Permanotice</button>
-        <button class="btn btn-light my-1 source" onclick="if (permanotice.remove) permanotice.close();">Remove Permanotice</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="if (permanotice.remove) permanotice.close();">Remove Permanotice</button>
       </div>
       <h5 class="card-header">NonBlock Module <small>Click through to things underneath the notice.</small></h5>
       <div class="card-body">
-        <button class="btn btn-light my-1 source" onclick="PNotify.notice({
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.notice({
           title: 'Non-Blocking Notice',
           text: 'I\'m a special kind of notice called &quot;non-blocking&quot;. When you hover over me I\'ll fade to show the elements underneath. Feel free to click any of them just like I wasn\'t even here.\n\nNote: HTML links don\'t trigger in some browsers, due to security settings.',
           modules: {
@@ -1520,7 +1520,7 @@ color: #FF0;
             }
           }
         });">Non-Blocking</button>
-        <button class="btn btn-light my-1 source" onclick="PNotify.notice({
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.notice({
           title: 'Non-Blocking Notice',
           text: 'I\'m a non-blocking notice with buttons.',
           modules: {
@@ -1536,7 +1536,7 @@ color: #FF0;
       <h5 class="card-header">Mobile Module <small>Notices on mobile phones and tablets.</small></h5>
       <div class="card-body">
         <div class="alert alert-info">Since the Mobile module provides support by default, most of the demos on this page work on mobile.</div>
-        <button class="btn btn-light my-1 source" onclick="PNotify.notice({
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.notice({
           title: 'No Mobile Support Notice',
           text: 'If you\'re on a mobile device, I won\'t respond to your swipes.',
           modules: {
@@ -1545,7 +1545,7 @@ color: #FF0;
             }
           }
         });">No Mobile Support</button>
-        <button class="btn btn-light my-1 source" onclick="PNotify.notice({
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.notice({
           title: 'No Mobile Styling Notice',
           text: 'If you\'re on a mobile device, I\'ll look terrible.',
           modules: {
@@ -1558,7 +1558,7 @@ color: #FF0;
       <h5 class="card-header">Animate Module <small>Fluid CSS animations using <a href="https://daneden.github.io/animate.css/" target="_blank">Animate.css</a>.</small></h5>
       <div class="card-body">
         Some good looking examples:<br />
-        <button class="btn btn-light my-1 source" onclick="
+        <button class="btn btn-outline-dark my-1 source" onclick="
           PNotify.notice({
             title: 'Animate.css Effect',
             text: 'I use effects from Animate.css. Such smooth CSS3 transitions make me feel like butter.',
@@ -1571,7 +1571,7 @@ color: #FF0;
             }
           });
         ">Sidenote</button>
-        <button class="btn btn-light my-1 source" onclick="
+        <button class="btn btn-outline-dark my-1 source" onclick="
           PNotify.notice({
             title: 'Animate.css Effect',
             text: 'I use effects from Animate.css. Such smooth CSS3 transitions make me feel like butter.',
@@ -1584,7 +1584,7 @@ color: #FF0;
             }
           });
         ">Zoom, Zoom</button>
-        <button class="btn btn-light my-1 source" onclick="
+        <button class="btn btn-outline-dark my-1 source" onclick="
           PNotify.notice({
             title: 'Animate.css Effect',
             text: 'I use effects from Animate.css. Such smooth CSS3 transitions make me feel like butter.',
@@ -1597,7 +1597,7 @@ color: #FF0;
             }
           });
         ">Shuffling Cards</button>
-        <button class="btn btn-light my-1 source" onclick="
+        <button class="btn btn-outline-dark my-1 source" onclick="
           PNotify.notice({
             title: 'Animate.css Effect',
             text: 'I use effects from Animate.css. Such smooth CSS3 transitions make me feel like butter.',
@@ -1610,7 +1610,7 @@ color: #FF0;
             }
           });
         ">Zippy</button>
-        <button class="btn btn-light my-1 source" onclick="
+        <button class="btn btn-outline-dark my-1 source" onclick="
           PNotify.notice({
             title: 'Animate.css Effect',
             text: 'I use effects from Animate.css. Such smooth CSS3 transitions make me feel like butter.',
@@ -1697,7 +1697,7 @@ color: #FF0;
           <option value="slideOutUp">slideOutUp</option>
         </select>
         <br />
-        <button class="btn btn-light my-1 source" onclick="
+        <button class="btn btn-outline-dark my-1 source" onclick="
           var animate_in = $('#animate_in').val(),
             animate_out = $('#animate_out').val();
           PNotify.notice({
@@ -1714,7 +1714,7 @@ color: #FF0;
         ">Notify!</button>
         <br /><br />
         Attention seekers:<br />
-        <button class="btn btn-light my-1 source" onclick="
+        <button class="btn btn-outline-dark my-1 source" onclick="
           var notice = PNotify.notice({
             title: 'Attention Seeker',
             text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-secondary float-right\'&gt;Bounce!&lt;/button&gt;'
@@ -1723,7 +1723,7 @@ color: #FF0;
             notice.attention('bounce');
           });
         ">Bounce</button>
-        <button class="btn btn-light my-1 source" onclick="
+        <button class="btn btn-outline-dark my-1 source" onclick="
           var notice = PNotify.notice({
             title: 'Attention Seeker',
             text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-secondary float-right\'&gt;Flash!&lt;/button&gt;'
@@ -1732,7 +1732,7 @@ color: #FF0;
             notice.attention('flash');
           });
         ">Flash</button>
-        <button class="btn btn-light my-1 source" onclick="
+        <button class="btn btn-outline-dark my-1 source" onclick="
           var notice = PNotify.notice({
             title: 'Attention Seeker',
             text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-secondary float-right\'&gt;Pulse!&lt;/button&gt;'
@@ -1741,7 +1741,7 @@ color: #FF0;
             notice.attention('pulse');
           });
         ">Pulse</button>
-        <button class="btn btn-light my-1 source" onclick="
+        <button class="btn btn-outline-dark my-1 source" onclick="
           var notice = PNotify.notice({
             title: 'Attention Seeker',
             text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-secondary float-right\'&gt;Rubber Band!&lt;/button&gt;'
@@ -1750,7 +1750,7 @@ color: #FF0;
             notice.attention('rubberBand');
           });
         ">Rubber Band</button>
-        <button class="btn btn-light my-1 source" onclick="
+        <button class="btn btn-outline-dark my-1 source" onclick="
           var notice = PNotify.notice({
             title: 'Attention Seeker',
             text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-secondary float-right\'&gt;Shake!&lt;/button&gt;'
@@ -1759,7 +1759,7 @@ color: #FF0;
             notice.attention('shake');
           });
         ">Shake</button>
-        <button class="btn btn-light my-1 source" onclick="
+        <button class="btn btn-outline-dark my-1 source" onclick="
           var notice = PNotify.notice({
             title: 'Attention Seeker',
             text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-secondary float-right\'&gt;Swing!&lt;/button&gt;'
@@ -1768,7 +1768,7 @@ color: #FF0;
             notice.attention('swing');
           });
         ">Swing</button>
-        <button class="btn btn-light my-1 source" onclick="
+        <button class="btn btn-outline-dark my-1 source" onclick="
           var notice = PNotify.notice({
             title: 'Attention Seeker',
             text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-secondary float-right\'&gt;Tada!&lt;/button&gt;'
@@ -1777,7 +1777,7 @@ color: #FF0;
             notice.attention('tada');
           });
         ">Tada</button>
-        <button class="btn btn-light my-1 source" onclick="
+        <button class="btn btn-outline-dark my-1 source" onclick="
           var notice = PNotify.notice({
             title: 'Attention Seeker',
             text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-secondary float-right\'&gt;Wobble!&lt;/button&gt;'
@@ -1786,7 +1786,7 @@ color: #FF0;
             notice.attention('wobble');
           });
         ">Wobble</button>
-        <button class="btn btn-light my-1 source" onclick="
+        <button class="btn btn-outline-dark my-1 source" onclick="
           var notice = PNotify.notice({
             title: 'Attention Seeker',
             text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-secondary float-right\'&gt;Jello!&lt;/button&gt;'
@@ -1798,7 +1798,7 @@ color: #FF0;
       </div>
       <h5 class="card-header">Confirm Module <small>Confirmation dialogs and prompts.</small></h5>
       <div class="card-body">
-        <button class="btn btn-light my-1 source" onclick="var notice = PNotify.notice({
+        <button class="btn btn-outline-dark my-1 source" onclick="var notice = PNotify.notice({
           title: 'Confirmation Needed',
           text: 'Are you sure?',
           icon: 'fas fa-question-circle',
@@ -1822,7 +1822,7 @@ color: #FF0;
         notice.on('pnotify.cancel', function(){
           alert('Oh ok. Chicken, I see.');
         });">Confirm Dialog</button>
-        <button class="btn btn-light my-1 source" onclick="var notice = PNotify.notice({
+        <button class="btn btn-outline-dark my-1 source" onclick="var notice = PNotify.notice({
           title: 'Confirmation Needed',
           text: 'Are you sure?',
           icon: 'fas fa-question-circle',
@@ -1847,7 +1847,7 @@ color: #FF0;
         notice.on('pnotify.cancel', function(){
           alert('Oh ok. Chicken, I see.');
         });">Modal Confirm Dialog</button>
-        <button class="btn btn-light my-1 source" onclick="PNotify.notice({
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.notice({
           title: 'Choose a Side',
           text: 'You have three options to choose from.',
           icon: 'fas fa-question-circle',
@@ -1919,7 +1919,7 @@ color: #FF0;
             }
           }
         });">Custom Buttons</button>
-        <button class="btn btn-light my-1 source" onclick="PNotify.notice({
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.notice({
           title: 'You Will Receive a Side',
           text: 'You have no choice.',
           icon: 'fas fa-info-circle',
@@ -1947,7 +1947,7 @@ color: #FF0;
             }
           }
         });">Alert Style Button</button>
-        <button class="btn btn-light my-1 source" onclick="var notice = PNotify.notice({
+        <button class="btn btn-outline-dark my-1 source" onclick="var notice = PNotify.notice({
           title: 'Input Needed',
           text: 'What side would you like?',
           icon: 'fas fa-question-circle',
@@ -1993,7 +1993,7 @@ color: #FF0;
             }
           });
         });">Prompt Dialog</button>
-        <button class="btn btn-light my-1 source" onclick="var notice = PNotify.notice({
+        <button class="btn btn-outline-dark my-1 source" onclick="var notice = PNotify.notice({
           title: 'Input Needed',
           text: 'Write me a poem, please.',
           icon: 'fas fa-question-circle',
@@ -2044,7 +2044,7 @@ color: #FF0;
       </div>
       <h5 class="card-header">Callbacks Module <small>Manipulate the notice during its lifecycle.</small></h5>
       <div class="card-body">
-        <button class="btn btn-light my-1 source" onclick="var dont_alert = function(){};
+        <button class="btn btn-outline-dark my-1 source" onclick="var dont_alert = function(){};
         PNotify.notice({
           title: 'I\'m Here',
           text: 'I have a callback for each of my events. I\'ll call all my callbacks while I change states.',
@@ -2082,7 +2082,7 @@ color: #FF0;
             }
           }
         });">Notice with Callbacks</button>
-        <button class="btn btn-light my-1 source" onclick="PNotify.notice({
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.notice({
           title: 'Notice',
           text: 'Right now I\'m a notice.',
           modules: {
@@ -2131,13 +2131,13 @@ color: #FF0;
             }
           }
         });">Notice to Error to Success to Info</button>
-        <button class="btn btn-light my-1 source" onclick="fake_load();">Progress Loader</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="fake_load();">Progress Loader</button>
       </div>
       <h5 class="card-header">History Module <small>Redisplay old notices.</small></h5>
       <div class="card-body">
-        <button class="btn btn-light my-1 source" onclick="$(this).trigger('pnotify.history-last');">Display Last Notice</button>
-        <button class="btn btn-light my-1 source" onclick="$(this).trigger('pnotify.history-all');">Display All Notices</button>
-        <button class="btn btn-light my-1 source" onclick="PNotify.notice({
+        <button class="btn btn-outline-dark my-1 source" onclick="$(this).trigger('pnotify.history-last');">Display Last Notice</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="$(this).trigger('pnotify.history-all');">Display All Notices</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.notice({
           title: 'Pull Down Menu Notice',
           text: 'I\'ll create a menu in the upper right corner that provides history functions.',
           modules: {
@@ -2146,7 +2146,7 @@ color: #FF0;
             }
           }
         });">Pull Down Menu</button>
-        <button class="btn btn-light my-1 source" onclick="PNotify.notice({
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.notice({
           title: 'No History Notice',
           text: 'I\'m not part of the notice history, so if you redisplay the last message, it won\'t be me.',
           modules: {
@@ -2158,7 +2158,7 @@ color: #FF0;
       </div>
       <h5 class="card-header">Reference Module <small>A reference for when you are coding your own module.</small></h5>
       <div class="card-body">
-        <button class="btn btn-light my-1 source" onclick="PNotify.info({
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.info({
           title: 'Reference Module',
           text: 'The reference module is a basic module that demonstrates how to write a PNotify module by implementing many of its features. You can find it in PNotifyReference.html.',
           modules: {
@@ -2179,59 +2179,59 @@ color: #FF0;
     <div class="card">
       <h5 class="card-header">Examples of Custom Stacks</h5>
       <div class="card-body">
-        <button class="btn btn-light my-1 source" style="margin-left: 10px;" onclick="show_stack_info();">What are stacks?</button>
+        <button class="btn btn-outline-dark my-1 source" style="margin-left: 10px;" onclick="show_stack_info();">What are stacks?</button>
         <hr />
-        <button class="btn btn-light my-1 source" onclick="show_stack_topleft('notice');">Notice</button>
-        <button class="btn btn-light my-1 source" onclick="show_stack_topleft('info');">Info</button>
-        <button class="btn btn-light my-1 source" onclick="show_stack_topleft('success');">Success</button>
-        <button class="btn btn-light my-1 source" onclick="show_stack_topleft('error');">Error</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="show_stack_topleft('notice');">Notice</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="show_stack_topleft('info');">Info</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="show_stack_topleft('success');">Success</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="show_stack_topleft('error');">Error</button>
         Top Left. Moves down, then right. Pushes to stack top.
         <hr />
-        <button class="btn btn-light my-1 source" onclick="show_stack_bottomleft('notice');">Notice</button>
-        <button class="btn btn-light my-1 source" onclick="show_stack_bottomleft('info');">Info</button>
-        <button class="btn btn-light my-1 source" onclick="show_stack_bottomleft('success');">Success</button>
-        <button class="btn btn-light my-1 source" onclick="show_stack_bottomleft('error');">Error</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="show_stack_bottomleft('notice');">Notice</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="show_stack_bottomleft('info');">Info</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="show_stack_bottomleft('success');">Success</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="show_stack_bottomleft('error');">Error</button>
         Bottom Left. Moves right, then up. Pushes to stack top.
         <hr />
-        <button class="btn btn-light my-1 source" onclick="show_stack_bottomright('notice');">Notice</button>
-        <button class="btn btn-light my-1 source" onclick="show_stack_bottomright('info');">Info</button>
-        <button class="btn btn-light my-1 source" onclick="show_stack_bottomright('success');">Success</button>
-        <button class="btn btn-light my-1 source" onclick="show_stack_bottomright('error');">Error</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="show_stack_bottomright('notice');">Notice</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="show_stack_bottomright('info');">Info</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="show_stack_bottomright('success');">Success</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="show_stack_bottomright('error');">Error</button>
         Bottom Right. Moves up, then left. Pushes to stack bottom.
         <hr />
-        <button class="btn btn-light my-1 source" onclick="show_stack_topcenter('notice');">Notice</button>
-        <button class="btn btn-light my-1 source" onclick="show_stack_topcenter('info');">Info</button>
-        <button class="btn btn-light my-1 source" onclick="show_stack_topcenter('success');">Success</button>
-        <button class="btn btn-light my-1 source" onclick="show_stack_topcenter('error');">Error</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="show_stack_topcenter('notice');">Notice</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="show_stack_topcenter('info');">Info</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="show_stack_topcenter('success');">Success</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="show_stack_topcenter('error');">Error</button>
         Top Center. Moves down. Pushes to stack bottom.
       </div>
       <h5 class="card-header">Really Different Stacks</h5>
       <div class="card-body">
-        <button class="btn btn-light my-1 source" onclick="show_stack_modal('notice');">Notice</button>
-        <button class="btn btn-light my-1 source" onclick="show_stack_modal('info');">Info</button>
-        <button class="btn btn-light my-1 source" onclick="show_stack_modal('success');">Success</button>
-        <button class="btn btn-light my-1 source" onclick="show_stack_modal('error');">Error</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="show_stack_modal('notice');">Notice</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="show_stack_modal('info');">Info</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="show_stack_modal('success');">Success</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="show_stack_modal('error');">Error</button>
         Modal stack, centered. Moves up. Pushes to stack top.
         <hr />
-        <button class="btn btn-light my-1 source" onclick="show_stack_modal_left('notice');">Notice</button>
-        <button class="btn btn-light my-1 source" onclick="show_stack_modal_left('info');">Info</button>
-        <button class="btn btn-light my-1 source" onclick="show_stack_modal_left('success');">Success</button>
-        <button class="btn btn-light my-1 source" onclick="show_stack_modal_left('error');">Error</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="show_stack_modal_left('notice');">Notice</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="show_stack_modal_left('info');">Info</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="show_stack_modal_left('success');">Success</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="show_stack_modal_left('error');">Error</button>
         Modal stack. Moves down, then right. Pushes to stack top.
         <hr />
-        <button class="btn btn-light my-1 source" onclick="show_stack_bar_top('notice');">Notice</button>
-        <button class="btn btn-light my-1 source" onclick="show_stack_bar_top('info');">Info</button>
-        <button class="btn btn-light my-1 source" onclick="show_stack_bar_top('success');">Success</button>
-        <button class="btn btn-light my-1 source" onclick="show_stack_bar_top('error');">Error</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="show_stack_bar_top('notice');">Notice</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="show_stack_bar_top('info');">Info</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="show_stack_bar_top('success');">Success</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="show_stack_bar_top('error');">Error</button>
         Top bar style. (Like Old Microsoft Notification Bars.) Moves down, then right. Pushes to stack top.
         <hr />
-        <button class="btn btn-light my-1 source" onclick="show_stack_bar_bottom('notice');">Notice</button>
-        <button class="btn btn-light my-1 source" onclick="show_stack_bar_bottom('info');">Info</button>
-        <button class="btn btn-light my-1 source" onclick="show_stack_bar_bottom('success');">Success</button>
-        <button class="btn btn-light my-1 source" onclick="show_stack_bar_bottom('error');">Error</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="show_stack_bar_bottom('notice');">Notice</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="show_stack_bar_bottom('info');">Info</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="show_stack_bar_bottom('success');">Success</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="show_stack_bar_bottom('error');">Error</button>
         Bottom bar style. (Like New Microsoft Notification Bars.) Moves up, then right. Pushes to stack bottom.
         <hr />
-        <button class="btn btn-light my-1 source" onmouseover="tooltip.open();" onmousemove="tooltip.refs.elem.style.top = (event.clientY+12)+'px'; tooltip.refs.elem.style.left = (event.clientX+12)+'px';" onmouseout="tooltip.close();">Hover Over Me</button>
+        <button class="btn btn-outline-dark my-1 source" onmouseover="tooltip.open();" onmousemove="tooltip.refs.elem.style.top = (event.clientY+12)+'px'; tooltip.refs.elem.style.left = (event.clientX+12)+'px';" onmouseout="tooltip.close();">Hover Over Me</button>
         Tooltip
       </div>
       <h5 class="card-header">Stack Contexts</h5>
@@ -2240,24 +2240,24 @@ color: #FF0;
         <hr />
         <div class="row">
           <div class="col-md-2">
-            <button class="btn btn-light my-1 source" onclick="show_stack_context('notice');">Notice</button>
+            <button class="btn btn-outline-dark my-1 source" onclick="show_stack_context('notice');">Notice</button>
             <br />
-            <button class="btn btn-light my-1 source" onclick="show_stack_context('info');">Info</button>
+            <button class="btn btn-outline-dark my-1 source" onclick="show_stack_context('info');">Info</button>
             <br />
-            <button class="btn btn-light my-1 source" onclick="show_stack_context('success');">Success</button>
+            <button class="btn btn-outline-dark my-1 source" onclick="show_stack_context('success');">Success</button>
             <br />
-            <button class="btn btn-light my-1 source" onclick="show_stack_context('error');">Error</button>
+            <button class="btn btn-outline-dark my-1 source" onclick="show_stack_context('error');">Error</button>
             <br />
             <br />
             Modal:
             <br />
-            <button class="btn btn-light my-1 source" onclick="show_stack_context('notice', true);">Notice</button>
+            <button class="btn btn-outline-dark my-1 source" onclick="show_stack_context('notice', true);">Notice</button>
             <br />
-            <button class="btn btn-light my-1 source" onclick="show_stack_context('info', true);">Info</button>
+            <button class="btn btn-outline-dark my-1 source" onclick="show_stack_context('info', true);">Info</button>
             <br />
-            <button class="btn btn-light my-1 source" onclick="show_stack_context('success', true);">Success</button>
+            <button class="btn btn-outline-dark my-1 source" onclick="show_stack_context('success', true);">Success</button>
             <br />
-            <button class="btn btn-light my-1 source" onclick="show_stack_context('error', true);">Error</button>
+            <button class="btn btn-outline-dark my-1 source" onclick="show_stack_context('error', true);">Error</button>
           </div>
           <div class="col-md-10">
             <div class="card">
@@ -2331,8 +2331,8 @@ PNotify.notice({
           });
         </script>
         <br style="margin-bottom: 3px;" />
-        <button class="btn btn-light my-1 source" onclick="PNotify.defaults.delay ? (function(){PNotify.defaults.delay -= 500; update_timer_display();}()) : (alert('Timer is already at zero.'))">Lower Timer</button>
-        <button class="btn btn-light my-1 source" onclick="(function(){PNotify.defaults.delay += 500; update_timer_display();}())">Raise Timer</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.defaults.delay ? (function(){PNotify.defaults.delay -= 500; update_timer_display();}()) : (alert('Timer is already at zero.'))">Lower Timer</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="(function(){PNotify.defaults.delay += 500; update_timer_display();}())">Raise Timer</button>
       </div>
     </div>
 
@@ -2341,10 +2341,10 @@ PNotify.notice({
       <div class="card-body">
         This isn't really a feature of PNotify, but it's cool.
         <ol>
-          <li style="margin-bottom: 1em;"><button class="btn btn-light my-1 source" onclick="alert('I\'m a standard alert, called with alert().')">Display a JavaScript Alert</button></li>
-          <li style="margin-bottom: 1em;"><button class="btn btn-light my-1 source" onclick="consume_alert();">Consume alert()</button></li>
+          <li style="margin-bottom: 1em;"><button class="btn btn-outline-dark my-1 source" onclick="alert('I\'m a standard alert, called with alert().')">Display a JavaScript Alert</button></li>
+          <li style="margin-bottom: 1em;"><button class="btn btn-outline-dark my-1 source" onclick="consume_alert();">Consume alert()</button></li>
           <li style="margin-bottom: 1em;">Repeat step 1.</li>
-          <li style="margin-bottom: 1em;"><button class="btn btn-light my-1 source" onclick="release_alert();">Release alert()</button></li>
+          <li style="margin-bottom: 1em;"><button class="btn btn-outline-dark my-1 source" onclick="release_alert();">Release alert()</button></li>
         </ol>
       </div>
     </div>
