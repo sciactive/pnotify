@@ -2221,13 +2221,23 @@ color: #FF0;
         <button class="btn btn-outline-dark my-1 source" onclick="show_stack_bar_top('info');">Info</button>
         <button class="btn btn-outline-dark my-1 source" onclick="show_stack_bar_top('success');">Success</button>
         <button class="btn btn-outline-dark my-1 source" onclick="show_stack_bar_top('error');">Error</button>
-        Top bar style. (Like Old Microsoft Notification Bars.) Moves down, then right. Pushes to stack top.
+        Top bar style. (Like Old Microsoft Notification Bars.) Moves down, then right. Pushes to stack top.<br />
+        <br />
+        You also need this CSS:
+        <pre class="code prettyprint">[ui-pnotify].ui-pnotify.stack-bar-top {
+  width: 100%;
+}</pre>
         <hr />
         <button class="btn btn-outline-dark my-1 source" onclick="show_stack_bar_bottom('notice');">Notice</button>
         <button class="btn btn-outline-dark my-1 source" onclick="show_stack_bar_bottom('info');">Info</button>
         <button class="btn btn-outline-dark my-1 source" onclick="show_stack_bar_bottom('success');">Success</button>
         <button class="btn btn-outline-dark my-1 source" onclick="show_stack_bar_bottom('error');">Error</button>
-        Bottom bar style. (Like New Microsoft Notification Bars.) Moves up, then right. Pushes to stack bottom.
+        Bottom bar style. (Like New Microsoft Notification Bars.) Moves up, then right. Pushes to stack bottom.<br />
+        <br />
+        You also need this CSS:
+        <pre class="code prettyprint">[ui-pnotify].ui-pnotify.stack-bar-bottom {
+  width: 70%;
+}</pre>
         <hr />
         <button class="btn btn-outline-dark my-1 source" onmouseover="tooltip.open();" onmousemove="tooltip.refs.elem.style.top = (event.clientY+12)+'px'; tooltip.refs.elem.style.left = (event.clientX+12)+'px';" onmouseout="tooltip.close();">Hover Over Me</button>
         Tooltip
@@ -2283,26 +2293,32 @@ color: #FF0;
         <div class="row">
           <div class="col-sm-6">
             <div class="card border-danger">
-              <h6 class="card-header">Bad</h6>
-              <div class="card-body text-danger">
+              <h6 class="card-header text-light bg-danger">Bad - Notices will overlap.</h6>
+              <div class="card-body">
                 <pre class="code prettyprint">PNotify.notice({
-  title: "Over Here",
-  text: "Check me out. I'm in a different stack.",
-  stack: {"dir1":"down", "dir2":"right", "firstpos1":25, "firstpos2":25, "push":"top"}
-})</pre>
+  text: "Notice 1.",
+  stack: {"dir1":"down", "firstpos1":25}
+});
+PNotify.notice({
+  text: "Notice 2.",
+  stack: {"dir1":"down", "firstpos1":25}
+});</pre>
               </div>
             </div>
           </div>
           <div class="col-sm-6">
             <div class="card border-success">
-              <h6 class="card-header">Good</h6>
+              <h6 class="card-header text-light bg-success">Good - Notices will flow.</h6>
               <div class="card-body text-success">
-                <pre class="code prettyprint">var myStack = {"dir1":"down", "dir2":"right", "firstpos1":25, "firstpos2":25, "push":"top"};
+                <pre class="code prettyprint">var myStack = {"dir1":"down", "firstpos1":25};
 PNotify.notice({
-  title: "Over Here",
-  text: "Check me out. I'm in a different stack.",
+  text: "Notice 1.",
   stack: myStack
-})</pre>
+});
+PNotify.notice({
+  text: "Notice 2.",
+  stack: myStack
+});</pre>
               </div>
             </div>
           </div>
