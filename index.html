@@ -176,7 +176,7 @@
               //   }
               // });
 
-              // notice.queueRemove();
+              // notice.queueClose();
               // return false;
             }
           }
@@ -205,7 +205,7 @@
             }
           }
         });
-        // Remove the notice if the user mouses over it.
+        // Close the notice if the user mouses over it.
         tooltip.on("mouseout", function(){
           tooltip.close();
         });
@@ -370,7 +370,7 @@
                   });
                 }
                 if (cur_value >= 100) {
-                  // Remove the interval.
+                  // Clean up the interval.
                   window.clearInterval(timer);
                   loader.close();
                   return;
@@ -1274,7 +1274,7 @@ color: #FF0;
           </div>
         </div>
         <hr style="clear: both;" />
-        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.removeAll();">Remove All Notices</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.closeAll();">Close All Notices</button>
       </div>
     </div>
   </div>
@@ -1503,7 +1503,7 @@ color: #FF0;
             }
           });
         }">Permanotice</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="if (permanotice.remove) permanotice.close();">Remove Permanotice</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="if (permanotice.close) permanotice.close();">Close Permanotice</button>
       </div>
       <h5 class="card-header">NonBlock Module <small>Click through to things underneath the notice.</small></h5>
       <div class="card-body">
@@ -1962,7 +1962,7 @@ color: #FF0;
           }
         });
         notice.on('pnotify.confirm', function(e, val){
-          notice.cancelRemove().update({
+          notice.cancelClose().update({
             title: 'You\'ve Chosen a Side', text: 'You want '+$('<div/>').text(val).html()+'.', icon: true, type: 'info', hide: true,
             modules: {
               Confirm: {
@@ -1976,7 +1976,7 @@ color: #FF0;
           });
         });
         notice.on('pnotify.cancel', function(e){
-          notice.cancelRemove().update({
+          notice.cancelClose().update({
             title: 'You Don\'t Want a Side', text: 'No soup for you!', icon: true, type: 'info', hide: true,
             modules: {
               Confirm: {
@@ -2010,7 +2010,7 @@ color: #FF0;
           }
         });
         notice.on('pnotify.confirm', function(e, val){
-          notice.cancelRemove().update({
+          notice.cancelClose().update({
             title: 'Your Poem', text: $('<div/>').text(val).html(), icon: true, type: 'info', hide: true,
             modules: {
               Confirm: {
@@ -2024,7 +2024,7 @@ color: #FF0;
           });
         });
         notice.on('pnotify.cancel', function(e){
-          notice.cancelRemove().update({
+          notice.cancelClose().update({
             title: 'You Don\'t Like Poetry', text: 'Roses are dead,\nViolets are dead,\nI suck at gardening.', icon: true, type: 'info', hide: true,
             modules: {
               Confirm: {
@@ -2066,7 +2066,7 @@ color: #FF0;
               },
               before_close: function(notice, timer_hide){
                 console.log('before_close', notice, timer_hide);
-                var source_note = 'Return false to cancel close. Use PNotify.queueRemove() to set the removal timer again.';
+                var source_note = 'Return false to cancel close. Use PNotify.queueClose() to set the close timer again.';
                 dont_alert('I\'m called before the notice closes. I\'m passed the PNotify object for the current notice: '+notice);
                 dont_alert('I also have an argument called timer_hide, which is true if the notice was closed because the timer ran down. Value: '+timer_hide);
               },
@@ -2107,21 +2107,21 @@ color: #FF0;
                                   }
                                 });
                                 notice.attention('swing');
-                                notice.queueRemove();
+                                notice.queueClose();
                                 return false;
                               }
                             }
                           }
                         });
                         notice.attention('swing');
-                        notice.queueRemove();
+                        notice.queueClose();
                         return false;
                       }
                     }
                   }
                 });
                 notice.attention('swing');
-                notice.queueRemove();
+                notice.queueClose();
                 return false;
               }
             }

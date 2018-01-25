@@ -157,10 +157,10 @@ new PNotify({
 * `animation: "fade"` - The animation to use when displaying and hiding the notice. "none" and "fade" are supported through CSS. Others are supported through the Animate module and Animate.css.
 * `animate_speed: "normal"` - Speed at which the notice animates in and out. "slow", "normal", or "fast". Respectively, 400ms, 250ms, 100ms.
 * `shadow: true` - Display a drop shadow.
-* `hide: true` - After a delay, remove the notice.
-* `delay: 8000` - Delay in milliseconds before the notice is removed.
+* `hide: true` - After a delay, close the notice.
+* `delay: 8000` - Delay in milliseconds before the notice is closed.
 * `mouse_reset: true` - Reset the hide timer if the mouse moves over the notice.
-* `remove: true` - Remove the notice's elements from the DOM after it is removed.
+* `remove: true` - Remove the notice's elements from the DOM after it is closed.
 * `insert_brs: true` - Change new lines to br tags.
 * `destroy: true` - Whether to remove the notice from the global array when it is closed.
 * `stack: PNotify.defaultStack` - The stack on which the notices will be placed. Also controls the direction the notices stack.
@@ -252,7 +252,7 @@ The Animate module also creates a method, `attention`, on notices which accepts 
 * `prompt_default: ""` - The default value of the prompt.
 * `prompt_multi_line: false` - Whether the prompt should accept multiple lines of text.
 * `align: "right"` - Where to align the buttons. (right, center, left, justify)
-* `buttons: [{text: "Ok", addClass: "", promptTrigger: true, click: function(notice, value){ notice.remove(); notice.get().trigger("pnotify.confirm", [notice, value]); }},{text: "Cancel", addClass: "", click: function(notice){ notice.remove(); notice.get().trigger("pnotify.cancel", notice); }}]` - The buttons to display, and their callbacks. If a button has promptTrigger set to true, it will be triggered when the user hits enter in a single line prompt. If you want only one button, use null as the second entry of your array to remove the cancel button.
+* `buttons: [{text: "Ok", addClass: "", promptTrigger: true, click: function(notice, value){ notice.close(); notice.get().trigger("pnotify.confirm", [notice, value]); }},{text: "Cancel", addClass: "", click: function(notice){ notice.close(); notice.get().trigger("pnotify.cancel", notice); }}]` - The buttons to display, and their callbacks. If a button has promptTrigger set to true, it will be triggered when the user hits enter in a single line prompt. If you want only one button, use null as the second entry of your array to remove the cancel button.
 
 `}`
 
@@ -295,8 +295,10 @@ The callback options all expect one argument, a function, which will be called w
 * `PNotify.info(options)` - Create an alert with "info" type.
 * `PNotify.success(options)` - Create an alert with "success" type.
 * `PNotify.error(options)` - Create an alert with "error" type.
-* `PNotify.removeAll()` - Remove all notices.
-* `PNotify.removeStack(stack)` - Remove all the notices in a stack.
+* `PNotify.closeAll()` - Close all notices.
+* `PNotify.removeAll()` - Alias for closeAll(). (Deprecated)
+* `PNotify.closeStack(stack)` - Close all the notices in a stack.
+* `PNotify.removeStack(stack)` - Alias for closeStack(stack). (Deprecated)
 * `PNotify.positionAll()` - Reposition all notices.
 * `PNotify.defaults` - Defaults for options.
 * `PNotify.defaultStack` - The default stack object.
@@ -308,7 +310,7 @@ The callback options all expect one argument, a function, which will be called w
 
 * `notice.open()` - Open the notice.
 * `notice.close()` - Close the notice.
-* `notice.remove()` - Alias for close().
+* `notice.remove()` - Alias for close(). (Deprecated)
 * `notice.update(options)` - Update the notice with new options.
 * `notice.refs.elem` - The notice's DOM element.
 * `notice.refs.container` - The notice container DOM element.
@@ -353,9 +355,9 @@ A stack is an object which PNotify uses to determine where to position notices.
 
 ## Modal Stacks
 
-You can set a stack as modal by setting the `modal` property to true. A modal stack creates an overlay behind it when any of its notices are open. When the last notice within it is removed, the overlay is hidden.
+You can set a stack as modal by setting the `modal` property to true. A modal stack creates an overlay behind it when any of its notices are open. When the last notice within it is closed, the overlay is hidden.
 
-If the `overlay_close` property is set to true, then clicking the overlay will cause all of the notices in that stack to be removed.
+If the `overlay_close` property is set to true, then clicking the overlay will cause all of the notices in that stack to be closed.
 
 ## Example Stacks
 

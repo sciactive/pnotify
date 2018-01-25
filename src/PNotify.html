@@ -96,7 +96,7 @@
     // Close the notices on overlay click.
     overlay.addEventListener('click', () => {
       if (stack.overlay_close) {
-        PNotify.removeStack(stack);
+        PNotify.closeStack(stack);
       }
     });
     return overlay;
@@ -213,17 +213,28 @@
       // Helper function to create a new notice (error type).
       PNotify.error = (options) => new PNotify(getDefaultArgs(options, "error"));
 
-      // Remove all visible notices.
       PNotify.removeAll = () => {
+        PNotify.closeAll();
+      };
+
+      // Close all notices.
+      PNotify.closeAll = () => {
         for (let i = 0; i < PNotify.notices.length; i++) {
-          if (PNotify.notices[i].remove) {
+          if (PNotify.notices[i].close) {
             PNotify.notices[i].close(false);
           }
         }
       };
 
-      // Remove all visible notices in a single stack.
       PNotify.removeStack = (stack) => {
+        PNotify.closeStack(stack);
+      };
+
+      // Close all notices in a single stack.
+      PNotify.closeStack = (stack) => {
+        if (stack === false) {
+          return;
+        }
         for (let i = 0; i < PNotify.notices.length; i++) {
           if (PNotify.notices[i].close && PNotify.notices[i].get("stack") === stack) {
             PNotify.notices[i].close(false);
@@ -336,18 +347,18 @@
           if (!this.get("_timerHide")) {
             return;
           }
-          this.cancelRemove();
+          this.cancelClose();
         }
         // Stop the close timer.
         if (this.get("hide") && this.get("mouse_reset")) {
-          this.cancelRemove();
+          this.cancelClose();
         }
       });
 
       this.on("mouseleave", (e) => {
         // Start the close timer.
         if (this.get("hide") && this.get("mouse_reset") && this.get("_animating") !== "out") {
-          this.queueRemove();
+          this.queueClose();
         }
         PNotify.positionAll();
       });
@@ -456,9 +467,9 @@
 
         // Update the timed hiding.
         if (!this.get("hide")) {
-          this.cancelRemove();
+          this.cancelClose();
         } else if (!oldHide) {
-          this.queueRemove();
+          this.queueClose();
         }
         this.queuePosition();
 
@@ -487,7 +498,7 @@
         }
         if (this.get("_state") === "open") {
           if (this.get("hide")) {
-            this.queueRemove();
+            this.queueClose();
           }
           return;
         }
@@ -533,7 +544,7 @@
           this.animateIn(() => {
             // Now set it to hide.
             if (this.get("hide")) {
-              this.queueRemove();
+              this.queueClose();
             }
 
             this.set({"_state": "open"});
@@ -913,8 +924,12 @@
         return this;
       },
 
-      // Cancel any pending removal timer.
       cancelRemove() {
+        this.cancelClose();
+      },
+
+      // Cancel any pending removal timer.
+      cancelClose() {
         if (this.get("_timer")) {
           clearTimeout(this.get("_timer"));
         }
@@ -932,10 +947,14 @@
         return this;
       },
 
-      // Queue a removal timer.
       queueRemove() {
-        // Cancel any current removal timer.
-        this.cancelRemove();
+        this.queueClose();
+      },
+
+      // Queue a close timer.
+      queueClose() {
+        // Cancel any current close timer.
+        this.cancelClose();
         this.set({
           "_timer": setTimeout(() => this.close(true), (isNaN(this.get("delay")) ? 0 : this.get("delay")))
         });
