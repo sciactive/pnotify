@@ -10,10 +10,10 @@ let pnotify_src = {
   'buttons': 'PNotifyButtons.html',
   'callbacks': 'PNotifyCallbacks.html',
   'nonblock': 'PNotifyNonBlock.html',
+  'mobile': 'PNotifyMobile.html',
   // 'confirm': 'PNotifyConfirm.?',
   // 'desktop': 'PNotifyDesktop.?',
   // 'history': 'PNotifyHistory.?',
-  // 'mobile': 'PNotifyMobile.?',
   'stylematerial': 'PNotifyStyleMaterial.html',
   'reference': 'PNotifyReference.html',
 };
@@ -24,10 +24,10 @@ let pnotify_js = {
   'buttons': 'PNotifyButtons.js',
   'callbacks': 'PNotifyCallbacks.js',
   'nonblock': 'PNotifyNonBlock.js',
+  'mobile': 'PNotifyMobile.js',
   // 'confirm': 'PNotifyConfirm.js',
   // 'desktop': 'PNotifyDesktop.js',
   // 'history': 'PNotifyHistory.js',
-  // 'mobile': 'PNotifyMobile.js',
   'stylematerial': 'PNotifyStyleMaterial.js',
   'reference': 'PNotifyReference.js',
 };
@@ -35,7 +35,6 @@ let pnotify_js = {
 let pnotify_css = {
   'brighttheme': 'PNotifyBrightTheme.css',
   // 'history': 'PNotifyHistory.css',
-  // 'mobile': 'PNotifyMobile.css',
 };
 
 let root = __dirname + '/';

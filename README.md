@@ -30,13 +30,13 @@ Things that work:
 * Animate module
 * Callbacks module
 * NonBlock module
+* Mobile module
 
 Things that don't work:
 
 * Confirm module
 * Desktop module
 * History module
-* Mobile module
 
 # Getting Started
 

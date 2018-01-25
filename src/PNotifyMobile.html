@@ -1,0 +1,292 @@
+<:Window on:resize="doMobileStyling()" />
+
+<script>
+  import PNotify from "./PNotify.html";
+
+  export default {
+    setup (Component) {
+      Component.key = "Mobile";
+
+      Component.defaults = {
+        // Let the user swipe the notice away.
+        swipe_dismiss: true,
+        // Styles the notice to look good on mobile.
+        styling: true
+      };
+
+      // Register the module with PNotify.
+      PNotify.modules.Mobile = Component;
+      // Append this module to the container.
+      PNotify.modulesAppendContainer.push(Component);
+    },
+
+    oncreate () {
+      this.on("initModule", (options) => {
+        this.set(options);
+
+        const notice = this.get("_notice");
+        let origXY = null,
+            diffXY = null,
+            noticeWidthHeight = null,
+            noticeOpacity = null,
+            csspos = "left",
+            direction = "X",
+            span = "Width";
+
+        notice.on("touchstart", (e) => {
+          if (!this.get("swipe_dismiss")) {
+            return;
+          }
+
+          const stack = notice.get("stack");
+          if (stack !== false) {
+            switch (stack.dir1) {
+              case "up":
+              case "down":
+                csspos = "left";
+                direction = "X";
+                span = "Width";
+                break;
+              case "left":
+              case "right":
+                csspos = "top";
+                direction = "Y";
+                span = "Height";
+                break;
+            }
+          }
+
+          origXY = e.touches[0]["screen"+direction];
+          noticeWidthHeight = notice.refs.elem["scroll"+span];
+          noticeOpacity = window.getComputedStyle(notice.refs.elem)["opacity"];
+          notice.refs.container.style[csspos] = 0;
+        });
+
+        notice.on("touchmove", (e) => {
+          if (!origXY || !this.get("swipe_dismiss")) {
+            return;
+          }
+
+          const curXY = e.touches[0]["screen"+direction];
+
+          diffXY = curXY - origXY;
+          const opacity = (1 - (Math.abs(diffXY) / noticeWidthHeight)) * noticeOpacity;
+
+          notice.refs.elem.style.opacity = opacity;
+          notice.refs.container.style[csspos] = diffXY+"px";
+        });
+
+        notice.on("touchend", () => {
+          if (!origXY || !this.get("swipe_dismiss")) {
+            return;
+          }
+
+          notice.refs.container.classList.add("ui-pnotify-mobile-animate-left");
+          if (Math.abs(diffXY) > 40) {
+            const goLeft = (diffXY < 0) ? noticeWidthHeight * -2 : noticeWidthHeight * 2;
+            notice.refs.elem.style.opacity = 0;
+            notice.refs.container.style[csspos] = goLeft+"px";
+            notice.close();
+          } else {
+            notice.refs.elem.style.removeProperty("opacity");
+            notice.refs.container.style.removeProperty(csspos);
+          }
+          origXY = null;
+          diffXY = null;
+          noticeWidthHeight = null;
+          noticeOpacity = null;
+        });
+
+        notice.on("touchcancel", () => {
+          if (!origXY || !this.get("swipe_dismiss")) {
+            return;
+          }
+
+          notice.refs.elem.style.removeProperty("opacity");
+          notice.refs.container.style.removeProperty(csspos);
+          origXY = null;
+          diffXY = null;
+          noticeWidthHeight = null;
+          noticeOpacity = null;
+        });
+
+        this.doMobileStyling();
+      });
+      this.fire("init", {module: this});
+    },
+
+    data () {
+      return Object.assign({
+        "_notice": null, // The PNotify notice.
+        "_options": {}, // The options for the notice.
+      }, PNotify.modules.Mobile.defaults);
+    },
+
+    methods: {
+      update() {
+        this.doMobileStyling();
+      },
+
+      afterClose() {
+        // Remove any styling we added to close it.
+        if (!this.get("swipe_dismiss")) {
+          return;
+        }
+
+        const notice = this.get("_notice");
+        notice.refs.elem.style.removeProperty("opacity");
+        notice.refs.container.style.removeProperty("left");
+        notice.refs.container.style.removeProperty("top");
+      },
+
+      doMobileStyling() {
+        const notice = this.get("_notice");
+        const stack = notice.get("stack");
+
+        if (this.get("styling")) {
+          if (stack !== false) {
+            if (window.innerWidth <= 480) {
+              if (!stack.mobileOrigSpacing1) {
+                stack.mobileOrigSpacing1 = stack.spacing1;
+              }
+              stack.spacing1 = 0;
+              if (!stack.mobileOrigFirstpos1) {
+                stack.mobileOrigFirstpos1 = stack.firstpos1;
+              }
+              stack.firstpos1 = 0;
+              if (!stack.mobileOrigSpacing2) {
+                stack.mobileOrigSpacing2 = stack.spacing2;
+              }
+              stack.spacing2 = 0;
+              if (!stack.mobileOrigFirstpos2) {
+                stack.mobileOrigFirstpos2 = stack.firstpos2;
+              }
+              stack.firstpos2 = 0;
+            } else {
+              if (stack.mobileOrigSpacing1) {
+                stack.spacing1 = stack.mobileOrigSpacing1;
+                delete stack.mobileOrigSpacing1;
+              }
+              if (stack.mobileOrigFirstpos1) {
+                stack.firstpos1 = stack.mobileOrigFirstpos1;
+                delete stack.mobileOrigFirstpos1;
+              }
+              if (stack.mobileOrigSpacing2) {
+                stack.spacing2 = stack.mobileOrigSpacing2;
+                delete stack.mobileOrigSpacing2;
+              }
+              if (stack.mobileOrigFirstpos2) {
+                stack.firstpos2 = stack.mobileOrigFirstpos2;
+                delete stack.mobileOrigFirstpos2;
+              }
+            }
+            switch (stack.dir1) {
+              case "down":
+                notice.addModuleClass("ui-pnotify-mobile-top");
+                break;
+              case "up":
+                notice.addModuleClass("ui-pnotify-mobile-bottom");
+                break;
+              case "left":
+                notice.addModuleClass("ui-pnotify-mobile-right");
+                break;
+              case "right":
+                notice.addModuleClass("ui-pnotify-mobile-left");
+                break;
+            }
+          }
+
+          notice.addModuleClass("ui-pnotify-mobile-able");
+        } else {
+          notice.removeModuleClass("ui-pnotify-mobile-able");
+          notice.removeModuleClass("ui-pnotify-mobile-top");
+          notice.removeModuleClass("ui-pnotify-mobile-bottom");
+          notice.removeModuleClass("ui-pnotify-mobile-right");
+          notice.removeModuleClass("ui-pnotify-mobile-left");
+
+          if (stack !== false) {
+            if (stack.mobileOrigSpacing1) {
+              stack.spacing1 = stack.mobileOrigSpacing1;
+              delete stack.mobileOrigSpacing1;
+            }
+            if (stack.mobileOrigFirstpos1) {
+              stack.firstpos1 = stack.mobileOrigFirstpos1;
+              delete stack.mobileOrigFirstpos1;
+            }
+            if (stack.mobileOrigSpacing2) {
+              stack.spacing2 = stack.mobileOrigSpacing2;
+              delete stack.mobileOrigSpacing2;
+            }
+            if (stack.mobileOrigFirstpos2) {
+              stack.firstpos2 = stack.mobileOrigFirstpos2;
+              delete stack.mobileOrigFirstpos2;
+            }
+          }
+        }
+      }
+    }
+  }
+</script>
+
+<style>
+  :global([ui-pnotify] .ui-pnotify-container) {
+    position: relative;
+  }
+  :global([ui-pnotify] .ui-pnotify-mobile-animate-left) {
+    transition: left .1s ease;
+  }
+  :global([ui-pnotify] .ui-pnotify-mobile-animate-top) {
+    transition: top .1s ease;
+  }
+  @media (max-width: 480px) {
+    /* -- Notice */
+    :global([ui-pnotify].ui-pnotify-mobile-able.ui-pnotify) {
+      font-size: 1.2em;
+      -webkit-font-smoothing: antialiased;
+      -moz-font-smoothing: antialiased;
+      -ms-font-smoothing: antialiased;
+      font-smoothing: antialiased;
+    }
+    :global(body > [ui-pnotify].ui-pnotify-mobile-able.ui-pnotify) {
+      position: fixed;
+    }
+    :global([ui-pnotify].ui-pnotify-mobile-able.ui-pnotify-mobile-top.ui-pnotify),
+    :global([ui-pnotify].ui-pnotify-mobile-able.ui-pnotify-mobile-bottom.ui-pnotify) {
+      width: 100% !important;
+    }
+    :global([ui-pnotify].ui-pnotify-mobile-able.ui-pnotify-mobile-left.ui-pnotify),
+    :global([ui-pnotify].ui-pnotify-mobile-able.ui-pnotify-mobile-right.ui-pnotify) {
+      height: 100% !important;
+    }
+    :global([ui-pnotify].ui-pnotify-mobile-able.ui-pnotify .ui-pnotify-shadow) {
+      -webkit-box-shadow: none;
+      -moz-box-shadow: none;
+      box-shadow: none;
+    }
+    :global([ui-pnotify].ui-pnotify-mobile-able.ui-pnotify-mobile-top.ui-pnotify .ui-pnotify-shadow) {
+      border-bottom-width: 5px;
+    }
+    :global([ui-pnotify].ui-pnotify-mobile-able.ui-pnotify-mobile-bottom.ui-pnotify .ui-pnotify-shadow) {
+      border-top-width: 5px;
+    }
+    :global([ui-pnotify].ui-pnotify-mobile-able.ui-pnotify-mobile-left.ui-pnotify .ui-pnotify-shadow) {
+      border-right-width: 5px;
+    }
+    :global([ui-pnotify].ui-pnotify-mobile-able.ui-pnotify-mobile-right.ui-pnotify .ui-pnotify-shadow) {
+      border-left-width: 5px;
+    }
+    :global([ui-pnotify].ui-pnotify-mobile-able .ui-pnotify-container) {
+      -webkit-border-radius: 0;
+      -moz-border-radius: 0;
+      border-radius: 0;
+    }
+    :global([ui-pnotify].ui-pnotify-mobile-able.ui-pnotify-mobile-top .ui-pnotify-container),
+    :global([ui-pnotify].ui-pnotify-mobile-able.ui-pnotify-mobile-bottom .ui-pnotify-container) {
+      width: auto !important;
+    }
+    :global([ui-pnotify].ui-pnotify-mobile-able.ui-pnotify-mobile-left .ui-pnotify-container),
+    :global([ui-pnotify].ui-pnotify-mobile-able.ui-pnotify-mobile-right .ui-pnotify-container) {
+      height: 100% !important;
+    }
+  }
+</style>

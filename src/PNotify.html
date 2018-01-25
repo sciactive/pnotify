@@ -25,7 +25,11 @@
     on:click="fire('click', event)"
     on:dblclick="fire('dblclick', event)"
     on:focus="fire('focus', event)"
-    on:blur="fire('blur', event)">
+    on:blur="fire('blur', event)"
+    on:touchstart="fire('touchstart', event)"
+    on:touchmove="fire('touchmove', event)"
+    on:touchend="fire('touchend', event)"
+    on:touchcancel="fire('touchcancel', event)">
   <div ref:container
       class="ui-pnotify-container {{_styles.container ? _styles.container : ''}} {{_styles[type] ? _styles[type] : ''}} {{cornerclass}} {{shadow ? 'ui-pnotify-shadow' : ''}}"
       style="
