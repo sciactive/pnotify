@@ -53,9 +53,9 @@
   <script type="text/javascript" src="lib/iife/PNotifyNonBlock.js"></script>
   <script type="text/javascript" src="lib/iife/PNotifyMobile.js"></script>
   <script type="text/javascript" src="lib/iife/PNotifyHistory.js"></script>
+  <script type="text/javascript" src="lib/iife/PNotifyDesktop.js"></script>
   <!--
   <script type="text/javascript" src="lib/iife/PNotifyConfirm.js"></script>
-  <script type="text/javascript" src="lib/iife/PNotifyDesktop.js"></script>
   -->
   <script type="text/javascript" src="lib/iife/PNotifyStyleMaterial.js"></script>
   <script type="text/javascript" src="lib/iife/PNotifyReference.js"></script>
@@ -1308,73 +1308,68 @@ color: #FF0;
           If your browser doesn't support Web Notifications, or you deny permission to show them, you will only see regular in-browser notices. You can check <a href="http://caniuse.com/notifications" target="_blank">here</a>.
         </p>
         <hr />
-        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.desktop.permission(); PNotify.notice({
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.notice({
           title: 'Desktop Notice',
-          text: 'If you\'ve given me permission, I\'ll appear as a desktop notification. If you haven\'t, I\'ll still appear as a regular PNotify notice.',
+          text: 'I\'ll appear as a desktop notification. Unless I can\'t. I\'ll still appear as a regular PNotify notice then.',
           modules: {
             Desktop: {
               desktop: true
             }
           }
-        }).on('click', function(e){
-          if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target))
-            return;
-          alert('Hey! You clicked the desktop notification!');
         });">Notice</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.desktop.permission(); PNotify.info({
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.info({
           title: 'Desktop Info',
-          text: 'If you\'ve given me permission, I\'ll appear as a desktop notification. If you haven\'t, I\'ll still appear as a regular PNotify notice.',
+          text: 'Hey there. Something happened.',
           modules: {
             Desktop: {
               desktop: true
             }
           }
-        }).on('click', function(e){
-          if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target))
-            return;
-          alert('Hey! You clicked the desktop notification!');
         });">Info</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.desktop.permission(); PNotify.success({
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.success({
           title: 'Desktop Success',
-          text: 'If you\'ve given me permission, I\'ll appear as a desktop notification. If you haven\'t, I\'ll still appear as a regular PNotify notice.',
+          text: 'All done! Come back to my tab!',
           modules: {
             Desktop: {
               desktop: true
             }
           }
-        }).on('click', function(e){
-          if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target))
-            return;
-          alert('Hey! You clicked the desktop notification!');
         });">Success</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.desktop.permission(); PNotify.error({
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.error({
           title: 'Desktop Error',
-          text: 'If you\'ve given me permission, I\'ll appear as a desktop notification. If you haven\'t, I\'ll still appear as a regular PNotify notice.',
+          text: 'Serious error is serious.',
           modules: {
             Desktop: {
               desktop: true
             }
           }
-        }).on('click', function(e){
-          if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target))
-            return;
-          alert('Hey! You clicked the desktop notification!');
         });">Error</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.desktop.permission(); PNotify.notice({
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.notice({
           title: 'Desktop Custom Icon',
-          text: 'If you\'ve given me permission, I\'ll appear as a desktop notification. If you haven\'t, I\'ll still appear as a regular PNotify notice.',
+          text: 'I\'ve got a custom icon.',
           modules: {
             Desktop: {
               desktop: true,
               icon: 'includes/le_happy_face_by_luchocas-32.png'
             }
           }
-        }).on('click', function(e){
-          if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target))
-            return;
-          alert('Hey! You clicked the desktop notification!');
-        });">Custom</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.desktop.permission(); PNotify.notice({
+        });">Custom Icon</button>
+        <!-- <button class="btn btn-outline-dark my-1 source" onclick="PNotify.notice({
+          title: 'Desktop Image',
+          type: 'info',
+          text: 'I\'ve got an image.&lt;div style=&quot;text-align: center;&quot;&gt;&lt;img src=&quot;https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Happy_smiley_face.png/240px-Happy_smiley_face.png&quot; /&gt;&lt;/div&gt;',
+          modules: {
+            Desktop: {
+              desktop: true,
+              text: 'I\'ve got an image.',
+              icon: false,
+              options {
+                image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Happy_smiley_face.png/240px-Happy_smiley_face.png'
+              }
+            }
+          }
+        });">Image</button> -->
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.notice({
           title: 'Alternate Text Notice - Browser',
           text: 'This text appears on the &lt;strong&gt;browser&lt;/strong&gt;.',
           modules: {
@@ -1384,59 +1379,64 @@ color: #FF0;
               text: 'This text appears on the *desktop*.'
             }
           }
-        })).on('click', function(e){
-          if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target))
-            return;
-          alert('Hey! You clicked the desktop notification!');
         });">Alternate Text and Title</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.desktop.permission(); PNotify.notice({
-          title: 'Sticky Desktop Notice',
-          text: 'I\'m a sticky notice, so you\'ll have to close me yourself. (Some systems don\'t allow sticky notifications.) If you\'ve given me permission, I\'ll appear as a desktop notification. If you haven\'t, I\'ll still appear as a regular PNotify notice.',
-          hide: false,
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.notice({
+          title: 'Clicky Desktop Notice',
+          text: 'Click me.',
           modules: {
             Desktop: {
-              desktop: true
+              desktop: true,
+              icon: false
             }
           }
         }).on('click', function(e){
-          if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target))
+          if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target)) {
             return;
+          }
           alert('Hey! You clicked the desktop notification!');
-        });">Sticky</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.desktop.permission(); var notice = PNotify.notice({
+        });">Clicky</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.notice({
+          title: 'Sticky Desktop Notice',
+          text: 'I\'m a sticky notice. (Some browsers don\'t allow sticky Web Notifications.)',
+          hide: false,
+          modules: {
+            Desktop: {
+              desktop: true,
+              icon: false
+            }
+          }
+        }).on('click', function(e){
+          if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target)) {
+            return;
+          }
+          alert('Hey! You clicked the desktop notification!');
+        });">Sticky Clicky</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="var notice = PNotify.notice({
           title: 'Dynamic Desktop Notice',
-          text: 'I\'m a dynamic desktop notice. I\'ll change my type and text in a few seconds. If you\'ve given me permission, I\'ll appear as a desktop notification. If you haven\'t, I\'ll still appear as a regular PNotify notice.',
+          text: 'I\'m a dynamic desktop notice.',
           modules: {
             Desktop: {
               desktop: true
             }
           }
-        });
-        notice.on('click', function(e){
-          if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target))
-            return;
-          alert('Hey! You clicked the desktop notification!');
         });
         setTimeout(function(){
           notice.update({
             type: 'info',
             text: 'Now I\'m an info box!'
           });
-        }, 4000);">Dynamic</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.desktop.permission(); PNotify.notice({
+        }, 1000);">Dynamic</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.notice({
           title: 'Desktop Notice',
-          text: 'If you\'ve given me permission, I\'ll appear as a desktop notification. If you haven\'t, I won\'t appear at all, because my fallback is turned off.',
+          text: 'I won\t fall back to a regular notice.',
           modules: {
             Desktop: {
               desktop: true,
               fallback: false
             }
           }
-        }).on('click', function(e){
-          if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target))
-            return;
-          alert('Hey! You clicked the desktop notification!');
         });" title="Disabling fallback makes the notice not appear at all if it can't appear as a desktop notice.">No Fallback</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.modules.Desktop.permission();">Explicitly Ask for Notice Permission</button>
       </div>
       <h5 class="card-header">Buttons Module <small>Sticker and a closer buttons.</small></h5>
       <div class="card-body">

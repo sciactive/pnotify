@@ -74,8 +74,15 @@
       PNotify.modules.History = Component;
     },
 
-    oncreate () {
-      this.on("initModule", (options) => {
+    data () {
+      return Object.assign({
+        "_notice": null, // The PNotify notice.
+        "_options": {}, // The options for the notice.
+      }, PNotify.modules.History.defaults);
+    },
+
+    methods: {
+      initModule(options) {
         this.set(options);
 
         if (this.get("history")) {
@@ -85,17 +92,8 @@
             notice.set({"destroy": false});
           }
         }
-      });
-    },
+      },
 
-    data () {
-      return Object.assign({
-        "_notice": null, // The PNotify notice.
-        "_options": {}, // The options for the notice.
-      }, PNotify.modules.History.defaults);
-    },
-
-    methods: {
       beforeOpen() {
         const max_in_stack = this.get("max_in_stack");
         if (max_in_stack === Infinity) {

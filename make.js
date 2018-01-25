@@ -12,8 +12,8 @@ let pnotify_src = {
   'nonblock': 'PNotifyNonBlock.html',
   'mobile': 'PNotifyMobile.html',
   'history': 'PNotifyHistory.html',
+  'desktop': 'PNotifyDesktop.html',
   // 'confirm': 'PNotifyConfirm.?',
-  // 'desktop': 'PNotifyDesktop.?',
   'stylematerial': 'PNotifyStyleMaterial.html',
   'reference': 'PNotifyReference.html',
 };
@@ -26,8 +26,8 @@ let pnotify_js = {
   'nonblock': 'PNotifyNonBlock.js',
   'mobile': 'PNotifyMobile.js',
   'history': 'PNotifyHistory.js',
+  'desktop': 'PNotifyDesktop.js',
   // 'confirm': 'PNotifyConfirm.js',
-  // 'desktop': 'PNotifyDesktop.js',
   'stylematerial': 'PNotifyStyleMaterial.js',
   'reference': 'PNotifyReference.js',
 };

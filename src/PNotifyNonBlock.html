@@ -71,7 +71,9 @@
       };
 
       Component.init = (notice) => {
-        return new Component({target: document.body});
+        return new Component({target: document.body, data: {
+          "_notice": notice
+        }});
       };
 
       // Register the module with PNotify.
@@ -138,70 +140,67 @@
         nonBlockLastElem = elemBelow;
       };
 
-      this.on("initModule", (options) => {
-        this.set(options);
-        const notice = this.get("_notice");
+      const notice = this.get("_notice");
 
-        notice.on("mouseenter", (event) => {
-          if (this.get("nonblock")) {
-            event.stopPropagation();
-            // If it's non-blocking, animate to the other opacity.
-            notice.addModuleClass("ui-pnotify-nonblock-fade");
-          }
-        });
-        notice.on("mouseleave", (event) => {
-          if (this.get("nonblock")) {
-            event.stopPropagation();
-          }
-          nonBlockLastElem = null;
-          resetCursorStyles();
-          // Animate back to the normal opacity.
-          if (this.get("nonblock")) {
-            notice.removeModuleClass("ui-pnotify-nonblock-fade");
-          }
-        });
-        notice.on("mouseover", (event) => {
-          if (this.get("nonblock")) {
-            event.stopPropagation();
-          }
-        });
-        notice.on("mouseout", (event) => {
-          if (this.get("nonblock")) {
-            event.stopPropagation();
-          }
-        });
-        notice.on("mousemove", (event) => {
-          if (this.get("nonblock")) {
-            event.stopPropagation();
-            nonBlockPass(notice, event, "onmousemove");
-          }
-        });
-        notice.on("mousedown", (event) => {
-          if (this.get("nonblock")) {
-            event.stopPropagation();
-            event.preventDefault();
-            nonBlockPass(notice, event, "onmousedown");
-          }
-        });
-        notice.on("mouseup", (event) => {
-          if (this.get("nonblock")) {
-            event.stopPropagation();
-            event.preventDefault();
-            nonBlockPass(notice, event, "onmouseup");
-          }
-        });
-        notice.on("click", (event) => {
-          if (this.get("nonblock")) {
-            event.stopPropagation();
-            nonBlockPass(notice, event, "onclick");
-          }
-        });
-        notice.on("dblclick", (event) => {
-          if (this.get("nonblock")) {
-            event.stopPropagation();
-            nonBlockPass(notice, event, "ondblclick");
-          }
-        });
+      notice.on("mouseenter", (event) => {
+        if (this.get("nonblock")) {
+          event.stopPropagation();
+          // If it's non-blocking, animate to the other opacity.
+          notice.addModuleClass("ui-pnotify-nonblock-fade");
+        }
+      });
+      notice.on("mouseleave", (event) => {
+        if (this.get("nonblock")) {
+          event.stopPropagation();
+        }
+        nonBlockLastElem = null;
+        resetCursorStyles();
+        // Animate back to the normal opacity.
+        if (this.get("nonblock")) {
+          notice.removeModuleClass("ui-pnotify-nonblock-fade");
+        }
+      });
+      notice.on("mouseover", (event) => {
+        if (this.get("nonblock")) {
+          event.stopPropagation();
+        }
+      });
+      notice.on("mouseout", (event) => {
+        if (this.get("nonblock")) {
+          event.stopPropagation();
+        }
+      });
+      notice.on("mousemove", (event) => {
+        if (this.get("nonblock")) {
+          event.stopPropagation();
+          nonBlockPass(notice, event, "onmousemove");
+        }
+      });
+      notice.on("mousedown", (event) => {
+        if (this.get("nonblock")) {
+          event.stopPropagation();
+          event.preventDefault();
+          nonBlockPass(notice, event, "onmousedown");
+        }
+      });
+      notice.on("mouseup", (event) => {
+        if (this.get("nonblock")) {
+          event.stopPropagation();
+          event.preventDefault();
+          nonBlockPass(notice, event, "onmouseup");
+        }
+      });
+      notice.on("click", (event) => {
+        if (this.get("nonblock")) {
+          event.stopPropagation();
+          nonBlockPass(notice, event, "onclick");
+        }
+      });
+      notice.on("dblclick", (event) => {
+        if (this.get("nonblock")) {
+          event.stopPropagation();
+          nonBlockPass(notice, event, "ondblclick");
+        }
       });
     },
 
@@ -211,6 +210,12 @@
         "_options": {}, // The options for the notice.
       }, PNotify.modules.NonBlock.defaults);
     },
+
+    methods: {
+      initModule(options) {
+        this.set(options);
+      }
+    }
   }
 </script>
 

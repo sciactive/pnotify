@@ -394,6 +394,7 @@
         "_moveClass": "", // Stores the class that adds movement animation effects.
         "_timerHide": false, // Stores whether the notice was hidden by a timer.
         "_moduleClasses": [], // Modules can add classes here to be added to the notice element. (They should play nice and not remove classes that aren't theirs.)
+        "_moduleIsNoticeOpen": false, // Modules that change how the notice displays (causing the notice element to not appear) can set this to true to make PNotify assume the notice has opened.
         "_modules": {}, // Stores the instances of the modules.
         "_modulesPrependContainer": PNotify.modulesPrependContainer,
         "_modulesAppendContainer": PNotify.modulesAppendContainer,
@@ -448,7 +449,7 @@
           "_notice": this,
           "_options": this.get()
         }, modules[module.constructor.key]);
-        module.fire("initModule", moduleOptions);
+        module.initModule(moduleOptions);
 
         // Now save the module instance.
         const _modules = this.get("_modules");
@@ -614,12 +615,14 @@
           if (this.get("_animating") !== "in") {
             return;
           }
-          let visible = false;
-          const domRect = this.refs.elem.getBoundingClientRect();
-          for (let prop in domRect) {
-            if (domRect[prop] > 0) {
-              visible = true;
-              break;
+          let visible = this.get("_moduleIsNoticeOpen");
+          if (!visible) {
+            const domRect = this.refs.elem.getBoundingClientRect();
+            for (let prop in domRect) {
+              if (domRect[prop] > 0) {
+                visible = true;
+                break;
+              }
             }
           }
           if (visible) {
@@ -658,12 +661,14 @@
           if (this.get("_animating") !== "out") {
             return;
           }
-          let visible = false;
-          const domRect = this.refs.elem.getBoundingClientRect();
-          for (let prop in domRect) {
-            if (domRect[prop] > 0) {
-              visible = true;
-              break;
+          let visible = this.get("_moduleIsNoticeOpen");
+          if (!visible) {
+            const domRect = this.refs.elem.getBoundingClientRect();
+            for (let prop in domRect) {
+              if (domRect[prop] > 0) {
+                visible = true;
+                break;
+              }
             }
           }
           if (!this.refs.elem.style.opacity || this.refs.elem.style.opacity == "0" || !visible) {

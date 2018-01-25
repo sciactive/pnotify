@@ -35,9 +35,17 @@
         }
       };
 
+      // This is the first way to init a module. If you aren't placing any
+      // markup in the template, you would do this.
+      // Component.init = (notice) => {
+      //   return new Component({target: document.body, data: {
+      //     "_notice": notice
+      //   }});
+      // };
+
       // Register the module with PNotify.
       PNotify.modules.Reference = Component;
-      // Append this module to the container.
+      // Append our markup to the container.
       PNotify.modulesAppendContainer.push(Component);
 
       // This is where you would add any styling or icons classes you are using in your code.
@@ -62,18 +70,9 @@
     },
 
     oncreate () {
-      // This event is fired from the core to give us our actual options. Until
-      // it is fired, our options will just be the defaults.
-      this.on("initModule", (options) => {
-        // Set our options.
-        this.set(options);
-        // Now that the notice is available to us, we can listen to events fired
-        // from it.
-        this.get("_notice").on("mouseenter", () => this.set({"_mouseIsIn": true}));
-        this.get("_notice").on("mouseleave", () => this.set({"_mouseIsIn": false}));
-      });
-      // We have to fire this event to tell the core that we are ready to
-      // receive our options.
+      // This is the second way to init a module. Because we put markup in the
+      // template, we have to fire this event to tell the core that we are ready
+      // to receive our options.
       this.fire("init", {module: this});
     },
 
@@ -86,6 +85,17 @@
     },
 
     methods: {
+      // This method is called from the core to give us our actual options.
+      // Until it is called, our options will just be the defaults.
+      initModule(options) {
+        // Set our options.
+        this.set(options);
+        // Now that the notice is available to us, we can listen to events fired
+        // from it.
+        this.get("_notice").on("mouseenter", () => this.set({"_mouseIsIn": true}));
+        this.get("_notice").on("mouseleave", () => this.set({"_mouseIsIn": false}));
+      },
+
       doSomething() {
         // Spin the notice around.
         let cur_angle = 0, notice = this.get("_notice"), timer = setInterval(() => {

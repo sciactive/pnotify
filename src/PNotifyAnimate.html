@@ -43,13 +43,6 @@
       PNotify.modules.Animate = Component;
     },
 
-    oncreate () {
-      this.on("initModule", (options) => {
-        this.set(options);
-        this.setUpAnimations();
-      });
-    },
-
     data () {
       return Object.assign({
         "_notice": null, // The PNotify notice.
@@ -58,6 +51,11 @@
     },
 
     methods: {
+      initModule(options) {
+        this.set(options);
+        this.setUpAnimations();
+      },
+
       update() {
         this.setUpAnimations();
       },

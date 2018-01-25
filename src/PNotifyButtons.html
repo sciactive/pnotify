@@ -81,30 +81,6 @@
     },
 
     oncreate () {
-      this.on("initModule", (options) => {
-        this.set(options);
-        this.get("_notice").on("mouseenter", () => this.set({"_mouseIsIn": true}));
-        this.get("_notice").on("mouseleave", () => this.set({"_mouseIsIn": false}));
-        this.get("_notice").observe("hide", (hide) => {
-          const sticker = this.get("sticker");
-
-          if (!sticker) {
-            return;
-          }
-
-          // Font Awesome 5 replaces our lovely element with a gross SVG. In order
-          // to make it play nice with Svelte, we have to clear the element and
-          // make it again.
-          const icon = hide ? this.get("classes").pin_up : this.get("classes").pin_down;
-          if (
-              (this.get("_notice").get("icons") === "fontawesome5")
-              || (typeof icon === "string" && icon.match(/(^| )fa[srlb]($| )/))
-            ) {
-            this.set({"sticker": false});
-            this.set({"sticker": true});
-          }
-        });
-      });
       this.fire("init", {module: this});
     },
 
@@ -128,6 +104,31 @@
     },
 
     methods: {
+      initModule(options) {
+        this.set(options);
+        this.get("_notice").on("mouseenter", () => this.set({"_mouseIsIn": true}));
+        this.get("_notice").on("mouseleave", () => this.set({"_mouseIsIn": false}));
+        this.get("_notice").observe("hide", (hide) => {
+          const sticker = this.get("sticker");
+
+          if (!sticker) {
+            return;
+          }
+
+          // Font Awesome 5 replaces our lovely element with a gross SVG. In order
+          // to make it play nice with Svelte, we have to clear the element and
+          // make it again.
+          const icon = hide ? this.get("classes").pin_up : this.get("classes").pin_down;
+          if (
+              (this.get("_notice").get("icons") === "fontawesome5")
+              || (typeof icon === "string" && icon.match(/(^| )fa[srlb]($| )/))
+            ) {
+            this.set({"sticker": false});
+            this.set({"sticker": true});
+          }
+        });
+      },
+
       handleStickerClick() {
         const _notice = this.get("_notice");
         _notice.update({hide: !_notice.get("hide")});

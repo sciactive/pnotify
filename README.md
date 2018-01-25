@@ -1,6 +1,4 @@
-[![Stories in Ready](https://badge.waffle.io/sciactive/pnotify.png?label=ready&title=Ready)](http://waffle.io/sciactive/pnotify) [![Stories in Progress](https://badge.waffle.io/sciactive/pnotify.png?label=in%20progress&title=In%20Progress)](http://waffle.io/sciactive/pnotify)
-[![npm version](https://badge.fury.io/js/pnotify.svg)](https://www.npmjs.com/package/pnotify)
-[![jsDelivr Hits](https://data.jsdelivr.com/v1/package/npm/pnotify/badge?style=rounded)](https://www.jsdelivr.com/package/npm/pnotify)
+[![Stories in Ready](https://badge.waffle.io/sciactive/pnotify.png?label=ready&title=Ready)](http://waffle.io/sciactive/pnotify) [![Stories in Progress](https://badge.waffle.io/sciactive/pnotify.png?label=in%20progress&title=In%20Progress)](http://waffle.io/sciactive/pnotify) [![npm version](https://badge.fury.io/js/pnotify.svg)](https://www.npmjs.com/package/pnotify) [![jsDelivr Hits](https://data.jsdelivr.com/v1/package/npm/pnotify/badge?style=rounded)](https://www.jsdelivr.com/package/npm/pnotify)
 
 PNotify is a JavaScript notification plugin. PNotify can provide [desktop notifications](http://sciactive.com/pnotify/#web-notifications) based on the [Web Notifications spec](http://www.w3.org/TR/notifications/). If desktop notifications are not available or not permitted, PNotify will fall back to an in-browser notice.
 
@@ -32,11 +30,11 @@ Things that work:
 * NonBlock module
 * Mobile module
 * History module
+* Desktop module
 
 Things that don't work:
 
 * Confirm module
-* Desktop module
 
 # Getting Started
 

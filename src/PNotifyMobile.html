@@ -22,8 +22,17 @@
 
     oncreate () {
       this.set({"_doMobileStylingBound": this.doMobileStyling.bind(this)});
+    },
 
-      this.on("initModule", (options) => {
+    data () {
+      return Object.assign({
+        "_notice": null, // The PNotify notice.
+        "_options": {}, // The options for the notice.
+      }, PNotify.modules.Mobile.defaults);
+    },
+
+    methods: {
+      initModule(options) {
         this.set(options);
 
         const notice = this.get("_notice");
@@ -113,17 +122,8 @@
         });
 
         this.doMobileStyling();
-      });
-    },
+      },
 
-    data () {
-      return Object.assign({
-        "_notice": null, // The PNotify notice.
-        "_options": {}, // The options for the notice.
-      }, PNotify.modules.Mobile.defaults);
-    },
-
-    methods: {
       update() {
         this.doMobileStyling();
       },
