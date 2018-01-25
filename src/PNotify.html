@@ -225,7 +225,7 @@
       // Remove all visible notices in a single stack.
       PNotify.removeStack = (stack) => {
         for (let i = 0; i < PNotify.notices.length; i++) {
-          if (PNotify.notices[i].remove && PNotify.notices[i].get("stack") === stack) {
+          if (PNotify.notices[i].close && PNotify.notices[i].get("stack") === stack) {
             PNotify.notices[i].close(false);
           }
         }
@@ -482,6 +482,15 @@
 
       // Display the notice.
       open() {
+        if (this.get("_state") === "opening") {
+          return;
+        }
+        if (this.get("_state") === "open") {
+          if (this.get("hide")) {
+            this.queueRemove();
+          }
+          return;
+        }
         this.set({
           "_state": "opening",
           // This makes the notice visibity: hidden; so its dimensions can be
@@ -543,6 +552,9 @@
 
       // Remove the notice.
       close(timerHide) {
+        if (this.get("_state") === "closing" || this.get("_state") === "closed") {
+          return;
+        }
         this.set({"_state": "closing", "_timerHide": !!timerHide}); // Make sure it's a boolean.
         // Run the modules.
         this.runModules('beforeClose');
@@ -930,26 +942,35 @@
         return this;
       },
 
-      addModuleClass(className) {
+      addModuleClass(...classNames) {
         const moduleClasses = this.get("_moduleClasses");
-        if (moduleClasses.indexOf(className) === -1) {
-          moduleClasses.push(className);
-          this.set({"_moduleClasses": moduleClasses});
+        for (let className of classNames) {
+          if (moduleClasses.indexOf(className) === -1) {
+            moduleClasses.push(className);
+          }
         }
+        this.set({"_moduleClasses": moduleClasses});
       },
 
-      removeModuleClass(className) {
+      removeModuleClass(...classNames) {
         const moduleClasses = this.get("_moduleClasses");
-        const idx = moduleClasses.indexOf(className);
-        if (idx !== -1) {
-          moduleClasses.splice(idx, 1);
-          this.set({"_moduleClasses": moduleClasses});
+        for (let className of classNames) {
+          const idx = moduleClasses.indexOf(className);
+          if (idx !== -1) {
+            moduleClasses.splice(idx, 1);
+          }
         }
+        this.set({"_moduleClasses": moduleClasses});
       },
 
-      hasModuleClass(className) {
-        const moduleClasses = this.get("_moduleClasses");
-        return moduleClasses.indexOf(className) !== -1;
+      hasModuleClass(...classNames) {
+        for (let className of classNames) {
+          const moduleClasses = this.get("_moduleClasses");
+          if (moduleClasses.indexOf(className) === -1) {
+            return false;
+          }
+        }
+        return true;
       }
     }
   };

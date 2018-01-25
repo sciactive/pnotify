@@ -1,0 +1,138 @@
+<script>
+  import PNotify from "./PNotify.html";
+
+  export default {
+    setup (Component) {
+      Component.key = "History";
+
+      Component.defaults = {
+        // Place the notice in the history.
+        history: true,
+        // Maximum number of notices to have open in its stack.
+        max_in_stack: Infinity
+      };
+
+      Component.init = (notice) => {
+        return new Component({target: document.body});
+      };
+
+      Component.showLast = (stack) => {
+        if (stack === undefined) {
+          stack = PNotify.defaultStack;
+        }
+        if (stack === false) {
+          return;
+        }
+        const top = (stack.push === "top");
+
+        // Look up the last history notice, and display it.
+        let i = (top ? 0 : PNotify.notices.length - 1);
+
+        let notice;
+        do {
+          notice = PNotify.notices[i];
+
+          if (!notice) {
+            return;
+          }
+
+          i += (top ? 1 : -1);
+        } while (
+          notice.get("stack") !== stack
+          || !notice.get("_modules").History.get("history")
+          || notice.get("_state") === "opening"
+          || notice.get("_state") === "open"
+        );
+
+        notice.open();
+      };
+
+      Component.showAll = (stack) => {
+        if (stack === undefined) {
+          stack = PNotify.defaultStack;
+        }
+        if (stack === false) {
+          return;
+        }
+
+        // Display all notices. (Disregarding non-history notices.)
+        for (let i = 0; i < PNotify.notices.length; i++) {
+          const notice = PNotify.notices[i];
+          if (
+              (
+                stack === true
+                || notice.get("stack") === stack
+              )
+              && notice.get("_modules").History.get("history")
+            ) {
+            notice.open();
+          }
+        };
+      };
+
+      // Register the module with PNotify.
+      PNotify.modules.History = Component;
+    },
+
+    oncreate () {
+      this.on("initModule", (options) => {
+        this.set(options);
+
+        if (this.get("history")) {
+          // Don't destroy notices that are in history.
+          const notice = this.get("_notice");
+          if (notice.get("destroy")) {
+            notice.set({"destroy": false});
+          }
+        }
+      });
+    },
+
+    data () {
+      return Object.assign({
+        "_notice": null, // The PNotify notice.
+        "_options": {}, // The options for the notice.
+      }, PNotify.modules.History.defaults);
+    },
+
+    methods: {
+      beforeOpen() {
+        const max_in_stack = this.get("max_in_stack");
+        if (max_in_stack === Infinity) {
+          return;
+        }
+
+        const stack = this.get("_options").stack;
+        if (stack === false) {
+          return;
+        }
+
+        // Remove oldest notifications leaving only max_in_stack from the stack.
+        if (PNotify.notices && (PNotify.notices.length > max_in_stack)) {
+          // Oldest are normally in front of array, or if stack.push=="top" then
+          // they are at the end of the array!
+          const top = stack.push === "top";
+          const forRemoval = [];
+          let currentOpen = 0;
+
+          for (let i = (top ? 0 : PNotify.notices.length - 1); (top ? i < PNotify.notices.length : i >= 0); (top ? i++ : i--)) {
+            if (
+                ["opening", "open"].indexOf(PNotify.notices[i].get("_state")) !== -1
+                && PNotify.notices[i].get("stack") === stack
+              ) {
+              if (currentOpen >= max_in_stack) {
+                forRemoval.push(PNotify.notices[i]);
+              } else {
+                currentOpen++;
+              }
+            }
+          }
+
+          for (let i = 0; i < forRemoval.length; i++) {
+            forRemoval[i].close(false);
+          }
+        }
+      }
+    }
+  }
+</script>

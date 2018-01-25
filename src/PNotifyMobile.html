@@ -1,5 +1,3 @@
-<:Window on:resize="doMobileStyling()" />
-
 <script>
   import PNotify from "./PNotify.html";
 
@@ -14,13 +12,17 @@
         styling: true
       };
 
+      Component.init = (notice) => {
+        return new Component({target: document.body});
+      };
+
       // Register the module with PNotify.
       PNotify.modules.Mobile = Component;
-      // Append this module to the container.
-      PNotify.modulesAppendContainer.push(Component);
     },
 
     oncreate () {
+      this.set({"_doMobileStylingBound": this.doMobileStyling.bind(this)});
+
       this.on("initModule", (options) => {
         this.set(options);
 
@@ -112,7 +114,6 @@
 
         this.doMobileStyling();
       });
-      this.fire("init", {module: this});
     },
 
     data () {
@@ -127,7 +128,15 @@
         this.doMobileStyling();
       },
 
+      beforeOpen() {
+        // Add an event listener to watch the window resizes.
+        window.addEventListener("resize", this.get("_doMobileStylingBound"));
+      },
+
       afterClose() {
+        // Remove the event listener.
+        window.removeEventListener("resize", this.get("_doMobileStylingBound"));
+
         // Remove any styling we added to close it.
         if (!this.get("swipe_dismiss")) {
           return;
@@ -198,11 +207,13 @@
 
           notice.addModuleClass("ui-pnotify-mobile-able");
         } else {
-          notice.removeModuleClass("ui-pnotify-mobile-able");
-          notice.removeModuleClass("ui-pnotify-mobile-top");
-          notice.removeModuleClass("ui-pnotify-mobile-bottom");
-          notice.removeModuleClass("ui-pnotify-mobile-right");
-          notice.removeModuleClass("ui-pnotify-mobile-left");
+          notice.removeModuleClass(
+            "ui-pnotify-mobile-able",
+            "ui-pnotify-mobile-top",
+            "ui-pnotify-mobile-bottom",
+            "ui-pnotify-mobile-right",
+            "ui-pnotify-mobile-left"
+          );
 
           if (stack !== false) {
             if (stack.mobileOrigSpacing1) {

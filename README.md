@@ -31,12 +31,12 @@ Things that work:
 * Callbacks module
 * NonBlock module
 * Mobile module
+* History module
 
 Things that don't work:
 
 * Confirm module
 * Desktop module
-* History module
 
 # Getting Started
 
@@ -168,6 +168,28 @@ new PNotify({
 
 `PNotify.defaultStack` = `{"dir1": "down", "dir2": "left", "firstpos1": 25, "firstpos2": 25, "spacing1": 36, "spacing2": 36, "push": "bottom", "context": document.body}`;
 
+## Changing Default Options
+
+Changing a default option is easy.
+
+```js
+PNotify.defaults.width = "400px";
+```
+
+Changing a default option for modules can be done in a couple ways.
+
+```js
+// This will change the default for every notice and is the recommended way.
+PNotify.modules.History.defaults.max_in_stack = 10;
+
+// This will change the default only for notices that don't specify any module options.
+PNotify.defaults.modules = {
+  History: {
+    max_in_stack: 10
+  }
+};
+```
+
 ## Desktop Module
 
 `Desktop: {`
@@ -238,12 +260,16 @@ The Animate module also creates a method, `attention`, on notices which accepts 
 
 `History: {`
 * `history: true` - Place the notice in the history.
-* `menu: false` - Display a pull down menu to redisplay previous notices.
-* `fixed: true` - Make the pull down menu fixed to the top of the viewport.
-* `maxonscreen: Infinity` - Maximum number of notifications to have onscreen.
-* `labels: {redisplay: "Redisplay", all: "All", last: "Last"}` - Lets you change the displayed text, facilitating internationalization.
+* `max_in_stack: Infinity` - Maximum number of notices to have open in its stack.
 
 `}`
+
+The History module also has two methods:
+
+* `PNotify.modules.History.showLast(stack)` - Reopen the last closed notice from a stack that was placed in the history. If no stack is provided, it will use the default stack.
+* `PNotify.modules.History.showAll(stack)` - Reopen all notices from a stack that were placed in the history. If no stack is provided, it will also use the default stack. If stack is `true`, it will reopen all notices from every stack.
+
+In PNotify v3, the history module could make a dropdown which had these functions. In v4, it was decided that the dropdown was extra code that users weren't using, so it was removed.
 
 ## Callbacks Module
 
@@ -288,9 +314,9 @@ The callback options all expect one argument, a function, which will be called w
 * `notice.refs.container` - The notice container DOM element.
 * `notice.refs.titleContainer` - The title container DOM element.
 * `notice.refs.textContainer` - The text container DOM element.
-* `notice.addModuleClass(className)` - This is for modules to add classes to the notice.
-* `notice.removeModuleClass(className)` - This is for modules to remove classes from the notice.
-* `notice.hasModuleClass(className)` - This is for modules to test classes on the notice.
+* `notice.addModuleClass(...classNames)` - This is for modules to add classes to the notice.
+* `notice.removeModuleClass(...classNames)` - This is for modules to remove classes from the notice.
+* `notice.hasModuleClass(...classNames)` - This is for modules to test classes on the notice.
 
 ## From the [Svelte Component API](https://svelte.technology/guide#component-api)
 

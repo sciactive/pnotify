@@ -52,10 +52,10 @@
   <script type="text/javascript" src="lib/iife/PNotifyCallbacks.js"></script>
   <script type="text/javascript" src="lib/iife/PNotifyNonBlock.js"></script>
   <script type="text/javascript" src="lib/iife/PNotifyMobile.js"></script>
+  <script type="text/javascript" src="lib/iife/PNotifyHistory.js"></script>
   <!--
   <script type="text/javascript" src="lib/iife/PNotifyConfirm.js"></script>
   <script type="text/javascript" src="lib/iife/PNotifyDesktop.js"></script>
-  <script type="text/javascript" src="lib/iife/PNotifyHistory.js"></script>
   -->
   <script type="text/javascript" src="lib/iife/PNotifyStyleMaterial.js"></script>
   <script type="text/javascript" src="lib/iife/PNotifyReference.js"></script>
@@ -194,6 +194,7 @@
           animate_speed: "fast",
           icon: "fas fa-comment",
           // Setting stack to false causes PNotify to ignore this notice when positioning.
+          // It also causes the History module to ignore it.
           stack: false,
           auto_display: false,
           destroy: false,
@@ -201,9 +202,6 @@
             Buttons: {
               closer: false,
               sticker: false
-            },
-            History: {
-              history: false
             }
           }
         });
@@ -2133,17 +2131,22 @@ color: #FF0;
       </div>
       <h5 class="card-header">History Module <small>Redisplay old notices.</small></h5>
       <div class="card-body">
-        <button class="btn btn-outline-dark my-1 source" onclick="$(this).trigger('pnotify.history-last');">Display Last Notice</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="$(this).trigger('pnotify.history-all');">Display All Notices</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.notice({
-          title: 'Pull Down Menu Notice',
-          text: 'I\'ll create a menu in the upper right corner that provides history functions.',
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.modules.History.showLast();">Show Last Notice (Default Stack)</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.modules.History.showAll();">Show All Notices (Default Stack)</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.modules.History.showAll(true);">Show All Notices (All Stacks)</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="if (typeof history_max_stack === 'undefined') {
+          history_max_stack = {'dir1': 'up', 'dir2': 'right', 'firstpos1': 25, 'firstpos2': 25};
+        }
+        PNotify.notice({
+          title: 'Stack Limit Menu Notice',
+          text: 'I get anxious around other notices, so I\'ll keep only one friend around.',
+          stack: history_max_stack,
           modules: {
             History: {
-              menu: true
+              max_in_stack: 2
             }
           }
-        });">Pull Down Menu</button>
+        });">Limit Stack to 2</button>
         <button class="btn btn-outline-dark my-1 source" onclick="PNotify.notice({
           title: 'No History Notice',
           text: 'I\'m not part of the notice history, so if you redisplay the last message, it won\'t be me.',
@@ -2153,6 +2156,8 @@ color: #FF0;
             }
           }
         });">No History Notice</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.modules.History.defaults.max_in_stack = 5;">Set Max in Stack Default to 5</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.modules.History.defaults.max_in_stack = Infinity;">Set Max in Stack Default back to Infinity</button>
       </div>
       <h5 class="card-header">Reference Module <small>A reference for when you are coding your own module.</small></h5>
       <div class="card-body">
