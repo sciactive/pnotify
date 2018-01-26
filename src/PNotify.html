@@ -11,7 +11,17 @@
 -->
 
 <div ref:elem
-    class="ui-pnotify {{icon !== false ? 'ui-pnotify-with-icon' : ''}} {{_styles.element ? _styles.element : ''}} {{addclass}} {{_animatingClass}} {{_moveClass}} {{animation === 'fade' ? 'ui-pnotify-fade-'+animate_speed : ''}} {{_moduleClasses.join(' ')}}"
+    class="
+      ui-pnotify
+      {{icon !== false ? 'ui-pnotify-with-icon' : ''}}
+      {{_styles.element ? _styles.element : ''}}
+      {{addclass}}
+      {{_animatingClass}}
+      {{_moveClass}}
+      {{animation === 'fade' ? 'ui-pnotify-fade-'+animate_speed : ''}}
+      {{stack && stack.modal ? 'ui-pnotify-modal' : ''}}
+      {{_moduleClasses.join(' ')}}
+    "
     aria-live="assertive"
     role="alertdialog"
     ui-pnotify
@@ -31,7 +41,13 @@
     on:touchend="fire('touchend', event)"
     on:touchcancel="fire('touchcancel', event)">
   <div ref:container
-      class="ui-pnotify-container {{_styles.container ? _styles.container : ''}} {{_styles[type] ? _styles[type] : ''}} {{cornerclass}} {{shadow ? 'ui-pnotify-shadow' : ''}}"
+      class="
+        ui-pnotify-container
+        {{_styles.container ? _styles.container : ''}}
+        {{_styles[type] ? _styles[type] : ''}}
+        {{cornerclass}}
+        {{shadow ? 'ui-pnotify-shadow' : ''}}
+      "
       style="
         {{typeof width === 'string' ? 'width: '+width+';' : ''}}
         {{typeof min_height === 'string' ? 'min-height: '+min_height+';' : ''}}
@@ -1004,11 +1020,17 @@
     /* Ensures notices are above everything */
     z-index: 100040;
   }
+  :global(body > .ui-pnotify.ui-pnotify-modal) {
+    z-index: 100042;
+  }
   :global(.ui-pnotify) {
     position: absolute;
     height: auto;
-    z-index: 2;
+    z-index: 1;
     display: none;
+  }
+  :global(.ui-pnotify.ui-pnotify-modal) {
+    z-index: 3;
   }
   :global(.ui-pnotify.ui-pnotify-in) {
     display: block;
@@ -1107,11 +1129,11 @@
     position: absolute;
     height: 100%;
     width: 100%;
-    z-index: 1;
+    z-index: 2;
   }
   :global(body > .ui-pnotify-modal-overlay) {
     position: fixed;
-    z-index: 100039;
+    z-index: 100041;
   }
   :global(.ui-pnotify-modal-overlay-hidden) {
     display: none;

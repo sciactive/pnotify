@@ -16,8 +16,14 @@ Color Scheme: http://paletton.com/palette.php?uid=c1T3n2J040kpEKzpEKzbEPSOEyiNk9
 }
 [ui-pnotify].ui-pnotify .brighttheme .ui-pnotify-title {
   font-size: 1.2rem;
-  line-height: 1.2rem;
+  line-height: 1.4rem;
+  margin-top: -.2rem;
   margin-bottom: 1rem;
+}
+[ui-pnotify].ui-pnotify-with-icon .brighttheme .ui-pnotify-text {
+  font-size: 1rem;
+  line-height: 1.2rem;
+  margin-top: -.2rem;
 }
 [ui-pnotify].ui-pnotify .brighttheme .ui-pnotify-icon {
   line-height: 1;
@@ -134,28 +140,25 @@ Color Scheme: http://paletton.com/palette.php?uid=c1T3n2J040kpEKzpEKzbEPSOEyiNk9
 [ui-pnotify].ui-pnotify .brighttheme .ui-pnotify-action-button {
   text-transform: uppercase;
   font-weight: bold;
-  padding: .4rem .8rem;
+  padding: .4rem 1rem;
   border: none;
   background: transparent;
+  cursor: pointer;
 }
 
-[ui-pnotify].ui-pnotify .brighttheme .ui-pnotify-action-button.btn-primary {
-  border: none;
-  border-radius: 0;
-}
-[ui-pnotify].ui-pnotify .brighttheme-notice .ui-pnotify-action-button.btn-primary {
+[ui-pnotify].ui-pnotify .brighttheme-notice .ui-pnotify-action-button.brighttheme-primary {
   background-color: #FFFF00;
   color: #4F4F00;
 }
-[ui-pnotify].ui-pnotify .brighttheme-info .ui-pnotify-action-button.btn-primary {
+[ui-pnotify].ui-pnotify .brighttheme-info .ui-pnotify-action-button.brighttheme-primary {
   background-color: #0286A5;
   color: #012831;
 }
-[ui-pnotify].ui-pnotify .brighttheme-success .ui-pnotify-action-button.btn-primary {
+[ui-pnotify].ui-pnotify .brighttheme-success .ui-pnotify-action-button.brighttheme-primary {
   background-color: #35DB00;
   color: #104300;
 }
-[ui-pnotify].ui-pnotify .brighttheme-error .ui-pnotify-action-button.btn-primary {
+[ui-pnotify].ui-pnotify .brighttheme-error .ui-pnotify-action-button.brighttheme-primary {
   background-color: #FF1800;
   color: #4F0800;
 }

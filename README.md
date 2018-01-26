@@ -271,6 +271,7 @@ buttons: [
     text: "Ok",
     trustText: false,
     addClass: "",
+    primary: true,
     promptTrigger: true,
     click: (notice, value) => {
       notice.close();

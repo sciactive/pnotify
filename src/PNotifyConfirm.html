@@ -1,6 +1,10 @@
 {{#if confirm || prompt}}
   <div
-      class="ui-pnotify-action-bar {{_notice.get('_styles').text ? _notice.get('_styles').text : ''}}"
+      class="
+        ui-pnotify-action-bar
+        {{_notice.get('_styles').action_bar ? _notice.get('_styles').action_bar : ''}}
+        {{_notice.get('_styles').text ? _notice.get('_styles').text : ''}}
+      "
       style="text-align: {{align}};">
     {{#if prompt}}
       {{#if prompt_multi_line}}
@@ -33,7 +37,7 @@
           on:click="handleClick(button, event)"
           class="
             ui-pnotify-action-button
-            {{_notice.get('_styles').btn ? _notice.get('_styles').btn : ''}}
+            {{button.primary ? (_notice.get('_styles').btn_primary ? _notice.get('_styles').btn_primary : '') : (_notice.get('_styles').btn ? _notice.get('_styles').btn : '')}}
             {{button.addClass ? button.addClass : ''}}
           ">{{#if button.trustText}}{{{button.text}}}{{else}}{{button.text}}{{/if}}</button>
     {{/each}}
@@ -66,6 +70,7 @@
             text: "Ok",
             trustText: false,
             addClass: "",
+            primary: true,
             // Whether to trigger this button when the user hits enter in a single line prompt.
             promptTrigger: true,
             click: (notice, value) => {
@@ -90,14 +95,33 @@
       // Append this module to the container.
       PNotify.modulesAppendContainer.push(Component);
 
-      // Add button icons to icons objects.
+      // Add button styles to styling objects.
+      Object.assign(PNotify.styling.brighttheme, {
+        action_bar: "",
+        btn: "",
+        btn_primary: "brighttheme-primary",
+        input: ""
+      });
       Object.assign(PNotify.styling.bootstrap3, {
+        action_bar: "ui-pnotify-confirm-ml",
         btn: "btn btn-default",
+        btn_primary: "btn btn-default btn-primary",
         input: "form-control"
       });
       Object.assign(PNotify.styling.bootstrap4, {
+        action_bar: "ui-pnotify-confirm-ml",
         btn: "btn btn-secondary ml-1",
+        btn_primary: "btn btn-primary ml-1",
         input: "form-control"
+      });
+      if (!PNotify.styling.material) {
+        PNotify.styling.material = {};
+      }
+      Object.assign(PNotify.styling.material, {
+        action_bar: "",
+        btn: "",
+        btn_primary: "ui-pnotify-material-primary",
+        input: ""
       });
     },
 
@@ -156,5 +180,8 @@
   :global(.ui-pnotify-prompt-input) {
     margin-bottom: 5px;
     clear: both;
+  }
+  :global(.ui-pnotify.ui-pnotify-with-icon .ui-pnotify-action-bar.ui-pnotify-confirm-ml) {
+    margin-left: 24px;
   }
 </style>

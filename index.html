@@ -88,28 +88,31 @@
 
     /* Custom styled notice CSS */
     [ui-pnotify].ui-pnotify.custom .ui-pnotify-container {
-      background-color: #404040 !important;
-      background-image: none !important;
-      border: none !important;
+      background-color: #404040;
+      background-image: none;
+      border: none;
       -moz-border-radius: 10px;
       -webkit-border-radius: 10px;
       border-radius: 10px;
+      padding: 15px;
+      font-size: 15px;
     }
     [ui-pnotify].ui-pnotify.custom {
-      font-family: Arial, Helvetica, sans-serif !important;
-      font-size: 10pt !important;
-      line-height: 1 !important;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 10pt;
+      line-height: 1.1;
     }
     [ui-pnotify].ui-pnotify.custom .ui-pnotify-title,
     [ui-pnotify].ui-pnotify.custom .ui-pnotify-text {
-      padding-left: 50px !important;
-      color: #FFF !important;
+      margin-left: 50px;
+      color: #FFF;
     }
     [ui-pnotify].ui-pnotify.custom .ui-pnotify-title {
       font-weight: bold;
+      font-size: 15px;
     }
     [ui-pnotify].ui-pnotify.custom .ui-pnotify-icon {
-      color: #FFA !important;
+      color: #FFA;
     }
 
     /* Browser bar stacks. */
@@ -391,6 +394,7 @@
           };
           if (percent == 80) {
             options.title = "Almost There";
+            options.width = "200px";
           }
           if (percent >= 100) {
             window.clearInterval(interval);
@@ -1190,6 +1194,7 @@
         <button class="btn btn-outline-dark my-1 source" onclick="PNotify.notice({
           title: 'Custom Styling',
           text: 'I have an additional class that\'s used to give me special styling. I always wanted to be pretty. I also use the nonblock module.',
+          styling: {},
           addclass: 'custom',
           icon: 'far fa-file-image fa-3x',
           modules: {
@@ -1217,28 +1222,31 @@
                   Here's some CSS to make custom notices look like Growl:
                 </p>
                 <pre class="prettyprint lang-css" style="min-width: 100%;">[ui-pnotify].ui-pnotify<strong>.custom</strong> .ui-pnotify-container {
-  background-color: #404040 !important;
-  background-image: none !important;
-  border: none !important;
+  background-color: #404040;
+  background-image: none;
+  border: none;
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
   border-radius: 10px;
+  padding: 15px;
+  font-size: 15px;
 }
 [ui-pnotify].ui-pnotify<strong>.custom</strong> {
-  font-family: Arial, Helvetica, sans-serif !important;
-  font-size: 10pt !important;
-  line-height: 1 !important;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 10pt;
+  line-height: 1.1;
 }
 [ui-pnotify].ui-pnotify<strong>.custom</strong> .ui-pnotify-title,
 [ui-pnotify].ui-pnotify<strong>.custom</strong> .ui-pnotify-text {
-  padding-left: 50px !important;
-  color: #FFF !important;
+  margin-left: 50px;
+  color: #FFF;
 }
 [ui-pnotify].ui-pnotify<strong>.custom</strong> .ui-pnotify-title {
   font-weight: bold;
+  font-size: 15px;
 }
 [ui-pnotify].ui-pnotify<strong>.custom</strong> .ui-pnotify-icon {
-  color: #FFA !important;
+  color: #FFA;
 }</pre>
                 <p>
                   And here's the JavaScript to use this styling:
@@ -1246,6 +1254,7 @@
                 <pre class="prettyprint" style="min-width: 100%;">PNotify.notice({
   title: 'Custom Styling',
   text: 'I have an additional class that\'s used to give me special styling. I always wanted to be pretty.',
+  <strong>styling: {}</strong>,
   <strong>addclass: 'custom'</strong>,
   icon: 'far fa-file-image fa-3x',
   modules: {
@@ -1692,96 +1701,177 @@
         ">Notify!</button>
         <br /><br />
         Attention seekers:<br />
-        <button class="btn btn-outline-dark my-1 source" onclick="
-          var notice = PNotify.notice({
-            title: 'Attention Seeker',
-            text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-secondary float-right\'&gt;Bounce!&lt;/button&gt;',
-            trust_text: true
-          });
-          $(notice.refs.elem).on('click', 'button', function() {
-            notice.attention('bounce');
-          });
-        ">Bounce</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
-          var notice = PNotify.notice({
-            title: 'Attention Seeker',
-            text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-secondary float-right\'&gt;Flash!&lt;/button&gt;',
-            trust_text: true
-          });
-          $(notice.refs.elem).on('click', 'button', function() {
-            notice.attention('flash');
-          });
-        ">Flash</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
-          var notice = PNotify.notice({
-            title: 'Attention Seeker',
-            text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-secondary float-right\'&gt;Pulse!&lt;/button&gt;',
-            trust_text: true
-          });
-          $(notice.refs.elem).on('click', 'button', function() {
-            notice.attention('pulse');
-          });
-        ">Pulse</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
-          var notice = PNotify.notice({
-            title: 'Attention Seeker',
-            text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-secondary float-right\'&gt;Rubber Band!&lt;/button&gt;',
-            trust_text: true
-          });
-          $(notice.refs.elem).on('click', 'button', function() {
-            notice.attention('rubberBand');
-          });
-        ">Rubber Band</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
-          var notice = PNotify.notice({
-            title: 'Attention Seeker',
-            text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-secondary float-right\'&gt;Shake!&lt;/button&gt;',
-            trust_text: true
-          });
-          $(notice.refs.elem).on('click', 'button', function() {
-            notice.attention('shake');
-          });
-        ">Shake</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
-          var notice = PNotify.notice({
-            title: 'Attention Seeker',
-            text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-secondary float-right\'&gt;Swing!&lt;/button&gt;',
-            trust_text: true
-          });
-          $(notice.refs.elem).on('click', 'button', function() {
-            notice.attention('swing');
-          });
-        ">Swing</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
-          var notice = PNotify.notice({
-            title: 'Attention Seeker',
-            text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-secondary float-right\'&gt;Tada!&lt;/button&gt;',
-            trust_text: true
-          });
-          $(notice.refs.elem).on('click', 'button', function() {
-            notice.attention('tada');
-          });
-        ">Tada</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
-          var notice = PNotify.notice({
-            title: 'Attention Seeker',
-            text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-secondary float-right\'&gt;Wobble!&lt;/button&gt;',
-            trust_text: true
-          });
-          $(notice.refs.elem).on('click', 'button', function() {
-            notice.attention('wobble');
-          });
-        ">Wobble</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
-          var notice = PNotify.notice({
-            title: 'Attention Seeker',
-            text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-secondary float-right\'&gt;Jello!&lt;/button&gt;',
-            trust_text: true
-          });
-          $(notice.refs.elem).on('click', 'button', function() {
-            notice.attention('jello');
-          });
-        ">Jello</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="var notice = PNotify.notice({
+          title: 'Attention Seeker',
+          text: 'Click the button to see how you can highlight the notice with the Animate module:',
+          trust_text: true,
+          modules: {
+            Confirm: {
+              confirm: true,
+              buttons: [
+                {
+                  text: 'Bounce!',
+                  primary: true,
+                  click: function(notice) {
+                    notice.attention('bounce');
+                  }
+                }
+              ]
+            }
+          }
+        });">Bounce</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="var notice = PNotify.notice({
+          title: 'Attention Seeker',
+          text: 'Click the button to see how you can highlight the notice with the Animate module:',
+          trust_text: true,
+          modules: {
+            Confirm: {
+              confirm: true,
+              buttons: [
+                {
+                  text: 'Flash!',
+                  primary: true,
+                  click: function(notice) {
+                    notice.attention('flash');
+                  }
+                }
+              ]
+            }
+          }
+        });">Flash</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="var notice = PNotify.notice({
+          title: 'Attention Seeker',
+          text: 'Click the button to see how you can highlight the notice with the Animate module:',
+          trust_text: true,
+          modules: {
+            Confirm: {
+              confirm: true,
+              buttons: [
+                {
+                  text: 'Pulse!',
+                  primary: true,
+                  click: function(notice) {
+                    notice.attention('pulse');
+                  }
+                }
+              ]
+            }
+          }
+        });">Pulse</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="var notice = PNotify.notice({
+          title: 'Attention Seeker',
+          text: 'Click the button to see how you can highlight the notice with the Animate module:',
+          trust_text: true,
+          modules: {
+            Confirm: {
+              confirm: true,
+              buttons: [
+                {
+                  text: 'Rubber Band!',
+                  primary: true,
+                  click: function(notice) {
+                    notice.attention('rubberBand');
+                  }
+                }
+              ]
+            }
+          }
+        });">Rubber Band</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="var notice = PNotify.notice({
+          title: 'Attention Seeker',
+          text: 'Click the button to see how you can highlight the notice with the Animate module:',
+          trust_text: true,
+          modules: {
+            Confirm: {
+              confirm: true,
+              buttons: [
+                {
+                  text: 'Shake!',
+                  primary: true,
+                  click: function(notice) {
+                    notice.attention('shake');
+                  }
+                }
+              ]
+            }
+          }
+        });">Shake</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="var notice = PNotify.notice({
+          title: 'Attention Seeker',
+          text: 'Click the button to see how you can highlight the notice with the Animate module:',
+          trust_text: true,
+          modules: {
+            Confirm: {
+              confirm: true,
+              buttons: [
+                {
+                  text: 'Swing!',
+                  primary: true,
+                  click: function(notice) {
+                    notice.attention('swing');
+                  }
+                }
+              ]
+            }
+          }
+        });">Swing</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="var notice = PNotify.notice({
+          title: 'Attention Seeker',
+          text: 'Click the button to see how you can highlight the notice with the Animate module:',
+          trust_text: true,
+          modules: {
+            Confirm: {
+              confirm: true,
+              buttons: [
+                {
+                  text: 'Tada!',
+                  primary: true,
+                  click: function(notice) {
+                    notice.attention('tada');
+                  }
+                }
+              ]
+            }
+          }
+        });">Tada</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="var notice = PNotify.notice({
+          title: 'Attention Seeker',
+          text: 'Click the button to see how you can highlight the notice with the Animate module:',
+          trust_text: true,
+          modules: {
+            Confirm: {
+              confirm: true,
+              buttons: [
+                {
+                  text: 'Wobble!',
+                  primary: true,
+                  click: function(notice) {
+                    notice.attention('wobble');
+                  }
+                }
+              ]
+            }
+          }
+        });">Wobble</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="var notice = PNotify.notice({
+          title: 'Attention Seeker',
+          text: 'Click the button to see how you can highlight the notice with the Animate module:',
+          trust_text: true,
+          modules: {
+            Confirm: {
+              confirm: true,
+              buttons: [
+                {
+                  text: 'Jello!',
+                  primary: true,
+                  click: function(notice) {
+                    notice.attention('jello');
+                  }
+                }
+              ]
+            }
+          }
+        });">Jello</button>
       </div>
       <h5 class="card-header">Confirm Module <small>Confirmation dialogs and prompts.</small></h5>
       <div class="card-body">
@@ -1845,7 +1935,7 @@
               buttons: [
                 {
                   text: 'Fries',
-                  addClass: 'btn-primary',
+                  primary: true,
                   click: function(notice) {
                     notice.update({
                       title: 'You\'ve Chosen a Side', text: 'You want fries.', icon: true, type: 'info', hide: true,
@@ -1906,33 +1996,6 @@
             }
           }
         });">Custom Buttons</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.notice({
-          title: 'You Will Receive a Side',
-          text: 'You have no choice.',
-          icon: 'fas fa-info-circle',
-          hide: false,
-          modules: {
-            Confirm: {
-              confirm: true,
-              buttons: [
-                {
-                  text: 'Ok',
-                  addClass: 'btn-primary',
-                  click: function(notice) {
-                    notice.close();
-                  }
-                }
-              ]
-            },
-            Buttons: {
-              closer: false,
-              sticker: false
-            },
-            History: {
-              history: false
-            }
-          }
-        });">Alert Style Button</button>
         <button class="btn btn-outline-dark my-1 source" onclick="var notice = PNotify.notice({
           title: 'Input Needed',
           text: 'What side would you like?',
@@ -2043,6 +2106,115 @@
             }
           });
         });">Multi Line Prompt Dialog</button>
+        <hr />
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.notice({
+          title: 'You Will Receive a Side',
+          text: 'You have no choice.',
+          icon: 'fas fa-info-circle',
+          hide: false,
+          modules: {
+            Confirm: {
+              confirm: true,
+              buttons: [
+                {
+                  text: 'Ok',
+                  primary: true,
+                  click: function(notice) {
+                    notice.close();
+                  }
+                }
+              ]
+            },
+            Buttons: {
+              closer: false,
+              sticker: false
+            },
+            History: {
+              history: false
+            }
+          }
+        });">Alert Style Notice</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.info({
+          title: 'You Will Receive a Side',
+          text: 'You have no choice.',
+          icon: 'fas fa-info-circle',
+          hide: false,
+          modules: {
+            Confirm: {
+              confirm: true,
+              buttons: [
+                {
+                  text: 'Ok',
+                  primary: true,
+                  click: function(notice) {
+                    notice.close();
+                  }
+                }
+              ]
+            },
+            Buttons: {
+              closer: false,
+              sticker: false
+            },
+            History: {
+              history: false
+            }
+          }
+        });">Alert Style Info</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.success({
+          title: 'You Will Receive a Side',
+          text: 'You have no choice.',
+          icon: 'fas fa-info-circle',
+          hide: false,
+          modules: {
+            Confirm: {
+              confirm: true,
+              buttons: [
+                {
+                  text: 'Ok',
+                  primary: true,
+                  click: function(notice) {
+                    notice.close();
+                  }
+                }
+              ]
+            },
+            Buttons: {
+              closer: false,
+              sticker: false
+            },
+            History: {
+              history: false
+            }
+          }
+        });">Alert Style Success</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.error({
+          title: 'You Will Receive a Side',
+          text: 'You have no choice.',
+          icon: 'fas fa-info-circle',
+          hide: false,
+          modules: {
+            Confirm: {
+              confirm: true,
+              buttons: [
+                {
+                  text: 'Ok',
+                  primary: true,
+                  click: function(notice) {
+                    notice.close();
+                  }
+                }
+              ]
+            },
+            Buttons: {
+              closer: false,
+              sticker: false
+            },
+            History: {
+              history: false
+            }
+          }
+        });">Alert Style Error</button>
       </div>
       <h5 class="card-header">Callbacks Module <small>Manipulate the notice during its lifecycle.</small></h5>
       <div class="card-body">

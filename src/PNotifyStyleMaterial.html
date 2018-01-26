@@ -57,8 +57,21 @@
     padding: 24px;
   }
   :global([ui-pnotify] .pnotify-material .ui-pnotify-title) {
-    margin-bottom: 20px;
     font-size: 20px;
+    margin-bottom: 20px;
+  }
+  :global([ui-pnotify] .pnotify-material .ui-pnotify-text) {
+    font-size: 16px;
+  }
+  :global([ui-pnotify].ui-pnotify-with-icon .pnotify-material .ui-pnotify-title),
+  :global([ui-pnotify].ui-pnotify-with-icon .pnotify-material .ui-pnotify-text),
+  :global([ui-pnotify].ui-pnotify-with-icon .pnotify-material .ui-pnotify-action-bar) {
+    margin-left: 32px;
+  }
+  :global([ui-pnotify].ui-pnotify-with-icon .pnotify-material .ui-pnotify-action-bar) {
+    margin-top: 20px;
+    margin-right: -16px;
+    margin-bottom: -16px;
   }
   :global([ui-pnotify] .pnotify-material-notice) {
     /* https://material.io/color/#!/?view.left=0&view.right=0&primary.color=FFEE58 */
@@ -135,5 +148,96 @@
   }
   :global([ui-pnotify] .pnotify-material-icon-sticker.pnotify-material-icon-stuck:after) {
     content: "play_arrow";
+  }
+
+  :global([ui-pnotify].ui-pnotify .pnotify-material .ui-pnotify-prompt-input) {
+    display: block;
+    width: 100%;
+    margin-bottom: 8px;
+
+    padding: 15px 0 8px;
+    background-color: transparent;
+    color: inherit;
+    border-radius: 0;
+
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom-style: solid;
+    border-bottom-color: inherit;
+    border-bottom-width: 1px;
+  }
+  :global([ui-pnotify].ui-pnotify .pnotify-material .ui-pnotify-prompt-input:focus) {
+    outline: none;
+    border-bottom-color: #3F51B5;
+    border-bottom-width: 2px;
+  }
+
+  /* CSS Material Buttons from https://codepen.io/sebj54/pen/oxluI */
+  :global([ui-pnotify].ui-pnotify .pnotify-material .ui-pnotify-action-button) {
+    position: relative;
+
+    padding: 0 16px;
+
+    overflow: hidden;
+
+    border-width: 0;
+    outline: none;
+    border-radius: 2px;
+
+    background-color: transparent;
+    color: inherit;
+
+    transition: background-color .3s;
+
+    text-transform: uppercase;
+    height: 36px;
+    margin: 6px;
+    min-width: 64px;
+    font-weight: bold;
+  }
+  :global([ui-pnotify].ui-pnotify .pnotify-material .ui-pnotify-action-button.ui-pnotify-material-primary) {
+    /* background-color: #3F51B5; */
+    /* color: #ecf0f1; */
+    color: #3F51B5;
+    /* box-shadow: 0 1px 4px rgba(0, 0, 0, .6); */
+  }
+  :global([ui-pnotify].ui-pnotify .pnotify-material .ui-pnotify-action-button:hover),
+  :global([ui-pnotify].ui-pnotify .pnotify-material .ui-pnotify-action-button:focus) {
+    background-color: rgba(0, 0, 0, .12);
+    color: inherit;
+  }
+  :global([ui-pnotify].ui-pnotify .pnotify-material .ui-pnotify-action-button.ui-pnotify-material-primary:hover),
+  :global([ui-pnotify].ui-pnotify .pnotify-material .ui-pnotify-action-button.ui-pnotify-material-primary:focus) {
+    /* background-color: #303F9F; */
+    /* color: #ecf0f1; */
+    color: #303F9F;
+  }
+  :global([ui-pnotify].ui-pnotify .pnotify-material .ui-pnotify-action-button:before) {
+    content: "";
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    display: block;
+    width: 0;
+    padding-top: 0;
+
+    border-radius: 100%;
+
+    background-color: rgba(153, 153, 153, .4);
+
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+  :global([ui-pnotify].ui-pnotify .pnotify-material .ui-pnotify-action-button:active:before) {
+    width: 120%;
+    padding-top: 120%;
+
+    transition: width .2s ease-out, padding-top .2s ease-out;
   }
 </style>
