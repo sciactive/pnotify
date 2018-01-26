@@ -20,10 +20,10 @@ Color Scheme: http://paletton.com/palette.php?uid=c1T3n2J040kpEKzpEKzbEPSOEyiNk9
   margin-top: -.2rem;
   margin-bottom: 1rem;
 }
-[ui-pnotify].ui-pnotify-with-icon .brighttheme .ui-pnotify-text {
+[ui-pnotify].ui-pnotify .brighttheme .ui-pnotify-text {
   font-size: 1rem;
   line-height: 1.2rem;
-  margin-top: -.2rem;
+  margin-top: 0;
 }
 [ui-pnotify].ui-pnotify .brighttheme .ui-pnotify-icon {
   line-height: 1;
@@ -49,17 +49,23 @@ Color Scheme: http://paletton.com/palette.php?uid=c1T3n2J040kpEKzpEKzbEPSOEyiNk9
   border: 0 solid #FF1800;
   color: #4F0800;
 }
+[ui-pnotify].ui-pnotify .brighttheme .ui-pnotify-closer,
+[ui-pnotify].ui-pnotify .brighttheme .ui-pnotify-sticker {
+  font-size: 1rem;
+  line-height: 1.2rem;
+}
 [ui-pnotify].ui-pnotify .brighttheme-icon-notice,
 [ui-pnotify].ui-pnotify .brighttheme-icon-info,
 [ui-pnotify].ui-pnotify .brighttheme-icon-success,
+[ui-pnotify].ui-pnotify .brighttheme-icon-error,
 [ui-pnotify].ui-pnotify .brighttheme-icon-closer,
 [ui-pnotify].ui-pnotify .brighttheme-icon-sticker {
   position: relative;
-  width: 1.2rem;
-  height: 1.2rem;
-  font-size: 1.2rem;
+  width: 1rem;
+  height: 1rem;
+  font-size: 1rem;
   font-weight: bold;
-  line-height: 1.2rem;
+  line-height: 1rem;
   font-family: "Courier New",Courier,monospace;
   border-radius: 50%;
 }
@@ -94,14 +100,14 @@ Color Scheme: http://paletton.com/palette.php?uid=c1T3n2J040kpEKzpEKzbEPSOEyiNk9
   content: "\002713";
 }
 [ui-pnotify].ui-pnotify .brighttheme-icon-error {
-  position: relative;
   width: 0;
   height: 0;
+  font-size: 0;
+  line-height: 0;
+  border-radius: 0;
   border-left: .6rem solid transparent;
   border-right: .6rem solid transparent;
   border-bottom: 1.2rem solid #2E0400;
-  font-size: 0;
-  line-height: 0;
   color: #FFABA2;
 }
 [ui-pnotify].ui-pnotify .brighttheme-icon-error:after {
