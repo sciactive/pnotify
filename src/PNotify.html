@@ -46,17 +46,17 @@
       </div>
     {{/if}}
     <h4 ref:titleContainer class="ui-pnotify-title {{_styles.title ? _styles.title : ''}}" style="display: {{title === false ? 'none' : 'block'}}">
-      {{#if title_escape}}
-        {{title}}
-      {{else}}
+      {{#if trust_title}}
         {{{title}}}
+      {{else}}
+        {{title}}
       {{/if}}
     </h4>
     <div ref:textContainer class="ui-pnotify-text {{_styles.text ? _styles.text : ''}}" style="display: {{text === false ? 'none' : 'block'}}" role="alert">
-      {{#if text_escape}}
-        {{text}}
+      {{#if trust_text}}
+        {{{text}}}
       {{else}}
-        {{{_text_processed}}}
+        {{text}}
       {{/if}}
     </div>
     {{#each _modulesAppendContainer as module}}
@@ -138,12 +138,12 @@
       PNotify.defaults = {
         // The notice's title.
         title: false,
-        // Whether to escape the content of the title. (Not allow HTML.)
-        title_escape: false,
+        // Whether to trust the title or escape its contents. (Not allow HTML.)
+        trust_title: false,
         // The notice's text.
         text: false,
-        // Whether to escape the content of the text. (Not allow HTML.)
-        text_escape: false,
+        // Whether to trust the text or escape its contents. (Not allow HTML.)
+        trust_text: false,
         // What styling classes to use. (Can be "brighttheme", "bootstrap3", "bootstrap4", or a styling object.)
         styling: "brighttheme",
         // What icons to use (Can be "brighttheme", "bootstrap3", "fontawesome4", "fontawesome5", or an icon object.)
@@ -180,8 +180,6 @@
         mouse_reset: true,
         // Remove the notice's elements from the DOM after it is removed.
         remove: true,
-        // Change new lines to br tags.
-        insert_brs: true,
         // Whether to remove the notice from the global array when it is closed.
         destroy: true,
         // The stack on which the notices will be placed. Also controls the
@@ -404,8 +402,6 @@
     },
 
     computed: {
-      // Add <br />s in place of line breaks.
-      _text_processed: (text, insert_brs) => insert_brs ?  String(text).replace(/\n/g, '<br />') : text,
       // Grab styles from the styling object or use the styles provided.
       _styles: (styling) => typeof styling === "object" ? styling : PNotify.styling[styling],
       // Grab the icons from the icons object or use provided icons
@@ -1073,6 +1069,7 @@
   }
   .ui-pnotify-title {
     display: block;
+    white-space: pre-line;
     margin-bottom: .4em;
     margin-top: 0;
   }
@@ -1082,6 +1079,7 @@
   }
   .ui-pnotify-text {
     display: block;
+    white-space: pre-line;
   }
   .ui-pnotify-icon, .ui-pnotify-icon span {
     display: block;

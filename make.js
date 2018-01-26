@@ -13,7 +13,7 @@ let pnotify_src = {
   'mobile': 'PNotifyMobile.html',
   'history': 'PNotifyHistory.html',
   'desktop': 'PNotifyDesktop.html',
-  // 'confirm': 'PNotifyConfirm.?',
+  'confirm': 'PNotifyConfirm.html',
   'stylematerial': 'PNotifyStyleMaterial.html',
   'reference': 'PNotifyReference.html',
 };
@@ -27,7 +27,7 @@ let pnotify_js = {
   'mobile': 'PNotifyMobile.js',
   'history': 'PNotifyHistory.js',
   'desktop': 'PNotifyDesktop.js',
-  // 'confirm': 'PNotifyConfirm.js',
+  'confirm': 'PNotifyConfirm.js',
   'stylematerial': 'PNotifyStyleMaterial.js',
   'reference': 'PNotifyReference.js',
 };

@@ -1,0 +1,149 @@
+{{#if confirm || prompt}}
+  <div
+      class="ui-pnotify-action-bar {{_notice.get('_styles').text ? _notice.get('_styles').text : ''}}"
+      style="margin-top: 5px; clear: both; text-align: {{align}};">
+    {{#if prompt}}
+      {{#if prompt_multi_line}}
+        <textarea
+            rows="5"
+            on:keypress="handleKeyPress(event)"
+            ref:promptMulti
+            class="
+              {{_notice.get('_styles').input ? _notice.get('_styles').input : ''}}
+              {{prompt_class}}
+            "
+            bind:value="prompt_value"
+            style="margin-bottom: 5px; clear: both;"></textarea>
+      {{else}}
+        <input
+            type="text"
+            on:keypress="handleKeyPress(event)"
+            ref:promptSingle
+            class="
+              {{_notice.get('_styles').input ? _notice.get('_styles').input : ''}}
+              {{prompt_class}}
+            "
+            bind:value="prompt_value"
+            style="margin-bottom: 5px; clear: both;" />
+      {{/if}}
+    {{/if}}
+    {{#each buttons as button}}
+      <button
+          type="button"
+          on:click="handleClick(button, event)"
+          class="
+            ui-pnotify-action-button
+            {{_notice.get('_styles').btn ? _notice.get('_styles').btn : ''}}
+            {{button.addClass ? button.addClass : ''}}
+          ">{{#if button.trustText}}{{{button.text}}}{{else}}{{button.text}}{{/if}}</button>
+    {{/each}}
+  </div>
+{{/if}}
+
+<script>
+  import PNotify from "./PNotify.html";
+
+  export default {
+    setup (Component) {
+      Component.key = "Confirm";
+
+      Component.defaults = {
+        // Make a confirmation box.
+        confirm: false,
+        // Make a prompt.
+        prompt: false,
+        // Classes to add to the input element of the prompt.
+        prompt_class: "",
+        // The value of the prompt.
+        prompt_value: "",
+        // Whether the prompt should accept multiple lines of text.
+        prompt_multi_line: false,
+        // Where to align the buttons. (right, center, left, justify)
+        align: "right",
+        // The buttons to display, and their callbacks.
+        buttons: [
+          {
+            text: "Ok",
+            trustText: false,
+            addClass: "",
+            // Whether to trigger this button when the user hits enter in a single line prompt.
+            promptTrigger: true,
+            click: (notice, value) => {
+              notice.close();
+              notice.fire("pnotify.confirm", {notice, value});
+            }
+          },
+          {
+            text: "Cancel",
+            trustText: false,
+            addClass: "",
+            click: (notice) => {
+              notice.close();
+              notice.fire("pnotify.cancel", {notice});
+            }
+          }
+        ]
+      };
+
+      // Register the module with PNotify.
+      PNotify.modules.Confirm = Component;
+      // Append this module to the container.
+      PNotify.modulesAppendContainer.push(Component);
+
+      // Add button icons to icons objects.
+      Object.assign(PNotify.styling.bootstrap3, {
+        btn: "btn btn-default",
+        input: "form-control"
+      });
+      Object.assign(PNotify.styling.bootstrap4, {
+        btn: "btn btn-secondary ml-1",
+        input: "form-control"
+      });
+    },
+
+    oncreate () {
+      this.fire("init", {module: this});
+    },
+
+    data () {
+      return Object.assign({
+        "_notice": null, // The PNotify notice.
+        "_options": {}, // The options for the notice.
+      }, PNotify.modules.Confirm.defaults);
+    },
+
+    methods: {
+      initModule(options) {
+        this.set(options);
+      },
+
+      afterOpen() {
+        if (this.get("prompt")) {
+          if (this.get("prompt_multi_line")) {
+            this.refs.promptMulti.focus();
+          } else {
+            this.refs.promptSingle.focus();
+          }
+        }
+      },
+
+      handleClick(button, event) {
+        if (button.click) {
+          button.click(this.get("_notice"), this.get("prompt") ? this.get("prompt_value") : null, event);
+        }
+      },
+
+      handleKeyPress(event) {
+        if (event.keyCode == 13 && !event.shiftKey) {
+          event.preventDefault();
+          const buttons = this.get("buttons");
+          for (let i = 0; i < buttons.length; i++) {
+            if (buttons[i].promptTrigger && buttons[i].click) {
+              buttons[i].click(this.get("_notice"), this.get("prompt") ? this.get("prompt_value") : null, event);
+            }
+          }
+        }
+      }
+    }
+  }
+</script>

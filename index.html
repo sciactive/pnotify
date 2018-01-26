@@ -33,11 +33,6 @@
   <script src="//cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
   <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
-  <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-  <!--[if lt IE 9]>
-  <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
-  <![endif]-->
-
   <!-- JavaScript Source Formatting -->
   <link href="//cdn.rawgit.com/google/code-prettify/master/loader/prettify.css" rel="stylesheet" type="text/css" />
   <link href="//cdn.rawgit.com/google/code-prettify/master/styles/desert.css" rel="stylesheet" type="text/css" />
@@ -54,18 +49,13 @@
   <script type="text/javascript" src="lib/iife/PNotifyMobile.js"></script>
   <script type="text/javascript" src="lib/iife/PNotifyHistory.js"></script>
   <script type="text/javascript" src="lib/iife/PNotifyDesktop.js"></script>
-  <!--
   <script type="text/javascript" src="lib/iife/PNotifyConfirm.js"></script>
-  -->
   <script type="text/javascript" src="lib/iife/PNotifyStyleMaterial.js"></script>
   <script type="text/javascript" src="lib/iife/PNotifyReference.js"></script>
 
   <!-- PForm (For the form notice.) -->
   <link href="//sciactive.com/pform/css/pform.css" media="all" rel="stylesheet" type="text/css" />
   <link href="//sciactive.com/pform/css/pform-bootstrap.css" media="all" rel="stylesheet" type="text/css" />
-  <!--[if lt IE 8]>
-  <link href="//sciactive.com/pform/css/pform-ie-lt-8.css" media="all" rel="stylesheet" type="text/css" />
-  <![endif]-->
   <style type="text/css">
     .pform_custom div.pf-element .pf-label, .pform_custom div.pf-element .pf-note {
       width: 130px; /* Width of labels. */
@@ -78,13 +68,6 @@
       padding-left: 115px; /* Width of labels + margin to inputs - button spacing. */
     }
   </style>
-  <!--[if lt IE 7]>
-  <style type="text/css">
-    .pform_custom div.pf-buttons {
-      width: 225px; /* Custom form width - custom button div left padding - 20px (for IE's default padding.) */
-    }
-  </style>
-  <![endif]-->
 
   <!-- Custom Styling -->
   <style type="text/css">
@@ -115,27 +98,21 @@
       -webkit-border-radius: 10px;
       border-radius: 10px;
     }
-    [ui-pnotify].ui-pnotify.custom .ui-pnotify-title, .ui-pnotify.custom .ui-pnotify-text {
+    [ui-pnotify].ui-pnotify.custom {
       font-family: Arial, Helvetica, sans-serif !important;
-      text-shadow: 2px 2px 3px black !important;
       font-size: 10pt !important;
-      color: #FFF !important;
-      padding-left: 50px !important;
       line-height: 1 !important;
-      text-rendering: geometricPrecision !important;
+    }
+    [ui-pnotify].ui-pnotify.custom .ui-pnotify-title,
+    [ui-pnotify].ui-pnotify.custom .ui-pnotify-text {
+      padding-left: 50px !important;
+      color: #FFF !important;
     }
     [ui-pnotify].ui-pnotify.custom .ui-pnotify-title {
       font-weight: bold;
     }
     [ui-pnotify].ui-pnotify.custom .ui-pnotify-icon {
-      float: left;
-    }
-    [ui-pnotify].ui-pnotify.custom .far {
-      margin: 3px;
-      width: 33px;
-      height: 33px;
-      font-size: 33px;
-      color: #FF0;
+      color: #FFA !important;
     }
 
     /* This stack is totally different. It stacks at the top and looks
@@ -151,7 +128,8 @@
   <!-- Demo Code -->
   <script type="text/javascript">
     var permanotice, tooltip, _alert;
-    $(function(){
+
+    $(function() {
       // ---
       // Notice that opens when the page opens.
       // ---
@@ -164,7 +142,7 @@
             nonblock: true
           },
           Callbacks: {
-            before_close: function(notice){
+            before_close: function(notice) {
               // You can access the notice's options like this.
               // notice.get("text");
 
@@ -186,7 +164,7 @@
       // ---
       // This notice is the tooltip demo.
       // ---
-      var make_tooltip = function(){
+      var make_tooltip = function() {
         tooltip = PNotify.notice({
           title: "Tooltip",
           text: "I'm not in a stack. I'm positioned like a tooltip with JavaScript.",
@@ -206,7 +184,7 @@
           }
         });
         // Close the notice if the user mouses over it.
-        tooltip.on("mouseout", function(){
+        tooltip.on("mouseout", function() {
           tooltip.close();
         });
       };
@@ -216,7 +194,7 @@
       // ---
       // This creates all those source code view buttons.
       // ---
-      var makeSourceButton = function(elem){
+      var makeSourceButton = function(elem) {
         var button = $(elem);
         var classList = button.attr("class");
         // Wrap the button in a container.
@@ -232,16 +210,18 @@
           <div class="dropdown-menu dropdown-menu-right">\
             <a class="dropdown-item" href="javascript:void(0)">See the source</a>\
           </div>\
-        ').on("click", "a", function(){
+        ').on("click", "a", function() {
           $(this).blur();
           var text = button.attr("onclick");
-          if (!text && button.attr("onmouseover"))
+          if (!text && button.attr("onmouseover")) {
             text = "// Mouse Over:\n"+button.attr("onmouseover")+"\n\n// Mouse Move:\n"+button.attr("onmousemove")+"\n\n// Mouse Out:\n"+button.attr("onmouseout");
+          }
           // IE needs this.
           if (text.toString) {
             text = text.toString();
-            if (text.match(/^function (onclick|anonymous)[\n ]*\([^\)]*\)[\n ]*\{[\n\t ]*/))
+            if (text.match(/^function (onclick|anonymous)[\n ]*\([^\)]*\)[\n ]*\{[\n\t ]*/)) {
               text = text.replace(/^function (onclick|anonymous)[\n ]*\([^\)]*\)[\n ]*\{[\n\t ]*/, "").replace(/[\n\t ]*}[\n\t ]*$/, "");
+            }
           }
 
           // Is there a better way to do this?
@@ -278,18 +258,18 @@
             $("<pre class=\"prettyprint\" />").text(js_beautify(make_tooltip.toString())).appendTo(dialog.find(".modal-body"));
           }
 
-          dialog.on("shown.bs.modal", function(){
+          dialog.on("shown.bs.modal", function() {
             prettyPrint();
-          }).on("hidden.bs.modal", function(){
+          }).on("hidden.bs.modal", function() {
             dialog.remove();
           }).modal();
         }).appendTo(contain);
         button.removeClass("source");
       };
-      $("body").on("mouseenter click", ".source", function(){
+      $("body").on("mouseenter click", ".source", function() {
         makeSourceButton(this);
       });
-      $(".source", "body").each(function(){
+      $(".source", "body").each(function() {
         makeSourceButton(this);
       });
       prettyPrint(); // Format source in help.
@@ -301,12 +281,16 @@
     function show_rich() {
       PNotify.notice({
         title: '<span style="color: green;">Rich Content Notice</span>',
-        text: '<span style="color: blue;">Look at my beautiful <strong>strong</strong>, <em>emphasized</em>, and <span style="font-size: 1.5em;">large</span> text.</span>'
+        trust_title: true,
+        text: '<span style="color: blue;">Look at my beautiful <strong>strong</strong>, <em>emphasized</em>, and <span style="font-size: 1.5em;">large</span> text.</span>',
+        trust_text: true
       });
     }
 
     function consume_alert() {
-      if (_alert) return;
+      if (_alert) {
+        return;
+      }
       _alert = window.alert;
       window.alert = function(message) {
         PNotify.notice({
@@ -317,14 +301,16 @@
     }
 
     function release_alert() {
-      if (!_alert) return;
+      if (!_alert) {
+        return;
+      }
       window.alert = _alert;
       _alert = null;
     }
 
     function fake_load() {
       var cur_value = 1,
-        progress;
+          progress;
 
       // Make a loader.
       var loader = PNotify.notice({
@@ -332,7 +318,7 @@
         text: '<div class="progress">\
   <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>\
 </div>',
-        //icon: 'fas fa-moon fa-spin',
+        trust_text: true,
         icon: 'fas fa-cog fa-spin',
         hide: false,
         modules: {
@@ -344,12 +330,12 @@
             history: false
           },
           Callbacks: {
-            before_open: function(notice){
+            before_open: function(notice) {
               progress = $(notice.refs.elem).find("div.progress-bar");
               progress.width(cur_value+"%").attr("aria-valuenow", cur_value);
               // Pretend to do something.
               var plus = 1;
-              var timer = setInterval(function(){
+              var timer = setInterval(function() {
                 if (cur_value == 70) {
                   plus = .25;
                   loader.update({
@@ -400,15 +386,16 @@
         }
       });
 
-      setTimeout(function(){
+      setTimeout(function() {
         notice.update({title: false});
-        var interval = setInterval(function(){
+        var interval = setInterval(function() {
           percent += 2;
           var options = {
             text: percent+"% complete."
           };
-          if (percent == 80)
+          if (percent == 80) {
             options.title = "Almost There";
+          }
           if (percent >= 100) {
             window.clearInterval(interval);
             options.title = "Done!";
@@ -786,11 +773,11 @@
           <a class="dropdown-item" href="http://bootswatch.com/" target="_blank">Themes by Bootswatch</a>
         </div>
         <script type="text/javascript">
-          $(function(){
-            $('#switcher-bootstrap').on('click', 'a[data-theme]', function(){
+          $(function() {
+            $('#switcher-bootstrap').on('click', 'a[data-theme]', function() {
               var $this = $(this);
               $('#bootstrap-current').text($this.text()); $('#bootstrap-css').attr('href', $this.attr('data-theme'));
-              setTimeout(function(){
+              setTimeout(function() {
                 PNotify.positionAll();
               }, 500);
             });
@@ -982,10 +969,10 @@
         </div>
       </div>
       <script type="text/javascript">
-        $(function(){
+        $(function() {
           $(".sharpthemes-hideme").hide();
 
-          $("input[name=styling]").change(function(){
+          $("input[name=styling]").change(function() {
             switch ($("input[name=styling]:checked").attr("id")) {
               case "style-brighttheme":
                 PNotify.defaults.styling = "brighttheme";
@@ -1057,7 +1044,7 @@
           text: 'No one ever pays attention to me. Why should they? I\'m practically invisible.',
           addclass: 'translucent'
         });
-        var source_note = 'translucent is a custom class defined (using ui-pnotify-fade-in) with opacity: 0.8.';">Translucent</button>
+        var source_note = 'You need this CSS: [ui-pnotify].ui-pnotify.translucent.ui-pnotify-fade-in {opacity: 0.8;}';">Translucent</button>
         <button class="btn btn-outline-dark my-1 source" onclick="PNotify.notice({
           title: 'No Shadow Notice',
           text: 'I don\'t have a shadow. (It\'s cause I\'m a vampire or something. Or is that reflections...)',
@@ -1082,6 +1069,7 @@
         });">No Effect</button>
         <button class="btn btn-outline-dark my-1 source" onclick="var notice = PNotify.notice({
           text: $('#form_notice').html(),
+          trust_text: true,
           icon: false,
           width: 'auto',
           hide: false,
@@ -1093,9 +1081,9 @@
             }
           }
         });
-        $(notice.refs.elem).find('form.pf-form').on('click', '[name=cancel]', function(){
+        $(notice.refs.elem).find('form.pf-form').on('click', '[name=cancel]', function() {
           notice.close();
-        }).submit(function(){
+        }).submit(function() {
           var username = $(this).find('input[name=username]').val();
           if (!username) {
             alert('Please provide a username.');
@@ -1153,10 +1141,15 @@
           text: 'I wish someone would click me.'
         });
         notice.refs.elem.style.cursor = 'pointer';
-        notice.on('click', function(e){
-          if ($(e.target).is('.ui-pnotify-closer *, .ui-pnotify-sticker *'))
+        notice.on('click', function(e) {
+          if ($(e.target).is('.ui-pnotify-closer *, .ui-pnotify-sticker *')) {
             return;
-          notice.update({type: 'success', text: 'Yay, you clicked me!&lt;div style=&quot;text-align: center;&quot;&gt;&lt;img src=&quot;https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Happy_smiley_face.png/240px-Happy_smiley_face.png&quot; /&gt;&lt;/div&gt;'});
+          }
+          notice.update({
+            type: 'success',
+            text: 'Yay, you clicked me!&lt;div style=&quot;text-align: center;&quot;&gt;&lt;img src=&quot;https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Happy_smiley_face.png/240px-Happy_smiley_face.png&quot; /&gt;&lt;/div&gt;',
+            trust_text: true
+          });
         });">Click on It</button>
         <button class="btn btn-outline-dark my-1 source" onclick="var notice = PNotify.notice({
           title: 'Click Close Notice',
@@ -1168,7 +1161,7 @@
             }
           }
         });
-        notice.on('click', function(){
+        notice.on('click', function() {
           notice.close();
         });">Click to Close</button>
         <button class="btn btn-outline-dark my-1 source" onclick="PNotify.notice({
@@ -1180,15 +1173,13 @@
         <button class="btn btn-outline-dark my-1 source" onclick="show_rich();">Rich Text</button>
         <button class="btn btn-outline-dark my-1 source" onclick="PNotify.notice({
           title: '&lt;em&gt;Escaped Notice&lt;/em&gt;',
-          title_escape: true,
           text: $('#evil_html').html(),
-          text_escape: true
         });">Or Keep it Safe</button>
         <div id="evil_html" style="display: none;">
           <div>As you can see, I don't allow HTML in my content.</div>
           <div>This prevents things like cross site scripting attacks:</div>
           <script type="text/javascript">
-            (function(){
+            (function() {
               // Here would be the XSS attack.
             })()
           </script>
@@ -1206,7 +1197,7 @@
           title: 'Custom Styling',
           text: 'I have an additional class that\'s used to give me special styling. I always wanted to be pretty. I also use the nonblock module.',
           addclass: 'custom',
-          icon: 'far fa-file-image',
+          icon: 'far fa-file-image fa-3x',
           modules: {
             NonBlock: {
               nonblock: true
@@ -1225,42 +1216,35 @@
               </div>
               <div class="modal-body">
                 <p>
-                  To custom style a notice, you need to use a
-                  class. For this example, we'll use "<strong>custom</strong>".
+                  To custom style a notice, you need to use a class. For this
+                  example, we'll use "<strong>custom</strong>".
                 </p>
                 <p>
-                  Here's some CSS to make custom notices look like
-                  Apple Growl:
+                  Here's some CSS to make custom notices look like Growl:
                 </p>
-                <pre class="prettyprint lang-css" style="min-width: 100%;">.ui-pnotify<strong>.custom</strong> .ui-pnotify-container {
-background-color: #404040 !important;
-background-image: none !important;
-border: none !important;
--moz-border-radius: 10px;
--webkit-border-radius: 10px;
-border-radius: 10px;
+                <pre class="prettyprint lang-css" style="min-width: 100%;">[ui-pnotify].ui-pnotify<strong>.custom</strong> .ui-pnotify-container {
+  background-color: #404040 !important;
+  background-image: none !important;
+  border: none !important;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
 }
-.ui-pnotify<strong>.custom</strong> .ui-pnotify-title, .ui-pnotify<strong>.custom</strong> .ui-pnotify-text {
-font-family: Arial, Helvetica, sans-serif !important;
-text-shadow: 2px 2px 3px black !important;
-font-size: 10pt !important;
-color: #FFF !important;
-padding-left: 50px !important;
-line-height: 1 !important;
-text-rendering: geometricPrecision !important;
+[ui-pnotify].ui-pnotify<strong>.custom</strong> {
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: 10pt !important;
+  line-height: 1 !important;
 }
-.ui-pnotify<strong>.custom</strong> .ui-pnotify-title {
-font-weight: bold;
+[ui-pnotify].ui-pnotify<strong>.custom</strong> .ui-pnotify-title,
+[ui-pnotify].ui-pnotify<strong>.custom</strong> .ui-pnotify-text {
+  padding-left: 50px !important;
+  color: #FFF !important;
 }
-.ui-pnotify<strong>.custom</strong> .ui-pnotify-icon {
-float: left;
+[ui-pnotify].ui-pnotify<strong>.custom</strong> .ui-pnotify-title {
+  font-weight: bold;
 }
-.ui-pnotify<strong>.custom</strong> .far {
-margin: 3px;
-width: 33px;
-height: 33px;
-font-size: 33px;
-color: #FF0;
+[ui-pnotify].ui-pnotify<strong>.custom</strong> .ui-pnotify-icon {
+  color: #FFA !important;
 }</pre>
                 <p>
                   And here's the JavaScript to use this styling:
@@ -1269,7 +1253,7 @@ color: #FF0;
   title: 'Custom Styling',
   text: 'I have an additional class that\'s used to give me special styling. I always wanted to be pretty.',
   <strong>addclass: 'custom'</strong>,
-  icon: 'far fa-file-image',
+  icon: 'far fa-file-image fa-3x',
   modules: {
     NonBlock: {
       nonblock: true
@@ -1358,6 +1342,7 @@ color: #FF0;
           title: 'Desktop Image',
           type: 'info',
           text: 'I\'ve got an image.&lt;div style=&quot;text-align: center;&quot;&gt;&lt;img src=&quot;https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Happy_smiley_face.png/240px-Happy_smiley_face.png&quot; /&gt;&lt;/div&gt;',
+          trust_text: true,
           modules: {
             Desktop: {
               desktop: true,
@@ -1372,6 +1357,7 @@ color: #FF0;
         <button class="btn btn-outline-dark my-1 source" onclick="PNotify.notice({
           title: 'Alternate Text Notice - Browser',
           text: 'This text appears on the &lt;strong&gt;browser&lt;/strong&gt;.',
+          trust_text: true,
           modules: {
             Desktop: {
               desktop: true,
@@ -1389,7 +1375,7 @@ color: #FF0;
               icon: false
             }
           }
-        }).on('click', function(e){
+        }).on('click', function(e) {
           if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target)) {
             return;
           }
@@ -1405,7 +1391,7 @@ color: #FF0;
               icon: false
             }
           }
-        }).on('click', function(e){
+        }).on('click', function(e) {
           if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target)) {
             return;
           }
@@ -1420,7 +1406,7 @@ color: #FF0;
             }
           }
         });
-        setTimeout(function(){
+        setTimeout(function() {
           notice.update({
             type: 'info',
             text: 'Now I\'m an info box!'
@@ -1513,7 +1499,9 @@ color: #FF0;
             }
           });
         }">Permanotice</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="if (permanotice.close) permanotice.close();">Close Permanotice</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="if (permanotice) {
+          permanotice.close();
+        }">Close Permanotice</button>
       </div>
       <h5 class="card-header">NonBlock Module <small>Click through to things underneath the notice.</small></h5>
       <div class="card-body">
@@ -1564,71 +1552,61 @@ color: #FF0;
       <h5 class="card-header">Animate Module <small>Fluid CSS animations using <a href="https://daneden.github.io/animate.css/" target="_blank">Animate.css</a>.</small></h5>
       <div class="card-body">
         Some good looking examples:<br />
-        <button class="btn btn-outline-dark my-1 source" onclick="
-          PNotify.notice({
-            title: 'Animate.css Effect',
-            text: 'I use effects from Animate.css. Such smooth CSS3 transitions make me feel like butter.',
-            modules: {
-              Animate: {
-                animate: true,
-                in_class: 'rotateInUpRight',
-                out_class: 'rotateOutUpRight'
-              }
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.notice({
+          title: 'Animate.css Effect',
+          text: 'I use effects from Animate.css. Such smooth CSS3 transitions make me feel like butter.',
+          modules: {
+            Animate: {
+              animate: true,
+              in_class: 'rotateInUpRight',
+              out_class: 'rotateOutUpRight'
             }
-          });
-        ">Sidenote</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
-          PNotify.notice({
-            title: 'Animate.css Effect',
-            text: 'I use effects from Animate.css. Such smooth CSS3 transitions make me feel like butter.',
-            modules: {
-              Animate: {
-                animate: true,
-                in_class: 'zoomInLeft',
-                out_class: 'zoomOutRight'
-              }
+          }
+        });">Sidenote</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.notice({
+          title: 'Animate.css Effect',
+          text: 'I use effects from Animate.css. Such smooth CSS3 transitions make me feel like butter.',
+          modules: {
+            Animate: {
+              animate: true,
+              in_class: 'zoomInLeft',
+              out_class: 'zoomOutRight'
             }
-          });
-        ">Zoom, Zoom</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
-          PNotify.notice({
-            title: 'Animate.css Effect',
-            text: 'I use effects from Animate.css. Such smooth CSS3 transitions make me feel like butter.',
-            modules: {
-              Animate: {
-                animate: true,
-                in_class: 'rotateInDownLeft',
-                out_class: 'rotateOutUpRight'
-              }
+          }
+        });">Zoom, Zoom</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.notice({
+          title: 'Animate.css Effect',
+          text: 'I use effects from Animate.css. Such smooth CSS3 transitions make me feel like butter.',
+          modules: {
+            Animate: {
+              animate: true,
+              in_class: 'rotateInDownLeft',
+              out_class: 'rotateOutUpRight'
             }
-          });
-        ">Shuffling Cards</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
-          PNotify.notice({
-            title: 'Animate.css Effect',
-            text: 'I use effects from Animate.css. Such smooth CSS3 transitions make me feel like butter.',
-            modules: {
-              Animate: {
-                animate: true,
-                in_class: 'bounceInLeft',
-                out_class: 'bounceOutRight'
-              }
+          }
+        });">Shuffling Cards</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.notice({
+          title: 'Animate.css Effect',
+          text: 'I use effects from Animate.css. Such smooth CSS3 transitions make me feel like butter.',
+          modules: {
+            Animate: {
+              animate: true,
+              in_class: 'bounceInLeft',
+              out_class: 'bounceOutRight'
             }
-          });
-        ">Zippy</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
-          PNotify.notice({
-            title: 'Animate.css Effect',
-            text: 'I use effects from Animate.css. Such smooth CSS3 transitions make me feel like butter.',
-            modules: {
-              Animate: {
-                animate: true,
-                in_class: 'bounceInDown',
-                out_class: 'hinge'
-              }
+          }
+        });">Zippy</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.notice({
+          title: 'Animate.css Effect',
+          text: 'I use effects from Animate.css. Such smooth CSS3 transitions make me feel like butter.',
+          modules: {
+            Animate: {
+              animate: true,
+              in_class: 'bounceInDown',
+              out_class: 'hinge'
             }
-          });
-        ">Off the Handle</button>
+          }
+        });">Off the Handle</button>
         <br /><br />
         Or build your own:<br />
         Effect in
@@ -1705,7 +1683,7 @@ color: #FF0;
         <br />
         <button class="btn btn-outline-dark my-1 source" onclick="
           var animate_in = $('#animate_in').val(),
-            animate_out = $('#animate_out').val();
+              animate_out = $('#animate_out').val();
           PNotify.notice({
             title: 'Animate.css Effect',
             text: 'I use effects from Animate.css. Such smooth CSS3 transitions make me feel like butter.',
@@ -1723,81 +1701,90 @@ color: #FF0;
         <button class="btn btn-outline-dark my-1 source" onclick="
           var notice = PNotify.notice({
             title: 'Attention Seeker',
-            text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-secondary float-right\'&gt;Bounce!&lt;/button&gt;'
+            text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-secondary float-right\'&gt;Bounce!&lt;/button&gt;',
+            trust_text: true
           });
-          $(notice.refs.elem).on('click', 'button', function(){
+          $(notice.refs.elem).on('click', 'button', function() {
             notice.attention('bounce');
           });
         ">Bounce</button>
         <button class="btn btn-outline-dark my-1 source" onclick="
           var notice = PNotify.notice({
             title: 'Attention Seeker',
-            text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-secondary float-right\'&gt;Flash!&lt;/button&gt;'
+            text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-secondary float-right\'&gt;Flash!&lt;/button&gt;',
+            trust_text: true
           });
-          $(notice.refs.elem).on('click', 'button', function(){
+          $(notice.refs.elem).on('click', 'button', function() {
             notice.attention('flash');
           });
         ">Flash</button>
         <button class="btn btn-outline-dark my-1 source" onclick="
           var notice = PNotify.notice({
             title: 'Attention Seeker',
-            text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-secondary float-right\'&gt;Pulse!&lt;/button&gt;'
+            text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-secondary float-right\'&gt;Pulse!&lt;/button&gt;',
+            trust_text: true
           });
-          $(notice.refs.elem).on('click', 'button', function(){
+          $(notice.refs.elem).on('click', 'button', function() {
             notice.attention('pulse');
           });
         ">Pulse</button>
         <button class="btn btn-outline-dark my-1 source" onclick="
           var notice = PNotify.notice({
             title: 'Attention Seeker',
-            text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-secondary float-right\'&gt;Rubber Band!&lt;/button&gt;'
+            text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-secondary float-right\'&gt;Rubber Band!&lt;/button&gt;',
+            trust_text: true
           });
-          $(notice.refs.elem).on('click', 'button', function(){
+          $(notice.refs.elem).on('click', 'button', function() {
             notice.attention('rubberBand');
           });
         ">Rubber Band</button>
         <button class="btn btn-outline-dark my-1 source" onclick="
           var notice = PNotify.notice({
             title: 'Attention Seeker',
-            text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-secondary float-right\'&gt;Shake!&lt;/button&gt;'
+            text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-secondary float-right\'&gt;Shake!&lt;/button&gt;',
+            trust_text: true
           });
-          $(notice.refs.elem).on('click', 'button', function(){
+          $(notice.refs.elem).on('click', 'button', function() {
             notice.attention('shake');
           });
         ">Shake</button>
         <button class="btn btn-outline-dark my-1 source" onclick="
           var notice = PNotify.notice({
             title: 'Attention Seeker',
-            text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-secondary float-right\'&gt;Swing!&lt;/button&gt;'
+            text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-secondary float-right\'&gt;Swing!&lt;/button&gt;',
+            trust_text: true
           });
-          $(notice.refs.elem).on('click', 'button', function(){
+          $(notice.refs.elem).on('click', 'button', function() {
             notice.attention('swing');
           });
         ">Swing</button>
         <button class="btn btn-outline-dark my-1 source" onclick="
           var notice = PNotify.notice({
             title: 'Attention Seeker',
-            text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-secondary float-right\'&gt;Tada!&lt;/button&gt;'
+            text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-secondary float-right\'&gt;Tada!&lt;/button&gt;',
+            trust_text: true
           });
-          $(notice.refs.elem).on('click', 'button', function(){
+          $(notice.refs.elem).on('click', 'button', function() {
             notice.attention('tada');
           });
         ">Tada</button>
         <button class="btn btn-outline-dark my-1 source" onclick="
           var notice = PNotify.notice({
             title: 'Attention Seeker',
-            text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-secondary float-right\'&gt;Wobble!&lt;/button&gt;'
+            text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-secondary float-right\'&gt;Wobble!&lt;/button&gt;',
+            trust_text: true
           });
-          $(notice.refs.elem).on('click', 'button', function(){
+          $(notice.refs.elem).on('click', 'button', function() {
             notice.attention('wobble');
           });
         ">Wobble</button>
         <button class="btn btn-outline-dark my-1 source" onclick="
           var notice = PNotify.notice({
             title: 'Attention Seeker',
-            text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-secondary float-right\'&gt;Jello!&lt;/button&gt;'
+            text: 'Click the button to see how you can highlight the notice with the Animate module:&lt;br&gt;&lt;button class=\'btn btn-secondary float-right\'&gt;Jello!&lt;/button&gt;',
+            trust_text: true
           });
-          $(notice.refs.elem).on('click', 'button', function(){
+          $(notice.refs.elem).on('click', 'button', function() {
             notice.attention('jello');
           });
         ">Jello</button>
@@ -1822,10 +1809,10 @@ color: #FF0;
             }
           }
         });
-        notice.on('pnotify.confirm', function(){
+        notice.on('pnotify.confirm', function() {
           alert('Ok, cool.');
         });
-        notice.on('pnotify.cancel', function(){
+        notice.on('pnotify.cancel', function() {
           alert('Oh ok. Chicken, I see.');
         });">Confirm Dialog</button>
         <button class="btn btn-outline-dark my-1 source" onclick="var notice = PNotify.notice({
@@ -1847,10 +1834,10 @@ color: #FF0;
             },
           }
         });
-        notice.on('pnotify.confirm', function(){
+        notice.on('pnotify.confirm', function() {
           alert('Ok, cool.');
         });
-        notice.on('pnotify.cancel', function(){
+        notice.on('pnotify.cancel', function() {
           alert('Oh ok. Chicken, I see.');
         });">Modal Confirm Dialog</button>
         <button class="btn btn-outline-dark my-1 source" onclick="PNotify.notice({
@@ -1865,7 +1852,7 @@ color: #FF0;
                 {
                   text: 'Fries',
                   addClass: 'btn-primary',
-                  click: function(notice){
+                  click: function(notice) {
                     notice.update({
                       title: 'You\'ve Chosen a Side', text: 'You want fries.', icon: true, type: 'info', hide: true,
                       modules: {
@@ -1882,7 +1869,7 @@ color: #FF0;
                 },
                 {
                   text: 'Mash',
-                  click: function(notice){
+                  click: function(notice) {
                     notice.update({
                       title: 'You\'ve Chosen a Side', text: 'You want mashed potatoes.', icon: true, type: 'info', hide: true,
                       modules: {
@@ -1899,7 +1886,7 @@ color: #FF0;
                 },
                 {
                   text: 'Fruit',
-                  click: function(notice){
+                  click: function(notice) {
                     notice.update({
                       title: 'You\'ve Chosen a Side', text: 'You want fruit.', icon: true, type: 'info', hide: true,
                       modules: {
@@ -1937,11 +1924,10 @@ color: #FF0;
                 {
                   text: 'Ok',
                   addClass: 'btn-primary',
-                  click: function(notice){
+                  click: function(notice) {
                     notice.close();
                   }
-                },
-                null
+                }
               ]
             },
             Buttons: {
@@ -1971,9 +1957,13 @@ color: #FF0;
             }
           }
         });
-        notice.on('pnotify.confirm', function(e, val){
+        notice.on('pnotify.confirm', function(e) {
           notice.cancelClose().update({
-            title: 'You\'ve Chosen a Side', text: 'You want '+$('<div/>').text(val).html()+'.', icon: true, type: 'info', hide: true,
+            title: 'You\'ve Chosen a Side',
+            text: 'You want '+e.value+'.',
+            icon: true,
+            type: 'info',
+            hide: true,
             modules: {
               Confirm: {
                 prompt: false
@@ -1985,9 +1975,13 @@ color: #FF0;
             }
           });
         });
-        notice.on('pnotify.cancel', function(e){
+        notice.on('pnotify.cancel', function(e) {
           notice.cancelClose().update({
-            title: 'You Don\'t Want a Side', text: 'No soup for you!', icon: true, type: 'info', hide: true,
+            title: 'You Don\'t Want a Side',
+            text: 'No soup for you!',
+            icon: true,
+            type: 'info',
+            hide: true,
             modules: {
               Confirm: {
                 prompt: false
@@ -2019,9 +2013,13 @@ color: #FF0;
             }
           }
         });
-        notice.on('pnotify.confirm', function(e, val){
+        notice.on('pnotify.confirm', function(e) {
           notice.cancelClose().update({
-            title: 'Your Poem', text: $('<div/>').text(val).html(), icon: true, type: 'info', hide: true,
+            title: 'Your Poem',
+            text: e.value,
+            icon: true,
+            type: 'info',
+            hide: true,
             modules: {
               Confirm: {
                 prompt: false
@@ -2033,9 +2031,13 @@ color: #FF0;
             }
           });
         });
-        notice.on('pnotify.cancel', function(e){
+        notice.on('pnotify.cancel', function(e) {
           notice.cancelClose().update({
-            title: 'You Don\'t Like Poetry', text: 'Roses are dead,\nViolets are dead,\nI suck at gardening.', icon: true, type: 'info', hide: true,
+            title: 'You Don\'t Like Poetry',
+            text: 'Roses are dead,\nViolets are dead,\nI suck at gardening.',
+            icon: true,
+            type: 'info',
+            hide: true,
             modules: {
               Confirm: {
                 prompt: false
@@ -2050,37 +2052,37 @@ color: #FF0;
       </div>
       <h5 class="card-header">Callbacks Module <small>Manipulate the notice during its lifecycle.</small></h5>
       <div class="card-body">
-        <button class="btn btn-outline-dark my-1 source" onclick="var dont_alert = function(){};
+        <button class="btn btn-outline-dark my-1 source" onclick="var dont_alert = function() {};
         PNotify.notice({
           title: 'I\'m Here',
           text: 'I have a callback for each of my events. I\'ll call all my callbacks while I change states.',
           modules: {
             Callbacks: {
-              before_init: function(opts){
+              before_init: function(opts) {
                 console.log('before_init', opts);
                 alert('I\'m called before the notice initializes. I\'m passed the options used to make the notice. I can modify them. Watch me replace the word callback with tire iron!');
                 opts.text = opts.text.replace(/callback/g, 'tire iron');
               },
-              after_init: function(notice){
+              after_init: function(notice) {
                 console.log('after_init', notice);
                 alert('I\'m called after the notice initializes. I\'m passed the PNotify object for the current notice: '+notice+'\n\nThere are more callbacks you can assign, but this is the last notice you\'ll see. Check the code to see them all.');
               },
-              before_open: function(notice){
+              before_open: function(notice) {
                 console.log('before_open', notice);
                 var source_note = 'Return false to cancel opening.';
                 dont_alert('I\'m called before the notice opens. I\'m passed the PNotify object for the current notice: '+notice);
               },
-              after_open: function(notice){
+              after_open: function(notice) {
                 console.log('after_open', notice);
                 dont_alert('I\'m called after the notice opens. I\'m passed the PNotify object for the current notice: '+notice);
               },
-              before_close: function(notice, timer_hide){
+              before_close: function(notice, timer_hide) {
                 console.log('before_close', notice, timer_hide);
                 var source_note = 'Return false to cancel close. Use PNotify.queueClose() to set the close timer again.';
                 dont_alert('I\'m called before the notice closes. I\'m passed the PNotify object for the current notice: '+notice);
                 dont_alert('I also have an argument called timer_hide, which is true if the notice was closed because the timer ran down. Value: '+timer_hide);
               },
-              after_close: function(notice, timer_hide){
+              after_close: function(notice, timer_hide) {
                 console.log('after_close', notice, timer_hide);
                 dont_alert('I\'m called after the notice closes. I\'m passed the PNotify object for the current notice: '+notice);
                 dont_alert('I also have an argument called timer_hide, which is true if the notice was closed because the timer ran down. Value: '+timer_hide);
@@ -2093,21 +2095,21 @@ color: #FF0;
           text: 'Right now I\'m a notice.',
           modules: {
             Callbacks: {
-              before_close: function(notice){
+              before_close: function(notice) {
                 notice.update({
                   title: 'Error',
                   text: 'Uh oh. Now I\'ve become an error.',
                   type: 'error',
                   modules: {
                     Callbacks: {
-                      before_close: function(notice){
+                      before_close: function(notice) {
                         notice.update({
                           title: 'Success',
                           text: 'I fixed the error!',
                           type: 'success',
                           modules: {
                             Callbacks: {
-                              before_close: function(notice){
+                              before_close: function(notice) {
                                 notice.update({
                                   title: 'Info',
                                   text: 'Everything\'s cool now.',
@@ -2355,13 +2357,13 @@ PNotify.notice({
           function update_timer_display() {
             $("#timer").text((PNotify.defaults.delay/1000)+" seconds");
           }
-          $(function(){
+          $(function() {
             update_timer_display();
           });
         </script>
         <br style="margin-bottom: 3px;" />
-        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.defaults.delay ? (function(){PNotify.defaults.delay -= 500; update_timer_display();}()) : (alert('Timer is already at zero.'))">Lower Timer</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="(function(){PNotify.defaults.delay += 500; update_timer_display();}())">Raise Timer</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.defaults.delay ? (function() {PNotify.defaults.delay -= 500; update_timer_display();}()) : (alert('Timer is already at zero.'))">Lower Timer</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="(function() {PNotify.defaults.delay += 500; update_timer_display();}())">Raise Timer</button>
       </div>
     </div>
 

@@ -16,6 +16,8 @@ This README is for **PNotify v4**. v4 isn't out yet, but it's got some huge chan
 * jQuery is no longer required. v4 doesn't require any libraries, actually.
 * It's built using [Svelte](http://svelte.technology), which means it compiles down to vanilla JS.
 * PNotify now has an ES6 module build.
+* `text_escape` and `title_escape` have been replaced by `trust_text` and `trust_title`, and the default behavior changed.
+* `insert_brs` option has gone away. (Text and title now have `white-space: pre-line;`.)
 
 But v4 isn't even in the alpha stage yet.
 
@@ -31,10 +33,10 @@ Things that work:
 * Mobile module
 * History module
 * Desktop module
+* Confirm module
 
 Things that don't work:
-
-* Confirm module
+* npm package...
 
 # Getting Started
 
@@ -140,9 +142,9 @@ new PNotify({
 # Options
 
 * `title: false` - The notice's title.
-* `title_escape: false` - Whether to escape the content of the title. (Not allow HTML.)
+* `trust_title: false` - Whether to trust the title or escape its contents. (Not allow HTML.)
 * `text: false` - The notice's text.
-* `text_escape: false` - Whether to escape the content of the text. (Not allow HTML.)
+* `trust_text: false` - Whether to trust the text or escape its contents. (Not allow HTML.)
 * `styling: "brighttheme"` - What styling classes to use. (Can be "brighttheme", "bootstrap3", "bootstrap4", or a styling object. See the source in PNotifyStyleMaterial.html for the properties in a style object.)
 * `icons: "brighttheme"` - What icons classes to use (Can be "brighttheme", "bootstrap3", "fontawesome4", "fontawesome5", or an icon object. See the source in PNotifyStyleMaterial.html for the properties in an icon object.)
 * `addclass: ""` - Additional classes to be added to the notice. (For custom styling.)
@@ -159,12 +161,22 @@ new PNotify({
 * `delay: 8000` - Delay in milliseconds before the notice is closed.
 * `mouse_reset: true` - Reset the hide timer if the mouse moves over the notice.
 * `remove: true` - Remove the notice's elements from the DOM after it is closed.
-* `insert_brs: true` - Change new lines to br tags.
 * `destroy: true` - Whether to remove the notice from the global array when it is closed.
 * `stack: PNotify.defaultStack` - The stack on which the notices will be placed. Also controls the direction the notices stack.
 * `modules: {}` - This is where options for modules should be defined.
 
-`PNotify.defaultStack` = `{"dir1": "down", "dir2": "left", "firstpos1": 25, "firstpos2": 25, "spacing1": 36, "spacing2": 36, "push": "bottom", "context": document.body}`;
+```js
+PNotify.defaultStack = {
+  "dir1": "down",
+  "dir2": "left",
+  "firstpos1": 25,
+  "firstpos2": 25,
+  "spacing1": 36,
+  "spacing2": 36,
+  "push": "bottom",
+  "context": document.body
+}
+```
 
 ## Changing Default Options
 
@@ -248,12 +260,53 @@ The Animate module also creates a method, `attention`, on notices which accepts 
 * `confirm: false` - Make a confirmation box.
 * `prompt: false` - Make a prompt.
 * `prompt_class: ""` - Classes to add to the input element of the prompt.
-* `prompt_default: ""` - The default value of the prompt.
+* `prompt_value: ""` - The value of the prompt. (Note that this is two-way bound to the input.)
 * `prompt_multi_line: false` - Whether the prompt should accept multiple lines of text.
 * `align: "right"` - Where to align the buttons. (right, center, left, justify)
-* `buttons: [{text: "Ok", addClass: "", promptTrigger: true, click: function(notice, value){ notice.close(); notice.get().trigger("pnotify.confirm", [notice, value]); }},{text: "Cancel", addClass: "", click: function(notice){ notice.close(); notice.get().trigger("pnotify.cancel", notice); }}]` - The buttons to display, and their callbacks. If a button has promptTrigger set to true, it will be triggered when the user hits enter in a single line prompt. If you want only one button, use null as the second entry of your array to remove the cancel button.
+
+```js
+buttons: [
+  {
+    text: "Ok",
+    trustText: false,
+    addClass: "",
+    promptTrigger: true,
+    click: (notice, value) => {
+      notice.close();
+      notice.fire("pnotify.confirm", {notice, value});
+    }
+  },
+  {
+    text: "Cancel",
+    trustText: false,
+    addClass: "",
+    click: (notice) => {
+      notice.close();
+      notice.fire("pnotify.cancel", {notice});
+    }
+  }
+]
+```
+* The buttons to display, and their callbacks. If a button has promptTrigger set to true, it will be triggered when the user hits enter in a prompt (unless they hold shift).
 
 `}`
+
+Because the default buttons fire notice events on confirmation and cancellation, you can listen for them like this:
+
+```js
+PNotify.alert({
+  title: "Confirmation Needed",
+  text: "Are you sure?",
+  hide: false,
+  modules: {
+    Confirm: {
+      confirm: true
+    }
+  }
+}).on("pnotify.confirm", () => {
+  // User confirmed, continue here...
+});
+```
 
 ## History Module
 
