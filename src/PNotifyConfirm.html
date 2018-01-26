@@ -1,7 +1,7 @@
 {{#if confirm || prompt}}
   <div
       class="ui-pnotify-action-bar {{_notice.get('_styles').text ? _notice.get('_styles').text : ''}}"
-      style="margin-top: 5px; clear: both; text-align: {{align}};">
+      style="text-align: {{align}};">
     {{#if prompt}}
       {{#if prompt_multi_line}}
         <textarea
@@ -9,22 +9,22 @@
             on:keypress="handleKeyPress(event)"
             ref:promptMulti
             class="
+              ui-pnotify-prompt-input
               {{_notice.get('_styles').input ? _notice.get('_styles').input : ''}}
               {{prompt_class}}
             "
-            bind:value="prompt_value"
-            style="margin-bottom: 5px; clear: both;"></textarea>
+            bind:value="prompt_value"></textarea>
       {{else}}
         <input
             type="text"
             on:keypress="handleKeyPress(event)"
             ref:promptSingle
             class="
+              ui-pnotify-prompt-input
               {{_notice.get('_styles').input ? _notice.get('_styles').input : ''}}
               {{prompt_class}}
             "
-            bind:value="prompt_value"
-            style="margin-bottom: 5px; clear: both;" />
+            bind:value="prompt_value" />
       {{/if}}
     {{/if}}
     {{#each buttons as button}}
@@ -147,3 +147,14 @@
     }
   }
 </script>
+
+<style>
+  :global(.ui-pnotify-action-bar) {
+    margin-top: 5px;
+    clear: both;
+  }
+  :global(.ui-pnotify-prompt-input) {
+    margin-bottom: 5px;
+    clear: both;
+  }
+</style>

@@ -18,6 +18,7 @@ This README is for **PNotify v4**. v4 isn't out yet, but it's got some huge chan
 * PNotify now has an ES6 module build.
 * `text_escape` and `title_escape` have been replaced by `trust_text` and `trust_title`, and the default behavior changed.
 * `insert_brs` option has gone away. (Text and title now have `white-space: pre-line;`.)
+* The default width was raised from 300px to 360px.
 
 But v4 isn't even in the alpha stage yet.
 
@@ -150,7 +151,7 @@ new PNotify({
 * `addclass: ""` - Additional classes to be added to the notice. (For custom styling.)
 * `cornerclass: ""` - Class to be added to the notice for corner styling.
 * `auto_display: true` - Display the notice when it is created. Turn this off to add notifications to the history without displaying them.
-* `width: "300px"` - Width of the notice.
+* `width: "360px"` - Width of the notice.
 * `min_height: "16px"` - Minimum height of the notice. It will expand to fit content.
 * `type: "notice"` - Type of the notice. "notice", "info", "success", or "error".
 * `icon: true` - Set icon to true to use the default icon for the selected style/type, false for no icon, or a string for your own icon class.

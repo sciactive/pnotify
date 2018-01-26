@@ -11,7 +11,7 @@
 -->
 
 <div ref:elem
-    class="ui-pnotify {{_styles.element ? _styles.element : ''}} {{addclass}} {{_animatingClass}} {{_moveClass}} {{animation === 'fade' ? 'ui-pnotify-fade-'+animate_speed : ''}} {{_moduleClasses.join(' ')}}"
+    class="ui-pnotify {{icon !== false ? 'ui-pnotify-with-icon' : ''}} {{_styles.element ? _styles.element : ''}} {{addclass}} {{_animatingClass}} {{_moveClass}} {{animation === 'fade' ? 'ui-pnotify-fade-'+animate_speed : ''}} {{_moduleClasses.join(' ')}}"
     aria-live="assertive"
     role="alertdialog"
     ui-pnotify
@@ -155,7 +155,7 @@
         // Display the notice when it is created.
         auto_display: true,
         // Width of the notice.
-        width: "300px",
+        width: "360px",
         // Minimum height of the notice. It will expand to fit content.
         min_height: "16px",
         // Type of the notice. "notice", "info", "success", or "error".
@@ -998,101 +998,104 @@
 
 <style>
   /* -- Notice */
-  :global(body) > .ui-pnotify {
+  :global(body > .ui-pnotify) {
     /* Notices in the body context should be fixed to the viewport. */
     position: fixed;
     /* Ensures notices are above everything */
     z-index: 100040;
   }
-  .ui-pnotify {
+  :global(.ui-pnotify) {
     position: absolute;
     height: auto;
     z-index: 2;
     display: none;
   }
-  .ui-pnotify.ui-pnotify-in {
+  :global(.ui-pnotify.ui-pnotify-in) {
     display: block;
   }
-  .ui-pnotify.ui-pnotify-initial-hidden {
+  :global(.ui-pnotify.ui-pnotify-initial-hidden) {
     display: block;
     visibility: hidden;
   }
-  .ui-pnotify.ui-pnotify-move {
+  :global(.ui-pnotify.ui-pnotify-move) {
     transition: left .5s ease, top .5s ease, right .5s ease, bottom .5s ease;
   }
-  .ui-pnotify.ui-pnotify-fade-slow {
+  :global(.ui-pnotify.ui-pnotify-fade-slow) {
     transition: opacity .4s linear;
     opacity: 0;
   }
-  .ui-pnotify.ui-pnotify-fade-slow.ui-pnotify.ui-pnotify-move {
+  :global(.ui-pnotify.ui-pnotify-fade-slow.ui-pnotify.ui-pnotify-move) {
     transition: opacity .4s linear, left .5s ease, top .5s ease, right .5s ease, bottom .5s ease;
   }
-  .ui-pnotify.ui-pnotify-fade-normal {
+  :global(.ui-pnotify.ui-pnotify-fade-normal) {
     transition: opacity .25s linear;
     opacity: 0;
   }
-  .ui-pnotify.ui-pnotify-fade-normal.ui-pnotify.ui-pnotify-move {
+  :global(.ui-pnotify.ui-pnotify-fade-normal.ui-pnotify.ui-pnotify-move) {
     transition: opacity .25s linear, left .5s ease, top .5s ease, right .5s ease, bottom .5s ease;
   }
-  .ui-pnotify.ui-pnotify-fade-fast {
+  :global(.ui-pnotify.ui-pnotify-fade-fast) {
     transition: opacity .1s linear;
     opacity: 0;
   }
-  .ui-pnotify.ui-pnotify-fade-fast.ui-pnotify.ui-pnotify-move {
+  :global(.ui-pnotify.ui-pnotify-fade-fast.ui-pnotify.ui-pnotify-move) {
     transition: opacity .1s linear, left .5s ease, top .5s ease, right .5s ease, bottom .5s ease;
   }
-  .ui-pnotify.ui-pnotify-fade-in {
+  :global(.ui-pnotify.ui-pnotify-fade-in) {
     opacity: 1;
   }
-  .ui-pnotify .ui-pnotify-shadow {
+  :global(.ui-pnotify .ui-pnotify-shadow) {
     -webkit-box-shadow: 0px 6px 28px 0px rgba(0,0,0,0.1);
     -moz-box-shadow: 0px 6px 28px 0px rgba(0,0,0,0.1);
     box-shadow: 0px 6px 28px 0px rgba(0,0,0,0.1);
   }
-  .ui-pnotify-container {
+  :global(.ui-pnotify-container) {
     background-position: 0 0;
     padding: .8em;
     height: 100%;
     margin: 0;
   }
-  .ui-pnotify-container:after {
+  :global(.ui-pnotify-container:after) {
     content: " "; /* Older browser do not support empty content */
     visibility: hidden;
     display: block;
     height: 0;
     clear: both;
   }
-  .ui-pnotify-container.ui-pnotify-sharp {
+  :global(.ui-pnotify-container.ui-pnotify-sharp) {
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
     border-radius: 0;
   }
-  .ui-pnotify-title {
+  :global(.ui-pnotify-title) {
     display: block;
     white-space: pre-line;
     margin-bottom: .4em;
     margin-top: 0;
   }
+  :global(.ui-pnotify.ui-pnotify-with-icon .ui-pnotify-title),
+  :global(.ui-pnotify.ui-pnotify-with-icon .ui-pnotify-text) {
+    margin-left: 24px;
+  }
   /* Bootstrap 4: make title text a tad smaller. */
-  .ui-pnotify-title-bs4 {
+  :global(.ui-pnotify-title-bs4) {
     font-size: 1.2rem;
   }
-  .ui-pnotify-text {
+  :global(.ui-pnotify-text) {
     display: block;
     white-space: pre-line;
   }
-  .ui-pnotify-icon, .ui-pnotify-icon span {
+  :global(.ui-pnotify-icon, .ui-pnotify-icon span) {
     display: block;
     float: left;
-    margin-right: .2em;
   }
   /* Bootstrap 3: correct positioning of icon. */
-  .ui-pnotify-icon-bs3 > span {
+  :global(.ui-pnotify-icon-bs3 > span) {
     position: relative;
     top: 2px;
   }
   /* Bootstrap 4: correct positioning of icon. */
-  .ui-pnotify-icon-bs4 > span {
+  :global(.ui-pnotify-icon-bs4 > span) {
     position: relative;
     top: 4px;
   }
@@ -1106,7 +1109,7 @@
     width: 100%;
     z-index: 1;
   }
-  :global(body) > :global(.ui-pnotify-modal-overlay) {
+  :global(body > .ui-pnotify-modal-overlay) {
     position: fixed;
     z-index: 100039;
   }
