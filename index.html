@@ -23,9 +23,6 @@
   <!-- Animate.css -->
   <link href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css" rel="stylesheet" type="text/css" />
 
-  <!-- jQuery -->
-  <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
   <!-- Bootstrap -->
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" id="bootstrap-css" crossorigin="anonymous">
   <script defer src="//use.fontawesome.com/releases/v5.0.4/js/all.js"></script>
@@ -71,7 +68,7 @@
 
   <!-- Custom Styling -->
   <style type="text/css">
-    /* Not PNotify specific, just make this page a little more presentable. */
+    /* Bootstrap theme switcher. */
     #switcher-container {
       position: fixed;
       bottom: 5px;
@@ -115,8 +112,7 @@
       color: #FFA !important;
     }
 
-    /* This stack is totally different. It stacks at the top and looks
-      like a Microsoft-esque browser notice bar. */
+    /* Browser bar stacks. */
     [ui-pnotify].ui-pnotify.stack-bar-top {
       width: 100%;
     }
@@ -789,7 +785,7 @@
   <section class="container page-banner">
     <div class="intro-section">
       <h1>PNotify</h1>
-      <h3>v4 <abbr title="almost everything is broken">Pre-Alpha</abbr></h3>
+      <h3>v4 <abbr title="but it's close">Pre-Alpha</abbr></h3>
       <p id="description">Beautiful JavaScript notifications. Now with <a href="index-nodependencies.html" target="_blank">zero dependencies</a>!</p>
     </div>
     <div class="intro-section">
@@ -860,27 +856,25 @@
           </div>
         </div>
       </div>
-      <div class="row stable-note" style="display: none;">
-        <div class="col-sm-6 col-sm-offset-3">
-          <div class="alert alert-success">
-            <h5 style="margin-top: 0;"><i class="fas fa-info-circle"></i> Did you know?</h5>
-            <p>
-              This is the stable site. You can download code here that's
-              tested and proven to work. However, if you like to live
-              dangerously, you can also check out the
+      <div class="row justify-content-center stable-note" style="display: none;">
+        <div class="col-sm-6">
+          <div class="card bg-success text-white" style="height: 100%;">
+            <div class="card-body">
+              <h5 class="card-title"><i class="fas fa-info-circle"></i> Did you know?</h5>
+              This is the stable site. You can download code here that's tested
+              and proven to work. However, if you like to live dangerously, you
+              can also check out the
               <a href="https://sciactive.github.com/pnotify">development site</a>.
-            </p>
+            </div>
           </div>
         </div>
       </div>
       <div class="dev-note" style="display: none;">
-        <div class="alert alert-danger" style="width: 50vw;">
+        <div class="alert alert-danger" style="width: 30vw;">
           <h5 style="margin-top: 0;"><i class="fas fa-exclamation-triangle"></i> Caution warning danger attention!</h5>
           <p>
-            This is the development site. It's a playground for
-            bleeding edge features and code that probably won't
-            work. Most of the modules haven't been migrated to
-            v4 yet.
+            This is the development site. It demos bleeding edge features that
+            may not work.
           </p>
         </div>
       </div>
