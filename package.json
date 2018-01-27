@@ -54,5 +54,8 @@
     "svelte": "^1.52.0",
     "uglify-es": "^3.3.8",
     "uglify-js": "^3.3.7"
+  },
+  "peerDependencies": {
+    "animate.css": "^3.5.2"
   }
 }
