@@ -9,9 +9,9 @@ PNotify is a JavaScript notification plugin. PNotify can provide [desktop notifi
 
 # Whoa there!
 
-I guarantee **none of this README applies to you!** You want to check out the **[README on the master branch](https://github.com/sciactive/pnotify/blob/master/README.md)**.
+Unless you're an alpha tester, **none of this README applies to you!** You want to check out the **[README on the master branch](https://github.com/sciactive/pnotify/blob/master/README.md)**.
 
-This README is for **PNotify v4**. v4 isn't out yet, but it's got some huge changes.
+This README is for **PNotify v4**. v4 is only in alpha stage, but it's got some huge changes:
 
 * jQuery is no longer required. v4 doesn't require any libraries, actually.
 * It's built using [Svelte](http://svelte.technology), which means it compiles down to vanilla JS.
@@ -19,25 +19,6 @@ This README is for **PNotify v4**. v4 isn't out yet, but it's got some huge chan
 * `text_escape` and `title_escape` have been replaced by `trust_text` and `trust_title`, and the default behavior changed.
 * `insert_brs` option has gone away. (Text and title now have `white-space: pre-line;`.)
 * The default width was raised from 300px to 360px.
-
-But v4 isn't even in the alpha stage yet.
-
-Things that work:
-
-* PNotify Core
-* Bright Theme styling (CSS)
-* Material styling (module)
-* Buttons module
-* Animate module
-* Callbacks module
-* NonBlock module
-* Mobile module
-* History module
-* Desktop module
-* Confirm module
-
-Things that don't work:
-* npm package...
 
 # Getting Started
 
@@ -49,30 +30,28 @@ npm install pnotify
 
 Inside the pnotify directory in node_modules, you'll find a `src`, `lib`, and `dist` directory.
 
-* `src` contains the actual Svelte source code, and CSS files.
-* `lib` contains all the JS files uncompressed.
+* `src` contains the Svelte source code, and uncompressed CSS.
+* `lib` contains all the compiled JS files uncompressed.
 * `dist` contains both JS and CSS files compressed.
 * `lib` and `dist` each have subdirectories for the available formats, UMD, IIFE, and ES6 modules.
 
 So if you're not using Webpack or Rollup, here's how you'd include PNotify on your page:
 
 ```html
+<!-- From an NPM install. -->
 <script type="text/javascript" src="node_modules/pnotify/dist/iife/PNotify.js"></script>
-<link href="node_modules/pnotify/dist/PNotify.BrightTheme.css" media="all" rel="stylesheet" type="text/css" />
+<link href="node_modules/pnotify/dist/PNotifyBrightTheme.css" media="all" rel="stylesheet" type="text/css" />
 ```
+
+There are also examples of how to use various libraries (like Browserify and RequireJS) in the libtests dir.
 
 Now you can use PNotify like this:
 
-```html
-<script type="text/javascript">
-  function makeNotice() {
-    PNotify.notice({
-      title: "Regular Notice",
-      text: "Check me out! I'm a notice."
-    });
-  }
-</script>
-<button onclick="makeNotice()">Click me for Notice</button>
+```js
+PNotify.notice({
+  title: "Regular Notice",
+  text: "Check me out! I'm a notice."
+});
 ```
 
 ## Using a UI Library

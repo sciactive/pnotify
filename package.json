@@ -26,7 +26,7 @@
     "src",
     "make.js"
   ],
-  "main": "dist/umd/index.js",
+  "main": "dist/iife/PNotify.js",
   "directories": {
     "lib": "lib/umd"
   },
