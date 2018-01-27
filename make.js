@@ -5,6 +5,7 @@ const fs = require('fs');
 require('shelljs/make');
 
 let pnotify_src = {
+  'index': 'index.js',
   'core': 'PNotify.html',
   'animate': 'PNotifyAnimate.html',
   'buttons': 'PNotifyButtons.html',
@@ -19,6 +20,7 @@ let pnotify_src = {
 };
 
 let pnotify_js = {
+  'index': 'index.js',
   'core': 'PNotify.js',
   'animate': 'PNotifyAnimate.js',
   'buttons': 'PNotifyButtons.js',
@@ -94,27 +96,38 @@ target.dist = (args) => {
 
 let compile_js = (module, filename, args) => {
   let format = setup(args);
+
+  if (module === "index" && format !== 'umd') {
+    return;
+  }
+
   const src_filename = 'src/' + filename;
   const dst_filename = 'lib/' + format + '/' + filename.replace(/\.html$/, '.js');
   echo('Compiling JavaScript '+module+' from '+src_filename+' to '+dst_filename);
   echo('Generating source map for '+dst_filename+' in '+dst_filename+'.map');
 
-  let inputCode, inputMap, isSvelte = filename.slice(-4) === 'html';
+  let code, map, inputCode, inputMap, isSvelte = filename.slice(-4) === 'html';
   if (isSvelte) {
     // Use Svelte to compile the code first.
     const svelte = require('svelte');
-    const {code, map} = svelte.compile(fs.readFileSync(src_filename, "utf8"), {
+    ({code, map} = svelte.compile(fs.readFileSync(src_filename, "utf8"), {
     	format: format === 'iife' ? 'iife' : 'es',
     	filename: src_filename,
     	name: filename.replace(/\.html$/, ''),
+      amd: {
+        id: filename.replace(/\.html$/, '')
+      },
     	onerror: err => {
     		console.error(err);
     	},
     	onwarn: warning => {
     		console.warn(warning);
     	},
+      globals: {
+        './PNotify': 'PNotify'
+      },
       cascade: false
-    });
+    }));
     [inputCode, inputMap] = [code, map];
     inputMap.file = filename.replace(/\.html$/, '.js');
     inputCode += '\n//# sourceMappingURL='+filename.replace(/\.html$/, '.js')+'.map';
@@ -122,27 +135,29 @@ let compile_js = (module, filename, args) => {
     inputCode = fs.readFileSync(src_filename, "utf8");
     inputMap = null;
   }
-  const babel = require('babel-core');
-  const plugins = ["transform-class-properties", "transform-object-assign"];
-  if (['iife', 'es'].indexOf(format) === -1) {
-    plugins.push('transform-es2015-modules-'+format);
+  if (format !== 'es') {
+    const babel = require('babel-core');
+    const plugins = ["transform-class-properties", "transform-object-assign"];
+    if (format !== 'iife') {
+      plugins.push('transform-es2015-modules-'+format);
+    }
+    ({code, map} = babel.transform(inputCode, {
+      inputSourceMap: inputMap,
+      moduleId: filename.replace(/\.(html|js)$/, ''),
+      filename: filename.replace(/\.html$/, '.js'),
+      filenameRelative: src_filename,
+      sourceMapTarget: src_filename,
+      moduleRoot: '',
+      sourceMaps: 'both',
+      sourceRoot: '../',
+      presets: [
+        'env',
+        'stage-3'
+      ],
+      plugins: plugins,
+      sourceType: (format === 'iife' && isSvelte) ? 'script' : 'module'
+    }));
   }
-  const {code, map} = babel.transform(inputCode, {
-    inputSourceMap: inputMap,
-    moduleId: filename.replace(/\.(html|js)$/, ''),
-    filename: filename.replace(/\.html$/, '.js'),
-    filenameRelative: src_filename,
-    sourceMapTarget: src_filename,
-    moduleRoot: '',
-    sourceMaps: 'both',
-    sourceRoot: '../',
-    presets: [
-      'env',
-      'stage-3'
-    ],
-    plugins: plugins,
-    sourceType: (format === 'iife' && isSvelte) ? 'script' : 'module'
-  });
 
   code.to(dst_filename);
   JSON.stringify(map).to(dst_filename+'.map');
@@ -150,12 +165,17 @@ let compile_js = (module, filename, args) => {
 
 let compress_js = (module, filename, args) => {
   let format = setup(args);
+
+  if (module === "index" && format !== 'umd') {
+    return;
+  }
+
   const src_filename = 'lib/' + format + '/' + filename;
   const dst_filename = 'dist/' + format + '/' + filename;
   echo('Compressing JavaScript '+module+' from '+src_filename+' to '+dst_filename);
   echo('Generating source map for '+dst_filename+' in '+dst_filename+'.map');
 
-  const UglifyJS = require('uglify-js');
+  const UglifyJS = format === 'es' ? require('uglify-es') : require('uglify-js');
   const options = {
     sourceMap: {
       root: '../',

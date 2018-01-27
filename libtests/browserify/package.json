@@ -10,11 +10,9 @@
   "author": "",
   "license": "none",
   "dependencies": {
-    "jquery": "~2.1.4",
-    "pnotify": "~2.2.0"
+    "pnotify": "file:../../"
   },
-  "browser": {
-    "pnotify": "../../src/pnotify.js",
-    "pnotify.reference": "../../src/pnotify.reference.js"
+  "devDependencies": {
+    "browserify": "^15.2.0"
   }
 }

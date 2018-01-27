@@ -1,35 +1,38 @@
 {
   "name": "pnotify",
-  "version": "4.0.0-dev",
-  "main": "lib/pnotify.js",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/sciactive/pnotify.git"
-  },
-  "author": "Hunter Perrin",
-  "license": "Apache-2.0",
+  "version": "4.0.0-alpha.1",
+  "description": "Beautiful JavaScript notifications. Now with zero dependencies!",
+  "keywords": [
+    "notice",
+    "notices",
+    "notification",
+    "notifications",
+    "alert",
+    "alerts",
+    "web notifications",
+    "prompts",
+    "non blocking",
+    "notify"
+  ],
+  "homepage": "https://github.com/sciactive/pnotify",
   "bugs": {
     "url": "https://github.com/sciactive/pnotify/issues"
   },
-  "homepage": "https://github.com/sciactive/pnotify",
+  "license": "Apache-2.0",
+  "author": "Hunter Perrin",
+  "files": [
+    "dist",
+    "lib",
+    "src",
+    "make.js"
+  ],
+  "main": "dist/umd/index.js",
   "directories": {
-    "lib": "lib"
+    "lib": "lib/umd"
   },
-  "dependencies": {},
-  "devDependencies": {
-    "babel-core": "^6.26.0",
-    "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-plugin-transform-es2015-modules-amd": "^6.24.1",
-    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.0",
-    "babel-plugin-transform-es2015-modules-systemjs": "^6.24.1",
-    "babel-plugin-transform-es2015-modules-umd": "^6.24.1",
-    "babel-plugin-transform-object-assign": "^6.22.0",
-    "babel-preset-env": "^1.6.1",
-    "babel-preset-stage-3": "^6.24.1",
-    "clean-css": "^4.1.9",
-    "shelljs": "^0.8.0",
-    "svelte": "^1.52.0",
-    "uglify-js": "^3.3.7"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sciactive/pnotify.git"
   },
   "scripts": {
     "build": "npm run build-iife && npm run build-umd && npm run build-es",
@@ -37,5 +40,19 @@
     "build-umd": "node make.js dist -- --format=umd",
     "build-es": "node make.js dist -- --format=es",
     "prepare": "npm run build"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-es2015-modules-umd": "^6.24.1",
+    "babel-plugin-transform-object-assign": "^6.22.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-stage-3": "^6.24.1",
+    "clean-css": "^4.1.9",
+    "shelljs": "^0.8.0",
+    "svelte": "^1.52.0",
+    "uglify-es": "^3.3.8",
+    "uglify-js": "^3.3.7"
   }
 }

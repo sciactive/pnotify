@@ -1,26 +1,24 @@
-
 // Not working? Did you `npm install` `npm run build` first?
 
-var $ = require("jquery");
-var PNotify = require("pnotify");
+var PNotify = require("pnotify/lib/umd/PNotify.js").default;
 
-$(function(){
-    $("#button1").click(function(){
-        new PNotify({
-            title: "Yay!",
-            text: "It works!"
-        });
+document.getElementById("button1").addEventListener("click", function(){
+    PNotify.notice({
+        title: "Yay!",
+        text: "It works!"
     });
+});
 
-    $("#button12").click(function(){
-        require("pnotify.reference");
+document.getElementById("button2").addEventListener("click", function(){
+    require("pnotify/lib/umd/PNotifyReference.js");
 
-        new PNotify({
-            title: "Yay!",
-            text: "It works!",
-            reference: {
-                put_thing: true
-            }
-        });
+    PNotify.notice({
+        title: "Yay!",
+        text: "It works!",
+        modules: {
+          Reference: {
+              put_thing: true
+          }
+        }
     });
 });
