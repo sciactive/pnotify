@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>RequireJS Test</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../../src/PNotifyBrightTheme.css">
+  <script type="text/javascript" src="../../lib/iife/PNotify.js"></script>
+  <script type="text/javascript" src="../../lib/iife/PNotifyReference.js"></script>
+</head>
+<body>
+  <div style="padding: 50vh 0; text-align: center;">
+    <button id="button1">Test PNotify with IIFE</button><br>
+    <button id="button2">PNotify Module with IIFE</button>
+  </div>
+  <script type="text/javascript">
+    document.getElementById("button1").addEventListener("click", function(){
+      PNotify.notice({
+        title: "Yay!",
+        text: "It works!"
+      });
+    });
+    document.getElementById("button2").addEventListener("click", function(){
+      PNotify.notice({
+        title: "Yay!",
+        text: "It works!",
+        modules: {
+          Reference: {
+            put_thing: true
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>

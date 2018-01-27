@@ -97,7 +97,7 @@ target.dist = (args) => {
 let compile_js = (module, filename, args) => {
   let format = setup(args);
 
-  if (module === "index" && format !== 'umd') {
+  if (module === "index" && format === 'iife') {
     return;
   }
 
@@ -107,15 +107,20 @@ let compile_js = (module, filename, args) => {
   echo('Generating source map for '+dst_filename+' in '+dst_filename+'.map');
 
   let code, map, inputCode, inputMap, isSvelte = filename.slice(-4) === 'html';
+  inputCode = code = fs.readFileSync(src_filename, "utf8");
+  inputMap = map = null;
   if (isSvelte) {
     // Use Svelte to compile the code first.
     const svelte = require('svelte');
-    ({code, map} = svelte.compile(fs.readFileSync(src_filename, "utf8"), {
+    ({code, map} = svelte.compile(code, {
     	format: format === 'iife' ? 'iife' : 'es',
     	filename: src_filename,
     	name: filename.replace(/\.html$/, ''),
       amd: {
         id: filename.replace(/\.html$/, '')
+      },
+      globals: {
+        "./PNotify.html": "PNotify"
       },
     	onerror: err => {
     		console.error(err);
@@ -123,17 +128,11 @@ let compile_js = (module, filename, args) => {
     	onwarn: warning => {
     		console.warn(warning);
     	},
-      globals: {
-        './PNotify': 'PNotify'
-      },
       cascade: false
     }));
     [inputCode, inputMap] = [code, map];
     inputMap.file = filename.replace(/\.html$/, '.js');
     inputCode += '\n//# sourceMappingURL='+filename.replace(/\.html$/, '.js')+'.map';
-  } else {
-    inputCode = fs.readFileSync(src_filename, "utf8");
-    inputMap = null;
   }
   if (format !== 'es') {
     const babel = require('babel-core');
@@ -159,14 +158,24 @@ let compile_js = (module, filename, args) => {
     }));
   }
 
+  if (format === 'es') {
+    code = code.replace(/import PNotify(\w*) from "\.\/PNotify(\w*)\.html";/g, 'import PNotify$1 from "./PNotify$2.js";');
+  }
+  if (format === 'umd') {
+    code = code.replace(/require\("\.\/PNotify(\w*)\.html"\)/g, 'require("./PNotify$1")');
+    code = code.replace(/, "\.\/PNotify(\w*)\.html"/g, ', "PNotify$1"');
+  }
+
   code.to(dst_filename);
-  JSON.stringify(map).to(dst_filename+'.map');
+  if (map) {
+    JSON.stringify(map).to(dst_filename+'.map');
+  }
 };
 
 let compress_js = (module, filename, args) => {
   let format = setup(args);
 
-  if (module === "index" && format !== 'umd') {
+  if (module === "index" && format === 'iife') {
     return;
   }
 
@@ -187,7 +196,9 @@ let compress_js = (module, filename, args) => {
     [filename]: fs.readFileSync(src_filename, "utf8")
   }, options);
   code.to(dst_filename);
-  map.to(dst_filename+'.map');
+  if (map) {
+    map.to(dst_filename+'.map');
+  }
 };
 
 let compress_css = (module, filename) => {

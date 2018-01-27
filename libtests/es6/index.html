@@ -8,30 +8,9 @@
 </head>
 <body>
   <div style="padding: 50vh 0; text-align: center;">
-    <button id="button1">Test PNotify with RequireJS</button><br>
-    <button id="button2">PNotify Module with RequireJS</button>
+    <button id="button1">Test PNotify with ES6 Modules</button><br>
+    <button id="button2">PNotify Module with ES6 Modules</button>
   </div>
-  <script type="text/javascript">
-    document.getElementById("button1").addEventListener("click", function(){
-      import PNotify from "../../lib/es/PNotify.js";
-      PNotify.notice({
-        title: "Yay!",
-        text: "It works!"
-      });
-    });
-    document.getElementById("button2").addEventListener("click", function(){
-      import PNotify from "../../lib/es/PNotify.js";
-      import PNotifyReference from "../../lib/es/PNotifyReference.js";
-      PNotify.notice({
-        title: "Yay!",
-        text: "It works!",
-        modules: {
-          Reference: {
-            put_thing: true
-          }
-        }
-      });
-    });
-  </script>
+  <script type="module" src="index.js"></script>
 </body>
 </html>
