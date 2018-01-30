@@ -6,8 +6,8 @@
   <script type="text/javascript" src="lib/iife/PNotifyStyleMaterial.js"></script>
   <script type="text/javascript" src="lib/iife/PNotifyButtons.js"></script>
   <link href="src/PNotifyBrightTheme.css" rel="stylesheet" type="text/css" />
-  <link href="about:blank" id="bootstrap-css" rel="stylesheet" type="text/css" />
-  <link href="about:blank" id="fontawesome-css" rel="stylesheet" type="text/css" />
+  <link href="" id="bootstrap-css" rel="stylesheet" type="text/css" />
+  <link href="" id="fontawesome-css" rel="stylesheet" type="text/css" />
 
   <script type="text/javascript">
     function loadStylingDeps() {
@@ -30,7 +30,7 @@
         document.getElementById("bootstrap-css").href = "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css";
         output.innerText += " Loaded Bootstrap 4.";
       } else {
-        document.getElementById("bootstrap-css").href = "about:blank";
+        document.getElementById("bootstrap-css").href = "";
       }
 
       if (icons === "fontawesome4") {
@@ -40,7 +40,7 @@
         document.getElementById("fontawesome-css").href = "https://use.fontawesome.com/releases/v5.0.4/css/all.css";
         output.innerText += " Loaded Font Awesome 5.";
       } else {
-        document.getElementById("fontawesome-css").href = "about:blank";
+        document.getElementById("fontawesome-css").href = "";
       }
     }
   </script>

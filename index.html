@@ -50,22 +50,6 @@
   <script type="text/javascript" src="lib/iife/PNotifyStyleMaterial.js"></script>
   <script type="text/javascript" src="lib/iife/PNotifyReference.js"></script>
 
-  <!-- PForm (For the form notice.) -->
-  <link href="//sciactive.com/pform/css/pform.css" media="all" rel="stylesheet" type="text/css" />
-  <link href="//sciactive.com/pform/css/pform-bootstrap.css" media="all" rel="stylesheet" type="text/css" />
-  <style type="text/css">
-    .pform_custom div.pf-element .pf-label, .pform_custom div.pf-element .pf-note {
-      width: 130px; /* Width of labels. */
-      font-weight: normal;
-    }
-    .pform_custom div.pf-element .pf-group {
-      margin-left: 130px; /* Same as width of labels. */
-    }
-    .pform_custom div.pf-buttons {
-      padding-left: 115px; /* Width of labels + margin to inputs - button spacing. */
-    }
-  </style>
-
   <!-- Custom Styling -->
   <style type="text/css">
     /* Bootstrap theme switcher. */
@@ -126,8 +110,6 @@
 
   <!-- Demo Code -->
   <script type="text/javascript">
-    var permanotice, tooltip, _alert;
-
     $(function() {
       // ---
       // Notice that opens when the page opens.
@@ -159,548 +141,7 @@
           }
         }
       });
-
-      // ---
-      // This notice is the tooltip demo.
-      // ---
-      var make_tooltip = function() {
-        tooltip = PNotify.notice({
-          title: "Tooltip",
-          text: "I'm not in a stack. I'm positioned like a tooltip with JavaScript.",
-          hide: false,
-          animate_speed: "fast",
-          icon: "fas fa-comment",
-          // Setting stack to false causes PNotify to ignore this notice when positioning.
-          // It also causes the History module to ignore it.
-          stack: false,
-          auto_display: false,
-          destroy: false,
-          modules: {
-            Buttons: {
-              closer: false,
-              sticker: false
-            }
-          }
-        });
-        // Close the notice if the user mouses over it.
-        tooltip.on("mouseout", function() {
-          tooltip.close();
-        });
-      };
-      // I put it in a function so I could show the source easily.
-      make_tooltip();
-
-      // ---
-      // This creates all those source code view buttons.
-      // ---
-      var makeSourceButton = function(elem) {
-        var button = $(elem);
-        var classList = button.attr("class");
-        // Wrap the button in a container.
-        var contain = $('<div class="btn-group" />');
-        contain = button.wrap(contain).parent();
-        $('\
-          <button type="button" class="dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">\
-            <span class="sr-only">Toggle Dropdown</span>\
-          </button>\
-        ').appendTo(contain).addClass(classList).removeClass("source");
-        // Add a source button.
-        $('\
-          <div class="dropdown-menu dropdown-menu-right">\
-            <a class="dropdown-item" href="javascript:void(0)">See the source</a>\
-          </div>\
-        ').on("click", "a", function() {
-          $(this).blur();
-          var text = button.attr("onclick");
-          if (!text && button.attr("onmouseover")) {
-            text = "// Mouse Over:\n"+button.attr("onmouseover")+"\n\n// Mouse Move:\n"+button.attr("onmousemove")+"\n\n// Mouse Out:\n"+button.attr("onmouseout");
-          }
-          // IE needs this.
-          if (text.toString) {
-            text = text.toString();
-            if (text.match(/^function (onclick|anonymous)[\n ]*\([^\)]*\)[\n ]*\{[\n\t ]*/)) {
-              text = text.replace(/^function (onclick|anonymous)[\n ]*\([^\)]*\)[\n ]*\{[\n\t ]*/, "").replace(/[\n\t ]*}[\n\t ]*$/, "");
-            }
-          }
-
-          // Is there a better way to do this?
-          var dialog = $('\
-            <div class="modal fade" tabindex="-1" role="dialog">\
-              <div class="modal-dialog modal-lg" role="document">\
-                <div class="modal-content">\
-                  <div class="modal-header">\
-                    <h5 class="modal-title">'+button.text()+' - Source</h5>\
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">\
-                      <span aria-hidden="true">&times;</span>\
-                    </button>\
-                  </div>\
-                  <div class="modal-body"></div>\
-                  <div class="modal-footer">\
-                    <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Ok, got it.</button>\
-                  </div>\
-                </div>\
-              </div>\
-            </div>\
-          ');
-
-          $("<pre class=\"prettyprint\" />").text(js_beautify(text)).appendTo(dialog.find(".modal-body"));
-
-          // Check if the code is just calling a function. Include that function.
-          if (text.match(/^\w*\([^\)]*\);$/)) {
-            var f_name = text.replace(/\(.*/g, "");
-            text = window[f_name].toString();
-            $("<pre class=\"prettyprint\" />").text(js_beautify(text)).appendTo(dialog.find(".modal-body"));
-          }
-
-          // Check if this is the tooltip button. Include the tooltip function.
-          if (text.match(/tooltip\.open\(\);/)) {
-            $("<pre class=\"prettyprint\" />").text(js_beautify(make_tooltip.toString())).appendTo(dialog.find(".modal-body"));
-          }
-
-          dialog.on("shown.bs.modal", function() {
-            prettyPrint();
-          }).on("hidden.bs.modal", function() {
-            dialog.remove();
-          }).modal();
-        }).appendTo(contain);
-        button.removeClass("source");
-      };
-      $("body").on("mouseenter click", ".source", function() {
-        makeSourceButton(this);
-      });
-      $(".source", "body").each(function() {
-        makeSourceButton(this);
-      });
-      prettyPrint(); // Format source in help.
-
-      // Navbar scrollspy.
-      $('#navbar').scrollspy();
     });
-
-    function show_rich() {
-      PNotify.notice({
-        title: '<span style="color: green;">Rich Content Notice</span>',
-        trust_title: true,
-        text: '<span style="color: blue;">Look at my beautiful <strong>strong</strong>, <em>emphasized</em>, and <span style="font-size: 1.5em;">large</span> text.</span>',
-        trust_text: true
-      });
-    }
-
-    function consume_alert() {
-      if (_alert) {
-        return;
-      }
-      _alert = window.alert;
-      window.alert = function(message) {
-        PNotify.notice({
-          title: 'Alert',
-          text: message
-        });
-      };
-    }
-
-    function release_alert() {
-      if (!_alert) {
-        return;
-      }
-      window.alert = _alert;
-      _alert = null;
-    }
-
-    function fake_load() {
-      var cur_value = 1,
-          progress;
-
-      // Make a loader.
-      var loader = PNotify.notice({
-        title: "Creating series of tubes",
-        text: '<div class="progress">\
-  <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>\
-</div>',
-        trust_text: true,
-        icon: 'fas fa-cog fa-spin',
-        hide: false,
-        modules: {
-          Buttons: {
-            closer: false,
-            sticker: false
-          },
-          History: {
-            history: false
-          },
-          Callbacks: {
-            before_open: function(notice) {
-              progress = $(notice.refs.elem).find("div.progress-bar");
-              progress.width(cur_value+"%").attr("aria-valuenow", cur_value);
-              // Pretend to do something.
-              var plus = 1;
-              var timer = setInterval(function() {
-                if (cur_value == 70) {
-                  plus = .25;
-                  loader.update({
-                    title: "Aligning discrete worms",
-                    icon: "fas fa-circle-notch fa-spin"
-                  });
-                }
-                if (cur_value == 80) {
-                  loader.update({
-                    title: "Connecting end points",
-                    icon: "fas fa-sync fa-spin"
-                  });
-                }
-                if (cur_value == 90) {
-                  loader.update({
-                    title: "Dividing and conquering",
-                    icon: "fas fa-spinner fa-pulse"
-                  });
-                }
-                if (cur_value >= 100) {
-                  // Clean up the interval.
-                  window.clearInterval(timer);
-                  loader.close();
-                  return;
-                }
-                cur_value += plus;
-                progress.width(cur_value+"%").attr("aria-valuenow", cur_value);
-              }, 65);
-            }
-          }
-        }
-      });
-    }
-
-    function dyn_notice() {
-      var percent = 0;
-      var notice = PNotify.info({
-        text: "Please Wait",
-        icon: 'fas fa-spinner fa-pulse',
-        hide: false,
-        shadow: false,
-        width: "170px",
-        modules: {
-          Buttons: {
-            closer: false,
-            sticker: false
-          }
-        }
-      });
-
-      setTimeout(function() {
-        notice.update({title: false});
-        var interval = setInterval(function() {
-          percent += 2;
-          var options = {
-            text: percent+"% complete."
-          };
-          if (percent == 80) {
-            options.title = "Almost There";
-            options.width = "200px";
-          }
-          if (percent >= 100) {
-            window.clearInterval(interval);
-            options.title = "Done!";
-            options.type = "success";
-            options.hide = true;
-            options.icon = 'fas fa-check';
-            options.shadow = true;
-            options.width = PNotify.defaults.width;
-            options.modules = {
-              Buttons: {
-                closer: true,
-                sticker: true
-              }
-            };
-          }
-          notice.update(options);
-        }, 120);
-      }, 2000);
-    }
-
-    function show_stack_topleft(type) {
-      if (typeof stack_topleft === "undefined") {
-        stack_topleft = {"dir1": "down", "dir2": "right", "firstpos1": 25, "firstpos2": 25, "push": "top"};
-      }
-      var opts = {
-        title: "Over Here",
-        text: "Check me out. I'm in a different stack.",
-        stack: stack_topleft
-      };
-      switch (type) {
-        case 'error':
-          opts.title = "Oh No";
-          opts.text = "Watch out for that water tower!";
-          opts.type = "error";
-          break;
-        case 'info':
-          opts.title = "Breaking News";
-          opts.text = "Have you met Ted?";
-          opts.type = "info";
-          break;
-        case 'success':
-          opts.title = "Good News Everyone";
-          opts.text = "I've invented a device that bites shiny metal asses.";
-          opts.type = "success";
-          break;
-      }
-      PNotify.alert(opts);
-    };
-
-    function show_stack_bottomleft(type) {
-      if (typeof stack_bottomleft === "undefined") {
-        stack_bottomleft = {"dir1": "right", "dir2": "up", "firstpos1": 25, "firstpos2": 25, "push": "top"};
-      }
-      var opts = {
-        title: "Over Here",
-        text: "Check me out. I'm in a different stack.",
-        stack: stack_bottomleft
-      };
-      switch (type) {
-        case 'error':
-          opts.title = "Oh No";
-          opts.text = "Watch out for that water tower!";
-          opts.type = "error";
-          break;
-        case 'info':
-          opts.title = "Breaking News";
-          opts.text = "Have you met Ted?";
-          opts.type = "info";
-          break;
-        case 'success':
-          opts.title = "Good News Everyone";
-          opts.text = "I've invented a device that bites shiny metal asses.";
-          opts.type = "success";
-          break;
-      }
-      PNotify.alert(opts);
-    };
-
-    function show_stack_bottomright(type) {
-      if (typeof stack_bottomright === "undefined") {
-        stack_bottomright = {"dir1": "up", "dir2": "left", "firstpos1": 25, "firstpos2": 25};
-      }
-      var opts = {
-        title: "Over Here",
-        text: "Check me out. I'm in a different stack.",
-        stack: stack_bottomright
-      };
-      switch (type) {
-        case 'error':
-          opts.title = "Oh No";
-          opts.text = "Watch out for that water tower!";
-          opts.type = "error";
-          break;
-        case 'info':
-          opts.title = "Breaking News";
-          opts.text = "Have you met Ted?";
-          opts.type = "info";
-          break;
-        case 'success':
-          opts.title = "Good News Everyone";
-          opts.text = "I've invented a device that bites shiny metal asses.";
-          opts.type = "success";
-          break;
-      }
-      PNotify.alert(opts);
-    };
-
-    function show_stack_topcenter(type) {
-      if (typeof stack_topcenter === "undefined") {
-        stack_topcenter = {"dir1": "down", "firstpos1": 25};
-      }
-      var opts = {
-        title: "Over Here",
-        text: "Check me out. I'm in a different stack.",
-        stack: stack_topcenter
-      };
-      switch (type) {
-        case 'error':
-          opts.title = "Oh No";
-          opts.text = "Watch out for that water tower!";
-          opts.type = "error";
-          break;
-        case 'info':
-          opts.title = "Breaking News";
-          opts.text = "Have you met Ted?";
-          opts.type = "info";
-          break;
-        case 'success':
-          opts.title = "Good News Everyone";
-          opts.text = "I've invented a device that bites shiny metal asses.";
-          opts.type = "success";
-          break;
-      }
-      PNotify.alert(opts);
-    };
-
-    function show_stack_modal(type) {
-      if (typeof stack_modal === "undefined") {
-        stack_modal = {"dir1": "up", "firstpos1": 25, "push": "top", "modal": true, "overlay_close": true};
-      }
-      var opts = {
-        title: "Over Here",
-        text: "Check me out. I'm in a different stack.",
-        stack: stack_modal
-      };
-      switch (type) {
-        case 'error':
-          opts.title = "Oh No";
-          opts.text = "Watch out for that water tower!";
-          opts.type = "error";
-          break;
-        case 'info':
-          opts.title = "Breaking News";
-          opts.text = "Have you met Ted?";
-          opts.type = "info";
-          break;
-        case 'success':
-          opts.title = "Good News Everyone";
-          opts.text = "I've invented a device that bites shiny metal asses.";
-          opts.type = "success";
-          break;
-      }
-      PNotify.alert(opts);
-    };
-
-    function show_stack_modal_left(type) {
-      if (typeof stack_modal_left === "undefined") {
-        stack_modal_left = {"dir1": "down", "dir2": "right", "firstpos1": 25, "firstpos2": 25, "push": "top", "modal": true, "overlay_close": true};
-      }
-      var opts = {
-        title: "Over Here",
-        text: "Check me out. I'm in a different stack.",
-        stack: stack_modal_left
-      };
-      switch (type) {
-        case 'error':
-          opts.title = "Oh No";
-          opts.text = "Watch out for that water tower!";
-          opts.type = "error";
-          break;
-        case 'info':
-          opts.title = "Breaking News";
-          opts.text = "Have you met Ted?";
-          opts.type = "info";
-          break;
-        case 'success':
-          opts.title = "Good News Everyone";
-          opts.text = "I've invented a device that bites shiny metal asses.";
-          opts.type = "success";
-          break;
-      }
-      PNotify.alert(opts);
-    };
-
-    function show_stack_bar_top(type) {
-      if (typeof stack_bar_top === "undefined") {
-        stack_bar_top = {"dir1": "down", "firstpos1": 0, "spacing1": 0, "push": "top"};
-      }
-      var opts = {
-        title: "Over Here",
-        text: "Check me out. I'm in a different stack.",
-        addclass: "stack-bar-top",
-        cornerclass: "ui-pnotify-sharp",
-        shadow: false,
-        width: "100%",
-        stack: stack_bar_top
-      };
-      switch (type) {
-        case 'error':
-          opts.title = "Oh No";
-          opts.text = "Watch out for that water tower!";
-          opts.type = "error";
-          break;
-        case 'info':
-          opts.title = "Breaking News";
-          opts.text = "Have you met Ted?";
-          opts.type = "info";
-          break;
-        case 'success':
-          opts.title = "Good News Everyone";
-          opts.text = "I've invented a device that bites shiny metal asses.";
-          opts.type = "success";
-          break;
-      }
-      PNotify.alert(opts);
-    };
-
-    function show_stack_bar_bottom(type) {
-      if (typeof stack_bar_bottom === "undefined") {
-        stack_bar_bottom = {"dir1": "up", "firstpos1": 0, "spacing1": 0};
-      }
-      var opts = {
-        title: "Over Here",
-        text: "Check me out. I'm in a different stack.",
-        addclass: "stack-bar-bottom",
-        cornerclass: "ui-pnotify-sharp",
-        shadow: false,
-        width: "100%",
-        stack: stack_bar_bottom
-      };
-      switch (type) {
-        case 'error':
-          opts.title = "Oh No";
-          opts.text = "Watch out for that water tower!";
-          opts.type = "error";
-          break;
-        case 'info':
-          opts.title = "Breaking News";
-          opts.text = "Have you met Ted?";
-          opts.type = "info";
-          break;
-        case 'success':
-          opts.title = "Good News Everyone";
-          opts.text = "I've invented a device that bites shiny metal asses.";
-          opts.type = "success";
-          break;
-      }
-      PNotify.alert(opts);
-    };
-
-    function show_stack_context(type, modal) {
-      if (typeof stack_context === "undefined") {
-        stack_context = {"dir1": "down", "dir2": "left", "firstpos1": 25, "firstpos2": 25, "context": document.getElementById("stack-context")};
-      }
-      if (typeof stack_context_modal === "undefined") {
-        stack_context_modal = {"dir1": "down", "firstpos1": 25, "context": document.getElementById("stack-context"), "modal": true, "overlay_close": true};
-      }
-      var opts = {
-        title: "Over Here",
-        text: "Check me out. I'm in a different stack.",
-        stack: modal ? stack_context_modal : stack_context
-      };
-      switch (type) {
-        case 'error':
-          opts.title = "Oh No";
-          opts.text = "Watch out for that water tower!";
-          opts.type = "error";
-          break;
-        case 'info':
-          opts.title = "Breaking News";
-          opts.text = "Have you met Ted?";
-          opts.type = "info";
-          break;
-        case 'success':
-          opts.title = "Good News Everyone";
-          opts.text = "I've invented a device that bites shiny metal asses.";
-          opts.type = "success";
-          break;
-      }
-      PNotify.alert(opts);
-    };
-    function show_stack_info() {
-      PNotify.info({
-        title: "PNotify Stacks",
-        text: "Stacks are used to position notices and determine where new notices will go when they're created. Each notice that's placed into a stack will be positioned related to the other notices in that stack.",
-        icon: "fas fa-bars",
-        hide: false,
-        stack: {"modal": true, "overlay_close": true},
-        modules: {
-          History: {
-            history: false
-          }
-        }
-      });
-    };
   </script>
 </head>
 <body id="page" data-spy="scroll" data-target=".navbar" data-offset="0" style="position: relative;">
@@ -786,160 +227,84 @@
       </div>
     </div>
   </div>
+
   <section class="container page-banner">
-    <div class="intro-section">
+    <div>
       <h1>PNotify</h1>
       <h3>v4 <abbr title="you can use it, if you're daring">Alpha</abbr></h3>
       <p id="description">Beautiful JavaScript notifications. Now with <a href="index-nodependencies.html" target="_blank">zero dependencies</a>!</p>
     </div>
-    <div class="intro-section">
-      <a class="right-button btn btn-primary btn-lg" href="https://github.com/sciactive/pnotify" target="_blank" title="Fork me on GitHub">PNotify on GitHub <i class="fab fa-github"></i></a>
-      <a class="right-button btn btn-secondary btn-lg" href="https://github.com/sciactive/pnotify/issues/new" target="_blank" title="Fork me on GitHub">Bug Report/Feature Request</a>
+    <div>
+      <a class="btn btn-primary btn-lg my-3" href="https://github.com/sciactive/pnotify" target="_blank" title="Fork me on GitHub">PNotify on GitHub <i class="fab fa-github"></i></a>
+      <a class="btn btn-secondary btn-lg my-3" href="https://github.com/sciactive/pnotify/issues/new" target="_blank" title="Fork me on GitHub">Bug Report/Feature Request</a>
     </div>
   </section>
-  <section class="container page-points">
-    <div class="container">
-      <div class="row align-items-stretch">
-        <div class="col-sm-8 my-3">
-          <div class="card" style="height: 100%;">
-            <div class="card-body">
-              <h5 class="card-title"><i class="fas fa-book"></i> About</h5>
-              PNotify is a JavaScript notification system, developed
-              by <a href="https://github.com/sciactive/">SciActive</a>.
-              <br />
-              <br />
-              PNotify provides desktop notifications based on the
-              <a href="http://www.w3.org/TR/notifications/" target="_blank">Web Notifications spec</a>.
-              If desktop notifications are not available or not allowed,
-              PNotify will fall back to displaying the notice as a
-              regular, in-browser notice.
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-4 my-3">
-          <div class="card" style="height: 100%;">
-            <div class="card-body">
-              <h5 class="card-title"><i class="fas fa-mobile"></i> Mobile Ready</h5>
-              PNotify works on your phone and tablet. You can swipe
-              notices away to dismiss them.
-            </div>
+
+  <div id="demos-simple" class="container page-section">
+    <div class="my-3">
+      <h2>About PNotify</h2>
+      <hr />
+    </div>
+    <p>
+      PNotify is a JavaScript notification library, developed by
+      <a href="https://github.com/sciactive/">SciActive</a>.
+    </p>
+    <p>
+      PNotify provides desktop notifications based on the
+      <a href="http://www.w3.org/TR/notifications/" target="_blank">Web Notifications spec</a>.
+      If desktop notifications are not available or not allowed, PNotify will
+      fall back to displaying the notice as a regular, in-browser notice.
+    </p>
+    <div class="row align-items-stretch">
+      <div class="col-md-4 my-3">
+        <div class="card" style="height: 100%;">
+          <h5 class="card-header"><i class="fas fa-mobile"></i> Mobile Ready</h5>
+          <div class="card-body">
+            PNotify works on your phone and tablet. You can swipe notices away
+            to dismiss them.
           </div>
         </div>
       </div>
-      <div class="row align-items-stretch">
-        <div class="col-sm-4 my-3">
-          <div class="card" style="height: 100%;">
-            <div class="card-body">
-              <h5 class="card-title"><i class="fas fa-asterisk"></i> Unobtrusive</h5>
-              PNotify can provide <strong>non-blocking</strong> notices
-              that allow the user to click elements behind the notice without
-              even having to dismiss it.
-            </div>
-            <div class="card-body">
-              <a class="btn btn-outline-dark" data-toggle="modal" href="#feature-modal" >See All Features</a>
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-4 my-3">
-          <div class="card" style="height: 100%;">
-            <div class="card-body">
-              <h5 class="card-title"><i class="fas fa-images"></i> Themeable</h5>
-              PNotify can use Bootstrap themes. Try out some of the
-              readymade themes using the selector in the top right corner
-              of this page.
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-4 my-3">
-          <div class="card" style="height: 100%;">
-            <div class="card-body">
-              <h5 class="card-title"><i class="fas fa-gift"></i> Completely Open</h5>
-              PNotify is distributed under the permissive
-              <a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">Apache License, Version 2.0</a>.
-            </div>
+      <div class="col-md-4 my-3">
+        <div class="card" style="height: 100%;">
+          <h5 class="card-header"><i class="fas fa-asterisk"></i> Unobtrusive</h5>
+          <div class="card-body">
+            PNotify can provide <strong>non-blocking</strong> notices that allow
+            the user to click elements underneath the notice.
           </div>
         </div>
       </div>
-      <div class="row justify-content-center stable-note" style="display: none;">
-        <div class="col-sm-6">
-          <div class="card bg-success text-white" style="height: 100%;">
-            <div class="card-body">
-              <h5 class="card-title"><i class="fas fa-info-circle"></i> Did you know?</h5>
-              This is the stable site. You can download code here that's tested
-              and proven to work. However, if you like to live dangerously, you
-              can also check out the
-              <a href="https://sciactive.github.com/pnotify">development site</a>.
-            </div>
+      <div class="col-md-4 my-3">
+        <div class="card" style="height: 100%;">
+          <h5 class="card-header"><i class="fas fa-gift"></i> Completely Open</h5>
+          <div class="card-body">
+            PNotify is distributed under the permissive
+            <a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">Apache License, Version 2.0</a>.
           </div>
-        </div>
-      </div>
-      <div class="dev-note" style="display: none;">
-        <div class="alert alert-danger" style="width: 30vw;">
-          <h5 style="margin-top: 0;"><i class="fas fa-exclamation-triangle"></i> Caution warning danger attention!</h5>
-          <p>
-            This is the development site. It demos bleeding edge features that
-            may not work.
-          </p>
         </div>
       </div>
     </div>
-  </section>
-  <div class="modal fade" id="feature-modal" tabindex="-1" role="dialog" aria-labelledby="feature-modal-title" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="feature-modal-title">PNotify Features</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+    <div class="row justify-content-center stable-note" style="display: none;">
+      <div class="col-md-6">
+        <div class="card bg-success text-white" style="height: 100%;">
+          <div class="card-body">
+            <h5 class="card-title"><i class="fas fa-info-circle"></i> Did you know?</h5>
+            This is the stable site. You can download code here that's tested
+            and proven to work. However, if you like to live dangerously, you
+            can also check out the
+            <a href="https://sciactive.github.com/pnotify">development site</a>.
+          </div>
         </div>
-        <div class="modal-body">
-          <ul>
-            <li>Rich graphical features and effects.
-              <ul>
-                <li>Bootstrap, Font Awesome, and any other CSS based icons.</li>
-                <li>Mobile styling and swipe away support.</li>
-                <li>Timed hiding with visual effects.</li>
-                <li>Standard and custom effects.</li>
-                <li>Add custom classes for individual notice styling.</li>
-                <li>Optional drop shadows.</li>
-              </ul>
-            </li>
-            <li>Highly customizable UI.
-              <ul>
-                <li>Sticky (no automatic hiding) notices.</li>
-                <li>Optional hide and sticker buttons.</li>
-                <li>Non-blocking notices for less intrusive use.</li>
-                <li>Three notification types: notice, info, and error.</li>
-                <li>Stacks allow notice sets to stack independently.
-                  <ul>
-                    <li>Control stack direction and push to top or bottom.</li>
-                  </ul>
-                </li>
-              </ul>
-            </li>
-            <li>Feature rich API.
-              <ul>
-                <li>Desktop notifications based on the Web Notifications standard.</li>
-                <li>Supports dynamically updating text, title, icon, type...</li>
-                <li>Supports HTML (including forms) in title and text.
-                  <ul>
-                    <li>Can also escape HTML to prevent XSS attack.</li>
-                  </ul>
-                </li>
-                <li>Callbacks for various events, which can cancel said events.</li>
-                <li>History viewer allows user to review previous notices.</li>
-              </ul>
-            </li>
-          </ul>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Close</button>
-        </div>
+      </div>
+    </div>
+    <div class="dev-note" style="display: none;">
+      <div class="alert alert-danger">
+        <h5 style="margin-top: 0;"><i class="fas fa-exclamation-triangle"></i> Caution warning danger attention!</h5>
+        <p class="mb-0">This is the development site. It demos bleeding edge features that may not work.</p>
       </div>
     </div>
   </div>
-  <div class="clearfix">&nbsp;</div>
+
   <div id="demos-simple" class="container page-section">
     <div class="my-3">
       <h2>Simple Demos <small>These demos only use core PNotify features.</small></h2>
@@ -951,18 +316,18 @@
         PNotify supports multiple styling methods and icon sets.
         <div class="btn-toolbar" role="toolbar">
           <div class="btn-group btn-group-toggle" data-toggle="buttons" role="group">
-            <label class="btn btn-outline-info active">
+            <label class="btn btn-outline-info my-1 active">
               <input type="radio" name="styling" id="style-brighttheme" autocomplete="off" checked> Bright Theme
             </label>
-            <label class="btn btn-outline-info">
+            <label class="btn btn-outline-info my-1">
               <input type="radio" name="styling" id="style-material" autocomplete="off"> Material
             </label>
-            <label class="btn btn-outline-info">
+            <label class="btn btn-outline-info my-1">
               <input type="radio" name="styling" id="style-bootstrap4" autocomplete="off"> Bootstrap
             </label>
           </div>
           <div class="btn-group ml-3" role="group">
-            <a class="btn btn-outline-info" href="index-styling.html" target="_blank">Demo All Styles/Icons</a>
+            <a class="btn btn-outline-info my-1" href="index-styling.html" target="_blank">Demo All Styles/Icons</a>
           </div>
         </div>
       </div>
@@ -1071,7 +436,6 @@
           icon: false,
           width: 'auto',
           hide: false,
-          insert_brs: false,
           modules: {
             Buttons: {
               closer: false,
@@ -1079,7 +443,7 @@
             }
           }
         });
-        $(notice.refs.elem).find('form.pf-form').on('click', '[name=cancel]', function() {
+        $(notice.refs.elem).find('form').on('click', '[name=cancel]', function() {
           notice.close();
         }).submit(function() {
           var username = $(this).find('input[name=username]').val();
@@ -1090,6 +454,7 @@
           notice.update({
             title: 'Welcome',
             text: 'Successfully logged in as '+username,
+            trust_text: false,
             icon: true,
             width: PNotify.defaults.width,
             hide: true,
@@ -1103,37 +468,30 @@
           });
           return false;
         });">Forms</button>
-        <div id="form_notice" style="display: none;">
-          <form class="pf-form pform_custom" action="" method="post">
-            <div class="pf-element pf-heading">
-              <h3 style="margin-top: 0;">Login to Continue</h3>
+        <div id="form_notice" style="display: none;"><form action="" method="post" style="white-space: normal;">
+            <div class="mt-0 mb-3">
+              <h3>Login to Continue</h3>
               <p>Just an example.</p>
+              <hr />
             </div>
-            <div class="pf-element">
-              <label>
-                <span class="pf-label">Username</span>
-                <input class="pf-field form-control" type="text" name="username" />
-              </label>
+            <div class="form-group">
+              <label for="exampleFormUsername">Username</label>
+              <input class="form-control" id="exampleFormUsername" type="text" name="username" />
             </div>
-            <div class="pf-element">
-              <label>
-                <span class="pf-label">Password</span>
-                <input class="pf-field form-control" type="password" name="password" />
-              </label>
+            <div class="form-group">
+              <label for="exampleFormPassword">Password</label>
+              <input class="form-control" id="exampleFormPassword" type="password" name="password" />
             </div>
-            <div class="pf-element">
-              <label>
-                <span class="pf-label">Remember Me</span>
-                <span class="pf-note">Lasts for 2 weeks.</span>
-                <input class="pf-field" type="checkbox" name="remember" />
-              </label>
+            <div class="form-check">
+              <input class="form-check-input" id="exampleFormRemember" type="checkbox" name="remember" />
+              <label class="form-check-label" for="exampleFormRemember">Remember Me</label>
+              <small class="form-text text-muted">Lasts for 2 weeks.</small>
             </div>
-            <div class="pf-element pf-buttons pf-centered">
-              <input class="pf-button btn btn-primary" type="submit" name="submit" value="Submit" />
-              <input class="pf-button btn btn-outline-dark" type="button" name="cancel" value="Cancel" />
+            <div class="mt-3">
+              <input class="btn btn-primary" type="submit" name="submit" value="Submit" />
+              <input class="btn btn-secondary ml-3" type="button" name="cancel" value="Cancel" />
             </div>
-          </form>
-        </div>
+          </form></div>
         <button class="btn btn-outline-dark my-1 source" onclick="var notice = PNotify.notice({
           title: 'Click Notice',
           text: 'I wish someone would click me.'
@@ -1168,6 +526,16 @@
           width: '500px',
           min_height: '400px'
         });">Huge</button>
+        <script type="text/javascript">
+          function show_rich() {
+            PNotify.notice({
+              title: '<span style="color: green;">Rich Content Notice</span>',
+              trust_title: true,
+              text: '<span style="color: blue;">Look at my beautiful <strong>strong</strong>, <em>emphasized</em>, and <span style="font-size: 1.5em;">large</span> text.</span>',
+              trust_text: true
+            });
+          }
+        </script>
         <button class="btn btn-outline-dark my-1 source" onclick="show_rich();">Rich Text</button>
         <button class="btn btn-outline-dark my-1 source" onclick="PNotify.notice({
           title: '&lt;em&gt;Escaped Notice&lt;/em&gt;',
@@ -1182,6 +550,53 @@
             })()
           </script>
         </div>
+        <script type="text/javascript">
+          function dyn_notice() {
+            var percent = 0;
+            var notice = PNotify.info({
+              text: "Please Wait",
+              icon: 'fas fa-spinner fa-pulse',
+              hide: false,
+              shadow: false,
+              width: "200px",
+              modules: {
+                Buttons: {
+                  closer: false,
+                  sticker: false
+                }
+              }
+            });
+
+            setTimeout(function() {
+              notice.update({title: false});
+              var interval = setInterval(function() {
+                percent += 2;
+                var options = {
+                  text: percent+"% complete."
+                };
+                if (percent == 80) {
+                  options.title = "Almost There";
+                }
+                if (percent >= 100) {
+                  window.clearInterval(interval);
+                  options.title = "Done!";
+                  options.type = "success";
+                  options.hide = true;
+                  options.icon = 'fas fa-check';
+                  options.shadow = true;
+                  options.width = PNotify.defaults.width;
+                  options.modules = {
+                    Buttons: {
+                      closer: true,
+                      sticker: true
+                    }
+                  };
+                }
+                notice.update(options);
+              }, 120);
+            }, 2000);
+          }
+        </script>
         <button class="btn btn-outline-dark my-1 source" onclick="dyn_notice();">Dynamic</button>
         <div class="sharpthemes-hideme" style="display: inline-block;">
           <button class="btn btn-outline-dark my-1 source" onclick="PNotify.notice({
@@ -1283,9 +698,11 @@
       <hr />
     </div>
     <div class="card">
-      <div class="card-header">
-        <div style="float: right;">Implements the <a href="http://www.w3.org/TR/notifications/" target="_blank">Web Notifications spec</a>.</div>
-        <h5 class="my-0">Desktop Module <small>Notifications that display even when the web page is not visible.</small></h5>
+      <h5 class="card-header">Desktop Module <small>Notifications that display even when the web page is not visible.</small></h5>
+      <div class="card-body">
+        <div class="float-right">
+          Implements the <a href="http://www.w3.org/TR/notifications/" target="_blank">Web Notifications spec</a>.
+        </div>
       </div>
       <div class="card-body">
         <p>
@@ -1610,96 +1027,99 @@
             }
           }
         });">Off the Handle</button>
-        <br /><br />
-        Or build your own:<br />
-        Effect in
-        <select id="animate_in" class="form-control" style="display: inline; width: auto;">
-          <option value="bounceIn">bounceIn</option>
-          <option value="bounceInDown">bounceInDown</option>
-          <option value="bounceInLeft">bounceInLeft</option>
-          <option value="bounceInRight">bounceInRight</option>
-          <option value="bounceInUp">bounceInUp</option>
-          <option value="fadeIn">fadeIn</option>
-          <option value="fadeInDown">fadeInDown</option>
-          <option value="fadeInDownBig">fadeInDownBig</option>
-          <option value="fadeInLeft">fadeInLeft</option>
-          <option value="fadeInLeftBig">fadeInLeftBig</option>
-          <option value="fadeInRight">fadeInRight</option>
-          <option value="fadeInRightBig">fadeInRightBig</option>
-          <option value="fadeInUp">fadeInUp</option>
-          <option value="fadeInUpBig">fadeInUpBig</option>
-          <option value="flipInX">flipInX</option>
-          <option value="flipInY">flipInY</option>
-          <option value="lightSpeedIn">lightSpeedIn</option>
-          <option value="rotateIn">rotateIn</option>
-          <option value="rotateInDownLeft">rotateInDownLeft</option>
-          <option value="rotateInDownRight">rotateInDownRight</option>
-          <option value="rotateInUpLeft">rotateInUpLeft</option>
-          <option value="rotateInUpRight">rotateInUpRight</option>
-          <option value="rollIn">rollIn</option>
-          <option value="zoomIn">zoomIn</option>
-          <option value="zoomInDown">zoomInDown</option>
-          <option value="zoomInLeft">zoomInLeft</option>
-          <option value="zoomInRight">zoomInRight</option>
-          <option value="zoomInUp">zoomInUp</option>
-          <option value="slideInDown">slideInDown</option>
-          <option value="slideInLeft">slideInLeft</option>
-          <option value="slideInRight">slideInRight</option>
-          <option value="slideInUp">slideInUp</option>
-        </select>
-        Effect out
-        <select id="animate_out" class="form-control" style="display: inline; width: auto;">
-          <option value="bounceOut">bounceOut</option>
-          <option value="bounceOutDown">bounceOutDown</option>
-          <option value="bounceOutLeft">bounceOutLeft</option>
-          <option value="bounceOutRight">bounceOutRight</option>
-          <option value="bounceOutUp">bounceOutUp</option>
-          <option value="fadeOut">fadeOut</option>
-          <option value="fadeOutDown">fadeOutDown</option>
-          <option value="fadeOutDownBig">fadeOutDownBig</option>
-          <option value="fadeOutLeft">fadeOutLeft</option>
-          <option value="fadeOutLeftBig">fadeOutLeftBig</option>
-          <option value="fadeOutRight">fadeOutRight</option>
-          <option value="fadeOutRightBig">fadeOutRightBig</option>
-          <option value="fadeOutUp">fadeOutUp</option>
-          <option value="fadeOutUpBig">fadeOutUpBig</option>
-          <option value="flipOutX">flipOutX</option>
-          <option value="flipOutY">flipOutY</option>
-          <option value="lightSpeedOut">lightSpeedOut</option>
-          <option value="rotateOut">rotateOut</option>
-          <option value="rotateOutDownLeft">rotateOutDownLeft</option>
-          <option value="rotateOutDownRight">rotateOutDownRight</option>
-          <option value="rotateOutUpLeft">rotateOutUpLeft</option>
-          <option value="rotateOutUpRight">rotateOutUpRight</option>
-          <option value="hinge">hinge</option>
-          <option value="rollOut">rollOut</option>
-          <option value="zoomOut">zoomOut</option>
-          <option value="zoomOutDown">zoomOutDown</option>
-          <option value="zoomOutLeft">zoomOutLeft</option>
-          <option value="zoomOutRight">zoomOutRight</option>
-          <option value="zoomOutUp">zoomOutUp</option>
-          <option value="slideOutDown">slideOutDown</option>
-          <option value="slideOutLeft">slideOutLeft</option>
-          <option value="slideOutRight">slideOutRight</option>
-          <option value="slideOutUp">slideOutUp</option>
-        </select>
-        <br />
-        <button class="btn btn-outline-dark my-1 source" onclick="
-          var animate_in = $('#animate_in').val(),
-              animate_out = $('#animate_out').val();
-          PNotify.notice({
-            title: 'Animate.css Effect',
-            text: 'I use effects from Animate.css. Such smooth CSS3 transitions make me feel like butter.',
-            modules: {
-              Animate: {
-                animate: true,
-                in_class: animate_in,
-                out_class: animate_out
+        <p class="my-3">
+          Or build your own:
+          <div class="my-1">
+            Effect in
+            <select id="animate_in" class="form-control" style="display: inline; width: auto;">
+              <option value="bounceIn">bounceIn</option>
+              <option value="bounceInDown">bounceInDown</option>
+              <option value="bounceInLeft">bounceInLeft</option>
+              <option value="bounceInRight">bounceInRight</option>
+              <option value="bounceInUp">bounceInUp</option>
+              <option value="fadeIn">fadeIn</option>
+              <option value="fadeInDown">fadeInDown</option>
+              <option value="fadeInDownBig">fadeInDownBig</option>
+              <option value="fadeInLeft">fadeInLeft</option>
+              <option value="fadeInLeftBig">fadeInLeftBig</option>
+              <option value="fadeInRight">fadeInRight</option>
+              <option value="fadeInRightBig">fadeInRightBig</option>
+              <option value="fadeInUp">fadeInUp</option>
+              <option value="fadeInUpBig">fadeInUpBig</option>
+              <option value="flipInX">flipInX</option>
+              <option value="flipInY">flipInY</option>
+              <option value="lightSpeedIn">lightSpeedIn</option>
+              <option value="rotateIn">rotateIn</option>
+              <option value="rotateInDownLeft">rotateInDownLeft</option>
+              <option value="rotateInDownRight">rotateInDownRight</option>
+              <option value="rotateInUpLeft">rotateInUpLeft</option>
+              <option value="rotateInUpRight">rotateInUpRight</option>
+              <option value="rollIn">rollIn</option>
+              <option value="zoomIn">zoomIn</option>
+              <option value="zoomInDown">zoomInDown</option>
+              <option value="zoomInLeft">zoomInLeft</option>
+              <option value="zoomInRight">zoomInRight</option>
+              <option value="zoomInUp">zoomInUp</option>
+              <option value="slideInDown">slideInDown</option>
+              <option value="slideInLeft">slideInLeft</option>
+              <option value="slideInRight">slideInRight</option>
+              <option value="slideInUp">slideInUp</option>
+            </select>
+          </div>
+          <div class="my-1">
+            Effect out
+            <select id="animate_out" class="form-control" style="display: inline; width: auto;">
+              <option value="bounceOut">bounceOut</option>
+              <option value="bounceOutDown">bounceOutDown</option>
+              <option value="bounceOutLeft">bounceOutLeft</option>
+              <option value="bounceOutRight">bounceOutRight</option>
+              <option value="bounceOutUp">bounceOutUp</option>
+              <option value="fadeOut">fadeOut</option>
+              <option value="fadeOutDown">fadeOutDown</option>
+              <option value="fadeOutDownBig">fadeOutDownBig</option>
+              <option value="fadeOutLeft">fadeOutLeft</option>
+              <option value="fadeOutLeftBig">fadeOutLeftBig</option>
+              <option value="fadeOutRight">fadeOutRight</option>
+              <option value="fadeOutRightBig">fadeOutRightBig</option>
+              <option value="fadeOutUp">fadeOutUp</option>
+              <option value="fadeOutUpBig">fadeOutUpBig</option>
+              <option value="flipOutX">flipOutX</option>
+              <option value="flipOutY">flipOutY</option>
+              <option value="lightSpeedOut">lightSpeedOut</option>
+              <option value="rotateOut">rotateOut</option>
+              <option value="rotateOutDownLeft">rotateOutDownLeft</option>
+              <option value="rotateOutDownRight">rotateOutDownRight</option>
+              <option value="rotateOutUpLeft">rotateOutUpLeft</option>
+              <option value="rotateOutUpRight">rotateOutUpRight</option>
+              <option value="hinge">hinge</option>
+              <option value="rollOut">rollOut</option>
+              <option value="zoomOut">zoomOut</option>
+              <option value="zoomOutDown">zoomOutDown</option>
+              <option value="zoomOutLeft">zoomOutLeft</option>
+              <option value="zoomOutRight">zoomOutRight</option>
+              <option value="zoomOutUp">zoomOutUp</option>
+              <option value="slideOutDown">slideOutDown</option>
+              <option value="slideOutLeft">slideOutLeft</option>
+              <option value="slideOutRight">slideOutRight</option>
+              <option value="slideOutUp">slideOutUp</option>
+            </select>
+          </div>
+          <button class="btn btn-outline-dark my-1 source" onclick="
+            var animate_in = $('#animate_in').val(),
+                animate_out = $('#animate_out').val();
+            PNotify.notice({
+              title: 'Animate.css Effect',
+              text: 'I use effects from Animate.css. Such smooth CSS3 transitions make me feel like butter.',
+              modules: {
+                Animate: {
+                  animate: true,
+                  in_class: animate_in,
+                  out_class: animate_out
+                }
               }
-            }
-          });
-        ">Notify!</button>
-        <br /><br />
+            });
+          ">Notify!</button>
+        </p>
         Attention seekers:<br />
         <button class="btn btn-outline-dark my-1 source" onclick="var notice = PNotify.notice({
           title: 'Attention Seeker',
@@ -1708,15 +1128,11 @@
           modules: {
             Confirm: {
               confirm: true,
-              buttons: [
-                {
-                  text: 'Bounce!',
-                  primary: true,
-                  click: function(notice) {
-                    notice.attention('bounce');
-                  }
-                }
-              ]
+              buttons: [{
+                text: 'Bounce!',
+                primary: true,
+                click: function(notice) { notice.attention('bounce'); }
+              }]
             }
           }
         });">Bounce</button>
@@ -1727,15 +1143,11 @@
           modules: {
             Confirm: {
               confirm: true,
-              buttons: [
-                {
-                  text: 'Flash!',
-                  primary: true,
-                  click: function(notice) {
-                    notice.attention('flash');
-                  }
-                }
-              ]
+              buttons: [{
+                text: 'Flash!',
+                primary: true,
+                click: function(notice) { notice.attention('flash'); }
+              }]
             }
           }
         });">Flash</button>
@@ -1746,15 +1158,11 @@
           modules: {
             Confirm: {
               confirm: true,
-              buttons: [
-                {
-                  text: 'Pulse!',
-                  primary: true,
-                  click: function(notice) {
-                    notice.attention('pulse');
-                  }
-                }
-              ]
+              buttons: [{
+                text: 'Pulse!',
+                primary: true,
+                click: function(notice) { notice.attention('pulse'); }
+              }]
             }
           }
         });">Pulse</button>
@@ -1765,15 +1173,11 @@
           modules: {
             Confirm: {
               confirm: true,
-              buttons: [
-                {
-                  text: 'Rubber Band!',
-                  primary: true,
-                  click: function(notice) {
-                    notice.attention('rubberBand');
-                  }
-                }
-              ]
+              buttons: [{
+                text: 'Rubber Band!',
+                primary: true,
+                click: function(notice) { notice.attention('rubberBand'); }
+              }]
             }
           }
         });">Rubber Band</button>
@@ -1784,15 +1188,11 @@
           modules: {
             Confirm: {
               confirm: true,
-              buttons: [
-                {
-                  text: 'Shake!',
-                  primary: true,
-                  click: function(notice) {
-                    notice.attention('shake');
-                  }
-                }
-              ]
+              buttons: [{
+                text: 'Shake!',
+                primary: true,
+                click: function(notice) { notice.attention('shake'); }
+              }]
             }
           }
         });">Shake</button>
@@ -1803,15 +1203,11 @@
           modules: {
             Confirm: {
               confirm: true,
-              buttons: [
-                {
-                  text: 'Swing!',
-                  primary: true,
-                  click: function(notice) {
-                    notice.attention('swing');
-                  }
-                }
-              ]
+              buttons: [{
+                text: 'Swing!',
+                primary: true,
+                click: function(notice) { notice.attention('swing'); }
+              }]
             }
           }
         });">Swing</button>
@@ -1822,15 +1218,11 @@
           modules: {
             Confirm: {
               confirm: true,
-              buttons: [
-                {
-                  text: 'Tada!',
-                  primary: true,
-                  click: function(notice) {
-                    notice.attention('tada');
-                  }
-                }
-              ]
+              buttons: [{
+                text: 'Tada!',
+                primary: true,
+                click: function(notice) { notice.attention('tada'); }
+              }]
             }
           }
         });">Tada</button>
@@ -1841,15 +1233,11 @@
           modules: {
             Confirm: {
               confirm: true,
-              buttons: [
-                {
-                  text: 'Wobble!',
-                  primary: true,
-                  click: function(notice) {
-                    notice.attention('wobble');
-                  }
-                }
-              ]
+              buttons: [{
+                text: 'Wobble!',
+                primary: true,
+                click: function(notice) { notice.attention('wobble'); }
+              }]
             }
           }
         });">Wobble</button>
@@ -1860,15 +1248,11 @@
           modules: {
             Confirm: {
               confirm: true,
-              buttons: [
-                {
-                  text: 'Jello!',
-                  primary: true,
-                  click: function(notice) {
-                    notice.attention('jello');
-                  }
-                }
-              ]
+              buttons: [{
+                text: 'Jello!',
+                primary: true,
+                click: function(notice) { notice.attention('jello'); }
+              }]
             }
           }
         });">Jello</button>
@@ -2115,15 +1499,11 @@
           modules: {
             Confirm: {
               confirm: true,
-              buttons: [
-                {
-                  text: 'Ok',
-                  primary: true,
-                  click: function(notice) {
-                    notice.close();
-                  }
-                }
-              ]
+              buttons: [{
+                text: 'Ok',
+                primary: true,
+                click: function(notice) { notice.close(); }
+              }]
             },
             Buttons: {
               closer: false,
@@ -2142,15 +1522,11 @@
           modules: {
             Confirm: {
               confirm: true,
-              buttons: [
-                {
-                  text: 'Ok',
-                  primary: true,
-                  click: function(notice) {
-                    notice.close();
-                  }
-                }
-              ]
+              buttons: [{
+                text: 'Ok',
+                primary: true,
+                click: function(notice) { notice.close(); }
+              }]
             },
             Buttons: {
               closer: false,
@@ -2169,15 +1545,11 @@
           modules: {
             Confirm: {
               confirm: true,
-              buttons: [
-                {
-                  text: 'Ok',
-                  primary: true,
-                  click: function(notice) {
-                    notice.close();
-                  }
-                }
-              ]
+              buttons: [{
+                text: 'Ok',
+                primary: true,
+                click: function(notice) { notice.close(); }
+              }]
             },
             Buttons: {
               closer: false,
@@ -2196,15 +1568,11 @@
           modules: {
             Confirm: {
               confirm: true,
-              buttons: [
-                {
-                  text: 'Ok',
-                  primary: true,
-                  click: function(notice) {
-                    notice.close();
-                  }
-                }
-              ]
+              buttons: [{
+                text: 'Ok',
+                primary: true,
+                click: function(notice) { notice.close(); }
+              }]
             },
             Buttons: {
               closer: false,
@@ -2305,6 +1673,69 @@
             }
           }
         });">Notice to Error to Success to Info</button>
+        <script type="text/javascript">
+          function fake_load() {
+            var cur_value = 1,
+                progress;
+
+            // Make a loader.
+            var loader = PNotify.notice({
+              title: "Creating series of tubes",
+              text: '<div class="progress">\
+  <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>\
+</div>',
+              trust_text: true,
+              icon: 'fas fa-cog fa-spin',
+              hide: false,
+              modules: {
+                Buttons: {
+                  closer: false,
+                  sticker: false
+                },
+                History: {
+                  history: false
+                },
+                Callbacks: {
+                  before_open: function(notice) {
+                    progress = $(notice.refs.elem).find("div.progress-bar");
+                    progress.width(cur_value+"%").attr("aria-valuenow", cur_value);
+                    // Pretend to do something.
+                    var plus = 1;
+                    var timer = setInterval(function() {
+                      if (cur_value == 70) {
+                        plus = .25;
+                        loader.update({
+                          title: "Aligning discrete worms",
+                          icon: "fas fa-circle-notch fa-spin"
+                        });
+                      }
+                      if (cur_value == 80) {
+                        loader.update({
+                          title: "Connecting end points",
+                          icon: "fas fa-sync fa-spin"
+                        });
+                      }
+                      if (cur_value == 90) {
+                        loader.update({
+                          title: "Dividing and conquering",
+                          icon: "fas fa-spinner fa-pulse"
+                        });
+                      }
+                      if (cur_value >= 100) {
+                        // Clean up the interval.
+                        window.clearInterval(timer);
+                        loader.close();
+                        return;
+                      }
+                      cur_value += plus;
+                      progress.width(cur_value+"%").attr("aria-valuenow", cur_value);
+                    }, 65);
+                  }
+                }
+              }
+            });
+          }
+        </script>
         <button class="btn btn-outline-dark my-1 source" onclick="fake_load();">Progress Loader</button>
       </div>
       <h5 class="card-header">History Module <small>Redisplay old notices and limit number of notices.</small></h5>
@@ -2360,26 +1791,162 @@
     <div class="card">
       <h5 class="card-header">Examples of Custom Stacks</h5>
       <div class="card-body">
-        <button class="btn btn-outline-dark my-1 source" style="margin-left: 10px;" onclick="show_stack_info();">What are stacks?</button>
+        <script type="text/javascript">
+          function show_stack_info() {
+            PNotify.info({
+              title: "PNotify Stacks",
+              text: "Stacks are used to position notices and determine where new notices will go when they're created. Each notice that's placed into a stack will be positioned related to the other notices in that stack.",
+              icon: "fas fa-bars",
+              hide: false,
+              stack: {"modal": true, "overlay_close": true},
+              modules: {
+                History: {
+                  history: false
+                }
+              }
+            });
+          };
+        </script>
+        <button class="btn btn-outline-dark my-1 source" onclick="show_stack_info();">What are stacks?</button>
         <hr />
+        <script type="text/javascript">
+          function show_stack_topleft(type) {
+            if (typeof stack_topleft === "undefined") {
+              stack_topleft = {"dir1": "down", "dir2": "right", "firstpos1": 25, "firstpos2": 25, "push": "top"};
+            }
+            var opts = {
+              title: "Over Here",
+              text: "Check me out. I'm in a different stack.",
+              stack: stack_topleft
+            };
+            switch (type) {
+              case 'error':
+                opts.title = "Oh No";
+                opts.text = "Watch out for that water tower!";
+                opts.type = "error";
+                break;
+              case 'info':
+                opts.title = "Breaking News";
+                opts.text = "Have you met Ted?";
+                opts.type = "info";
+                break;
+              case 'success':
+                opts.title = "Good News Everyone";
+                opts.text = "I've invented a device that bites shiny metal asses.";
+                opts.type = "success";
+                break;
+            }
+            PNotify.alert(opts);
+          };
+        </script>
         <button class="btn btn-outline-dark my-1 source" onclick="show_stack_topleft('notice');">Notice</button>
         <button class="btn btn-outline-dark my-1 source" onclick="show_stack_topleft('info');">Info</button>
         <button class="btn btn-outline-dark my-1 source" onclick="show_stack_topleft('success');">Success</button>
         <button class="btn btn-outline-dark my-1 source" onclick="show_stack_topleft('error');">Error</button>
         Top Left. Moves down, then right. Pushes to stack top.
         <hr />
+        <script type="text/javascript">
+          function show_stack_bottomleft(type) {
+            if (typeof stack_bottomleft === "undefined") {
+              stack_bottomleft = {"dir1": "right", "dir2": "up", "firstpos1": 25, "firstpos2": 25, "push": "top"};
+            }
+            var opts = {
+              title: "Over Here",
+              text: "Check me out. I'm in a different stack.",
+              stack: stack_bottomleft
+            };
+            switch (type) {
+              case 'error':
+                opts.title = "Oh No";
+                opts.text = "Watch out for that water tower!";
+                opts.type = "error";
+                break;
+              case 'info':
+                opts.title = "Breaking News";
+                opts.text = "Have you met Ted?";
+                opts.type = "info";
+                break;
+              case 'success':
+                opts.title = "Good News Everyone";
+                opts.text = "I've invented a device that bites shiny metal asses.";
+                opts.type = "success";
+                break;
+            }
+            PNotify.alert(opts);
+          };
+        </script>
         <button class="btn btn-outline-dark my-1 source" onclick="show_stack_bottomleft('notice');">Notice</button>
         <button class="btn btn-outline-dark my-1 source" onclick="show_stack_bottomleft('info');">Info</button>
         <button class="btn btn-outline-dark my-1 source" onclick="show_stack_bottomleft('success');">Success</button>
         <button class="btn btn-outline-dark my-1 source" onclick="show_stack_bottomleft('error');">Error</button>
         Bottom Left. Moves right, then up. Pushes to stack top.
         <hr />
+        <script type="text/javascript">
+          function show_stack_bottomright(type) {
+            if (typeof stack_bottomright === "undefined") {
+              stack_bottomright = {"dir1": "up", "dir2": "left", "firstpos1": 25, "firstpos2": 25};
+            }
+            var opts = {
+              title: "Over Here",
+              text: "Check me out. I'm in a different stack.",
+              stack: stack_bottomright
+            };
+            switch (type) {
+              case 'error':
+                opts.title = "Oh No";
+                opts.text = "Watch out for that water tower!";
+                opts.type = "error";
+                break;
+              case 'info':
+                opts.title = "Breaking News";
+                opts.text = "Have you met Ted?";
+                opts.type = "info";
+                break;
+              case 'success':
+                opts.title = "Good News Everyone";
+                opts.text = "I've invented a device that bites shiny metal asses.";
+                opts.type = "success";
+                break;
+            }
+            PNotify.alert(opts);
+          };
+        </script>
         <button class="btn btn-outline-dark my-1 source" onclick="show_stack_bottomright('notice');">Notice</button>
         <button class="btn btn-outline-dark my-1 source" onclick="show_stack_bottomright('info');">Info</button>
         <button class="btn btn-outline-dark my-1 source" onclick="show_stack_bottomright('success');">Success</button>
         <button class="btn btn-outline-dark my-1 source" onclick="show_stack_bottomright('error');">Error</button>
         Bottom Right. Moves up, then left. Pushes to stack bottom.
         <hr />
+        <script type="text/javascript">
+          function show_stack_topcenter(type) {
+            if (typeof stack_topcenter === "undefined") {
+              stack_topcenter = {"dir1": "down", "firstpos1": 25};
+            }
+            var opts = {
+              title: "Over Here",
+              text: "Check me out. I'm in a different stack.",
+              stack: stack_topcenter
+            };
+            switch (type) {
+              case 'error':
+                opts.title = "Oh No";
+                opts.text = "Watch out for that water tower!";
+                opts.type = "error";
+                break;
+              case 'info':
+                opts.title = "Breaking News";
+                opts.text = "Have you met Ted?";
+                opts.type = "info";
+                break;
+              case 'success':
+                opts.title = "Good News Everyone";
+                opts.text = "I've invented a device that bites shiny metal asses.";
+                opts.type = "success";
+                break;
+            }
+            PNotify.alert(opts);
+          };
+        </script>
         <button class="btn btn-outline-dark my-1 source" onclick="show_stack_topcenter('notice');">Notice</button>
         <button class="btn btn-outline-dark my-1 source" onclick="show_stack_topcenter('info');">Info</button>
         <button class="btn btn-outline-dark my-1 source" onclick="show_stack_topcenter('success');">Success</button>
@@ -2388,18 +1955,112 @@
       </div>
       <h5 class="card-header">Really Different Stacks</h5>
       <div class="card-body">
+        <script type="text/javascript">
+          function show_stack_modal(type) {
+            if (typeof stack_modal === "undefined") {
+              stack_modal = {"dir1": "up", "firstpos1": 25, "push": "top", "modal": true, "overlay_close": true};
+            }
+            var opts = {
+              title: "Over Here",
+              text: "Check me out. I'm in a different stack.",
+              stack: stack_modal
+            };
+            switch (type) {
+              case 'error':
+                opts.title = "Oh No";
+                opts.text = "Watch out for that water tower!";
+                opts.type = "error";
+                break;
+              case 'info':
+                opts.title = "Breaking News";
+                opts.text = "Have you met Ted?";
+                opts.type = "info";
+                break;
+              case 'success':
+                opts.title = "Good News Everyone";
+                opts.text = "I've invented a device that bites shiny metal asses.";
+                opts.type = "success";
+                break;
+            }
+            PNotify.alert(opts);
+          };
+        </script>
         <button class="btn btn-outline-dark my-1 source" onclick="show_stack_modal('notice');">Notice</button>
         <button class="btn btn-outline-dark my-1 source" onclick="show_stack_modal('info');">Info</button>
         <button class="btn btn-outline-dark my-1 source" onclick="show_stack_modal('success');">Success</button>
         <button class="btn btn-outline-dark my-1 source" onclick="show_stack_modal('error');">Error</button>
         Modal stack, centered. Moves up. Pushes to stack top.
         <hr />
+        <script type="text/javascript">
+          function show_stack_modal_left(type) {
+            if (typeof stack_modal_left === "undefined") {
+              stack_modal_left = {"dir1": "down", "dir2": "right", "firstpos1": 25, "firstpos2": 25, "push": "top", "modal": true, "overlay_close": true};
+            }
+            var opts = {
+              title: "Over Here",
+              text: "Check me out. I'm in a different stack.",
+              stack: stack_modal_left
+            };
+            switch (type) {
+              case 'error':
+                opts.title = "Oh No";
+                opts.text = "Watch out for that water tower!";
+                opts.type = "error";
+                break;
+              case 'info':
+                opts.title = "Breaking News";
+                opts.text = "Have you met Ted?";
+                opts.type = "info";
+                break;
+              case 'success':
+                opts.title = "Good News Everyone";
+                opts.text = "I've invented a device that bites shiny metal asses.";
+                opts.type = "success";
+                break;
+            }
+            PNotify.alert(opts);
+          };
+        </script>
         <button class="btn btn-outline-dark my-1 source" onclick="show_stack_modal_left('notice');">Notice</button>
         <button class="btn btn-outline-dark my-1 source" onclick="show_stack_modal_left('info');">Info</button>
         <button class="btn btn-outline-dark my-1 source" onclick="show_stack_modal_left('success');">Success</button>
         <button class="btn btn-outline-dark my-1 source" onclick="show_stack_modal_left('error');">Error</button>
         Modal stack. Moves down, then right. Pushes to stack top.
         <hr />
+        <script type="text/javascript">
+          function show_stack_bar_top(type) {
+            if (typeof stack_bar_top === "undefined") {
+              stack_bar_top = {"dir1": "down", "firstpos1": 0, "spacing1": 0, "push": "top"};
+            }
+            var opts = {
+              title: "Over Here",
+              text: "Check me out. I'm in a different stack.",
+              addclass: "stack-bar-top",
+              cornerclass: "ui-pnotify-sharp",
+              shadow: false,
+              width: "100%",
+              stack: stack_bar_top
+            };
+            switch (type) {
+              case 'error':
+                opts.title = "Oh No";
+                opts.text = "Watch out for that water tower!";
+                opts.type = "error";
+                break;
+              case 'info':
+                opts.title = "Breaking News";
+                opts.text = "Have you met Ted?";
+                opts.type = "info";
+                break;
+              case 'success':
+                opts.title = "Good News Everyone";
+                opts.text = "I've invented a device that bites shiny metal asses.";
+                opts.type = "success";
+                break;
+            }
+            PNotify.alert(opts);
+          };
+        </script>
         <button class="btn btn-outline-dark my-1 source" onclick="show_stack_bar_top('notice');">Notice</button>
         <button class="btn btn-outline-dark my-1 source" onclick="show_stack_bar_top('info');">Info</button>
         <button class="btn btn-outline-dark my-1 source" onclick="show_stack_bar_top('success');">Success</button>
@@ -2411,6 +2072,40 @@
   width: 100%;
 }</pre>
         <hr />
+        <script type="text/javascript">
+          function show_stack_bar_bottom(type) {
+            if (typeof stack_bar_bottom === "undefined") {
+              stack_bar_bottom = {"dir1": "up", "firstpos1": 0, "spacing1": 0};
+            }
+            var opts = {
+              title: "Over Here",
+              text: "Check me out. I'm in a different stack.",
+              addclass: "stack-bar-bottom",
+              cornerclass: "ui-pnotify-sharp",
+              shadow: false,
+              width: "100%",
+              stack: stack_bar_bottom
+            };
+            switch (type) {
+              case 'error':
+                opts.title = "Oh No";
+                opts.text = "Watch out for that water tower!";
+                opts.type = "error";
+                break;
+              case 'info':
+                opts.title = "Breaking News";
+                opts.text = "Have you met Ted?";
+                opts.type = "info";
+                break;
+              case 'success':
+                opts.title = "Good News Everyone";
+                opts.text = "I've invented a device that bites shiny metal asses.";
+                opts.type = "success";
+                break;
+            }
+            PNotify.alert(opts);
+          };
+        </script>
         <button class="btn btn-outline-dark my-1 source" onclick="show_stack_bar_bottom('notice');">Notice</button>
         <button class="btn btn-outline-dark my-1 source" onclick="show_stack_bar_bottom('info');">Info</button>
         <button class="btn btn-outline-dark my-1 source" onclick="show_stack_bar_bottom('success');">Success</button>
@@ -2422,6 +2117,36 @@
   width: 70%;
 }</pre>
         <hr />
+        <script type="text/javascript">
+          $(function() {
+            window.make_tooltip = function() {
+              tooltip = PNotify.notice({
+                title: "Tooltip",
+                text: "I'm not in a stack. I'm positioned like a tooltip with JavaScript.",
+                hide: false,
+                animate_speed: "fast",
+                icon: "fas fa-comment",
+                // Setting stack to false causes PNotify to ignore this notice when positioning.
+                // It also causes the History module to ignore it.
+                stack: false,
+                auto_display: false,
+                destroy: false,
+                modules: {
+                  Buttons: {
+                    closer: false,
+                    sticker: false
+                  }
+                }
+              });
+              // Close the notice if the user mouses over it.
+              tooltip.on("mouseout", function() {
+                tooltip.close();
+              });
+            };
+            // I put it in a function so I could show the source easily.
+            make_tooltip();
+          });
+        </script>
         <button class="btn btn-outline-dark my-1 source" onmouseover="tooltip.open();" onmousemove="tooltip.refs.elem.style.top = (event.clientY+12)+'px'; tooltip.refs.elem.style.left = (event.clientX+12)+'px';" onmouseout="tooltip.close();">Hover Over Me</button>
         Tooltip
       </div>
@@ -2429,27 +2154,50 @@
       <div class="card-body">
         By default, a stack will place its notices underneath the body node. You can also specify a context for your notices to be placed in.
         <hr />
-        <div class="row">
-          <div class="col-md-2">
-            <button class="btn btn-outline-dark my-1 source" onclick="show_stack_context('notice');">Notice</button>
-            <br />
-            <button class="btn btn-outline-dark my-1 source" onclick="show_stack_context('info');">Info</button>
-            <br />
-            <button class="btn btn-outline-dark my-1 source" onclick="show_stack_context('success');">Success</button>
-            <br />
-            <button class="btn btn-outline-dark my-1 source" onclick="show_stack_context('error');">Error</button>
-            <br />
-            <br />
-            Modal:
-            <br />
-            <button class="btn btn-outline-dark my-1 source" onclick="show_stack_context('notice', true);">Notice</button>
-            <br />
-            <button class="btn btn-outline-dark my-1 source" onclick="show_stack_context('info', true);">Info</button>
-            <br />
-            <button class="btn btn-outline-dark my-1 source" onclick="show_stack_context('success', true);">Success</button>
-            <br />
-            <button class="btn btn-outline-dark my-1 source" onclick="show_stack_context('error', true);">Error</button>
-          </div>
+        <script type="text/javascript">
+          function show_stack_context(type, modal) {
+            if (typeof stack_context === "undefined") {
+              stack_context = {"dir1": "down", "dir2": "left", "firstpos1": 25, "firstpos2": 25, "context": document.getElementById("stack-context")};
+            }
+            if (typeof stack_context_modal === "undefined") {
+              stack_context_modal = {"dir1": "down", "firstpos1": 25, "context": document.getElementById("stack-context"), "modal": true, "overlay_close": true};
+            }
+            var opts = {
+              title: "Over Here",
+              text: "Check me out. I'm in a different stack.",
+              stack: modal ? stack_context_modal : stack_context
+            };
+            switch (type) {
+              case 'error':
+                opts.title = "Oh No";
+                opts.text = "Watch out for that water tower!";
+                opts.type = "error";
+                break;
+              case 'info':
+                opts.title = "Breaking News";
+                opts.text = "Have you met Ted?";
+                opts.type = "info";
+                break;
+              case 'success':
+                opts.title = "Good News Everyone";
+                opts.text = "I've invented a device that bites shiny metal asses.";
+                opts.type = "success";
+                break;
+            }
+            PNotify.alert(opts);
+          };
+        </script>
+        <button class="btn btn-outline-dark my-1 source" onclick="show_stack_context('notice');">Notice</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="show_stack_context('info');">Info</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="show_stack_context('success');">Success</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="show_stack_context('error');">Error</button>
+        <br />
+        Modal:
+        <button class="btn btn-outline-dark my-1 source" onclick="show_stack_context('notice', true);">Notice</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="show_stack_context('info', true);">Info</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="show_stack_context('success', true);">Success</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="show_stack_context('error', true);">Error</button>
+        <div class="row justify-content-md-center mt-3">
           <div class="col-md-10">
             <div class="card">
               <div id="stack-context" class="card-body" style="height: 350px; position: relative; overflow: auto;">
@@ -2469,13 +2217,15 @@
         </div>
       </div>
       <div class="card-footer">
-        <i class="fas fa-exclamation-triangle"></i> Remember that you can't just pass an object literal as a
-        stack. You need to create a new variable and pass that.
-        This is because PNotify will use that object to store
-        the notices that go into it.<br /><br />
+        <p class="alert alert-warning">
+          <i class="fas fa-exclamation-triangle"></i> You can't just pass an
+          object literal as a stack if you want multiple notices. You need to
+          create a new variable and pass that. This is because PNotify will use
+          that object to store the notices that go into it.
+        </p>
         <div class="row">
-          <div class="col-sm-6">
-            <div class="card border-danger">
+          <div class="col-md-6">
+            <div class="card border-danger mt-3">
               <h6 class="card-header text-light bg-danger">Bad - Notices will overlap.</h6>
               <div class="card-body">
                 <pre class="code prettyprint">PNotify.notice({
@@ -2489,8 +2239,8 @@ PNotify.notice({
               </div>
             </div>
           </div>
-          <div class="col-sm-6">
-            <div class="card border-success">
+          <div class="col-md-6">
+            <div class="card border-success mt-3">
               <h6 class="card-header text-light bg-success">Good - Notices will flow.</h6>
               <div class="card-body text-success">
                 <pre class="code prettyprint">var myStack = {"dir1":"down", "firstpos1":25};
@@ -2539,8 +2289,31 @@ PNotify.notice({
         This isn't really a feature of PNotify, but it's cool.
         <ol>
           <li style="margin-bottom: 1em;"><button class="btn btn-outline-dark my-1 source" onclick="alert('I\'m a standard alert, called with alert().')">Display a JavaScript Alert</button></li>
+          <script type="text/javascript">
+            function consume_alert() {
+              if (_alert) {
+                return;
+              }
+              _alert = window.alert;
+              window.alert = function(message) {
+                PNotify.notice({
+                  title: 'Alert',
+                  text: message
+                });
+              };
+            }
+          </script>
           <li style="margin-bottom: 1em;"><button class="btn btn-outline-dark my-1 source" onclick="consume_alert();">Consume alert()</button></li>
           <li style="margin-bottom: 1em;">Repeat step 1.</li>
+          <script type="text/javascript">
+            function release_alert() {
+              if (!_alert) {
+                return;
+              }
+              window.alert = _alert;
+              _alert = null;
+            }
+          </script>
           <li style="margin-bottom: 1em;"><button class="btn btn-outline-dark my-1 source" onclick="release_alert();">Release alert()</button></li>
         </ol>
       </div>
@@ -2575,6 +2348,96 @@ PNotify.notice({
     </div>
   </div>
   <p id="copyright">&copy; 2011-2018 Hunter Perrin. All Rights Reserved.</p>
+
+  <script type="text/javascript">
+    $(function() {
+      // ---
+      // This creates all those source code view buttons.
+      // ---
+      var makeSourceButton = function(elem) {
+        var button = $(elem);
+        var classList = button.attr("class");
+        // Wrap the button in a container.
+        var contain = $('<div class="btn-group" />');
+        contain = button.wrap(contain).parent();
+        $('\
+          <button type="button" class="dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">\
+            <span class="sr-only">Toggle Dropdown</span>\
+          </button>\
+        ').appendTo(contain).addClass(classList).removeClass("source");
+        // Add a source button.
+        $('\
+          <div class="dropdown-menu dropdown-menu-right">\
+            <a class="dropdown-item" href="javascript:void(0)">See the source</a>\
+          </div>\
+        ').on("click", "a", function() {
+          $(this).blur();
+          var text = button.attr("onclick");
+          if (!text && button.attr("onmouseover")) {
+            text = "// Mouse Over:\n"+button.attr("onmouseover")+"\n\n// Mouse Move:\n"+button.attr("onmousemove")+"\n\n// Mouse Out:\n"+button.attr("onmouseout");
+          }
+          // IE needs this.
+          if (text.toString) {
+            text = text.toString();
+            if (text.match(/^function (onclick|anonymous)[\n ]*\([^\)]*\)[\n ]*\{[\n\t ]*/)) {
+              text = text.replace(/^function (onclick|anonymous)[\n ]*\([^\)]*\)[\n ]*\{[\n\t ]*/, "").replace(/[\n\t ]*}[\n\t ]*$/, "");
+            }
+          }
+
+          // Is there a better way to do this?
+          var dialog = $('\
+            <div class="modal fade" tabindex="-1" role="dialog">\
+              <div class="modal-dialog modal-lg" role="document">\
+                <div class="modal-content">\
+                  <div class="modal-header">\
+                    <h5 class="modal-title">'+button.text()+' - Source</h5>\
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">\
+                      <span aria-hidden="true">&times;</span>\
+                    </button>\
+                  </div>\
+                  <div class="modal-body"></div>\
+                  <div class="modal-footer">\
+                    <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Ok, got it.</button>\
+                  </div>\
+                </div>\
+              </div>\
+            </div>\
+          ');
+
+          $("<pre class=\"prettyprint\" />").text(js_beautify(text)).appendTo(dialog.find(".modal-body"));
+
+          // Check if the code is just calling a function. Include that function.
+          if (text.match(/^\w*\([^\)]*\);$/)) {
+            var f_name = text.replace(/\(.*/g, "");
+            text = window[f_name].toString();
+            $("<pre class=\"prettyprint\" />").text(js_beautify(text)).appendTo(dialog.find(".modal-body"));
+          }
+
+          // Check if this is the tooltip button. Include the tooltip function.
+          if (text.match(/tooltip\.open\(\);/)) {
+            $("<pre class=\"prettyprint\" />").text(js_beautify(make_tooltip.toString())).appendTo(dialog.find(".modal-body"));
+          }
+
+          dialog.on("shown.bs.modal", function() {
+            prettyPrint();
+          }).on("hidden.bs.modal", function() {
+            dialog.remove();
+          }).modal();
+        }).appendTo(contain);
+        button.removeClass("source");
+      };
+      $("body").on("mouseenter click", ".source", function() {
+        makeSourceButton(this);
+      });
+      $(".source", "body").each(function() {
+        makeSourceButton(this);
+      });
+      prettyPrint(); // Format source in help.
+
+      // Navbar scrollspy.
+      $('#navbar').scrollspy();
+    });
+  </script>
 
   <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

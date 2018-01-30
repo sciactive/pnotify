@@ -1000,8 +1000,8 @@
       },
 
       hasModuleClass(...classNames) {
+        const moduleClasses = this.get("_moduleClasses");
         for (let className of classNames) {
-          const moduleClasses = this.get("_moduleClasses");
           if (moduleClasses.indexOf(className) === -1) {
             return false;
           }

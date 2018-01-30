@@ -388,9 +388,9 @@ A stack is an object which PNotify uses to determine where to position notices.
 
 ## Modal Stacks
 
-You can set a stack as modal by setting the `modal` property to true. A modal stack creates an overlay behind it when any of its notices are open. When the last notice within it is closed, the overlay is hidden.
+You can set a stack as modal by setting the `modal` property to true. A modal stack creates an overlay behind it when any of its notices are open. When the last notice within it is closed, the overlay is removed.
 
-If the `overlay_close` property is set to true, then clicking the overlay will cause all of the notices in that stack to be closed.
+If the `overlay_close` property is set to true, then clicking the overlay will close all of the notices in that stack.
 
 ## Example Stacks
 
@@ -456,11 +456,34 @@ new PNotify({
 
 This will create a notice that is positioned 90px from the top edge and 90px from the left edge of the viewport.
 
+# Features
+
+* Rich graphical features and effects.
+  * Material, Bootstrap 3/4, Font Awesome 4/5, or the stand-alone theme, Bright Theme.
+  * Mobile styling and swipe support.
+  * Timed hiding with optional visual effects from Animate.css.
+  * Attention getters from Animate.css.
+* Highly customizable UI.
+  * Sticky notices.
+  * Optional close and stick buttons.
+  * Non-blocking notices for less intrusive use.
+  * Notification types: notice, info, success, and error.
+  * Stacks allow notices to position together or independently.
+  * Control stack direction and push to top or bottom.
+* Feature rich API.
+  * Desktop notifications based on the Web Notifications standard.
+  * Confirm dialogs, alert buttons, and prompts.
+  * Dynamically update existing notices.
+  * Put forms and other HTML in notices.
+    * By default, escapes text to prevent XSS attack.
+  * Callbacks for lifespan events.
+  * Notice history for reshowing old notices.
+
 # Licensing and Additional Info
 
 PNotify is distributed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0).
 
-See http://sciactive.com/pnotify/ for download, more information, and examples.
+See http://sciactive.com/pnotify/ for more information, and demos.
 
 ## Support on Beerpay
 Hey dude! Help me out for a couple of :beers:!
