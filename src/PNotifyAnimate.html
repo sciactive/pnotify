@@ -73,11 +73,11 @@
           }
           _notice.animateIn = this.animateIn.bind(this);
           _notice.animateOut = this.animateOut.bind(this);
-          var animSpeed = 400;
+          var animSpeed = 250;
           if (_options.animate_speed === "slow") {
-            animSpeed = 600;
+            animSpeed = 400;
           } else if (_options.animate_speed === "fast") {
-            animSpeed = 200;
+            animSpeed = 100;
           } else if (_options.animate_speed > 0) {
             animSpeed = _options.animate_speed;
           }
