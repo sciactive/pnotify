@@ -104,7 +104,6 @@
   let createStackOverlay = (stack) => {
     const overlay = document.createElement("div");
     overlay.classList.add("ui-pnotify-modal-overlay");
-    stack.context.insertBefore(overlay, stack.context.firstChild);
     if (stack.context !== document.body) {
       overlay.style.height = stack.context.scrollHeight+"px";
       overlay.style.width = stack.context.scrollWidth+"px";
@@ -115,7 +114,19 @@
         PNotify.closeStack(stack);
       }
     });
-    return overlay;
+    stack.overlay = overlay;
+  };
+
+  let insertStackOverlay = (stack) => {
+    if (stack.overlay.parentNode !== stack.context) {
+      stack.overlay = stack.context.insertBefore(stack.overlay, stack.context.firstChild);
+    }
+  };
+
+  let removeStackOverlay = (stack) => {
+    if (stack.overlay.parentNode) {
+      stack.overlay.parentNode.removeChild(stack.overlay);
+    }
   };
 
   // Default arguments for the new notice helper functions.
@@ -273,7 +284,7 @@
               continue;
             }
             if (s.overlay) {
-              s.overlay.classList.add("ui-pnotify-modal-overlay-hidden");
+              removeStackOverlay(s);
             }
             s.nextpos1 = s.firstpos1;
             s.nextpos2 = s.firstpos2;
@@ -637,9 +648,6 @@
           if (!visible) {
             const domRect = this.refs.elem.getBoundingClientRect();
             for (let prop in domRect) {
-              if (!domRect.hasOwnProperty(prop)) {
-                continue;
-              }
               if (domRect[prop] > 0) {
                 visible = true;
                 break;
@@ -686,9 +694,6 @@
           if (!visible) {
             const domRect = this.refs.elem.getBoundingClientRect();
             for (let prop in domRect) {
-              if (!domRect.hasOwnProperty(prop)) {
-                continue;
-              }
               if (domRect[prop] > 0) {
                 visible = true;
                 break;
@@ -710,7 +715,7 @@
                 }
               }
               if (!stillOpen) {
-                stack.overlay.classList.add("ui-pnotify-modal-overlay-hidden");
+                removeStackOverlay(stack);
               }
             }
             if (callback) {
@@ -765,11 +770,10 @@
         }
 
         if (stack.modal) {
-          if (stack.overlay) {
-            stack.overlay.classList.remove("ui-pnotify-modal-overlay-hidden");
-          } else {
-            stack.overlay = createStackOverlay(stack);
+          if (!stack.overlay) {
+            createStackOverlay(stack);
           }
+          insertStackOverlay(stack);
         }
 
         // Read from the DOM to cause refresh.
@@ -1149,8 +1153,5 @@
   :global(body > .ui-pnotify-modal-overlay) {
     position: fixed;
     z-index: 100041;
-  }
-  :global(.ui-pnotify-modal-overlay-hidden) {
-    display: none;
   }
 </style>
