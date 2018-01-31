@@ -84,7 +84,7 @@
       const cursorStyleCache = [];
 
       const cacheCursorStyle = (elem) => {
-        for (let i in cursorStyleCache) {
+        for (let i = 0; i < cursorStyleCache.length; i++) {
           if (cursorStyleCache[i].elem === elem) {
             return
           }
@@ -97,7 +97,7 @@
       };
 
       const resetCursorStyles = () => {
-        for (let i in cursorStyleCache) {
+        for (let i = 0; i < cursorStyleCache.length; i++) {
           cursorStyleCache[i].elem.style.setProperty(
             "cursor",
             cursorStyleCache[i].cursorStyleValue,

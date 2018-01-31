@@ -431,6 +431,9 @@
           // Initializing a module should only be done if it has an init
           // function, which means it's not rendered in the template.
           for (let key in PNotify.modules) {
+            if (!PNotify.modules.hasOwnProperty(key)) {
+              continue;
+            }
             if (typeof PNotify.modules[key].init === 'function') {
               const module = PNotify.modules[key].init(this);
               this.initModule(module);
@@ -439,6 +442,9 @@
         } else {
           const _modules = this.get("_modules");
           for (let module in _modules) {
+            if (!_modules.hasOwnProperty(module)) {
+              continue;
+            }
             const moduleOptions = Object.assign({
               "_notice": this,
               "_options": this.get()
@@ -631,6 +637,9 @@
           if (!visible) {
             const domRect = this.refs.elem.getBoundingClientRect();
             for (let prop in domRect) {
+              if (!domRect.hasOwnProperty(prop)) {
+                continue;
+              }
               if (domRect[prop] > 0) {
                 visible = true;
                 break;
@@ -677,6 +686,9 @@
           if (!visible) {
             const domRect = this.refs.elem.getBoundingClientRect();
             for (let prop in domRect) {
+              if (!domRect.hasOwnProperty(prop)) {
+                continue;
+              }
               if (domRect[prop] > 0) {
                 visible = true;
                 break;
@@ -980,7 +992,8 @@
 
       addModuleClass(...classNames) {
         const moduleClasses = this.get("_moduleClasses");
-        for (let className of classNames) {
+        for (let i = 0; i < classNames.length; i++) {
+          let className = classNames[i];
           if (moduleClasses.indexOf(className) === -1) {
             moduleClasses.push(className);
           }
@@ -990,7 +1003,8 @@
 
       removeModuleClass(...classNames) {
         const moduleClasses = this.get("_moduleClasses");
-        for (let className of classNames) {
+        for (let i = 0; i < classNames.length; i++) {
+          let className = classNames[i];
           const idx = moduleClasses.indexOf(className);
           if (idx !== -1) {
             moduleClasses.splice(idx, 1);
@@ -1001,7 +1015,8 @@
 
       hasModuleClass(...classNames) {
         const moduleClasses = this.get("_moduleClasses");
-        for (let className of classNames) {
+        for (let i = 0; i < classNames.length; i++) {
+          let className = classNames[i];
           if (moduleClasses.indexOf(className) === -1) {
             return false;
           }
