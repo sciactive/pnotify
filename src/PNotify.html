@@ -1118,6 +1118,11 @@
   :global(.ui-pnotify.ui-pnotify-with-icon .ui-pnotify-text) {
     margin-left: 24px;
   }
+  :global([dir=rtl] .ui-pnotify.ui-pnotify-with-icon .ui-pnotify-title),
+  :global([dir=rtl] .ui-pnotify.ui-pnotify-with-icon .ui-pnotify-text) {
+    margin-right: 24px;
+    margin-left: 0;
+  }
   /* Bootstrap 4: make title text a tad smaller. */
   :global(.ui-pnotify-title-bs4) {
     font-size: 1.2rem;
@@ -1126,9 +1131,14 @@
     display: block;
     white-space: pre-line;
   }
-  :global(.ui-pnotify-icon, .ui-pnotify-icon span) {
+  :global(.ui-pnotify-icon),
+  :global(.ui-pnotify-icon span) {
     display: block;
     float: left;
+  }
+  :global([dir=rtl] .ui-pnotify-icon),
+  :global([dir=rtl] .ui-pnotify-icon span) {
+    float: right;
   }
   /* Bootstrap 3: correct positioning of icon. */
   :global(.ui-pnotify-icon-bs3 > span) {

@@ -470,6 +470,7 @@ This will create a notice that is positioned 90px from the top edge and 90px fro
   * Notification types: notice, info, success, and error.
   * Stacks allow notices to position together or independently.
   * Control stack direction and push to top or bottom.
+  * Full RTL language support.
 * Feature rich API.
   * Desktop notifications based on the Web Notifications standard.
   * Confirm dialogs, alert buttons, and prompts.

@@ -1,6 +1,6 @@
 {{#if _show_closer}}
   <div
-      class="ui-pnotify-closer {{(!closer_hover || _mouseIsIn) ? '' : 'ui-pnotify-hidden'}}"
+      class="ui-pnotify-closer {{(!closer_hover || _mouseIsIn) ? '' : 'ui-pnotify-buttons-hidden'}}"
       role="button"
       tabindex="0"
       title="{{labels.close}}"
@@ -10,7 +10,7 @@
 {{/if}}
 {{#if _show_sticker}}
   <div
-      class="ui-pnotify-sticker {{(!sticker_hover || _mouseIsIn) ? '' : 'ui-pnotify-hidden'}}"
+      class="ui-pnotify-sticker {{(!sticker_hover || _mouseIsIn) ? '' : 'ui-pnotify-buttons-hidden'}}"
       role="button"
       aria-pressed="{{_options.hide}}"
       tabindex="0"
@@ -143,12 +143,19 @@
 </script>
 
 <style>
-  .ui-pnotify-closer, .ui-pnotify-sticker {
+  .ui-pnotify-closer,
+  .ui-pnotify-sticker {
     float: right;
     margin-left: .5em;
     cursor: pointer;
   }
-  .ui-pnotify-hidden {
+  :global([dir=rtl]) .ui-pnotify-closer,
+  :global([dir=rtl]) .ui-pnotify-sticker {
+    float: left;
+    margin-right: .5em;
+    margin-left: 0;
+  }
+  .ui-pnotify-buttons-hidden {
     visibility: hidden;
   }
 </style>

@@ -65,13 +65,23 @@
   }
   :global([ui-pnotify].ui-pnotify-with-icon .pnotify-material .ui-pnotify-title),
   :global([ui-pnotify].ui-pnotify-with-icon .pnotify-material .ui-pnotify-text),
-  :global([ui-pnotify].ui-pnotify-with-icon .pnotify-material .ui-pnotify-action-bar) {
+  :global([ui-pnotify].ui-pnotify-with-icon .pnotify-material .ui-pnotify-confirm) {
     margin-left: 32px;
   }
-  :global([ui-pnotify].ui-pnotify-with-icon .pnotify-material .ui-pnotify-action-bar) {
+  :global([dir=rtl] [ui-pnotify].ui-pnotify-with-icon .pnotify-material .ui-pnotify-title),
+  :global([dir=rtl] [ui-pnotify].ui-pnotify-with-icon .pnotify-material .ui-pnotify-text),
+  :global([dir=rtl] [ui-pnotify].ui-pnotify-with-icon .pnotify-material .ui-pnotify-confirm) {
+    margin-right: 32px;
+    margin-left: 0;
+  }
+  :global([ui-pnotify] .pnotify-material .ui-pnotify-action-bar) {
     margin-top: 20px;
     margin-right: -16px;
     margin-bottom: -16px;
+  }
+  :global([dir=rtl] [ui-pnotify] .pnotify-material .ui-pnotify-action-bar) {
+    margin-left: -16px;
+    margin-right: 0;
   }
   :global([ui-pnotify] .pnotify-material-notice) {
     /* https://material.io/color/#!/?view.left=0&view.right=0&primary.color=FFEE58 */

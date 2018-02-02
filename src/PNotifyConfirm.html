@@ -1,46 +1,55 @@
 {{#if confirm || prompt}}
-  <div
-      class="
-        ui-pnotify-action-bar
-        {{_notice.get('_styles').action_bar ? _notice.get('_styles').action_bar : ''}}
-        {{_notice.get('_styles').text ? _notice.get('_styles').text : ''}}
-      "
-      style="text-align: {{align}};">
+  <div class="ui-pnotify-confirm">
     {{#if prompt}}
-      {{#if prompt_multi_line}}
-        <textarea
-            rows="5"
-            on:keypress="handleKeyPress(event)"
-            ref:promptMulti
-            class="
-              ui-pnotify-prompt-input
-              {{_notice.get('_styles').input ? _notice.get('_styles').input : ''}}
-              {{prompt_class}}
-            "
-            bind:value="prompt_value"></textarea>
-      {{else}}
-        <input
-            type="text"
-            on:keypress="handleKeyPress(event)"
-            ref:promptSingle
-            class="
-              ui-pnotify-prompt-input
-              {{_notice.get('_styles').input ? _notice.get('_styles').input : ''}}
-              {{prompt_class}}
-            "
-            bind:value="prompt_value" />
-      {{/if}}
-    {{/if}}
-    {{#each buttons as button}}
-      <button
-          type="button"
-          on:click="handleClick(button, event)"
+      <div
           class="
-            ui-pnotify-action-button
-            {{button.primary ? (_notice.get('_styles').btn_primary ? _notice.get('_styles').btn_primary : '') : (_notice.get('_styles').btn ? _notice.get('_styles').btn : '')}}
-            {{button.addClass ? button.addClass : ''}}
-          ">{{#if button.trustText}}{{{button.text}}}{{else}}{{button.text}}{{/if}}</button>
-    {{/each}}
+            ui-pnotify-prompt-bar
+            {{_notice.get('_styles').prompt_bar ? _notice.get('_styles').prompt_bar : ''}}
+            {{_notice.get('_styles').text ? _notice.get('_styles').text : ''}}
+          ">
+        {{#if prompt_multi_line}}
+          <textarea
+              rows="5"
+              on:keypress="handleKeyPress(event)"
+              ref:promptMulti
+              class="
+                ui-pnotify-prompt-input
+                {{_notice.get('_styles').input ? _notice.get('_styles').input : ''}}
+                {{prompt_class}}
+              "
+              bind:value="prompt_value"></textarea>
+        {{else}}
+          <input
+              type="text"
+              on:keypress="handleKeyPress(event)"
+              ref:promptSingle
+              class="
+                ui-pnotify-prompt-input
+                {{_notice.get('_styles').input ? _notice.get('_styles').input : ''}}
+                {{prompt_class}}
+              "
+              bind:value="prompt_value" />
+        {{/if}}
+      </div>
+    {{/if}}
+    <div
+        class="
+          ui-pnotify-action-bar
+          {{_notice.get('_styles').action_bar ? _notice.get('_styles').action_bar : ''}}
+          {{_notice.get('_styles').text ? _notice.get('_styles').text : ''}}
+        "
+        style="justify-content: {{align}};">
+      {{#each buttons as button}}
+        <button
+            type="button"
+            on:click="handleClick(button, event)"
+            class="
+              ui-pnotify-action-button
+              {{button.primary ? (_notice.get('_styles').btn_primary ? _notice.get('_styles').btn_primary : '') : (_notice.get('_styles').btn ? _notice.get('_styles').btn : '')}}
+              {{button.addClass ? button.addClass : ''}}
+            ">{{#if button.trustText}}{{{button.text}}}{{else}}{{button.text}}{{/if}}</button>
+      {{/each}}
+    </div>
   </div>
 {{/if}}
 
@@ -62,8 +71,8 @@
         prompt_value: "",
         // Whether the prompt should accept multiple lines of text.
         prompt_multi_line: false,
-        // Where to align the buttons. (right, center, left, justify)
-        align: "right",
+        // Where to align the buttons. (flex-start, center, flex-end, space-around, space-between)
+        align: "flex-end",
         // The buttons to display, and their callbacks.
         buttons: [
           {
@@ -98,20 +107,23 @@
       // Add button styles to styling objects.
       Object.assign(PNotify.styling.brighttheme, {
         action_bar: "",
+        prompt_bar: "",
         btn: "",
         btn_primary: "brighttheme-primary",
         input: ""
       });
       Object.assign(PNotify.styling.bootstrap3, {
         action_bar: "ui-pnotify-confirm-ml",
-        btn: "btn btn-default",
-        btn_primary: "btn btn-default btn-primary",
+        prompt_bar: "ui-pnotify-confirm-ml",
+        btn: "btn btn-default ui-pnotify-confirm-mx-1",
+        btn_primary: "btn btn-default ui-pnotify-confirm-mx-1 btn-primary",
         input: "form-control"
       });
       Object.assign(PNotify.styling.bootstrap4, {
         action_bar: "ui-pnotify-confirm-ml",
-        btn: "btn btn-secondary ml-1",
-        btn_primary: "btn btn-primary ml-1",
+        prompt_bar: "ui-pnotify-confirm-ml",
+        btn: "btn btn-secondary mx-1",
+        btn_primary: "btn btn-primary mx-1",
         input: "form-control"
       });
       if (!PNotify.styling.material) {
@@ -119,6 +131,7 @@
       }
       Object.assign(PNotify.styling.material, {
         action_bar: "",
+        prompt_bar: "",
         btn: "",
         btn_primary: "ui-pnotify-material-primary",
         input: ""
@@ -173,15 +186,29 @@
 </script>
 
 <style>
-  :global(.ui-pnotify-action-bar) {
+  .ui-pnotify-action-bar,
+  .ui-pnotify-prompt-bar {
     margin-top: 5px;
     clear: both;
   }
-  :global(.ui-pnotify-prompt-input) {
-    margin-bottom: 5px;
-    clear: both;
+  .ui-pnotify-action-bar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
   }
-  :global(.ui-pnotify.ui-pnotify-with-icon .ui-pnotify-action-bar.ui-pnotify-confirm-ml) {
+  .ui-pnotify-prompt-input {
+    margin-bottom: 5px;
+    display: block;
+    width: 100%;
+  }
+  .ui-pnotify-confirm-mx-1 {
+    margin: 0 5px;
+  }
+  :global(.ui-pnotify.ui-pnotify-with-icon) .ui-pnotify-confirm-ml {
     margin-left: 24px;
+  }
+  :global([dir=rtl] .ui-pnotify.ui-pnotify-with-icon) .ui-pnotify-confirm-ml {
+    margin-right: 24px;
+    margin-left: 0;
   }
 </style>

@@ -11,8 +11,14 @@ Color Scheme: http://paletton.com/palette.php?uid=c1T3n2J040kpEKzpEKzbEPSOEyiNk9
 }
 [ui-pnotify].ui-pnotify-with-icon .brighttheme .ui-pnotify-title,
 [ui-pnotify].ui-pnotify-with-icon .brighttheme .ui-pnotify-text,
-[ui-pnotify].ui-pnotify-with-icon .brighttheme .ui-pnotify-action-bar {
+[ui-pnotify].ui-pnotify-with-icon .brighttheme .ui-pnotify-confirm {
   margin-left: 1.8rem;
+}
+[dir=rtl] [ui-pnotify].ui-pnotify-with-icon .brighttheme .ui-pnotify-title,
+[dir=rtl] [ui-pnotify].ui-pnotify-with-icon .brighttheme .ui-pnotify-text,
+[dir=rtl] [ui-pnotify].ui-pnotify-with-icon .brighttheme .ui-pnotify-confirm {
+  margin-right: 1.8rem;
+  margin-left: 0;
 }
 [ui-pnotify].ui-pnotify .brighttheme .ui-pnotify-title {
   font-size: 1.2rem;
@@ -135,12 +141,10 @@ Color Scheme: http://paletton.com/palette.php?uid=c1T3n2J040kpEKzpEKzbEPSOEyiNk9
   content: "\00003E";
 }
 
-[ui-pnotify].ui-pnotify .brighttheme .ui-pnotify-action-bar {
+[ui-pnotify].ui-pnotify .brighttheme .ui-pnotify-confirm {
   margin-top: 1rem;
 }
-[ui-pnotify].ui-pnotify .brighttheme .ui-pnotify-prompt-input {
-  display: block;
-  width: 100%;
+[ui-pnotify].ui-pnotify .brighttheme .ui-pnotify-prompt-bar {
   margin-bottom: 1rem;
 }
 [ui-pnotify].ui-pnotify .brighttheme .ui-pnotify-action-button {
