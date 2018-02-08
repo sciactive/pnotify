@@ -8,7 +8,7 @@ Demos
 =====
 
 * http://sciactive.com/pnotify/ for the latest release
-* https://sciactive.github.io/pnotify/ for what's on master (gh-pages to be precise)
+* https://sciactive.github.io/pnotify/ for what's on develop (gh-pages to be precise)
 
 Requirements
 ============

@@ -1,6 +1,6 @@
 {
   "name": "pnotify",
-  "version": "3.2.1",
+  "version": "3.2.2-dev",
   "main": "dist/pnotify.js",
   "repository": {
     "type": "git",
@@ -24,6 +24,8 @@
     "uglify-js": "^2.8.22"
   },
   "scripts": {
+    "prepare": "npm run build",
+    "build": "npm run dist",
     "dist": "node make.js dist"
   }
 }

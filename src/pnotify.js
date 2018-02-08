@@ -1,6 +1,6 @@
 /*
-PNotify 3.2.0 sciactive.com/pnotify/
-(C) 2015 Hunter Perrin; Google, Inc.
+PNotify 3.2.2-dev sciactive.com/pnotify/
+(C) 2009-2018 Hunter Perrin; 2015 Google, Inc.
 license Apache-2.0
 */
 /*
@@ -8,7 +8,7 @@ license Apache-2.0
  *
  * http://sciactive.com/pnotify/
  *
- * Copyright 2009-2015 Hunter Perrin
+ * Copyright 2009-2018 Hunter Perrin
  * Copyright 2015 Google, Inc.
  *
  * Licensed under Apache License, Version 2.0.
@@ -86,7 +86,7 @@ var init = function(root){
   };
   $.extend(PNotify.prototype, {
     // The current version of PNotify.
-    version: "3.2.0",
+    version: "3.2.2-dev",
 
     // === Options ===
 
@@ -210,7 +210,7 @@ var init = function(root){
       }
       // Create a container for the notice contents.
       this.container = $("<div />", {
-        "class": this.styles.container+" ui-pnotify-container "+(this.options.type === "error" ? this.styles.error : (this.options.type === "info" ? this.styles.info : (this.options.type === "success" ? this.styles.success : this.styles.notice))),
+        "class": this.styles.container+" ui-pnotify-container "+(this.styles[this.options.type] ? this.styles[this.options.type] : this.styles.notice),
         "role": "alert"
       }).appendTo(this.elem);
       if (this.options.cornerclass !== "") {
@@ -225,7 +225,7 @@ var init = function(root){
       // Add the appropriate icon.
       if (this.options.icon !== false) {
         $("<div />", {"class": "ui-pnotify-icon"})
-        .append($("<span />", {"class": this.options.icon === true ? (this.options.type === "error" ? this.styles.error_icon : (this.options.type === "info" ? this.styles.info_icon : (this.options.type === "success" ? this.styles.success_icon : this.styles.notice_icon))) : this.options.icon}))
+        .append($("<span />", {"class": this.options.icon === true ? (this.styles[this.options.type+'_icon'] ? this.styles[this.options.type+'_icon'] : this.styles.notice_icon) : this.options.icon}))
         .prependTo(this.container);
       }
 
@@ -350,18 +350,9 @@ var init = function(root){
       }
       // Change the notice type.
       if (this.options.type !== oldOpts.type) {
-        this.container.removeClass(
-          this.styles.error+" "+this.styles.notice+" "+this.styles.success+" "+this.styles.info
-        ).addClass(this.options.type === "error" ?
-          this.styles.error :
-          (this.options.type === "info" ?
-            this.styles.info :
-            (this.options.type === "success" ?
-              this.styles.success :
-              this.styles.notice
-            )
-          )
-        );
+        this.container
+        .removeClass(this.styles[oldOpts.type] ? this.styles[oldOpts.type] : this.styles.notice)
+        .addClass(this.styles[this.options.type] ? this.styles[this.options.type] : this.styles.notice);
       }
       if (this.options.icon !== oldOpts.icon || (this.options.icon === true && this.options.type !== oldOpts.type)) {
         // Remove any old icon.
@@ -369,7 +360,7 @@ var init = function(root){
         if (this.options.icon !== false) {
           // Build the new icon.
           $("<div />", {"class": "ui-pnotify-icon"})
-          .append($("<span />", {"class": this.options.icon === true ? (this.options.type === "error" ? this.styles.error_icon : (this.options.type === "info" ? this.styles.info_icon : (this.options.type === "success" ? this.styles.success_icon : this.styles.notice_icon))) : this.options.icon}))
+          .append($("<span />", {"class": this.options.icon === true ? (this.styles[this.options.type+'_icon'] ? this.styles[this.options.type+'_icon'] : this.styles.notice_icon) : this.options.icon}))
           .prependTo(this.container);
         }
       }
