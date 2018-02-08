@@ -13,7 +13,7 @@ Demos
 Requirements
 ============
 
-jQuery (1.6 or higher)
+jQuery (1.7 or higher)
 
 Getting Started
 ===============
