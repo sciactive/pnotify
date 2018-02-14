@@ -13,9 +13,9 @@ Unless you're an alpha tester, **none of this README applies to you!** You want 
 
 This README is for **PNotify 4**. v4 is only in alpha stage, but it's got some huge changes:
 
-* jQuery is no longer required. v4 doesn't require any libraries, actually.
+* **jQuery is no longer required.** v4 doesn't require any libraries, actually.
 * It's built using [Svelte](http://svelte.technology), which means it compiles down to vanilla JS.
-* PNotify now has an ES6 module build.
+* PNotify now has an ES module build.
 * All options are now in camelCase instead of snake_case.
 * `text_escape` and `title_escape` have been replaced by `textTrusted` and `titleTrusted`, and the default behavior changed.
 * `insert_brs` option has gone away. (Text and title now have `white-space: pre-line;`.)
@@ -24,15 +24,24 @@ This README is for **PNotify 4**. v4 is only in alpha stage, but it's got some h
 
 ## Running PNotify 3 Code with the Compat Module
 
-You can require `PNotifyCompat` instead of `PNotify` in order to run PNotify 3 code. Check out `index-compat.html` for more examples.
+You can use `PNotifyCompat` instead of `PNotify` in order to run PNotify 3 code. Check out `demo/compat-*.html` for more examples.
 
 ```js
+// IIFE
+new PNotifyCompat({
+  title: 'Regular Notice',
+  text: 'Check me out! I\'m a notice.',
+  text_escape: true // <-- old options work
+});
+
+// UMD
 requirejs(['PNotifyCompat'], function(PNotify){
   PNotify = PNotify && PNotify.__esModule ? PNotify['default'] : PNotify;
 
   new PNotify({
     title: 'Regular Notice',
-    text: 'Check me out! I\'m a notice.'
+    text: 'Check me out! I\'m a notice.',
+    text_escape: true // <-- old options work
   });
 });
 ```
@@ -73,7 +82,7 @@ PNotify.notice({
 
 ## Using a UI Library
 
-If you are not using any UI library, you can use the default styling, called Bright Theme by including the PNotifyBrightTheme.css file. It is the default.
+If you are not using any UI library, you can use the default styling, called Bright Theme by including the `PNotifyBrightTheme.css` file. It is the default.
 
 If you are using a UI or icon library, include the appropriate lines below somewhere before your first notice:
 
@@ -124,7 +133,7 @@ PNotify.error({
 });
 ```
 
-Or you can manually create a new notice:
+Or you can manually create a new notice (if you know what you're doing):
 
 ```js
 new PNotify({
@@ -217,7 +226,7 @@ PNotify.defaults.modules = {
 * `closerHover: true` - Only show the closer button on hover.
 * `sticker: true` - Provide a button for the user to manually stick the notice.
 * `stickerHover: true` - Only show the sticker button on hover.
-* `showOnNonblock: false` - Show the buttons even when the nonblock module is in use.
+* `showOnNonblock: false` - Show the buttons even when the NonBlock module is in use.
 * `labels: {close: "Close", stick: "Stick", unstick: "Unstick"}` - Lets you change the displayed text, facilitating internationalization.
 * `classes: {closer: null, pinUp: null, pinDown: null}` - The classes to use for button icons. Leave them null to use the classes from the styling you're using.
 
@@ -319,7 +328,7 @@ The History module also has two methods:
 * `PNotify.modules.History.showLast(stack)` - Reopen the last closed notice from a stack that was placed in the history. If no stack is provided, it will use the default stack.
 * `PNotify.modules.History.showAll(stack)` - Reopen all notices from a stack that were placed in the history. If no stack is provided, it will also use the default stack. If stack is `true`, it will reopen all notices from every stack.
 
-In PNotify v3, the history module could make a dropdown which had these functions. In v4, it was decided that the dropdown was extra code that users weren't using, so it was removed.
+In PNotify 3, the history module could make a dropdown which had these functions. In v4, it was decided that the dropdown was extra code that users weren't using, so it was removed.
 
 ## Callbacks Module
 
@@ -337,7 +346,7 @@ The callback options all expect one argument, a function, which will be called w
 
 # Utility Functions and Properties
 
-## Global
+## Static Methods
 
 * `PNotify.VERSION` - PNotify version number.
 * `PNotify.alert(options)` - Create an alert.
@@ -356,7 +365,7 @@ The callback options all expect one argument, a function, which will be called w
 * `PNotify.modules` - This object holds all the PNotify modules.
 * `PNotify.styling` - Styling objects.
 
-## Per Notice
+## Instance Methods
 
 * `notice.open()` - Open the notice.
 * `notice.close()` - Close the notice.
@@ -370,7 +379,7 @@ The callback options all expect one argument, a function, which will be called w
 * `notice.removeModuleClass(...classNames)` - This is for modules to remove classes from the notice.
 * `notice.hasModuleClass(...classNames)` - This is for modules to test classes on the notice.
 
-## From the [Svelte Component API](https://svelte.technology/guide#component-api)
+### From the [Svelte Component API](https://svelte.technology/guide#component-api)
 
 * `notice.get(option)` - Get the value of an option.
 * `notice.set(options)` - You probably want to use `update(options)` instead. It has some special PNotify secret sauce to make sure your notice doesn't break.

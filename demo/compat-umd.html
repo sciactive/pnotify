@@ -7,10 +7,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <!-- RequireJS -->
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.js"></script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.js"></script>
 
   <!-- jQuery -->
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 
   <!-- Animate.css -->
   <link href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css" rel="stylesheet" type="text/css" />
@@ -19,27 +19,27 @@
   <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
 
   <!-- PNotify -->
-  <script type="text/javascript" src="lib/umd/PNotify.js"></script>
-  <link href="src/PNotifyBrightTheme.css" rel="stylesheet" type="text/css" />
-  <script type="text/javascript" src="lib/umd/PNotifyButtons.js"></script>
-  <script type="text/javascript" src="lib/umd/PNotifyAnimate.js"></script>
-  <script type="text/javascript" src="lib/umd/PNotifyCallbacks.js"></script>
-  <script type="text/javascript" src="lib/umd/PNotifyNonBlock.js"></script>
-  <script type="text/javascript" src="lib/umd/PNotifyMobile.js"></script>
-  <script type="text/javascript" src="lib/umd/PNotifyHistory.js"></script>
-  <script type="text/javascript" src="lib/umd/PNotifyDesktop.js"></script>
-  <script type="text/javascript" src="lib/umd/PNotifyConfirm.js"></script>
-  <script type="text/javascript" src="lib/umd/PNotifyStyleMaterial.js"></script>
-  <script type="text/javascript" src="lib/umd/PNotifyReference.js"></script>
+  <script type="text/javascript" src="../lib/umd/PNotify.js"></script>
+  <link href="../src/PNotifyBrightTheme.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="../lib/umd/PNotifyButtons.js"></script>
+  <script type="text/javascript" src="../lib/umd/PNotifyAnimate.js"></script>
+  <script type="text/javascript" src="../lib/umd/PNotifyCallbacks.js"></script>
+  <script type="text/javascript" src="../lib/umd/PNotifyNonBlock.js"></script>
+  <script type="text/javascript" src="../lib/umd/PNotifyMobile.js"></script>
+  <script type="text/javascript" src="../lib/umd/PNotifyHistory.js"></script>
+  <script type="text/javascript" src="../lib/umd/PNotifyDesktop.js"></script>
+  <script type="text/javascript" src="../lib/umd/PNotifyConfirm.js"></script>
+  <script type="text/javascript" src="../lib/umd/PNotifyStyleMaterial.js"></script>
+  <script type="text/javascript" src="../lib/umd/PNotifyReference.js"></script>
 
-  <script type="text/javascript" src="lib/umd/PNotifyCompat.js"></script>
+  <script type="text/javascript" src="../lib/umd/PNotifyCompat.js"></script>
   <script type="text/javascript">
     // Load the modules that do stuff by default.
     requirejs(['PNotifyCompat', 'PNotifyButtons', 'PNotifyMobile', 'PNotifyHistory'], function() {});
   </script>
 </head>
 <body>
-  <h1>PNotify Backward Compatibility Module</h1>
+  <h1>PNotify Backward Compatibility Module (UMD)</h1>
 
   <p>
     This page loads all modules + the special "PNotifyCompat" module. This module makes most code written for PNotify 3 work with PNotify 4.
@@ -84,12 +84,6 @@
       });
 
     });">Error Message</button>
-    <button onclick="requirejs(['PNotifyCompat'], function(PNotify){
-      PNotify = PNotify && PNotify.__esModule ? PNotify['default'] : PNotify;
-
-      new PNotify('Check me out! I\'m a notice.');
-
-    });">Simple</button>
     <button onclick="requirejs(['PNotifyCompat'], function(PNotify){
       PNotify = PNotify && PNotify.__esModule ? PNotify['default'] : PNotify;
 

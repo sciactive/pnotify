@@ -113,7 +113,7 @@ target.dist = (args) => {
 let compile_js = (module, filename, args) => {
   let format = setup(args);
 
-  if ((module === "index" || module === "compat") && format === 'iife') {
+  if (module === 'index' && format === 'iife') {
     return;
   }
 
@@ -122,9 +122,18 @@ let compile_js = (module, filename, args) => {
   echo('Compiling JavaScript '+module+' from '+src_filename+' to '+dst_filename);
   echo('Generating source map for '+dst_filename+' in '+dst_filename+'.map');
 
+  // Gather code.
   let code, map, inputCode, inputMap, isSvelte = filename.slice(-4) === 'html';
-  inputCode = code = fs.readFileSync(src_filename, "utf8");
+  inputCode = code = fs.readFileSync(src_filename, 'utf8');
   inputMap = map = null;
+
+  // Pre-compile transforms.
+  if (module === 'compat' && format === 'iife') {
+    inputCode = code = code.replace(/import PNotify(\w*) from ["']\.\/PNotify(\w*)\.html["'];/g, 'var PNotify$1 = window.PNotify$2;');
+    inputCode = code = code.replace(/export default PNotifyCompat;/g, 'window.PNotifyCompat = PNotifyCompat;');
+  }
+
+  // Compile.
   if (isSvelte) {
     // Use Svelte to compile the code first.
     const svelte = require('svelte');
@@ -136,7 +145,7 @@ let compile_js = (module, filename, args) => {
         id: filename.replace(/\.html$/, '')
       },
       globals: {
-        "./PNotify.html": "PNotify"
+        './PNotify.html': 'PNotify'
       },
     	onerror: err => {
     		console.error(err);
@@ -152,12 +161,7 @@ let compile_js = (module, filename, args) => {
   }
   if (format !== 'es') {
     const babel = require('babel-core');
-    const plugins = ["transform-class-properties", "transform-object-assign"];
-    if (format !== 'iife') {
-      plugins.push('transform-es2015-modules-'+format);
-    }
-    ({code, map} = babel.transform(inputCode, {
-      inputSourceMap: inputMap,
+    const babelOptions = {
       moduleId: filename.replace(/\.(html|js)$/, ''),
       filename: filename.replace(/\.html$/, '.js'),
       filenameRelative: src_filename,
@@ -169,11 +173,31 @@ let compile_js = (module, filename, args) => {
         'env',
         'stage-3'
       ],
-      plugins: plugins,
+      plugins: [
+        'transform-class-properties',
+        'transform-object-assign'
+      ],
       sourceType: (format === 'iife' && isSvelte) ? 'script' : 'module'
-    }));
+    };
+
+    if (inputMap) {
+      babelOptions.inputSourceMap = inputMap;
+    }
+
+    if (format === 'iife' && !isSvelte) {
+      babelOptions.passPerPreset = true;
+      babelOptions.presets.push({
+        plugins: ['iife-wrap']
+      });
+    }
+    if (format !== 'iife') {
+      babelOptions.plugins.push('transform-es2015-modules-'+format);
+    }
+
+    ({code, map} = babel.transform(inputCode, babelOptions));
   }
 
+  // Post-compile transforms.
   if (format === 'es') {
     code = code.replace(/import PNotify(\w*) from ["']\.\/PNotify(\w*)\.html["'];/g, 'import PNotify$1 from "./PNotify$2.js";');
   }
@@ -191,7 +215,7 @@ let compile_js = (module, filename, args) => {
 let compress_js = (module, filename, args) => {
   let format = setup(args);
 
-  if ((module === "index" || module === "compat") && format === 'iife') {
+  if (module === 'index' && format === 'iife') {
     return;
   }
 
@@ -209,7 +233,7 @@ let compress_js = (module, filename, args) => {
     }
   };
   const {code, map} = UglifyJS.minify({
-    [filename]: fs.readFileSync(src_filename, "utf8")
+    [filename]: fs.readFileSync(src_filename, 'utf8')
   }, options);
   code.to(dst_filename);
   if (map) {
@@ -227,7 +251,7 @@ let compress_css = (module, filename) => {
   const options = {
     rebase: false
   };
-  (new CleanCSS(options).minify(fs.readFileSync(src_filename, "utf8"))).styles.to(dst_filename);
+  (new CleanCSS(options).minify(fs.readFileSync(src_filename, 'utf8'))).styles.to(dst_filename);
 };
 
 let setup = (args) => {
@@ -240,7 +264,7 @@ let setup = (args) => {
 };
 
 let get_intro = (filename) => {
-  let code = fs.readFileSync(filename, "utf8");
+  let code = fs.readFileSync(filename, 'utf8');
   if (code.slice(0, 2) == '//') {
     return code.slice(0, code.indexOf('\n') + 1);
   } else if (code.slice(0, 2) == '/*') {

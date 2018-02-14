@@ -1,10 +1,9 @@
 import PNotify from "./PNotify.html";
 
 // Translate v3 options to v4 options.
-const translateOptions = (options, module) => {
+const translateOptions = (options, module, moduleName) => {
   // Merge the classic default options.
-  const newOptions = Object.assign({}, PNotifyCompat.prototype.options, options);
-  // const log = (badName, goodName) => console.log(`PNotify Warning: Option ${badName} is deprecated. Use ${goodName}.`);
+  const newOptions = module ? Object.assign({}, moduleName ? PNotifyCompat.prototype.options[moduleName] : {}, options) : Object.assign({}, PNotifyCompat.prototype.options, options);
   const translateName = (badName) => {
     let goodName = badName, underscoreIndex;
     while ((underscoreIndex = goodName.indexOf('_')) !== -1) {
@@ -61,38 +60,38 @@ const translateOptions = (options, module) => {
     // Translate module options.
     newOptions.modules = {};
     if (newOptions.hasOwnProperty('animate')) {
-      newOptions.modules.Animate = translateOptions(newOptions.animate, true);
+      newOptions.modules.Animate = translateOptions(newOptions.animate, true, 'animate');
       delete newOptions.animate;
     }
     if (newOptions.hasOwnProperty('buttons')) {
-      newOptions.modules.Buttons = translateOptions(newOptions.buttons, true);
+      newOptions.modules.Buttons = translateOptions(newOptions.buttons, true, 'buttons');
       delete newOptions.buttons;
       if (newOptions.modules.Buttons.classes) {
         newOptions.modules.Buttons.classes = translateOptions(newOptions.modules.Buttons.classes, true);
       }
     }
     if (newOptions.hasOwnProperty('confirm')) {
-      newOptions.modules.Confirm = translateOptions(newOptions.confirm, true);
+      newOptions.modules.Confirm = translateOptions(newOptions.confirm, true, 'confirm');
       delete newOptions.confirm;
     }
     if (newOptions.hasOwnProperty('desktop')) {
-      newOptions.modules.Desktop = translateOptions(newOptions.desktop, true);
+      newOptions.modules.Desktop = translateOptions(newOptions.desktop, true, 'desktop');
       delete newOptions.desktop;
     }
     if (newOptions.hasOwnProperty('history')) {
-      newOptions.modules.History = translateOptions(newOptions.history, true);
+      newOptions.modules.History = translateOptions(newOptions.history, true, 'history');
       delete newOptions.history;
     }
     if (newOptions.hasOwnProperty('mobile')) {
-      newOptions.modules.Mobile = translateOptions(newOptions.mobile, true);
+      newOptions.modules.Mobile = translateOptions(newOptions.mobile, true, 'mobile');
       delete newOptions.mobile;
     }
     if (newOptions.hasOwnProperty('nonblock')) {
-      newOptions.modules.NonBlock = translateOptions(newOptions.nonblock, true);
+      newOptions.modules.NonBlock = translateOptions(newOptions.nonblock, true, 'nonblock');
       delete newOptions.nonblock;
     }
     if (newOptions.hasOwnProperty('reference')) {
-      newOptions.modules.Reference = translateOptions(newOptions.reference, true);
+      newOptions.modules.Reference = translateOptions(newOptions.reference, true, 'reference');
       delete newOptions.reference;
     }
     if (newOptions.hasOwnProperty('beforeInit')) {
@@ -145,6 +144,10 @@ const translateOptions = (options, module) => {
 // The compatibility class.
 class PNotifyCompat extends PNotify {
   constructor(options) {
+    if (typeof options !== "object") {
+      options = {"text": options};
+    }
+
     // These need to be called directly, since we're not using PNotify.alert().
     if (PNotify.modules.Callbacks && options.before_init) {
       options.before_init(options);
@@ -152,17 +155,13 @@ class PNotifyCompat extends PNotify {
 
     options = translateOptions(options);
 
-    if (typeof options !== "object") {
-      options = {"text": options};
-    }
-
     super({target: document.body, data: options});
 
     // Override the get function to retunr the element like it did in v3.
     const _get = this.get;
     this.get = function(option) {
       if (option === undefined) {
-        return (window.jQuery ? window.jQuery(this.refs.elem) : this.refs.elem);
+        return Object.assign(window.jQuery ? window.jQuery(this.refs.elem) : this.refs.elem, _get.call(this));
       }
       return _get.call(this, option);
     };
