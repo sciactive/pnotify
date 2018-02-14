@@ -13,7 +13,7 @@ document.getElementById("button2").addEventListener("click", function(){
     text: "It works!",
     modules: {
       Reference: {
-        put_thing: true
+        putThing: true
       }
     }
   });

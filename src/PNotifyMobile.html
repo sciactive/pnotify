@@ -7,7 +7,7 @@
 
       Component.defaults = {
         // Let the user swipe the notice away.
-        swipe_dismiss: true,
+        swipeDismiss: true,
         // Styles the notice to look good on mobile.
         styling: true
       };
@@ -45,7 +45,7 @@
             span = "Width";
 
         notice.on("touchstart", (e) => {
-          if (!this.get("swipe_dismiss")) {
+          if (!this.get("swipeDismiss")) {
             return;
           }
 
@@ -74,7 +74,7 @@
         });
 
         notice.on("touchmove", (e) => {
-          if (!origXY || !this.get("swipe_dismiss")) {
+          if (!origXY || !this.get("swipeDismiss")) {
             return;
           }
 
@@ -88,7 +88,7 @@
         });
 
         notice.on("touchend", () => {
-          if (!origXY || !this.get("swipe_dismiss")) {
+          if (!origXY || !this.get("swipeDismiss")) {
             return;
           }
 
@@ -109,7 +109,7 @@
         });
 
         notice.on("touchcancel", () => {
-          if (!origXY || !this.get("swipe_dismiss")) {
+          if (!origXY || !this.get("swipeDismiss")) {
             return;
           }
 
@@ -138,7 +138,7 @@
         window.removeEventListener("resize", this.get("_doMobileStylingBound"));
 
         // Remove any styling we added to close it.
-        if (!this.get("swipe_dismiss")) {
+        if (!this.get("swipeDismiss")) {
           return;
         }
 

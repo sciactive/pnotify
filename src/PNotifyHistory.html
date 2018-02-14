@@ -9,7 +9,7 @@
         // Place the notice in the history.
         history: true,
         // Maximum number of notices to have open in its stack.
-        max_in_stack: Infinity
+        maxInStack: Infinity
       };
 
       Component.init = (notice) => {
@@ -95,8 +95,8 @@
       },
 
       beforeOpen() {
-        const max_in_stack = this.get("max_in_stack");
-        if (max_in_stack === Infinity) {
+        const maxInStack = this.get("maxInStack");
+        if (maxInStack === Infinity) {
           return;
         }
 
@@ -105,8 +105,8 @@
           return;
         }
 
-        // Remove oldest notifications leaving only max_in_stack from the stack.
-        if (PNotify.notices && (PNotify.notices.length > max_in_stack)) {
+        // Remove oldest notifications leaving only maxInStack from the stack.
+        if (PNotify.notices && (PNotify.notices.length > maxInStack)) {
           // Oldest are normally in front of array, or if stack.push=="top" then
           // they are at the end of the array!
           const top = stack.push === "top";
@@ -118,7 +118,7 @@
                 ["opening", "open"].indexOf(PNotify.notices[i].get("_state")) !== -1
                 && PNotify.notices[i].get("stack") === stack
               ) {
-              if (currentOpen >= max_in_stack) {
+              if (currentOpen >= maxInStack) {
                 forRemoval.push(PNotify.notices[i]);
               } else {
                 currentOpen++;

@@ -1,5 +1,5 @@
 <!-- This file is for referencing while you are making a PNotify module. -->
-{{#if put_thing}} <!-- We want to check to make sure the notice should include our thing. -->
+{{#if putThing}} <!-- We want to check to make sure the notice should include our thing. -->
   <!--
   We're going to create a button that will be appended to the notice.
   It will be disabled by default, so we can enable it on mouseover.
@@ -27,7 +27,7 @@
       // This if the default values of your options.
       Component.defaults = {
         // Provide a thing for stuff. Turned off by default.
-        put_thing: false,
+        putThing: false,
         // If you are displaying any text, you should use a labels options to
         // support internationalization.
         labels: {

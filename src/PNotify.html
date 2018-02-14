@@ -15,10 +15,10 @@
       ui-pnotify
       {{icon !== false ? 'ui-pnotify-with-icon' : ''}}
       {{_styles.element ? _styles.element : ''}}
-      {{addclass}}
+      {{addClass}}
       {{_animatingClass}}
       {{_moveClass}}
-      {{animation === 'fade' ? 'ui-pnotify-fade-'+animate_speed : ''}}
+      {{animation === 'fade' ? 'ui-pnotify-fade-'+animateSpeed : ''}}
       {{stack && stack.modal ? 'ui-pnotify-modal' : ''}}
       {{_moduleClasses.join(' ')}}
     "
@@ -45,12 +45,12 @@
         ui-pnotify-container
         {{_styles.container ? _styles.container : ''}}
         {{_styles[type] ? _styles[type] : ''}}
-        {{cornerclass}}
+        {{cornerClass}}
         {{shadow ? 'ui-pnotify-shadow' : ''}}
       "
       style="
         {{typeof width === 'string' ? 'width: '+width+';' : ''}}
-        {{typeof min_height === 'string' ? 'min-height: '+min_height+';' : ''}}
+        {{typeof minHeight === 'string' ? 'min-height: '+minHeight+';' : ''}}
       "
       role="alert">
     {{#each _modulesPrependContainer as module}}
@@ -62,14 +62,14 @@
       </div>
     {{/if}}
     <h4 ref:titleContainer class="ui-pnotify-title {{_styles.title ? _styles.title : ''}}" style="display: {{title === false ? 'none' : 'block'}}">
-      {{#if trust_title}}
+      {{#if titleTrusted}}
         {{{title}}}
       {{else}}
         {{title}}
       {{/if}}
     </h4>
     <div ref:textContainer class="ui-pnotify-text {{_styles.text ? _styles.text : ''}}" style="display: {{text === false ? 'none' : 'block'}}" role="alert">
-      {{#if trust_text}}
+      {{#if textTrusted}}
         {{{text}}}
       {{else}}
         {{text}}
@@ -110,7 +110,7 @@
     }
     // Close the notices on overlay click.
     overlay.addEventListener('click', () => {
-      if (stack.overlay_close) {
+      if (stack.overlayClose) {
         PNotify.closeStack(stack);
       }
     });
@@ -166,25 +166,25 @@
         // The notice's title.
         title: false,
         // Whether to trust the title or escape its contents. (Not allow HTML.)
-        trust_title: false,
+        titleTrusted: false,
         // The notice's text.
         text: false,
         // Whether to trust the text or escape its contents. (Not allow HTML.)
-        trust_text: false,
+        textTrusted: false,
         // What styling classes to use. (Can be "brighttheme", "bootstrap3", "bootstrap4", or a styling object.)
         styling: "brighttheme",
         // What icons to use (Can be "brighttheme", "bootstrap3", "fontawesome4", "fontawesome5", or an icon object.)
         icons: "brighttheme",
         // Additional classes to be added to the notice. (For custom styling.)
-        addclass: "",
+        addClass: "",
         // Class to be added to the notice for corner styling.
-        cornerclass: "",
+        cornerClass: "",
         // Display the notice when it is created.
-        auto_display: true,
+        autoDisplay: true,
         // Width of the notice.
         width: "360px",
         // Minimum height of the notice. It will expand to fit content.
-        min_height: "16px",
+        minHeight: "16px",
         // Type of the notice. "notice", "info", "success", or "error".
         type: "notice",
         // Set icon to true to use the default icon for the selected
@@ -196,7 +196,7 @@
         animation: "fade",
         // Speed at which the notice animates in and out. "slow", "normal",
         // or "fast". Respectively, 400ms, 250ms, 100ms.
-        animate_speed: "normal",
+        animateSpeed: "normal",
         // Display a drop shadow.
         shadow: true,
         // After a delay, remove the notice.
@@ -204,7 +204,7 @@
         // Delay in milliseconds before the notice is removed.
         delay: 8000,
         // Reset the hide timer if the mouse moves over the notice.
-        mouse_reset: true,
+        mouseReset: true,
         // Remove the notice's elements from the DOM after it is removed.
         remove: true,
         // Whether to remove the notice from the global array when it is closed.
@@ -368,21 +368,21 @@
     oncreate () {
       this.on("mouseenter", (e) => {
         // Stop animation, reset the removal timer when the user mouses over.
-        if (this.get("mouse_reset") && this.get("_animating") === "out") {
+        if (this.get("mouseReset") && this.get("_animating") === "out") {
           if (!this.get("_timerHide")) {
             return;
           }
           this.cancelClose();
         }
         // Stop the close timer.
-        if (this.get("hide") && this.get("mouse_reset")) {
+        if (this.get("hide") && this.get("mouseReset")) {
           this.cancelClose();
         }
       });
 
       this.on("mouseleave", (e) => {
         // Start the close timer.
-        if (this.get("hide") && this.get("mouse_reset") && this.get("_animating") !== "out") {
+        if (this.get("hide") && this.get("mouseReset") && this.get("_animating") !== "out") {
           this.queueClose();
         }
         PNotify.positionAll();
@@ -404,7 +404,7 @@
       this.set({"_state": "closed"});
 
       // Display the notice.
-      if (this.get("auto_display")) {
+      if (this.get("autoDisplay")) {
         this.open();
       }
     },
@@ -588,7 +588,7 @@
       },
 
       remove(timerHide) {
-        this.close(timerHide);
+        return this.close(timerHide);
       },
 
       // Remove the notice.
@@ -958,7 +958,7 @@
       },
 
       cancelRemove() {
-        this.cancelClose();
+        return this.cancelClose();
       },
 
       // Cancel any pending removal timer.
@@ -981,7 +981,7 @@
       },
 
       queueRemove() {
-        this.queueClose();
+        return this.queueClose();
       },
 
       // Queue a close timer.

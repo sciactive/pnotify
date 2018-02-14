@@ -4,10 +4,10 @@
       <div
           class="
             ui-pnotify-prompt-bar
-            {{_notice.get('_styles').prompt_bar ? _notice.get('_styles').prompt_bar : ''}}
+            {{_notice.get('_styles').promptBar ? _notice.get('_styles').promptBar : ''}}
             {{_notice.get('_styles').text ? _notice.get('_styles').text : ''}}
           ">
-        {{#if prompt_multi_line}}
+        {{#if promptMultiLine}}
           <textarea
               rows="5"
               on:keypress="handleKeyPress(event)"
@@ -15,9 +15,9 @@
               class="
                 ui-pnotify-prompt-input
                 {{_notice.get('_styles').input ? _notice.get('_styles').input : ''}}
-                {{prompt_class}}
+                {{promptClass}}
               "
-              bind:value="prompt_value"></textarea>
+              bind:value="promptValue"></textarea>
         {{else}}
           <input
               type="text"
@@ -26,16 +26,16 @@
               class="
                 ui-pnotify-prompt-input
                 {{_notice.get('_styles').input ? _notice.get('_styles').input : ''}}
-                {{prompt_class}}
+                {{promptClass}}
               "
-              bind:value="prompt_value" />
+              bind:value="promptValue" />
         {{/if}}
       </div>
     {{/if}}
     <div
         class="
           ui-pnotify-action-bar
-          {{_notice.get('_styles').action_bar ? _notice.get('_styles').action_bar : ''}}
+          {{_notice.get('_styles').actionBar ? _notice.get('_styles').actionBar : ''}}
           {{_notice.get('_styles').text ? _notice.get('_styles').text : ''}}
         "
         style="justify-content: {{align}};">
@@ -45,9 +45,9 @@
             on:click="handleClick(button, event)"
             class="
               ui-pnotify-action-button
-              {{button.primary ? (_notice.get('_styles').btn_primary ? _notice.get('_styles').btn_primary : '') : (_notice.get('_styles').btn ? _notice.get('_styles').btn : '')}}
+              {{button.primary ? (_notice.get('_styles').btnPrimary ? _notice.get('_styles').btnPrimary : '') : (_notice.get('_styles').btn ? _notice.get('_styles').btn : '')}}
               {{button.addClass ? button.addClass : ''}}
-            ">{{#if button.trustText}}{{{button.text}}}{{else}}{{button.text}}{{/if}}</button>
+            ">{{#if button.textTrusted}}{{{button.text}}}{{else}}{{button.text}}{{/if}}</button>
       {{/each}}
     </div>
   </div>
@@ -66,18 +66,18 @@
         // Make a prompt.
         prompt: false,
         // Classes to add to the input element of the prompt.
-        prompt_class: "",
+        promptClass: "",
         // The value of the prompt.
-        prompt_value: "",
+        promptValue: "",
         // Whether the prompt should accept multiple lines of text.
-        prompt_multi_line: false,
+        promptMultiLine: false,
         // Where to align the buttons. (flex-start, center, flex-end, space-around, space-between)
         align: "flex-end",
         // The buttons to display, and their callbacks.
         buttons: [
           {
             text: "Ok",
-            trustText: false,
+            textTrusted: false,
             addClass: "",
             primary: true,
             // Whether to trigger this button when the user hits enter in a single line prompt.
@@ -89,7 +89,7 @@
           },
           {
             text: "Cancel",
-            trustText: false,
+            textTrusted: false,
             addClass: "",
             click: (notice) => {
               notice.close();
@@ -106,34 +106,34 @@
 
       // Add button styles to styling objects.
       Object.assign(PNotify.styling.brighttheme, {
-        action_bar: "",
-        prompt_bar: "",
+        actionBar: "",
+        promptBar: "",
         btn: "",
-        btn_primary: "brighttheme-primary",
+        btnPrimary: "brighttheme-primary",
         input: ""
       });
       Object.assign(PNotify.styling.bootstrap3, {
-        action_bar: "ui-pnotify-confirm-ml",
-        prompt_bar: "ui-pnotify-confirm-ml",
+        actionBar: "ui-pnotify-confirm-ml",
+        promptBar: "ui-pnotify-confirm-ml",
         btn: "btn btn-default ui-pnotify-confirm-mx-1",
-        btn_primary: "btn btn-default ui-pnotify-confirm-mx-1 btn-primary",
+        btnPrimary: "btn btn-default ui-pnotify-confirm-mx-1 btn-primary",
         input: "form-control"
       });
       Object.assign(PNotify.styling.bootstrap4, {
-        action_bar: "ui-pnotify-confirm-ml",
-        prompt_bar: "ui-pnotify-confirm-ml",
+        actionBar: "ui-pnotify-confirm-ml",
+        promptBar: "ui-pnotify-confirm-ml",
         btn: "btn btn-secondary mx-1",
-        btn_primary: "btn btn-primary mx-1",
+        btnPrimary: "btn btn-primary mx-1",
         input: "form-control"
       });
       if (!PNotify.styling.material) {
         PNotify.styling.material = {};
       }
       Object.assign(PNotify.styling.material, {
-        action_bar: "",
-        prompt_bar: "",
+        actionBar: "",
+        promptBar: "",
         btn: "",
-        btn_primary: "ui-pnotify-material-primary",
+        btnPrimary: "ui-pnotify-material-primary",
         input: ""
       });
     },
@@ -156,7 +156,7 @@
 
       afterOpen() {
         if (this.get("prompt")) {
-          if (this.get("prompt_multi_line")) {
+          if (this.get("promptMultiLine")) {
             this.refs.promptMulti.focus();
           } else {
             this.refs.promptSingle.focus();
@@ -166,7 +166,7 @@
 
       handleClick(button, event) {
         if (button.click) {
-          button.click(this.get("_notice"), this.get("prompt") ? this.get("prompt_value") : null, event);
+          button.click(this.get("_notice"), this.get("prompt") ? this.get("promptValue") : null, event);
         }
       },
 
@@ -176,7 +176,7 @@
           const buttons = this.get("buttons");
           for (let i = 0; i < buttons.length; i++) {
             if (buttons[i].promptTrigger && buttons[i].click) {
-              buttons[i].click(this.get("_notice"), this.get("prompt") ? this.get("prompt_value") : null, event);
+              buttons[i].click(this.get("_notice"), this.get("prompt") ? this.get("promptValue") : null, event);
             }
           }
         }

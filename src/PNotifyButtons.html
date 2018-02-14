@@ -1,22 +1,22 @@
-{{#if _show_closer}}
+{{#if _showCloser}}
   <div
-      class="ui-pnotify-closer {{(!closer_hover || _mouseIsIn) ? '' : 'ui-pnotify-buttons-hidden'}}"
+      class="ui-pnotify-closer {{(!closerHover || _mouseIsIn) ? '' : 'ui-pnotify-buttons-hidden'}}"
       role="button"
       tabindex="0"
       title="{{labels.close}}"
       on:click="handleCloserClick()">
-    <span class="{{_closer_class}}"></span>
+    <span class="{{_closerClass}}"></span>
   </div>
 {{/if}}
-{{#if _show_sticker}}
+{{#if _showSticker}}
   <div
-      class="ui-pnotify-sticker {{(!sticker_hover || _mouseIsIn) ? '' : 'ui-pnotify-buttons-hidden'}}"
+      class="ui-pnotify-sticker {{(!stickerHover || _mouseIsIn) ? '' : 'ui-pnotify-buttons-hidden'}}"
       role="button"
       aria-pressed="{{_options.hide}}"
       tabindex="0"
       title="{{_options.hide ? labels.stick : labels.unstick}}"
       on:click="handleStickerClick()">
-    <span class="{{_options.hide ? _pin_up_class : _pin_down_class}}"></span>
+    <span class="{{_options.hide ? _pinUpClass : _pinDownClass}}"></span>
   </div>
 {{/if}}
 
@@ -31,13 +31,13 @@
         // Provide a button for the user to manually close the notice.
         closer: true,
         // Only show the closer button on hover.
-        closer_hover: true,
+        closerHover: true,
         // Provide a button for the user to manually stick the notice.
         sticker: true,
         // Only show the sticker button on hover.
-        sticker_hover: true,
+        stickerHover: true,
         // Show the buttons even when the nonblock module is in use.
-        show_on_nonblock: false,
+        showOnNonblock: false,
         // The various displayed text, helps facilitating internationalization.
         labels: {
           close: "Close",
@@ -47,8 +47,8 @@
         // The classes to use for button icons. Leave them null to use the classes from the styling you're using.
         classes: {
           closer: null,
-          pin_up: null,
-          pin_down: null
+          pinUp: null,
+          pinDown: null
         }
       };
 
@@ -60,23 +60,23 @@
       // Add button icons to icons objects.
       Object.assign(PNotify.icons.brighttheme, {
         closer: "brighttheme-icon-closer",
-        pin_up: "brighttheme-icon-sticker",
-        pin_down: "brighttheme-icon-sticker brighttheme-icon-stuck"
+        pinUp: "brighttheme-icon-sticker",
+        pinDown: "brighttheme-icon-sticker brighttheme-icon-stuck"
       });
       Object.assign(PNotify.icons.bootstrap3, {
         closer: "glyphicon glyphicon-remove",
-        pin_up: "glyphicon glyphicon-pause",
-        pin_down: "glyphicon glyphicon-play"
+        pinUp: "glyphicon glyphicon-pause",
+        pinDown: "glyphicon glyphicon-play"
       });
       Object.assign(PNotify.icons.fontawesome4, {
         closer: "fa fa-times",
-        pin_up: "fa fa-pause",
-        pin_down: "fa fa-play"
+        pinUp: "fa fa-pause",
+        pinDown: "fa fa-play"
       });
       Object.assign(PNotify.icons.fontawesome5, {
         closer: "fas fa-times",
-        pin_up: "fas fa-pause",
-        pin_down: "fas fa-play"
+        pinUp: "fas fa-pause",
+        pinDown: "fas fa-play"
       });
     },
 
@@ -94,13 +94,13 @@
 
     computed: {
       // Whether to show the sticker icon.
-      _show_sticker: (sticker, show_on_nonblock, _options) => sticker && (!(_options.modules && _options.modules.NonBlock && _options.modules.NonBlock.nonblock) || show_on_nonblock),
+      _showSticker: (sticker, showOnNonblock, _options) => sticker && (!(_options.modules && _options.modules.NonBlock && _options.modules.NonBlock.nonblock) || showOnNonblock),
       // Whether to show the closer icon.
-      _show_closer: (closer, show_on_nonblock, _options) => closer && (!(_options.modules && _options.modules.NonBlock && _options.modules.NonBlock.nonblock) || show_on_nonblock),
+      _showCloser: (closer, showOnNonblock, _options) => closer && (!(_options.modules && _options.modules.NonBlock && _options.modules.NonBlock.nonblock) || showOnNonblock),
       // These are button icon classes.
-      _pin_up_class: (classes, _notice) => _notice ? (classes.pin_up === null ? _notice.get("_icons").pin_up : classes.pin_up) : '',
-      _pin_down_class: (classes, _notice) => _notice ? (classes.pin_down === null ? _notice.get("_icons").pin_down : classes.pin_down) : '',
-      _closer_class: (classes, _notice) => _notice ? (classes.closer === null ? _notice.get("_icons").closer : classes.closer) : '',
+      _pinUpClass: (classes, _notice) => _notice ? (classes.pinUp === null ? _notice.get("_icons").pinUp : classes.pinUp) : '',
+      _pinDownClass: (classes, _notice) => _notice ? (classes.pinDown === null ? _notice.get("_icons").pinDown : classes.pinDown) : '',
+      _closerClass: (classes, _notice) => _notice ? (classes.closer === null ? _notice.get("_icons").closer : classes.closer) : '',
     },
 
     methods: {
@@ -118,7 +118,7 @@
           // Font Awesome 5 replaces our lovely element with a gross SVG. In order
           // to make it play nice with Svelte, we have to clear the element and
           // make it again.
-          const icon = hide ? this.get("classes").pin_up : this.get("classes").pin_down;
+          const icon = hide ? this.get("classes").pinUp : this.get("classes").pinDown;
           if (
               (this.get("_notice").get("icons") === "fontawesome5")
               || (typeof icon === "string" && icon.match(/(^| )fa[srlb]($| )/))

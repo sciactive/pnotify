@@ -11,14 +11,31 @@ PNotify is a JavaScript notification plugin. PNotify can provide [desktop notifi
 
 Unless you're an alpha tester, **none of this README applies to you!** You want to check out the **[README on the master branch](https://github.com/sciactive/pnotify/blob/master/README.md)**.
 
-This README is for **PNotify v4**. v4 is only in alpha stage, but it's got some huge changes:
+This README is for **PNotify 4**. v4 is only in alpha stage, but it's got some huge changes:
 
 * jQuery is no longer required. v4 doesn't require any libraries, actually.
 * It's built using [Svelte](http://svelte.technology), which means it compiles down to vanilla JS.
 * PNotify now has an ES6 module build.
-* `text_escape` and `title_escape` have been replaced by `trust_text` and `trust_title`, and the default behavior changed.
+* All options are now in camelCase instead of snake_case.
+* `text_escape` and `title_escape` have been replaced by `textTrusted` and `titleTrusted`, and the default behavior changed.
 * `insert_brs` option has gone away. (Text and title now have `white-space: pre-line;`.)
 * The default width was raised from 300px to 360px.
+* There is a Compat module available to allow you to run PNotify 3 code with PNotify 4.
+
+## Running PNotify 3 Code with the Compat Module
+
+You can require `PNotifyCompat` instead of `PNotify` in order to run PNotify 3 code. Check out `index-compat.html` for more examples.
+
+```js
+requirejs(['PNotifyCompat'], function(PNotify){
+  PNotify = PNotify && PNotify.__esModule ? PNotify['default'] : PNotify;
+
+  new PNotify({
+    title: 'Regular Notice',
+    text: 'Check me out! I\'m a notice.'
+  });
+});
+```
 
 # Getting Started
 
@@ -107,7 +124,7 @@ PNotify.error({
 });
 ```
 
-Or you can manually create a new notice (but, why would you?):
+Or you can manually create a new notice:
 
 ```js
 new PNotify({
@@ -122,24 +139,24 @@ new PNotify({
 # Options
 
 * `title: false` - The notice's title.
-* `trust_title: false` - Whether to trust the title or escape its contents. (Not allow HTML.)
+* `titleTrusted: false` - Whether to trust the title or escape its contents. (Not allow HTML.)
 * `text: false` - The notice's text.
-* `trust_text: false` - Whether to trust the text or escape its contents. (Not allow HTML.)
+* `textTrusted: false` - Whether to trust the text or escape its contents. (Not allow HTML.)
 * `styling: "brighttheme"` - What styling classes to use. (Can be "brighttheme", "bootstrap3", "bootstrap4", or a styling object. See the source in PNotifyStyleMaterial.html for the properties in a style object.)
 * `icons: "brighttheme"` - What icons classes to use (Can be "brighttheme", "bootstrap3", "fontawesome4", "fontawesome5", or an icon object. See the source in PNotifyStyleMaterial.html for the properties in an icon object.)
-* `addclass: ""` - Additional classes to be added to the notice. (For custom styling.)
-* `cornerclass: ""` - Class to be added to the notice for corner styling.
-* `auto_display: true` - Display the notice when it is created. Turn this off to add notifications to the history without displaying them.
+* `addClass: ""` - Additional classes to be added to the notice. (For custom styling.)
+* `cornerClass: ""` - Class to be added to the notice for corner styling.
+* `autoDisplay: true` - Display the notice when it is created. Turn this off to add notifications to the history without displaying them.
 * `width: "360px"` - Width of the notice.
-* `min_height: "16px"` - Minimum height of the notice. It will expand to fit content.
+* `minHeight: "16px"` - Minimum height of the notice. It will expand to fit content.
 * `type: "notice"` - Type of the notice. "notice", "info", "success", or "error".
 * `icon: true` - Set icon to true to use the default icon for the selected style/type, false for no icon, or a string for your own icon class.
 * `animation: "fade"` - The animation to use when displaying and hiding the notice. "none" and "fade" are supported through CSS. Others are supported through the Animate module and Animate.css.
-* `animate_speed: "normal"` - Speed at which the notice animates in and out. "slow", "normal", or "fast". Respectively, 400ms, 250ms, 100ms.
+* `animateSpeed: "normal"` - Speed at which the notice animates in and out. "slow", "normal", or "fast". Respectively, 400ms, 250ms, 100ms.
 * `shadow: true` - Display a drop shadow.
 * `hide: true` - After a delay, close the notice.
 * `delay: 8000` - Delay in milliseconds before the notice is closed.
-* `mouse_reset: true` - Reset the hide timer if the mouse moves over the notice.
+* `mouseReset: true` - Reset the hide timer if the mouse moves over the notice.
 * `remove: true` - Remove the notice's elements from the DOM after it is closed.
 * `destroy: true` - Whether to remove the notice from the global array when it is closed.
 * `stack: PNotify.defaultStack` - The stack on which the notices will be placed. Also controls the direction the notices stack.
@@ -170,12 +187,12 @@ Changing a default option for modules can be done in a couple ways.
 
 ```js
 // This will change the default for every notice and is the recommended way.
-PNotify.modules.History.defaults.max_in_stack = 10;
+PNotify.modules.History.defaults.maxInStack = 10;
 
 // This will change the default only for notices that don't specify any module options.
 PNotify.defaults.modules = {
   History: {
-    max_in_stack: 10
+    maxInStack: 10
   }
 };
 ```
@@ -197,12 +214,12 @@ PNotify.defaults.modules = {
 
 `Buttons: {`
 * `closer: true` - Provide a button for the user to manually close the notice.
-* `closer_hover: true` - Only show the closer button on hover.
+* `closerHover: true` - Only show the closer button on hover.
 * `sticker: true` - Provide a button for the user to manually stick the notice.
-* `sticker_hover: true` - Only show the sticker button on hover.
-* `show_on_nonblock: false` - Show the buttons even when the nonblock module is in use.
+* `stickerHover: true` - Only show the sticker button on hover.
+* `showOnNonblock: false` - Show the buttons even when the nonblock module is in use.
 * `labels: {close: "Close", stick: "Stick", unstick: "Unstick"}` - Lets you change the displayed text, facilitating internationalization.
-* `classes: {closer: null, pin_up: null, pin_down: null}` - The classes to use for button icons. Leave them null to use the classes from the styling you're using.
+* `classes: {closer: null, pinUp: null, pinDown: null}` - The classes to use for button icons. Leave them null to use the classes from the styling you're using.
 
 `}`
 
@@ -216,7 +233,7 @@ PNotify.defaults.modules = {
 ## Mobile Module
 
 `Mobile: {`
-* `swipe_dismiss: true` - Let the user swipe the notice away.
+* `swipeDismiss: true` - Let the user swipe the notice away.
 * `styling: true` - Styles the notice to look good on mobile.
 
 `}`
@@ -227,8 +244,8 @@ The Animate module requires you to include [Animate.css](https://daneden.github.
 
 `Animate: {`
 * `animate: false` - Use animate.css to animate the notice.
-* `in_class: ""` - The class to use to animate the notice in.
-* `out_class: ""` - The class to use to animate the notice out.
+* `inClass: ""` - The class to use to animate the notice in.
+* `outClass: ""` - The class to use to animate the notice out.
 
 `}`
 
@@ -239,16 +256,16 @@ The Animate module also creates a method, `attention`, on notices which accepts 
 `Confirm: {`
 * `confirm: false` - Make a confirmation box.
 * `prompt: false` - Make a prompt.
-* `prompt_class: ""` - Classes to add to the input element of the prompt.
-* `prompt_value: ""` - The value of the prompt. (Note that this is two-way bound to the input.)
-* `prompt_multi_line: false` - Whether the prompt should accept multiple lines of text.
+* `promptClass: ""` - Classes to add to the input element of the prompt.
+* `promptValue: ""` - The value of the prompt. (Note that this is two-way bound to the input.)
+* `promptMultiLine: false` - Whether the prompt should accept multiple lines of text.
 * `align: "right"` - Where to align the buttons. (right, center, left, justify)
 
 ```js
 buttons: [
   {
     text: "Ok",
-    trustText: false,
+    textTrusted: false,
     addClass: "",
     primary: true,
     promptTrigger: true,
@@ -259,7 +276,7 @@ buttons: [
   },
   {
     text: "Cancel",
-    trustText: false,
+    textTrusted: false,
     addClass: "",
     click: (notice) => {
       notice.close();
@@ -293,7 +310,7 @@ PNotify.alert({
 
 `History: {`
 * `history: true` - Place the notice in the history.
-* `max_in_stack: Infinity` - Maximum number of notices to have open in its stack.
+* `maxInStack: Infinity` - Maximum number of notices to have open in its stack.
 
 `}`
 
@@ -306,15 +323,15 @@ In PNotify v3, the history module could make a dropdown which had these function
 
 ## Callbacks Module
 
-The callback options all expect one argument, a function, which will be called when that event occurs. If the function returns false on the "before_open" or "before_close" callback, that event will be canceled.
+The callback options all expect one argument, a function, which will be called when that event occurs. If the function returns false on the "beforeOpen" or "beforeClose" callback, that event will be canceled. `beforeInit` and `afterInit` will only work for notices created with the helper functions.
 
 `Callbacks: {`
-* `before_init` - This option is called before the notice has been initialized. It accepts one argument, the options object.
-* `after_init` - This option is called after the notice has been initialized. It accepts one argument, the notice object.
-* `before_open` - This option is called before the notice has been displayed. It accepts one argument, the notice object.
-* `after_open` - This option is called after the notice has been displayed. It accepts one argument, the notice object.
-* `before_close` - This option is called before the notice closes. It accepts one argument, the notice object.
-* `after_close` - This option is called after the notice closes. It accepts one argument, the notice object.
+* `beforeInit` - This option is called before the notice has been initialized. It accepts one argument, the options object.
+* `afterInit` - This option is called after the notice has been initialized. It accepts one argument, the notice object.
+* `beforeOpen` - This option is called before the notice has been displayed. It accepts one argument, the notice object.
+* `afterOpen` - This option is called after the notice has been displayed. It accepts one argument, the notice object.
+* `beforeClose` - This option is called before the notice closes. It accepts one argument, the notice object.
+* `afterClose` - This option is called after the notice closes. It accepts one argument, the notice object.
 
 `}`
 
@@ -390,7 +407,7 @@ A stack is an object which PNotify uses to determine where to position notices.
 
 You can set a stack as modal by setting the `modal` property to true. A modal stack creates an overlay behind it when any of its notices are open. When the last notice within it is closed, the overlay is removed.
 
-If the `overlay_close` property is set to true, then clicking the overlay will close all of the notices in that stack.
+If the `overlayClose` property is set to true, then clicking the overlay will close all of the notices in that stack.
 
 ## Example Stacks
 
@@ -420,7 +437,7 @@ const stack_modal = {
   "firstpos1": 25,
   "push": "top",
   "modal": true,
-  "overlay_close": true
+  "overlayClose": true
 };
 const stack_bar_top = {
   "dir1": "down",
@@ -470,7 +487,7 @@ This will create a notice that is positioned 90px from the top edge and 90px fro
   * Notification types: notice, info, success, and error.
   * Stacks allow notices to position together or independently.
   * Control stack direction and push to top or bottom.
-  * Full RTL language support.
+  * RTL language support.
 * Feature rich API.
   * Desktop notifications based on the Web Notifications standard.
   * Confirm dialogs, alert buttons, and prompts.

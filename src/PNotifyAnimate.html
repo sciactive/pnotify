@@ -9,9 +9,9 @@
         // Use animate.css to animate the notice.
         animate: false,
         // The class to use to animate the notice in.
-        in_class: "",
+        inClass: "",
         // The class to use to animate the notice out.
-        out_class: ""
+        outClass: ""
       };
 
       Component.init = (notice) => {
@@ -74,12 +74,12 @@
           _notice.animateIn = this.animateIn.bind(this);
           _notice.animateOut = this.animateOut.bind(this);
           var animSpeed = 250;
-          if (_options.animate_speed === "slow") {
+          if (_options.animateSpeed === "slow") {
             animSpeed = 400;
-          } else if (_options.animate_speed === "fast") {
+          } else if (_options.animateSpeed === "fast") {
             animSpeed = 100;
-          } else if (_options.animate_speed > 0) {
-            animSpeed = _options.animate_speed;
+          } else if (_options.animateSpeed > 0) {
+            animSpeed = _options.animateSpeed;
           }
           animSpeed = animSpeed / 1000;
           _notice.refs.elem.style.WebkitAnimationDuration = animSpeed+"s";
@@ -118,7 +118,7 @@
         _notice.refs.elem.addEventListener('MSAnimationEnd', finished);
         _notice.refs.elem.addEventListener('oanimationend', finished);
         _notice.refs.elem.addEventListener('animationend', finished);
-        _notice.set({"_animatingClass": "ui-pnotify-in animated "+this.get("in_class")});
+        _notice.set({"_animatingClass": "ui-pnotify-in animated "+this.get("inClass")});
       },
 
       animateOut(callback) {
@@ -146,7 +146,7 @@
         _notice.refs.elem.addEventListener('MSAnimationEnd', finished);
         _notice.refs.elem.addEventListener('oanimationend', finished);
         _notice.refs.elem.addEventListener('animationend', finished);
-        _notice.set({"_animatingClass": "ui-pnotify-in animated "+this.get("out_class")});
+        _notice.set({"_animatingClass": "ui-pnotify-in animated "+this.get("outClass")});
       }
     }
   }

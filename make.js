@@ -5,6 +5,7 @@ const fs = require('fs');
 require('shelljs/make');
 
 let pnotify_src = {
+  // Main code.
   'index': 'index.js',
   'core': 'PNotify.html',
   'animate': 'PNotifyAnimate.html',
@@ -15,11 +16,19 @@ let pnotify_src = {
   'history': 'PNotifyHistory.html',
   'desktop': 'PNotifyDesktop.html',
   'confirm': 'PNotifyConfirm.html',
+
+  // Compat module.
+  'compat': 'PNotifyCompat.js',
+
+  // Styles.
   'stylematerial': 'PNotifyStyleMaterial.html',
+
+  // Reference module.
   'reference': 'PNotifyReference.html',
 };
 
 let pnotify_js = {
+  // Main code.
   'index': 'index.js',
   'core': 'PNotify.js',
   'animate': 'PNotifyAnimate.js',
@@ -30,7 +39,14 @@ let pnotify_js = {
   'history': 'PNotifyHistory.js',
   'desktop': 'PNotifyDesktop.js',
   'confirm': 'PNotifyConfirm.js',
+
+  // Compat module.
+  'compat': 'PNotifyCompat.js',
+
+  // Styles.
   'stylematerial': 'PNotifyStyleMaterial.js',
+
+  // Reference module.
   'reference': 'PNotifyReference.js',
 };
 
@@ -97,7 +113,7 @@ target.dist = (args) => {
 let compile_js = (module, filename, args) => {
   let format = setup(args);
 
-  if (module === "index" && format === 'iife') {
+  if ((module === "index" || module === "compat") && format === 'iife') {
     return;
   }
 
@@ -159,11 +175,11 @@ let compile_js = (module, filename, args) => {
   }
 
   if (format === 'es') {
-    code = code.replace(/import PNotify(\w*) from "\.\/PNotify(\w*)\.html";/g, 'import PNotify$1 from "./PNotify$2.js";');
+    code = code.replace(/import PNotify(\w*) from ["']\.\/PNotify(\w*)\.html["'];/g, 'import PNotify$1 from "./PNotify$2.js";');
   }
   if (format === 'umd') {
-    code = code.replace(/require\("\.\/PNotify(\w*)\.html"\)/g, 'require("./PNotify$1")');
-    code = code.replace(/, "\.\/PNotify(\w*)\.html"/g, ', "PNotify$1"');
+    code = code.replace(/require\(["']\.\/PNotify(\w*)\.html["']\)/g, 'require("./PNotify$1")');
+    code = code.replace(/, ["']\.\/PNotify(\w*)\.html["']/g, ', "PNotify$1"');
   }
 
   code.to(dst_filename);
@@ -175,7 +191,7 @@ let compile_js = (module, filename, args) => {
 let compress_js = (module, filename, args) => {
   let format = setup(args);
 
-  if (module === "index" && format === 'iife') {
+  if ((module === "index" || module === "compat") && format === 'iife') {
     return;
   }
 
