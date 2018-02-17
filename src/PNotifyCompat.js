@@ -72,6 +72,10 @@ const translateOptions = (options, module, moduleName) => {
     }
     if (newOptions.hasOwnProperty('confirm')) {
       newOptions.modules.Confirm = translateOptions(newOptions.confirm, true, 'confirm');
+      if (newOptions.modules.Confirm.promptDefault) {
+        newOptions.modules.Confirm.promptValue = newOptions.modules.Confirm.promptDefault;
+        delete newOptions.modules.Confirm.promptDefault;
+      }
       delete newOptions.confirm;
     }
     if (newOptions.hasOwnProperty('desktop')) {

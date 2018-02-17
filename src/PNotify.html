@@ -57,7 +57,7 @@
       <:Component {module} on:init="initModule(event.module)" />
     {{/each}}
     {{#if icon !== false}}
-      <div class="ui-pnotify-icon {{_styles.icon ? _styles.icon : ''}}">
+      <div class="ui-pnotify-icon {{_styles.icon ? _styles.icon : ''}}" ref:iconContainer>
         <span class="{{icon === true ? (_icons[type] ? _icons[type] : '') : icon}}"></span>
       </div>
     {{/if}}
