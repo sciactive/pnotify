@@ -344,9 +344,9 @@ The callback options all expect one argument, a function, which will be called w
 
 `}`
 
-# Utility Functions and Properties
+# Methods and Properties
 
-## Static Methods
+## Static Methods/Properties
 
 * `PNotify.VERSION` - PNotify version number.
 * `PNotify.alert(options)` - Create an alert.
@@ -365,7 +365,7 @@ The callback options all expect one argument, a function, which will be called w
 * `PNotify.modules` - This object holds all the PNotify modules.
 * `PNotify.styling` - Styling objects.
 
-## Instance Methods
+## Instance Methods/Properties
 
 * `notice.open()` - Open the notice.
 * `notice.close()` - Close the notice.
@@ -375,6 +375,7 @@ The callback options all expect one argument, a function, which will be called w
 * `notice.refs.container` - The notice container DOM element.
 * `notice.refs.titleContainer` - The title container DOM element.
 * `notice.refs.textContainer` - The text container DOM element.
+* `notice.refs.iconContainer` - The icon container DOM element.
 * `notice.addModuleClass(...classNames)` - This is for modules to add classes to the notice.
 * `notice.removeModuleClass(...classNames)` - This is for modules to remove classes from the notice.
 * `notice.hasModuleClass(...classNames)` - This is for modules to test classes on the notice.
