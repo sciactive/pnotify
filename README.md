@@ -88,6 +88,8 @@ If you are using a UI or icon library, include the appropriate lines below somew
 
 ```js
 //  The Material Style module. (PNotifyStyleMaterial.js)
+//  This module requires a reference to the Material Icons font:
+//  https://fonts.googleapis.com/css?family=Material+Icons
 PNotify.defaults.styling = "material";
 PNotify.defaults.icons = "material";
 
