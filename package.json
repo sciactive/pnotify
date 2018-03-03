@@ -57,6 +57,7 @@
     "uglify-js": "^3.3.10"
   },
   "peerDependencies": {
-    "animate.css": "^3.5.2"
+    "animate.css": "^3.5.2",
+    "nonblockjs": "^1.0.7"
   }
 }

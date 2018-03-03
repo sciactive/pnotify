@@ -36,8 +36,6 @@
         sticker: true,
         // Only show the sticker button on hover.
         stickerHover: true,
-        // Show the buttons even when the NonBlock module is in use.
-        showOnNonblock: false,
         // The various displayed text, helps facilitating internationalization.
         labels: {
           close: "Close",
@@ -94,9 +92,9 @@
 
     computed: {
       // Whether to show the sticker icon.
-      _showSticker: (sticker, showOnNonblock, _options) => sticker && (!(_options.modules && _options.modules.NonBlock && _options.modules.NonBlock.nonblock) || showOnNonblock),
+      _showSticker: (sticker, _notice) => sticker && !(_notice && _notice.refs.elem.classList.contains('nonblock')),
       // Whether to show the closer icon.
-      _showCloser: (closer, showOnNonblock, _options) => closer && (!(_options.modules && _options.modules.NonBlock && _options.modules.NonBlock.nonblock) || showOnNonblock),
+      _showCloser: (closer, _notice) => closer && !(_notice && _notice.refs.elem.classList.contains('nonblock')),
       // These are button icon classes.
       _pinUpClass: (classes, _notice) => _notice ? (classes.pinUp === null ? _notice.get("_icons").pinUp : classes.pinUp) : '',
       _pinDownClass: (classes, _notice) => _notice ? (classes.pinDown === null ? _notice.get("_icons").pinDown : classes.pinDown) : '',

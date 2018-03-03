@@ -23,6 +23,9 @@
   <!-- Animate.css -->
   <link href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css" rel="stylesheet" type="text/css" />
 
+  <!-- NonBlock.js -->
+  <script type="text/javascript" src="//cdn.jsdelivr.net/npm/nonblockjs@1.0.7/NonBlock.es5.js"></script>
+
   <!-- Bootstrap -->
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" id="bootstrap-css" crossorigin="anonymous">
   <script defer src="//use.fontawesome.com/releases/v5.0.4/js/all.js"></script>
@@ -118,10 +121,8 @@
         title: "PNotify",
         text: "Welcome. Try hovering over me. You can click things behind me, because I'm non-blocking.",
         delay: 12000,
+        addClass: 'nonblock',
         modules: {
-          NonBlock: {
-            nonblock: true
-          },
           Callbacks: {
             beforeClose: function(notice) {
               // You can access the notice's options like this.
@@ -608,15 +609,10 @@
         <hr />
         <button class="btn btn-outline-dark my-1 source" onclick="PNotify.notice({
           title: 'Custom Styling',
-          text: 'I have an additional class that\'s used to give me special styling. I always wanted to be pretty. I also use the nonblock module.',
+          text: 'I have an additional class that\'s used to give me special styling. I always wanted to be pretty. I also use NonBlock.js.',
           styling: {},
-          addClass: 'custom',
-          icon: 'far fa-file-image fa-3x',
-          modules: {
-            NonBlock: {
-              nonblock: true
-            }
-          }
+          addClass: 'custom nonblock',
+          icon: 'far fa-file-image fa-3x'
         });">Custom Styles</button>
         <div style="float: right;"><a data-toggle="modal" href="#growl">How to style like Growl.</a></div>
         <div class="modal fade" id="growl" tabindex="-1" role="dialog" aria-labelledby="growl-title" aria-hidden="true">
@@ -670,13 +666,8 @@
   title: 'Custom Styling',
   text: 'I have an additional class that\'s used to give me special styling. I always wanted to be pretty.',
   <strong>styling: {}</strong>,
-  <strong>addClass: 'custom'</strong>,
-  icon: 'far fa-file-image fa-3x',
-  modules: {
-    NonBlock: {
-      nonblock: true
-    }
-  }
+  <strong>addClass: 'custom nonblock'</strong>,
+  icon: 'far fa-file-image fa-3x'
 });</pre>
               </div>
               <div class="modal-footer">
@@ -901,10 +892,10 @@
             }
           }
         });">Permanent Buttons</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="if (permanotice) {
-          permanotice.open();
+        <button class="btn btn-outline-dark my-1 source" onclick="if (window.permanotice) {
+          window.permanotice.open();
         } else {
-          permanotice = PNotify.notice({
+          window.permanotice = PNotify.notice({
             title: 'Now Look Here',
             text: 'There\'s something you need to know, and I won\'t go away until you come to grips with it.',
             hide: false,
@@ -919,12 +910,17 @@
             }
           });
         }">Permanotice</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="if (permanotice) {
-          permanotice.close();
+        <button class="btn btn-outline-dark my-1 source" onclick="if (window.permanotice) {
+          window.permanotice.close();
         }">Close Permanotice</button>
       </div>
-      <h5 class="card-header">NonBlock Module <small>Click through to things underneath the notice.</small></h5>
+      <h5 class="card-header">NonBlock Module (Deprecated, Replaced with <a href="https://github.com/sciactive/nonblockjs" target="_blank">NonBlock.js</a>) <small>Click through to things underneath the notice.</small></h5>
       <div class="card-body">
+        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.notice({
+          title: 'Non-Blocking Notice with Class',
+          text: 'You can still use the NonBlock module, but all it does is add the &quot;nonblock&quot; class for you. You can do that yourself with &quot;addClass: \'nonblock\'&quot;.',
+          addClass: 'nonblock'
+        });">Easier Now That NonBlock.js is a Thing</button>
         <button class="btn btn-outline-dark my-1 source" onclick="PNotify.notice({
           title: 'Non-Blocking Notice',
           text: 'I\'m a special kind of notice called &quot;non-blocking&quot;. When you hover over me I\'ll fade to show the elements underneath. Feel free to click any of them just like I wasn\'t even here.\n\nNote: HTML links don\'t trigger in some browsers, due to security settings.',
@@ -933,19 +929,7 @@
               nonblock: true
             }
           }
-        });">Non-Blocking</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="PNotify.notice({
-          title: 'Non-Blocking Notice',
-          text: 'I\'m a non-blocking notice with buttons.',
-          modules: {
-            NonBlock: {
-              nonblock: true
-            },
-            Buttons: {
-              showOnNonblock: true
-            }
-          }
-        });">Non-Blocking with Buttons</button>
+        });">Non-Blocking (The Old Way)</button>
       </div>
       <h5 class="card-header">Mobile Module <small>Notices on mobile phones and tablets.</small></h5>
       <div class="card-body">

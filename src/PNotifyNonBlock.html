@@ -1,72 +1,12 @@
 <script>
   import PNotify from "./PNotify.html";
 
-  // Some useful regexes.
-  const regexOn = /^on/,
-        regexMouseEvents = /^(dbl)?click$|^mouse(move|down|up|over|out|enter|leave)$|^contextmenu$/,
-        regexUiEvents = /^(focus|blur|select|change|reset)$|^key(press|down|up)$/,
-        regexHtmlEvents = /^(scroll|resize|(un)?load|abort|error)$/;
-
-  // Fire a DOM event.
-  const domEvent = (elem, event, origEvent) => {
-    let eventObject;
-    event = event.toLowerCase();
-    if (document.createEvent && elem.dispatchEvent) {
-      // FireFox, Opera, Safari, Chrome
-      event = event.replace(regexOn, '');
-      if (event.match(regexMouseEvents)) {
-        // This allows the click event to fire on the notice. There is
-        // probably a much better way to do it.
-        elem.getBoundingClientRect();
-        eventObject = document.createEvent("MouseEvents");
-        eventObject.initMouseEvent(
-          event,
-          origEvent.bubbles,
-          origEvent.cancelable,
-          origEvent.view,
-          origEvent.detail,
-          origEvent.screenX,
-          origEvent.screenY,
-          origEvent.clientX,
-          origEvent.clientY,
-          origEvent.ctrlKey,
-          origEvent.altKey,
-          origEvent.shiftKey,
-          origEvent.metaKey,
-          origEvent.button,
-          origEvent.relatedTarget
-        );
-      } else if (event.match(regexUiEvents)) {
-        eventObject = document.createEvent("UIEvents");
-        eventObject.initUIEvent(event, origEvent.bubbles, origEvent.cancelable, origEvent.view, origEvent.detail);
-      } else if (event.match(regexHtmlEvents)) {
-        eventObject = document.createEvent("HTMLEvents");
-        eventObject.initEvent(event, origEvent.bubbles, origEvent.cancelable);
-      }
-      if (!eventObject) {
-        return
-      };
-      elem.dispatchEvent(eventObject);
-    } else {
-      // Internet Explorer
-      if (!event.match(regexOn)) {
-        event = "on"+event
-      };
-      eventObject = document.createEventObject(origEvent);
-      elem.fireEvent(event, eventObject);
-    }
-  };
-
-  // This keeps track of the last element the mouse was over, so
-  // mouseleave, mouseenter, etc can be called.
-  let nonBlockLastElem;
-
   export default {
     setup (Component) {
       Component.key = "NonBlock";
 
       Component.defaults = {
-        // Create a non-blocking notice. It lets the user click elements underneath it.
+        // Use NonBlock.js to create a non-blocking notice. It lets the user click elements underneath it.
         nonblock: false
       };
 
@@ -80,130 +20,6 @@
       PNotify.modules.NonBlock = Component;
     },
 
-    oncreate () {
-      const cursorStyleCache = [];
-
-      const cacheCursorStyle = (elem) => {
-        for (let i = 0; i < cursorStyleCache.length; i++) {
-          if (cursorStyleCache[i].elem === elem) {
-            return
-          }
-        }
-        cursorStyleCache.push({
-          elem,
-          cursorStyleValue: elem.style.getPropertyValue("cursor"),
-          cursorStylePriority: elem.style.getPropertyPriority("cursor")
-        });
-      };
-
-      const resetCursorStyles = () => {
-        for (let i = 0; i < cursorStyleCache.length; i++) {
-          cursorStyleCache[i].elem.style.setProperty(
-            "cursor",
-            cursorStyleCache[i].cursorStyleValue,
-            cursorStyleCache[i].cursorStylePriority
-          );
-        }
-        cursorStyleCache.length = 0;
-      };
-
-      // This is used to pass events through the notice if it is non-blocking.
-      const nonBlockPass = (notice, event, eventName) => {
-        // This needs a new cursor from the element below.
-        const elemInNotice = document.elementFromPoint(event.clientX, event.clientY);
-
-        // Figure out the cursor.
-        notice.refs.elem.classList.add("ui-pnotify-nonblock-hide");
-        const elemBelow = document.elementFromPoint(event.clientX, event.clientY);
-        notice.refs.elem.classList.remove("ui-pnotify-nonblock-hide");
-        const cursorStyle = window.getComputedStyle(elemBelow)["cursor"];
-
-        // Put it on the element.
-        cacheCursorStyle(elemInNotice);
-        elemInNotice.style.setProperty(
-          "cursor",
-          cursorStyle === "auto" ? "default" : cursorStyle,
-          "important"
-        );
-
-        // If the element changed, call mouseenter, mouseleave, etc.
-        if (!nonBlockLastElem || nonBlockLastElem != elemBelow) {
-          if (nonBlockLastElem) {
-            domEvent(nonBlockLastElem, "mouseleave", event);
-            domEvent(nonBlockLastElem, "mouseout", event);
-          }
-          domEvent(elemBelow, "mouseenter", event);
-          domEvent(elemBelow, "mouseover", event);
-        }
-        domEvent(elemBelow, eventName, event);
-        // Remember the latest element the mouse was over.
-        nonBlockLastElem = elemBelow;
-      };
-
-      const notice = this.get("_notice");
-
-      notice.on("mouseenter", (event) => {
-        if (this.get("nonblock") && event.stopPropagation) {
-          event.stopPropagation();
-          // If it's non-blocking, animate to the other opacity.
-          notice.addModuleClass("ui-pnotify-nonblock-fade");
-        }
-      });
-      notice.on("mouseleave", (event) => {
-        if (this.get("nonblock") && event.stopPropagation) {
-          event.stopPropagation();
-        }
-        nonBlockLastElem = null;
-        resetCursorStyles();
-        // Animate back to the normal opacity.
-        if (this.get("nonblock")) {
-          notice.removeModuleClass("ui-pnotify-nonblock-fade");
-        }
-      });
-      notice.on("mouseover", (event) => {
-        if (this.get("nonblock") && event.stopPropagation) {
-          event.stopPropagation();
-        }
-      });
-      notice.on("mouseout", (event) => {
-        if (this.get("nonblock") && event.stopPropagation) {
-          event.stopPropagation();
-        }
-      });
-      notice.on("mousemove", (event) => {
-        if (this.get("nonblock") && event.stopPropagation) {
-          event.stopPropagation();
-          nonBlockPass(notice, event, "onmousemove");
-        }
-      });
-      notice.on("mousedown", (event) => {
-        if (this.get("nonblock") && event.stopPropagation) {
-          event.stopPropagation();
-          event.preventDefault();
-          nonBlockPass(notice, event, "onmousedown");
-        }
-      });
-      notice.on("mouseup", (event) => {
-        if (this.get("nonblock") && event.stopPropagation) {
-          event.stopPropagation();
-          event.preventDefault();
-          nonBlockPass(notice, event, "onmouseup");
-        }
-      });
-      notice.on("click", (event) => {
-        if (this.get("nonblock") && event.stopPropagation) {
-          event.stopPropagation();
-          nonBlockPass(notice, event, "onclick");
-        }
-      });
-      notice.on("dblclick", (event) => {
-        if (this.get("nonblock") && event.stopPropagation) {
-          event.stopPropagation();
-          nonBlockPass(notice, event, "ondblclick");
-        }
-      });
-    },
-
     data () {
       return Object.assign({
         "_notice": null, // The PNotify notice.
@@ -214,17 +30,20 @@
     methods: {
       initModule(options) {
         this.set(options);
+        this.doNonBlockClass();
+      },
+
+      update() {
+        this.doNonBlockClass();
+      },
+
+      doNonBlockClass() {
+        if (this.get("nonblock")) {
+          this.get("_notice").addModuleClass("nonblock");
+        } else {
+          this.get("_notice").removeModuleClass("nonblock");
+        }
       }
     }
   }
 </script>
-
-<style>
-  :global([ui-pnotify].ui-pnotify.ui-pnotify-nonblock-fade) {
-    /*transition: opacity .3s ease;*/
-    opacity: .2 !important;
-  }
-  :global([ui-pnotify].ui-pnotify.ui-pnotify-nonblock-hide) {
-    display: none !important;
-  }
-</style>

@@ -20,6 +20,8 @@ This README is for **PNotify 4**. v4 is only in alpha stage, but it's got some h
 * `text_escape` and `title_escape` have been replaced by `textTrusted` and `titleTrusted`, and the default behavior changed.
 * `insert_brs` option has gone away. (Text and title now have `white-space: pre-line;`.)
 * The default width was raised from 300px to 360px.
+* The NonBlock module was spun off into its own project, [NonBlock.js](https://github.com/sciactive/nonblockjs). Now the module's just there to add a class for you and has been deprecated. You can use `addClass` instead.
+* It's not possible to show closer/sticker buttons when the notice is nonblocking anymore.
 * There is a Compat module available to allow you to run PNotify 3 code with PNotify 4.
 
 ## Running PNotify 3 Code with the Compat Module
@@ -226,7 +228,6 @@ PNotify.defaults.modules = {
 * `closerHover: true` - Only show the closer button on hover.
 * `sticker: true` - Provide a button for the user to manually stick the notice.
 * `stickerHover: true` - Only show the sticker button on hover.
-* `showOnNonblock: false` - Show the buttons even when the NonBlock module is in use.
 * `labels: {close: "Close", stick: "Stick", unstick: "Unstick"}` - Lets you change the displayed text, facilitating internationalization.
 * `classes: {closer: null, pinUp: null, pinDown: null}` - The classes to use for button icons. Leave them null to use the classes from the styling you're using.
 
@@ -234,8 +235,12 @@ PNotify.defaults.modules = {
 
 ## NonBlock Module
 
+The NonBlock module requires you to include [NonBlock.js](https://github.com/sciactive/nonblockjs) 1.0.7 or higher in your page.
+
+**It is also deprecated and unnecessary in v4.** All it does is add the "nonblock" class to your notice. You can do the same yourself with `addClass: 'nonblock'`.
+
 `NonBlock: {`
-* `nonblock: false` - Create a non-blocking notice. It lets the user click elements underneath it.
+* `nonblock: false` - Use NonBlock.js to create a non-blocking notice. It lets the user click elements underneath it.
 
 `}`
 
