@@ -51,7 +51,6 @@
     "babel-preset-env": "^1.6.1",
     "babel-preset-stage-3": "^6.24.1",
     "clean-css": "^4.1.9",
-    "material-design-icons": "^3.0.1",
     "shelljs": "^0.8.1",
     "svelte": "^1.55.0",
     "uglify-es": "^3.3.9",
@@ -59,6 +58,7 @@
   },
   "peerDependencies": {
     "animate.css": "^3.5.2",
+    "material-design-icons": "^3.0.1",
     "nonblockjs": "^1.0.7"
   }
 }
