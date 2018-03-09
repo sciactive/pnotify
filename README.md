@@ -88,8 +88,7 @@ If you are using a UI or icon library, include the appropriate lines below somew
 
 ```js
 //  The Material Style module. (PNotifyStyleMaterial.js)
-//  This module requires a reference to the Material Icons font:
-//  https://fonts.googleapis.com/css?family=Material+Icons
+//  This module requires a reference to the Material Icons font
 PNotify.defaults.styling = "material";
 PNotify.defaults.icons = "material";
 
@@ -105,6 +104,23 @@ PNotify.defaults.icons = "fontawesome4";
 
 // Font Awesome 5
 PNotify.defaults.icons = "fontawesome5";
+```
+### Material Library Dependencies
+In order for the material library icons to work correctly, you must include the material design icons as a stylesheet in your page.
+
+You can get the icons using NPM:
+```
+npm install --save material-design-icons
+```
+
+and include the stylesheet on your page:
+```
+<link rel="stylesheet" href="node_modules/material-design-icons/iconfont/material-icons.css"/>
+```
+
+Alternatively, you can reference the Google Fonts CDN directly:
+```
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Material+Icons"/>
 ```
 
 # Creating Notices
