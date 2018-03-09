@@ -58,6 +58,7 @@
   },
   "peerDependencies": {
     "animate.css": "^3.5.2",
+    "material-design-icons": "^3.0.1",
     "nonblockjs": "^1.0.7"
   }
 }
