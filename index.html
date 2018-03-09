@@ -21,24 +21,30 @@
   <link href="includes/style.css" rel="stylesheet" type="text/css" />
 
   <!-- Animate.css -->
-  <link href="http://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css" rel="stylesheet" type="text/css" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css" rel="stylesheet" type="text/css" />
 
   <!-- NonBlock.js -->
-  <script type="text/javascript" src="//cdn.jsdelivr.net/npm/nonblockjs@1/NonBlock.es5.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/nonblockjs@1/NonBlock.es5.js"></script>
+
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 
   <!-- Bootstrap -->
-  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" id="bootstrap-css" crossorigin="anonymous">
-  <script defer src="http://use.fontawesome.com/releases/v5.0.4/js/all.js"></script>
-  <script src="http://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="node_modules/material-design-icons/iconfont/material-icons.css"/>
-  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" id="bootstrap-css" crossorigin="anonymous">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+  <!-- FontAwesome -->
+  <script defer src="https://use.fontawesome.com/releases/v5.0.4/js/all.js"></script>
+
+  <!-- Material Design Icons Font -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Material+Icons" />
+
   <!-- JavaScript Source Formatting -->
-  <link href="http://cdn.rawgit.com/google/code-prettify/master/loader/prettify.css" rel="stylesheet" type="text/css" />
-  <link href="http://cdn.rawgit.com/google/code-prettify/master/styles/desert.css" rel="stylesheet" type="text/css" />
-  <script type="text/javascript" src="http://cdn.rawgit.com/google/code-prettify/master/loader/prettify.js"></script>
-  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.7.5/beautify.min.js"></script>
+  <link href="https://cdn.rawgit.com/google/code-prettify/master/loader/prettify.css" rel="stylesheet" type="text/css" />
+  <link href="https://cdn.rawgit.com/google/code-prettify/master/styles/desert.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="https://cdn.rawgit.com/google/code-prettify/master/loader/prettify.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.7.5/beautify.min.js"></script>
 
   <!-- PNotify -->
   <script type="text/javascript" src="lib/iife/PNotify.js"></script>
@@ -122,7 +128,7 @@
         title: "PNotify",
         text: "Welcome. Try hovering over me. You can click things behind me, because I'm non-blocking.",
         delay: 12000,
-        addClass: 'nonblock',
+        addClass: "nonblock",
         modules: {
           Callbacks: {
             beforeClose: function(notice) {
@@ -131,7 +137,7 @@
 
               // You can change the notice's options like this:
               // notice.update({
-              //   title: notice.options.title+" - Enjoy your Stay",
+              //   title: notice.get("title")+" - Enjoy your Stay",
               //   modules: {
               //     Callbacks: {}
               //   }
@@ -189,29 +195,29 @@
           Theme: <span id="bootstrap-current">Normal</span>
         </button>
         <div class="dropdown-menu" aria-labelledby="bootswatch-dropdown" style="max-height: 450px; overflow-y: auto;">
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">Normal</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">Normal</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/cerulean/bootstrap.min.css">Cerulean</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/cosmo/bootstrap.min.css">Cosmo</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/cyborg/bootstrap.min.css">Cyborg</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/darkly/bootstrap.min.css">Darkly</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/flatly/bootstrap.min.css">Flatly</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/journal/bootstrap.min.css">Journal</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/litera/bootstrap.min.css">Litera</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/lumen/bootstrap.min.css">Lumen</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/lux/bootstrap.min.css">LUX</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/materia/bootstrap.min.css">Materia</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/minty/bootstrap.min.css">Minty</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/pulse/bootstrap.min.css">Pulse</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/sandstone/bootstrap.min.css">Sandstone</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/simplex/bootstrap.min.css">Simplex</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/sketchy/bootstrap.min.css">Sketchy</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/slate/bootstrap.min.css">Slate</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/solar/bootstrap.min.css">Solar</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/spacelab/bootstrap.min.css">Spacelab</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/superhero/bootstrap.min.css">Superhero</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/united/bootstrap.min.css">United</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="//maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/yeti/bootstrap.min.css">Yeti</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/cerulean/bootstrap.min.css">Cerulean</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/cosmo/bootstrap.min.css">Cosmo</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/cyborg/bootstrap.min.css">Cyborg</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/darkly/bootstrap.min.css">Darkly</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/flatly/bootstrap.min.css">Flatly</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/journal/bootstrap.min.css">Journal</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/litera/bootstrap.min.css">Litera</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/lumen/bootstrap.min.css">Lumen</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/lux/bootstrap.min.css">LUX</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/materia/bootstrap.min.css">Materia</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/minty/bootstrap.min.css">Minty</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/pulse/bootstrap.min.css">Pulse</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/sandstone/bootstrap.min.css">Sandstone</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/simplex/bootstrap.min.css">Simplex</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/sketchy/bootstrap.min.css">Sketchy</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/slate/bootstrap.min.css">Slate</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/solar/bootstrap.min.css">Solar</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/spacelab/bootstrap.min.css">Spacelab</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/superhero/bootstrap.min.css">Superhero</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/united/bootstrap.min.css">United</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/yeti/bootstrap.min.css">Yeti</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="http://bootswatch.com/" target="_blank">Themes by Bootswatch</a>
         </div>

@@ -1,6 +1,6 @@
 [![npm version](https://badge.fury.io/js/pnotify.svg)](https://www.npmjs.com/package/pnotify) [![Waffle.io - Columns and their card count](https://badge.waffle.io/sciactive/pnotify.svg?columns=all)](https://waffle.io/sciactive/pnotify) [![jsDelivr Hits](https://data.jsdelivr.com/v1/package/npm/pnotify/badge?style=rounded)](https://www.jsdelivr.com/package/npm/pnotify)
 
-PNotify is a JavaScript notification plugin. PNotify can provide [desktop notifications](http://sciactive.com/pnotify/#web-notifications) based on the [Web Notifications spec](http://www.w3.org/TR/notifications/). If desktop notifications are not available or not permitted, PNotify will fall back to an in-browser notice.
+PNotify is a vanilla JavaScript notification library. PNotify can provide [desktop notifications](http://sciactive.com/pnotify/#web-notifications) based on the [Web Notifications spec](http://www.w3.org/TR/notifications/). If desktop notifications are not available or not permitted, PNotify will fall back to an in-browser notice.
 
 # Demos
 
@@ -22,6 +22,7 @@ This README is for **PNotify 4**. v4 is only in alpha stage, but it's got some h
 * The default width was raised from 300px to 360px.
 * The NonBlock module was spun off into its own project, [NonBlock.js](https://github.com/sciactive/nonblockjs). Now the module's just there to add a class for you and has been deprecated. You can use `addClass` instead.
 * It's not possible to show closer/sticker buttons when the notice is nonblocking anymore.
+* The history module can no longer make a dropdown with reshow functions. But hey, it's smaller now.
 * There is a Compat module available to allow you to run PNotify 3 code with PNotify 4.
 
 ## Running PNotify 3 Code with the Compat Module
@@ -52,26 +53,25 @@ requirejs(['PNotifyCompat'], function(PNotify){
 
 You can get PNotify using NPM. (You can also use [jsDelivr](https://www.jsdelivr.com/package/npm/pnotify).)
 
-```
-npm install pnotify
+```sh
+npm install --save pnotify
 ```
 
 Inside the pnotify directory in node_modules, you'll find a `src`, `lib`, and `dist` directory.
 
 * `src` contains the Svelte source code, and uncompressed CSS.
-* `lib` contains all the compiled JS files uncompressed.
-* `dist` contains both JS and CSS files compressed.
-* `lib` and `dist` each have subdirectories for the available formats, UMD, IIFE, and ES6 modules.
+* `lib` contains all the compiled JS files, uncompressed.
+* `dist` contains both JS and CSS files, compressed.
+* `lib` and `dist` each have subdirectories for the available formats, UMD, IIFE, and ES modules.
 
-So if you're not using Webpack or Rollup, here's how you'd include PNotify on your page:
+So if you're not using Webpack or Rollup, here's how you'd include PNotify from NPM on your page:
 
 ```html
-<!-- From an NPM install. -->
 <script type="text/javascript" src="node_modules/pnotify/dist/iife/PNotify.js"></script>
-<link href="node_modules/pnotify/dist/PNotifyBrightTheme.css" media="all" rel="stylesheet" type="text/css" />
+<link href="node_modules/pnotify/dist/PNotifyBrightTheme.css" rel="stylesheet" type="text/css" />
 ```
 
-There are also examples of how to use various libraries (like Browserify and RequireJS) in the libtests dir.
+There are also examples of how to use various libraries (like Browserify and RequireJS) in the `libtests` dir.
 
 Now you can use PNotify like this:
 
@@ -84,14 +84,12 @@ PNotify.notice({
 
 ## Using a UI Library
 
-If you are not using any UI library, you can use the default styling, called Bright Theme by including the `PNotifyBrightTheme.css` file. It is the default.
-
-If you are using a UI or icon library, include the appropriate lines below somewhere before your first notice:
+If you are using a supported UI or icon library, leave out `PNotifyBrightTheme.css` and include the appropriate lines below somewhere before your first notice:
 
 ```js
-//  The Material Style module. (PNotifyStyleMaterial.js)
-//  This module requires a reference to the Material Icons font
+// The Material Style module. (PNotifyStyleMaterial.js)
 PNotify.defaults.styling = "material";
+// This icon setting requires the Material Icons font. (See below.)
 PNotify.defaults.icons = "material";
 
 // Bootstrap version 3
@@ -107,38 +105,41 @@ PNotify.defaults.icons = "fontawesome4";
 // Font Awesome 5
 PNotify.defaults.icons = "fontawesome5";
 ```
-### Material Library Dependencies
-In order for the material library icons to work correctly, you must include the material design icons as a stylesheet in your page.
 
-You can get the icons using NPM:
-```
+### Material Style Icons
+
+To use the MaterialStyle icons, include the Material Design Icons Font in your page.
+
+```sh
+# The official Google package:
 npm install --save material-design-icons
+
+# OR, An unofficial package that only includes the font:
+npm install --save material-design-icon-fonts
 ```
 
-and include the stylesheet on your page:
-```
-<link rel="stylesheet" href="node_modules/material-design-icons/iconfont/material-icons.css"/>
+```html
+<link rel="stylesheet" href="node_modules/material-design-icons/iconfont/material-icons.css" />
 ```
 
-Alternatively, you can reference the Google Fonts CDN directly:
-```
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Material+Icons"/>
+Alternatively, you can use the Google Fonts CDN:
+
+```html
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Material+Icons" />
 ```
 
 # Creating Notices
 
-To make a notice, you can use the helper function:
+To make a notice, use the helper functions:
 
 ```js
+// Manually set the type.
 PNotify.alert({
   text: "I'm an alert.",
   type: "notice"
 });
-```
 
-Or you can automatically set the type:
-
-```js
+// Automatically set the type.
 PNotify.notice({
   text: "I'm a notice."
 });
@@ -204,15 +205,15 @@ PNotify.defaultStack = {
 }
 ```
 
-## Changing Default Options
+## Changing Defaults
 
-Changing a default option is easy.
+Changing a default is easy.
 
 ```js
 PNotify.defaults.width = "400px";
 ```
 
-Changing a default option for modules can be done in a couple ways.
+Changing a default for modules can be done in a couple ways.
 
 ```js
 // This will change the default for every notice and is the recommended way.
@@ -324,7 +325,7 @@ buttons: [
 Because the default buttons fire notice events on confirmation and cancellation, you can listen for them like this:
 
 ```js
-PNotify.alert({
+const notice = PNotify.alert({
   title: "Confirmation Needed",
   text: "Are you sure?",
   hide: false,
@@ -333,8 +334,12 @@ PNotify.alert({
       confirm: true
     }
   }
-}).on("pnotify.confirm", () => {
+});
+notice.on("pnotify.confirm", () => {
   // User confirmed, continue here...
+});
+notice.on("pnotify.cancel", () => {
+  // User canceled, continue here...
 });
 ```
 
@@ -350,8 +355,6 @@ The History module also has two methods:
 
 * `PNotify.modules.History.showLast(stack)` - Reopen the last closed notice from a stack that was placed in the history. If no stack is provided, it will use the default stack.
 * `PNotify.modules.History.showAll(stack)` - Reopen all notices from a stack that were placed in the history. If no stack is provided, it will also use the default stack. If stack is `true`, it will reopen all notices from every stack.
-
-In PNotify 3, the history module could make a dropdown which had these functions. In v4, it was decided that the dropdown was extra code that users weren't using, so it was removed.
 
 ## Callbacks Module
 
