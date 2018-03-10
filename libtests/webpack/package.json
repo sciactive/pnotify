@@ -1,11 +1,11 @@
 {
-  "name": "pnotify-test-browserify",
+  "name": "pnotify-test-webpack",
   "version": "0.0.0",
   "description": "Just a test.",
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "browserify src/index.js -o dist/bundle.js"
+    "build": "webpack"
   },
   "author": "",
   "license": "none",
@@ -13,6 +13,7 @@
     "pnotify": "file:../../"
   },
   "devDependencies": {
-    "browserify": "^15.2.0"
+    "webpack": "^4.1.1",
+    "webpack-cli": "^2.0.11"
   }
 }

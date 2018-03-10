@@ -1,6 +1,6 @@
 /node_modules/
-/libtests/browserify/node_modules
-/libtests/browserify/bundle.js
+/libtests/*/node_modules
+/libtests/*/dist
 /vendor/
 /lib/
 /dist/
