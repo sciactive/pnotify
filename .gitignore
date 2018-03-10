@@ -4,3 +4,10 @@
 /vendor/
 /lib/
 /dist/
+
+/libtests/webpack/node_modules/
+/libtests/webpack/dist/
+
+Thumbs.db
+*.map
+
