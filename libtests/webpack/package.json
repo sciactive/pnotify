@@ -1,14 +1,19 @@
 {
-  "name": "pnotify-webpack-test",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "pnotify-test-webpack",
+  "version": "0.0.0",
+  "description": "Just a test.",
+  "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
   },
   "author": "",
-  "license": "ISC",
+  "license": "none",
   "dependencies": {
-    "pnotify": "^4.0.0-alpha.2"
+    "pnotify": "file:../../"
+  },
+  "devDependencies": {
+    "webpack": "^4.1.1",
+    "webpack-cli": "^2.0.11"
   }
 }

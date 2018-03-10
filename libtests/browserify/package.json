@@ -2,10 +2,10 @@
   "name": "pnotify-test-browserify",
   "version": "0.0.0",
   "description": "Just a test.",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "browserify index.js -o bundle.js"
+    "build": "browserify src/index.js -o dist/bundle.js"
   },
   "author": "",
   "license": "none",
