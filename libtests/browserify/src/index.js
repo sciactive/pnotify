@@ -1,6 +1,6 @@
 // Not working? Did you `npm install` `npm run build` first?
 
-var PNotify = require("pnotify/lib/umd/PNotify.js").default;
+var PNotify = require("pnotify/lib/umd/index.js").default;
 
 document.getElementById("button1").addEventListener("click", function(){
   PNotify.notice({
