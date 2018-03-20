@@ -8,14 +8,19 @@ PNotify is a vanilla JavaScript notification library. PNotify can provide [deskt
   - [Running PNotify 3 Code with the Compat Module](#running-pnotify-3-code-with-the-compat-module)
 - [Getting Started](#getting-started)
 - [Installation](#installation)
+  - [Svelte](#svelte)
+  - [React](#react)
+  - [Angular](#angular)
+  - [Angular (Injectable)](#angular-injectable)
+  - [AngularJS](#angularjs)
+  - [Vanilla JS (ES5)](#vanilla-js-es5)
+  - [Vanilla JS (ES6)](#vanilla-js-es6)
+- [Themes](#themes)
   - [Bright Theme](#bright-theme)
-  - [PNotify in Svelte](#pnotify-in-svelte)
-  - [PNotify in React](#pnotify-in-react)
-  - [PNotify in Angular](#pnotify-in-angular)
-  - [PNotify in Angular (Injectable)](#pnotify-in-angular-injectable)
-  - [PNotify in Vanilla JS](#pnotify-in-vanilla-js)
-  - [Using a UI Library](#using-a-ui-library)
-    - [Material Style Icons](#material-style-icons)
+  - [Material](#material)
+    - [Material Icons](#material-icons)
+  - [Bootstrap](#bootstrap)
+  - [Font Awesome (Icons)](#font-awesome-icons)
 - [Creating Notices](#creating-notices)
 - [Options](#options)
   - [Changing Defaults](#changing-defaults)
@@ -28,13 +33,12 @@ PNotify is a vanilla JavaScript notification library. PNotify can provide [deskt
   - [History Module](#history-module)
   - [Callbacks Module](#callbacks-module)
 - [Methods and Properties](#methods-and-properties)
-  - [Static Methods/Properties](#static-methodsproperties)
-  - [Instance Methods/Properties](#instance-methodsproperties)
+  - [Static Methods and Properties](#static-methods-and-properties)
+  - [Instance Methods and Properties](#instance-methods-and-properties)
     - [From the Svelte Component API](#from-the-svelte-component-api)
     - [Events](#events)
 - [Stacks](#stacks)
-  - [Modal Stacks](#modal-stacks)
-  - [Example Stacks](#example-stacks)
+  - [Example Stack](#example-stack)
 - [Features](#features)
 - [Licensing and Additional Info](#licensing-and-additional-info)
   - [Support on Beerpay](#support-on-beerpay)
@@ -99,27 +103,20 @@ Inside the pnotify module directory:
 
 # Installation
 
+In addition to the JS, be sure to [include a PNotify theme](#themes).
 
-## Bright Theme
-
-If you're using the default theme, called Bright Theme, include the CSS file in your page:
-
-```html
-<link href="node_modules/pnotify/dist/PNotifyBrightTheme.css" rel="stylesheet" type="text/css" />
-```
-
-## PNotify in Svelte
+## Svelte
 
 To [include PNotify in Svelte](https://codesandbox.io/s/nwoxqkvw6m), you can import the Svelte files from `src`:
 
 ```js
-import PNotify from 'pnotify/src/PNotify.html';
-import PNotifyButtons from 'pnotify/src/PNotifyButtons.html';
+import PNotify from "pnotify/src/PNotify.html";
+import PNotifyButtons from "pnotify/src/PNotifyButtons.html";
 
 PNotify.alert("Notice me, senpai!");
 ```
 
-## PNotify in React
+## React
 
 To [include PNotify in React](https://codesandbox.io/s/wwqzk8472w), you can import the ES modules from `dist`:
 
@@ -130,7 +127,7 @@ import PNotifyButtons from "pnotify/dist/es/PNotifyButtons";
 PNotify.alert("Notice me, senpai!");
 ```
 
-## PNotify in Angular
+## Angular
 
 To [include PNotify in Angular](https://codesandbox.io/s/l3pzkl64yq), you can import the ES modules from `dist` and initiate the modules:
 
@@ -147,7 +144,7 @@ export class WhateverComponent {
 }
 ```
 
-## PNotify in Angular (Injectable)
+## Angular (Injectable)
 
 To [include PNotify in Angular](https://codesandbox.io/s/17yr520yj) as an injectable service:
 
@@ -188,9 +185,25 @@ export class WhateverComponent {
 }
 ```
 
-## PNotify in Vanilla JS
+## AngularJS
 
-To include PNotify in vanilla JS, you can include the IIFE scripts from `dist`:
+To [include PNotify in AngularJS](https://codesandbox.io/s/o5mp55p2p9), you can import the UMD modules from `dist`:
+
+```js
+var angular = require("angular");
+var PNotify = require("pnotify/dist/umd/PNotify");
+var PNotifyButtons = require("pnotify/dist/umd/PNotifyButtons");
+
+angular.module('WhateverModule', [])
+  .value('PNotify', PNotify.default)
+  .controller('WhateverController', ['PNotify', function(PNotify) {
+    PNotify.alert("Notice me, senpai!");
+  }]);
+```
+
+## Vanilla JS (ES5)
+
+To include PNotify in vanilla ECMAScript 5, you can include the IIFE scripts from `dist`:
 
 ```html
 <script type="text/javascript" src="node_modules/pnotify/dist/iife/PNotify.js"></script>
@@ -200,33 +213,45 @@ To include PNotify in vanilla JS, you can include the IIFE scripts from `dist`:
 </script>
 ```
 
-## Using a UI Library
+## Vanilla JS (ES6)
 
-If you are using a supported UI or icon library, leave out `PNotifyBrightTheme.css` and include the appropriate lines below somewhere before your first notice:
+To include PNotify in vanilla ECMAScript 6+, you can include the ES modules from `dist`:
 
 ```js
-// The Material Style module. (PNotifyStyleMaterial.js)
+import PNotify from "node_modules/pnotify/dist/es/PNotify.js";
+import PNotifyButtons from "node_modules/pnotify/dist/es/PNotifyButtons.js";
+
+PNotify.alert("Notice me, senpai!");
+```
+
+# Themes
+
+## Bright Theme
+
+If you're using the default theme, called Bright Theme, include the CSS file in your page:
+
+```html
+<link href="node_modules/pnotify/dist/PNotifyBrightTheme.css" rel="stylesheet" type="text/css" />
+```
+
+## Material
+
+If you're using the Material Style module, include the module in your JS, and set it as the default:
+
+```js
+import PNotifyStyleMaterial from "pnotify/dist/es/PNotifyStyleMaterial.js";
+// or
+var PNotifyStyleMaterial = require("pnotify/dist/umd/PNotifyStyleMaterial.js");
+
+// Set default styling.
 PNotify.defaults.styling = "material";
 // This icon setting requires the Material Icons font. (See below.)
 PNotify.defaults.icons = "material";
-
-// Bootstrap version 3
-PNotify.defaults.styling = "bootstrap3";
-PNotify.defaults.icons = "bootstrap3";
-
-// Bootstrap version 4
-PNotify.defaults.styling = "bootstrap4";
-
-// Font Awesome 4
-PNotify.defaults.icons = "fontawesome4";
-
-// Font Awesome 5
-PNotify.defaults.icons = "fontawesome5";
 ```
 
-### Material Style Icons
+### Material Icons
 
-To use the MaterialStyle icons, include the Material Design Icons Font in your page.
+To use the Material Style icons, include the Material Design Icons Font in your page.
 
 ```sh
 # The official Google package:
@@ -244,6 +269,27 @@ Alternatively, you can use the Google Fonts CDN:
 
 ```html
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Material+Icons" />
+```
+
+## Bootstrap
+
+To set Bootstrap as the default style, include the appropriate line(s) from below after you import PNotify:
+
+```js
+PNotify.defaults.styling = "bootstrap3"; // Bootstrap version 3
+PNotify.defaults.icons = "bootstrap3"; // glyphicons
+// or
+PNotify.defaults.styling = "bootstrap4"; // Bootstrap version 4
+```
+
+## Font Awesome (Icons)
+
+To set Font Awesome as the default icons, include the appropriate line from below after you import PNotify:
+
+```js
+PNotify.defaults.icons = "fontawesome4"; // Font Awesome 4
+// or
+PNotify.defaults.icons = "fontawesome5"; // Font Awesome 5
 ```
 
 # Creating Notices
@@ -490,7 +536,7 @@ The callback options all expect one argument, a function, which will be called w
 
 # Methods and Properties
 
-## Static Methods/Properties
+## Static Methods and Properties
 
 * `PNotify.VERSION` - PNotify version number.
 * `PNotify.alert(options)` - Create an alert.
@@ -509,7 +555,7 @@ The callback options all expect one argument, a function, which will be called w
 * `PNotify.modules` - This object holds all the PNotify modules.
 * `PNotify.styling` - Styling objects.
 
-## Instance Methods/Properties
+## Instance Methods and Properties
 
 * `notice.open()` - Open the notice.
 * `notice.close()` - Close the notice.
@@ -540,83 +586,54 @@ The callback options all expect one argument, a function, which will be called w
 
 A stack is an object which PNotify uses to determine where to position notices.
 
-* A stack can include a `dir1` property, wich can be `"up"`, `"down"`, `"right"`, or `"left"`.
-* If you include `dir1`, you can also include `firstpos1`, a number of pixels from the edge of the container the first notice will appear.
-* You can also include a `dir2`, which should be a perpendicular direction to `dir1`.
-* If you include `dir2`, you can also include `firstpos2`, a number of pixels from the edge of the container the first notice will appear.
-* `dir1` is the first direction in which the notices are stacked. When the notices run out of room in the window, they will move over in the direction specified by `dir2`.
-* If there is no `dir1` property, the notice will be centered.
+Stack properties:
+
+* `dir1` - The primary stacking direction. Can be `"up"`, `"down"`, `"right"`, or `"left"`.
+* `firstpos1` - Number of pixels from the edge of the context, relative to `dir1`, the first notice will appear. If undefined, the current position of the notice, whatever that is, will be used.
+* `spacing1` - Number of pixels between notices along `dir1`. If undefined, `25` will be used.
+* `dir2` - The secondary stacking direction. Should be a perpendicular direction to `dir1`. The notices will continue in this direction when they reach the edge of the viewport along `dir1`.
+* `firstpos2` - Number of pixels from the edge of the context, relative to `dir2`, the first notice will appear. If undefined, the current position of the notice, whatever that is, will be used.
+* `spacing2` - Number of pixels between notices along `dir2`. If undefined, `25` will be used.
+* `push` - Where, in the stack, to push new notices. Can be `"top"` or `"bottom"`.
+* `modal` - Whether to create a modal overlay when this stack's notices are open.
+* `overlayClose` - Whether clicking on the modal overlay should close the stack's notices.
+* `context` - The DOM element this stack's notices should appear in. If undefined, `document.body` will be used.
+
+Stack behavior:
+
+* If there is no `dir1` property, the notice will be centered in the context.
 * If there is a `dir1` and no `dir2`, the notices will be centered along the axis of `dir1`.
-* The `firstpos*` values are relative to an edge determined by the `dir*` value.
-  * `dir*` is `"up"` - `firstpos*` is relative to the bottom edge.
-  * `dir*` is `"down"` - `firstpos*` is relative to the top edge.
-  * `dir*` is `"left"` - `firstpos*` is relative to the right edge.
-  * `dir*` is `"right"` - `firstpos*` is relative to the left edge.
+* The `firstpos*` values are relative to an edge determined by the corresponding `dir*` value.
+  * `dirX === "up"` - `firstposX` is relative to the **bottom** edge.
+  * `dirX === "down"` - `firstposX` is relative to the **top** edge.
+  * `dirX === "left"` - `firstposX` is relative to the **right** edge.
+  * `dirX === "right"` - `firstposX` is relative to the **left** edge.
 * Stacks are independent of each other, so a stack doesn't know and doesn't care if it overlaps (and blocks) another stack.
 * Stack objects are used and manipulated by PNotify, and therefore, should be a variable when passed.
 
 > :warning: Calling something like `PNotify.alert({text: "notice", stack: {"dir1": "down", "firstpos1": 25}});` may not do what you want. It will create a notice, but that notice will be in its own stack and will overlap other notices.
 
-## Modal Stacks
+## Example Stack
 
-You can set a stack as modal by setting the `modal` property to true. A modal stack creates an overlay behind it when any of its notices are open. When the last notice within it is closed, the overlay is removed.
-
-If the `overlayClose` property is set to true, then clicking the overlay will close all of the notices in that stack.
-
-## Example Stacks
-
-These are some example stacks that are used on the demo page.
+Here is an example stack with comments to explain. You can play with it [here](https://codesandbox.io/s/2po6zq9yrr).
 
 ```js
-const stack_topleft = {
-  "dir1": "down",
-  "dir2": "right",
-  "firstpos1": 25,
-  "firstpos2": 25,
-  "push": "top"
-};
-const stack_bottomleft = {
-  "dir1": "right",
-  "dir2": "up",
-  "firstpos1": 25,
-  "firstpos2": 25,
-  "push": "top"
-};
-const stack_topcenter = {
-  "dir1": "down",
-  "firstpos1": 25
-};
-const stack_modal = {
-  "dir1": "down",
-  "firstpos1": 25,
-  "push": "top",
-  "modal": true,
-  "overlayClose": true
-};
-const stack_bar_top = {
-  "dir1": "down",
-  "firstpos1": 0,
-  "spacing1": 0,
-  "push": "top"
-};
-const stack_bar_bottom = {
-  "dir1": "up",
-  "firstpos1": 0,
-  "spacing1": 0
-};
-const stack_context = {
-  "dir1": "down",
-  "dir2": "left",
-  "firstpos1": 25,
-  "firstpos2": 25,
-  "context": document.getElementById("stack-context")
+const stackBottomModal = {
+  dir1: "up", // With a dir1 of "up", the stacks will start appearing at the bottom.
+  // Without a `dir2`, this stack will be horizontally centered, since the `dir1` axis is vertical.
+  firstpos1: 25, // The notices will appear 25 pixels from the bottom of the context.
+  // Without a `spacing1`, this stack's notices will be placed 25 pixels apart.
+  push: "top", // Each new notice will appear at the bottom of the screen, which is where the "top" of the stack is. Other notices will be pushed up.
+  modal: true, // When a notice appears in this stack, a modal overlay will be created.
+  overlayClose: true, // When the user clicks on the overlay, all notices in this stack will be closed.
+  context: document.getElementById("page-container") // The notices will be placed in the "page-container" element.
 };
 ```
 
 If you just want to position a single notice programmatically, and don't want to add any other notices into the stack, you can use something like this:
 
 ```js
-new PNotify({
+PNotify.alert({
   text: "Notice that's positioned in its own stack.",
   stack: {
     "dir1": "down", "dir2": "right",
@@ -632,8 +649,9 @@ This will create a notice that is positioned 90px from the top edge and 90px fro
 * Rich graphical features and effects.
   * Material, Bootstrap 3/4, Font Awesome 4/5, or the stand-alone theme, Bright Theme.
   * Mobile styling and swipe support.
-  * Timed hiding with optional visual effects from Animate.css.
-  * Attention getters from Animate.css.
+  * Timed hiding.
+  * Slick animations with Animate.css.
+  * Attention getters with Animate.css.
 * Highly customizable UI.
   * Sticky notices.
   * Optional close and stick buttons.
@@ -641,15 +659,19 @@ This will create a notice that is positioned 90px from the top edge and 90px fro
   * Notification types: notice, info, success, and error.
   * Stacks allow notices to position together or independently.
   * Control stack direction and push to top or bottom.
+  * Modal notices.
+  * Confirm dialogs, alert buttons, and prompts.
   * RTL language support.
 * Feature rich API.
   * Desktop notifications based on the Web Notifications standard.
-  * Confirm dialogs, alert buttons, and prompts.
   * Dynamically update existing notices.
   * Put forms and other HTML in notices.
     * By default, escapes text to prevent XSS attack.
   * Callbacks for lifespan events.
   * Notice history for reshowing old notices.
+* Universally compatible.
+  * Works with any frontend library.
+  * No dependencies for most features.
 
 # Licensing and Additional Info
 
