@@ -9,4 +9,16 @@ import PNotifyMobile from "./PNotifyMobile.html";
 import PNotifyNonBlock from "./PNotifyNonBlock.html";
 import PNotifyStyleMaterial from "./PNotifyStyleMaterial.html";
 
-export default PNotify;
+export {
+  PNotify as default,
+  PNotify,
+  PNotifyAnimate,
+  PNotifyButtons,
+  PNotifyCallbacks,
+  PNotifyConfirm,
+  PNotifyDesktop,
+  PNotifyHistory,
+  PNotifyMobile,
+  PNotifyNonBlock,
+  PNotifyStyleMaterial
+};

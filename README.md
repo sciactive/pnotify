@@ -2,6 +2,45 @@
 
 PNotify is a vanilla JavaScript notification library. PNotify can provide [desktop notifications](http://sciactive.com/pnotify/#web-notifications) based on the [Web Notifications spec](http://www.w3.org/TR/notifications/). If desktop notifications are not available or not permitted, PNotify will fall back to an in-browser notice.
 
+<!-- TOC START min:1 max:3 link:true update:true -->
+- [Demos](#demos)
+- [Whoa there!](#whoa-there)
+  - [Running PNotify 3 Code with the Compat Module](#running-pnotify-3-code-with-the-compat-module)
+- [Getting Started](#getting-started)
+- [Installation](#installation)
+  - [Bright Theme](#bright-theme)
+  - [PNotify in Svelte](#pnotify-in-svelte)
+  - [PNotify in React](#pnotify-in-react)
+  - [PNotify in Angular](#pnotify-in-angular)
+  - [PNotify in Angular (Injectable)](#pnotify-in-angular-injectable)
+  - [PNotify in Vanilla JS](#pnotify-in-vanilla-js)
+  - [Using a UI Library](#using-a-ui-library)
+    - [Material Style Icons](#material-style-icons)
+- [Creating Notices](#creating-notices)
+- [Options](#options)
+  - [Changing Defaults](#changing-defaults)
+  - [Desktop Module](#desktop-module)
+  - [Buttons Module](#buttons-module)
+  - [NonBlock Module](#nonblock-module)
+  - [Mobile Module](#mobile-module)
+  - [Animate Module](#animate-module)
+  - [Confirm Module](#confirm-module)
+  - [History Module](#history-module)
+  - [Callbacks Module](#callbacks-module)
+- [Methods and Properties](#methods-and-properties)
+  - [Static Methods/Properties](#static-methodsproperties)
+  - [Instance Methods/Properties](#instance-methodsproperties)
+    - [From the Svelte Component API](#from-the-svelte-component-api)
+    - [Events](#events)
+- [Stacks](#stacks)
+  - [Modal Stacks](#modal-stacks)
+  - [Example Stacks](#example-stacks)
+- [Features](#features)
+- [Licensing and Additional Info](#licensing-and-additional-info)
+  - [Support on Beerpay](#support-on-beerpay)
+
+<!-- TOC END -->
+
 # Demos
 
 * http://sciactive.com/pnotify/ for the latest release
@@ -30,56 +69,135 @@ This README is for **PNotify 4**. v4 is only in alpha stage, but it's got some h
 You can use `PNotifyCompat` instead of `PNotify` in order to run PNotify 3 code. Check out `demo/compat-*.html` for more examples.
 
 ```js
-// IIFE
-new PNotifyCompat({
+import PNotify from 'pnotify/dist/es/PNotifyCompat';
+
+new PNotify({
   title: 'Regular Notice',
   text: 'Check me out! I\'m a notice.',
   text_escape: true // <-- old options work
-});
-
-// UMD
-requirejs(['PNotifyCompat'], function(PNotify){
-  PNotify = PNotify && PNotify.__esModule ? PNotify['default'] : PNotify;
-
-  new PNotify({
-    title: 'Regular Notice',
-    text: 'Check me out! I\'m a notice.',
-    text_escape: true // <-- old options work
-  });
 });
 ```
 
 # Getting Started
 
-You can get PNotify using NPM. (You can also use [jsDelivr](https://www.jsdelivr.com/package/npm/pnotify).)
+You can get PNotify using NPM. (You can also use [jsDelivr](https://www.jsdelivr.com/package/npm/pnotify) or [UNPKG](https://unpkg.com/pnotify/).)
 
 ```sh
 npm install --save pnotify
 ```
 
-Inside the pnotify directory in node_modules, you'll find a `src`, `lib`, and `dist` directory.
+Inside the pnotify module directory:
 
-* `src` contains the Svelte source code, and uncompressed CSS.
-* `lib` contains all the compiled JS files, uncompressed.
-* `dist` contains both JS and CSS files, compressed.
-* `lib` and `dist` each have subdirectories for the available formats, UMD, IIFE, and ES modules.
+* `src` Svelte components and uncompressed Bright Theme CSS.
+* `lib/es` uncompressed ECMAScript modules.
+* `lib/umd` uncompressed UMD modules.
+* `lib/iife` uncompressed IIFE scripts.
+* `dist` compressed Bright Theme CSS.
+* `lib/es` compressed ECMAScript modules.
+* `lib/umd` compressed UMD modules.liz
+* `lib/iife` compressed IIFE scripts.
 
-So if you're not using Webpack or Rollup, here's how you'd include PNotify from NPM on your page:
+# Installation
+
+
+## Bright Theme
+
+If you're using the default theme, called Bright Theme, include the CSS file in your page:
 
 ```html
-<script type="text/javascript" src="node_modules/pnotify/dist/iife/PNotify.js"></script>
 <link href="node_modules/pnotify/dist/PNotifyBrightTheme.css" rel="stylesheet" type="text/css" />
 ```
 
-There are also examples of how to use various libraries (like Browserify and RequireJS) in the `libtests` dir.
+## PNotify in Svelte
 
-Now you can use PNotify like this:
+To [include PNotify in Svelte](https://codesandbox.io/s/nwoxqkvw6m), you can import the Svelte files from `src`:
 
 ```js
-PNotify.notice({
-  title: "Regular Notice",
-  text: "Check me out! I'm a notice."
-});
+import PNotify from 'pnotify/src/PNotify.html';
+import PNotifyButtons from 'pnotify/src/PNotifyButtons.html';
+
+PNotify.alert("Notice me, senpai!");
+```
+
+## PNotify in React
+
+To [include PNotify in React](https://codesandbox.io/s/wwqzk8472w), you can import the ES modules from `dist`:
+
+```js
+import PNotify from "pnotify/dist/es/PNotify";
+import PNotifyButtons from "pnotify/dist/es/PNotifyButtons";
+
+PNotify.alert("Notice me, senpai!");
+```
+
+## PNotify in Angular
+
+To [include PNotify in Angular](https://codesandbox.io/s/l3pzkl64yq), you can import the ES modules from `dist` and initiate the modules:
+
+```ts
+import PNotify from "pnotify/dist/es/PNotify";
+import PNotifyButtons from "pnotify/dist/es/PNotifyButtons";
+
+//...
+export class WhateverComponent {
+  constructor() {
+    PNotifyButtons; // Initiate the module. Important!
+    PNotify.alert("Notice me, senpai!");
+  }
+}
+```
+
+## PNotify in Angular (Injectable)
+
+To [include PNotify in Angular](https://codesandbox.io/s/17yr520yj) as an injectable service:
+
+```ts
+// pnotify.service.ts
+import { Injectable } from "@angular/core";
+import PNotify from "pnotify/dist/es/PNotify";
+import PNotifyButtons from "pnotify/dist/es/PNotifyButtons";
+
+@Injectable()
+export class PNotifyService {
+  getPNotify() {
+    PNotifyButtons; // Initiate the module. Important!
+    return PNotify;
+  }
+}
+
+// whatever.module.ts
+//...
+import { PNotifyService } from "./pnotify.service";
+@NgModule({
+  declarations: [...],
+  imports: [...],
+  providers: [PNotifyService],
+  bootstrap: [...]
+})
+export class WhateverModule {}
+
+// whatever.component.ts
+import { PNotifyService } from "./pnotify.service";
+//...
+export class WhateverComponent {
+  pnotify = undefined;
+  constructor(pnotifyService: PNotifyService) {
+    this.pnotify = pnotifyService.getPNotify();
+    this.pnotify.alert("Notice me, senpai!");
+  }
+}
+```
+
+## PNotify in Vanilla JS
+
+To include PNotify in vanilla JS, you can include the IIFE scripts from `dist`:
+
+```html
+<script type="text/javascript" src="node_modules/pnotify/dist/iife/PNotify.js"></script>
+<script type="text/javascript" src="node_modules/pnotify/dist/iife/PNotifyButtons.js"></script>
+<script type="text/javascript">
+  PNotify.alert("Notice me, senpai!");
+</script>
 ```
 
 ## Using a UI Library
