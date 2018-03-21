@@ -21,11 +21,11 @@
 {{/if}}
 
 <script>
-  import PNotify from "./PNotify.html";
+  import PNotify from './PNotify.html';
 
   export default {
     setup (Component) {
-      Component.key = "Buttons";
+      Component.key = 'Buttons';
 
       Component.defaults = {
         // Provide a button for the user to manually close the notice.
@@ -38,9 +38,9 @@
         stickerHover: true,
         // The various displayed text, helps facilitating internationalization.
         labels: {
-          close: "Close",
-          stick: "Stick",
-          unstick: "Unstick"
+          close: 'Close',
+          stick: 'Stick',
+          unstick: 'Unstick'
         },
         // The classes to use for button icons. Leave them null to use the classes from the styling you're using.
         classes: {
@@ -57,36 +57,36 @@
 
       // Add button icons to icons objects.
       Object.assign(PNotify.icons.brighttheme, {
-        closer: "brighttheme-icon-closer",
-        pinUp: "brighttheme-icon-sticker",
-        pinDown: "brighttheme-icon-sticker brighttheme-icon-stuck"
+        closer: 'brighttheme-icon-closer',
+        pinUp: 'brighttheme-icon-sticker',
+        pinDown: 'brighttheme-icon-sticker brighttheme-icon-stuck'
       });
       Object.assign(PNotify.icons.bootstrap3, {
-        closer: "glyphicon glyphicon-remove",
-        pinUp: "glyphicon glyphicon-pause",
-        pinDown: "glyphicon glyphicon-play"
+        closer: 'glyphicon glyphicon-remove',
+        pinUp: 'glyphicon glyphicon-pause',
+        pinDown: 'glyphicon glyphicon-play'
       });
       Object.assign(PNotify.icons.fontawesome4, {
-        closer: "fa fa-times",
-        pinUp: "fa fa-pause",
-        pinDown: "fa fa-play"
+        closer: 'fa fa-times',
+        pinUp: 'fa fa-pause',
+        pinDown: 'fa fa-play'
       });
       Object.assign(PNotify.icons.fontawesome5, {
-        closer: "fas fa-times",
-        pinUp: "fas fa-pause",
-        pinDown: "fas fa-play"
+        closer: 'fas fa-times',
+        pinUp: 'fas fa-pause',
+        pinDown: 'fas fa-play'
       });
     },
 
     oncreate () {
-      this.fire("init", {module: this});
+      this.fire('init', {module: this});
     },
 
     data () {
       return Object.assign({
-        "_notice": null, // The PNotify notice.
-        "_options": {}, // The options for the notice.
-        "_mouseIsIn": false,
+        '_notice': null, // The PNotify notice.
+        '_options': {}, // The options for the notice.
+        '_mouseIsIn': false
       }, PNotify.modules.Buttons.defaults);
     },
 
@@ -96,18 +96,18 @@
       // Whether to show the closer icon.
       _showCloser: (closer, _notice) => closer && !(_notice && _notice.refs.elem.classList.contains('nonblock')),
       // These are button icon classes.
-      _pinUpClass: (classes, _notice) => _notice ? (classes.pinUp === null ? _notice.get("_icons").pinUp : classes.pinUp) : '',
-      _pinDownClass: (classes, _notice) => _notice ? (classes.pinDown === null ? _notice.get("_icons").pinDown : classes.pinDown) : '',
-      _closerClass: (classes, _notice) => _notice ? (classes.closer === null ? _notice.get("_icons").closer : classes.closer) : '',
+      _pinUpClass: (classes, _notice) => _notice ? (classes.pinUp === null ? _notice.get('_icons').pinUp : classes.pinUp) : '',
+      _pinDownClass: (classes, _notice) => _notice ? (classes.pinDown === null ? _notice.get('_icons').pinDown : classes.pinDown) : '',
+      _closerClass: (classes, _notice) => _notice ? (classes.closer === null ? _notice.get('_icons').closer : classes.closer) : ''
     },
 
     methods: {
-      initModule(options) {
+      initModule (options) {
         this.set(options);
-        this.get("_notice").on("mouseenter", () => this.set({"_mouseIsIn": true}));
-        this.get("_notice").on("mouseleave", () => this.set({"_mouseIsIn": false}));
-        this.get("_notice").observe("hide", (hide) => {
-          const sticker = this.get("sticker");
+        this.get('_notice').on('mouseenter', () => this.set({'_mouseIsIn': true}));
+        this.get('_notice').on('mouseleave', () => this.set({'_mouseIsIn': false}));
+        this.get('_notice').observe('hide', (hide) => {
+          const sticker = this.get('sticker');
 
           if (!sticker) {
             return;
@@ -116,28 +116,28 @@
           // Font Awesome 5 replaces our lovely element with a gross SVG. In order
           // to make it play nice with Svelte, we have to clear the element and
           // make it again.
-          const icon = hide ? this.get("classes").pinUp : this.get("classes").pinDown;
+          const icon = hide ? this.get('classes').pinUp : this.get('classes').pinDown;
           if (
-              (this.get("_notice").get("icons") === "fontawesome5")
-              || (typeof icon === "string" && icon.match(/(^| )fa[srlb]($| )/))
-            ) {
-            this.set({"sticker": false});
-            this.set({"sticker": true});
+            (this.get('_notice').get('icons') === 'fontawesome5') ||
+            (typeof icon === 'string' && icon.match(/(^| )fa[srlb]($| )/))
+          ) {
+            this.set({'sticker': false});
+            this.set({'sticker': true});
           }
         });
       },
 
-      handleStickerClick() {
-        const _notice = this.get("_notice");
-        _notice.update({hide: !_notice.get("hide")});
+      handleStickerClick () {
+        const _notice = this.get('_notice');
+        _notice.update({hide: !_notice.get('hide')});
       },
 
-      handleCloserClick() {
-        this.get("_notice").close(false);
-        this.set({"_mouseIsIn": false});
+      handleCloserClick () {
+        this.get('_notice').close(false);
+        this.set({'_mouseIsIn': false});
       }
     }
-  }
+  };
 </script>
 
 <style>

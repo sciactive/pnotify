@@ -1,11 +1,12 @@
-import PNotify from "./PNotify.html";
+import PNotify from './PNotify.html';
 
 // Translate v3 options to v4 options.
 const translateOptions = (options, module, moduleName) => {
   // Merge the classic default options.
   const newOptions = module ? Object.assign({}, moduleName ? PNotifyCompat.prototype.options[moduleName] : {}, options) : Object.assign({}, PNotifyCompat.prototype.options, options);
   const translateName = (badName) => {
-    let goodName = badName, underscoreIndex;
+    let goodName = badName;
+    let underscoreIndex;
     while ((underscoreIndex = goodName.indexOf('_')) !== -1) {
       goodName = goodName.slice(0, underscoreIndex) + goodName.slice(underscoreIndex + 1, underscoreIndex + 2).toUpperCase() + goodName.slice(underscoreIndex + 2);
     }
@@ -143,13 +144,13 @@ const translateOptions = (options, module, moduleName) => {
   }
 
   return newOptions;
-}
+};
 
 // The compatibility class.
 class PNotifyCompat extends PNotify {
-  constructor(options) {
-    if (typeof options !== "object") {
-      options = {"text": options};
+  constructor (options) {
+    if (typeof options !== 'object') {
+      options = {'text': options};
     }
 
     // These need to be called directly, since we're not using PNotify.alert().
@@ -163,7 +164,7 @@ class PNotifyCompat extends PNotify {
 
     // Override the get function to retunr the element like it did in v3.
     const _get = this.get;
-    this.get = function(option) {
+    this.get = function (option) {
       if (option === undefined) {
         return Object.assign(window.jQuery ? window.jQuery(this.refs.elem) : this.refs.elem, _get.call(this));
       }
@@ -187,7 +188,7 @@ class PNotifyCompat extends PNotify {
     }
   }
 
-  update(options) {
+  update (options) {
     options = translateOptions(options);
     return super.update(options);
   }
@@ -215,7 +216,7 @@ PNotifyCompat.desktop = {
 // Old style showLast() in History module.
 if (window.jQuery) {
   window.jQuery(() => {
-    window.jQuery(document.body).on('pnotify.history-last', function() {
+    window.jQuery(document.body).on('pnotify.history-last', function () {
       PNotify.modules.History.showLast();
     });
   });

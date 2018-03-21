@@ -1,8 +1,8 @@
 <script>
-  import PNotify from "./PNotify.html";
+  import PNotify from './PNotify.html';
 
-  let _open   = PNotify.prototype.open,
-      _close = PNotify.prototype.close;
+  let _open = PNotify.prototype.open;
+  let _close = PNotify.prototype.close;
 
   const callbacks = (notice, options, name) => {
     let modules = notice ? notice.get('modules') : options.modules;
@@ -10,7 +10,7 @@
     return cbs[name] ? cbs[name] : () => true;
   };
 
-  PNotify.prototype.open = function(...args) {
+  PNotify.prototype.open = function (...args) {
     let ret = callbacks(this, null, 'beforeOpen')(this);
     if (ret !== false) {
       _open.apply(this, args);
@@ -18,25 +18,25 @@
     }
   };
 
-  PNotify.prototype.close = function(timer_hide, ...args) {
-    let ret = callbacks(this, null, 'beforeClose')(this, timer_hide);
+  PNotify.prototype.close = function (timerHide, ...args) {
+    let ret = callbacks(this, null, 'beforeClose')(this, timerHide);
     if (ret !== false) {
-      _close.apply(this, [timer_hide, ...args]);
-      callbacks(this, null, 'afterClose')(this, timer_hide);
+      _close.apply(this, [timerHide, ...args]);
+      callbacks(this, null, 'afterClose')(this, timerHide);
     }
   };
 
   export default {
     setup (Component) {
-      Component.key = "Callbacks";
+      Component.key = 'Callbacks';
 
       Component.getCallbacks = callbacks;
 
-      let _alert   = PNotify.alert,
-          _notice  = PNotify.notice,
-          _info    = PNotify.info,
-          _success = PNotify.success,
-          _error   = PNotify.error;
+      let _alert = PNotify.alert;
+      let _notice = PNotify.notice;
+      let _info = PNotify.info;
+      let _success = PNotify.success;
+      let _error = PNotify.error;
 
       let init = (original, options) => {
         callbacks(null, options, 'beforeInit')(options);
@@ -64,5 +64,5 @@
       // Register the module with PNotify.
       PNotify.modules.Callbacks = Component;
     }
-  }
+  };
 </script>

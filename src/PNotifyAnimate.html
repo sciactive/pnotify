@@ -1,17 +1,17 @@
 <script>
-  import PNotify from "./PNotify.html";
+  import PNotify from './PNotify.html';
 
   export default {
     setup (Component) {
-      Component.key = "Animate";
+      Component.key = 'Animate';
 
       Component.defaults = {
         // Use animate.css to animate the notice.
         animate: false,
         // The class to use to animate the notice in.
-        inClass: "",
+        inClass: '',
         // The class to use to animate the notice out.
-        outClass: ""
+        outClass: ''
       };
 
       Component.init = (notice) => {
@@ -32,7 +32,7 @@
           notice.refs.container.addEventListener('MSAnimationEnd', cb);
           notice.refs.container.addEventListener('oanimationend', cb);
           notice.refs.container.addEventListener('animationend', cb);
-          notice.refs.container.classList.add("animated");
+          notice.refs.container.classList.add('animated');
           notice.refs.container.classList.add(aniClass);
         };
 
@@ -45,26 +45,26 @@
 
     data () {
       return Object.assign({
-        "_notice": null, // The PNotify notice.
-        "_options": {}, // The options for the notice.
+        '_notice': null, // The PNotify notice.
+        '_options': {} // The options for the notice.
       }, PNotify.modules.Animate.defaults);
     },
 
     methods: {
-      initModule(options) {
+      initModule (options) {
         this.set(options);
         this.setUpAnimations();
       },
 
-      update() {
+      update () {
         this.setUpAnimations();
       },
 
-      setUpAnimations() {
-        const _notice = this.get("_notice");
-        const _options = this.get("_options");
-        if (this.get("animate")) {
-          _notice.set({"animation": "none"});
+      setUpAnimations () {
+        const _notice = this.get('_notice');
+        const _options = this.get('_options');
+        if (this.get('animate')) {
+          _notice.set({'animation': 'none'});
           if (!_notice._animateIn) {
             _notice._animateIn = _notice.animateIn;
           }
@@ -74,17 +74,17 @@
           _notice.animateIn = this.animateIn.bind(this);
           _notice.animateOut = this.animateOut.bind(this);
           var animSpeed = 250;
-          if (_options.animateSpeed === "slow") {
+          if (_options.animateSpeed === 'slow') {
             animSpeed = 400;
-          } else if (_options.animateSpeed === "fast") {
+          } else if (_options.animateSpeed === 'fast') {
             animSpeed = 100;
           } else if (_options.animateSpeed > 0) {
             animSpeed = _options.animateSpeed;
           }
           animSpeed = animSpeed / 1000;
-          _notice.refs.elem.style.WebkitAnimationDuration = animSpeed+"s";
-          _notice.refs.elem.style.MozAnimationDuration = animSpeed+"s";
-          _notice.refs.elem.style.animationDuration = animSpeed+"s";
+          _notice.refs.elem.style.WebkitAnimationDuration = animSpeed + 's';
+          _notice.refs.elem.style.MozAnimationDuration = animSpeed + 's';
+          _notice.refs.elem.style.animationDuration = animSpeed + 's';
         } else if (_notice._animateIn && _notice._animateOut) {
           _notice.animateIn = _notice._animateIn;
           delete _notice._animateIn;
@@ -93,11 +93,10 @@
         }
       },
 
-      animateIn(callback) {
-        const _notice = this.get("_notice");
-        const _options = this.get("_options");
+      animateIn (callback) {
+        const _notice = this.get('_notice');
         // Declare that the notice is animating in.
-        _notice.set({"_animating": "in"});
+        _notice.set({'_animating': 'in'});
 
         const finished = () => {
           _notice.refs.elem.removeEventListener('webkitAnimationEnd', finished);
@@ -105,12 +104,12 @@
           _notice.refs.elem.removeEventListener('MSAnimationEnd', finished);
           _notice.refs.elem.removeEventListener('oanimationend', finished);
           _notice.refs.elem.removeEventListener('animationend', finished);
-          _notice.set({"_animatingClass": "ui-pnotify-in animated"});
+          _notice.set({'_animatingClass': 'ui-pnotify-in animated'});
           if (callback) {
             callback.call();
           }
           // Declare that the notice has completed animating.
-          _notice.set({"_animating": false});
+          _notice.set({'_animating': false});
         };
 
         _notice.refs.elem.addEventListener('webkitAnimationEnd', finished);
@@ -118,14 +117,13 @@
         _notice.refs.elem.addEventListener('MSAnimationEnd', finished);
         _notice.refs.elem.addEventListener('oanimationend', finished);
         _notice.refs.elem.addEventListener('animationend', finished);
-        _notice.set({"_animatingClass": "ui-pnotify-in animated "+this.get("inClass")});
+        _notice.set({'_animatingClass': 'ui-pnotify-in animated ' + this.get('inClass')});
       },
 
-      animateOut(callback) {
-        const _notice = this.get("_notice");
-        const _options = this.get("_options");
+      animateOut (callback) {
+        const _notice = this.get('_notice');
         // Declare that the notice is animating out.
-        _notice.set({"_animating": "out"});
+        _notice.set({'_animating': 'out'});
 
         const finished = () => {
           _notice.refs.elem.removeEventListener('webkitAnimationEnd', finished);
@@ -133,12 +131,12 @@
           _notice.refs.elem.removeEventListener('MSAnimationEnd', finished);
           _notice.refs.elem.removeEventListener('oanimationend', finished);
           _notice.refs.elem.removeEventListener('animationend', finished);
-          _notice.set({"_animatingClass": "animated"});
+          _notice.set({'_animatingClass': 'animated'});
           if (callback) {
             callback.call();
           }
           // Declare that the notice has completed animating.
-          _notice.set({"_animating": false});
+          _notice.set({'_animating': false});
         };
 
         _notice.refs.elem.addEventListener('webkitAnimationEnd', finished);
@@ -146,8 +144,8 @@
         _notice.refs.elem.addEventListener('MSAnimationEnd', finished);
         _notice.refs.elem.addEventListener('oanimationend', finished);
         _notice.refs.elem.addEventListener('animationend', finished);
-        _notice.set({"_animatingClass": "ui-pnotify-in animated "+this.get("outClass")});
+        _notice.set({'_animatingClass': 'ui-pnotify-in animated ' + this.get('outClass')});
       }
     }
-  }
+  };
 </script>

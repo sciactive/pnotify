@@ -17,12 +17,12 @@
 {{/if}}
 
 <script>
-  import PNotify from "./PNotify.html";
+  import PNotify from './PNotify.html';
 
   export default {
     setup (Component) {
       // This is the key you use for registering your module with PNotify.
-      Component.key = "Reference";
+      Component.key = 'Reference';
 
       // This if the default values of your options.
       Component.defaults = {
@@ -31,7 +31,7 @@
         // If you are displaying any text, you should use a labels options to
         // support internationalization.
         labels: {
-          text: "Spin Around"
+          text: 'Spin Around'
         }
       };
 
@@ -39,7 +39,7 @@
       // markup in the template, you would do this.
       // Component.init = (notice) => {
       //   return new Component({target: document.body, data: {
-      //     "_notice": notice
+      //     '_notice': notice
       //   }});
       // };
 
@@ -50,22 +50,22 @@
 
       // This is where you would add any styling or icons classes you are using in your code.
       Object.assign(PNotify.icons.brighttheme, {
-        athing: "bt-icon bt-icon-refresh"
+        athing: 'bt-icon bt-icon-refresh'
       });
       Object.assign(PNotify.icons.bootstrap3, {
-        athing: "glyphicon glyphicon-refresh"
+        athing: 'glyphicon glyphicon-refresh'
       });
       Object.assign(PNotify.icons.fontawesome4, {
-        athing: "fa fa-refresh"
+        athing: 'fa fa-refresh'
       });
       Object.assign(PNotify.icons.fontawesome5, {
-        athing: "fas fa-sync"
+        athing: 'fas fa-sync'
       });
       if (!PNotify.icons.material) {
         PNotify.icons.material = {};
       }
       Object.assign(PNotify.icons.material, {
-        athing: "material-icons pnotify-material-icon-refresh"
+        athing: 'material-icons pnotify-material-icon-refresh'
       });
     },
 
@@ -73,66 +73,68 @@
       // This is the second way to init a module. Because we put markup in the
       // template, we have to fire this event to tell the core that we are ready
       // to receive our options.
-      this.fire("init", {module: this});
+      this.fire('init', {module: this});
     },
 
     data () {
       return Object.assign({
-        "_notice": null, // The PNotify notice.
-        "_options": {}, // The options for the notice.
-        "_mouseIsIn": false,
+        '_notice': null, // The PNotify notice.
+        '_options': {}, // The options for the notice.
+        '_mouseIsIn': false
       }, PNotify.modules.Reference.defaults);
     },
 
     methods: {
       // This method is called from the core to give us our actual options.
       // Until it is called, our options will just be the defaults.
-      initModule(options) {
+      initModule (options) {
         // Set our options.
         this.set(options);
         // Now that the notice is available to us, we can listen to events fired
         // from it.
-        this.get("_notice").on("mouseenter", () => this.set({"_mouseIsIn": true}));
-        this.get("_notice").on("mouseleave", () => this.set({"_mouseIsIn": false}));
+        this.get('_notice').on('mouseenter', () => this.set({'_mouseIsIn': true}));
+        this.get('_notice').on('mouseleave', () => this.set({'_mouseIsIn': false}));
       },
 
-      doSomething() {
+      doSomething () {
         // Spin the notice around.
-        let cur_angle = 0, notice = this.get("_notice"), timer = setInterval(() => {
-          cur_angle += 10;
-          if (cur_angle == 360) {
-            cur_angle = 0;
+        let curAngle = 0;
+        let notice = this.get('_notice');
+        let timer = setInterval(() => {
+          curAngle += 10;
+          if (curAngle === 360) {
+            curAngle = 0;
             clearInterval(timer);
           }
-          notice.refs.elem.style.transform = 'rotate('+cur_angle+'deg)';
+          notice.refs.elem.style.transform = 'rotate(' + curAngle + 'deg)';
         }, 20);
       },
 
       // I have nothing to put in these, just showing you that they exist. You
       // won't need to include them if you aren't using them.
-      update() {
+      update () {
         // Called when the notice is updating its options.
       },
-      beforeOpen() {
+      beforeOpen () {
         // Called before the notice is opened.
       },
-      afterOpen() {
+      afterOpen () {
         // Called after the notice is opened.
       },
-      beforeClose() {
+      beforeClose () {
         // Called before the notice is closed.
       },
-      afterClose() {
+      afterClose () {
         // Called after the notice is closed.
       },
-      beforeDestroy() {
+      beforeDestroy () {
         // Called before the notice is destroyed.
       },
-      afterDestroy() {
+      afterDestroy () {
         // Called after the notice is destroyed.
       }
     }
-  }
+  };
 </script>
 
 <style>

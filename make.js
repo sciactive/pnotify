@@ -1,10 +1,11 @@
 #!/user/bin/env nodejs
 'use strict';
+/* eslint-env shelljs */
 
 const fs = require('fs');
 require('shelljs/make');
 
-let pnotify_src = {
+let pnotifySrc = {
   // Main code.
   'index': 'index.js',
   'core': 'PNotify.html',
@@ -24,10 +25,10 @@ let pnotify_src = {
   'stylematerial': 'PNotifyStyleMaterial.html',
 
   // Reference module.
-  'reference': 'PNotifyReference.html',
+  'reference': 'PNotifyReference.html'
 };
 
-let pnotify_js = {
+let pnotifyJs = {
   // Main code.
   'index': 'index.js',
   'core': 'PNotify.js',
@@ -47,84 +48,85 @@ let pnotify_js = {
   'stylematerial': 'PNotifyStyleMaterial.js',
 
   // Reference module.
-  'reference': 'PNotifyReference.js',
+  'reference': 'PNotifyReference.js'
 };
 
-let pnotify_css = {
-  'brighttheme': 'PNotifyBrightTheme.css',
+let pnotifyCss = {
+  'brighttheme': 'PNotifyBrightTheme.css'
 };
 
-let root = __dirname + '/';
-
-for (let module in pnotify_src) {
-  target[module+'_lib'] = (args) => compile_js(module, pnotify_src[module], args);
+for (let module in pnotifySrc) {
+  target[module + '_lib'] = (args) => compileJs(module, pnotifySrc[module], args);
 
   ((target) => {
     const existing = target[module];
 
     target[module] = (args) => {
       existing && existing(args);
-      target[module+'_lib'](args);
+      target[module + '_lib'](args);
     };
   })(target);
 }
 
-for (let module in pnotify_js) {
-  target[module+'_js'] = (args) => compress_js(module, pnotify_js[module], args);
+for (let module in pnotifyJs) {
+  target[module + '_js'] = (args) => compressJs(module, pnotifyJs[module], args);
 
   ((target) => {
     const existing = target[module];
 
     target[module] = (args) => {
       existing && existing(args);
-      target[module+'_js'](args);
+      target[module + '_js'](args);
     };
   })(target);
 }
 
-for (let module in pnotify_css) {
-  target[module+'_css'] = () => compress_css(module, pnotify_css[module]);
+for (let module in pnotifyCss) {
+  target[module + '_css'] = () => compressCss(module, pnotifyCss[module]);
 
   ((target) => {
     const existing = target[module];
 
     target[module] = (args) => {
       existing && existing(args);
-      target[module+'_css'](args);
+      target[module + '_css'](args);
     };
   })(target);
 }
 
 target.dist = (args) => {
-  for (let module in pnotify_src) {
-    target[module+'_lib'](args);
+  for (let module in pnotifySrc) {
+    target[module + '_lib'](args);
   }
-  for (let module in pnotify_js) {
-    target[module+'_js'](args);
+  for (let module in pnotifyJs) {
+    target[module + '_js'](args);
   }
-  for (let module in pnotify_css) {
-    target[module+'_css'](args);
+  for (let module in pnotifyCss) {
+    target[module + '_css'](args);
   }
 };
 
-
 // Functions
 
-let compile_js = (module, filename, args) => {
+let compileJs = (module, filename, args) => {
   let format = setup(args);
 
   if (module === 'index' && format === 'iife') {
     return;
   }
 
-  const src_filename = 'src/' + filename;
-  const dst_filename = 'lib/' + format + '/' + filename.replace(/\.html$/, '.js');
-  echo('Compiling JavaScript '+module+' from '+src_filename+' to '+dst_filename);
-  echo('Generating source map for '+dst_filename+' in '+dst_filename+'.map');
+  const srcFilename = 'src/' + filename;
+  const dstFilename = 'lib/' + format + '/' + filename.replace(/\.html$/, '.js');
+  echo('Compiling JavaScript ' + module + ' from ' + srcFilename + ' to ' + dstFilename);
+  echo('Generating source map for ' + dstFilename + ' in ' + dstFilename + '.map');
 
   // Gather code.
-  let code, map, inputCode, inputMap, isSvelte = filename.slice(-4) === 'html';
-  inputCode = code = fs.readFileSync(src_filename, 'utf8');
+  let code;
+  let map;
+  let inputCode;
+  let inputMap;
+  let isSvelte = filename.slice(-4) === 'html';
+  inputCode = code = fs.readFileSync(srcFilename, 'utf8');
   inputMap = map = null;
 
   // Pre-compile transforms.
@@ -138,34 +140,34 @@ let compile_js = (module, filename, args) => {
     // Use Svelte to compile the code first.
     const svelte = require('svelte');
     ({code, map} = svelte.compile(code, {
-    	format: format === 'iife' ? 'iife' : 'es',
-    	filename: src_filename,
-    	name: filename.replace(/\.html$/, ''),
+      format: format === 'iife' ? 'iife' : 'es',
+      filename: srcFilename,
+      name: filename.replace(/\.html$/, ''),
       amd: {
         id: filename.replace(/\.html$/, '')
       },
       globals: {
         './PNotify.html': 'PNotify'
       },
-    	onerror: err => {
-    		console.error(err);
-    	},
-    	onwarn: warning => {
-    		console.warn(warning);
-    	},
+      onerror: err => {
+        console.error(err);
+      },
+      onwarn: warning => {
+        console.warn(warning);
+      },
       cascade: false
     }));
     [inputCode, inputMap] = [code, map];
     inputMap.file = filename.replace(/\.html$/, '.js');
-    inputCode += '\n//# sourceMappingURL='+filename.replace(/\.html$/, '.js')+'.map';
+    inputCode += '\n//# sourceMappingURL=' + filename.replace(/\.html$/, '.js') + '.map';
   }
   if (format !== 'es') {
     const babel = require('babel-core');
     const babelOptions = {
       moduleId: filename.replace(/\.(html|js)$/, ''),
       filename: filename.replace(/\.html$/, '.js'),
-      filenameRelative: src_filename,
-      sourceMapTarget: src_filename,
+      filenameRelative: srcFilename,
+      sourceMapTarget: srcFilename,
       moduleRoot: '',
       sourceMaps: 'both',
       sourceRoot: '../',
@@ -191,7 +193,7 @@ let compile_js = (module, filename, args) => {
       });
     }
     if (format !== 'iife') {
-      babelOptions.plugins.push('transform-es2015-modules-'+format);
+      babelOptions.plugins.push('transform-es2015-modules-' + format);
     }
 
     ({code, map} = babel.transform(inputCode, babelOptions));
@@ -206,70 +208,59 @@ let compile_js = (module, filename, args) => {
     code = code.replace(/, ["']\.\/PNotify(\w*)\.html["']/g, ', "PNotify$1"');
   }
 
-  code.to(dst_filename);
+  code.to(dstFilename);
   if (map) {
-    JSON.stringify(map).to(dst_filename+'.map');
+    JSON.stringify(map).to(dstFilename + '.map');
   }
 };
 
-let compress_js = (module, filename, args) => {
+let compressJs = (module, filename, args) => {
   let format = setup(args);
 
   if (module === 'index' && format === 'iife') {
     return;
   }
 
-  const src_filename = 'lib/' + format + '/' + filename;
-  const dst_filename = 'dist/' + format + '/' + filename;
-  echo('Compressing JavaScript '+module+' from '+src_filename+' to '+dst_filename);
-  echo('Generating source map for '+dst_filename+' in '+dst_filename+'.map');
+  const srcFilename = 'lib/' + format + '/' + filename;
+  const dstFilename = 'dist/' + format + '/' + filename;
+  echo('Compressing JavaScript ' + module + ' from ' + srcFilename + ' to ' + dstFilename);
+  echo('Generating source map for ' + dstFilename + ' in ' + dstFilename + '.map');
 
   const UglifyJS = format === 'es' ? require('uglify-es') : require('uglify-js');
   const options = {
     sourceMap: {
       root: '../',
       filename: filename,
-      url: filename+'.map'
+      url: filename + '.map'
     }
   };
   const {code, map} = UglifyJS.minify({
-    [filename]: fs.readFileSync(src_filename, 'utf8')
+    [filename]: fs.readFileSync(srcFilename, 'utf8')
   }, options);
-  code.to(dst_filename);
+  code.to(dstFilename);
   if (map) {
-    map.to(dst_filename+'.map');
+    map.to(dstFilename + '.map');
   }
 };
 
-let compress_css = (module, filename) => {
+let compressCss = (module, filename) => {
   setup();
-  const src_filename = 'src/' + filename;
-  const dst_filename = 'dist/' + filename;
-  echo('Compressing CSS '+module+' from '+src_filename+' to '+dst_filename);
+  const srcFilename = 'src/' + filename;
+  const dstFilename = 'dist/' + filename;
+  echo('Compressing CSS ' + module + ' from ' + srcFilename + ' to ' + dstFilename);
 
   const CleanCSS = require('clean-css');
   const options = {
     rebase: false
   };
-  (new CleanCSS(options).minify(fs.readFileSync(src_filename, 'utf8'))).styles.to(dst_filename);
+  (new CleanCSS(options).minify(fs.readFileSync(srcFilename, 'utf8'))).styles.to(dstFilename);
 };
 
 let setup = (args) => {
   let format = 'iife';
-  (args || []).filter(arg => arg.match(/^--format=/)).map(arg => format = arg.slice(9));
+  (args || []).filter(arg => arg.match(/^--format=/)).map(arg => (format = arg.slice(9)));
   cd(__dirname);
-  mkdir('-p', 'lib/'+(args ? format : ''));
-  mkdir('-p', 'dist/'+(args ? format : ''));
+  mkdir('-p', 'lib/' + (args ? format : ''));
+  mkdir('-p', 'dist/' + (args ? format : ''));
   return format;
-};
-
-let get_intro = (filename) => {
-  let code = fs.readFileSync(filename, 'utf8');
-  if (code.slice(0, 2) == '//') {
-    return code.slice(0, code.indexOf('\n') + 1);
-  } else if (code.slice(0, 2) == '/*') {
-    return code.slice(0, code.indexOf('*/\n') + 3);
-  } else {
-    return '';
-  }
 };

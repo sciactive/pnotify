@@ -2,10 +2,10 @@
 import simpleNotice from './simple-notice';
 import moduleNotice from './module-notice';
 
-document.getElementById("button1").addEventListener("click", function(){
+document.getElementById('button1').addEventListener('click', function () {
   simpleNotice();
 });
 
-document.getElementById("button2").addEventListener("click", function(){
+document.getElementById('button2').addEventListener('click', function () {
   moduleNotice();
 });

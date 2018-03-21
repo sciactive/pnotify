@@ -1,9 +1,9 @@
 <script>
-  import PNotify from "./PNotify.html";
+  import PNotify from './PNotify.html';
 
   export default {
     setup (Component) {
-      Component.key = "StyleMaterial";
+      Component.key = 'StyleMaterial';
 
       // Register the module with PNotify.
       PNotify.modules.StyleMaterial = Component;
@@ -14,27 +14,27 @@
         PNotify.styling.material = {};
       }
       PNotify.styling.material = Object.assign(PNotify.styling.material, {
-        container: "pnotify-material",
-        notice: "pnotify-material-notice",
-        info: "pnotify-material-info",
-        success: "pnotify-material-success",
-        error: "pnotify-material-error",
+        container: 'pnotify-material',
+        notice: 'pnotify-material-notice',
+        info: 'pnotify-material-info',
+        success: 'pnotify-material-success',
+        error: 'pnotify-material-error'
       });
 
       if (!PNotify.icons.material) {
         PNotify.icons.material = {};
       }
       PNotify.icons.material = Object.assign(PNotify.icons.material, {
-        notice: "material-icons pnotify-material-icon-notice",
-        info: "material-icons pnotify-material-icon-info",
-        success: "material-icons pnotify-material-icon-success",
-        error: "material-icons pnotify-material-icon-error",
-        closer: "material-icons pnotify-material-icon-closer",
-        pinUp: "material-icons pnotify-material-icon-sticker",
-        pinDown: "material-icons pnotify-material-icon-sticker pnotify-material-icon-stuck"
+        notice: 'material-icons pnotify-material-icon-notice',
+        info: 'material-icons pnotify-material-icon-info',
+        success: 'material-icons pnotify-material-icon-success',
+        error: 'material-icons pnotify-material-icon-error',
+        closer: 'material-icons pnotify-material-icon-closer',
+        pinUp: 'material-icons pnotify-material-icon-sticker',
+        pinDown: 'material-icons pnotify-material-icon-sticker pnotify-material-icon-stuck'
       });
     }
-  }
+  };
 </script>
 
 <style>

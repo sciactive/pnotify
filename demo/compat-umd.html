@@ -37,8 +37,9 @@
 
   <script type="text/javascript" src="../lib/umd/PNotifyCompat.js"></script>
   <script type="text/javascript">
+    /* globals requirejs */
     // Load the modules that do stuff by default.
-    requirejs(['PNotifyCompat', 'PNotifyButtons', 'PNotifyMobile', 'PNotifyHistory'], function() {});
+    requirejs(['PNotifyCompat', 'PNotifyButtons', 'PNotifyMobile', 'PNotifyHistory'], function () {});
   </script>
 </head>
 <body>
@@ -143,9 +144,9 @@
       <span>As you can see, I don't allow HTML in my content.</span>
       <span>This prevents things like cross site scripting attacks:</span>
       <script type="text/javascript">
-        (function(){
+        (function () {
         // Here would be the XSS attack.
-        })()
+        })();
       </script>
     </span>
     <hr />

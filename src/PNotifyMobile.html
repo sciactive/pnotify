@@ -1,9 +1,9 @@
 <script>
-  import PNotify from "./PNotify.html";
+  import PNotify from './PNotify.html';
 
   export default {
     setup (Component) {
-      Component.key = "Mobile";
+      Component.key = 'Mobile';
 
       Component.defaults = {
         // Let the user swipe the notice away.
@@ -21,85 +21,85 @@
     },
 
     oncreate () {
-      this.set({"_doMobileStylingBound": this.doMobileStyling.bind(this)});
+      this.set({'_doMobileStylingBound': this.doMobileStyling.bind(this)});
     },
 
     data () {
       return Object.assign({
-        "_notice": null, // The PNotify notice.
-        "_options": {}, // The options for the notice.
+        '_notice': null, // The PNotify notice.
+        '_options': {} // The options for the notice.
       }, PNotify.modules.Mobile.defaults);
     },
 
     methods: {
-      initModule(options) {
+      initModule (options) {
         this.set(options);
 
-        const notice = this.get("_notice");
-        let origXY = null,
-            diffXY = null,
-            noticeWidthHeight = null,
-            noticeOpacity = null,
-            csspos = "left",
-            direction = "X",
-            span = "Width";
+        const notice = this.get('_notice');
+        let origXY = null;
+        let diffXY = null;
+        let noticeWidthHeight = null;
+        let noticeOpacity = null;
+        let csspos = 'left';
+        let direction = 'X';
+        let span = 'Width';
 
-        notice.on("touchstart", (e) => {
-          if (!this.get("swipeDismiss")) {
+        notice.on('touchstart', (e) => {
+          if (!this.get('swipeDismiss')) {
             return;
           }
 
-          const stack = notice.get("stack");
+          const stack = notice.get('stack');
           if (stack !== false) {
             switch (stack.dir1) {
-              case "up":
-              case "down":
-                csspos = "left";
-                direction = "X";
-                span = "Width";
+              case 'up':
+              case 'down':
+                csspos = 'left';
+                direction = 'X';
+                span = 'Width';
                 break;
-              case "left":
-              case "right":
-                csspos = "top";
-                direction = "Y";
-                span = "Height";
+              case 'left':
+              case 'right':
+                csspos = 'top';
+                direction = 'Y';
+                span = 'Height';
                 break;
             }
           }
 
-          origXY = e.touches[0]["screen"+direction];
-          noticeWidthHeight = notice.refs.elem["scroll"+span];
-          noticeOpacity = window.getComputedStyle(notice.refs.elem)["opacity"];
+          origXY = e.touches[0]['screen' + direction];
+          noticeWidthHeight = notice.refs.elem['scroll' + span];
+          noticeOpacity = window.getComputedStyle(notice.refs.elem)['opacity'];
           notice.refs.container.style[csspos] = 0;
         });
 
-        notice.on("touchmove", (e) => {
-          if (!origXY || !this.get("swipeDismiss")) {
+        notice.on('touchmove', (e) => {
+          if (!origXY || !this.get('swipeDismiss')) {
             return;
           }
 
-          const curXY = e.touches[0]["screen"+direction];
+          const curXY = e.touches[0]['screen' + direction];
 
           diffXY = curXY - origXY;
           const opacity = (1 - (Math.abs(diffXY) / noticeWidthHeight)) * noticeOpacity;
 
           notice.refs.elem.style.opacity = opacity;
-          notice.refs.container.style[csspos] = diffXY+"px";
+          notice.refs.container.style[csspos] = diffXY + 'px';
         });
 
-        notice.on("touchend", () => {
-          if (!origXY || !this.get("swipeDismiss")) {
+        notice.on('touchend', () => {
+          if (!origXY || !this.get('swipeDismiss')) {
             return;
           }
 
-          notice.refs.container.classList.add("ui-pnotify-mobile-animate-left");
+          notice.refs.container.classList.add('ui-pnotify-mobile-animate-left');
           if (Math.abs(diffXY) > 40) {
             const goLeft = (diffXY < 0) ? noticeWidthHeight * -2 : noticeWidthHeight * 2;
             notice.refs.elem.style.opacity = 0;
-            notice.refs.container.style[csspos] = goLeft+"px";
+            notice.refs.container.style[csspos] = goLeft + 'px';
             notice.close();
           } else {
-            notice.refs.elem.style.removeProperty("opacity");
+            notice.refs.elem.style.removeProperty('opacity');
             notice.refs.container.style.removeProperty(csspos);
           }
           origXY = null;
@@ -108,12 +108,12 @@
           noticeOpacity = null;
         });
 
-        notice.on("touchcancel", () => {
-          if (!origXY || !this.get("swipeDismiss")) {
+        notice.on('touchcancel', () => {
+          if (!origXY || !this.get('swipeDismiss')) {
             return;
           }
 
-          notice.refs.elem.style.removeProperty("opacity");
+          notice.refs.elem.style.removeProperty('opacity');
           notice.refs.container.style.removeProperty(csspos);
           origXY = null;
           diffXY = null;
@@ -124,35 +124,35 @@
         this.doMobileStyling();
       },
 
-      update() {
+      update () {
         this.doMobileStyling();
       },
 
-      beforeOpen() {
+      beforeOpen () {
         // Add an event listener to watch the window resizes.
-        window.addEventListener("resize", this.get("_doMobileStylingBound"));
+        window.addEventListener('resize', this.get('_doMobileStylingBound'));
       },
 
-      afterClose() {
+      afterClose () {
         // Remove the event listener.
-        window.removeEventListener("resize", this.get("_doMobileStylingBound"));
+        window.removeEventListener('resize', this.get('_doMobileStylingBound'));
 
         // Remove any styling we added to close it.
-        if (!this.get("swipeDismiss")) {
+        if (!this.get('swipeDismiss')) {
           return;
         }
 
-        const notice = this.get("_notice");
-        notice.refs.elem.style.removeProperty("opacity");
-        notice.refs.container.style.removeProperty("left");
-        notice.refs.container.style.removeProperty("top");
+        const notice = this.get('_notice');
+        notice.refs.elem.style.removeProperty('opacity');
+        notice.refs.container.style.removeProperty('left');
+        notice.refs.container.style.removeProperty('top');
       },
 
-      doMobileStyling() {
-        const notice = this.get("_notice");
-        const stack = notice.get("stack");
+      doMobileStyling () {
+        const notice = this.get('_notice');
+        const stack = notice.get('stack');
 
-        if (this.get("styling")) {
+        if (this.get('styling')) {
           if (stack !== false) {
             if (window.innerWidth <= 480) {
               if (!stack.mobileOrigSpacing1) {
@@ -190,29 +190,29 @@
               }
             }
             switch (stack.dir1) {
-              case "down":
-                notice.addModuleClass("ui-pnotify-mobile-top");
+              case 'down':
+                notice.addModuleClass('ui-pnotify-mobile-top');
                 break;
-              case "up":
-                notice.addModuleClass("ui-pnotify-mobile-bottom");
+              case 'up':
+                notice.addModuleClass('ui-pnotify-mobile-bottom');
                 break;
-              case "left":
-                notice.addModuleClass("ui-pnotify-mobile-right");
+              case 'left':
+                notice.addModuleClass('ui-pnotify-mobile-right');
                 break;
-              case "right":
-                notice.addModuleClass("ui-pnotify-mobile-left");
+              case 'right':
+                notice.addModuleClass('ui-pnotify-mobile-left');
                 break;
             }
           }
 
-          notice.addModuleClass("ui-pnotify-mobile-able");
+          notice.addModuleClass('ui-pnotify-mobile-able');
         } else {
           notice.removeModuleClass(
-            "ui-pnotify-mobile-able",
-            "ui-pnotify-mobile-top",
-            "ui-pnotify-mobile-bottom",
-            "ui-pnotify-mobile-right",
-            "ui-pnotify-mobile-left"
+            'ui-pnotify-mobile-able',
+            'ui-pnotify-mobile-top',
+            'ui-pnotify-mobile-bottom',
+            'ui-pnotify-mobile-right',
+            'ui-pnotify-mobile-left'
           );
 
           if (stack !== false) {
@@ -236,7 +236,7 @@
         }
       }
     }
-  }
+  };
 </script>
 
 <style>

@@ -14,16 +14,17 @@
     <button id="button2">PNotify Module with IIFE</button>
   </div>
   <script type="text/javascript">
-    document.getElementById("button1").addEventListener("click", function(){
+    /* globals PNotify */
+    document.getElementById('button1').addEventListener('click', function () {
       PNotify.notice({
-        title: "Yay!",
-        text: "It works!"
+        title: 'Yay!',
+        text: 'It works!'
       });
     });
-    document.getElementById("button2").addEventListener("click", function(){
+    document.getElementById('button2').addEventListener('click', function () {
       PNotify.notice({
-        title: "Yay!",
-        text: "It works!",
+        title: 'Yay!',
+        text: 'It works!',
         modules: {
           Reference: {
             putThing: true
