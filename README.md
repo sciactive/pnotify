@@ -2,13 +2,14 @@
 
 PNotify is a vanilla JavaScript notification library. PNotify can provide [desktop notifications](http://sciactive.com/pnotify/#web-notifications) based on the [Web Notifications spec](http://www.w3.org/TR/notifications/) with fall back to an in-browser notice.
 
-# Demos
+<h1>Demos</h1>
 
 * http://sciactive.com/pnotify/ for the latest release (v3)
 * https://sciactive.github.io/pnotify/ for what's in development (v4-alpha)
 
+<h1>Table of Contents</h1>
+
 <!-- TOC START min:1 max:3 link:true update:true -->
-- [Demos](#demos)
 - [Whoa there!](#whoa-there)
   - [Running PNotify 3 Code with the Compat Module](#running-pnotify-3-code-with-the-compat-module)
 - [Getting Started](#getting-started)
@@ -45,7 +46,6 @@ PNotify is a vanilla JavaScript notification library. PNotify can provide [deskt
   - [Example Stack](#example-stack)
 - [Features](#features)
 - [Licensing and Additional Info](#licensing-and-additional-info)
-  - [Support on Beerpay](#support-on-beerpay)
 
 <!-- TOC END -->
 
@@ -676,7 +676,8 @@ PNotify is distributed under the [Apache License, Version 2.0](http://www.apache
 
 See http://sciactive.com/pnotify/ for more information, and demos.
 
-## Support on Beerpay
+<h2>Support on Beerpay</h2>
+
 Hey dude! Help me out for a couple of :beers:!
 
 [![Beerpay](https://beerpay.io/sciactive/pnotify/badge.svg?style=beer-square)](https://beerpay.io/sciactive/pnotify)  [![Beerpay](https://beerpay.io/sciactive/pnotify/make-wish.svg?style=flat-square)](https://beerpay.io/sciactive/pnotify?focus=wish)
