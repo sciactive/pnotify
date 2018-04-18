@@ -162,7 +162,7 @@ class PNotifyCompat extends PNotify {
 
     super({target: document.body, data: options});
 
-    // Override the get function to retunr the element like it did in v3.
+    // Override the get function to return the element like it did in v3.
     const _get = this.get;
     this.get = function (option) {
       if (option === undefined) {
