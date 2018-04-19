@@ -1,5 +1,5 @@
 <!-- This file is for referencing while you are making a PNotify module. -->
-{{#if putThing}} <!-- We want to check to make sure the notice should include our thing. -->
+{#if putThing} <!-- We want to check to make sure the notice should include our thing. -->
   <!--
   We're going to create a button that will be appended to the notice.
   It will be disabled by default, so we can enable it on mouseover.
@@ -8,13 +8,13 @@
       ref:thingElem
       class="ui-pnotify-reference-button btn btn-default"
       type="button"
-      disabled="{{!_mouseIsIn}}"
+      disabled="{!_mouseIsIn}"
       on:click="doSomething()">
-    <i class="{{_notice.get('_icons').athing}}" />&nbsp;{{labels.text}}
+    <i class="{_notice.get()._icons.athing}" />&nbsp;{labels.text}
   </button>
   <!-- Since our button is floated, we have to add a clearing div. -->
   <div class="ui-pnotify-reference-clearing" />
-{{/if}}
+{/if}
 
 <script>
   import PNotify from './PNotify.html';
@@ -37,10 +37,8 @@
 
       // This is the first way to init a module. If you aren't placing any
       // markup in the template, you would do this.
-      // Component.init = (notice) => {
-      //   return new Component({target: document.body, data: {
-      //     '_notice': notice
-      //   }});
+      // Component.init = (_notice) => {
+      //   return new Component({target: document.body, data: {_notice}});
       // };
 
       // Register the module with PNotify.
@@ -92,21 +90,22 @@
         this.set(options);
         // Now that the notice is available to us, we can listen to events fired
         // from it.
-        this.get('_notice').on('mouseenter', () => this.set({'_mouseIsIn': true}));
-        this.get('_notice').on('mouseleave', () => this.set({'_mouseIsIn': false}));
+        const {_notice} = this.get();
+        _notice.on('mouseenter', () => this.set({'_mouseIsIn': true}));
+        _notice.on('mouseleave', () => this.set({'_mouseIsIn': false}));
       },
 
       doSomething () {
         // Spin the notice around.
         let curAngle = 0;
-        let notice = this.get('_notice');
-        let timer = setInterval(() => {
+        const {_notice} = this.get();
+        const timer = setInterval(() => {
           curAngle += 10;
           if (curAngle === 360) {
             curAngle = 0;
             clearInterval(timer);
           }
-          notice.refs.elem.style.transform = 'rotate(' + curAngle + 'deg)';
+          _notice.refs.elem.style.transform = 'rotate(' + curAngle + 'deg)';
         }, 20);
       },
 

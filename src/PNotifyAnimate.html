@@ -61,9 +61,8 @@
       },
 
       setUpAnimations () {
-        const _notice = this.get('_notice');
-        const _options = this.get('_options');
-        if (this.get('animate')) {
+        const {_notice, _options, animate} = this.get();
+        if (animate) {
           _notice.set({'animation': 'none'});
           if (!_notice._animateIn) {
             _notice._animateIn = _notice.animateIn;
@@ -94,7 +93,7 @@
       },
 
       animateIn (callback) {
-        const _notice = this.get('_notice');
+        const {_notice} = this.get();
         // Declare that the notice is animating in.
         _notice.set({'_animating': 'in'});
 
@@ -117,11 +116,11 @@
         _notice.refs.elem.addEventListener('MSAnimationEnd', finished);
         _notice.refs.elem.addEventListener('oanimationend', finished);
         _notice.refs.elem.addEventListener('animationend', finished);
-        _notice.set({'_animatingClass': 'ui-pnotify-in animated ' + this.get('inClass')});
+        _notice.set({'_animatingClass': 'ui-pnotify-in animated ' + this.get().inClass});
       },
 
       animateOut (callback) {
-        const _notice = this.get('_notice');
+        const {_notice} = this.get();
         // Declare that the notice is animating out.
         _notice.set({'_animating': 'out'});
 
@@ -144,7 +143,7 @@
         _notice.refs.elem.addEventListener('MSAnimationEnd', finished);
         _notice.refs.elem.addEventListener('oanimationend', finished);
         _notice.refs.elem.addEventListener('animationend', finished);
-        _notice.set({'_animatingClass': 'ui-pnotify-in animated ' + this.get('outClass')});
+        _notice.set({'_animatingClass': 'ui-pnotify-in animated ' + this.get().outClass});
       }
     }
   };

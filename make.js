@@ -117,8 +117,8 @@ let compileJs = (module, filename, args) => {
 
   const srcFilename = 'src/' + filename;
   const dstFilename = 'lib/' + format + '/' + filename.replace(/\.html$/, '.js');
-  echo('Compiling JavaScript ' + module + ' from ' + srcFilename + ' to ' + dstFilename);
-  echo('Generating source map for ' + dstFilename + ' in ' + dstFilename + '.map');
+  console.log('Compiling JavaScript ' + module + ' from ' + srcFilename + ' to ' + dstFilename);
+  console.log('Generating source map for ' + dstFilename + ' in ' + dstFilename + '.map');
 
   // Gather code.
   let code;
@@ -139,7 +139,7 @@ let compileJs = (module, filename, args) => {
   if (isSvelte) {
     // Use Svelte to compile the code first.
     const svelte = require('svelte');
-    ({code, map} = svelte.compile(code, {
+    const {js} = svelte.compile(code, {
       format: format === 'iife' ? 'iife' : 'es',
       filename: srcFilename,
       name: filename.replace(/\.html$/, ''),
@@ -155,8 +155,10 @@ let compileJs = (module, filename, args) => {
       onwarn: warning => {
         console.warn(warning);
       },
+      css: true,
       cascade: false
-    }));
+    });
+    ({code, map} = js);
     [inputCode, inputMap] = [code, map];
     inputMap.file = filename.replace(/\.html$/, '.js');
     inputCode += '\n//# sourceMappingURL=' + filename.replace(/\.html$/, '.js') + '.map';
@@ -208,9 +210,9 @@ let compileJs = (module, filename, args) => {
     code = code.replace(/, ["']\.\/PNotify(\w*)\.html["']/g, ', "PNotify$1"');
   }
 
-  code.to(dstFilename);
+  fs.writeFileSync(dstFilename, code);
   if (map) {
-    JSON.stringify(map).to(dstFilename + '.map');
+    fs.writeFileSync(dstFilename + '.map', JSON.stringify(map));
   }
 };
 
@@ -223,8 +225,8 @@ let compressJs = (module, filename, args) => {
 
   const srcFilename = 'lib/' + format + '/' + filename;
   const dstFilename = 'dist/' + format + '/' + filename;
-  echo('Compressing JavaScript ' + module + ' from ' + srcFilename + ' to ' + dstFilename);
-  echo('Generating source map for ' + dstFilename + ' in ' + dstFilename + '.map');
+  console.log('Compressing JavaScript ' + module + ' from ' + srcFilename + ' to ' + dstFilename);
+  console.log('Generating source map for ' + dstFilename + ' in ' + dstFilename + '.map');
 
   const UglifyJS = format === 'es' ? require('uglify-es') : require('uglify-js');
   const options = {
@@ -234,12 +236,15 @@ let compressJs = (module, filename, args) => {
       url: filename + '.map'
     }
   };
-  const {code, map} = UglifyJS.minify({
+  const {code, map, error} = UglifyJS.minify({
     [filename]: fs.readFileSync(srcFilename, 'utf8')
   }, options);
-  code.to(dstFilename);
+  if (!code) {
+    console.log('error:', error);
+  }
+  fs.writeFileSync(dstFilename, code);
   if (map) {
-    map.to(dstFilename + '.map');
+    fs.writeFileSync(dstFilename + '.map', map);
   }
 };
 
@@ -247,13 +252,13 @@ let compressCss = (module, filename) => {
   setup();
   const srcFilename = 'src/' + filename;
   const dstFilename = 'dist/' + filename;
-  echo('Compressing CSS ' + module + ' from ' + srcFilename + ' to ' + dstFilename);
+  console.log('Compressing CSS ' + module + ' from ' + srcFilename + ' to ' + dstFilename);
 
   const CleanCSS = require('clean-css');
   const options = {
     rebase: false
   };
-  (new CleanCSS(options).minify(fs.readFileSync(srcFilename, 'utf8'))).styles.to(dstFilename);
+  fs.writeFileSync(dstFilename, (new CleanCSS(options).minify(fs.readFileSync(srcFilename, 'utf8'))).styles);
 };
 
 let setup = (args) => {

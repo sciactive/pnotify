@@ -13,14 +13,14 @@
 <div ref:elem
     class="
       ui-pnotify
-      {{icon !== false ? 'ui-pnotify-with-icon' : ''}}
-      {{_styles.element ? _styles.element : ''}}
-      {{addClass}}
-      {{_animatingClass}}
-      {{_moveClass}}
-      {{animation === 'fade' ? 'ui-pnotify-fade-'+animateSpeed : ''}}
-      {{stack && stack.modal ? 'ui-pnotify-modal' : ''}}
-      {{_moduleClasses.join(' ')}}
+      {icon !== false ? 'ui-pnotify-with-icon' : ''}
+      {_styles.element ? _styles.element : ''}
+      {addClass}
+      {_animatingClass}
+      {_moveClass}
+      {animation === 'fade' ? 'ui-pnotify-fade-'+animateSpeed : ''}
+      {stack && stack.modal ? 'ui-pnotify-modal' : ''}
+      {_moduleClasses.join(' ')}
     "
     aria-live="assertive"
     role="alertdialog"
@@ -43,45 +43,42 @@
   <div ref:container
       class="
         ui-pnotify-container
-        {{_styles.container ? _styles.container : ''}}
-        {{_styles[type] ? _styles[type] : ''}}
-        {{cornerClass}}
-        {{shadow ? 'ui-pnotify-shadow' : ''}}
+        {_styles.container ? _styles.container : ''}
+        {_styles[type] ? _styles[type] : ''}
+        {cornerClass}
+        {shadow ? 'ui-pnotify-shadow' : ''}
       "
-      style="
-        {{typeof width === 'string' ? 'width: '+width+';' : ''}}
-        {{typeof minHeight === 'string' ? 'min-height: '+minHeight+';' : ''}}
-      "
+      style="{_widthStyle} {_minHeightStyle}"
       role="alert">
-    {{#each _modulesPrependContainer as module}}
-      <:Component {module} on:init="initModule(event.module)" />
-    {{/each}}
-    {{#if icon !== false}}
-      <div ref:iconContainer class="ui-pnotify-icon {{_styles.icon ? _styles.icon : ''}}">
-        <span class="{{icon === true ? (_icons[type] ? _icons[type] : '') : icon}}"></span>
+    {#each _modulesPrependContainer as module (module.key)}
+      <svelte:component this={module} on:init="initModule(event.module)" />
+    {/each}
+    {#if icon !== false}
+      <div ref:iconContainer class="ui-pnotify-icon {_styles.icon ? _styles.icon : ''}">
+        <span class="{icon === true ? (_icons[type] ? _icons[type] : '') : icon}"></span>
       </div>
-    {{/if}}
-    {{#if title !== false}}
-      <h4 ref:titleContainer class="ui-pnotify-title {{_styles.title ? _styles.title : ''}}">
-        {{#if titleTrusted}}
-          {{{title}}}
-        {{else}}
-          {{title}}
-        {{/if}}
+    {/if}
+    {#if title !== false}
+      <h4 ref:titleContainer class="ui-pnotify-title {_styles.title ? _styles.title : ''}">
+        {#if titleTrusted}
+          {@html title}
+        {:else}
+          {title}
+        {/if}
       </h4>
-    {{/if}}
-    {{#if text !== false}}
-      <div ref:textContainer class="ui-pnotify-text {{_styles.text ? _styles.text : ''}}" role="alert">
-        {{#if textTrusted}}
-          {{{text}}}
-        {{else}}
-          {{text}}
-        {{/if}}
+    {/if}
+    {#if text !== false}
+      <div ref:textContainer class="ui-pnotify-text {_styles.text ? _styles.text : ''}" role="alert">
+        {#if textTrusted}
+          {@html text}
+        {:else}
+          {text}
+        {/if}
       </div>
-    {{/if}}
-    {{#each _modulesAppendContainer as module}}
-      <:Component {module} on:init="initModule(event.module)" />
-    {{/each}}
+    {/if}
+    {#each _modulesAppendContainer as module (module.key)}
+      <svelte:component this={module} on:init="initModule(event.module)" />
+    {/each}
   </div>
 </div>
 
@@ -265,7 +262,7 @@
           return;
         }
         for (let i = 0; i < PNotify.notices.length; i++) {
-          if (PNotify.notices[i].close && PNotify.notices[i].get('stack') === stack) {
+          if (PNotify.notices[i].close && PNotify.notices[i].get().stack === stack) {
             PNotify.notices[i].close(false);
           }
         }
@@ -283,16 +280,16 @@
         if (PNotify.notices.length > 0) {
           for (let i = 0; i < PNotify.notices.length; i++) {
             let notice = PNotify.notices[i];
-            let s = notice.get('stack');
-            if (!s) {
+            let {stack} = notice.get();
+            if (!stack) {
               continue;
             }
-            if (s.overlay) {
-              removeStackOverlay(s);
+            if (stack.overlay) {
+              removeStackOverlay(stack);
             }
-            s.nextpos1 = s.firstpos1;
-            s.nextpos2 = s.firstpos2;
-            s.addpos2 = 0;
+            stack.nextpos1 = stack.firstpos1;
+            stack.nextpos2 = stack.firstpos2;
+            stack.addpos2 = 0;
           }
           for (let i = 0; i < PNotify.notices.length; i++) {
             PNotify.notices[i].position();
@@ -372,27 +369,27 @@
     oncreate () {
       this.on('mouseenter', (e) => {
         // Stop animation, reset the removal timer when the user mouses over.
-        if (this.get('mouseReset') && this.get('_animating') === 'out') {
-          if (!this.get('_timerHide')) {
+        if (this.get().mouseReset && this.get()._animating === 'out') {
+          if (!this.get()._timerHide) {
             return;
           }
           this.cancelClose();
         }
         // Stop the close timer.
-        if (this.get('hide') && this.get('mouseReset')) {
+        if (this.get().hide && this.get().mouseReset) {
           this.cancelClose();
         }
       });
 
       this.on('mouseleave', (e) => {
         // Start the close timer.
-        if (this.get('hide') && this.get('mouseReset') && this.get('_animating') !== 'out') {
+        if (this.get().hide && this.get().mouseReset && this.get()._animating !== 'out') {
           this.queueClose();
         }
         PNotify.positionAll();
       });
 
-      let stack = this.get('stack');
+      let {stack} = this.get();
 
       // Add the notice to the notice array.
       if (stack && stack.push === 'top') {
@@ -408,7 +405,7 @@
       this.set({'_state': 'closed'});
 
       // Display the notice.
-      if (this.get('autoDisplay')) {
+      if (this.get().autoDisplay) {
         this.open();
       }
     },
@@ -434,9 +431,11 @@
 
     computed: {
       // Grab styles from the styling object or use the styles provided.
-      _styles: (styling) => typeof styling === 'object' ? styling : PNotify.styling[styling],
+      _styles: ({ styling }) => typeof styling === 'object' ? styling : PNotify.styling[styling],
       // Grab the icons from the icons object or use provided icons
-      _icons: (icons) => typeof icons === 'object' ? icons : PNotify.icons[icons]
+      _icons: ({ icons }) => typeof icons === 'object' ? icons : PNotify.icons[icons],
+      _widthStyle: ({ width }) => typeof width === 'string' ? 'width: ' + width + ';' : '',
+      _minHeightStyle: ({ minHeight }) => typeof minHeight === 'string' ? 'min-height: ' + minHeight + ';' : ''
     },
 
     methods: {
@@ -455,7 +454,7 @@
             }
           }
         } else {
-          const _modules = this.get('_modules');
+          const {_modules} = this.get();
           for (let module in _modules) {
             if (!_modules.hasOwnProperty(module)) {
               continue;
@@ -463,7 +462,7 @@
             const moduleOptions = Object.assign({
               '_notice': this,
               '_options': this.get()
-            }, this.get('modules')[module]);
+            }, this.get().modules[module]);
             _modules[module].set(moduleOptions);
             if (typeof _modules[module][event] === 'function') {
               _modules[module][event]();
@@ -474,7 +473,7 @@
 
       // This passes module options to a module.
       initModule (module) {
-        const modules = this.get('modules');
+        const {modules} = this.get();
         if (!modules.hasOwnProperty(module.constructor.key)) {
           modules[module.constructor.key] = {};
         }
@@ -485,14 +484,14 @@
         module.initModule(moduleOptions);
 
         // Now save the module instance.
-        const _modules = this.get('_modules');
+        const {_modules} = this.get();
         _modules[module.constructor.key] = module;
       },
 
       update (options) {
         // Save old options.
-        const oldHide = this.get('hide');
-        const oldIcon = this.get('icon');
+        const oldHide = this.get().hide;
+        const oldIcon = this.get().icon;
 
         this.set(options);
 
@@ -500,7 +499,7 @@
         this.runModules('update');
 
         // Update the timed hiding.
-        if (!this.get('hide')) {
+        if (!this.get().hide) {
           this.cancelClose();
         } else if (!oldHide) {
           this.queueClose();
@@ -510,11 +509,11 @@
         // Font Awesome 5 replaces our lovely element with a gross SVG. In order
         // to make it play nice with Svelte, we have to clear the element and
         // make it again.
-        const icon = this.get('icon');
+        const {icon} = this.get();
         if (
           icon !== oldIcon &&
           (
-            (icon === true && this.get('icons') === 'fontawesome5') ||
+            (icon === true && this.get().icons === 'fontawesome5') ||
             (typeof icon === 'string' && icon.match(/(^| )fa[srlb]($| )/))
           )
         ) {
@@ -527,11 +526,12 @@
 
       // Display the notice.
       open () {
-        if (this.get('_state') === 'opening') {
+        const {_state, hide} = this.get();
+        if (_state === 'opening') {
           return;
         }
-        if (this.get('_state') === 'open') {
-          if (this.get('hide')) {
+        if (_state === 'open') {
+          if (hide) {
             this.queueClose();
           }
           return;
@@ -545,7 +545,7 @@
         // Run the modules.
         this.runModules('beforeOpen');
 
-        let stack = this.get('stack');
+        let {stack} = this.get();
         // If the notice is not in the DOM, or in the wrong context, append it.
         if (
           !this.refs.elem.parentNode ||
@@ -577,7 +577,7 @@
 
           this.animateIn(() => {
             // Now set it to hide.
-            if (this.get('hide')) {
+            if (this.get().hide) {
               this.queueClose();
             }
 
@@ -597,15 +597,17 @@
 
       // Remove the notice.
       close (timerHide) {
-        if (this.get('_state') === 'closing' || this.get('_state') === 'closed') {
+        const {_state} = this.get();
+        if (_state === 'closing' || _state === 'closed') {
           return;
         }
         this.set({'_state': 'closing', '_timerHide': !!timerHide}); // Make sure it's a boolean.
         // Run the modules.
         this.runModules('beforeClose');
 
-        if (this.get('_timer') && clearTimeout) {
-          clearTimeout(this.get('_timer'));
+        const {_timer} = this.get();
+        if (_timer && clearTimeout) {
+          clearTimeout(_timer);
           this.set({'_timer': null});
         }
         this.animateOut(() => {
@@ -614,14 +616,14 @@
           this.runModules('afterClose');
           this.queuePosition();
           // If we're supposed to remove the notice from the DOM, do it.
-          if (this.get('remove')) {
+          if (this.get().remove) {
             this.refs.elem.parentNode.removeChild(this.refs.elem);
           }
           // Run the modules.
           this.runModules('beforeDestroy');
           // Remove object from PNotify.notices to prevent memory leak (issue #49)
           // unless destroy is off
-          if (this.get('destroy')) {
+          if (this.get().destroy) {
             if (PNotify.notices !== null) {
               const idx = PNotify.notices.indexOf(this);
               if (idx !== -1) {
@@ -642,13 +644,14 @@
         this.set({'_animating': 'in'});
         const finished = () => {
           this.refs.elem.removeEventListener('transitionend', finished);
-          if (this.get('_animTimer')) {
-            clearTimeout(this.get('_animTimer'));
+          const {_animTimer, _animating, _moduleIsNoticeOpen} = this.get();
+          if (_animTimer) {
+            clearTimeout(_animTimer);
           }
-          if (this.get('_animating') !== 'in') {
+          if (_animating !== 'in') {
             return;
           }
-          let visible = this.get('_moduleIsNoticeOpen');
+          let visible = _moduleIsNoticeOpen;
           if (!visible) {
             const domRect = this.refs.elem.getBoundingClientRect();
             for (let prop in domRect) {
@@ -669,7 +672,7 @@
           }
         };
 
-        if (this.get('animation') === 'fade') {
+        if (this.get().animation === 'fade') {
           this.refs.elem.addEventListener('transitionend', finished);
           this.set({'_animatingClass': 'ui-pnotify-in'});
           // eslint-disable-next-line no-unused-expressions
@@ -689,13 +692,14 @@
         this.set({'_animating': 'out'});
         const finished = () => {
           this.refs.elem.removeEventListener('transitionend', finished);
-          if (this.get('_animTimer')) {
-            clearTimeout(this.get('_animTimer'));
+          const {_animTimer, _animating, _moduleIsNoticeOpen} = this.get();
+          if (_animTimer) {
+            clearTimeout(_animTimer);
           }
-          if (this.get('_animating') !== 'out') {
+          if (_animating !== 'out') {
             return;
           }
-          let visible = this.get('_moduleIsNoticeOpen');
+          let visible = _moduleIsNoticeOpen;
           if (!visible) {
             const domRect = this.refs.elem.getBoundingClientRect();
             for (let prop in domRect) {
@@ -707,14 +711,14 @@
           }
           if (!this.refs.elem.style.opacity || this.refs.elem.style.opacity === '0' || !visible) {
             this.set({'_animatingClass': ''});
-            const stack = this.get('stack');
+            const {stack} = this.get();
             if (stack && stack.overlay) {
               // Go through the modal stack to see if any are left open.
               // TODO: Rewrite this cause it sucks.
               let stillOpen = false;
               for (let i = 0; i < PNotify.notices.length; i++) {
                 const notice = PNotify.notices[i];
-                if (notice !== this && notice.get('stack') === stack && notice.get('_state') !== 'closed') {
+                if (notice !== this && notice.get().stack === stack && notice.get()._state !== 'closed') {
                   stillOpen = true;
                   break;
                 }
@@ -734,7 +738,7 @@
           }
         };
 
-        if (this.get('animation') === 'fade') {
+        if (this.get().animation === 'fade') {
           this.refs.elem.addEventListener('transitionend', finished);
           this.set({'_animatingClass': 'ui-pnotify-in'});
           // Just in case the event doesn't fire, call it after 650 ms.
@@ -748,7 +752,7 @@
       // Position the notice.
       position () {
         // Get the notice's stack.
-        let stack = this.get('stack');
+        let {stack} = this.get();
         let elem = this.refs.elem;
         if (!stack) {
           return;
@@ -972,18 +976,19 @@
 
       // Cancel any pending removal timer.
       cancelClose () {
-        if (this.get('_timer')) {
-          clearTimeout(this.get('_timer'));
+        const {_timer, _animTimer, _state, animation} = this.get();
+        if (_timer) {
+          clearTimeout(_timer);
         }
-        if (this.get('_animTimer')) {
-          clearTimeout(this.get('_animTimer'));
+        if (_animTimer) {
+          clearTimeout(_animTimer);
         }
-        if (this.get('_state') === 'closing') {
+        if (_state === 'closing') {
           // If it's animating out, stop it.
           this.set({
             '_state': 'open',
             '_animating': false,
-            '_animatingClass': this.get('animation') === 'fade' ? 'ui-pnotify-in ui-pnotify-fade-in' : 'ui-pnotify-in'
+            '_animatingClass': animation === 'fade' ? 'ui-pnotify-in ui-pnotify-fade-in' : 'ui-pnotify-in'
           });
         }
         return this;
@@ -998,39 +1003,39 @@
         // Cancel any current close timer.
         this.cancelClose();
         this.set({
-          '_timer': setTimeout(() => this.close(true), (isNaN(this.get('delay')) ? 0 : this.get('delay')))
+          '_timer': setTimeout(() => this.close(true), (isNaN(this.get().delay) ? 0 : this.get().delay))
         });
         return this;
       },
 
       addModuleClass (...classNames) {
-        const moduleClasses = this.get('_moduleClasses');
+        const {_moduleClasses} = this.get();
         for (let i = 0; i < classNames.length; i++) {
           let className = classNames[i];
-          if (moduleClasses.indexOf(className) === -1) {
-            moduleClasses.push(className);
+          if (_moduleClasses.indexOf(className) === -1) {
+            _moduleClasses.push(className);
           }
         }
-        this.set({'_moduleClasses': moduleClasses});
+        this.set({_moduleClasses});
       },
 
       removeModuleClass (...classNames) {
-        const moduleClasses = this.get('_moduleClasses');
+        const {_moduleClasses} = this.get();
         for (let i = 0; i < classNames.length; i++) {
           let className = classNames[i];
-          const idx = moduleClasses.indexOf(className);
+          const idx = _moduleClasses.indexOf(className);
           if (idx !== -1) {
-            moduleClasses.splice(idx, 1);
+            _moduleClasses.splice(idx, 1);
           }
         }
-        this.set({'_moduleClasses': moduleClasses});
+        this.set({_moduleClasses});
       },
 
       hasModuleClass (...classNames) {
-        const moduleClasses = this.get('_moduleClasses');
+        const {_moduleClasses} = this.get();
         for (let i = 0; i < classNames.length; i++) {
           let className = classNames[i];
-          if (moduleClasses.indexOf(className) === -1) {
+          if (_moduleClasses.indexOf(className) === -1) {
             return false;
           }
         }

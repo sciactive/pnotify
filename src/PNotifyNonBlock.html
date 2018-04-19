@@ -39,10 +39,10 @@
       },
 
       doNonBlockClass () {
-        if (this.get('nonblock')) {
-          this.get('_notice').addModuleClass('nonblock');
+        if (this.get().nonblock) {
+          this.get()._notice.addModuleClass('nonblock');
         } else {
-          this.get('_notice').removeModuleClass('nonblock');
+          this.get()._notice.removeModuleClass('nonblock');
         }
       }
     }

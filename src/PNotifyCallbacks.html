@@ -5,7 +5,7 @@
   let _close = PNotify.prototype.close;
 
   const callbacks = (notice, options, name) => {
-    let modules = notice ? notice.get('modules') : options.modules;
+    let modules = notice ? notice.get().modules : options.modules;
     let cbs = (modules && modules.Callbacks) ? modules.Callbacks : {};
     return cbs[name] ? cbs[name] : () => true;
   };

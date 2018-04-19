@@ -35,7 +35,7 @@
       initModule (options) {
         this.set(options);
 
-        const notice = this.get('_notice');
+        const {_notice} = this.get();
         let origXY = null;
         let diffXY = null;
         let noticeWidthHeight = null;
@@ -44,12 +44,12 @@
         let direction = 'X';
         let span = 'Width';
 
-        notice.on('touchstart', (e) => {
-          if (!this.get('swipeDismiss')) {
+        _notice.on('touchstart', (e) => {
+          if (!this.get().swipeDismiss) {
             return;
           }
 
-          const stack = notice.get('stack');
+          const {stack} = _notice.get();
           if (stack !== false) {
             switch (stack.dir1) {
               case 'up':
@@ -68,13 +68,13 @@
           }
 
           origXY = e.touches[0]['screen' + direction];
-          noticeWidthHeight = notice.refs.elem['scroll' + span];
-          noticeOpacity = window.getComputedStyle(notice.refs.elem)['opacity'];
-          notice.refs.container.style[csspos] = 0;
+          noticeWidthHeight = _notice.refs.elem['scroll' + span];
+          noticeOpacity = window.getComputedStyle(_notice.refs.elem)['opacity'];
+          _notice.refs.container.style[csspos] = 0;
         });
 
-        notice.on('touchmove', (e) => {
-          if (!origXY || !this.get('swipeDismiss')) {
+        _notice.on('touchmove', (e) => {
+          if (!origXY || !this.get().swipeDismiss) {
             return;
           }
 
@@ -83,24 +83,24 @@
           diffXY = curXY - origXY;
           const opacity = (1 - (Math.abs(diffXY) / noticeWidthHeight)) * noticeOpacity;
 
-          notice.refs.elem.style.opacity = opacity;
-          notice.refs.container.style[csspos] = diffXY + 'px';
+          _notice.refs.elem.style.opacity = opacity;
+          _notice.refs.container.style[csspos] = diffXY + 'px';
         });
 
-        notice.on('touchend', () => {
-          if (!origXY || !this.get('swipeDismiss')) {
+        _notice.on('touchend', () => {
+          if (!origXY || !this.get().swipeDismiss) {
             return;
           }
 
-          notice.refs.container.classList.add('ui-pnotify-mobile-animate-left');
+          _notice.refs.container.classList.add('ui-pnotify-mobile-animate-left');
           if (Math.abs(diffXY) > 40) {
             const goLeft = (diffXY < 0) ? noticeWidthHeight * -2 : noticeWidthHeight * 2;
-            notice.refs.elem.style.opacity = 0;
-            notice.refs.container.style[csspos] = goLeft + 'px';
-            notice.close();
+            _notice.refs.elem.style.opacity = 0;
+            _notice.refs.container.style[csspos] = goLeft + 'px';
+            _notice.close();
           } else {
-            notice.refs.elem.style.removeProperty('opacity');
-            notice.refs.container.style.removeProperty(csspos);
+            _notice.refs.elem.style.removeProperty('opacity');
+            _notice.refs.container.style.removeProperty(csspos);
           }
           origXY = null;
           diffXY = null;
@@ -108,13 +108,13 @@
           noticeOpacity = null;
         });
 
-        notice.on('touchcancel', () => {
-          if (!origXY || !this.get('swipeDismiss')) {
+        _notice.on('touchcancel', () => {
+          if (!origXY || !this.get().swipeDismiss) {
             return;
           }
 
-          notice.refs.elem.style.removeProperty('opacity');
-          notice.refs.container.style.removeProperty(csspos);
+          _notice.refs.elem.style.removeProperty('opacity');
+          _notice.refs.container.style.removeProperty(csspos);
           origXY = null;
           diffXY = null;
           noticeWidthHeight = null;
@@ -130,29 +130,29 @@
 
       beforeOpen () {
         // Add an event listener to watch the window resizes.
-        window.addEventListener('resize', this.get('_doMobileStylingBound'));
+        window.addEventListener('resize', this.get()._doMobileStylingBound);
       },
 
       afterClose () {
         // Remove the event listener.
-        window.removeEventListener('resize', this.get('_doMobileStylingBound'));
+        window.removeEventListener('resize', this.get()._doMobileStylingBound);
 
         // Remove any styling we added to close it.
-        if (!this.get('swipeDismiss')) {
+        if (!this.get().swipeDismiss) {
           return;
         }
 
-        const notice = this.get('_notice');
-        notice.refs.elem.style.removeProperty('opacity');
-        notice.refs.container.style.removeProperty('left');
-        notice.refs.container.style.removeProperty('top');
+        const {_notice} = this.get();
+        _notice.refs.elem.style.removeProperty('opacity');
+        _notice.refs.container.style.removeProperty('left');
+        _notice.refs.container.style.removeProperty('top');
       },
 
       doMobileStyling () {
-        const notice = this.get('_notice');
-        const stack = notice.get('stack');
+        const {_notice} = this.get();
+        const {stack} = _notice.get();
 
-        if (this.get('styling')) {
+        if (this.get().styling) {
           if (stack !== false) {
             if (window.innerWidth <= 480) {
               if (!stack.mobileOrigSpacing1) {
@@ -191,23 +191,23 @@
             }
             switch (stack.dir1) {
               case 'down':
-                notice.addModuleClass('ui-pnotify-mobile-top');
+                _notice.addModuleClass('ui-pnotify-mobile-top');
                 break;
               case 'up':
-                notice.addModuleClass('ui-pnotify-mobile-bottom');
+                _notice.addModuleClass('ui-pnotify-mobile-bottom');
                 break;
               case 'left':
-                notice.addModuleClass('ui-pnotify-mobile-right');
+                _notice.addModuleClass('ui-pnotify-mobile-right');
                 break;
               case 'right':
-                notice.addModuleClass('ui-pnotify-mobile-left');
+                _notice.addModuleClass('ui-pnotify-mobile-left');
                 break;
             }
           }
 
-          notice.addModuleClass('ui-pnotify-mobile-able');
+          _notice.addModuleClass('ui-pnotify-mobile-able');
         } else {
-          notice.removeModuleClass(
+          _notice.removeModuleClass(
             'ui-pnotify-mobile-able',
             'ui-pnotify-mobile-top',
             'ui-pnotify-mobile-bottom',

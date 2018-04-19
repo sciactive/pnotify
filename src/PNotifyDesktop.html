@@ -25,7 +25,7 @@
       notify = (title, options, onclick, onclose) => {
         // Gecko < 22
         const notice = navigator.mozNotification
-          .createNotification(title, options.body, this.get('icon'))
+          .createNotification(title, options.body, this.get().icon)
           .show();
         notice.onclick = onclick;
         notice.onclose = onclose;
@@ -34,7 +34,7 @@
     } else if ('webkitNotifications' in window) {
       notify = (title, options, onclick, onclose) => {
         const notice = window.webkitNotifications.createNotification(
-          this.get('icon'),
+          this.get().icon,
           title,
           options.body
         );
@@ -112,93 +112,96 @@
       initModule (options) {
         this.set(options);
 
-        const notice = this.get('_notice');
-
-        // This is necessary so desktop notices don't cause spacing problems
-        // when positioning.
-        notice.observe('_animatingClass', (value) => {
-          if (value === '' || (permission !== 0 && this.get('fallback')) || !this.get('desktop')) {
-            return;
-          }
-          notice.set({'_animatingClass': ''});
-        });
+        const {_notice} = this.get();
 
         // Animation should always be 'none' for desktop notices, but remember
         // the old animation so it can be recovered.
-        this.set({'_oldAnimation': notice.get('animation')});
-        notice.observe('animation', (value, oldValue) => {
-          if (
-            oldValue === undefined ||
-            value !== 'none' ||
-            (
-              oldValue === 'none' &&
-              value !== this.get('_oldAnimation')
-            )
-          ) {
-            this.set({'_oldAnimation': value});
+        this.set({'_oldAnimation': _notice.get().animation});
+        _notice.on('state', ({changed, current, previous}) => {
+          if (changed.animation) {
+            if (
+              previous.animation === undefined ||
+              current.animation !== 'none' ||
+              (
+                previous.animation === 'none' &&
+                current.animation !== this.get()._oldAnimation
+              )
+            ) {
+              this.set({'_oldAnimation': current.animation});
+            }
+          }
+
+          // This is necessary so desktop notices don't cause spacing problems
+          // when positioning.
+          if (changed._animatingClass) {
+            if (!(current._animatingClass === '' || (permission !== 0 && this.get().fallback) || !this.get().desktop)) {
+              _notice.set({'_animatingClass': ''});
+            }
           }
         });
 
-        if (!this.get('desktop')) {
+        if (!this.get().desktop) {
           return;
         }
 
         permission = PNotify.modules.Desktop.checkPermission();
         if (permission !== 0) {
           // Keep the notice from opening if fallback is false.
-          if (!this.get('fallback')) {
-            notice.set({'autoDisplay': false});
+          if (!this.get().fallback) {
+            _notice.set({'autoDisplay': false});
           }
           return;
         }
 
-        notice.set({'animation': 'none'});
-        this.get('_notice').addModuleClass('ui-pnotify-desktop-hide');
+        _notice.set({'animation': 'none'});
+        _notice.addModuleClass('ui-pnotify-desktop-hide');
 
         this.genNotice();
       },
 
       update () {
-        const notice = this.get('_notice');
-        if ((permission !== 0 && this.get('fallback')) || !this.get('desktop')) {
-          notice.set({'animation': this.get('_oldAnimation')});
-          notice.removeModuleClass('ui-pnotify-desktop-hide');
+        const {_notice} = this.get();
+        if ((permission !== 0 && this.get().fallback) || !this.get().desktop) {
+          _notice.set({'animation': this.get()._oldAnimation});
+          _notice.removeModuleClass('ui-pnotify-desktop-hide');
           return;
         } else {
-          notice.set({'animation': 'none'});
-          notice.addModuleClass('ui-pnotify-desktop-hide');
+          _notice.set({'animation': 'none'});
+          _notice.addModuleClass('ui-pnotify-desktop-hide');
         }
         this.genNotice();
       },
 
       beforeOpen () {
-        if (this.get('desktop') && permission !== 0) {
+        if (this.get().desktop && permission !== 0) {
           PNotify.modules.Desktop.permission();
         }
-        if ((permission !== 0 && this.get('fallback')) || !this.get('desktop')) {
+        if ((permission !== 0 && this.get().fallback) || !this.get().desktop) {
           return;
         }
-        if (this.get('_desktop') && 'show' in this.get('_desktop')) {
-          this.get('_notice').set({'_moduleIsNoticeOpen': true});
-          this.get('_desktop').show();
+        const {_desktop} = this.get();
+        if (_desktop && 'show' in _desktop) {
+          this.get()._notice.set({'_moduleIsNoticeOpen': true});
+          _desktop.show();
         }
       },
 
       beforeClose () {
-        if ((permission !== 0 && this.get('fallback')) || !this.get('desktop')) {
+        if ((permission !== 0 && this.get().fallback) || !this.get().desktop) {
           return;
         }
-        if (this.get('_desktop') && 'close' in this.get('_desktop')) {
-          this.get('_desktop').close();
-          this.get('_notice').set({'_moduleIsNoticeOpen': false});
+        const {_desktop} = this.get();
+        if (_desktop && 'close' in _desktop) {
+          _desktop.close();
+          this.get()._notice.set({'_moduleIsNoticeOpen': false});
         }
       },
 
       genNotice () {
-        const notice = this.get('_notice');
+        const {_notice, icon} = this.get();
 
-        if (this.get('icon') === null) {
-          switch (notice.get('type')) {
+        if (icon === null) {
+          switch (_notice.get().type) {
             case 'error':
               this.set({'_icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3gQJATQg7e6HvQAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAABr0lEQVRYw8WXu0oDQRSGv7hRSFYrLTTWKihaqUgUJO+gphBLL1jYpPSCVcAggpWthYhC7Ows9An0IbSPkMRCw8ZmFuI6yczs9cAPuzNz5v92brtrESxGARtokkCcAg2hk7jNl4G2R/m4zFPAiwTgWdRFHnmJuaulOAAaPQDqUZvv9DB3tR0lwIcGwHtU5uca5q4qYZvngJbHpAZ8CtU8dS1gLEyAisegBGTFKWiL65KnzVlY5uOSId6VtNuTtMupOu/TAHiQlNmSskHNXCOAGWBeUp7VhFoApoMAXAOWJoCszBJ9+ALY6vL0JiPgjsKmKUAaOOoBZwIAcNxlJLsCrAOTIQJMAWu62y4LOIqT7lGS96TIcYCMDkBZ46h1gB+PHI28ssq8X/G6DaqG8Piz2DrjVjGXbtSBy46F5QAHwJAizwZugKKscs7gSaqS/KpB/qxsFxwafhf6Odb/eblJi8BGwJdW26BtURxQpMU83hmaDQsNiPtvYMSwj3tgAqDgYzU7wJdHjo9+CgBvEW47lV5Tgj5DMtG0xIfESkIAF+522gdWxTzGEX3i9+6KpOMXF5UBt0NKJCAAAAAASUVORK5CYII='});
               break;
@@ -213,48 +216,48 @@
               this.set({'_icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3gQJATM4scOJLAAAAcxJREFUWMPtljtLA0EQx3+J0QRfnYqCiCA+MERBrIwgFtoFbMTOR61i5QcQBdEihZWNoEWwsNAvkMJeBLHRQtHC0iIP4utOmw2cx97d7l2SRgcGbufmv/Pf2dmdhb8uIR+YJqAPaBff30AeeAHuxLgqMgRkgS/AAEybGuLfEdBcycCTwKVYmY5mgO6gwdd8BLaqAST9Bs8EDG7VTd3gex4TbgEjwKjQOHDugZlRDb7sMZEJpCS4bYVMJOygsG1cB+wqHN0Gib1RYXFpLwL74nx7Sb3EFlXATQNjTgRagA3FbZIRiCliT5wITGgUaRACA0CPjMC4xtUcDUAgDAzLCCQ0MhALQCAE9MoIdGkQCJIBgE4ZgWiNMvDL10qgUMMMFGQEnjQmkLXbVg38s8y4qtFcTCAnHiJ5oKiJnSoHjVgIXAmHkGIl5yy+YcWruIy9dvqpupIDCfZWEXvh1gsWFVfxIbG9a3RbRwJnYiuqJYfAqxsBgBWFiQyJzfTAlIB1uzEicbwBFoBTl8lSwINoSuXKjrv4F4FBh61zlKUKvgn7/e5ZEngMEDgLdFSieHaAT42LpgTMVbqC24B54Bi4twV9E6cnDcw6PFj+RSo/l6rlSlldhx4AAAAASUVORK5CYII='});
               break;
           }
-        } else if (this.get('icon') === false) {
+        } else if (icon === false) {
           this.set({'_icon': null});
         } else {
-          this.set({'_icon': this.get('icon')});
+          this.set({'_icon': icon});
         }
 
-        let tag = this.get('tag');
-        if (!this.get('_tag') || tag !== null) {
+        let {tag} = this.get();
+        if (!this.get()._tag || tag !== null) {
           this.set({
             '_tag': tag === null ? 'PNotify-' + Math.round(Math.random() * 1000000) : tag
           });
         }
 
         const options = {
-          body: this.get('text') || notice.get('text'),
-          tag: this.get('_tag')
+          body: this.get().text || _notice.get().text,
+          tag: this.get()._tag
         };
-        if (!notice.get('hide')) {
+        if (!_notice.get().hide) {
           options.requireInteraction = true;
         }
-        if (this.get('_icon') !== null) {
-          options.icon = this.get('_icon');
+        if (this.get()._icon !== null) {
+          options.icon = this.get()._icon;
         }
-        Object.apply(options, this.get('options'));
+        Object.apply(options, this.get().options);
 
-        const desktopNotice = notify(
-          this.get('title') || notice.get('title'),
+        const _desktop = notify(
+          this.get().title || _notice.get().title,
           options,
           () => {
-            notice.fire('click', {target: desktopNotice});
+            _notice.fire('click', {target: _desktop});
           },
           () => {
-            notice.close();
+            _notice.close();
           }
         );
 
-        notice.set({'_moduleIsNoticeOpen': true});
-        this.set({'_desktop': desktopNotice});
+        _notice.set({'_moduleIsNoticeOpen': true});
+        this.set({_desktop});
 
-        if (!('close' in desktopNotice) && ('cancel' in desktopNotice)) {
-          desktopNotice.close = () => {
-            desktopNotice.cancel();
+        if (!('close' in _desktop) && ('cancel' in _desktop)) {
+          _desktop.close = () => {
+            _desktop.cancel();
           };
         }
       }

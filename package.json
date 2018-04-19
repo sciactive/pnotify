@@ -42,7 +42,6 @@
     "prepare": "npm run lint && npm run build",
     "lint": "eslint index.html make.js src/ demo/"
   },
-  "dependencies": {},
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-plugin-iife-wrap": "^1.1.0",
@@ -55,20 +54,21 @@
     "eslint": "^4.19.1",
     "eslint-config-semistandard": "^12.0.1",
     "eslint-config-standard": "^11.0.0",
-    "eslint-plugin-html": "^4.0.2",
-    "eslint-plugin-import": "^2.10.0",
+    "eslint-plugin-html": "^4.0.3",
+    "eslint-plugin-import": "^2.11.0",
     "eslint-plugin-node": "^6.0.1",
     "eslint-plugin-promise": "^3.7.0",
     "eslint-plugin-react": "^7.7.0",
     "eslint-plugin-standard": "^3.0.1",
     "shelljs": "^0.8.1",
-    "svelte": "^1.60.2",
-    "uglify-es": "^3.3.10",
-    "uglify-js": "^3.3.20"
+    "svelte": "^2.0.0",
+    "uglify-es": "3.3.9",
+    "uglify-js": "^3.3.21"
   },
   "peerDependencies": {
     "animate.css": "^3.5.2",
     "material-design-icons": "^3.0.1",
     "nonblockjs": "^1.0.7"
-  }
+  },
+  "dependencies": {}
 }
