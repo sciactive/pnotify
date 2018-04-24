@@ -25,7 +25,7 @@
       notify = (title, options, onclick, onclose) => {
         // Gecko < 22
         const notice = navigator.mozNotification
-          .createNotification(title, options.body, this.get().icon)
+          .createNotification(title, options.body, options.icon)
           .show();
         notice.onclick = onclick;
         notice.onclose = onclose;
@@ -34,7 +34,7 @@
     } else if ('webkitNotifications' in window) {
       notify = (title, options, onclick, onclose) => {
         const notice = window.webkitNotifications.createNotification(
-          this.get().icon,
+          options.icon,
           title,
           options.body
         );
