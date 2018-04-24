@@ -418,7 +418,7 @@ PNotify.defaults.modules = {
 
 ## NonBlock Module
 
-Requires [NonBlock.js](https://github.com/sciactive/nonblockjs) 1.0.7 or higher.
+Requires [NonBlock.js](https://github.com/sciactive/nonblockjs) 1.0.8 or higher.
 
 **It is also deprecated and unnecessary in v4.** All it does is add the 'nonblock' class to your notice. You can do the same yourself with `addClass: 'nonblock'`.
 
