@@ -1,6 +1,6 @@
 {
   "name": "pnotify",
-  "version": "4.0.0-alpha.2",
+  "version": "4.0.0-alpha.3",
   "description": "Beautiful JavaScript notifications. Now with zero dependencies!",
   "keywords": [
     "notice",
@@ -63,9 +63,9 @@
     "eslint-plugin-react": "^7.7.0",
     "eslint-plugin-standard": "^3.0.1",
     "shelljs": "^0.8.1",
-    "svelte": "^2.0.0",
+    "svelte": "^2.1.1",
     "uglify-es": "3.3.9",
-    "uglify-js": "^3.3.21"
+    "uglify-js": "^3.3.22"
   },
   "peerDependencies": {
     "animate.css": "^3.5.2",
