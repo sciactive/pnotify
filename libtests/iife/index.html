@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>RequireJS Test</title>
+  <title>IIFE Test</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="../../src/PNotifyBrightTheme.css">
   <script type="text/javascript" src="../../lib/iife/PNotify.js"></script>
-  <script type="text/javascript" src="../../lib/iife/PNotifyReference.js"></script>
+  <script type="text/javascript" src="../../lib/iife/PNotifyConfirm.js"></script>
 </head>
 <body>
   <div style="padding: 50vh 0; text-align: center;">
@@ -26,8 +26,8 @@
         title: 'Yay!',
         text: 'It works!',
         modules: {
-          Reference: {
-            putThing: true
+          Confirm: {
+            confirm: true
           }
         }
       });

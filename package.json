@@ -27,6 +27,9 @@
     "make.js"
   ],
   "main": "dist/umd/PNotify.js",
+  "browser": "dist/es/index.js",
+  "module": "dist/es/index.js",
+  "sideEffects": false,
   "directories": {
     "lib": "lib/umd"
   },

@@ -1,11 +1,11 @@
 {
-  "name": "pnotify-test-browserify",
+  "name": "pnotify-test-rollup",
   "version": "0.0.0",
   "description": "Just a test.",
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "browserify src/index.js -o dist/bundle.js",
+    "build": "rollup -c",
     "prepare": "npm run build"
   },
   "author": "",
@@ -14,6 +14,7 @@
     "pnotify": "file:../../"
   },
   "devDependencies": {
-    "browserify": "^15.2.0"
+    "rollup": "^0.58.2",
+    "rollup-plugin-node-resolve": "^3.3.0"
   }
 }

@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="../../src/PNotifyBrightTheme.css">
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.js"></script>
   <script type="text/javascript" src="../../lib/umd/PNotify.js"></script>
-  <script type="text/javascript" src="../../lib/umd/PNotifyReference.js"></script>
+  <script type="text/javascript" src="../../lib/umd/PNotifyConfirm.js"></script>
 </head>
 <body>
   <div style="padding: 50vh 0; text-align: center;">
@@ -19,6 +19,7 @@
     document.getElementById('button1').addEventListener('click', function () {
       requirejs(['PNotify'], function (PNotify) {
         PNotify = PNotify && PNotify.__esModule ? PNotify['default'] : PNotify;
+
         PNotify.notice({
           title: 'Yay!',
           text: 'It works!'
@@ -26,14 +27,15 @@
       });
     });
     document.getElementById('button2').addEventListener('click', function () {
-      requirejs(['PNotify', 'PNotifyReference'], function (PNotify) {
+      requirejs(['PNotify', 'PNotifyConfirm'], function (PNotify) {
         PNotify = PNotify && PNotify.__esModule ? PNotify['default'] : PNotify;
+
         PNotify.notice({
           title: 'Yay!',
           text: 'It works!',
           modules: {
-            Reference: {
-              putThing: true
+            Confirm: {
+              confirm: true
             }
           }
         });

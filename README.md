@@ -21,6 +21,7 @@ PNotify is a vanilla JavaScript notification library. PNotify can provide [deskt
   - [AngularJS](#angularjs)
   - [Vanilla JS (ES5)](#vanilla-js-es5)
   - [Vanilla JS (ES6)](#vanilla-js-es6)
+  - [Webpack, Rollup, etc.](#webpack-rollup-etc)
 - [Styles](#styles)
   - [Bright Theme](#bright-theme)
   - [Material](#material)
@@ -220,6 +221,21 @@ import PNotifyButtons from 'node_modules/pnotify/dist/es/PNotifyButtons.js';
 
 PNotify.alert('Notice me, senpai!');
 ```
+
+## Webpack, Rollup, etc.
+
+PNotify in bundlers. Include the named ES modules and initiate them:
+
+```js
+import {PNotify, PNotifyButtons} from 'pnotify';
+PNotifyButtons; // Initiate the module. Important!
+
+PNotify.alert('Notice me, senpai!');
+```
+
+You can do this with any bundler, but it's recommended to only do this with ones that support tree shaking. This is why "initiating" the module is necessary. What you're doing is telling the bundler that this import is used, so it doesn't exclude it.
+
+PNotify is marked as "side-effect free" in package.json. This is untrue, but without this, the bundler will include all PNotify modules if you use the named imports. So, it's a necessary hack.
 
 # Styles
 
