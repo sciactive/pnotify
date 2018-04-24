@@ -6,8 +6,5 @@ export default {
     file: 'dist/bundle.js',
     format: 'iife'
   },
-  plugins: [ resolve() ],
-  treeshake: {
-    pureExternalModules: true
-  }
+  plugins: [ resolve() ]
 };

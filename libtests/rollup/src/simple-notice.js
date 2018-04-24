@@ -1,4 +1,4 @@
-import {PNotify} from 'pnotify';
+import PNotify from 'pnotify/dist/es/PNotify';
 
 export default function simpleNotice () {
   return PNotify.notice({

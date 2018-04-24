@@ -1,4 +1,3 @@
-// No tree shaking, so include only the files you need.
 import PNotify from '../../dist/es/PNotify.js';
 import PNotifyConfirm from '../../dist/es/PNotifyConfirm.js'; // eslint-disable-line no-unused-vars
 

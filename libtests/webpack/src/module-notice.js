@@ -1,6 +1,5 @@
-// Tree shaking, so you can include from the index.
-import {PNotify, PNotifyConfirm} from 'pnotify';
-PNotifyConfirm; // eslint-disable-line no-unused-expressions
+import PNotify from 'pnotify/dist/es/PNotify';
+import PNotifyConfirm from 'pnotify/dist/es/PNotifyConfirm'; // eslint-disable-line no-unused-vars
 
 export default function moduleNotice () {
   return PNotify.notice({

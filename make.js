@@ -7,7 +7,6 @@ require('shelljs/make');
 
 let pnotifySrc = {
   // Main code.
-  'index': 'index.js',
   'core': 'PNotify.html',
   'animate': 'PNotifyAnimate.html',
   'buttons': 'PNotifyButtons.html',
@@ -30,7 +29,6 @@ let pnotifySrc = {
 
 let pnotifyJs = {
   // Main code.
-  'index': 'index.js',
   'core': 'PNotify.js',
   'animate': 'PNotifyAnimate.js',
   'buttons': 'PNotifyButtons.js',
@@ -110,10 +108,6 @@ target.dist = (args) => {
 
 let compileJs = (module, filename, args) => {
   let format = setup(args);
-
-  if (module === 'index' && format === 'iife') {
-    return;
-  }
 
   const srcFilename = 'src/' + filename;
   const dstFilename = 'lib/' + format + '/' + filename.replace(/\.html$/, '.js');
@@ -195,16 +189,7 @@ let compileJs = (module, filename, args) => {
       });
     }
     if (format !== 'iife') {
-      if (module === 'index' && format === 'umd') {
-        babelOptions.plugins.push(['transform-es2015-modules-' + format, {
-          'globals': {
-            'index': 'pnotify'
-          },
-          'exactGlobals': true
-        }]);
-      } else {
-        babelOptions.plugins.push('transform-es2015-modules-' + format);
-      }
+      babelOptions.plugins.push('transform-es2015-modules-' + format);
     }
 
     ({code, map} = babel.transform(inputCode, babelOptions));
@@ -213,12 +198,10 @@ let compileJs = (module, filename, args) => {
   // Post-compile transforms.
   if (format === 'es') {
     code = code.replace(/import PNotify(\w*) from ["']\.\/PNotify(\w*)\.html["'];/g, 'import PNotify$1 from "./PNotify$2.js";');
-    code = code.replace(/export (.*) from ["']\.\/PNotify(\w*)\.html["'];/g, 'export $1 from "./PNotify$2.js";');
   }
   if (format === 'umd') {
     code = code.replace(/require\(["']\.\/PNotify(\w*)\.html["']\)/g, 'require("./PNotify$1")');
     code = code.replace(/, ["']\.\/PNotify(\w*)\.html["']/g, ', "PNotify$1"');
-    code = code.replace(/global\.PNotify(\w*)Html/g, 'global.PNotify$1');
   }
 
   fs.writeFileSync(dstFilename, code);
@@ -229,10 +212,6 @@ let compileJs = (module, filename, args) => {
 
 let compressJs = (module, filename, args) => {
   let format = setup(args);
-
-  if (module === 'index' && format === 'iife') {
-    return;
-  }
 
   const srcFilename = 'lib/' + format + '/' + filename;
   const dstFilename = 'dist/' + format + '/' + filename;
