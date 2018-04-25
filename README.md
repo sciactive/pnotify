@@ -21,7 +21,6 @@ PNotify is a vanilla JavaScript notification library. PNotify can provide [deskt
   - [AngularJS](#angularjs)
   - [Vanilla JS (ES5)](#vanilla-js-es5)
   - [Vanilla JS (ES6)](#vanilla-js-es6)
-  - [Webpack, Rollup, etc.](#webpack-rollup-etc)
 - [Styles](#styles)
   - [Bright Theme](#bright-theme)
   - [Material](#material)
