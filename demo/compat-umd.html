@@ -50,63 +50,43 @@
     <hr />
     Some simple demos:<br />
     <button onclick="requirejs(['PNotifyCompat'], function(PNotify){
-      PNotify = PNotify && PNotify.__esModule ? PNotify['default'] : PNotify;
-
       new PNotify({
         title: 'Regular Notice',
         text: 'Check me out! I\'m a notice.'
       });
-
     });">Notice</button>
     <button onclick="requirejs(['PNotifyCompat'], function(PNotify){
-      PNotify = PNotify && PNotify.__esModule ? PNotify['default'] : PNotify;
-
       new PNotify({
         title: 'New Thing',
         text: 'Just to let you know, something happened.',
         type: 'info'
       });
-
     });">Info Message</button>
     <button onclick="requirejs(['PNotifyCompat'], function(PNotify){
-      PNotify = PNotify && PNotify.__esModule ? PNotify['default'] : PNotify;
-
       new PNotify({
         title: 'Success!',
         text: 'That thing that you were trying to do worked.',
         type: 'success'
       });
-
     });">Success Message</button>
     <button onclick="requirejs(['PNotifyCompat'], function(PNotify){
-      PNotify = PNotify && PNotify.__esModule ? PNotify['default'] : PNotify;
-
       new PNotify({
         title: 'Oh No!',
         text: 'Something terrible happened.',
         type: 'error'
       });
-
     });">Error Message</button>
     <button onclick="requirejs(['PNotifyCompat'], function(PNotify){
-      PNotify = PNotify && PNotify.__esModule ? PNotify['default'] : PNotify;
-
       new PNotify('Check me out! I\'m a notice.');
-
     });">Simple</button>
     <button onclick="requirejs(['PNotifyCompat'], function(PNotify){
-      PNotify = PNotify && PNotify.__esModule ? PNotify['default'] : PNotify;
-
       new PNotify({
         title: 'No Mouse Reset Notice',
         text: 'I don\'t care if you move your mouse over me, I\'ll disappear when I want.',
         mouse_reset: false
       });
-
     });">No Mouse Reset</button>
     <button onclick="requirejs(['PNotifyCompat'], function(PNotify){
-      PNotify = PNotify && PNotify.__esModule ? PNotify['default'] : PNotify;
-
       var notice = new PNotify({
         title: 'Click Notice',
         text: 'I wish someone would click me.'
@@ -118,27 +98,20 @@
           text: 'Yay, you clicked me!&lt;div style=&quot;text-align: center;&quot;&gt;&lt;img src=&quot;https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Happy_smiley_face.png/240px-Happy_smiley_face.png&quot; /&gt;&lt;/div&gt;'
         });
       });
-
     });">Click on It</button>
     <button onclick="requirejs(['PNotifyCompat'], function(PNotify){
-      PNotify = PNotify && PNotify.__esModule ? PNotify['default'] : PNotify;
-
       new PNotify({
         title: '&lt;span style=&quot;color: green;&quot;&gt;Rich Content Notice&lt;/span&gt;',
         text: '&lt;span style=&quot;color: blue;&quot;&gt;Look at my beautiful &lt;strong&gt;strong&lt;/strong&gt;, &lt;em&gt;emphasized&lt;/em&gt;, and &lt;span style=&quot;font-size: 1.5em;&quot;&gt;large&lt;/span&gt; text.&lt;/span&gt;'
       });
-
     });">Rich Text</button>
     <button onclick="requirejs(['PNotifyCompat'], function(PNotify){
-      PNotify = PNotify && PNotify.__esModule ? PNotify['default'] : PNotify;
-
       new PNotify({
         title: '&lt;em&gt;Escaped Notice&lt;/em&gt;',
         title_escape: true,
         text: $('#evil_html').html(),
         text_escape: true
       });
-
     });">Or Keep it Safe</button>
     <span id="evil_html" style="display: none;">
       <span>As you can see, I don't allow HTML in my content.</span>
@@ -152,8 +125,6 @@
     <hr />
     Some module demos<br />
     <button onclick="requirejs(['PNotifyCompat', 'PNotifyDesktop'], function(PNotify){
-      PNotify = PNotify && PNotify.__esModule ? PNotify['default'] : PNotify;
-
       PNotify.desktop.permission();
       (new PNotify({
         title: 'Desktop Notice',
@@ -165,20 +136,14 @@
         if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target)) return;
         alert('Hey! You clicked the desktop notification!');
       });
-
     });">Desktop - Notice</button>
     <button onclick="requirejs(['PNotifyCompat', 'PNotifyButtons'], function(PNotify){
-      PNotify = PNotify && PNotify.__esModule ? PNotify['default'] : PNotify;
-
       new PNotify({
         title: 'Regular Notice',
-        text: 'Check me out! I\'m a notice. With buttons'
+        text: 'Check me out! I\'m a notice. With buttons.'
       });
-
     });">Buttons</button>
     <button onclick="requirejs(['PNotifyCompat', 'PNotifyButtons'], function(PNotify){
-      PNotify = PNotify && PNotify.__esModule ? PNotify['default'] : PNotify;
-
       new PNotify({
         title: 'Custom Icon Button Notice',
         text: 'Check me out! My sticker and close buttons have custom icons!',
@@ -191,11 +156,8 @@
           }
         }
       });
-
     });">Buttons - Custom Icons</button>
     <button onclick="requirejs(['PNotifyCompat', 'PNotifyNonBlock'], function(PNotify){
-      PNotify = PNotify && PNotify.__esModule ? PNotify['default'] : PNotify;
-
       new PNotify({
         title: 'Non-Blocking Notice',
         text: 'I\'m a special kind of notice called &quot;non-blocking&quot;. When you hover over me I\'ll fade to show the elements underneath. Feel free to click any of them just like I wasn\'t even here.\n\nNote: HTML links don\'t trigger in some browsers, due to security settings.',
@@ -203,11 +165,8 @@
           nonblock: true
         }
       });
-
     });">NonBlock</button>
     <button onclick="requirejs(['PNotifyCompat', 'PNotifyMobile'], function(PNotify){
-      PNotify = PNotify && PNotify.__esModule ? PNotify['default'] : PNotify;
-
       new PNotify({
         title: 'No Mobile Support Notice',
         text: 'If you\'re on a mobile device, I won\'t respond to your swipes.',
@@ -215,11 +174,8 @@
           swipe_dismiss: false
         }
       });
-
     });">Mobile - No Mobile Support</button>
     <button onclick="requirejs(['PNotifyCompat', 'PNotifyAnimate'], function(PNotify){
-      PNotify = PNotify && PNotify.__esModule ? PNotify['default'] : PNotify;
-
       new PNotify({
         title: 'Animate.css Effect',
         text: 'I use effects from Animate.css. Such smooth CSS3 transitions make me feel like butter.',
@@ -229,11 +185,8 @@
           out_class: 'rotateOutUpRight'
         }
       });
-
     });">Animate</button>
     <button onclick="requirejs(['PNotifyCompat', 'PNotifyConfirm'], function(PNotify){
-      PNotify = PNotify && PNotify.__esModule ? PNotify['default'] : PNotify;
-
       (new PNotify({
         title: 'Confirmation Needed',
         text: 'Are you sure?',
@@ -253,11 +206,8 @@
       }).on('pnotify.cancel', function() {
         alert('Oh ok. Chicken, I see.');
       });
-
     });">Confirm - Confirm Dialog</button>
     <button onclick="requirejs(['PNotifyCompat', 'PNotifyConfirm'], function(PNotify){
-      PNotify = PNotify && PNotify.__esModule ? PNotify['default'] : PNotify;
-
       (new PNotify({
         title: 'Input Needed',
         text: 'What side would you like?',
@@ -301,11 +251,8 @@
           }
         });
       });
-
     });">Confirm - Prompt Dialog</button>
     <button onclick="requirejs(['PNotifyCompat', 'PNotifyCallbacks'], function(PNotify){
-      PNotify = PNotify && PNotify.__esModule ? PNotify['default'] : PNotify;
-
       var dont_alert = function() {};
       new PNotify({
         title: 'I\'m Here',
@@ -334,12 +281,9 @@
           dont_alert('I also have an argument called timer_hide, which is true if the notice was closed because the timer ran down. Value: ' + timer_hide);
         }
       });
-
     });">Callbacks</button>
     <button onclick="$(this).trigger('pnotify.history-last');">History - Show Last</button>
     <button onclick="requirejs(['PNotifyCompat', 'PNotifyReference'], function(PNotify){
-      PNotify = PNotify && PNotify.__esModule ? PNotify['default'] : PNotify;
-
       new PNotify({
         title: 'Reference Module',
         text: 'The reference module is a basic module that demonstrates how to write a PNotify module by implementing many of its features. You can find it in pnotify.reference.js (in v3).',
@@ -348,7 +292,6 @@
           put_thing: true
         }
       });
-
     });">Reference</button>
     <hr />
   </p>

@@ -1,7 +1,7 @@
 {
   "name": "pnotify",
   "version": "4.0.0-alpha.3",
-  "description": "Beautiful JavaScript notifications. Now with zero dependencies!",
+  "description": "Beautiful dependency free notifications.",
   "keywords": [
     "notice",
     "notices",
@@ -26,9 +26,6 @@
     "src",
     "make.js"
   ],
-  "main": "dist/umd/PNotify.js",
-  "browser": "dist/es/PNotify.js",
-  "module": "dist/es/PNotify.js",
   "directories": {
     "lib": "lib/umd"
   },
@@ -45,27 +42,26 @@
     "lint": "eslint index.html make.js src/ demo/"
   },
   "devDependencies": {
-    "babel-core": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-plugin-add-module-exports": "^0.2.1",
     "babel-plugin-iife-wrap": "^1.1.0",
-    "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-plugin-transform-es2015-modules-umd": "^6.24.1",
     "babel-plugin-transform-object-assign": "^6.22.0",
-    "babel-preset-env": "^1.6.1",
+    "babel-preset-env": "^1.7.0",
     "babel-preset-stage-3": "^6.24.1",
     "clean-css": "^4.1.11",
     "eslint": "^4.19.1",
     "eslint-config-semistandard": "^12.0.1",
     "eslint-config-standard": "^11.0.0",
     "eslint-plugin-html": "^4.0.3",
-    "eslint-plugin-import": "^2.11.0",
+    "eslint-plugin-import": "^2.12.0",
     "eslint-plugin-node": "^6.0.1",
     "eslint-plugin-promise": "^3.7.0",
-    "eslint-plugin-react": "^7.7.0",
-    "eslint-plugin-standard": "^3.0.1",
-    "shelljs": "^0.8.1",
-    "svelte": "^2.1.1",
+    "eslint-plugin-react": "^7.8.2",
+    "eslint-plugin-standard": "^3.1.0",
+    "shelljs": "^0.8.2",
+    "svelte": "^2.6.3",
     "uglify-es": "3.3.9",
-    "uglify-js": "^3.3.22"
+    "uglify-js": "^3.3.25"
   },
   "peerDependencies": {
     "animate.css": "^3.5.2",

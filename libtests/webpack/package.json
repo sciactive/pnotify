@@ -10,11 +10,13 @@
   },
   "author": "",
   "license": "none",
-  "dependencies": {
-    "pnotify": "file:../../"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "webpack": "^4.1.1",
-    "webpack-cli": "^2.0.11"
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
+    "pnotify": "file:../../",
+    "uglifyjs-webpack-plugin": "^1.2.5",
+    "webpack": "^4.8.3",
+    "webpack-cli": "^2.1.3"
   }
 }

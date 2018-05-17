@@ -192,7 +192,7 @@ var PNotify = require('pnotify/dist/umd/PNotify');
 var PNotifyButtons = require('pnotify/dist/umd/PNotifyButtons');
 
 angular.module('WhateverModule', [])
-  .value('PNotify', PNotify.default)
+  .value('PNotify', PNotify)
   .controller('WhateverController', ['PNotify', function(PNotify) {
     PNotify.alert('Notice me, senpai!');
   }]);

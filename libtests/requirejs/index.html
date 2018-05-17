@@ -18,8 +18,6 @@
     /* globals requirejs */
     document.getElementById('button1').addEventListener('click', function () {
       requirejs(['PNotify'], function (PNotify) {
-        PNotify = PNotify && PNotify.__esModule ? PNotify['default'] : PNotify;
-
         PNotify.notice({
           title: 'Yay!',
           text: 'It works!'
@@ -28,8 +26,6 @@
     });
     document.getElementById('button2').addEventListener('click', function () {
       requirejs(['PNotify', 'PNotifyConfirm'], function (PNotify) {
-        PNotify = PNotify && PNotify.__esModule ? PNotify['default'] : PNotify;
-
         PNotify.notice({
           title: 'Yay!',
           text: 'It works!',

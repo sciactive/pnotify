@@ -10,11 +10,10 @@
   },
   "author": "",
   "license": "none",
-  "dependencies": {
-    "pnotify": "file:../../"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "rollup": "^0.58.2",
+    "pnotify": "file:../../",
+    "rollup": "^0.59.1",
     "rollup-plugin-node-resolve": "^3.3.0"
   }
 }

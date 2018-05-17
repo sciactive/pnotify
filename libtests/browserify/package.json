@@ -10,10 +10,9 @@
   },
   "author": "",
   "license": "none",
-  "dependencies": {
-    "pnotify": "file:../../"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "browserify": "^15.2.0"
+    "browserify": "^15.2.0",
+    "pnotify": "file:../../"
   }
 }

@@ -1,5 +1,5 @@
 // Not working? Did you `npm install` first?
-var PNotify = require('pnotify/dist/umd/PNotify').default;
+var PNotify = require('pnotify/dist/umd/PNotify');
 
 document.getElementById('button1').addEventListener('click', function () {
   PNotify.notice({
@@ -9,7 +9,7 @@ document.getElementById('button1').addEventListener('click', function () {
 });
 
 document.getElementById('button2').addEventListener('click', function () {
-  require('pnotify/dist/umd/PNotifyConfirm');
+  var PNotifyConfirm = require('pnotify/dist/umd/PNotifyConfirm'); // eslint-disable-line no-unused-vars
 
   PNotify.notice({
     title: 'Yay!',

@@ -134,7 +134,7 @@ let compileJs = (module, filename, args) => {
     // Use Svelte to compile the code first.
     const svelte = require('svelte');
     const {js} = svelte.compile(code, {
-      format: format === 'iife' ? 'iife' : 'es',
+      format: format,
       filename: srcFilename,
       name: filename.replace(/\.html$/, ''),
       amd: {
@@ -167,29 +167,32 @@ let compileJs = (module, filename, args) => {
       moduleRoot: '',
       sourceMaps: 'both',
       sourceRoot: '../',
-      presets: [
-        'env',
-        'stage-3'
-      ],
       plugins: [
-        'transform-class-properties',
         'transform-object-assign'
       ],
-      sourceType: (format === 'iife' && isSvelte) ? 'script' : 'module'
+      sourceType: (format !== 'es' && isSvelte) ? 'script' : 'module'
     };
 
     if (inputMap) {
       babelOptions.inputSourceMap = inputMap;
     }
 
-    if (format === 'iife' && !isSvelte) {
+    if (format === 'umd' && !isSvelte) {
       babelOptions.passPerPreset = true;
-      babelOptions.presets.push({
-        plugins: ['iife-wrap']
-      });
-    }
-    if (format !== 'iife') {
-      babelOptions.plugins.push('transform-es2015-modules-' + format);
+      babelOptions.presets = [
+        ['env', {
+          modules: 'umd'
+        }],
+        'stage-3'
+      ];
+      babelOptions.plugins.push('add-module-exports');
+    } else {
+      babelOptions.presets = [
+        ['env', {
+          modules: false
+        }],
+        'stage-3'
+      ];
     }
 
     ({code, map} = babel.transform(inputCode, babelOptions));
@@ -200,8 +203,8 @@ let compileJs = (module, filename, args) => {
     code = code.replace(/import PNotify(\w*) from ["']\.\/PNotify(\w*)\.html["'];/g, 'import PNotify$1 from "./PNotify$2.js";');
   }
   if (format === 'umd') {
-    code = code.replace(/require\(["']\.\/PNotify(\w*)\.html["']\)/g, 'require("./PNotify$1")');
-    code = code.replace(/, ["']\.\/PNotify(\w*)\.html["']/g, ', "PNotify$1"');
+    code = code.replace(/require\(["']\.\/PNotify(\w*)?\.html["']\)/g, 'require(\'./PNotify$1\')');
+    code = code.replace(/, ["']\.\/PNotify(\w*)?\.html["']/g, ', \'./PNotify$1\'');
   }
 
   fs.writeFileSync(dstFilename, code);
