@@ -13,7 +13,7 @@
       };
 
       Component.init = (notice) => {
-        return new Component({target: document.body});
+        return new Component({ target: document.body });
       };
 
       Component.showLast = (stack) => {
@@ -87,15 +87,15 @@
 
         if (this.get().history) {
           // Don't destroy notices that are in history.
-          const {_notice} = this.get();
+          const { _notice } = this.get();
           if (_notice.get().destroy) {
-            _notice.set({'destroy': false});
+            _notice.set({ 'destroy': false });
           }
         }
       },
 
       beforeOpen () {
-        const {maxInStack, _options} = this.get();
+        const { maxInStack, _options } = this.get();
         if (maxInStack === Infinity) {
           return;
         }

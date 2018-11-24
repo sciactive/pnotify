@@ -624,7 +624,7 @@
             });
 
             setTimeout(function () {
-              notice.update({title: false});
+              notice.update({ title: false });
               var interval = setInterval(function () {
                 percent += 2;
                 var options = {
@@ -1963,26 +1963,19 @@
     <div class="card">
       <h5 class="card-header">Examples of Custom Stacks</h5>
       <div class="card-body">
-        <script type="text/javascript">
-          /* eslint-env browser, jquery */
-          /* globals PNotify */
-          window.showStackInfo = function showStackInfo () {
-            PNotify.info({
-              title: 'PNotify Stacks',
-              text: "Stacks are used to position notices and determine where new notices will go when they're created. Each notice that's placed into a stack will be positioned related to the other notices in that stack.",
-              icon: 'fas fa-bars',
-              hide: false,
-              stack: {'modal': true, 'overlayClose': true},
-              modules: {
-                History: {
-                  history: false
-                }
-              }
-            });
-          };
-        </script>
         <button class="btn btn-outline-dark my-1 source" onclick="
-          showStackInfo();
+          PNotify.info({
+            title: 'PNotify Stacks',
+            text: 'Stacks are used to position notices and determine where new notices will go when they\'re created. Each notice that\'s placed into a stack will be positioned related to the other notices in that stack.',
+            icon: 'fas fa-bars',
+            hide: false,
+            stack: { 'modal': true, 'overlayClose': true },
+            modules: {
+              History: {
+                history: false
+              }
+            }
+          });
         ">What are stacks?</button>
         <hr />
         <script type="text/javascript">
@@ -1990,7 +1983,7 @@
           /* globals PNotify */
           window.showStackTopLeft = function showStackTopLeft (type) {
             if (typeof window.stackTopLeft === 'undefined') {
-              window.stackTopLeft = {'dir1': 'down', 'dir2': 'right', 'firstpos1': 25, 'firstpos2': 25, 'push': 'top'};
+              window.stackTopLeft = { 'dir1': 'down', 'dir2': 'right', 'firstpos1': 25, 'firstpos2': 25, 'push': 'top' };
             }
             var opts = {
               title: 'Over Here',
@@ -2036,7 +2029,7 @@
           /* globals PNotify */
           window.showStackBottomLeft = function showStackBottomLeft (type) {
             if (typeof window.stackBottomLeft === 'undefined') {
-              window.stackBottomLeft = {'dir1': 'right', 'dir2': 'up', 'firstpos1': 25, 'firstpos2': 25, 'push': 'top'};
+              window.stackBottomLeft = { 'dir1': 'right', 'dir2': 'up', 'firstpos1': 25, 'firstpos2': 25, 'push': 'top' };
             }
             var opts = {
               title: 'Over Here',
@@ -2082,7 +2075,7 @@
           /* globals PNotify */
           window.showStackBottomRight = function showStackBottomRight (type) {
             if (typeof window.stackBottomRight === 'undefined') {
-              window.stackBottomRight = {'dir1': 'up', 'dir2': 'left', 'firstpos1': 25, 'firstpos2': 25};
+              window.stackBottomRight = { 'dir1': 'up', 'dir2': 'left', 'firstpos1': 25, 'firstpos2': 25 };
             }
             var opts = {
               title: 'Over Here',
@@ -2128,7 +2121,7 @@
           /* globals PNotify */
           window.showStackTopCenter = function showStackTopCenter (type) {
             if (typeof window.stackTopCenter === 'undefined') {
-              window.stackTopCenter = {'dir1': 'down', 'firstpos1': 25};
+              window.stackTopCenter = { 'dir1': 'down', 'firstpos1': 25 };
             }
             var opts = {
               title: 'Over Here',
@@ -2176,7 +2169,7 @@
           /* globals PNotify */
           window.showStackModal = function showStackModal (type) {
             if (typeof window.stackModal === 'undefined') {
-              window.stackModal = {'dir1': 'up', 'firstpos1': 25, 'push': 'top', 'modal': true, 'overlayClose': true};
+              window.stackModal = { 'dir1': 'up', 'firstpos1': 25, 'push': 'top', 'modal': true, 'overlayClose': true };
             }
             var opts = {
               title: 'Over Here',
@@ -2222,7 +2215,7 @@
           /* globals PNotify */
           window.showStackModalLeft = function showStackModalLeft (type) {
             if (typeof window.stackModalLeft === 'undefined') {
-              window.stackModalLeft = {'dir1': 'down', 'dir2': 'right', 'firstpos1': 25, 'firstpos2': 25, 'push': 'top', 'modal': true, 'overlayClose': true};
+              window.stackModalLeft = { 'dir1': 'down', 'dir2': 'right', 'firstpos1': 25, 'firstpos2': 25, 'push': 'top', 'modal': true, 'overlayClose': true };
             }
             var opts = {
               title: 'Over Here',
@@ -2268,7 +2261,7 @@
           /* globals PNotify */
           window.showStackBarTop = function showStackBarTop (type) {
             if (typeof window.stackBarTop === 'undefined') {
-              window.stackBarTop = {'dir1': 'down', 'firstpos1': 0, 'spacing1': 0, 'push': 'top'};
+              window.stackBarTop = { 'dir1': 'down', 'firstpos1': 0, 'spacing1': 0, 'push': 'top' };
             }
             var opts = {
               title: 'Over Here',
@@ -2323,7 +2316,7 @@
           /* globals PNotify */
           window.showStackBarBottom = function showStackBarBottom (type) {
             if (typeof window.stackBarBottom === 'undefined') {
-              window.stackBarBottom = {'dir1': 'up', 'firstpos1': 0, 'spacing1': 0};
+              window.stackBarBottom = { 'dir1': 'up', 'firstpos1': 0, 'spacing1': 0 };
             }
             var opts = {
               title: 'Over Here',
@@ -2417,10 +2410,10 @@
           /* globals PNotify */
           window.showStackContext = function showStackContext (type, modal) {
             if (typeof window.stackContext === 'undefined') {
-              window.stackContext = {'dir1': 'down', 'dir2': 'left', 'firstpos1': 25, 'firstpos2': 25, 'context': document.getElementById('stack-context')};
+              window.stackContext = { 'dir1': 'down', 'dir2': 'left', 'firstpos1': 25, 'firstpos2': 25, 'context': document.getElementById('stack-context') };
             }
             if (typeof window.stackContextModal === 'undefined') {
-              window.stackContextModal = {'dir1': 'down', 'firstpos1': 25, 'context': document.getElementById('stack-context'), 'modal': true, 'overlayClose': true};
+              window.stackContextModal = { 'dir1': 'down', 'firstpos1': 25, 'context': document.getElementById('stack-context'), 'modal': true, 'overlayClose': true };
             }
             var opts = {
               title: 'Over Here',
@@ -2716,7 +2709,7 @@ PNotify.notice({
 
       var addPrettyCode = function (code, where) {
         code = code.replace(/(?:var )?sourceNote = ['"](.*)['"];$/gm, '// $1');
-        var codeBlock = $('<code class="js" />').text(window.js_beautify(code, {indent_size: 2}));
+        var codeBlock = $('<code class="js" />').text(window.js_beautify(code, { indent_size: 2 }));
         $('<pre />').append(codeBlock).appendTo(where);
         window.hljs.highlightBlock(codeBlock.get(0));
       };

@@ -150,7 +150,7 @@ const translateOptions = (options, module, moduleName) => {
 class PNotifyCompat extends PNotify {
   constructor (options) {
     if (typeof options !== 'object') {
-      options = {'text': options};
+      options = { 'text': options };
     }
 
     // These need to be called directly, since we're not using PNotify.alert().
@@ -160,7 +160,7 @@ class PNotifyCompat extends PNotify {
 
     options = translateOptions(options);
 
-    super({target: document.body, data: options});
+    super({ target: document.body, data: options });
 
     // Override the get function to return the element like it did in v3.
     const _get = this.get;

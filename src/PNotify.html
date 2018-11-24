@@ -133,7 +133,7 @@
   // Default arguments for the new notice helper functions.
   const getDefaultArgs = (options, type) => {
     if (typeof options !== 'object') {
-      options = {'text': options};
+      options = { 'text': options };
     }
 
     // Only assign the type if it was requested, so we don't overwrite
@@ -142,7 +142,7 @@
       options.type = type;
     }
 
-    return {target: document.body, data: options};
+    return { target: document.body, data: options };
   };
 
   export default {
@@ -280,7 +280,7 @@
         if (PNotify.notices.length > 0) {
           for (let i = 0; i < PNotify.notices.length; i++) {
             let notice = PNotify.notices[i];
-            let {stack} = notice.get();
+            let { stack } = notice.get();
             if (!stack) {
               continue;
             }
@@ -389,7 +389,7 @@
         PNotify.positionAll();
       });
 
-      let {stack} = this.get();
+      let { stack } = this.get();
 
       // Add the notice to the notice array.
       if (stack && stack.push === 'top') {
@@ -402,7 +402,7 @@
       this.runModules('init');
 
       // We're now initialized, but haven't been opened yet.
-      this.set({'_state': 'closed'});
+      this.set({ '_state': 'closed' });
 
       // Display the notice.
       if (this.get().autoDisplay) {
@@ -454,7 +454,7 @@
             }
           }
         } else {
-          const {_modules} = this.get();
+          const { _modules } = this.get();
           for (let module in _modules) {
             if (!_modules.hasOwnProperty(module)) {
               continue;
@@ -473,7 +473,7 @@
 
       // This passes module options to a module.
       initModule (module) {
-        const {modules} = this.get();
+        const { modules } = this.get();
         if (!modules.hasOwnProperty(module.constructor.key)) {
           modules[module.constructor.key] = {};
         }
@@ -484,7 +484,7 @@
         module.initModule(moduleOptions);
 
         // Now save the module instance.
-        const {_modules} = this.get();
+        const { _modules } = this.get();
         _modules[module.constructor.key] = module;
       },
 
@@ -509,7 +509,7 @@
         // Font Awesome 5 replaces our lovely element with a gross SVG. In order
         // to make it play nice with Svelte, we have to clear the element and
         // make it again.
-        const {icon} = this.get();
+        const { icon } = this.get();
         if (
           icon !== oldIcon &&
           (
@@ -517,8 +517,8 @@
             (typeof icon === 'string' && icon.match(/(^| )fa[srlb]($| )/))
           )
         ) {
-          this.set({'icon': false});
-          this.set({'icon': icon});
+          this.set({ 'icon': false });
+          this.set({ 'icon': icon });
         }
 
         return this;
@@ -526,7 +526,7 @@
 
       // Display the notice.
       open () {
-        const {_state, hide} = this.get();
+        const { _state, hide } = this.get();
         if (_state === 'opening') {
           return;
         }
@@ -545,7 +545,7 @@
         // Run the modules.
         this.runModules('beforeOpen');
 
-        let {stack} = this.get();
+        let { stack } = this.get();
         // If the notice is not in the DOM, or in the wrong context, append it.
         if (
           !this.refs.elem.parentNode ||
@@ -581,7 +581,7 @@
               this.queueClose();
             }
 
-            this.set({'_state': 'open'});
+            this.set({ '_state': 'open' });
 
             // Run the modules.
             this.runModules('afterOpen');
@@ -597,21 +597,21 @@
 
       // Remove the notice.
       close (timerHide) {
-        const {_state} = this.get();
+        const { _state } = this.get();
         if (_state === 'closing' || _state === 'closed') {
           return;
         }
-        this.set({'_state': 'closing', '_timerHide': !!timerHide}); // Make sure it's a boolean.
+        this.set({ '_state': 'closing', '_timerHide': !!timerHide }); // Make sure it's a boolean.
         // Run the modules.
         this.runModules('beforeClose');
 
-        const {_timer} = this.get();
+        const { _timer } = this.get();
         if (_timer && clearTimeout) {
           clearTimeout(_timer);
-          this.set({'_timer': null});
+          this.set({ '_timer': null });
         }
         this.animateOut(() => {
-          this.set({'_state': 'closed'});
+          this.set({ '_state': 'closed' });
           // Run the modules.
           this.runModules('afterClose');
           this.queuePosition();
@@ -641,10 +641,10 @@
       // Animate the notice in.
       animateIn (callback) {
         // Declare that the notice is animating in.
-        this.set({'_animating': 'in'});
+        this.set({ '_animating': 'in' });
         const finished = () => {
           this.refs.elem.removeEventListener('transitionend', finished);
-          const {_animTimer, _animating, _moduleIsNoticeOpen} = this.get();
+          const { _animTimer, _animating, _moduleIsNoticeOpen } = this.get();
           if (_animTimer) {
             clearTimeout(_animTimer);
           }
@@ -666,22 +666,22 @@
               callback.call();
             }
             // Declare that the notice has completed animating.
-            this.set({'_animating': false});
+            this.set({ '_animating': false });
           } else {
-            this.set({'_animTimer': setTimeout(finished, 40)});
+            this.set({ '_animTimer': setTimeout(finished, 40) });
           }
         };
 
         if (this.get().animation === 'fade') {
           this.refs.elem.addEventListener('transitionend', finished);
-          this.set({'_animatingClass': 'ui-pnotify-in'});
+          this.set({ '_animatingClass': 'ui-pnotify-in' });
           // eslint-disable-next-line no-unused-expressions
           this.refs.elem.style.opacity; // This line is necessary for some reason. Some notices don't fade without it.
-          this.set({'_animatingClass': 'ui-pnotify-in ui-pnotify-fade-in'});
+          this.set({ '_animatingClass': 'ui-pnotify-in ui-pnotify-fade-in' });
           // Just in case the event doesn't fire, call it after 650 ms.
-          this.set({'_animTimer': setTimeout(finished, 650)});
+          this.set({ '_animTimer': setTimeout(finished, 650) });
         } else {
-          this.set({'_animatingClass': 'ui-pnotify-in'});
+          this.set({ '_animatingClass': 'ui-pnotify-in' });
           finished();
         }
       },
@@ -689,10 +689,10 @@
       // Animate the notice out.
       animateOut (callback) {
         // Declare that the notice is animating out.
-        this.set({'_animating': 'out'});
+        this.set({ '_animating': 'out' });
         const finished = () => {
           this.refs.elem.removeEventListener('transitionend', finished);
-          const {_animTimer, _animating, _moduleIsNoticeOpen} = this.get();
+          const { _animTimer, _animating, _moduleIsNoticeOpen } = this.get();
           if (_animTimer) {
             clearTimeout(_animTimer);
           }
@@ -710,8 +710,8 @@
             }
           }
           if (!this.refs.elem.style.opacity || this.refs.elem.style.opacity === '0' || !visible) {
-            this.set({'_animatingClass': ''});
-            const {stack} = this.get();
+            this.set({ '_animatingClass': '' });
+            const { stack } = this.get();
             if (stack && stack.overlay) {
               // Go through the modal stack to see if any are left open.
               // TODO: Rewrite this cause it sucks.
@@ -731,20 +731,20 @@
               callback.call();
             }
             // Declare that the notice has completed animating.
-            this.set({'_animating': false});
+            this.set({ '_animating': false });
           } else {
             // In case this was called before the notice finished animating.
-            this.set({'_animTimer': setTimeout(finished, 40)});
+            this.set({ '_animTimer': setTimeout(finished, 40) });
           }
         };
 
         if (this.get().animation === 'fade') {
           this.refs.elem.addEventListener('transitionend', finished);
-          this.set({'_animatingClass': 'ui-pnotify-in'});
+          this.set({ '_animatingClass': 'ui-pnotify-in' });
           // Just in case the event doesn't fire, call it after 650 ms.
-          this.set({'_animTimer': setTimeout(finished, 650)});
+          this.set({ '_animTimer': setTimeout(finished, 650) });
         } else {
-          this.set({'_animatingClass': ''});
+          this.set({ '_animatingClass': '' });
           finished();
         }
       },
@@ -752,7 +752,7 @@
       // Position the notice.
       position () {
         // Get the notice's stack.
-        let {stack} = this.get();
+        let { stack } = this.get();
         let elem = this.refs.elem;
         if (!stack) {
           return;
@@ -790,7 +790,7 @@
 
         if (stack.animation) {
           // Add animate class.
-          this.set({'_moveClass': 'ui-pnotify-move'});
+          this.set({ '_moveClass': 'ui-pnotify-move' });
         }
 
         let spaceY = (stack.context === document.body ? window.innerHeight : stack.context.scrollHeight);
@@ -976,7 +976,7 @@
 
       // Cancel any pending removal timer.
       cancelClose () {
-        const {_timer, _animTimer, _state, animation} = this.get();
+        const { _timer, _animTimer, _state, animation } = this.get();
         if (_timer) {
           clearTimeout(_timer);
         }
@@ -1009,18 +1009,18 @@
       },
 
       addModuleClass (...classNames) {
-        const {_moduleClasses} = this.get();
+        const { _moduleClasses } = this.get();
         for (let i = 0; i < classNames.length; i++) {
           let className = classNames[i];
           if (_moduleClasses.indexOf(className) === -1) {
             _moduleClasses.push(className);
           }
         }
-        this.set({_moduleClasses});
+        this.set({ _moduleClasses });
       },
 
       removeModuleClass (...classNames) {
-        const {_moduleClasses} = this.get();
+        const { _moduleClasses } = this.get();
         for (let i = 0; i < classNames.length; i++) {
           let className = classNames[i];
           const idx = _moduleClasses.indexOf(className);
@@ -1028,11 +1028,11 @@
             _moduleClasses.splice(idx, 1);
           }
         }
-        this.set({_moduleClasses});
+        this.set({ _moduleClasses });
       },
 
       hasModuleClass (...classNames) {
-        const {_moduleClasses} = this.get();
+        const { _moduleClasses } = this.get();
         for (let i = 0; i < classNames.length; i++) {
           let className = classNames[i];
           if (_moduleClasses.indexOf(className) === -1) {

@@ -133,7 +133,7 @@ let compileJs = (module, filename, args) => {
   if (isSvelte) {
     // Use Svelte to compile the code first.
     const svelte = require('svelte');
-    const {js} = svelte.compile(code, {
+    const { js } = svelte.compile(code, {
       format: format,
       filename: srcFilename,
       name: filename.replace(/\.html$/, ''),
@@ -152,7 +152,7 @@ let compileJs = (module, filename, args) => {
       css: true,
       cascade: false
     });
-    ({code, map} = js);
+    ({ code, map } = js);
     [inputCode, inputMap] = [code, map];
     inputMap.file = filename.replace(/\.html$/, '.js');
     inputCode += '\n//# sourceMappingURL=' + filename.replace(/\.html$/, '.js') + '.map';
@@ -195,7 +195,7 @@ let compileJs = (module, filename, args) => {
       ];
     }
 
-    ({code, map} = babel.transform(inputCode, babelOptions));
+    ({ code, map } = babel.transform(inputCode, babelOptions));
   }
 
   // Post-compile transforms.
@@ -229,7 +229,7 @@ let compressJs = (module, filename, args) => {
       url: filename + '.map'
     }
   };
-  const {code, map, error} = UglifyJS.minify({
+  const { code, map, error } = UglifyJS.minify({
     [filename]: fs.readFileSync(srcFilename, 'utf8')
   }, options);
   if (!code) {

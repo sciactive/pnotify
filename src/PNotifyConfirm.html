@@ -85,7 +85,7 @@
             promptTrigger: true,
             click: (notice, value) => {
               notice.close();
-              notice.fire('pnotify.confirm', {notice, value});
+              notice.fire('pnotify.confirm', { notice, value });
             }
           },
           {
@@ -94,7 +94,7 @@
             addClass: '',
             click: (notice) => {
               notice.close();
-              notice.fire('pnotify.cancel', {notice});
+              notice.fire('pnotify.cancel', { notice });
             }
           }
         ]
@@ -140,7 +140,7 @@
     },
 
     oncreate () {
-      this.fire('init', {module: this});
+      this.fire('init', { module: this });
     },
 
     data () {
@@ -186,7 +186,7 @@
       handleKeyPress (event) {
         if (event.keyCode === 13 && !event.shiftKey) {
           event.preventDefault();
-          const {buttons} = this.get();
+          const { buttons } = this.get();
           for (let i = 0; i < buttons.length; i++) {
             if (buttons[i].promptTrigger && buttons[i].click) {
               buttons[i].click(this.get()._notice, this.get().prompt ? this.get().promptValue : null, event);

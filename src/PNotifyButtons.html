@@ -79,7 +79,7 @@
     },
 
     oncreate () {
-      this.fire('init', {module: this});
+      this.fire('init', { module: this });
     },
 
     data () {
@@ -104,15 +104,15 @@
     methods: {
       initModule (options) {
         this.set(options);
-        const {_notice} = this.get();
-        _notice.on('mouseenter', () => this.set({'_mouseIsIn': true}));
-        _notice.on('mouseleave', () => this.set({'_mouseIsIn': false}));
-        _notice.on('state', ({changed, current}) => {
+        const { _notice } = this.get();
+        _notice.on('mouseenter', () => this.set({ '_mouseIsIn': true }));
+        _notice.on('mouseleave', () => this.set({ '_mouseIsIn': false }));
+        _notice.on('state', ({ changed, current }) => {
           if (!changed.hide) {
             return;
           }
 
-          const {sticker} = this.get();
+          const { sticker } = this.get();
 
           if (!sticker) {
             return;
@@ -126,20 +126,20 @@
             (this.get()._notice.get().icons === 'fontawesome5') ||
             (typeof icon === 'string' && icon.match(/(^| )fa[srlb]($| )/))
           ) {
-            this.set({'sticker': false});
-            this.set({'sticker': true});
+            this.set({ 'sticker': false });
+            this.set({ 'sticker': true });
           }
         });
       },
 
       handleStickerClick () {
-        const {_notice} = this.get();
-        _notice.update({hide: !_notice.get().hide});
+        const { _notice } = this.get();
+        _notice.update({ hide: !_notice.get().hide });
       },
 
       handleCloserClick () {
         this.get()._notice.close(false);
-        this.set({'_mouseIsIn': false});
+        this.set({ '_mouseIsIn': false });
       }
     }
   };

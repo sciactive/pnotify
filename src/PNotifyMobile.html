@@ -13,7 +13,7 @@
       };
 
       Component.init = (notice) => {
-        return new Component({target: document.body});
+        return new Component({ target: document.body });
       };
 
       // Register the module with PNotify.
@@ -21,7 +21,7 @@
     },
 
     oncreate () {
-      this.set({'_doMobileStylingBound': this.doMobileStyling.bind(this)});
+      this.set({ '_doMobileStylingBound': this.doMobileStyling.bind(this) });
     },
 
     data () {
@@ -35,7 +35,7 @@
       initModule (options) {
         this.set(options);
 
-        const {_notice} = this.get();
+        const { _notice } = this.get();
         let origXY = null;
         let diffXY = null;
         let noticeWidthHeight = null;
@@ -49,7 +49,7 @@
             return;
           }
 
-          const {stack} = _notice.get();
+          const { stack } = _notice.get();
           if (stack !== false) {
             switch (stack.dir1) {
               case 'up':
@@ -142,15 +142,15 @@
           return;
         }
 
-        const {_notice} = this.get();
+        const { _notice } = this.get();
         _notice.refs.elem.style.removeProperty('opacity');
         _notice.refs.container.style.removeProperty('left');
         _notice.refs.container.style.removeProperty('top');
       },
 
       doMobileStyling () {
-        const {_notice} = this.get();
-        const {stack} = _notice.get();
+        const { _notice } = this.get();
+        const { stack } = _notice.get();
 
         if (this.get().styling) {
           if (stack !== false) {
