@@ -5,7 +5,7 @@ PNotify is a vanilla JavaScript notification library. PNotify can provide [deskt
 <h1>Demos</h1>
 
 * http://sciactive.com/pnotify/ for the latest release (v3)
-* https://sciactive.github.io/pnotify/ for what's in development (v4-alpha)
+* https://sciactive.github.io/pnotify/ for what's in development (v4-beta)
 
 <h1>Table of Contents</h1>
 
@@ -51,9 +51,9 @@ PNotify is a vanilla JavaScript notification library. PNotify can provide [deskt
 
 # Whoa there!
 
-Unless you're an alpha tester, **none of this README applies to you!** You want to check out the **[README on the master branch](https://github.com/sciactive/pnotify/blob/master/README.md)**.
+Unless you're a beta tester, **none of this README applies to you!** You want to check out the **[README on the master branch](https://github.com/sciactive/pnotify/blob/master/README.md)**.
 
-This README is for **PNotify 4**. v4 is only in alpha stage, but it's got some huge changes:
+This README is for **PNotify 4**. v4 is in beta stage, but it's got some huge changes:
 
 * **jQuery is no longer required.** v4 doesn't require any libraries, actually.
 * It's built using [Svelte](http://svelte.technology), which means it compiles down to vanilla JS.
@@ -64,6 +64,8 @@ This README is for **PNotify 4**. v4 is only in alpha stage, but it's got some h
 * Default width raised to 360px.
 * NonBlock module spun off into its own project, [NonBlock.js](https://github.com/sciactive/nonblockjs).
 * There is a Compat module available to allow you to run PNotify 3 code with PNotify 4.
+
+It should be safe to use in production code, but please report any issues you run into.
 
 ## Running PNotify 3 Code with the Compat Module
 
