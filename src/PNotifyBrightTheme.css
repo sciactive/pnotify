@@ -37,22 +37,34 @@ Color Scheme: http://paletton.com/palette.php?uid=c1T3n2J040kpEKzpEKzbEPSOEyiNk9
 [ui-pnotify].ui-pnotify .brighttheme-notice {
   background-color: #FFFFA2;
   border: 0 solid #FFFF00;
+}
+[ui-pnotify].ui-pnotify .brighttheme-notice h4,
+[ui-pnotify].ui-pnotify .brighttheme-notice div {
   color: #4F4F00;
 }
 [ui-pnotify].ui-pnotify .brighttheme-info {
   background-color: #8FCEDD;
   border: 0 solid #0286A5;
+}
+[ui-pnotify].ui-pnotify .brighttheme-info h4,
+[ui-pnotify].ui-pnotify .brighttheme-info div {
   color: #012831;
 }
 [ui-pnotify].ui-pnotify .brighttheme-success {
   background-color: #AFF29A;
   border: 0 solid #35DB00;
+}
+[ui-pnotify].ui-pnotify .brighttheme-success h4,
+[ui-pnotify].ui-pnotify .brighttheme-success div {
   color: #104300;
 }
 [ui-pnotify].ui-pnotify .brighttheme-error {
   background-color: #FFABA2;
   background-image: repeating-linear-gradient(135deg, transparent, transparent 35px, rgba(255,255,255,.3) 35px, rgba(255,255,255,.3) 70px);
   border: 0 solid #FF1800;
+}
+[ui-pnotify].ui-pnotify .brighttheme-error h4,
+[ui-pnotify].ui-pnotify .brighttheme-error div {
   color: #4F0800;
 }
 [ui-pnotify].ui-pnotify .brighttheme .ui-pnotify-closer,
