@@ -145,6 +145,8 @@ export class WhateverComponent {
 }
 ```
 
+<small>For IE support, see [this issue](https://github.com/sciactive/pnotify/issues/343).</small>
+
 ## Angular (Injectable)
 
 [PNotify in Angular](https://codesandbox.io/s/17yr520yj) as an injectable service:
