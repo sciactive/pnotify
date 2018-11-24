@@ -470,6 +470,8 @@ buttons: [
     textTrusted: false,
     addClass: '',
     primary: true,
+    // Whether to trigger this button when the user hits enter in a single line
+    // prompt. Also, focus the button if it is a modal prompt.
     promptTrigger: true,
     click: (notice, value) => {
       notice.close();

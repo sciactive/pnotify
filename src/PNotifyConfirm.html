@@ -38,7 +38,8 @@
           {_notice.get()._styles.actionBar ? _notice.get()._styles.actionBar : ''}
           {_notice.get()._styles.text ? _notice.get()._styles.text : ''}
         "
-        style="justify-content: {align};">
+        style="justify-content: {align};"
+        ref:buttons>
       {#each buttons as button}
         <button
             type="button"
@@ -80,7 +81,7 @@
             textTrusted: false,
             addClass: '',
             primary: true,
-            // Whether to trigger this button when the user hits enter in a single line prompt.
+            // Whether to trigger this button when the user hits enter in a single line prompt. Also, focus the button if it is a modal prompt.
             promptTrigger: true,
             click: (notice, value) => {
               notice.close();
@@ -160,6 +161,18 @@
             this.refs.promptMulti.focus();
           } else {
             this.refs.promptSingle.focus();
+          }
+        } else if (this.get().confirm && this.get()._options.stack.modal) {
+          const buttons = this.get().buttons;
+          if (buttons.length) {
+            let i = buttons.length - 1;
+            while (i >= 0) {
+              if (buttons[i].promptTrigger) {
+                break;
+              }
+              i--;
+            }
+            this.refs.buttons.children[i].focus();
           }
         }
       },
