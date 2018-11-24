@@ -63,10 +63,10 @@
     "uglify-es": "3.3.9",
     "uglify-js": "^3.3.25"
   },
-  "peerDependencies": {
-    "animate.css": "^3.5.2",
-    "material-design-icons": "^3.0.1",
-    "nonblockjs": "^1.0.8"
+  "optionalDependencies": {
+    "animate.css": "^3.0",
+    "material-design-icons": "^3.0",
+    "nonblockjs": "^1.0"
   },
   "dependencies": {}
 }

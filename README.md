@@ -85,6 +85,10 @@ You can get PNotify using NPM. (You can also use [jsDelivr](https://www.jsdelivr
 
 ```sh
 npm install --save pnotify
+
+# or, if you don't want optional dependencies
+
+npm install --save --no-optional pnotify
 ```
 
 Inside the pnotify module directory:
