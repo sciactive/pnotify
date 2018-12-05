@@ -88,9 +88,14 @@ You can get PNotify using NPM. (You can also use [jsDelivr](https://www.jsdelivr
 ```sh
 npm install --save pnotify
 
-# or, if you don't want optional dependencies
+# If you plan to use Material style:
+npm install --save material-design-icons
 
-npm install --save --no-optional pnotify
+# If you plan to use the Animate module:
+npm install --save animate.css
+
+# If you plan to use the NonBlock module:
+npm install --save nonblockjs
 ```
 
 Inside the pnotify module directory:
@@ -241,7 +246,7 @@ The default, standalone theme, Bright Theme. Include the CSS file in your page:
 
 ## Material
 
-The Material Style module. Include the module in your JS, and set it as the default:
+The Material Style module. Requires [material-design-icons](https://www.npmjs.com/package/material-design-icons). Include the module in your JS, and set it as the default:
 
 ```js
 import PNotifyStyleMaterial from 'pnotify/dist/es/PNotifyStyleMaterial.js';
