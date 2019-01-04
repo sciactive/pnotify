@@ -39,7 +39,9 @@
     "build-umd": "node make.js dist -- --format=umd",
     "build-es": "node make.js dist -- --format=es",
     "prepare": "npm run lint && npm run build",
-    "lint": "eslint index.html make.js src/*.html src/*.js demo/*"
+    "lint": "eslint index.html make.js src/*.html src/*.js demo/*",
+    "format": "prettier --config .prettierrc.json --write 'src/**/*.js'",
+    "format:check": "prettier --config .prettierrc.json --debug-check --list-different 'src/**/*.js'"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
