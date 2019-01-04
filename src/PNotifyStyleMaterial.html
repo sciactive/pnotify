@@ -2,7 +2,7 @@
   import PNotify from './PNotify.html';
 
   export default {
-    setup (Component) {
+    setup(Component) {
       Component.key = 'StyleMaterial';
 
       // Register the module with PNotify.
@@ -31,7 +31,8 @@
         error: 'material-icons pnotify-material-icon-error',
         closer: 'material-icons pnotify-material-icon-closer',
         pinUp: 'material-icons pnotify-material-icon-sticker',
-        pinDown: 'material-icons pnotify-material-icon-sticker pnotify-material-icon-stuck'
+        pinDown:
+          'material-icons pnotify-material-icon-sticker pnotify-material-icon-stuck'
       });
     }
   };
@@ -49,9 +50,9 @@
     font-size: 14px;
   }
   :global([ui-pnotify] .pnotify-material.ui-pnotify-shadow) {
-    -webkit-box-shadow: 0px 6px 24px 0px rgba(0,0,0,0.2);
-    -moz-box-shadow: 0px 6px 24px 0px rgba(0,0,0,0.2);
-    box-shadow: 0px 6px 24px 0px rgba(0,0,0,0.2);
+    -webkit-box-shadow: 0px 6px 24px 0px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0px 6px 24px 0px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 6px 24px 0px rgba(0, 0, 0, 0.2);
   }
   :global([ui-pnotify] .pnotify-material.ui-pnotify-container) {
     padding: 24px;
@@ -68,14 +69,27 @@
     font-size: 16px;
     line-height: 24px;
   }
-  :global([ui-pnotify].ui-pnotify-with-icon .pnotify-material .ui-pnotify-title),
+  :global([ui-pnotify].ui-pnotify-with-icon
+      .pnotify-material
+      .ui-pnotify-title),
   :global([ui-pnotify].ui-pnotify-with-icon .pnotify-material .ui-pnotify-text),
-  :global([ui-pnotify].ui-pnotify-with-icon .pnotify-material .ui-pnotify-confirm) {
+  :global([ui-pnotify].ui-pnotify-with-icon
+      .pnotify-material
+      .ui-pnotify-confirm) {
     margin-left: 32px;
   }
-  :global([dir=rtl] [ui-pnotify].ui-pnotify-with-icon .pnotify-material .ui-pnotify-title),
-  :global([dir=rtl] [ui-pnotify].ui-pnotify-with-icon .pnotify-material .ui-pnotify-text),
-  :global([dir=rtl] [ui-pnotify].ui-pnotify-with-icon .pnotify-material .ui-pnotify-confirm) {
+  :global([dir='rtl']
+      [ui-pnotify].ui-pnotify-with-icon
+      .pnotify-material
+      .ui-pnotify-title),
+  :global([dir='rtl']
+      [ui-pnotify].ui-pnotify-with-icon
+      .pnotify-material
+      .ui-pnotify-text),
+  :global([dir='rtl']
+      [ui-pnotify].ui-pnotify-with-icon
+      .pnotify-material
+      .ui-pnotify-confirm) {
     margin-right: 32px;
     margin-left: 0;
   }
@@ -84,32 +98,32 @@
     margin-right: -16px;
     margin-bottom: -16px;
   }
-  :global([dir=rtl] [ui-pnotify] .pnotify-material .ui-pnotify-action-bar) {
+  :global([dir='rtl'] [ui-pnotify] .pnotify-material .ui-pnotify-action-bar) {
     margin-left: -16px;
     margin-right: 0;
   }
   :global([ui-pnotify] .pnotify-material-notice) {
     /* https://material.io/color/#!/?view.left=0&view.right=0&primary.color=FFEE58 */
-    background-color: #FFEE58;
+    background-color: #ffee58;
     border: none;
     color: #000;
   }
   :global([ui-pnotify] .pnotify-material-info) {
     /* https://material.io/color/#!/?view.left=0&view.right=0&primary.color=26C6DA */
-    background-color: #26C6DA;
+    background-color: #26c6da;
     border: none;
     color: #000;
   }
   :global([ui-pnotify] .pnotify-material-success) {
     /* https://material.io/color/#!/?view.left=0&view.right=0&primary.color=66BB6A */
-    background-color: #66BB6A;
+    background-color: #66bb6a;
     border: none;
     color: #fff;
   }
 
   :global([ui-pnotify] .pnotify-material-error) {
     /* https://material.io/color/#!/?view.left=0&view.right=0&primary.color=EF5350 */
-    background-color: #EF5350;
+    background-color: #ef5350;
     border: none;
     color: #fff;
   }
@@ -138,16 +152,16 @@
     font-family: 'Material Icons';
   }
   :global([ui-pnotify] .pnotify-material-icon-notice:after) {
-    content: "announcement";
+    content: 'announcement';
   }
   :global([ui-pnotify] .pnotify-material-icon-info:after) {
-    content: "info";
+    content: 'info';
   }
   :global([ui-pnotify] .pnotify-material-icon-success:after) {
-    content: "check_circle";
+    content: 'check_circle';
   }
   :global([ui-pnotify] .pnotify-material-icon-error:after) {
-    content: "error";
+    content: 'error';
   }
   :global([ui-pnotify] .pnotify-material-icon-closer),
   :global([ui-pnotify] .pnotify-material-icon-sticker) {
@@ -155,14 +169,15 @@
   }
   :global([ui-pnotify] .pnotify-material-icon-closer:after) {
     top: -4px;
-    content: "close";
+    content: 'close';
   }
   :global([ui-pnotify] .pnotify-material-icon-sticker:after) {
     top: -5px;
-    content: "pause";
+    content: 'pause';
   }
-  :global([ui-pnotify] .pnotify-material-icon-sticker.pnotify-material-icon-stuck:after) {
-    content: "play_arrow";
+  :global([ui-pnotify]
+      .pnotify-material-icon-sticker.pnotify-material-icon-stuck:after) {
+    content: 'play_arrow';
   }
 
   :global([ui-pnotify].ui-pnotify .pnotify-material .ui-pnotify-prompt-input) {
@@ -182,9 +197,11 @@
     border-bottom-color: inherit;
     border-bottom-width: 1px;
   }
-  :global([ui-pnotify].ui-pnotify .pnotify-material .ui-pnotify-prompt-input:focus) {
+  :global([ui-pnotify].ui-pnotify
+      .pnotify-material
+      .ui-pnotify-prompt-input:focus) {
     outline: none;
-    border-bottom-color: #3F51B5;
+    border-bottom-color: #3f51b5;
     border-bottom-width: 2px;
   }
 
@@ -203,7 +220,7 @@
     background-color: transparent;
     color: inherit;
 
-    transition: background-color .3s;
+    transition: background-color 0.3s;
 
     text-transform: uppercase;
     height: 36px;
@@ -211,25 +228,37 @@
     min-width: 64px;
     font-weight: bold;
   }
-  :global([ui-pnotify].ui-pnotify .pnotify-material .ui-pnotify-action-button.ui-pnotify-material-primary) {
+  :global([ui-pnotify].ui-pnotify
+      .pnotify-material
+      .ui-pnotify-action-button.ui-pnotify-material-primary) {
     /* background-color: #3F51B5; */
     /* color: #ecf0f1; */
-    color: #3F51B5;
+    color: #3f51b5;
     /* box-shadow: 0 1px 4px rgba(0, 0, 0, .6); */
   }
-  :global([ui-pnotify].ui-pnotify .pnotify-material .ui-pnotify-action-button:hover),
-  :global([ui-pnotify].ui-pnotify .pnotify-material .ui-pnotify-action-button:focus) {
-    background-color: rgba(0, 0, 0, .12);
+  :global([ui-pnotify].ui-pnotify
+      .pnotify-material
+      .ui-pnotify-action-button:hover),
+  :global([ui-pnotify].ui-pnotify
+      .pnotify-material
+      .ui-pnotify-action-button:focus) {
+    background-color: rgba(0, 0, 0, 0.12);
     color: inherit;
   }
-  :global([ui-pnotify].ui-pnotify .pnotify-material .ui-pnotify-action-button.ui-pnotify-material-primary:hover),
-  :global([ui-pnotify].ui-pnotify .pnotify-material .ui-pnotify-action-button.ui-pnotify-material-primary:focus) {
+  :global([ui-pnotify].ui-pnotify
+      .pnotify-material
+      .ui-pnotify-action-button.ui-pnotify-material-primary:hover),
+  :global([ui-pnotify].ui-pnotify
+      .pnotify-material
+      .ui-pnotify-action-button.ui-pnotify-material-primary:focus) {
     /* background-color: #303F9F; */
     /* color: #ecf0f1; */
-    color: #303F9F;
+    color: #303f9f;
   }
-  :global([ui-pnotify].ui-pnotify .pnotify-material .ui-pnotify-action-button:before) {
-    content: "";
+  :global([ui-pnotify].ui-pnotify
+      .pnotify-material
+      .ui-pnotify-action-button:before) {
+    content: '';
 
     position: absolute;
     top: 50%;
@@ -241,7 +270,7 @@
 
     border-radius: 100%;
 
-    background-color: rgba(153, 153, 153, .4);
+    background-color: rgba(153, 153, 153, 0.4);
 
     -webkit-transform: translate(-50%, -50%);
     -moz-transform: translate(-50%, -50%);
@@ -249,10 +278,12 @@
     -o-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
   }
-  :global([ui-pnotify].ui-pnotify .pnotify-material .ui-pnotify-action-button:active:before) {
+  :global([ui-pnotify].ui-pnotify
+      .pnotify-material
+      .ui-pnotify-action-button:active:before) {
     width: 120%;
     padding-top: 120%;
 
-    transition: width .2s ease-out, padding-top .2s ease-out;
+    transition: width 0.2s ease-out, padding-top 0.2s ease-out;
   }
 </style>

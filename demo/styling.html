@@ -1,221 +1,360 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8"/>
-  <title>PNotify Styling Demos</title>
-  <meta name="HandheldFriendly" content="true" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script type="text/javascript" src="../lib/iife/PNotify.js"></script>
-  <script type="text/javascript" src="../lib/iife/PNotifyStyleMaterial.js"></script>
-  <script type="text/javascript" src="../lib/iife/PNotifyButtons.js"></script>
-  <script type="text/javascript" src="../lib/iife/PNotifyConfirm.js"></script>
-  <script type="text/javascript" src="../lib/iife/PNotifyMobile.js"></script>
-  <link href="../src/PNotifyBrightTheme.css" rel="stylesheet" type="text/css" />
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link href="" id="bootstrap-css" rel="stylesheet" type="text/css" />
-  <link href="" id="fontawesome-css" rel="stylesheet" type="text/css" />
+  <head>
+    <meta charset="utf-8" />
+    <title>PNotify Styling Demos</title>
+    <meta name="HandheldFriendly" content="true" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script type="text/javascript" src="../lib/iife/PNotify.js"></script>
+    <script
+      type="text/javascript"
+      src="../lib/iife/PNotifyStyleMaterial.js"
+    ></script>
+    <script type="text/javascript" src="../lib/iife/PNotifyButtons.js"></script>
+    <script type="text/javascript" src="../lib/iife/PNotifyConfirm.js"></script>
+    <script type="text/javascript" src="../lib/iife/PNotifyMobile.js"></script>
+    <link
+      href="../src/PNotifyBrightTheme.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link href="" id="bootstrap-css" rel="stylesheet" type="text/css" />
+    <link href="" id="fontawesome-css" rel="stylesheet" type="text/css" />
 
-  <script type="text/javascript">
-    /* globals PNotify */
-    window.setStyling = function () {
-      var styling = document.getElementById('styling').value;
+    <script type="text/javascript">
+      /* globals PNotify */
+      window.setStyling = function() {
+        var styling = document.getElementById('styling').value;
 
-      PNotify.defaults.styling = styling;
+        PNotify.defaults.styling = styling;
 
-      if (styling === 'bootstrap3') {
-        document.forms.libraries.elements.libraryBootstrap.value = '3';
-        loadLibraries();
-      } else if (styling === 'bootstrap4') {
-        document.forms.libraries.elements.libraryBootstrap.value = '4';
-        loadLibraries();
+        if (styling === 'bootstrap3') {
+          document.forms.libraries.elements.libraryBootstrap.value = '3';
+          loadLibraries();
+        } else if (styling === 'bootstrap4') {
+          document.forms.libraries.elements.libraryBootstrap.value = '4';
+          loadLibraries();
+        }
+
+        PNotify.removeAll();
+      };
+
+      window.setIcons = function() {
+        var icons = document.getElementById('icons').value;
+
+        PNotify.defaults.icons = icons;
+
+        if (icons === 'bootstrap3') {
+          document.forms.libraries.elements.libraryBootstrap.value = '3';
+          loadLibraries();
+        } else if (icons === 'fontawesome4') {
+          document.forms.libraries.elements.libraryFontAwesome.value = '4';
+          loadLibraries();
+        } else if (icons === 'fontawesome5') {
+          document.forms.libraries.elements.libraryFontAwesome.value = '5';
+          loadLibraries();
+        }
+
+        PNotify.removeAll();
+      };
+
+      window.setRtl = function() {
+        var rtl = document.getElementById('rtl').checked;
+
+        if (rtl) {
+          document.body.dir = 'rtl';
+        } else {
+          document.body.dir = '';
+        }
+      };
+
+      function loadLibraries() {
+        var bootstrap =
+          document.forms.libraries.elements.libraryBootstrap.value;
+        var bootstrapCss = document.getElementById('bootstrap-css');
+        var fontAwesome =
+          document.forms.libraries.elements.libraryFontAwesome.value;
+        var fontAwesomeCss = document.getElementById('fontawesome-css');
+        var output = document.getElementById('output');
+        output.innerText = '';
+
+        if (bootstrap === '3') {
+          bootstrapCss.href =
+            'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css';
+          output.innerText += ' Loaded Bootstrap 3.';
+        } else if (bootstrap === '4') {
+          bootstrapCss.href =
+            'https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css';
+          output.innerText += ' Loaded Bootstrap 4.';
+        } else {
+          bootstrapCss.href = '';
+        }
+
+        if (fontAwesome === '4') {
+          fontAwesomeCss.href =
+            'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css';
+          output.innerText += ' Loaded Font Awesome 4.';
+        } else if (fontAwesome === '5') {
+          fontAwesomeCss.href =
+            'https://use.fontawesome.com/releases/v5.0.13/css/all.css';
+          output.innerText += ' Loaded Font Awesome 5.';
+        } else {
+          fontAwesomeCss.href = '';
+        }
       }
+    </script>
+  </head>
 
-      PNotify.removeAll();
-    };
-
-    window.setIcons = function () {
-      var icons = document.getElementById('icons').value;
-
-      PNotify.defaults.icons = icons;
-
-      if (icons === 'bootstrap3') {
-        document.forms.libraries.elements.libraryBootstrap.value = '3';
-        loadLibraries();
-      } else if (icons === 'fontawesome4') {
-        document.forms.libraries.elements.libraryFontAwesome.value = '4';
-        loadLibraries();
-      } else if (icons === 'fontawesome5') {
-        document.forms.libraries.elements.libraryFontAwesome.value = '5';
-        loadLibraries();
-      }
-
-      PNotify.removeAll();
-    };
-
-    window.setRtl = function () {
-      var rtl = document.getElementById('rtl').checked;
-
-      if (rtl) {
-        document.body.dir = 'rtl';
-      } else {
-        document.body.dir = '';
-      }
-    };
-
-    function loadLibraries () {
-      var bootstrap = document.forms.libraries.elements.libraryBootstrap.value;
-      var bootstrapCss = document.getElementById('bootstrap-css');
-      var fontAwesome = document.forms.libraries.elements.libraryFontAwesome.value;
-      var fontAwesomeCss = document.getElementById('fontawesome-css');
-      var output = document.getElementById('output');
-      output.innerText = '';
-
-      if (bootstrap === '3') {
-        bootstrapCss.href = 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css';
-        output.innerText += ' Loaded Bootstrap 3.';
-      } else if (bootstrap === '4') {
-        bootstrapCss.href = 'https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css';
-        output.innerText += ' Loaded Bootstrap 4.';
-      } else {
-        bootstrapCss.href = '';
-      }
-
-      if (fontAwesome === '4') {
-        fontAwesomeCss.href = 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css';
-        output.innerText += ' Loaded Font Awesome 4.';
-      } else if (fontAwesome === '5') {
-        fontAwesomeCss.href = 'https://use.fontawesome.com/releases/v5.0.13/css/all.css';
-        output.innerText += ' Loaded Font Awesome 5.';
-      } else {
-        fontAwesomeCss.href = '';
-      }
-    }
-  </script>
-</head>
-
-<body>
-  <div style="padding: 0 30px; margin: 20px 0;">
-    <h1>Styling Demo</h1>
-    <p>
-      Use this page to check out various PNotify styling options. The Buttons,
-      Confirm, and Mobile modules have been loaded.
-    </p>
-
-    <section>
-      <h2>Choose PNotify's Styling Options</h2>
+  <body>
+    <div style="padding: 0 30px; margin: 20px 0;">
+      <h1>Styling Demo</h1>
       <p>
-        Styling: <select id="styling" onchange="setStyling()">
-          <option value="brighttheme">Bright Theme</option>
-          <option value="material">Material</option>
-          <option value="bootstrap3">Bootstrap 3</option>
-          <option value="bootstrap4">Bootstrap 4</option>
-        </select>
-        Icons: <select id="icons" onchange="setIcons()">
-          <option value="brighttheme">Bright Theme</option>
-          <option value="material">Material</option>
-          <option value="bootstrap3">Bootstrap 3</option>
-          <option value="fontawesome4">Font Awesome 4</option>
-          <option value="fontawesome5">Font Awesome 5</option>
-        </select>
+        Use this page to check out various PNotify styling options. The Buttons,
+        Confirm, and Mobile modules have been loaded.
       </p>
-      <p>
-        <label><input type="checkbox" id="rtl" onchange="setRtl()" /> Make page RTL (set dir="rtl" on &lt;body&gt;)</label>
-      </p>
-      <h2>Load CSS Libraries</h2>
-      <form name="libraries">
-        <label><input type="radio" name="libraryBootstrap" value="" onchange="loadLibraries()" checked /> No Bootstrap</label>
-        <label><input type="radio" name="libraryBootstrap" value="3" onchange="loadLibraries()" /> Bootstrap 3</label>
-        <label><input type="radio" name="libraryBootstrap" value="4" onchange="loadLibraries()" /> Bootstrap 4</label>
-        <br />
-        <label><input type="radio" name="libraryFontAwesome" value="" onchange="loadLibraries()" checked /> No Font Awesome</label>
-        <label><input type="radio" name="libraryFontAwesome" value="4" onchange="loadLibraries()" /> Font Awesome 4</label>
-        <label><input type="radio" name="libraryFontAwesome" value="5" onchange="loadLibraries()" /> Font Awesome 5</label>
-      </form>
-      <span id="output"></span>
-    </section>
-    <hr />
-    <h2>Test Notices</h2>
-    <button onclick="PNotify.notice({title: 'Test Notice', text: 'This is a test notice.'})">Test Notice</button>
-    <button onclick="PNotify.info({title: 'Test Notice', text: 'This is a test notice.'})">Test Info</button>
-    <button onclick="PNotify.success({title: 'Test Notice', text: 'This is a test notice.'})">Test Success</button>
-    <button onclick="PNotify.error({title: 'Test Notice', text: 'This is a test notice.'})">Test Danger</button>
-    <button onclick="PNotify.info({title: 'This is a test notice.'})">Just Title</button>
-    <button onclick="PNotify.info({text: 'This is a test notice.'})">Just Text</button>
-    <h3>Confirm Module</h3>
-    <button onclick="PNotify.notice({
+
+      <section>
+        <h2>Choose PNotify's Styling Options</h2>
+        <p>
+          Styling:
+          <select id="styling" onchange="setStyling()">
+            <option value="brighttheme">Bright Theme</option>
+            <option value="material">Material</option>
+            <option value="bootstrap3">Bootstrap 3</option>
+            <option value="bootstrap4">Bootstrap 4</option>
+          </select>
+          Icons:
+          <select id="icons" onchange="setIcons()">
+            <option value="brighttheme">Bright Theme</option>
+            <option value="material">Material</option>
+            <option value="bootstrap3">Bootstrap 3</option>
+            <option value="fontawesome4">Font Awesome 4</option>
+            <option value="fontawesome5">Font Awesome 5</option>
+          </select>
+        </p>
+        <p>
+          <label
+            ><input type="checkbox" id="rtl" onchange="setRtl()" /> Make page
+            RTL (set dir="rtl" on &lt;body&gt;)</label
+          >
+        </p>
+        <h2>Load CSS Libraries</h2>
+        <form name="libraries">
+          <label
+            ><input
+              type="radio"
+              name="libraryBootstrap"
+              value=""
+              onchange="loadLibraries()"
+              checked
+            />
+            No Bootstrap</label
+          >
+          <label
+            ><input
+              type="radio"
+              name="libraryBootstrap"
+              value="3"
+              onchange="loadLibraries()"
+            />
+            Bootstrap 3</label
+          >
+          <label
+            ><input
+              type="radio"
+              name="libraryBootstrap"
+              value="4"
+              onchange="loadLibraries()"
+            />
+            Bootstrap 4</label
+          >
+          <br />
+          <label
+            ><input
+              type="radio"
+              name="libraryFontAwesome"
+              value=""
+              onchange="loadLibraries()"
+              checked
+            />
+            No Font Awesome</label
+          >
+          <label
+            ><input
+              type="radio"
+              name="libraryFontAwesome"
+              value="4"
+              onchange="loadLibraries()"
+            />
+            Font Awesome 4</label
+          >
+          <label
+            ><input
+              type="radio"
+              name="libraryFontAwesome"
+              value="5"
+              onchange="loadLibraries()"
+            />
+            Font Awesome 5</label
+          >
+        </form>
+        <span id="output"></span>
+      </section>
+      <hr />
+      <h2>Test Notices</h2>
+      <button
+        onclick="PNotify.notice({title: 'Test Notice', text: 'This is a test notice.'})"
+      >
+        Test Notice
+      </button>
+      <button
+        onclick="PNotify.info({title: 'Test Notice', text: 'This is a test notice.'})"
+      >
+        Test Info
+      </button>
+      <button
+        onclick="PNotify.success({title: 'Test Notice', text: 'This is a test notice.'})"
+      >
+        Test Success
+      </button>
+      <button
+        onclick="PNotify.error({title: 'Test Notice', text: 'This is a test notice.'})"
+      >
+        Test Danger
+      </button>
+      <button onclick="PNotify.info({title: 'This is a test notice.'})">
+        Just Title
+      </button>
+      <button onclick="PNotify.info({text: 'This is a test notice.'})">
+        Just Text
+      </button>
+      <h3>Confirm Module</h3>
+      <button
+        onclick="PNotify.notice({
       title: 'Confirmation Needed',
       text: 'Are you sure?',
       hide: false,
       modules: {Confirm: {confirm: true}, Buttons: {closer: false, sticker: false}}
-    });">Confirm Notice</button>
-    <button onclick="PNotify.info({
+    });"
+      >
+        Confirm Notice
+      </button>
+      <button
+        onclick="PNotify.info({
       title: 'Confirmation Needed',
       text: 'Are you sure?',
       hide: false,
       modules: {Confirm: {confirm: true}, Buttons: {closer: false, sticker: false}}
-    });">Confirm Info</button>
-    <button onclick="PNotify.success({
+    });"
+      >
+        Confirm Info
+      </button>
+      <button
+        onclick="PNotify.success({
       title: 'Confirmation Needed',
       text: 'Are you sure?',
       hide: false,
       modules: {Confirm: {confirm: true}, Buttons: {closer: false, sticker: false}}
-    });">Confirm Success</button>
-    <button onclick="PNotify.error({
+    });"
+      >
+        Confirm Success
+      </button>
+      <button
+        onclick="PNotify.error({
       title: 'Confirmation Needed',
       text: 'Are you sure?',
       hide: false,
       modules: {Confirm: {confirm: true}, Buttons: {closer: false, sticker: false}}
-    });">Confirm Error</button>
-    <br />
-    <button onclick="PNotify.notice({
+    });"
+      >
+        Confirm Error
+      </button>
+      <br />
+      <button
+        onclick="PNotify.notice({
       title: 'Input Needed',
       text: 'What side would you like?',
       hide: false,
       modules: {Confirm: {prompt: true}, Buttons: {closer: false, sticker: false}}
-    });">Prompt Notice</button>
-    <button onclick="PNotify.info({
+    });"
+      >
+        Prompt Notice
+      </button>
+      <button
+        onclick="PNotify.info({
       title: 'Input Needed',
       text: 'What side would you like?',
       hide: false,
       modules: {Confirm: {prompt: true}, Buttons: {closer: false, sticker: false}}
-    });">Prompt Info</button>
-    <button onclick="PNotify.success({
+    });"
+      >
+        Prompt Info
+      </button>
+      <button
+        onclick="PNotify.success({
       title: 'Input Needed',
       text: 'What side would you like?',
       hide: false,
       modules: {Confirm: {prompt: true}, Buttons: {closer: false, sticker: false}}
-    });">Prompt Success</button>
-    <button onclick="PNotify.error({
+    });"
+      >
+        Prompt Success
+      </button>
+      <button
+        onclick="PNotify.error({
       title: 'Input Needed',
       text: 'What side would you like?',
       hide: false,
       modules: {Confirm: {prompt: true}, Buttons: {closer: false, sticker: false}}
-    });">Prompt Error</button>
-    <br />
-    <button onclick="PNotify.notice({
+    });"
+      >
+        Prompt Error
+      </button>
+      <br />
+      <button
+        onclick="PNotify.notice({
       title: 'Input Needed',
       text: 'Describe the color blue.',
       hide: false,
       modules: {Confirm: {prompt: true, promptMultiLine: true}, Buttons: {closer: false, sticker: false}}
-    });">Multi Line Prompt Notice</button>
-    <button onclick="PNotify.info({
+    });"
+      >
+        Multi Line Prompt Notice
+      </button>
+      <button
+        onclick="PNotify.info({
       title: 'Input Needed',
       text: 'Describe the color blue.',
       hide: false,
       modules: {Confirm: {prompt: true, promptMultiLine: true}, Buttons: {closer: false, sticker: false}}
-    });">Multi Line Prompt Info</button>
-    <button onclick="PNotify.success({
+    });"
+      >
+        Multi Line Prompt Info
+      </button>
+      <button
+        onclick="PNotify.success({
       title: 'Input Needed',
       text: 'Describe the color blue.',
       hide: false,
       modules: {Confirm: {prompt: true, promptMultiLine: true}, Buttons: {closer: false, sticker: false}}
-    });">Multi Line Prompt Success</button>
-    <button onclick="PNotify.error({
+    });"
+      >
+        Multi Line Prompt Success
+      </button>
+      <button
+        onclick="PNotify.error({
       title: 'Input Needed',
       text: 'Describe the color blue.',
       hide: false,
       modules: {Confirm: {prompt: true, promptMultiLine: true}, Buttons: {closer: false, sticker: false}}
-    });">Multi Line Prompt Error</button>
-  </div>
-</body>
+    });"
+      >
+        Multi Line Prompt Error
+      </button>
+    </div>
+  </body>
 </html>

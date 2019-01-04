@@ -2,7 +2,7 @@
   import PNotify from './PNotify.html';
 
   export default {
-    setup (Component) {
+    setup(Component) {
       Component.key = 'Mobile';
 
       Component.defaults = {
@@ -12,7 +12,7 @@
         styling: true
       };
 
-      Component.init = (notice) => {
+      Component.init = notice => {
         return new Component({ target: document.body });
       };
 
@@ -20,19 +20,22 @@
       PNotify.modules.Mobile = Component;
     },
 
-    oncreate () {
-      this.set({ '_doMobileStylingBound': this.doMobileStyling.bind(this) });
+    oncreate() {
+      this.set({ _doMobileStylingBound: this.doMobileStyling.bind(this) });
     },
 
-    data () {
-      return Object.assign({
-        '_notice': null, // The PNotify notice.
-        '_options': {} // The options for the notice.
-      }, PNotify.modules.Mobile.defaults);
+    data() {
+      return Object.assign(
+        {
+          _notice: null, // The PNotify notice.
+          _options: {} // The options for the notice.
+        },
+        PNotify.modules.Mobile.defaults
+      );
     },
 
     methods: {
-      initModule (options) {
+      initModule(options) {
         this.set(options);
 
         const { _notice } = this.get();
@@ -44,7 +47,7 @@
         let direction = 'X';
         let span = 'Width';
 
-        _notice.on('touchstart', (e) => {
+        _notice.on('touchstart', e => {
           if (!this.get().swipeDismiss) {
             return;
           }
@@ -73,7 +76,7 @@
           _notice.refs.container.style[csspos] = 0;
         });
 
-        _notice.on('touchmove', (e) => {
+        _notice.on('touchmove', e => {
           if (!origXY || !this.get().swipeDismiss) {
             return;
           }
@@ -81,7 +84,8 @@
           const curXY = e.touches[0]['screen' + direction];
 
           diffXY = curXY - origXY;
-          const opacity = (1 - (Math.abs(diffXY) / noticeWidthHeight)) * noticeOpacity;
+          const opacity =
+            (1 - Math.abs(diffXY) / noticeWidthHeight) * noticeOpacity;
 
           _notice.refs.elem.style.opacity = opacity;
           _notice.refs.container.style[csspos] = diffXY + 'px';
@@ -92,9 +96,12 @@
             return;
           }
 
-          _notice.refs.container.classList.add('ui-pnotify-mobile-animate-left');
+          _notice.refs.container.classList.add(
+            'ui-pnotify-mobile-animate-left'
+          );
           if (Math.abs(diffXY) > 40) {
-            const goLeft = (diffXY < 0) ? noticeWidthHeight * -2 : noticeWidthHeight * 2;
+            const goLeft =
+              diffXY < 0 ? noticeWidthHeight * -2 : noticeWidthHeight * 2;
             _notice.refs.elem.style.opacity = 0;
             _notice.refs.container.style[csspos] = goLeft + 'px';
             _notice.close();
@@ -124,16 +131,16 @@
         this.doMobileStyling();
       },
 
-      update () {
+      update() {
         this.doMobileStyling();
       },
 
-      beforeOpen () {
+      beforeOpen() {
         // Add an event listener to watch the window resizes.
         window.addEventListener('resize', this.get()._doMobileStylingBound);
       },
 
-      afterClose () {
+      afterClose() {
         // Remove the event listener.
         window.removeEventListener('resize', this.get()._doMobileStylingBound);
 
@@ -148,7 +155,7 @@
         _notice.refs.container.style.removeProperty('top');
       },
 
-      doMobileStyling () {
+      doMobileStyling() {
         const { _notice } = this.get();
         const { stack } = _notice.get();
 
@@ -244,10 +251,10 @@
     position: relative;
   }
   :global([ui-pnotify] .ui-pnotify-mobile-animate-left) {
-    transition: left .1s ease;
+    transition: left 0.1s ease;
   }
   :global([ui-pnotify] .ui-pnotify-mobile-animate-top) {
-    transition: top .1s ease;
+    transition: top 0.1s ease;
   }
   @media (max-width: 480px) {
     /* -- Notice */
@@ -274,29 +281,38 @@
       -moz-box-shadow: none;
       box-shadow: none;
     }
-    :global([ui-pnotify].ui-pnotify.ui-pnotify-mobile-able.ui-pnotify-mobile-top .ui-pnotify-shadow) {
+    :global([ui-pnotify].ui-pnotify.ui-pnotify-mobile-able.ui-pnotify-mobile-top
+        .ui-pnotify-shadow) {
       border-bottom-width: 5px;
     }
-    :global([ui-pnotify].ui-pnotify.ui-pnotify-mobile-able.ui-pnotify-mobile-bottom .ui-pnotify-shadow) {
+    :global([ui-pnotify].ui-pnotify.ui-pnotify-mobile-able.ui-pnotify-mobile-bottom
+        .ui-pnotify-shadow) {
       border-top-width: 5px;
     }
-    :global([ui-pnotify].ui-pnotify.ui-pnotify-mobile-able.ui-pnotify-mobile-left .ui-pnotify-shadow) {
+    :global([ui-pnotify].ui-pnotify.ui-pnotify-mobile-able.ui-pnotify-mobile-left
+        .ui-pnotify-shadow) {
       border-right-width: 5px;
     }
-    :global([ui-pnotify].ui-pnotify.ui-pnotify-mobile-able.ui-pnotify-mobile-right .ui-pnotify-shadow) {
+    :global([ui-pnotify].ui-pnotify.ui-pnotify-mobile-able.ui-pnotify-mobile-right
+        .ui-pnotify-shadow) {
       border-left-width: 5px;
     }
-    :global([ui-pnotify].ui-pnotify.ui-pnotify-mobile-able .ui-pnotify-container) {
+    :global([ui-pnotify].ui-pnotify.ui-pnotify-mobile-able
+        .ui-pnotify-container) {
       -webkit-border-radius: 0;
       -moz-border-radius: 0;
       border-radius: 0;
     }
-    :global([ui-pnotify].ui-pnotify.ui-pnotify-mobile-able.ui-pnotify-mobile-top .ui-pnotify-container),
-    :global([ui-pnotify].ui-pnotify.ui-pnotify-mobile-able.ui-pnotify-mobile-bottom .ui-pnotify-container) {
+    :global([ui-pnotify].ui-pnotify.ui-pnotify-mobile-able.ui-pnotify-mobile-top
+        .ui-pnotify-container),
+    :global([ui-pnotify].ui-pnotify.ui-pnotify-mobile-able.ui-pnotify-mobile-bottom
+        .ui-pnotify-container) {
       width: auto !important;
     }
-    :global([ui-pnotify].ui-pnotify.ui-pnotify-mobile-able.ui-pnotify-mobile-left .ui-pnotify-container),
-    :global([ui-pnotify].ui-pnotify.ui-pnotify-mobile-able.ui-pnotify-mobile-right .ui-pnotify-container) {
+    :global([ui-pnotify].ui-pnotify.ui-pnotify-mobile-able.ui-pnotify-mobile-left
+        .ui-pnotify-container),
+    :global([ui-pnotify].ui-pnotify.ui-pnotify-mobile-able.ui-pnotify-mobile-right
+        .ui-pnotify-container) {
       height: 100% !important;
     }
   }

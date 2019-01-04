@@ -1,476 +1,856 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:og="http://ogp.me/ns#" xmlns:fb="https://www.facebook.com/2008/fbml">
-<head>
-  <meta charset="utf-8"/>
-  <title>PNotify</title>
-  <meta name="HandheldFriendly" content="true" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="JavaScript notification plugin." />
-  <meta property="og:title" content="PNotify" />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://sciactive.com/pnotify/" />
-  <meta property="og:image" content="https://cdn.rawgit.com/sciactive/2be-extras/master/logo/logo.png" />
-  <meta property="og:site_name" content="PNotify" />
-  <meta property="fb:admins" content="508999194" />
-  <meta property="og:description" content="JavaScript notification plugin." />
+<html
+  lang="en"
+  xmlns:og="http://ogp.me/ns#"
+  xmlns:fb="https://www.facebook.com/2008/fbml"
+>
+  <head>
+    <meta charset="utf-8" />
+    <title>PNotify</title>
+    <meta name="HandheldFriendly" content="true" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="JavaScript notification plugin." />
+    <meta property="og:title" content="PNotify" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://sciactive.com/pnotify/" />
+    <meta
+      property="og:image"
+      content="https://cdn.rawgit.com/sciactive/2be-extras/master/logo/logo.png"
+    />
+    <meta property="og:site_name" content="PNotify" />
+    <meta property="fb:admins" content="508999194" />
+    <meta property="og:description" content="JavaScript notification plugin." />
 
-  <!-- Dev Notice -->
-  <link href="devnote.css" rel="stylesheet" type="text/css" />
+    <!-- Dev Notice -->
+    <link href="devnote.css" rel="stylesheet" type="text/css" />
 
-  <!-- Page Style -->
-  <link href="includes/style.css" rel="stylesheet" type="text/css" />
+    <!-- Page Style -->
+    <link href="includes/style.css" rel="stylesheet" type="text/css" />
 
-  <!-- Animate.css -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css" rel="stylesheet" type="text/css" />
+    <!-- Animate.css -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
 
-  <!-- NonBlock.js -->
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/nonblockjs@1/NonBlock.es5.js"></script>
+    <!-- NonBlock.js -->
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/nonblockjs@1/NonBlock.es5.js"
+    ></script>
 
-  <!-- jQuery -->
-  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.slim.min.js"></script>
+    <!-- jQuery -->
+    <script
+      type="text/javascript"
+      src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.slim.min.js"
+    ></script>
 
-  <!-- Bootstrap -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" id="bootstrap-css" crossorigin="anonymous">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+    <!-- Bootstrap -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+      id="bootstrap-css"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+      integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"
+      integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+      crossorigin="anonymous"
+    ></script>
 
-  <!-- FontAwesome -->
-  <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/all.js"></script>
+    <!-- FontAwesome -->
+    <script
+      defer
+      src="https://use.fontawesome.com/releases/v5.0.13/js/all.js"
+    ></script>
 
-  <!-- Material Design Icons Font -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Material+Icons" />
+    <!-- Material Design Icons Font -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Material+Icons"
+    />
 
-  <!-- JavaScript Source Formatting -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/vs2015.min.css">
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-  <script type="text/javascript" src="https://cdn.rawgit.com/google/code-prettify/master/loader/prettify.js"></script>
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.7.5/beautify.min.js"></script>
+    <!-- JavaScript Source Formatting -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/vs2015.min.css"
+    />
+    <script
+      type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.rawgit.com/google/code-prettify/master/loader/prettify.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.7.5/beautify.min.js"
+    ></script>
 
-  <!-- PNotify -->
-  <script type="text/javascript" src="lib/iife/PNotify.js"></script>
-  <link href="src/PNotifyBrightTheme.css" rel="stylesheet" type="text/css" />
-  <script type="text/javascript" src="lib/iife/PNotifyButtons.js"></script>
-  <script type="text/javascript" src="lib/iife/PNotifyAnimate.js"></script>
-  <script type="text/javascript" src="lib/iife/PNotifyCallbacks.js"></script>
-  <script type="text/javascript" src="lib/iife/PNotifyNonBlock.js"></script>
-  <script type="text/javascript" src="lib/iife/PNotifyMobile.js"></script>
-  <script type="text/javascript" src="lib/iife/PNotifyHistory.js"></script>
-  <script type="text/javascript" src="lib/iife/PNotifyDesktop.js"></script>
-  <script type="text/javascript" src="lib/iife/PNotifyConfirm.js"></script>
-  <script type="text/javascript" src="lib/iife/PNotifyStyleMaterial.js"></script>
-  <script type="text/javascript" src="lib/iife/PNotifyReference.js"></script>
+    <!-- PNotify -->
+    <script type="text/javascript" src="lib/iife/PNotify.js"></script>
+    <link href="src/PNotifyBrightTheme.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="lib/iife/PNotifyButtons.js"></script>
+    <script type="text/javascript" src="lib/iife/PNotifyAnimate.js"></script>
+    <script type="text/javascript" src="lib/iife/PNotifyCallbacks.js"></script>
+    <script type="text/javascript" src="lib/iife/PNotifyNonBlock.js"></script>
+    <script type="text/javascript" src="lib/iife/PNotifyMobile.js"></script>
+    <script type="text/javascript" src="lib/iife/PNotifyHistory.js"></script>
+    <script type="text/javascript" src="lib/iife/PNotifyDesktop.js"></script>
+    <script type="text/javascript" src="lib/iife/PNotifyConfirm.js"></script>
+    <script
+      type="text/javascript"
+      src="lib/iife/PNotifyStyleMaterial.js"
+    ></script>
+    <script type="text/javascript" src="lib/iife/PNotifyReference.js"></script>
 
-  <!-- Custom Styling -->
-  <style type="text/css">
-    /* Bootstrap theme switcher. */
-    #switcher-container {
-      position: fixed;
-      bottom: 5px;
-      left: 5px;
-      z-index: 1021;
-    }
-    @media (max-width: 460px) {
+    <!-- Custom Styling -->
+    <style type="text/css">
+      /* Bootstrap theme switcher. */
       #switcher-container {
-        position: static;
+        position: fixed;
+        bottom: 5px;
+        left: 5px;
+        z-index: 1021;
       }
-    }
+      @media (max-width: 460px) {
+        #switcher-container {
+          position: static;
+        }
+      }
 
-    /* Translucent notice CSS */
-    [ui-pnotify].ui-pnotify.translucent.ui-pnotify-fade-in {
-      opacity: 0.8;
-    }
+      /* Translucent notice CSS */
+      [ui-pnotify].ui-pnotify.translucent.ui-pnotify-fade-in {
+        opacity: 0.8;
+      }
 
-    /* Custom styled notice CSS */
-    [ui-pnotify].ui-pnotify.custom .ui-pnotify-container {
-      background-color: #404040;
-      background-image: none;
-      border: none;
-      -moz-border-radius: 10px;
-      -webkit-border-radius: 10px;
-      border-radius: 10px;
-      padding: 15px;
-      font-size: 15px;
-    }
-    [ui-pnotify].ui-pnotify.custom {
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: 10pt;
-      line-height: 1.1;
-    }
-    [ui-pnotify].ui-pnotify.custom .ui-pnotify-title,
-    [ui-pnotify].ui-pnotify.custom .ui-pnotify-text {
-      margin-left: 50px;
-      color: #FFF;
-    }
-    [ui-pnotify].ui-pnotify.custom .ui-pnotify-title {
-      font-weight: bold;
-      font-size: 15px;
-    }
-    [ui-pnotify].ui-pnotify.custom .ui-pnotify-icon {
-      color: #FFA;
-    }
+      /* Custom styled notice CSS */
+      [ui-pnotify].ui-pnotify.custom .ui-pnotify-container {
+        background-color: #404040;
+        background-image: none;
+        border: none;
+        -moz-border-radius: 10px;
+        -webkit-border-radius: 10px;
+        border-radius: 10px;
+        padding: 15px;
+        font-size: 15px;
+      }
+      [ui-pnotify].ui-pnotify.custom {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 10pt;
+        line-height: 1.1;
+      }
+      [ui-pnotify].ui-pnotify.custom .ui-pnotify-title,
+      [ui-pnotify].ui-pnotify.custom .ui-pnotify-text {
+        margin-left: 50px;
+        color: #fff;
+      }
+      [ui-pnotify].ui-pnotify.custom .ui-pnotify-title {
+        font-weight: bold;
+        font-size: 15px;
+      }
+      [ui-pnotify].ui-pnotify.custom .ui-pnotify-icon {
+        color: #ffa;
+      }
 
-    /* Browser bar stacks. */
-    [ui-pnotify].ui-pnotify.stack-bar-top {
-      width: 100%;
-    }
-    [ui-pnotify].ui-pnotify.stack-bar-bottom {
-      width: 70%;
-    }
-  </style>
+      /* Browser bar stacks. */
+      [ui-pnotify].ui-pnotify.stack-bar-top {
+        width: 100%;
+      }
+      [ui-pnotify].ui-pnotify.stack-bar-bottom {
+        width: 70%;
+      }
+    </style>
 
-  <!-- Demo Code -->
-  <script type="text/javascript">
-    /* eslint-env browser, jquery */
-    /* globals PNotify */
-    $(function () {
-      // ---
-      // Notice that opens when the page opens.
-      // ---
-      PNotify.notice({
-        title: 'PNotify',
-        text: "Welcome. Try hovering over me. You can click things behind me, because I'm non-blocking.",
-        delay: 12000,
-        addClass: 'nonblock',
-        modules: {
-          Callbacks: {
-            beforeClose: function (notice) {
-              // You can access the notice's options like this.
-              // notice.get('text');
-
-              // You can change the notice's options like this:
-              // notice.update({
-              //   title: notice.get('title') + ' - Enjoy your Stay',
-              //   modules: {
-              //     Callbacks: {}
-              //   }
-              // });
-
-              // notice.queueClose();
-              // return false;
+    <!-- Demo Code -->
+    <script type="text/javascript">
+      /* eslint-env browser, jquery */
+      /* globals PNotify */
+      $(function() {
+        // ---
+        // Notice that opens when the page opens.
+        // ---
+        PNotify.notice({
+          title: 'PNotify',
+          text:
+            "Welcome. Try hovering over me. You can click things behind me, because I'm non-blocking.",
+          delay: 12000,
+          addClass: 'nonblock',
+          modules: {
+            Callbacks: {
+              beforeClose: function(notice) {
+                // You can access the notice's options like this.
+                // notice.get('text');
+                // You can change the notice's options like this:
+                // notice.update({
+                //   title: notice.get('title') + ' - Enjoy your Stay',
+                //   modules: {
+                //     Callbacks: {}
+                //   }
+                // });
+                // notice.queueClose();
+                // return false;
+              }
             }
           }
-        }
+        });
       });
-    });
-  </script>
-</head>
-<body id="page" data-spy="scroll" data-target=".navbar" data-offset="0" style="position: relative;">
-  <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light">
-    <div class="container">
-      <a class="navbar-brand" href="https://sciactive.com/pnotify/">PNotify</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+    </script>
+  </head>
+  <body
+    id="page"
+    data-spy="scroll"
+    data-target=".navbar"
+    data-offset="0"
+    style="position: relative;"
+  >
+    <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light">
+      <div class="container">
+        <a class="navbar-brand" href="https://sciactive.com/pnotify/"
+          >PNotify</a
+        >
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
 
-      <!-- Collect the nav links, forms, and other content for toggling -->
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item"><a class="nav-link" href="#page">Overview</a></li>
-          <li class="nav-item"><a class="nav-link" href="#demos-simple">Simple Demos</a></li>
-          <li class="nav-item"><a class="nav-link" href="#demos-modules">Module Demos</a></li>
-          <li class="nav-item"><a class="nav-link" href="#stacks">Stacks</a></li>
-          <li class="nav-item"><a class="nav-link" href="#customization">Customization</a></li>
-          <li class="nav-item"><a class="nav-link" href="#comments">Comments</a></li>
-        </ul>
-        <ul class="navbar-nav">
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Beyond PNotify
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="https://github.com/sciactive/" target="_blank">SciActive</a>
-              <a class="dropdown-item" href="http://nymph.io/" target="_blank">Nymph</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="https://sciactive.com/pform/" target="_blank">PForm</a>
-              <a class="dropdown-item" href="http://hookphp.org/" target="_blank">HookPHP</a>
-              <a class="dropdown-item" href="http://requirephp.org/" target="_blank">RequirePHP</a>
-            </div>
-          </li>
-        </ul>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="#page">Overview</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#demos-simple">Simple Demos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#demos-modules">Module Demos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#stacks">Stacks</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#customization">Customization</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#comments">Comments</a>
+            </li>
+          </ul>
+          <ul class="navbar-nav">
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                Beyond PNotify
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a
+                  class="dropdown-item"
+                  href="https://github.com/sciactive/"
+                  target="_blank"
+                  >SciActive</a
+                >
+                <a class="dropdown-item" href="http://nymph.io/" target="_blank"
+                  >Nymph</a
+                >
+                <div class="dropdown-divider"></div>
+                <a
+                  class="dropdown-item"
+                  href="https://sciactive.com/pform/"
+                  target="_blank"
+                  >PForm</a
+                >
+                <a
+                  class="dropdown-item"
+                  href="http://hookphp.org/"
+                  target="_blank"
+                  >HookPHP</a
+                >
+                <a
+                  class="dropdown-item"
+                  href="http://requirephp.org/"
+                  target="_blank"
+                  >RequirePHP</a
+                >
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div id="switcher-container">
+      <div id="switcher-bootstrap" style="display: none;">
+        <div class="dropdown">
+          <button
+            class="btn btn-secondary dropdown-toggle"
+            type="button"
+            id="bootswatch-dropdown"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            Theme: <span id="bootstrap-current">Normal</span>
+          </button>
+          <div
+            class="dropdown-menu"
+            aria-labelledby="bootswatch-dropdown"
+            style="max-height: 450px; overflow-y: auto;"
+          >
+            <a
+              class="dropdown-item"
+              href="javascript:void(0);"
+              data-theme="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+              >Normal</a
+            >
+            <div class="dropdown-divider"></div>
+            <a
+              class="dropdown-item"
+              href="javascript:void(0);"
+              data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/cerulean/bootstrap.min.css"
+              >Cerulean</a
+            >
+            <a
+              class="dropdown-item"
+              href="javascript:void(0);"
+              data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/cosmo/bootstrap.min.css"
+              >Cosmo</a
+            >
+            <a
+              class="dropdown-item"
+              href="javascript:void(0);"
+              data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/cyborg/bootstrap.min.css"
+              >Cyborg</a
+            >
+            <a
+              class="dropdown-item"
+              href="javascript:void(0);"
+              data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/darkly/bootstrap.min.css"
+              >Darkly</a
+            >
+            <a
+              class="dropdown-item"
+              href="javascript:void(0);"
+              data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/flatly/bootstrap.min.css"
+              >Flatly</a
+            >
+            <a
+              class="dropdown-item"
+              href="javascript:void(0);"
+              data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/journal/bootstrap.min.css"
+              >Journal</a
+            >
+            <a
+              class="dropdown-item"
+              href="javascript:void(0);"
+              data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/litera/bootstrap.min.css"
+              >Litera</a
+            >
+            <a
+              class="dropdown-item"
+              href="javascript:void(0);"
+              data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/lumen/bootstrap.min.css"
+              >Lumen</a
+            >
+            <a
+              class="dropdown-item"
+              href="javascript:void(0);"
+              data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/lux/bootstrap.min.css"
+              >LUX</a
+            >
+            <a
+              class="dropdown-item"
+              href="javascript:void(0);"
+              data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/materia/bootstrap.min.css"
+              >Materia</a
+            >
+            <a
+              class="dropdown-item"
+              href="javascript:void(0);"
+              data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/minty/bootstrap.min.css"
+              >Minty</a
+            >
+            <a
+              class="dropdown-item"
+              href="javascript:void(0);"
+              data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/pulse/bootstrap.min.css"
+              >Pulse</a
+            >
+            <a
+              class="dropdown-item"
+              href="javascript:void(0);"
+              data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/sandstone/bootstrap.min.css"
+              >Sandstone</a
+            >
+            <a
+              class="dropdown-item"
+              href="javascript:void(0);"
+              data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/simplex/bootstrap.min.css"
+              >Simplex</a
+            >
+            <a
+              class="dropdown-item"
+              href="javascript:void(0);"
+              data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/sketchy/bootstrap.min.css"
+              >Sketchy</a
+            >
+            <a
+              class="dropdown-item"
+              href="javascript:void(0);"
+              data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/slate/bootstrap.min.css"
+              >Slate</a
+            >
+            <a
+              class="dropdown-item"
+              href="javascript:void(0);"
+              data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/solar/bootstrap.min.css"
+              >Solar</a
+            >
+            <a
+              class="dropdown-item"
+              href="javascript:void(0);"
+              data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/spacelab/bootstrap.min.css"
+              >Spacelab</a
+            >
+            <a
+              class="dropdown-item"
+              href="javascript:void(0);"
+              data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/superhero/bootstrap.min.css"
+              >Superhero</a
+            >
+            <a
+              class="dropdown-item"
+              href="javascript:void(0);"
+              data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/united/bootstrap.min.css"
+              >United</a
+            >
+            <a
+              class="dropdown-item"
+              href="javascript:void(0);"
+              data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/yeti/bootstrap.min.css"
+              >Yeti</a
+            >
+            <div class="dropdown-divider"></div>
+            <a
+              class="dropdown-item"
+              href="http://bootswatch.com/"
+              target="_blank"
+              >Themes by Bootswatch</a
+            >
+          </div>
+          <script type="text/javascript">
+            /* eslint-env browser, jquery */
+            /* globals PNotify */
+            $(function() {
+              $('#switcher-bootstrap').on('click', 'a[data-theme]', function() {
+                var $this = $(this);
+                $('#bootstrap-current').text($this.text());
+                $('#bootstrap-css').attr('href', $this.attr('data-theme'));
+                setTimeout(function() {
+                  PNotify.positionAll();
+                }, 500);
+              });
+            });
+          </script>
+        </div>
       </div>
     </div>
-  </nav>
-  <div id="switcher-container">
-    <div id="switcher-bootstrap" style="display: none;">
-      <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="bootswatch-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Theme: <span id="bootstrap-current">Normal</span>
-        </button>
-        <div class="dropdown-menu" aria-labelledby="bootswatch-dropdown" style="max-height: 450px; overflow-y: auto;">
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">Normal</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/cerulean/bootstrap.min.css">Cerulean</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/cosmo/bootstrap.min.css">Cosmo</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/cyborg/bootstrap.min.css">Cyborg</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/darkly/bootstrap.min.css">Darkly</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/flatly/bootstrap.min.css">Flatly</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/journal/bootstrap.min.css">Journal</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/litera/bootstrap.min.css">Litera</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/lumen/bootstrap.min.css">Lumen</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/lux/bootstrap.min.css">LUX</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/materia/bootstrap.min.css">Materia</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/minty/bootstrap.min.css">Minty</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/pulse/bootstrap.min.css">Pulse</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/sandstone/bootstrap.min.css">Sandstone</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/simplex/bootstrap.min.css">Simplex</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/sketchy/bootstrap.min.css">Sketchy</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/slate/bootstrap.min.css">Slate</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/solar/bootstrap.min.css">Solar</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/spacelab/bootstrap.min.css">Spacelab</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/superhero/bootstrap.min.css">Superhero</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/united/bootstrap.min.css">United</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/yeti/bootstrap.min.css">Yeti</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="http://bootswatch.com/" target="_blank">Themes by Bootswatch</a>
+
+    <section class="container page-banner">
+      <div>
+        <h1>PNotify</h1>
+        <h3>
+          4-<abbr
+            title="it should be safe to use, but please report any problems"
+            >beta</abbr
+          >
+        </h3>
+        <p id="description">
+          Beautiful
+          <a href="demo/nodependencies.html" target="_blank">dependency free</a>
+          notifications.
+        </p>
+      </div>
+      <div>
+        <a
+          class="btn btn-primary btn-lg my-3"
+          href="https://github.com/sciactive/pnotify"
+          target="_blank"
+          title="Fork me on GitHub"
+          >PNotify on GitHub <i class="fab fa-github"></i
+        ></a>
+        <a
+          class="btn btn-secondary btn-lg my-3"
+          href="https://github.com/sciactive/pnotify/issues/new"
+          target="_blank"
+          title="Fork me on GitHub"
+          >Bug Report/Feature Request</a
+        >
+      </div>
+    </section>
+
+    <div class="container page-section">
+      <div class="my-3">
+        <h2>About PNotify</h2>
+        <hr />
+      </div>
+      <p>
+        PNotify is a JavaScript notification library, developed by
+        <a href="https://github.com/sciactive/">SciActive</a>.
+      </p>
+      <p>
+        PNotify provides desktop notifications based on the
+        <a href="http://www.w3.org/TR/notifications/" target="_blank"
+          >Web Notifications spec</a
+        >. If desktop notifications are not available or not allowed, PNotify
+        will fall back to displaying the notice as a regular, in-browser notice.
+      </p>
+      <div class="row align-items-stretch">
+        <div class="col-md-4 my-3">
+          <div class="card" style="height: 100%;">
+            <h5 class="card-header">
+              <i class="fas fa-mobile"></i> Mobile Ready
+            </h5>
+            <div class="card-body">
+              PNotify works on your phone and tablet. You can swipe notices away
+              to dismiss them.
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 my-3">
+          <div class="card" style="height: 100%;">
+            <h5 class="card-header">
+              <i class="fas fa-asterisk"></i> Unobtrusive
+            </h5>
+            <div class="card-body">
+              PNotify can provide <strong>non-blocking</strong> notices that
+              allow the user to click elements underneath the notice.
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 my-3">
+          <div class="card" style="height: 100%;">
+            <h5 class="card-header">
+              <i class="fas fa-gift"></i> Completely Open
+            </h5>
+            <div class="card-body">
+              PNotify is distributed under the permissive
+              <a
+                href="http://www.apache.org/licenses/LICENSE-2.0"
+                target="_blank"
+                >Apache License, Version 2.0</a
+              >.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="row justify-content-center stable-note"
+        style="display: none;"
+      >
+        <div class="col-md-6">
+          <div class="card bg-success text-white" style="height: 100%;">
+            <div class="card-body">
+              <h5 class="card-title">
+                <i class="fas fa-info-circle"></i> Did you know?
+              </h5>
+              This is the stable site. You can download code here that's tested
+              and proven to work. However, if you like to live dangerously, you
+              can also check out the
+              <a href="https://sciactive.github.com/pnotify">development site</a
+              >.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="dev-note" style="display: none;">
+        <div class="alert alert-danger">
+          <h5 style="margin-top: 0;">
+            <i class="fas fa-exclamation-triangle"></i> Caution warning danger
+            attention!
+          </h5>
+          <p class="mb-0">
+            This is the development site. It demos bleeding edge features that
+            may not work.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div id="demos-simple" class="container page-section">
+      <div class="my-3">
+        <h2>
+          Simple Demos
+          <small>These demos only use core PNotify features.</small>
+        </h2>
+        <hr />
+      </div>
+      <div class="card border-info">
+        <h5 class="card-header bg-info text-light">Choose the Styling</h5>
+        <div class="card-body">
+          PNotify supports multiple styling methods and icon sets.
+          <div class="btn-toolbar" role="toolbar">
+            <div
+              class="btn-group btn-group-toggle"
+              data-toggle="buttons"
+              role="group"
+            >
+              <label class="btn btn-outline-info my-1 active">
+                <input
+                  type="radio"
+                  name="styling"
+                  id="style-brighttheme"
+                  autocomplete="off"
+                  checked
+                />
+                Bright Theme
+              </label>
+              <label class="btn btn-outline-info my-1">
+                <input
+                  type="radio"
+                  name="styling"
+                  id="style-material"
+                  autocomplete="off"
+                />
+                Material
+              </label>
+              <label class="btn btn-outline-info my-1">
+                <input
+                  type="radio"
+                  name="styling"
+                  id="style-bootstrap4"
+                  autocomplete="off"
+                />
+                Bootstrap
+              </label>
+            </div>
+            <div class="btn-group ml-3" role="group">
+              <a
+                class="btn btn-outline-info my-1"
+                href="demo/styling.html"
+                target="_blank"
+                >Demo All Styles/Icons</a
+              >
+            </div>
+          </div>
         </div>
         <script type="text/javascript">
           /* eslint-env browser, jquery */
           /* globals PNotify */
-          $(function () {
-            $('#switcher-bootstrap').on('click', 'a[data-theme]', function () {
-              var $this = $(this);
-              $('#bootstrap-current').text($this.text()); $('#bootstrap-css').attr('href', $this.attr('data-theme'));
-              setTimeout(function () {
-                PNotify.positionAll();
-              }, 500);
+          $(function() {
+            $('.sharpthemes-hideme').hide();
+
+            $('input[name=styling]').change(function() {
+              switch ($('input[name=styling]:checked').attr('id')) {
+                case 'style-brighttheme':
+                  PNotify.defaults.styling = 'brighttheme';
+                  PNotify.defaults.icons = 'brighttheme';
+                  $('#switcher-bootstrap').hide();
+                  $('.sharpthemes-hideme').hide();
+                  PNotify.notice({
+                    title: 'Styling Change',
+                    text:
+                      'From now on, notices will be styled with Bright Theme, the stand alone theme.'
+                  });
+                  break;
+                case 'style-material':
+                  PNotify.defaults.styling = 'material';
+                  PNotify.defaults.icons = 'material';
+                  $('#switcher-bootstrap').hide();
+                  $('.sharpthemes-hideme').hide();
+                  PNotify.notice({
+                    title: 'Styling Change',
+                    text:
+                      'From now on, notices will be styled with Material Style Module.'
+                  });
+                  break;
+                case 'style-bootstrap4':
+                  PNotify.defaults.styling = 'bootstrap4';
+                  PNotify.defaults.icons = 'fontawesome5';
+                  $('#switcher-bootstrap').show();
+                  $('.sharpthemes-hideme').show();
+                  PNotify.notice({
+                    title: 'Styling Change',
+                    text:
+                      'From now on, notices will be styled with Bootstrap 4 w/ Font Awesome 5 Icons.'
+                  });
+                  break;
+              }
             });
           });
         </script>
       </div>
-    </div>
-  </div>
-
-  <section class="container page-banner">
-    <div>
-      <h1>PNotify</h1>
-      <h3>4-<abbr title="it should be safe to use, but please report any problems">beta</abbr></h3>
-      <p id="description">Beautiful <a href="demo/nodependencies.html" target="_blank">dependency free</a> notifications.</p>
-    </div>
-    <div>
-      <a class="btn btn-primary btn-lg my-3" href="https://github.com/sciactive/pnotify" target="_blank" title="Fork me on GitHub">PNotify on GitHub <i class="fab fa-github"></i></a>
-      <a class="btn btn-secondary btn-lg my-3" href="https://github.com/sciactive/pnotify/issues/new" target="_blank" title="Fork me on GitHub">Bug Report/Feature Request</a>
-    </div>
-  </section>
-
-  <div class="container page-section">
-    <div class="my-3">
-      <h2>About PNotify</h2>
-      <hr />
-    </div>
-    <p>
-      PNotify is a JavaScript notification library, developed by
-      <a href="https://github.com/sciactive/">SciActive</a>.
-    </p>
-    <p>
-      PNotify provides desktop notifications based on the
-      <a href="http://www.w3.org/TR/notifications/" target="_blank">Web Notifications spec</a>.
-      If desktop notifications are not available or not allowed, PNotify will
-      fall back to displaying the notice as a regular, in-browser notice.
-    </p>
-    <div class="row align-items-stretch">
-      <div class="col-md-4 my-3">
-        <div class="card" style="height: 100%;">
-          <h5 class="card-header"><i class="fas fa-mobile"></i> Mobile Ready</h5>
-          <div class="card-body">
-            PNotify works on your phone and tablet. You can swipe notices away
-            to dismiss them.
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4 my-3">
-        <div class="card" style="height: 100%;">
-          <h5 class="card-header"><i class="fas fa-asterisk"></i> Unobtrusive</h5>
-          <div class="card-body">
-            PNotify can provide <strong>non-blocking</strong> notices that allow
-            the user to click elements underneath the notice.
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4 my-3">
-        <div class="card" style="height: 100%;">
-          <h5 class="card-header"><i class="fas fa-gift"></i> Completely Open</h5>
-          <div class="card-body">
-            PNotify is distributed under the permissive
-            <a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">Apache License, Version 2.0</a>.
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row justify-content-center stable-note" style="display: none;">
-      <div class="col-md-6">
-        <div class="card bg-success text-white" style="height: 100%;">
-          <div class="card-body">
-            <h5 class="card-title"><i class="fas fa-info-circle"></i> Did you know?</h5>
-            This is the stable site. You can download code here that's tested
-            and proven to work. However, if you like to live dangerously, you
-            can also check out the
-            <a href="https://sciactive.github.com/pnotify">development site</a>.
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="dev-note" style="display: none;">
-      <div class="alert alert-danger">
-        <h5 style="margin-top: 0;"><i class="fas fa-exclamation-triangle"></i> Caution warning danger attention!</h5>
-        <p class="mb-0">This is the development site. It demos bleeding edge features that may not work.</p>
-      </div>
-    </div>
-  </div>
-
-  <div id="demos-simple" class="container page-section">
-    <div class="my-3">
-      <h2>Simple Demos <small>These demos only use core PNotify features.</small></h2>
-      <hr />
-    </div>
-    <div class="card border-info">
-      <h5 class="card-header bg-info text-light">Choose the Styling</h5>
-      <div class="card-body">
-        PNotify supports multiple styling methods and icon sets.
-        <div class="btn-toolbar" role="toolbar">
-          <div class="btn-group btn-group-toggle" data-toggle="buttons" role="group">
-            <label class="btn btn-outline-info my-1 active">
-              <input type="radio" name="styling" id="style-brighttheme" autocomplete="off" checked> Bright Theme
-            </label>
-            <label class="btn btn-outline-info my-1">
-              <input type="radio" name="styling" id="style-material" autocomplete="off"> Material
-            </label>
-            <label class="btn btn-outline-info my-1">
-              <input type="radio" name="styling" id="style-bootstrap4" autocomplete="off"> Bootstrap
-            </label>
-          </div>
-          <div class="btn-group ml-3" role="group">
-            <a class="btn btn-outline-info my-1" href="demo/styling.html" target="_blank">Demo All Styles/Icons</a>
-          </div>
-        </div>
-      </div>
-      <script type="text/javascript">
-        /* eslint-env browser, jquery */
-        /* globals PNotify */
-        $(function () {
-          $('.sharpthemes-hideme').hide();
-
-          $('input[name=styling]').change(function () {
-            switch ($('input[name=styling]:checked').attr('id')) {
-              case 'style-brighttheme':
-                PNotify.defaults.styling = 'brighttheme';
-                PNotify.defaults.icons = 'brighttheme';
-                $('#switcher-bootstrap').hide();
-                $('.sharpthemes-hideme').hide();
-                PNotify.notice({
-                  title: 'Styling Change',
-                  text: 'From now on, notices will be styled with Bright Theme, the stand alone theme.'
-                });
-                break;
-              case 'style-material':
-                PNotify.defaults.styling = 'material';
-                PNotify.defaults.icons = 'material';
-                $('#switcher-bootstrap').hide();
-                $('.sharpthemes-hideme').hide();
-                PNotify.notice({
-                  title: 'Styling Change',
-                  text: 'From now on, notices will be styled with Material Style Module.'
-                });
-                break;
-              case 'style-bootstrap4':
-                PNotify.defaults.styling = 'bootstrap4';
-                PNotify.defaults.icons = 'fontawesome5';
-                $('#switcher-bootstrap').show();
-                $('.sharpthemes-hideme').show();
-                PNotify.notice({
-                  title: 'Styling Change',
-                  text: 'From now on, notices will be styled with Bootstrap 4 w/ Font Awesome 5 Icons.'
-                });
-                break;
-            }
-          });
-        });
-      </script>
-    </div>
-    <div class="card mt-3">
-      <h5 class="card-header">PNotify Core</h5>
-      <div class="card-body">
-        <button class="btn btn-outline-dark my-1 source" onclick="
+      <div class="card mt-3">
+        <h5 class="card-header">PNotify Core</h5>
+        <div class="card-body">
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           PNotify.notice({
             title: 'Regular Notice',
             text: 'Check me out! I\'m a notice.'
           });
-        ">Notice</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Notice
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           PNotify.info({
             title: 'New Thing',
             text: 'Just to let you know, something happened.'
           });
-        ">Info Message</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Info Message
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           PNotify.success({
             title: 'Success!',
             text: 'That thing that you were trying to do worked.'
           });
-        ">Success Message</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Success Message
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           PNotify.error({
             title: 'Oh No!',
             text: 'Something terrible happened.'
           });
-        ">Error Message</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Error Message
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           PNotify.notice({
             title: 'Font Awesome Icon',
             text: 'I have an icon that uses the Font Awesome icon styles.',
             icon: 'far fa-envelope'
           });
-        ">Specific Icon (Font Awesome)</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Specific Icon (Font Awesome)
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           PNotify.notice({
             title: 'No Icon Notice',
             text: 'I have no icon.',
             icon: false
           });
-        ">No Icon</button>
-        <hr />
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            No Icon
+          </button>
+          <hr />
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           PNotify.notice({
             title: 'See Through Notice',
             text: 'No one ever pays attention to me. Why should they? I\'m practically invisible.',
             addClass: 'translucent'
           });
           var sourceNote = 'You need this CSS: [ui-pnotify].ui-pnotify.translucent.ui-pnotify-fade-in {opacity: 0.8;}';
-        ">Translucent</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Translucent
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           PNotify.notice({
             title: 'No Shadow Notice',
             text: 'I don\'t have a shadow. (It\'s cause I\'m a vampire or something. Or is that reflections...)',
             shadow: false
           });
-        ">No Shadow Notice</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            No Shadow Notice
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           PNotify.notice('Check me out! I\'m a notice.');
-        ">Simple</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Simple
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           PNotify.notice(Math.round(Math.random()*9999));
-        ">Number</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Number
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           PNotify.notice({
             title: 'No Mouse Reset Notice',
             text: 'I don\'t care if you move your mouse over me, I\'ll disappear when I want.',
             mouseReset: false
           });
-        ">No Mouse Reset</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            No Mouse Reset
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           PNotify.notice({
             title: 'Fast Fading Notice',
             text: 'I fade in and out really quickly.',
             animateSpeed: 'fast'
           });
-        ">Fast Fading</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Fast Fading
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           PNotify.notice({
             title: 'No Effect Notice',
             text: 'I don\'t even bother to animate. I\'m too cool for that.',
             animation: 'none'
           });
-        ">No Effect</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            No Effect
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           var notice = PNotify.notice({
             text: $('#form_notice').html(),
             textTrusted: true,
@@ -509,32 +889,66 @@
             });
             return false;
           });
-        ">Forms</button>
-        <div id="form_notice" style="display: none;"><form action="" method="post" style="white-space: normal;">
-            <div class="mt-0 mb-3">
-              <h3>Login to Continue</h3>
-              <p>Just an example.</p>
-              <hr />
-            </div>
-            <div class="form-group">
-              <label for="exampleFormUsername">Username</label>
-              <input class="form-control" id="exampleFormUsername" type="text" name="username" />
-            </div>
-            <div class="form-group">
-              <label for="exampleFormPassword">Password</label>
-              <input class="form-control" id="exampleFormPassword" type="password" name="password" />
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" id="exampleFormRemember" type="checkbox" name="remember" />
-              <label class="form-check-label" for="exampleFormRemember">Remember Me</label>
-              <small class="form-text text-muted">Lasts for 2 weeks.</small>
-            </div>
-            <div class="mt-3">
-              <input class="btn btn-primary" type="submit" name="submit" value="Submit" />
-              <input class="btn btn-secondary ml-3" type="button" name="cancel" value="Cancel" />
-            </div>
-          </form></div>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Forms
+          </button>
+          <div id="form_notice" style="display: none;">
+            <form action="" method="post" style="white-space: normal;">
+              <div class="mt-0 mb-3">
+                <h3>Login to Continue</h3>
+                <p>Just an example.</p>
+                <hr />
+              </div>
+              <div class="form-group">
+                <label for="exampleFormUsername">Username</label>
+                <input
+                  class="form-control"
+                  id="exampleFormUsername"
+                  type="text"
+                  name="username"
+                />
+              </div>
+              <div class="form-group">
+                <label for="exampleFormPassword">Password</label>
+                <input
+                  class="form-control"
+                  id="exampleFormPassword"
+                  type="password"
+                  name="password"
+                />
+              </div>
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  id="exampleFormRemember"
+                  type="checkbox"
+                  name="remember"
+                />
+                <label class="form-check-label" for="exampleFormRemember"
+                  >Remember Me</label
+                >
+                <small class="form-text text-muted">Lasts for 2 weeks.</small>
+              </div>
+              <div class="mt-3">
+                <input
+                  class="btn btn-primary"
+                  type="submit"
+                  name="submit"
+                  value="Submit"
+                />
+                <input
+                  class="btn btn-secondary ml-3"
+                  type="button"
+                  name="cancel"
+                  value="Cancel"
+                />
+              </div>
+            </form>
+          </div>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           var notice = PNotify.notice({
             title: 'Click Notice',
             text: 'I wish someone would click me.'
@@ -550,8 +964,13 @@
               textTrusted: true
             });
           });
-        ">Click on It</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Click on It
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           var notice = PNotify.notice({
             title: 'Click Close Notice',
             text: 'Click me anywhere to dismiss me.',
@@ -565,108 +984,144 @@
           notice.on('click', function () {
             notice.close();
           });
-        ">Click to Close</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Click to Close
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           PNotify.notice({
             title: 'Big Notice',
             text: 'Check me out! I\'m tall and wide, even though my text isn\'t.',
             width: '500px',
             minHeight: '400px'
           });
-        ">Huge</button>
-        <script type="text/javascript">
-          /* eslint-env browser, jquery */
-          /* globals PNotify */
-          window.showRich = function showRich () {
-            PNotify.notice({
-              title: '<span style="color: green;">Rich Content Notice</' + 'span>',
-              titleTrusted: true,
-              text: '<span style="color: blue;">Look at my beautiful <strong>strong</' + 'strong>, <em>emphasized</' + 'em>, and <span style="font-size: 1.5em;">large</' + 'span> text.</' + 'span>',
-              textTrusted: true
-            });
-          };
-        </script>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Huge
+          </button>
+          <script type="text/javascript">
+            /* eslint-env browser, jquery */
+            /* globals PNotify */
+            window.showRich = function showRich() {
+              PNotify.notice({
+                title:
+                  '<span style="color: green;">Rich Content Notice</' + 'span>',
+                titleTrusted: true,
+                text:
+                  '<span style="color: blue;">Look at my beautiful <strong>strong</' +
+                  'strong>, <em>emphasized</' +
+                  'em>, and <span style="font-size: 1.5em;">large</' +
+                  'span> text.</' +
+                  'span>',
+                textTrusted: true
+              });
+            };
+          </script>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           showRich();
-        ">Rich Text</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Rich Text
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           PNotify.notice({
             title: '&lt;em&gt;Escaped Notice&lt;/em&gt;',
             text: $('#evil_html').html(),
           });
-        ">Or Keep it Safe</button>
-        <div id="evil_html" style="display: none;">
-          <div>As you can see, I don't allow HTML in my content.</div>
-          <div>This prevents things like cross site scripting attacks:</div>
+        "
+          >
+            Or Keep it Safe
+          </button>
+          <div id="evil_html" style="display: none;">
+            <div>As you can see, I don't allow HTML in my content.</div>
+            <div>This prevents things like cross site scripting attacks:</div>
+            <script type="text/javascript">
+              (function() {
+                // Here would be the XSS attack.
+              })();
+            </script>
+          </div>
           <script type="text/javascript">
-            (function () {
-              // Here would be the XSS attack.
-            })();
-          </script>
-        </div>
-        <script type="text/javascript">
-          /* eslint-env browser, jquery */
-          /* globals PNotify */
-          window.dynNotice = function dynNotice () {
-            var percent = 0;
-            var notice = PNotify.info({
-              text: 'Please Wait',
-              icon: 'fas fa-spinner fa-pulse',
-              hide: false,
-              shadow: false,
-              width: '200px',
-              modules: {
-                Buttons: {
-                  closer: false,
-                  sticker: false
+            /* eslint-env browser, jquery */
+            /* globals PNotify */
+            window.dynNotice = function dynNotice() {
+              var percent = 0;
+              var notice = PNotify.info({
+                text: 'Please Wait',
+                icon: 'fas fa-spinner fa-pulse',
+                hide: false,
+                shadow: false,
+                width: '200px',
+                modules: {
+                  Buttons: {
+                    closer: false,
+                    sticker: false
+                  }
                 }
-              }
-            });
+              });
 
-            setTimeout(function () {
-              notice.update({ title: false });
-              var interval = setInterval(function () {
-                percent += 2;
-                var options = {
-                  text: percent + '% complete.'
-                };
-                if (percent === 80) {
-                  options.title = 'Almost There';
-                }
-                if (percent >= 100) {
-                  window.clearInterval(interval);
-                  options.title = 'Done!';
-                  options.type = 'success';
-                  options.hide = true;
-                  options.icon = 'fas fa-check';
-                  options.shadow = true;
-                  options.width = PNotify.defaults.width;
-                  options.modules = {
-                    Buttons: {
-                      closer: true,
-                      sticker: true
-                    }
+              setTimeout(function() {
+                notice.update({ title: false });
+                var interval = setInterval(function() {
+                  percent += 2;
+                  var options = {
+                    text: percent + '% complete.'
                   };
-                }
-                notice.update(options);
-              }, 120);
-            }, 2000);
-          };
-        </script>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+                  if (percent === 80) {
+                    options.title = 'Almost There';
+                  }
+                  if (percent >= 100) {
+                    window.clearInterval(interval);
+                    options.title = 'Done!';
+                    options.type = 'success';
+                    options.hide = true;
+                    options.icon = 'fas fa-check';
+                    options.shadow = true;
+                    options.width = PNotify.defaults.width;
+                    options.modules = {
+                      Buttons: {
+                        closer: true,
+                        sticker: true
+                      }
+                    };
+                  }
+                  notice.update(options);
+                }, 120);
+              }, 2000);
+            };
+          </script>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           dynNotice();
-        ">Dynamic</button>
-        <div class="sharpthemes-hideme" style="display: inline-block;">
-          <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Dynamic
+          </button>
+          <div class="sharpthemes-hideme" style="display: inline-block;">
+            <button
+              class="btn btn-outline-dark my-1 source"
+              onclick="
             PNotify.notice({
               title: 'No Rounded Corners Notice',
               text: 'Warning: Contains sharp objects. Not suitable for browsers under the age of CSS3.',
               cornerClass: 'ui-pnotify-sharp'
             });
-          ">No Rounded Corners</button>
-        </div>
-        <hr />
-        <button class="btn btn-outline-dark my-1 source" onclick="
+          "
+            >
+              No Rounded Corners
+            </button>
+          </div>
+          <hr />
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           PNotify.notice({
             title: 'Custom Styling',
             text: 'I have an additional class that\'s used to give me special styling. I always wanted to be pretty. I also use NonBlock.js.',
@@ -674,26 +1129,45 @@
             addClass: 'custom nonblock',
             icon: 'far fa-file-image fa-3x'
           });
-        ">Custom Styles</button>
-        <div style="float: right;"><a data-toggle="modal" href="#growl">How to style like Growl.</a></div>
-        <div class="modal fade" id="growl" tabindex="-1" role="dialog" aria-labelledby="growl-title" aria-hidden="true">
-          <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="growl-title">Styling Notices Like Growl</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <p>
-                  To custom style a notice, you need to use a class. For this
-                  example, we'll use "<strong>custom</strong>".
-                </p>
-                <p>
-                  Here's some CSS to make custom notices look like Growl:
-                </p>
-                <pre style="min-width: 100%;"><code class="css">/* Notice that your selectors need to be more specific than PNotify's selectors. */
+        "
+          >
+            Custom Styles
+          </button>
+          <div style="float: right;">
+            <a data-toggle="modal" href="#growl">How to style like Growl.</a>
+          </div>
+          <div
+            class="modal fade"
+            id="growl"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="growl-title"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="growl-title">
+                    Styling Notices Like Growl
+                  </h5>
+                  <button
+                    type="button"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                  >
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <p>
+                    To custom style a notice, you need to use a class. For this
+                    example, we'll use "<strong>custom</strong>".
+                  </p>
+                  <p>Here's some CSS to make custom notices look like Growl:</p>
+                  <pre
+                    style="min-width: 100%;"
+                  ><code class="css">/* Notice that your selectors need to be more specific than PNotify's selectors. */
 [ui-pnotify].ui-pnotify<strong>.custom</strong> .ui-pnotify-container {
   background-color: #404040;
   background-image: none;
@@ -721,53 +1195,80 @@
 [ui-pnotify].ui-pnotify<strong>.custom</strong> .ui-pnotify-icon {
   color: #FFA;
 }</code></pre>
-                <p>
-                  And here's the JavaScript to use this styling:
-                </p>
-                <pre style="min-width: 100%;"><code class="js">PNotify.notice({
+                  <p>And here's the JavaScript to use this styling:</p>
+                  <pre
+                    style="min-width: 100%;"
+                  ><code class="js">PNotify.notice({
   title: 'Custom Styling',
   text: 'I have an additional class that\'s used to give me special styling. I always wanted to be pretty.',
   <strong>styling: {}</strong>,
   <strong>addClass: 'custom nonblock'</strong>,
   icon: 'far fa-file-image fa-3x'
 });</code></pre>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Ok, got it.</button>
+                </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-outline-dark"
+                    data-dismiss="modal"
+                  >
+                    Ok, got it.
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <hr style="clear: both;" />
-        <button class="btn btn-outline-dark my-1 source" onclick="
+          <hr style="clear: both;" />
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           PNotify.closeAll();
-        ">Close All Notices</button>
-      </div>
-    </div>
-  </div>
-
-  <div id="web-notifications"></div>
-  <div id="demos-modules" class="container page-section">
-    <div class="my-3">
-      <h2>Module Demos</h2>
-      <hr />
-    </div>
-    <div class="card">
-      <h5 class="card-header">Desktop Module <small>Notifications that display even when the web page is not visible.</small></h5>
-      <div class="card-body">
-        <div class="float-right">
-          Implements the <a href="http://www.w3.org/TR/notifications/" target="_blank">Web Notifications spec</a>.
+        "
+          >
+            Close All Notices
+          </button>
         </div>
       </div>
-      <div class="card-body">
-        <p>
-          The first time you click one of these buttons, you will be asked to grant permission for this site to show notices. Then you can click them again to see the desktop notification.
-        </p>
-        <p>
-          If your browser doesn't support Web Notifications, or you deny permission to show them, you will only see regular in-browser notices. You can check <a href="http://caniuse.com/notifications" target="_blank">here</a>.
-        </p>
+    </div>
+
+    <div id="web-notifications"></div>
+    <div id="demos-modules" class="container page-section">
+      <div class="my-3">
+        <h2>Module Demos</h2>
         <hr />
-        <button class="btn btn-outline-dark my-1 source" onclick="
+      </div>
+      <div class="card">
+        <h5 class="card-header">
+          Desktop Module
+          <small
+            >Notifications that display even when the web page is not
+            visible.</small
+          >
+        </h5>
+        <div class="card-body">
+          <div class="float-right">
+            Implements the
+            <a href="http://www.w3.org/TR/notifications/" target="_blank"
+              >Web Notifications spec</a
+            >.
+          </div>
+        </div>
+        <div class="card-body">
+          <p>
+            The first time you click one of these buttons, you will be asked to
+            grant permission for this site to show notices. Then you can click
+            them again to see the desktop notification.
+          </p>
+          <p>
+            If your browser doesn't support Web Notifications, or you deny
+            permission to show them, you will only see regular in-browser
+            notices. You can check
+            <a href="http://caniuse.com/notifications" target="_blank">here</a>.
+          </p>
+          <hr />
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           PNotify.notice({
             title: 'Desktop Notice',
             text: 'I\'ll appear as a desktop notification. Unless I can\'t. I\'ll still appear as a regular PNotify notice then.',
@@ -777,8 +1278,13 @@
               }
             }
           });
-        ">Notice</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Notice
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           PNotify.info({
             title: 'Desktop Info',
             text: 'Hey there. Something happened.',
@@ -788,8 +1294,13 @@
               }
             }
           });
-        ">Info</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Info
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           PNotify.success({
             title: 'Desktop Success',
             text: 'All done! Come back to my tab!',
@@ -799,8 +1310,13 @@
               }
             }
           });
-        ">Success</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Success
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           PNotify.error({
             title: 'Desktop Error',
             text: 'Serious error is serious.',
@@ -810,8 +1326,13 @@
               }
             }
           });
-        ">Error</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Error
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           PNotify.notice({
             title: 'Desktop Custom Icon',
             text: 'I\'ve got a custom icon.',
@@ -822,8 +1343,11 @@
               }
             }
           });
-        ">Custom Icon</button>
-        <!-- <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Custom Icon
+          </button>
+          <!-- <button class="btn btn-outline-dark my-1 source" onclick="
           PNotify.notice({
             title: 'Desktop Image',
             type: 'info',
@@ -841,7 +1365,9 @@
             }
           });
         ">Image</button> -->
-        <button class="btn btn-outline-dark my-1 source" onclick="
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           PNotify.notice({
             title: 'Alternate Text Notice - Browser',
             text: 'This text appears on the &lt;strong&gt;browser&lt;/strong&gt;.',
@@ -854,8 +1380,13 @@
               }
             }
           });
-        ">Alternate Text and Title</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Alternate Text and Title
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           PNotify.notice({
             title: 'Clicky Desktop Notice',
             text: 'Click me.',
@@ -871,8 +1402,13 @@
             }
             alert('Hey! You clicked the desktop notification!');
           });
-        ">Clicky</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Clicky
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           PNotify.notice({
             title: 'Sticky Desktop Notice',
             text: 'I\'m a sticky notice. (Some browsers don\'t allow sticky Web Notifications.)',
@@ -889,8 +1425,13 @@
             }
             alert('Hey! You clicked the desktop notification!');
           });
-        ">Sticky Clicky</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Sticky Clicky
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           var notice = PNotify.notice({
             title: 'Dynamic Desktop Notice',
             text: 'I\'m a dynamic desktop notice.',
@@ -906,8 +1447,14 @@
               text: 'Now I\'m an info box!'
             });
           }, 1000);
-        ">Dynamic</button>
-        <button class="btn btn-outline-dark my-1 source" title="Disabling fallback makes the notice not appear at all if it can't appear as a desktop notice." onclick="
+        "
+          >
+            Dynamic
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            title="Disabling fallback makes the notice not appear at all if it can't appear as a desktop notice."
+            onclick="
           PNotify.notice({
             title: 'Desktop Notice',
             text: 'I won\'t fall back to a regular notice.',
@@ -918,43 +1465,78 @@
               }
             }
           });
-        ">No Fallback</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            No Fallback
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           PNotify.modules.Desktop.permission();
-        ">Explicitly Ask for Notice Permission</button>
-      </div>
-      <h5 class="card-header">Buttons Module <small>Sticker and a closer buttons.</small></h5>
-      <div class="card-body">
-        <div class="alert alert-info">Since the Buttons module provides buttons by default, many of the demos on this page include the buttons.</div>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Explicitly Ask for Notice Permission
+          </button>
+        </div>
+        <h5 class="card-header">
+          Buttons Module <small>Sticker and a closer buttons.</small>
+        </h5>
+        <div class="card-body">
+          <div class="alert alert-info">
+            Since the Buttons module provides buttons by default, many of the
+            demos on this page include the buttons.
+          </div>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           PNotify.notice({
             title: 'Sticky Notice',
             text: 'Check me out! I\'m a sticky notice. You\'ll have to close me yourself.',
             hide: false
           });
-        ">Sticky Notice</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Sticky Notice
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           PNotify.info({
             title: 'Sticky Info',
             text: 'Sticky info, you know, like a newspaper covered in honey.',
             hide: false
           });
-        ">Sticky Info</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Sticky Info
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           PNotify.success({
             title: 'Sticky Success',
             text: 'Sticky success... I\'m not even gonna make a joke.',
             hide: false
           });
-        ">Sticky Success</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Sticky Success
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           PNotify.error({
             title: 'Uh Oh!',
             text: 'Something really terrible happened. You really need to read this, so I won\'t close automatically.',
             hide: false
           });
-        ">Sticky Error</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Sticky Error
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           PNotify.notice({
             title: 'Custom Icon Button Notice',
             text: 'Check me out! My sticker and close buttons have custom icons!',
@@ -969,8 +1551,13 @@
               }
             }
           });
-        ">Custom Icons</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Custom Icons
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           PNotify.notice({
             title: 'No Sticky Button Notice',
             text: 'Check me out! I\'m a sticky notice with no unsticky button. You\'ll have to close me yourself.',
@@ -981,8 +1568,13 @@
               }
             }
           });
-        ">No Sticky Button</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            No Sticky Button
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           PNotify.notice({
             title: 'Permanent Buttons Notice',
             text: 'My buttons are really lonely, so they\'re gonna hang out with us.',
@@ -993,8 +1585,13 @@
               }
             }
           });
-        ">Permanent Buttons</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Permanent Buttons
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           if (window.permanotice) {
             window.permanotice.open();
           } else {
@@ -1013,23 +1610,43 @@
               }
             });
           }
-        ">Permanotice</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Permanotice
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           if (window.permanotice) {
             window.permanotice.close();
           }
-        ">Close Permanotice</button>
-      </div>
-      <h5 class="card-header">NonBlock Module (Deprecated, Replaced with <a href="https://github.com/sciactive/nonblockjs" target="_blank">NonBlock.js</a>) <small>Click through to things underneath the notice.</small></h5>
-      <div class="card-body">
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Close Permanotice
+          </button>
+        </div>
+        <h5 class="card-header">
+          NonBlock Module (Deprecated, Replaced with
+          <a href="https://github.com/sciactive/nonblockjs" target="_blank"
+            >NonBlock.js</a
+          >) <small>Click through to things underneath the notice.</small>
+        </h5>
+        <div class="card-body">
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           PNotify.notice({
             title: 'Non-Blocking Notice with Class',
             text: 'You can still use the NonBlock module, but all it does is add the &quot;nonblock&quot; class for you. You can do that yourself with &quot;addClass: \'nonblock\'&quot;.',
             addClass: 'nonblock'
           });
-        ">Easier Now That NonBlock.js is a Thing</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Easier Now That NonBlock.js is a Thing
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           PNotify.notice({
             title: 'Non-Blocking Notice',
             text: 'I\'m a special kind of notice called &quot;non-blocking&quot;. When you hover over me I\'ll fade to show the elements underneath. Feel free to click any of them just like I wasn\'t even here.\n\nNote: HTML links don\'t trigger in some browsers, due to security settings.',
@@ -1039,12 +1656,22 @@
               }
             }
           });
-        ">Non-Blocking (The Old Way)</button>
-      </div>
-      <h5 class="card-header">Mobile Module <small>Notices on mobile phones and tablets.</small></h5>
-      <div class="card-body">
-        <div class="alert alert-info">Since the Mobile module provides support by default, most of the demos on this page work on mobile.</div>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Non-Blocking (The Old Way)
+          </button>
+        </div>
+        <h5 class="card-header">
+          Mobile Module <small>Notices on mobile phones and tablets.</small>
+        </h5>
+        <div class="card-body">
+          <div class="alert alert-info">
+            Since the Mobile module provides support by default, most of the
+            demos on this page work on mobile.
+          </div>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           PNotify.notice({
             title: 'No Mobile Support Notice',
             text: 'If you\'re on a mobile device, I won\'t respond to your swipes.',
@@ -1054,8 +1681,13 @@
               }
             }
           });
-        ">No Mobile Support</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            No Mobile Support
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           PNotify.notice({
             title: 'No Mobile Styling Notice',
             text: 'If you\'re on a mobile device, I\'ll look terrible.',
@@ -1065,12 +1697,25 @@
               }
             }
           });
-        ">No Mobile Styling</button>
-      </div>
-      <h5 class="card-header">Animate Module <small>Fluid CSS animations using <a href="https://daneden.github.io/animate.css/" target="_blank">Animate.css</a>.</small></h5>
-      <div class="card-body">
-        Some good looking examples:<br />
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            No Mobile Styling
+          </button>
+        </div>
+        <h5 class="card-header">
+          Animate Module
+          <small
+            >Fluid CSS animations using
+            <a href="https://daneden.github.io/animate.css/" target="_blank"
+              >Animate.css</a
+            >.</small
+          >
+        </h5>
+        <div class="card-body">
+          Some good looking examples:<br />
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           PNotify.notice({
             title: 'Animate.css Effect',
             text: 'I use effects from Animate.css. Such smooth CSS3 transitions make me feel like butter.',
@@ -1082,8 +1727,13 @@
               }
             }
           });
-        ">Sidenote</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Sidenote
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           PNotify.notice({
             title: 'Animate.css Effect',
             text: 'I use effects from Animate.css. Such smooth CSS3 transitions make me feel like butter.',
@@ -1095,8 +1745,13 @@
               }
             }
           });
-        ">Zoom, Zoom</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Zoom, Zoom
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           PNotify.notice({
             title: 'Animate.css Effect',
             text: 'I use effects from Animate.css. Such smooth CSS3 transitions make me feel like butter.',
@@ -1108,8 +1763,13 @@
               }
             }
           });
-        ">Shuffling Cards</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Shuffling Cards
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           PNotify.notice({
             title: 'Animate.css Effect',
             text: 'I use effects from Animate.css. Such smooth CSS3 transitions make me feel like butter.',
@@ -1121,8 +1781,13 @@
               }
             }
           });
-        ">Zippy</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Zippy
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           PNotify.notice({
             title: 'Animate.css Effect',
             text: 'I use effects from Animate.css. Such smooth CSS3 transitions make me feel like butter.',
@@ -1134,85 +1799,98 @@
               }
             }
           });
-        ">Off the Handle</button>
-        <div class="my-3">
-          Or build your own:
-          <div class="my-1">
-            Effect in
-            <select id="animate_in" class="form-control" style="display: inline; width: auto;">
-              <option value="bounceIn">bounceIn</option>
-              <option value="bounceInDown">bounceInDown</option>
-              <option value="bounceInLeft">bounceInLeft</option>
-              <option value="bounceInRight">bounceInRight</option>
-              <option value="bounceInUp">bounceInUp</option>
-              <option value="fadeIn">fadeIn</option>
-              <option value="fadeInDown">fadeInDown</option>
-              <option value="fadeInDownBig">fadeInDownBig</option>
-              <option value="fadeInLeft">fadeInLeft</option>
-              <option value="fadeInLeftBig">fadeInLeftBig</option>
-              <option value="fadeInRight">fadeInRight</option>
-              <option value="fadeInRightBig">fadeInRightBig</option>
-              <option value="fadeInUp">fadeInUp</option>
-              <option value="fadeInUpBig">fadeInUpBig</option>
-              <option value="flipInX">flipInX</option>
-              <option value="flipInY">flipInY</option>
-              <option value="lightSpeedIn">lightSpeedIn</option>
-              <option value="rotateIn">rotateIn</option>
-              <option value="rotateInDownLeft">rotateInDownLeft</option>
-              <option value="rotateInDownRight">rotateInDownRight</option>
-              <option value="rotateInUpLeft">rotateInUpLeft</option>
-              <option value="rotateInUpRight">rotateInUpRight</option>
-              <option value="rollIn">rollIn</option>
-              <option value="zoomIn">zoomIn</option>
-              <option value="zoomInDown">zoomInDown</option>
-              <option value="zoomInLeft">zoomInLeft</option>
-              <option value="zoomInRight">zoomInRight</option>
-              <option value="zoomInUp">zoomInUp</option>
-              <option value="slideInDown">slideInDown</option>
-              <option value="slideInLeft">slideInLeft</option>
-              <option value="slideInRight">slideInRight</option>
-              <option value="slideInUp">slideInUp</option>
-            </select>
-          </div>
-          <div class="my-1">
-            Effect out
-            <select id="animate_out" class="form-control" style="display: inline; width: auto;">
-              <option value="bounceOut">bounceOut</option>
-              <option value="bounceOutDown">bounceOutDown</option>
-              <option value="bounceOutLeft">bounceOutLeft</option>
-              <option value="bounceOutRight">bounceOutRight</option>
-              <option value="bounceOutUp">bounceOutUp</option>
-              <option value="fadeOut">fadeOut</option>
-              <option value="fadeOutDown">fadeOutDown</option>
-              <option value="fadeOutDownBig">fadeOutDownBig</option>
-              <option value="fadeOutLeft">fadeOutLeft</option>
-              <option value="fadeOutLeftBig">fadeOutLeftBig</option>
-              <option value="fadeOutRight">fadeOutRight</option>
-              <option value="fadeOutRightBig">fadeOutRightBig</option>
-              <option value="fadeOutUp">fadeOutUp</option>
-              <option value="fadeOutUpBig">fadeOutUpBig</option>
-              <option value="flipOutX">flipOutX</option>
-              <option value="flipOutY">flipOutY</option>
-              <option value="lightSpeedOut">lightSpeedOut</option>
-              <option value="rotateOut">rotateOut</option>
-              <option value="rotateOutDownLeft">rotateOutDownLeft</option>
-              <option value="rotateOutDownRight">rotateOutDownRight</option>
-              <option value="rotateOutUpLeft">rotateOutUpLeft</option>
-              <option value="rotateOutUpRight">rotateOutUpRight</option>
-              <option value="hinge">hinge</option>
-              <option value="rollOut">rollOut</option>
-              <option value="zoomOut">zoomOut</option>
-              <option value="zoomOutDown">zoomOutDown</option>
-              <option value="zoomOutLeft">zoomOutLeft</option>
-              <option value="zoomOutRight">zoomOutRight</option>
-              <option value="zoomOutUp">zoomOutUp</option>
-              <option value="slideOutDown">slideOutDown</option>
-              <option value="slideOutLeft">slideOutLeft</option>
-              <option value="slideOutRight">slideOutRight</option>
-              <option value="slideOutUp">slideOutUp</option>
-            </select>
-          </div>
-          <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Off the Handle
+          </button>
+          <div class="my-3">
+            Or build your own:
+            <div class="my-1">
+              Effect in
+              <select
+                id="animate_in"
+                class="form-control"
+                style="display: inline; width: auto;"
+              >
+                <option value="bounceIn">bounceIn</option>
+                <option value="bounceInDown">bounceInDown</option>
+                <option value="bounceInLeft">bounceInLeft</option>
+                <option value="bounceInRight">bounceInRight</option>
+                <option value="bounceInUp">bounceInUp</option>
+                <option value="fadeIn">fadeIn</option>
+                <option value="fadeInDown">fadeInDown</option>
+                <option value="fadeInDownBig">fadeInDownBig</option>
+                <option value="fadeInLeft">fadeInLeft</option>
+                <option value="fadeInLeftBig">fadeInLeftBig</option>
+                <option value="fadeInRight">fadeInRight</option>
+                <option value="fadeInRightBig">fadeInRightBig</option>
+                <option value="fadeInUp">fadeInUp</option>
+                <option value="fadeInUpBig">fadeInUpBig</option>
+                <option value="flipInX">flipInX</option>
+                <option value="flipInY">flipInY</option>
+                <option value="lightSpeedIn">lightSpeedIn</option>
+                <option value="rotateIn">rotateIn</option>
+                <option value="rotateInDownLeft">rotateInDownLeft</option>
+                <option value="rotateInDownRight">rotateInDownRight</option>
+                <option value="rotateInUpLeft">rotateInUpLeft</option>
+                <option value="rotateInUpRight">rotateInUpRight</option>
+                <option value="rollIn">rollIn</option>
+                <option value="zoomIn">zoomIn</option>
+                <option value="zoomInDown">zoomInDown</option>
+                <option value="zoomInLeft">zoomInLeft</option>
+                <option value="zoomInRight">zoomInRight</option>
+                <option value="zoomInUp">zoomInUp</option>
+                <option value="slideInDown">slideInDown</option>
+                <option value="slideInLeft">slideInLeft</option>
+                <option value="slideInRight">slideInRight</option>
+                <option value="slideInUp">slideInUp</option>
+              </select>
+            </div>
+            <div class="my-1">
+              Effect out
+              <select
+                id="animate_out"
+                class="form-control"
+                style="display: inline; width: auto;"
+              >
+                <option value="bounceOut">bounceOut</option>
+                <option value="bounceOutDown">bounceOutDown</option>
+                <option value="bounceOutLeft">bounceOutLeft</option>
+                <option value="bounceOutRight">bounceOutRight</option>
+                <option value="bounceOutUp">bounceOutUp</option>
+                <option value="fadeOut">fadeOut</option>
+                <option value="fadeOutDown">fadeOutDown</option>
+                <option value="fadeOutDownBig">fadeOutDownBig</option>
+                <option value="fadeOutLeft">fadeOutLeft</option>
+                <option value="fadeOutLeftBig">fadeOutLeftBig</option>
+                <option value="fadeOutRight">fadeOutRight</option>
+                <option value="fadeOutRightBig">fadeOutRightBig</option>
+                <option value="fadeOutUp">fadeOutUp</option>
+                <option value="fadeOutUpBig">fadeOutUpBig</option>
+                <option value="flipOutX">flipOutX</option>
+                <option value="flipOutY">flipOutY</option>
+                <option value="lightSpeedOut">lightSpeedOut</option>
+                <option value="rotateOut">rotateOut</option>
+                <option value="rotateOutDownLeft">rotateOutDownLeft</option>
+                <option value="rotateOutDownRight">rotateOutDownRight</option>
+                <option value="rotateOutUpLeft">rotateOutUpLeft</option>
+                <option value="rotateOutUpRight">rotateOutUpRight</option>
+                <option value="hinge">hinge</option>
+                <option value="rollOut">rollOut</option>
+                <option value="zoomOut">zoomOut</option>
+                <option value="zoomOutDown">zoomOutDown</option>
+                <option value="zoomOutLeft">zoomOutLeft</option>
+                <option value="zoomOutRight">zoomOutRight</option>
+                <option value="zoomOutUp">zoomOutUp</option>
+                <option value="slideOutDown">slideOutDown</option>
+                <option value="slideOutLeft">slideOutLeft</option>
+                <option value="slideOutRight">slideOutRight</option>
+                <option value="slideOutUp">slideOutUp</option>
+              </select>
+            </div>
+            <button
+              class="btn btn-outline-dark my-1 source"
+              onclick="
             var animateIn = $('#animate_in').val();
             var animateOut = $('#animate_out').val();
             PNotify.notice({
@@ -1226,10 +1904,15 @@
                 }
               }
             });
-          ">Notify!</button>
-        </div>
-        Attention seekers:<br />
-        <button class="btn btn-outline-dark my-1 source" onclick="
+          "
+            >
+              Notify!
+            </button>
+          </div>
+          Attention seekers:<br />
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           var notice = PNotify.notice({
             title: 'Attention Seeker',
             text: 'Click the button to see how you can highlight the notice with the Animate module:',
@@ -1245,8 +1928,13 @@
               }
             }
           });
-        ">Bounce</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Bounce
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           var notice = PNotify.notice({
             title: 'Attention Seeker',
             text: 'Click the button to see how you can highlight the notice with the Animate module:',
@@ -1262,8 +1950,13 @@
               }
             }
           });
-        ">Flash</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Flash
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           var notice = PNotify.notice({
             title: 'Attention Seeker',
             text: 'Click the button to see how you can highlight the notice with the Animate module:',
@@ -1279,8 +1972,13 @@
               }
             }
           });
-        ">Pulse</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Pulse
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           var notice = PNotify.notice({
             title: 'Attention Seeker',
             text: 'Click the button to see how you can highlight the notice with the Animate module:',
@@ -1296,8 +1994,13 @@
               }
             }
           });
-        ">Rubber Band</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Rubber Band
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           var notice = PNotify.notice({
             title: 'Attention Seeker',
             text: 'Click the button to see how you can highlight the notice with the Animate module:',
@@ -1313,8 +2016,13 @@
               }
             }
           });
-        ">Shake</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Shake
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           var notice = PNotify.notice({
             title: 'Attention Seeker',
             text: 'Click the button to see how you can highlight the notice with the Animate module:',
@@ -1330,8 +2038,13 @@
               }
             }
           });
-        ">Swing</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Swing
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           var notice = PNotify.notice({
             title: 'Attention Seeker',
             text: 'Click the button to see how you can highlight the notice with the Animate module:',
@@ -1347,8 +2060,13 @@
               }
             }
           });
-        ">Tada</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Tada
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           var notice = PNotify.notice({
             title: 'Attention Seeker',
             text: 'Click the button to see how you can highlight the notice with the Animate module:',
@@ -1364,8 +2082,13 @@
               }
             }
           });
-        ">Wobble</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Wobble
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           var notice = PNotify.notice({
             title: 'Attention Seeker',
             text: 'Click the button to see how you can highlight the notice with the Animate module:',
@@ -1381,11 +2104,18 @@
               }
             }
           });
-        ">Jello</button>
-      </div>
-      <h5 class="card-header">Confirm Module <small>Confirmation dialogs and prompts.</small></h5>
-      <div class="card-body">
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Jello
+          </button>
+        </div>
+        <h5 class="card-header">
+          Confirm Module <small>Confirmation dialogs and prompts.</small>
+        </h5>
+        <div class="card-body">
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           var notice = PNotify.notice({
             title: 'Confirmation Needed',
             text: 'Are you sure?',
@@ -1410,8 +2140,13 @@
           notice.on('pnotify.cancel', function () {
             alert('Oh ok. Chicken, I see.');
           });
-        ">Confirm Dialog</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Confirm Dialog
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           var notice = PNotify.notice({
             title: 'Confirmation Needed',
             text: 'Are you sure?',
@@ -1437,8 +2172,13 @@
           notice.on('pnotify.cancel', function () {
             alert('Oh ok. Chicken, I see.');
           });
-        ">Modal Confirm Dialog</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Modal Confirm Dialog
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           PNotify.notice({
             title: 'Choose a Side',
             text: 'You have three options to choose from.',
@@ -1511,8 +2251,13 @@
               }
             }
           });
-        ">Custom Buttons</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Custom Buttons
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           var notice = PNotify.notice({
             title: 'Input Needed',
             text: 'What side would you like?',
@@ -1567,8 +2312,13 @@
               }
             });
           });
-        ">Prompt Dialog</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Prompt Dialog
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           var notice = PNotify.notice({
             title: 'Input Needed',
             text: 'Write me a poem, please.',
@@ -1625,9 +2375,14 @@
               }
             });
           });
-        ">Multi Line Prompt Dialog</button>
-        <hr />
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Multi Line Prompt Dialog
+          </button>
+          <hr />
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           PNotify.notice({
             title: 'You Will Receive a Side',
             text: 'You have no choice.',
@@ -1651,8 +2406,13 @@
               }
             }
           });
-        ">Alert Style Notice</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Alert Style Notice
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           PNotify.info({
             title: 'You Will Receive a Side',
             text: 'You have no choice.',
@@ -1676,8 +2436,13 @@
               }
             }
           });
-        ">Alert Style Info</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Alert Style Info
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           PNotify.success({
             title: 'You Will Receive a Side',
             text: 'You have no choice.',
@@ -1701,8 +2466,13 @@
               }
             }
           });
-        ">Alert Style Success</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Alert Style Success
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           PNotify.error({
             title: 'You Will Receive a Side',
             text: 'You have no choice.',
@@ -1726,11 +2496,19 @@
               }
             }
           });
-        ">Alert Style Error</button>
-      </div>
-      <h5 class="card-header">Callbacks Module <small>Manipulate the notice during its lifecycle.</small></h5>
-      <div class="card-body">
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Alert Style Error
+          </button>
+        </div>
+        <h5 class="card-header">
+          Callbacks Module
+          <small>Manipulate the notice during its lifecycle.</small>
+        </h5>
+        <div class="card-body">
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           var dontAlert = function () {};
           PNotify.notice({
             title: 'I\'m Here',
@@ -1769,8 +2547,13 @@
               }
             }
           });
-        ">Notice with Callbacks</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Notice with Callbacks
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           PNotify.notice({
             title: 'Notice',
             text: 'Right now I\'m a notice.',
@@ -1820,88 +2603,123 @@
               }
             }
           });
-        ">Notice to Error to Success to Info</button>
-        <script type="text/javascript">
-          /* eslint-env browser, jquery */
-          /* globals PNotify */
-          window.fakeLoad = function fakeLoad () {
-            var curValue = 1;
-            var progress;
+        "
+          >
+            Notice to Error to Success to Info
+          </button>
+          <script type="text/javascript">
+            /* eslint-env browser, jquery */
+            /* globals PNotify */
+            window.fakeLoad = function fakeLoad() {
+              var curValue = 1;
+              var progress;
 
-            // Make a loader.
-            var loader = PNotify.notice({
-              title: 'Creating series of tubes',
-              text: '<div class="progress">\n' +
-                    '  <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></' + 'div>\n' +
-                    '</' + 'div>',
-              textTrusted: true,
-              icon: 'fas fa-cog fa-spin',
-              hide: false,
-              modules: {
-                Buttons: {
-                  closer: false,
-                  sticker: false
-                },
-                History: {
-                  history: false
-                },
-                Callbacks: {
-                  beforeOpen: function (notice) {
-                    progress = $(notice.refs.elem).find('div.progress-bar');
-                    progress.width(curValue + '%').attr('aria-valuenow', curValue);
-                    // Pretend to do something.
-                    var plus = 1;
-                    var timer = setInterval(function () {
-                      if (curValue === 70) {
-                        plus = 0.25;
-                        loader.update({
-                          title: 'Aligning discrete worms',
-                          icon: 'fas fa-circle-notch fa-spin'
-                        });
-                      }
-                      if (curValue === 80) {
-                        loader.update({
-                          title: 'Connecting end points',
-                          icon: 'fas fa-sync fa-spin'
-                        });
-                      }
-                      if (curValue === 90) {
-                        loader.update({
-                          title: 'Dividing and conquering',
-                          icon: 'fas fa-spinner fa-pulse'
-                        });
-                      }
-                      if (curValue >= 100) {
-                        // Clean up the interval.
-                        window.clearInterval(timer);
-                        loader.close();
-                        return;
-                      }
-                      curValue += plus;
-                      progress.width(curValue + '%').attr('aria-valuenow', curValue);
-                    }, 65);
+              // Make a loader.
+              var loader = PNotify.notice({
+                title: 'Creating series of tubes',
+                text:
+                  '<div class="progress">\n' +
+                  '  <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></' +
+                  'div>\n' +
+                  '</' +
+                  'div>',
+                textTrusted: true,
+                icon: 'fas fa-cog fa-spin',
+                hide: false,
+                modules: {
+                  Buttons: {
+                    closer: false,
+                    sticker: false
+                  },
+                  History: {
+                    history: false
+                  },
+                  Callbacks: {
+                    beforeOpen: function(notice) {
+                      progress = $(notice.refs.elem).find('div.progress-bar');
+                      progress
+                        .width(curValue + '%')
+                        .attr('aria-valuenow', curValue);
+                      // Pretend to do something.
+                      var plus = 1;
+                      var timer = setInterval(function() {
+                        if (curValue === 70) {
+                          plus = 0.25;
+                          loader.update({
+                            title: 'Aligning discrete worms',
+                            icon: 'fas fa-circle-notch fa-spin'
+                          });
+                        }
+                        if (curValue === 80) {
+                          loader.update({
+                            title: 'Connecting end points',
+                            icon: 'fas fa-sync fa-spin'
+                          });
+                        }
+                        if (curValue === 90) {
+                          loader.update({
+                            title: 'Dividing and conquering',
+                            icon: 'fas fa-spinner fa-pulse'
+                          });
+                        }
+                        if (curValue >= 100) {
+                          // Clean up the interval.
+                          window.clearInterval(timer);
+                          loader.close();
+                          return;
+                        }
+                        curValue += plus;
+                        progress
+                          .width(curValue + '%')
+                          .attr('aria-valuenow', curValue);
+                      }, 65);
+                    }
                   }
                 }
-              }
-            });
-          };
-        </script>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+              });
+            };
+          </script>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           fakeLoad();
-        ">Progress Loader</button>
-      </div>
-      <h5 class="card-header">History Module <small>Redisplay old notices and limit number of notices.</small></h5>
-      <div class="card-body">
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Progress Loader
+          </button>
+        </div>
+        <h5 class="card-header">
+          History Module
+          <small>Redisplay old notices and limit number of notices.</small>
+        </h5>
+        <div class="card-body">
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           PNotify.modules.History.showLast();
-        ">Show Last Notice (Default Stack)</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Show Last Notice (Default Stack)
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           PNotify.modules.History.showAll();
-        ">Show All Notices (Default Stack)</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Show All Notices (Default Stack)
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           PNotify.modules.History.showAll(true);
-        ">Show All Notices (All Stacks)</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Show All Notices (All Stacks)
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           if (typeof window.historyMaxStack === 'undefined') {
             window.historyMaxStack = {'dir1': 'up', 'dir2': 'right', 'firstpos1': 25, 'firstpos2': 25};
           }
@@ -1915,8 +2733,13 @@
               }
             }
           });
-        ">Limit Stack to 2</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Limit Stack to 2
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           PNotify.notice({
             title: 'No History Notice',
             text: 'I\'m not part of the notice history, so if you redisplay the last message, it won\'t be me.',
@@ -1926,17 +2749,35 @@
               }
             }
           });
-        ">No History Notice</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            No History Notice
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           PNotify.modules.History.defaults.maxInStack = 5;
-        ">Set Max in Stack Default to 5</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Set Max in Stack Default to 5
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           PNotify.modules.History.defaults.maxInStack = Infinity;
-        ">Set Max in Stack Default back to Infinity</button>
-      </div>
-      <h5 class="card-header">Reference Module <small>A reference for when you are coding your own module.</small></h5>
-      <div class="card-body">
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Set Max in Stack Default back to Infinity
+          </button>
+        </div>
+        <h5 class="card-header">
+          Reference Module
+          <small>A reference for when you are coding your own module.</small>
+        </h5>
+        <div class="card-body">
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           PNotify.info({
             title: 'Reference Module',
             text: 'The reference module is a basic module that demonstrates how to write a PNotify module by implementing many of its features. You can find it in PNotifyReference.html.',
@@ -1946,24 +2787,37 @@
               }
             }
           });
-        ">Reference Module Notice</button>
-      </div>
-      <h5 class="card-header">Compat Module <small>A backward compatibility module to run PNotify 3 code with PNotify 4.</small></h5>
-      <div class="card-body">
-        Check out the Compat demos in <a href="demo/compat-iife.html" target="_blank">IIFE</a> and <a href="demo/compat-umd.html" target="_blank">UMD</a>.
+        "
+          >
+            Reference Module Notice
+          </button>
+        </div>
+        <h5 class="card-header">
+          Compat Module
+          <small
+            >A backward compatibility module to run PNotify 3 code with PNotify
+            4.</small
+          >
+        </h5>
+        <div class="card-body">
+          Check out the Compat demos in
+          <a href="demo/compat-iife.html" target="_blank">IIFE</a> and
+          <a href="demo/compat-umd.html" target="_blank">UMD</a>.
+        </div>
       </div>
     </div>
-  </div>
 
-  <div id="stacks" class="container page-section">
-    <div class="my-3">
-      <h2>Stacks <small>Position, order, and group notices.</small></h2>
-      <hr />
-    </div>
-    <div class="card">
-      <h5 class="card-header">Examples of Custom Stacks</h5>
-      <div class="card-body">
-        <button class="btn btn-outline-dark my-1 source" onclick="
+    <div id="stacks" class="container page-section">
+      <div class="my-3">
+        <h2>Stacks <small>Position, order, and group notices.</small></h2>
+        <hr />
+      </div>
+      <div class="card">
+        <h5 class="card-header">Examples of Custom Stacks</h5>
+        <div class="card-body">
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           PNotify.info({
             title: 'PNotify Stacks',
             text: 'Stacks are used to position notices and determine where new notices will go when they\'re created. Each notice that\'s placed into a stack will be positioned related to the other notices in that stack.',
@@ -1976,528 +2830,815 @@
               }
             }
           });
-        ">What are stacks?</button>
-        <hr />
-        <script type="text/javascript">
-          /* eslint-env browser, jquery */
-          /* globals PNotify */
-          window.showStackTopLeft = function showStackTopLeft (type) {
-            if (typeof window.stackTopLeft === 'undefined') {
-              window.stackTopLeft = { 'dir1': 'down', 'dir2': 'right', 'firstpos1': 25, 'firstpos2': 25, 'push': 'top' };
-            }
-            var opts = {
-              title: 'Over Here',
-              text: "Check me out. I'm in a different stack.",
-              stack: window.stackTopLeft
+        "
+          >
+            What are stacks?
+          </button>
+          <hr />
+          <script type="text/javascript">
+            /* eslint-env browser, jquery */
+            /* globals PNotify */
+            window.showStackTopLeft = function showStackTopLeft(type) {
+              if (typeof window.stackTopLeft === 'undefined') {
+                window.stackTopLeft = {
+                  dir1: 'down',
+                  dir2: 'right',
+                  firstpos1: 25,
+                  firstpos2: 25,
+                  push: 'top'
+                };
+              }
+              var opts = {
+                title: 'Over Here',
+                text: "Check me out. I'm in a different stack.",
+                stack: window.stackTopLeft
+              };
+              switch (type) {
+                case 'error':
+                  opts.title = 'Oh No';
+                  opts.text = 'Watch out for that water tower!';
+                  opts.type = 'error';
+                  break;
+                case 'info':
+                  opts.title = 'Breaking News';
+                  opts.text = 'Have you met Ted?';
+                  opts.type = 'info';
+                  break;
+                case 'success':
+                  opts.title = 'Good News Everyone';
+                  opts.text =
+                    "I've invented a device that bites shiny metal asses.";
+                  opts.type = 'success';
+                  break;
+              }
+              PNotify.alert(opts);
             };
-            switch (type) {
-              case 'error':
-                opts.title = 'Oh No';
-                opts.text = 'Watch out for that water tower!';
-                opts.type = 'error';
-                break;
-              case 'info':
-                opts.title = 'Breaking News';
-                opts.text = 'Have you met Ted?';
-                opts.type = 'info';
-                break;
-              case 'success':
-                opts.title = 'Good News Everyone';
-                opts.text = "I've invented a device that bites shiny metal asses.";
-                opts.type = 'success';
-                break;
-            }
-            PNotify.alert(opts);
-          };
-        </script>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+          </script>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           showStackTopLeft('notice');
-        ">Notice</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Notice
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           showStackTopLeft('info');
-        ">Info</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Info
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           showStackTopLeft('success');
-        ">Success</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Success
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           showStackTopLeft('error');
-        ">Error</button>
-        Top Left. Moves down, then right. Pushes to stack top.
-        <hr />
-        <script type="text/javascript">
-          /* eslint-env browser, jquery */
-          /* globals PNotify */
-          window.showStackBottomLeft = function showStackBottomLeft (type) {
-            if (typeof window.stackBottomLeft === 'undefined') {
-              window.stackBottomLeft = { 'dir1': 'right', 'dir2': 'up', 'firstpos1': 25, 'firstpos2': 25, 'push': 'top' };
-            }
-            var opts = {
-              title: 'Over Here',
-              text: "Check me out. I'm in a different stack.",
-              stack: window.stackBottomLeft
+        "
+          >
+            Error
+          </button>
+          Top Left. Moves down, then right. Pushes to stack top.
+          <hr />
+          <script type="text/javascript">
+            /* eslint-env browser, jquery */
+            /* globals PNotify */
+            window.showStackBottomLeft = function showStackBottomLeft(type) {
+              if (typeof window.stackBottomLeft === 'undefined') {
+                window.stackBottomLeft = {
+                  dir1: 'right',
+                  dir2: 'up',
+                  firstpos1: 25,
+                  firstpos2: 25,
+                  push: 'top'
+                };
+              }
+              var opts = {
+                title: 'Over Here',
+                text: "Check me out. I'm in a different stack.",
+                stack: window.stackBottomLeft
+              };
+              switch (type) {
+                case 'error':
+                  opts.title = 'Oh No';
+                  opts.text = 'Watch out for that water tower!';
+                  opts.type = 'error';
+                  break;
+                case 'info':
+                  opts.title = 'Breaking News';
+                  opts.text = 'Have you met Ted?';
+                  opts.type = 'info';
+                  break;
+                case 'success':
+                  opts.title = 'Good News Everyone';
+                  opts.text =
+                    "I've invented a device that bites shiny metal asses.";
+                  opts.type = 'success';
+                  break;
+              }
+              PNotify.alert(opts);
             };
-            switch (type) {
-              case 'error':
-                opts.title = 'Oh No';
-                opts.text = 'Watch out for that water tower!';
-                opts.type = 'error';
-                break;
-              case 'info':
-                opts.title = 'Breaking News';
-                opts.text = 'Have you met Ted?';
-                opts.type = 'info';
-                break;
-              case 'success':
-                opts.title = 'Good News Everyone';
-                opts.text = "I've invented a device that bites shiny metal asses.";
-                opts.type = 'success';
-                break;
-            }
-            PNotify.alert(opts);
-          };
-        </script>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+          </script>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           showStackBottomLeft('notice');
-        ">Notice</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Notice
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           showStackBottomLeft('info');
-        ">Info</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Info
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           showStackBottomLeft('success');
-        ">Success</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Success
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           showStackBottomLeft('error');
-        ">Error</button>
-        Bottom Left. Moves right, then up. Pushes to stack top.
-        <hr />
-        <script type="text/javascript">
-          /* eslint-env browser, jquery */
-          /* globals PNotify */
-          window.showStackBottomRight = function showStackBottomRight (type) {
-            if (typeof window.stackBottomRight === 'undefined') {
-              window.stackBottomRight = { 'dir1': 'up', 'dir2': 'left', 'firstpos1': 25, 'firstpos2': 25 };
-            }
-            var opts = {
-              title: 'Over Here',
-              text: "Check me out. I'm in a different stack.",
-              stack: window.stackBottomRight
+        "
+          >
+            Error
+          </button>
+          Bottom Left. Moves right, then up. Pushes to stack top.
+          <hr />
+          <script type="text/javascript">
+            /* eslint-env browser, jquery */
+            /* globals PNotify */
+            window.showStackBottomRight = function showStackBottomRight(type) {
+              if (typeof window.stackBottomRight === 'undefined') {
+                window.stackBottomRight = {
+                  dir1: 'up',
+                  dir2: 'left',
+                  firstpos1: 25,
+                  firstpos2: 25
+                };
+              }
+              var opts = {
+                title: 'Over Here',
+                text: "Check me out. I'm in a different stack.",
+                stack: window.stackBottomRight
+              };
+              switch (type) {
+                case 'error':
+                  opts.title = 'Oh No';
+                  opts.text = 'Watch out for that water tower!';
+                  opts.type = 'error';
+                  break;
+                case 'info':
+                  opts.title = 'Breaking News';
+                  opts.text = 'Have you met Ted?';
+                  opts.type = 'info';
+                  break;
+                case 'success':
+                  opts.title = 'Good News Everyone';
+                  opts.text =
+                    "I've invented a device that bites shiny metal asses.";
+                  opts.type = 'success';
+                  break;
+              }
+              PNotify.alert(opts);
             };
-            switch (type) {
-              case 'error':
-                opts.title = 'Oh No';
-                opts.text = 'Watch out for that water tower!';
-                opts.type = 'error';
-                break;
-              case 'info':
-                opts.title = 'Breaking News';
-                opts.text = 'Have you met Ted?';
-                opts.type = 'info';
-                break;
-              case 'success':
-                opts.title = 'Good News Everyone';
-                opts.text = "I've invented a device that bites shiny metal asses.";
-                opts.type = 'success';
-                break;
-            }
-            PNotify.alert(opts);
-          };
-        </script>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+          </script>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           showStackBottomRight('notice');
-        ">Notice</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Notice
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           showStackBottomRight('info');
-        ">Info</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Info
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           showStackBottomRight('success');
-        ">Success</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Success
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           showStackBottomRight('error');
-        ">Error</button>
-        Bottom Right. Moves up, then left. Pushes to stack bottom.
-        <hr />
-        <script type="text/javascript">
-          /* eslint-env browser, jquery */
-          /* globals PNotify */
-          window.showStackTopCenter = function showStackTopCenter (type) {
-            if (typeof window.stackTopCenter === 'undefined') {
-              window.stackTopCenter = { 'dir1': 'down', 'firstpos1': 25 };
-            }
-            var opts = {
-              title: 'Over Here',
-              text: "Check me out. I'm in a different stack.",
-              stack: window.stackTopCenter
+        "
+          >
+            Error
+          </button>
+          Bottom Right. Moves up, then left. Pushes to stack bottom.
+          <hr />
+          <script type="text/javascript">
+            /* eslint-env browser, jquery */
+            /* globals PNotify */
+            window.showStackTopCenter = function showStackTopCenter(type) {
+              if (typeof window.stackTopCenter === 'undefined') {
+                window.stackTopCenter = { dir1: 'down', firstpos1: 25 };
+              }
+              var opts = {
+                title: 'Over Here',
+                text: "Check me out. I'm in a different stack.",
+                stack: window.stackTopCenter
+              };
+              switch (type) {
+                case 'error':
+                  opts.title = 'Oh No';
+                  opts.text = 'Watch out for that water tower!';
+                  opts.type = 'error';
+                  break;
+                case 'info':
+                  opts.title = 'Breaking News';
+                  opts.text = 'Have you met Ted?';
+                  opts.type = 'info';
+                  break;
+                case 'success':
+                  opts.title = 'Good News Everyone';
+                  opts.text =
+                    "I've invented a device that bites shiny metal asses.";
+                  opts.type = 'success';
+                  break;
+              }
+              PNotify.alert(opts);
             };
-            switch (type) {
-              case 'error':
-                opts.title = 'Oh No';
-                opts.text = 'Watch out for that water tower!';
-                opts.type = 'error';
-                break;
-              case 'info':
-                opts.title = 'Breaking News';
-                opts.text = 'Have you met Ted?';
-                opts.type = 'info';
-                break;
-              case 'success':
-                opts.title = 'Good News Everyone';
-                opts.text = "I've invented a device that bites shiny metal asses.";
-                opts.type = 'success';
-                break;
-            }
-            PNotify.alert(opts);
-          };
-        </script>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+          </script>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           showStackTopCenter('notice');
-        ">Notice</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Notice
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           showStackTopCenter('info');
-        ">Info</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Info
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           showStackTopCenter('success');
-        ">Success</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Success
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           showStackTopCenter('error');
-        ">Error</button>
-        Top Center. Moves down. Pushes to stack bottom.
-      </div>
-      <h5 class="card-header">Really Different Stacks</h5>
-      <div class="card-body">
-        <script type="text/javascript">
-          /* eslint-env browser, jquery */
-          /* globals PNotify */
-          window.showStackModal = function showStackModal (type) {
-            if (typeof window.stackModal === 'undefined') {
-              window.stackModal = { 'dir1': 'up', 'firstpos1': 25, 'push': 'top', 'modal': true, 'overlayClose': true };
-            }
-            var opts = {
-              title: 'Over Here',
-              text: "Check me out. I'm in a different stack.",
-              stack: window.stackModal
+        "
+          >
+            Error
+          </button>
+          Top Center. Moves down. Pushes to stack bottom.
+        </div>
+        <h5 class="card-header">Really Different Stacks</h5>
+        <div class="card-body">
+          <script type="text/javascript">
+            /* eslint-env browser, jquery */
+            /* globals PNotify */
+            window.showStackModal = function showStackModal(type) {
+              if (typeof window.stackModal === 'undefined') {
+                window.stackModal = {
+                  dir1: 'up',
+                  firstpos1: 25,
+                  push: 'top',
+                  modal: true,
+                  overlayClose: true
+                };
+              }
+              var opts = {
+                title: 'Over Here',
+                text: "Check me out. I'm in a different stack.",
+                stack: window.stackModal
+              };
+              switch (type) {
+                case 'error':
+                  opts.title = 'Oh No';
+                  opts.text = 'Watch out for that water tower!';
+                  opts.type = 'error';
+                  break;
+                case 'info':
+                  opts.title = 'Breaking News';
+                  opts.text = 'Have you met Ted?';
+                  opts.type = 'info';
+                  break;
+                case 'success':
+                  opts.title = 'Good News Everyone';
+                  opts.text =
+                    "I've invented a device that bites shiny metal asses.";
+                  opts.type = 'success';
+                  break;
+              }
+              PNotify.alert(opts);
             };
-            switch (type) {
-              case 'error':
-                opts.title = 'Oh No';
-                opts.text = 'Watch out for that water tower!';
-                opts.type = 'error';
-                break;
-              case 'info':
-                opts.title = 'Breaking News';
-                opts.text = 'Have you met Ted?';
-                opts.type = 'info';
-                break;
-              case 'success':
-                opts.title = 'Good News Everyone';
-                opts.text = "I've invented a device that bites shiny metal asses.";
-                opts.type = 'success';
-                break;
-            }
-            PNotify.alert(opts);
-          };
-        </script>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+          </script>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           showStackModal('notice');
-        ">Notice</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Notice
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           showStackModal('info');
-        ">Info</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Info
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           showStackModal('success');
-        ">Success</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Success
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           showStackModal('error');
-        ">Error</button>
-        Modal stack, centered. Moves up. Pushes to stack top.
-        <hr />
-        <script type="text/javascript">
-          /* eslint-env browser, jquery */
-          /* globals PNotify */
-          window.showStackModalLeft = function showStackModalLeft (type) {
-            if (typeof window.stackModalLeft === 'undefined') {
-              window.stackModalLeft = { 'dir1': 'down', 'dir2': 'right', 'firstpos1': 25, 'firstpos2': 25, 'push': 'top', 'modal': true, 'overlayClose': true };
-            }
-            var opts = {
-              title: 'Over Here',
-              text: "Check me out. I'm in a different stack.",
-              stack: window.stackModalLeft
+        "
+          >
+            Error
+          </button>
+          Modal stack, centered. Moves up. Pushes to stack top.
+          <hr />
+          <script type="text/javascript">
+            /* eslint-env browser, jquery */
+            /* globals PNotify */
+            window.showStackModalLeft = function showStackModalLeft(type) {
+              if (typeof window.stackModalLeft === 'undefined') {
+                window.stackModalLeft = {
+                  dir1: 'down',
+                  dir2: 'right',
+                  firstpos1: 25,
+                  firstpos2: 25,
+                  push: 'top',
+                  modal: true,
+                  overlayClose: true
+                };
+              }
+              var opts = {
+                title: 'Over Here',
+                text: "Check me out. I'm in a different stack.",
+                stack: window.stackModalLeft
+              };
+              switch (type) {
+                case 'error':
+                  opts.title = 'Oh No';
+                  opts.text = 'Watch out for that water tower!';
+                  opts.type = 'error';
+                  break;
+                case 'info':
+                  opts.title = 'Breaking News';
+                  opts.text = 'Have you met Ted?';
+                  opts.type = 'info';
+                  break;
+                case 'success':
+                  opts.title = 'Good News Everyone';
+                  opts.text =
+                    "I've invented a device that bites shiny metal asses.";
+                  opts.type = 'success';
+                  break;
+              }
+              PNotify.alert(opts);
             };
-            switch (type) {
-              case 'error':
-                opts.title = 'Oh No';
-                opts.text = 'Watch out for that water tower!';
-                opts.type = 'error';
-                break;
-              case 'info':
-                opts.title = 'Breaking News';
-                opts.text = 'Have you met Ted?';
-                opts.type = 'info';
-                break;
-              case 'success':
-                opts.title = 'Good News Everyone';
-                opts.text = "I've invented a device that bites shiny metal asses.";
-                opts.type = 'success';
-                break;
-            }
-            PNotify.alert(opts);
-          };
-        </script>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+          </script>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           showStackModalLeft('notice');
-        ">Notice</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Notice
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           showStackModalLeft('info');
-        ">Info</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Info
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           showStackModalLeft('success');
-        ">Success</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Success
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           showStackModalLeft('error');
-        ">Error</button>
-        Modal stack. Moves down, then right. Pushes to stack top.
-        <hr />
-        <script type="text/javascript">
-          /* eslint-env browser, jquery */
-          /* globals PNotify */
-          window.showStackBarTop = function showStackBarTop (type) {
-            if (typeof window.stackBarTop === 'undefined') {
-              window.stackBarTop = { 'dir1': 'down', 'firstpos1': 0, 'spacing1': 0, 'push': 'top' };
-            }
-            var opts = {
-              title: 'Over Here',
-              text: "Check me out. I'm in a different stack.",
-              addClass: 'stack-bar-top',
-              cornerClass: 'ui-pnotify-sharp',
-              shadow: false,
-              width: '100%',
-              stack: window.stackBarTop
+        "
+          >
+            Error
+          </button>
+          Modal stack. Moves down, then right. Pushes to stack top.
+          <hr />
+          <script type="text/javascript">
+            /* eslint-env browser, jquery */
+            /* globals PNotify */
+            window.showStackBarTop = function showStackBarTop(type) {
+              if (typeof window.stackBarTop === 'undefined') {
+                window.stackBarTop = {
+                  dir1: 'down',
+                  firstpos1: 0,
+                  spacing1: 0,
+                  push: 'top'
+                };
+              }
+              var opts = {
+                title: 'Over Here',
+                text: "Check me out. I'm in a different stack.",
+                addClass: 'stack-bar-top',
+                cornerClass: 'ui-pnotify-sharp',
+                shadow: false,
+                width: '100%',
+                stack: window.stackBarTop
+              };
+              switch (type) {
+                case 'error':
+                  opts.title = 'Oh No';
+                  opts.text = 'Watch out for that water tower!';
+                  opts.type = 'error';
+                  break;
+                case 'info':
+                  opts.title = 'Breaking News';
+                  opts.text = 'Have you met Ted?';
+                  opts.type = 'info';
+                  break;
+                case 'success':
+                  opts.title = 'Good News Everyone';
+                  opts.text =
+                    "I've invented a device that bites shiny metal asses.";
+                  opts.type = 'success';
+                  break;
+              }
+              PNotify.alert(opts);
             };
-            switch (type) {
-              case 'error':
-                opts.title = 'Oh No';
-                opts.text = 'Watch out for that water tower!';
-                opts.type = 'error';
-                break;
-              case 'info':
-                opts.title = 'Breaking News';
-                opts.text = 'Have you met Ted?';
-                opts.type = 'info';
-                break;
-              case 'success':
-                opts.title = 'Good News Everyone';
-                opts.text = "I've invented a device that bites shiny metal asses.";
-                opts.type = 'success';
-                break;
-            }
-            PNotify.alert(opts);
-          };
-        </script>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+          </script>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           showStackBarTop('notice');
-        ">Notice</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Notice
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           showStackBarTop('info');
-        ">Info</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Info
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           showStackBarTop('success');
-        ">Success</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Success
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           showStackBarTop('error');
-        ">Error</button>
-        Top bar style. (Like Old Microsoft Notification Bars.) Moves down, then right. Pushes to stack top.<br />
-        <br />
-        You also need this CSS:
-        <pre><code class="css">[ui-pnotify].ui-pnotify.stack-bar-top {
+        "
+          >
+            Error
+          </button>
+          Top bar style. (Like Old Microsoft Notification Bars.) Moves down,
+          then right. Pushes to stack top.<br />
+          <br />
+          You also need this CSS:
+          <pre><code class="css">[ui-pnotify].ui-pnotify.stack-bar-top {
   width: 100%;
 }</code></pre>
-        <hr />
-        <script type="text/javascript">
-          /* eslint-env browser, jquery */
-          /* globals PNotify */
-          window.showStackBarBottom = function showStackBarBottom (type) {
-            if (typeof window.stackBarBottom === 'undefined') {
-              window.stackBarBottom = { 'dir1': 'up', 'firstpos1': 0, 'spacing1': 0 };
-            }
-            var opts = {
-              title: 'Over Here',
-              text: "Check me out. I'm in a different stack.",
-              addClass: 'stack-bar-bottom',
-              cornerClass: 'ui-pnotify-sharp',
-              shadow: false,
-              width: '100%',
-              stack: window.stackBarBottom
+          <hr />
+          <script type="text/javascript">
+            /* eslint-env browser, jquery */
+            /* globals PNotify */
+            window.showStackBarBottom = function showStackBarBottom(type) {
+              if (typeof window.stackBarBottom === 'undefined') {
+                window.stackBarBottom = {
+                  dir1: 'up',
+                  firstpos1: 0,
+                  spacing1: 0
+                };
+              }
+              var opts = {
+                title: 'Over Here',
+                text: "Check me out. I'm in a different stack.",
+                addClass: 'stack-bar-bottom',
+                cornerClass: 'ui-pnotify-sharp',
+                shadow: false,
+                width: '100%',
+                stack: window.stackBarBottom
+              };
+              switch (type) {
+                case 'error':
+                  opts.title = 'Oh No';
+                  opts.text = 'Watch out for that water tower!';
+                  opts.type = 'error';
+                  break;
+                case 'info':
+                  opts.title = 'Breaking News';
+                  opts.text = 'Have you met Ted?';
+                  opts.type = 'info';
+                  break;
+                case 'success':
+                  opts.title = 'Good News Everyone';
+                  opts.text =
+                    "I've invented a device that bites shiny metal asses.";
+                  opts.type = 'success';
+                  break;
+              }
+              PNotify.alert(opts);
             };
-            switch (type) {
-              case 'error':
-                opts.title = 'Oh No';
-                opts.text = 'Watch out for that water tower!';
-                opts.type = 'error';
-                break;
-              case 'info':
-                opts.title = 'Breaking News';
-                opts.text = 'Have you met Ted?';
-                opts.type = 'info';
-                break;
-              case 'success':
-                opts.title = 'Good News Everyone';
-                opts.text = "I've invented a device that bites shiny metal asses.";
-                opts.type = 'success';
-                break;
-            }
-            PNotify.alert(opts);
-          };
-        </script>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+          </script>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           showStackBarBottom('notice');
-        ">Notice</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Notice
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           showStackBarBottom('info');
-        ">Info</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Info
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           showStackBarBottom('success');
-        ">Success</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Success
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           showStackBarBottom('error');
-        ">Error</button>
-        Bottom bar style. (Like New Microsoft Notification Bars.) Moves up, then right. Pushes to stack bottom.<br />
-        <br />
-        You also need this CSS:
-        <pre><code class="css">[ui-pnotify].ui-pnotify.stack-bar-bottom {
+        "
+          >
+            Error
+          </button>
+          Bottom bar style. (Like New Microsoft Notification Bars.) Moves up,
+          then right. Pushes to stack bottom.<br />
+          <br />
+          You also need this CSS:
+          <pre><code class="css">[ui-pnotify].ui-pnotify.stack-bar-bottom {
   width: 70%;
 }</code></pre>
-        <hr />
-        <script type="text/javascript">
-          /* eslint-env browser, jquery */
-          /* globals PNotify */
-          $(function () {
-            window.makeTooltip = function makeTooltip () {
-              window.tooltip = PNotify.notice({
-                title: 'Tooltip',
-                text: "I'm not in a stack. I'm positioned like a tooltip with JavaScript.",
-                hide: false,
-                animateSpeed: 'fast',
-                icon: 'fas fa-comment',
-                // Setting stack to false causes PNotify to ignore this notice when positioning.
-                // It also causes the History module to ignore it.
-                stack: false,
-                autoDisplay: false,
-                destroy: false,
-                modules: {
-                  Buttons: {
-                    closer: false,
-                    sticker: false
+          <hr />
+          <script type="text/javascript">
+            /* eslint-env browser, jquery */
+            /* globals PNotify */
+            $(function() {
+              window.makeTooltip = function makeTooltip() {
+                window.tooltip = PNotify.notice({
+                  title: 'Tooltip',
+                  text:
+                    "I'm not in a stack. I'm positioned like a tooltip with JavaScript.",
+                  hide: false,
+                  animateSpeed: 'fast',
+                  icon: 'fas fa-comment',
+                  // Setting stack to false causes PNotify to ignore this notice when positioning.
+                  // It also causes the History module to ignore it.
+                  stack: false,
+                  autoDisplay: false,
+                  destroy: false,
+                  modules: {
+                    Buttons: {
+                      closer: false,
+                      sticker: false
+                    }
                   }
-                }
-              });
-              // Close the notice if the user mouses over it.
-              window.tooltip.on('mouseout', function () {
-                window.tooltip.close();
-              });
+                });
+                // Close the notice if the user mouses over it.
+                window.tooltip.on('mouseout', function() {
+                  window.tooltip.close();
+                });
+              };
+              // I put it in a function so I could show the source easily.
+              window.makeTooltip();
+            });
+          </script>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onmouseover="window.tooltip.open();"
+            onmousemove="window.tooltip.refs.elem.style.top = (event.clientY + 12) + 'px'; window.tooltip.refs.elem.style.left = (event.clientX + 12) + 'px';"
+            onmouseout="window.tooltip.close();"
+          >
+            Hover Over Me
+          </button>
+          Tooltip
+        </div>
+        <h5 class="card-header">Stack Contexts</h5>
+        <div class="card-body">
+          By default, a stack will place its notices underneath the body node.
+          You can also specify a context for your notices to be placed in.
+          <hr />
+          <script type="text/javascript">
+            /* eslint-env browser, jquery */
+            /* globals PNotify */
+            window.showStackContext = function showStackContext(type, modal) {
+              if (typeof window.stackContext === 'undefined') {
+                window.stackContext = {
+                  dir1: 'down',
+                  dir2: 'left',
+                  firstpos1: 25,
+                  firstpos2: 25,
+                  context: document.getElementById('stack-context')
+                };
+              }
+              if (typeof window.stackContextModal === 'undefined') {
+                window.stackContextModal = {
+                  dir1: 'down',
+                  firstpos1: 25,
+                  context: document.getElementById('stack-context'),
+                  modal: true,
+                  overlayClose: true
+                };
+              }
+              var opts = {
+                title: 'Over Here',
+                text: "Check me out. I'm in a different stack.",
+                stack: modal ? window.stackContextModal : window.stackContext
+              };
+              switch (type) {
+                case 'error':
+                  opts.title = 'Oh No';
+                  opts.text = 'Watch out for that water tower!';
+                  opts.type = 'error';
+                  break;
+                case 'info':
+                  opts.title = 'Breaking News';
+                  opts.text = 'Have you met Ted?';
+                  opts.type = 'info';
+                  break;
+                case 'success':
+                  opts.title = 'Good News Everyone';
+                  opts.text =
+                    "I've invented a device that bites shiny metal asses.";
+                  opts.type = 'success';
+                  break;
+              }
+              PNotify.alert(opts);
             };
-            // I put it in a function so I could show the source easily.
-            window.makeTooltip();
-          });
-        </script>
-        <button class="btn btn-outline-dark my-1 source" onmouseover="window.tooltip.open();" onmousemove="window.tooltip.refs.elem.style.top = (event.clientY + 12) + 'px'; window.tooltip.refs.elem.style.left = (event.clientX + 12) + 'px';" onmouseout="window.tooltip.close();">Hover Over Me</button>
-        Tooltip
-      </div>
-      <h5 class="card-header">Stack Contexts</h5>
-      <div class="card-body">
-        By default, a stack will place its notices underneath the body node. You can also specify a context for your notices to be placed in.
-        <hr />
-        <script type="text/javascript">
-          /* eslint-env browser, jquery */
-          /* globals PNotify */
-          window.showStackContext = function showStackContext (type, modal) {
-            if (typeof window.stackContext === 'undefined') {
-              window.stackContext = { 'dir1': 'down', 'dir2': 'left', 'firstpos1': 25, 'firstpos2': 25, 'context': document.getElementById('stack-context') };
-            }
-            if (typeof window.stackContextModal === 'undefined') {
-              window.stackContextModal = { 'dir1': 'down', 'firstpos1': 25, 'context': document.getElementById('stack-context'), 'modal': true, 'overlayClose': true };
-            }
-            var opts = {
-              title: 'Over Here',
-              text: "Check me out. I'm in a different stack.",
-              stack: modal ? window.stackContextModal : window.stackContext
-            };
-            switch (type) {
-              case 'error':
-                opts.title = 'Oh No';
-                opts.text = 'Watch out for that water tower!';
-                opts.type = 'error';
-                break;
-              case 'info':
-                opts.title = 'Breaking News';
-                opts.text = 'Have you met Ted?';
-                opts.type = 'info';
-                break;
-              case 'success':
-                opts.title = 'Good News Everyone';
-                opts.text = "I've invented a device that bites shiny metal asses.";
-                opts.type = 'success';
-                break;
-            }
-            PNotify.alert(opts);
-          };
-        </script>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+          </script>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           showStackContext('notice');
-        ">Notice</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Notice
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           showStackContext('info');
-        ">Info</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Info
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           showStackContext('success');
-        ">Success</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Success
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           showStackContext('error');
-        ">Error</button>
-        <br />
-        Modal:
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Error
+          </button>
+          <br />
+          Modal:
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           showStackContext('notice', true);
-        ">Notice</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Notice
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           showStackContext('info', true);
-        ">Info</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Info
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           showStackContext('success', true);
-        ">Success</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Success
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           showStackContext('error', true);
-        ">Error</button>
-        <div class="row justify-content-md-center mt-3">
-          <div class="col-md-10">
-            <div class="card">
-              <div id="stack-context" class="card-body" style="height: 350px; position: relative; overflow: auto;">
-                <div class="my-3">
-                  <h3>Stack Context</h3>
-                  <hr />
+        "
+          >
+            Error
+          </button>
+          <div class="row justify-content-md-center mt-3">
+            <div class="col-md-10">
+              <div class="card">
+                <div
+                  id="stack-context"
+                  class="card-body"
+                  style="height: 350px; position: relative; overflow: auto;"
+                >
+                  <div class="my-3">
+                    <h3>Stack Context</h3>
+                    <hr />
+                  </div>
+                  <p>
+                    I'm the stack context where notices will be placed. I'm
+                    position: relative, so the notices will be positioned
+                    relative to me. My overflow is set to auto, so the notices
+                    won't show beyond my borders.
+                  </p>
+                  <p style="text-align: center;">
+                    <img
+                      alt="Happy face"
+                      src="includes/le_happy_face_by_luchocas.png"
+                    />
+                  </p>
                 </div>
-                <p>I'm the stack context where notices will be
-                  placed. I'm position: relative, so the notices
-                  will be positioned relative to me. My overflow
-                  is set to auto, so the notices won't show beyond
-                  my borders.</p>
-                <p style="text-align: center;"><img alt="Happy face" src="includes/le_happy_face_by_luchocas.png" /></p>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="card-footer">
-        <p class="alert alert-warning">
-          <i class="fas fa-exclamation-triangle"></i> You can't just pass an
-          object literal as a stack if you want multiple notices. You need to
-          create a new variable and pass that. This is because PNotify will use
-          that object to store the notices that go into it.
-        </p>
-        <div class="row">
-          <div class="col-md-6">
-            <div class="card border-danger mt-3">
-              <h6 class="card-header text-light bg-danger">Bad - Notices will overlap.</h6>
-              <div class="card-body">
-                <pre><code class="js">PNotify.notice({
+        <div class="card-footer">
+          <p class="alert alert-warning">
+            <i class="fas fa-exclamation-triangle"></i> You can't just pass an
+            object literal as a stack if you want multiple notices. You need to
+            create a new variable and pass that. This is because PNotify will
+            use that object to store the notices that go into it.
+          </p>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="card border-danger mt-3">
+                <h6 class="card-header text-light bg-danger">
+                  Bad - Notices will overlap.
+                </h6>
+                <div class="card-body">
+                  <pre><code class="js">PNotify.notice({
   text: 'Notice 1.',
   stack: {'dir1':'down', 'firstpos1':25}
 });
@@ -2505,14 +3646,16 @@ PNotify.notice({
   text: 'Notice 2.',
   stack: {'dir1':'down', 'firstpos1':25}
 });</code></pre>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="col-md-6">
-            <div class="card border-success mt-3">
-              <h6 class="card-header text-light bg-success">Good - Notices will flow.</h6>
-              <div class="card-body text-success">
-                <pre><code class="js">var myStack = {'dir1':'down', 'firstpos1':25};
+            <div class="col-md-6">
+              <div class="card border-success mt-3">
+                <h6 class="card-header text-light bg-success">
+                  Good - Notices will flow.
+                </h6>
+                <div class="card-body text-success">
+                  <pre><code class="js">var myStack = {'dir1':'down', 'firstpos1':25};
 PNotify.notice({
   text: 'Notice 1.',
   stack: myStack
@@ -2521,223 +3664,331 @@ PNotify.notice({
   text: 'Notice 2.',
   stack: myStack
 });</code></pre>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <div id="customization" class="container page-section">
-    <div class="my-3">
-      <h2>Customization and Tools</h2>
-      <hr />
-    </div>
-    <div class="card">
-      <h5 class="card-header">Timer</h5>
-      <div class="card-body">
-        Current Timer: <span id="timer" style="font-family: monospace;"></span>
-        <script type="text/javascript">
-          /* eslint-env browser, jquery */
-          /* globals PNotify */
-          window.updateTimerDisplay = function updateTimerDisplay () {
-            $('#timer').text((PNotify.defaults.delay / 1000) + ' seconds');
-          };
-          $(function () {
-            window.updateTimerDisplay();
-          });
-        </script>
-        <br style="margin-bottom: 3px;" />
-        <button class="btn btn-outline-dark my-1 source" onclick="
+    <div id="customization" class="container page-section">
+      <div class="my-3">
+        <h2>Customization and Tools</h2>
+        <hr />
+      </div>
+      <div class="card">
+        <h5 class="card-header">Timer</h5>
+        <div class="card-body">
+          Current Timer:
+          <span id="timer" style="font-family: monospace;"></span>
+          <script type="text/javascript">
+            /* eslint-env browser, jquery */
+            /* globals PNotify */
+            window.updateTimerDisplay = function updateTimerDisplay() {
+              $('#timer').text(PNotify.defaults.delay / 1000 + ' seconds');
+            };
+            $(function() {
+              window.updateTimerDisplay();
+            });
+          </script>
+          <br style="margin-bottom: 3px;" />
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           PNotify.defaults.delay ?
             (function () {
               PNotify.defaults.delay -= 500;
               updateTimerDisplay();
             })() :
             alert('Timer is already at zero.');
-        ">Lower Timer</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
+        "
+          >
+            Lower Timer
+          </button>
+          <button
+            class="btn btn-outline-dark my-1 source"
+            onclick="
           (function () {
             PNotify.defaults.delay += 500;
             updateTimerDisplay();
           })();
-        ">Raise Timer</button>
+        "
+          >
+            Raise Timer
+          </button>
+        </div>
+      </div>
+
+      <div class="card mt-3">
+        <h5 class="card-header">Consuming the Alert Function</h5>
+        <div class="card-body">
+          This isn't really a feature of PNotify, but it's cool.
+          <ol>
+            <li style="margin-bottom: 1em;">
+              <button
+                class="btn btn-outline-dark my-1 source"
+                onclick="
+            alert('I\'m a standard alert, called with alert().');
+          "
+              >
+                Display a JavaScript Alert
+              </button>
+            </li>
+            <li style="margin-bottom: 1em;">
+              <button
+                class="btn btn-outline-dark my-1 source"
+                onclick="
+            consumeAlert();
+          "
+              >
+                Consume alert()
+              </button>
+            </li>
+            <li style="margin-bottom: 1em;">Repeat step 1.</li>
+            <li style="margin-bottom: 1em;">
+              <button
+                class="btn btn-outline-dark my-1 source"
+                onclick="
+            releaseAlert();
+          "
+              >
+                Release alert()
+              </button>
+            </li>
+          </ol>
+          <script type="text/javascript">
+            /* eslint-env browser, jquery */
+            /* globals PNotify */
+            window.consumeAlert = function consumeAlert() {
+              if (window._alert) {
+                return;
+              }
+              window._alert = window.alert;
+              window.alert = function alert(message) {
+                PNotify.notice({
+                  title: 'Alert',
+                  text: message
+                });
+              };
+            };
+
+            window.releaseAlert = function releaseAlert() {
+              if (!window._alert) {
+                return;
+              }
+              window.alert = window._alert;
+              window._alert = null;
+            };
+          </script>
+        </div>
       </div>
     </div>
 
-    <div class="card mt-3">
-      <h5 class="card-header">Consuming the Alert Function</h5>
-      <div class="card-body">
-        This isn't really a feature of PNotify, but it's cool.
-        <ol>
-          <li style="margin-bottom: 1em;"><button class="btn btn-outline-dark my-1 source" onclick="
-            alert('I\'m a standard alert, called with alert().');
-          ">Display a JavaScript Alert</button></li>
-          <li style="margin-bottom: 1em;"><button class="btn btn-outline-dark my-1 source" onclick="
-            consumeAlert();
-          ">Consume alert()</button></li>
-          <li style="margin-bottom: 1em;">Repeat step 1.</li>
-          <li style="margin-bottom: 1em;"><button class="btn btn-outline-dark my-1 source" onclick="
-            releaseAlert();
-          ">Release alert()</button></li>
-        </ol>
-        <script type="text/javascript">
-          /* eslint-env browser, jquery */
-          /* globals PNotify */
-          window.consumeAlert = function consumeAlert () {
-            if (window._alert) {
-              return;
-            }
-            window._alert = window.alert;
-            window.alert = function alert (message) {
-              PNotify.notice({
-                title: 'Alert',
-                text: message
-              });
-            };
-          };
+    <div
+      id="comments"
+      class="container page-section"
+      style="margin-bottom: 20px;"
+    >
+      <div class="my-3">
+        <h2>Comments</h2>
+        <hr />
+      </div>
+      <div id="commentContainer">
+        <div style="text-align: center;">
+          <button
+            class="btn btn-primary"
+            onclick="
+          $('#commentContainer').html($('#disqusLoader').html().replace(/screeept/g, 'script'));
+        "
+          >
+            Load Comments
+          </button>
+        </div>
+        <script type="text/html" id="disqusLoader">
+          <div id="disqus_thread"></div>
+          <screeept type="text/javascript">
+            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+            var disqus_shortname = 'pnotify'; // required: replace example with your forum shortname
 
-          window.releaseAlert = function releaseAlert () {
-            if (!window._alert) {
-              return;
-            }
-            window.alert = window._alert;
-            window._alert = null;
-          };
+            /* * * DON'T EDIT BELOW THIS LINE * * */
+            (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+              dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+          </screeept>
+          <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+          <a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
         </script>
       </div>
     </div>
-  </div>
+    <p id="copyright">&copy; 2011-2018 Hunter Perrin. All Rights Reserved.</p>
 
-  <div id="comments" class="container page-section" style="margin-bottom: 20px;">
-    <div class="my-3">
-      <h2>Comments</h2>
-      <hr />
-    </div>
-    <div id="commentContainer">
-      <div style="text-align: center;">
-        <button class="btn btn-primary" onclick="
-          $('#commentContainer').html($('#disqusLoader').html().replace(/screeept/g, 'script'));
-        ">Load Comments</button>
-      </div>
-      <script type="text/html" id="disqusLoader">
-        <div id="disqus_thread"></div>
-        <screeept type="text/javascript">
-          /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-          var disqus_shortname = 'pnotify'; // required: replace example with your forum shortname
+    <script type="text/javascript">
+      /* eslint-env browser, jquery */
+      $(function() {
+        // ---
+        // This creates all those source code view buttons.
+        // ---
+        var makeSourceButton = function(elem) {
+          var button = $(elem);
+          button.removeClass('source');
+          var classList = button.attr('class');
+          // Wrap the button in a container.
+          var contain = $('<div class="btn-group" />');
+          contain = button.wrap(contain).parent();
+          $(
+            '<button type="button"><i class="fas fa-code fa-sm"></' +
+              'i></' +
+              'button>'
+          )
+            .appendTo(contain)
+            .addClass(classList)
+            .on('click', function() {
+              $(this).blur();
+              var text = button.attr('onclick');
+              if (!text && button.attr('onmouseover')) {
+                text =
+                  '// Mouse Over:\n' +
+                  button.attr('onmouseover') +
+                  '\n\n// Mouse Move:\n' +
+                  button.attr('onmousemove') +
+                  '\n\n// Mouse Out:\n' +
+                  button.attr('onmouseout');
+              }
+              // IE needs this.
+              if (text.toString) {
+                text = text.toString();
+                if (
+                  text.match(
+                    /^\s*function (onclick|anonymous)[\n ]*\([^\)]*\)[\n ]*\{[\n\t ]*/
+                  )
+                ) {
+                  // eslint-disable-line no-useless-escape
+                  text = text
+                    .replace(
+                      /^\s*function (onclick|anonymous)[\n ]*\([^\)]*\)[\n ]*\{[\n\t ]*/,
+                      ''
+                    )
+                    .replace(/[\n\t ]*}[\n\t ]*$/, ''); // eslint-disable-line no-useless-escape
+                }
+              }
 
-          /* * * DON'T EDIT BELOW THIS LINE * * */
-          (function() {
-            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-            dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-          })();
-        </screeept>
-        <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-        <a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-      </script>
-    </div>
-  </div>
-  <p id="copyright">&copy; 2011-2018 Hunter Perrin. All Rights Reserved.</p>
+              // Is there a better way to do this?
+              var dialog = $(
+                '<div class="modal fade" tabindex="-1" role="dialog">\n' +
+                  '  <div class="modal-dialog modal-lg" role="document">\n' +
+                  '    <div class="modal-content">\n' +
+                  '      <div class="modal-header">\n' +
+                  '        <h5 class="modal-title">' +
+                  button.text() +
+                  ' - Source</' +
+                  'h5>\n' +
+                  '        <button type="button" class="close" data-dismiss="modal" aria-label="Close">\n' +
+                  '          <span aria-hidden="true">&times;</' +
+                  'span>\n' +
+                  '        </' +
+                  'button>\n' +
+                  '      </' +
+                  'div>\n' +
+                  '      <div class="modal-body"></' +
+                  'div>\n' +
+                  '      <div class="modal-footer">\n' +
+                  '        <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Ok, got it.</' +
+                  'button>\n' +
+                  '      </' +
+                  'div>\n' +
+                  '    </' +
+                  'div>\n' +
+                  '  </' +
+                  'div>\n' +
+                  '</' +
+                  'div>'
+              );
 
-  <script type="text/javascript">
-    /* eslint-env browser, jquery */
-    $(function () {
-      // ---
-      // This creates all those source code view buttons.
-      // ---
-      var makeSourceButton = function (elem) {
-        var button = $(elem);
-        button.removeClass('source');
-        var classList = button.attr('class');
-        // Wrap the button in a container.
-        var contain = $('<div class="btn-group" />');
-        contain = button.wrap(contain).parent();
-        $('<button type="button"><i class="fas fa-code fa-sm"></' + 'i></' + 'button>').appendTo(contain).addClass(classList).on('click', function () {
-          $(this).blur();
-          var text = button.attr('onclick');
-          if (!text && button.attr('onmouseover')) {
-            text = '// Mouse Over:\n' + button.attr('onmouseover') + '\n\n// Mouse Move:\n' + button.attr('onmousemove') + '\n\n// Mouse Out:\n' + button.attr('onmouseout');
-          }
-          // IE needs this.
-          if (text.toString) {
-            text = text.toString();
-            if (text.match(/^\s*function (onclick|anonymous)[\n ]*\([^\)]*\)[\n ]*\{[\n\t ]*/)) { // eslint-disable-line no-useless-escape
-              text = text.replace(/^\s*function (onclick|anonymous)[\n ]*\([^\)]*\)[\n ]*\{[\n\t ]*/, '').replace(/[\n\t ]*}[\n\t ]*$/, ''); // eslint-disable-line no-useless-escape
-            }
-          }
+              addPrettyCode(text, dialog.find('.modal-body'));
 
-          // Is there a better way to do this?
-          var dialog = $('<div class="modal fade" tabindex="-1" role="dialog">\n' +
-                         '  <div class="modal-dialog modal-lg" role="document">\n' +
-                         '    <div class="modal-content">\n' +
-                         '      <div class="modal-header">\n' +
-                         '        <h5 class="modal-title">' + button.text() + ' - Source</' + 'h5>\n' +
-                         '        <button type="button" class="close" data-dismiss="modal" aria-label="Close">\n' +
-                         '          <span aria-hidden="true">&times;</' + 'span>\n' +
-                         '        </' + 'button>\n' +
-                         '      </' + 'div>\n' +
-                         '      <div class="modal-body"></' + 'div>\n' +
-                         '      <div class="modal-footer">\n' +
-                         '        <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Ok, got it.</' + 'button>\n' +
-                         '      </' + 'div>\n' +
-                         '    </' + 'div>\n' +
-                         '  </' + 'div>\n' +
-                         '</' + 'div>');
+              // Check if the code is just calling a function. Include that function.
+              var match = text.match(
+                /^\s*(?:window\.)?(\w+)\s*\([^\)]*\);\s*$/
+              ); // eslint-disable-line no-useless-escape
+              if (match) {
+                var fName = match[1];
+                text = window[fName].toString();
+                addPrettyCode(text, dialog.find('.modal-body'));
+              }
 
-          addPrettyCode(text, dialog.find('.modal-body'));
+              // Check if this is the tooltip button. Include the tooltip function.
+              if (text.match(/tooltip\.open\(\);/)) {
+                addPrettyCode(
+                  window.makeTooltip.toString(),
+                  dialog.find('.modal-body')
+                );
+              }
 
-          // Check if the code is just calling a function. Include that function.
-          var match = text.match(/^\s*(?:window\.)?(\w+)\s*\([^\)]*\);\s*$/); // eslint-disable-line no-useless-escape
-          if (match) {
-            var fName = match[1];
-            text = window[fName].toString();
-            addPrettyCode(text, dialog.find('.modal-body'));
-          }
+              dialog
+                .on('hidden.bs.modal', function() {
+                  dialog.remove();
+                })
+                .modal();
+            })
+            .appendTo(contain);
+        };
 
-          // Check if this is the tooltip button. Include the tooltip function.
-          if (text.match(/tooltip\.open\(\);/)) {
-            addPrettyCode(window.makeTooltip.toString(), dialog.find('.modal-body'));
-          }
+        var addPrettyCode = function(code, where) {
+          code = code.replace(
+            /(?:var )?sourceNote = ['"](.*)['"];$/gm,
+            '// $1'
+          );
+          var codeBlock = $('<code class="js" />').text(
+            window.js_beautify(code, { indent_size: 2 })
+          );
+          $('<pre />')
+            .append(codeBlock)
+            .appendTo(where);
+          window.hljs.highlightBlock(codeBlock.get(0));
+        };
 
-          dialog.on('hidden.bs.modal', function () {
-            dialog.remove();
-          }).modal();
-        }).appendTo(contain);
-      };
+        $('body').on('mouseenter click', '.source', function() {
+          makeSourceButton(this);
+        });
 
-      var addPrettyCode = function (code, where) {
-        code = code.replace(/(?:var )?sourceNote = ['"](.*)['"];$/gm, '// $1');
-        var codeBlock = $('<code class="js" />').text(window.js_beautify(code, { indent_size: 2 }));
-        $('<pre />').append(codeBlock).appendTo(where);
-        window.hljs.highlightBlock(codeBlock.get(0));
-      };
+        $('.source', 'body').each(function() {
+          makeSourceButton(this);
+        });
 
-      $('body').on('mouseenter click', '.source', function () {
-        makeSourceButton(this);
+        window.hljs.initHighlightingOnLoad(); // Format source in help.
+
+        // Navbar scrollspy.
+        $('#navbar').scrollspy();
       });
+    </script>
 
-      $('.source', 'body').each(function () {
-        makeSourceButton(this);
-      });
+    <script>
+      /* eslint-disable */
+      (function(i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        (i[r] =
+          i[r] ||
+          function() {
+            (i[r].q = i[r].q || []).push(arguments);
+          }),
+          (i[r].l = 1 * new Date());
+        (a = s.createElement(o)), (m = s.getElementsByTagName(o)[0]);
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m);
+      })(
+        window,
+        document,
+        'script',
+        '//www.google-analytics.com/analytics.js',
+        'ga'
+      );
 
-      window.hljs.initHighlightingOnLoad(); // Format source in help.
-
-      // Navbar scrollspy.
-      $('#navbar').scrollspy();
-    });
-  </script>
-
-  <script>
-    /* eslint-disable */
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-    ga('create', 'UA-49382439-1', 'sciactive.com');
-    ga('send', 'pageview');
-  </script>
-</body>
+      ga('create', 'UA-49382439-1', 'sciactive.com');
+      ga('send', 'pageview');
+    </script>
+  </body>
 </html>

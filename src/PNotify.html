@@ -10,8 +10,9 @@
   http://www.apache.org/licenses/LICENSE-2.0
 -->
 
-<div ref:elem
-    class="
+<div
+  ref:elem
+  class="
       ui-pnotify
       {icon !== false ? 'ui-pnotify-with-icon' : ''}
       {_styles.element ? _styles.element : ''}
@@ -22,62 +23,65 @@
       {stack && stack.modal ? 'ui-pnotify-modal' : ''}
       {_moduleClasses.join(' ')}
     "
-    aria-live="assertive"
-    role="alertdialog"
-    ui-pnotify
-    on:mouseover
-    on:mouseout
-    on:mouseenter
-    on:mouseleave
-    on:mousemove
-    on:mousedown
-    on:mouseup
-    on:click
-    on:dblclick
-    on:focus
-    on:blur
-    on:touchstart
-    on:touchmove
-    on:touchend
-    on:touchcancel>
-  <div ref:container
-      class="
+  aria-live="assertive"
+  role="alertdialog"
+  ui-pnotify
+  on:mouseover
+  on:mouseout
+  on:mouseenter
+  on:mouseleave
+  on:mousemove
+  on:mousedown
+  on:mouseup
+  on:click
+  on:dblclick
+  on:focus
+  on:blur
+  on:touchstart
+  on:touchmove
+  on:touchend
+  on:touchcancel
+>
+  <div
+    ref:container
+    class="
         ui-pnotify-container
         {_styles.container ? _styles.container : ''}
         {_styles[type] ? _styles[type] : ''}
         {cornerClass}
         {shadow ? 'ui-pnotify-shadow' : ''}
       "
-      style="{_widthStyle} {_minHeightStyle}"
-      role="alert">
+    style="{_widthStyle} {_minHeightStyle}"
+    role="alert"
+  >
     {#each _modulesPrependContainer as module (module.key)}
-      <svelte:component this={module} on:init="initModule(event.module)" />
-    {/each}
-    {#if icon !== false}
-      <div ref:iconContainer class="ui-pnotify-icon {_styles.icon ? _styles.icon : ''}">
-        <span class="{icon === true ? (_icons[type] ? _icons[type] : '') : icon}"></span>
-      </div>
-    {/if}
-    {#if title !== false}
-      <h4 ref:titleContainer class="ui-pnotify-title {_styles.title ? _styles.title : ''}">
-        {#if titleTrusted}
-          {@html title}
-        {:else}
-          {title}
-        {/if}
-      </h4>
-    {/if}
-    {#if text !== false}
-      <div ref:textContainer class="ui-pnotify-text {_styles.text ? _styles.text : ''}" role="alert">
-        {#if textTrusted}
-          {@html text}
-        {:else}
-          {text}
-        {/if}
-      </div>
-    {/if}
-    {#each _modulesAppendContainer as module (module.key)}
-      <svelte:component this={module} on:init="initModule(event.module)" />
+    <svelte:component this="{module}" on:init="initModule(event.module)" />
+    {/each} {#if icon !== false}
+    <div
+      ref:iconContainer
+      class="ui-pnotify-icon {_styles.icon ? _styles.icon : ''}"
+    >
+      <span
+        class="{icon === true ? (_icons[type] ? _icons[type] : '') : icon}"
+      ></span>
+    </div>
+    {/if} {#if title !== false}
+    <h4
+      ref:titleContainer
+      class="ui-pnotify-title {_styles.title ? _styles.title : ''}"
+    >
+      {#if titleTrusted} {@html title} {:else} {title} {/if}
+    </h4>
+    {/if} {#if text !== false}
+    <div
+      ref:textContainer
+      class="ui-pnotify-text {_styles.text ? _styles.text : ''}"
+      role="alert"
+    >
+      {#if textTrusted} {@html text} {:else} {text} {/if}
+    </div>
+    {/if} {#each _modulesAppendContainer as module (module.key)}
+    <svelte:component this="{module}" on:init="initModule(event.module)" />
     {/each}
   </div>
 </div>
@@ -102,7 +106,7 @@
   };
 
   // Creates the background overlay for modal stacks.
-  let createStackOverlay = (stack) => {
+  let createStackOverlay = stack => {
     const overlay = document.createElement('div');
     overlay.classList.add('ui-pnotify-modal-overlay');
     if (stack.context !== document.body) {
@@ -118,13 +122,16 @@
     stack.overlay = overlay;
   };
 
-  let insertStackOverlay = (stack) => {
+  let insertStackOverlay = stack => {
     if (stack.overlay.parentNode !== stack.context) {
-      stack.overlay = stack.context.insertBefore(stack.overlay, stack.context.firstChild);
+      stack.overlay = stack.context.insertBefore(
+        stack.overlay,
+        stack.context.firstChild
+      );
     }
   };
 
-  let removeStackOverlay = (stack) => {
+  let removeStackOverlay = stack => {
     if (stack.overlay.parentNode) {
       stack.overlay.parentNode.removeChild(stack.overlay);
     }
@@ -133,7 +140,7 @@
   // Default arguments for the new notice helper functions.
   const getDefaultArgs = (options, type) => {
     if (typeof options !== 'object') {
-      options = { 'text': options };
+      options = { text: options };
     }
 
     // Only assign the type if it was requested, so we don't overwrite
@@ -146,7 +153,7 @@
   };
 
   export default {
-    setup: (Component) => {
+    setup: Component => {
       // Add static properties to the PNotify object.
       PNotify = Component;
 
@@ -229,15 +236,17 @@
       PNotify.modulesAppendContainer = [];
 
       // Helper function to create a new notice.
-      PNotify.alert = (options) => new PNotify(getDefaultArgs(options));
+      PNotify.alert = options => new PNotify(getDefaultArgs(options));
       // Helper function to create a new notice (notice type).
-      PNotify.notice = (options) => new PNotify(getDefaultArgs(options, 'notice'));
+      PNotify.notice = options =>
+        new PNotify(getDefaultArgs(options, 'notice'));
       // Helper function to create a new notice (info type).
-      PNotify.info = (options) => new PNotify(getDefaultArgs(options, 'info'));
+      PNotify.info = options => new PNotify(getDefaultArgs(options, 'info'));
       // Helper function to create a new notice (success type).
-      PNotify.success = (options) => new PNotify(getDefaultArgs(options, 'success'));
+      PNotify.success = options =>
+        new PNotify(getDefaultArgs(options, 'success'));
       // Helper function to create a new notice (error type).
-      PNotify.error = (options) => new PNotify(getDefaultArgs(options, 'error'));
+      PNotify.error = options => new PNotify(getDefaultArgs(options, 'error'));
 
       PNotify.removeAll = () => {
         PNotify.closeAll();
@@ -252,17 +261,20 @@
         }
       };
 
-      PNotify.removeStack = (stack) => {
+      PNotify.removeStack = stack => {
         PNotify.closeStack(stack);
       };
 
       // Close all notices in a single stack.
-      PNotify.closeStack = (stack) => {
+      PNotify.closeStack = stack => {
         if (stack === false) {
           return;
         }
         for (let i = 0; i < PNotify.notices.length; i++) {
-          if (PNotify.notices[i].close && PNotify.notices[i].get().stack === stack) {
+          if (
+            PNotify.notices[i].close &&
+            PNotify.notices[i].get().stack === stack
+          ) {
             PNotify.notices[i].close(false);
           }
         }
@@ -366,8 +378,8 @@
       }
     },
 
-    oncreate () {
-      this.on('mouseenter', (e) => {
+    oncreate() {
+      this.on('mouseenter', e => {
         // Stop animation, reset the removal timer when the user mouses over.
         if (this.get().mouseReset && this.get()._animating === 'out') {
           if (!this.get()._timerHide) {
@@ -381,9 +393,13 @@
         }
       });
 
-      this.on('mouseleave', (e) => {
+      this.on('mouseleave', e => {
         // Start the close timer.
-        if (this.get().hide && this.get().mouseReset && this.get()._animating !== 'out') {
+        if (
+          this.get().hide &&
+          this.get().mouseReset &&
+          this.get()._animating !== 'out'
+        ) {
           this.queueClose();
         }
         PNotify.positionAll();
@@ -402,7 +418,7 @@
       this.runModules('init');
 
       // We're now initialized, but haven't been opened yet.
-      this.set({ '_state': 'closed' });
+      this.set({ _state: 'closed' });
 
       // Display the notice.
       if (this.get().autoDisplay) {
@@ -410,37 +426,44 @@
       }
     },
 
-    data () {
-      const data = Object.assign({
-        '_state': 'initializing', // The state can be 'initializing', 'opening', 'open', 'closing', and 'closed'.
-        '_timer': null, // Auto close timer.
-        '_animTimer': null, // Animation timer.
-        '_animating': false, // Stores what is currently being animated (in or out).
-        '_animatingClass': '', // Stores the class that adds entry/exit animation effects.
-        '_moveClass': '', // Stores the class that adds movement animation effects.
-        '_timerHide': false, // Stores whether the notice was hidden by a timer.
-        '_moduleClasses': [], // Modules can add classes here to be added to the notice element. (They should play nice and not remove classes that aren't theirs.)
-        '_moduleIsNoticeOpen': false, // Modules that change how the notice displays (causing the notice element to not appear) can set this to true to make PNotify assume the notice has opened.
-        '_modules': {}, // Stores the instances of the modules.
-        '_modulesPrependContainer': PNotify.modulesPrependContainer,
-        '_modulesAppendContainer': PNotify.modulesAppendContainer
-      }, PNotify.defaults);
+    data() {
+      const data = Object.assign(
+        {
+          _state: 'initializing', // The state can be 'initializing', 'opening', 'open', 'closing', and 'closed'.
+          _timer: null, // Auto close timer.
+          _animTimer: null, // Animation timer.
+          _animating: false, // Stores what is currently being animated (in or out).
+          _animatingClass: '', // Stores the class that adds entry/exit animation effects.
+          _moveClass: '', // Stores the class that adds movement animation effects.
+          _timerHide: false, // Stores whether the notice was hidden by a timer.
+          _moduleClasses: [], // Modules can add classes here to be added to the notice element. (They should play nice and not remove classes that aren't theirs.)
+          _moduleIsNoticeOpen: false, // Modules that change how the notice displays (causing the notice element to not appear) can set this to true to make PNotify assume the notice has opened.
+          _modules: {}, // Stores the instances of the modules.
+          _modulesPrependContainer: PNotify.modulesPrependContainer,
+          _modulesAppendContainer: PNotify.modulesAppendContainer
+        },
+        PNotify.defaults
+      );
       data.modules = Object.assign({}, PNotify.defaults.modules);
       return data;
     },
 
     computed: {
       // Grab styles from the styling object or use the styles provided.
-      _styles: ({ styling }) => typeof styling === 'object' ? styling : PNotify.styling[styling],
+      _styles: ({ styling }) =>
+        typeof styling === 'object' ? styling : PNotify.styling[styling],
       // Grab the icons from the icons object or use provided icons
-      _icons: ({ icons }) => typeof icons === 'object' ? icons : PNotify.icons[icons],
-      _widthStyle: ({ width }) => typeof width === 'string' ? 'width: ' + width + ';' : '',
-      _minHeightStyle: ({ minHeight }) => typeof minHeight === 'string' ? 'min-height: ' + minHeight + ';' : ''
+      _icons: ({ icons }) =>
+        typeof icons === 'object' ? icons : PNotify.icons[icons],
+      _widthStyle: ({ width }) =>
+        typeof width === 'string' ? 'width: ' + width + ';' : '',
+      _minHeightStyle: ({ minHeight }) =>
+        typeof minHeight === 'string' ? 'min-height: ' + minHeight + ';' : ''
     },
 
     methods: {
       // This runs an event on all the modules.
-      runModules (event) {
+      runModules(event) {
         if (event === 'init') {
           // Initializing a module should only be done if it has an init
           // function, which means it's not rendered in the template.
@@ -459,10 +482,13 @@
             if (!_modules.hasOwnProperty(module)) {
               continue;
             }
-            const moduleOptions = Object.assign({
-              '_notice': this,
-              '_options': this.get()
-            }, this.get().modules[module]);
+            const moduleOptions = Object.assign(
+              {
+                _notice: this,
+                _options: this.get()
+              },
+              this.get().modules[module]
+            );
             _modules[module].set(moduleOptions);
             if (typeof _modules[module][event] === 'function') {
               _modules[module][event]();
@@ -472,15 +498,18 @@
       },
 
       // This passes module options to a module.
-      initModule (module) {
+      initModule(module) {
         const { modules } = this.get();
         if (!modules.hasOwnProperty(module.constructor.key)) {
           modules[module.constructor.key] = {};
         }
-        const moduleOptions = Object.assign({
-          '_notice': this,
-          '_options': this.get()
-        }, modules[module.constructor.key]);
+        const moduleOptions = Object.assign(
+          {
+            _notice: this,
+            _options: this.get()
+          },
+          modules[module.constructor.key]
+        );
         module.initModule(moduleOptions);
 
         // Now save the module instance.
@@ -488,7 +517,7 @@
         _modules[module.constructor.key] = module;
       },
 
-      update (options) {
+      update(options) {
         // Save old options.
         const oldHide = this.get().hide;
         const oldIcon = this.get().icon;
@@ -512,20 +541,18 @@
         const { icon } = this.get();
         if (
           icon !== oldIcon &&
-          (
-            (icon === true && this.get().icons === 'fontawesome5') ||
-            (typeof icon === 'string' && icon.match(/(^| )fa[srlb]($| )/))
-          )
+          ((icon === true && this.get().icons === 'fontawesome5') ||
+            (typeof icon === 'string' && icon.match(/(^| )fa[srlb]($| )/)))
         ) {
-          this.set({ 'icon': false });
-          this.set({ 'icon': icon });
+          this.set({ icon: false });
+          this.set({ icon: icon });
         }
 
         return this;
       },
 
       // Display the notice.
-      open () {
+      open() {
         const { _state, hide } = this.get();
         if (_state === 'opening') {
           return;
@@ -537,10 +564,10 @@
           return;
         }
         this.set({
-          '_state': 'opening',
+          _state: 'opening',
           // This makes the notice visibity: hidden; so its dimensions can be
           // determined.
-          '_animatingClass': 'ui-pnotify-initial-hidden'
+          _animatingClass: 'ui-pnotify-initial-hidden'
         });
         // Run the modules.
         this.runModules('beforeOpen');
@@ -549,11 +576,9 @@
         // If the notice is not in the DOM, or in the wrong context, append it.
         if (
           !this.refs.elem.parentNode ||
-          (
-            stack &&
+          (stack &&
             stack.context &&
-            stack.context !== this.refs.elem.parentNode
-          )
+            stack.context !== this.refs.elem.parentNode)
         ) {
           if (stack && stack.context) {
             stack.context.appendChild(this.refs.elem);
@@ -581,7 +606,7 @@
               this.queueClose();
             }
 
-            this.set({ '_state': 'open' });
+            this.set({ _state: 'open' });
 
             // Run the modules.
             this.runModules('afterOpen');
@@ -591,27 +616,27 @@
         return this;
       },
 
-      remove (timerHide) {
+      remove(timerHide) {
         return this.close(timerHide);
       },
 
       // Remove the notice.
-      close (timerHide) {
+      close(timerHide) {
         const { _state } = this.get();
         if (_state === 'closing' || _state === 'closed') {
           return;
         }
-        this.set({ '_state': 'closing', '_timerHide': !!timerHide }); // Make sure it's a boolean.
+        this.set({ _state: 'closing', _timerHide: !!timerHide }); // Make sure it's a boolean.
         // Run the modules.
         this.runModules('beforeClose');
 
         const { _timer } = this.get();
         if (_timer && clearTimeout) {
           clearTimeout(_timer);
-          this.set({ '_timer': null });
+          this.set({ _timer: null });
         }
         this.animateOut(() => {
-          this.set({ '_state': 'closed' });
+          this.set({ _state: 'closed' });
           // Run the modules.
           this.runModules('afterClose');
           this.queuePosition();
@@ -639,9 +664,9 @@
       },
 
       // Animate the notice in.
-      animateIn (callback) {
+      animateIn(callback) {
         // Declare that the notice is animating in.
-        this.set({ '_animating': 'in' });
+        this.set({ _animating: 'in' });
         const finished = () => {
           this.refs.elem.removeEventListener('transitionend', finished);
           const { _animTimer, _animating, _moduleIsNoticeOpen } = this.get();
@@ -666,30 +691,30 @@
               callback.call();
             }
             // Declare that the notice has completed animating.
-            this.set({ '_animating': false });
+            this.set({ _animating: false });
           } else {
-            this.set({ '_animTimer': setTimeout(finished, 40) });
+            this.set({ _animTimer: setTimeout(finished, 40) });
           }
         };
 
         if (this.get().animation === 'fade') {
           this.refs.elem.addEventListener('transitionend', finished);
-          this.set({ '_animatingClass': 'ui-pnotify-in' });
+          this.set({ _animatingClass: 'ui-pnotify-in' });
           // eslint-disable-next-line no-unused-expressions
           this.refs.elem.style.opacity; // This line is necessary for some reason. Some notices don't fade without it.
-          this.set({ '_animatingClass': 'ui-pnotify-in ui-pnotify-fade-in' });
+          this.set({ _animatingClass: 'ui-pnotify-in ui-pnotify-fade-in' });
           // Just in case the event doesn't fire, call it after 650 ms.
-          this.set({ '_animTimer': setTimeout(finished, 650) });
+          this.set({ _animTimer: setTimeout(finished, 650) });
         } else {
-          this.set({ '_animatingClass': 'ui-pnotify-in' });
+          this.set({ _animatingClass: 'ui-pnotify-in' });
           finished();
         }
       },
 
       // Animate the notice out.
-      animateOut (callback) {
+      animateOut(callback) {
         // Declare that the notice is animating out.
-        this.set({ '_animating': 'out' });
+        this.set({ _animating: 'out' });
         const finished = () => {
           this.refs.elem.removeEventListener('transitionend', finished);
           const { _animTimer, _animating, _moduleIsNoticeOpen } = this.get();
@@ -709,8 +734,12 @@
               }
             }
           }
-          if (!this.refs.elem.style.opacity || this.refs.elem.style.opacity === '0' || !visible) {
-            this.set({ '_animatingClass': '' });
+          if (
+            !this.refs.elem.style.opacity ||
+            this.refs.elem.style.opacity === '0' ||
+            !visible
+          ) {
+            this.set({ _animatingClass: '' });
             const { stack } = this.get();
             if (stack && stack.overlay) {
               // Go through the modal stack to see if any are left open.
@@ -718,7 +747,11 @@
               let stillOpen = false;
               for (let i = 0; i < PNotify.notices.length; i++) {
                 const notice = PNotify.notices[i];
-                if (notice !== this && notice.get().stack === stack && notice.get()._state !== 'closed') {
+                if (
+                  notice !== this &&
+                  notice.get().stack === stack &&
+                  notice.get()._state !== 'closed'
+                ) {
                   stillOpen = true;
                   break;
                 }
@@ -731,26 +764,26 @@
               callback.call();
             }
             // Declare that the notice has completed animating.
-            this.set({ '_animating': false });
+            this.set({ _animating: false });
           } else {
             // In case this was called before the notice finished animating.
-            this.set({ '_animTimer': setTimeout(finished, 40) });
+            this.set({ _animTimer: setTimeout(finished, 40) });
           }
         };
 
         if (this.get().animation === 'fade') {
           this.refs.elem.addEventListener('transitionend', finished);
-          this.set({ '_animatingClass': 'ui-pnotify-in' });
+          this.set({ _animatingClass: 'ui-pnotify-in' });
           // Just in case the event doesn't fire, call it after 650 ms.
-          this.set({ '_animTimer': setTimeout(finished, 650) });
+          this.set({ _animTimer: setTimeout(finished, 650) });
         } else {
-          this.set({ '_animatingClass': '' });
+          this.set({ _animatingClass: '' });
           finished();
         }
       },
 
       // Position the notice.
-      position () {
+      position() {
         // Get the notice's stack.
         let { stack } = this.get();
         let elem = this.refs.elem;
@@ -790,20 +823,26 @@
 
         if (stack.animation) {
           // Add animate class.
-          this.set({ '_moveClass': 'ui-pnotify-move' });
+          this.set({ _moveClass: 'ui-pnotify-move' });
         }
 
-        let spaceY = (stack.context === document.body ? window.innerHeight : stack.context.scrollHeight);
-        let spaceX = (stack.context === document.body ? window.innerWidth : stack.context.scrollWidth);
+        let spaceY =
+          stack.context === document.body
+            ? window.innerHeight
+            : stack.context.scrollHeight;
+        let spaceX =
+          stack.context === document.body
+            ? window.innerWidth
+            : stack.context.scrollWidth;
 
         let csspos1;
 
         if (stack.dir1) {
           csspos1 = {
-            'down': 'top',
-            'up': 'bottom',
-            'left': 'right',
-            'right': 'left'
+            down: 'top',
+            up: 'bottom',
+            left: 'right',
+            right: 'left'
           }[stack.dir1];
 
           // Calculate the current pos1 value.
@@ -831,10 +870,10 @@
 
         if (stack.dir1 && stack.dir2) {
           let csspos2 = {
-            'down': 'top',
-            'up': 'bottom',
-            'left': 'right',
-            'right': 'left'
+            down: 'top',
+            up: 'bottom',
+            left: 'right',
+            right: 'left'
           }[stack.dir2];
 
           // Calculate the current pos2 value.
@@ -860,15 +899,23 @@
           }
 
           // Check that it's not beyond the viewport edge.
-          const endY = stack.nextpos1 + elem.offsetHeight + (typeof stack.spacing1 === 'undefined' ? 25 : stack.spacing1);
-          const endX = stack.nextpos1 + elem.offsetWidth + (typeof stack.spacing1 === 'undefined' ? 25 : stack.spacing1);
+          const endY =
+            stack.nextpos1 +
+            elem.offsetHeight +
+            (typeof stack.spacing1 === 'undefined' ? 25 : stack.spacing1);
+          const endX =
+            stack.nextpos1 +
+            elem.offsetWidth +
+            (typeof stack.spacing1 === 'undefined' ? 25 : stack.spacing1);
           if (
             ((stack.dir1 === 'down' || stack.dir1 === 'up') && endY > spaceY) ||
             ((stack.dir1 === 'left' || stack.dir1 === 'right') && endX > spaceX)
           ) {
             // If it is, it needs to go back to the first pos1, and over on pos2.
             stack.nextpos1 = stack.firstpos1;
-            stack.nextpos2 += stack.addpos2 + (typeof stack.spacing2 === 'undefined' ? 25 : stack.spacing2);
+            stack.nextpos2 +=
+              stack.addpos2 +
+              (typeof stack.spacing2 === 'undefined' ? 25 : stack.spacing2);
             stack.addpos2 = 0;
           }
 
@@ -885,13 +932,23 @@
           switch (stack.dir2) {
             case 'down':
             case 'up':
-              if (elem.offsetHeight + (parseFloat(elem.style.marginTop, 10) || 0) + (parseFloat(elem.style.marginBottom, 10) || 0) > stack.addpos2) {
+              if (
+                elem.offsetHeight +
+                  (parseFloat(elem.style.marginTop, 10) || 0) +
+                  (parseFloat(elem.style.marginBottom, 10) || 0) >
+                stack.addpos2
+              ) {
                 stack.addpos2 = elem.offsetHeight;
               }
               break;
             case 'left':
             case 'right':
-              if (elem.offsetWidth + (parseFloat(elem.style.marginLeft, 10) || 0) + (parseFloat(elem.style.marginRight, 10) || 0) > stack.addpos2) {
+              if (
+                elem.offsetWidth +
+                  (parseFloat(elem.style.marginLeft, 10) || 0) +
+                  (parseFloat(elem.style.marginRight, 10) || 0) >
+                stack.addpos2
+              ) {
                 stack.addpos2 = elem.offsetWidth;
               }
               break;
@@ -903,12 +960,12 @@
             case 'down':
             case 'up':
               cssposCross = ['left', 'right'];
-              cssMiddle = (stack.context.scrollWidth / 2) - (elem.offsetWidth / 2);
+              cssMiddle = stack.context.scrollWidth / 2 - elem.offsetWidth / 2;
               break;
             case 'left':
             case 'right':
               cssposCross = ['top', 'bottom'];
-              cssMiddle = (spaceY / 2) - (elem.offsetHeight / 2);
+              cssMiddle = spaceY / 2 - elem.offsetHeight / 2;
               break;
           }
           elem.style[cssposCross[0]] = cssMiddle + 'px';
@@ -933,17 +990,21 @@
           switch (stack.dir1) {
             case 'down':
             case 'up':
-              stack.nextpos1 += elem.offsetHeight + (typeof stack.spacing1 === 'undefined' ? 25 : stack.spacing1);
+              stack.nextpos1 +=
+                elem.offsetHeight +
+                (typeof stack.spacing1 === 'undefined' ? 25 : stack.spacing1);
               break;
             case 'left':
             case 'right':
-              stack.nextpos1 += elem.offsetWidth + (typeof stack.spacing1 === 'undefined' ? 25 : stack.spacing1);
+              stack.nextpos1 +=
+                elem.offsetWidth +
+                (typeof stack.spacing1 === 'undefined' ? 25 : stack.spacing1);
               break;
           }
         } else {
           // Center the notice on the screen, because the stack has no dir1.
-          let cssMiddleLeft = (spaceX / 2) - (elem.offsetWidth / 2);
-          let cssMiddleTop = (spaceY / 2) - (elem.offsetHeight / 2);
+          let cssMiddleLeft = spaceX / 2 - elem.offsetWidth / 2;
+          let cssMiddleTop = spaceY / 2 - elem.offsetHeight / 2;
           elem.style.left = cssMiddleLeft + 'px';
           elem.style.top = cssMiddleTop + 'px';
           if (!stack.animation) {
@@ -957,7 +1018,7 @@
 
       // Queue the position all function so it doesn't run repeatedly and
       // use up resources.
-      queuePosition (milliseconds) {
+      queuePosition(milliseconds) {
         if (posTimer) {
           clearTimeout(posTimer);
         }
@@ -970,12 +1031,12 @@
         return this;
       },
 
-      cancelRemove () {
+      cancelRemove() {
         return this.cancelClose();
       },
 
       // Cancel any pending removal timer.
-      cancelClose () {
+      cancelClose() {
         const { _timer, _animTimer, _state, animation } = this.get();
         if (_timer) {
           clearTimeout(_timer);
@@ -986,29 +1047,35 @@
         if (_state === 'closing') {
           // If it's animating out, stop it.
           this.set({
-            '_state': 'open',
-            '_animating': false,
-            '_animatingClass': animation === 'fade' ? 'ui-pnotify-in ui-pnotify-fade-in' : 'ui-pnotify-in'
+            _state: 'open',
+            _animating: false,
+            _animatingClass:
+              animation === 'fade'
+                ? 'ui-pnotify-in ui-pnotify-fade-in'
+                : 'ui-pnotify-in'
           });
         }
         return this;
       },
 
-      queueRemove () {
+      queueRemove() {
         return this.queueClose();
       },
 
       // Queue a close timer.
-      queueClose () {
+      queueClose() {
         // Cancel any current close timer.
         this.cancelClose();
         this.set({
-          '_timer': setTimeout(() => this.close(true), (isNaN(this.get().delay) ? 0 : this.get().delay))
+          _timer: setTimeout(
+            () => this.close(true),
+            isNaN(this.get().delay) ? 0 : this.get().delay
+          )
         });
         return this;
       },
 
-      addModuleClass (...classNames) {
+      addModuleClass(...classNames) {
         const { _moduleClasses } = this.get();
         for (let i = 0; i < classNames.length; i++) {
           let className = classNames[i];
@@ -1019,7 +1086,7 @@
         this.set({ _moduleClasses });
       },
 
-      removeModuleClass (...classNames) {
+      removeModuleClass(...classNames) {
         const { _moduleClasses } = this.get();
         for (let i = 0; i < classNames.length; i++) {
           let className = classNames[i];
@@ -1031,7 +1098,7 @@
         this.set({ _moduleClasses });
       },
 
-      hasModuleClass (...classNames) {
+      hasModuleClass(...classNames) {
         const { _moduleClasses } = this.get();
         for (let i = 0; i < classNames.length; i++) {
           let className = classNames[i];
@@ -1073,45 +1140,48 @@
     visibility: hidden;
   }
   :global(.ui-pnotify.ui-pnotify-move) {
-    transition: left .5s ease, top .5s ease, right .5s ease, bottom .5s ease;
+    transition: left 0.5s ease, top 0.5s ease, right 0.5s ease, bottom 0.5s ease;
   }
   :global(.ui-pnotify.ui-pnotify-fade-slow) {
-    transition: opacity .4s linear;
+    transition: opacity 0.4s linear;
     opacity: 0;
   }
   :global(.ui-pnotify.ui-pnotify-fade-slow.ui-pnotify.ui-pnotify-move) {
-    transition: opacity .4s linear, left .5s ease, top .5s ease, right .5s ease, bottom .5s ease;
+    transition: opacity 0.4s linear, left 0.5s ease, top 0.5s ease,
+      right 0.5s ease, bottom 0.5s ease;
   }
   :global(.ui-pnotify.ui-pnotify-fade-normal) {
-    transition: opacity .25s linear;
+    transition: opacity 0.25s linear;
     opacity: 0;
   }
   :global(.ui-pnotify.ui-pnotify-fade-normal.ui-pnotify.ui-pnotify-move) {
-    transition: opacity .25s linear, left .5s ease, top .5s ease, right .5s ease, bottom .5s ease;
+    transition: opacity 0.25s linear, left 0.5s ease, top 0.5s ease,
+      right 0.5s ease, bottom 0.5s ease;
   }
   :global(.ui-pnotify.ui-pnotify-fade-fast) {
-    transition: opacity .1s linear;
+    transition: opacity 0.1s linear;
     opacity: 0;
   }
   :global(.ui-pnotify.ui-pnotify-fade-fast.ui-pnotify.ui-pnotify-move) {
-    transition: opacity .1s linear, left .5s ease, top .5s ease, right .5s ease, bottom .5s ease;
+    transition: opacity 0.1s linear, left 0.5s ease, top 0.5s ease,
+      right 0.5s ease, bottom 0.5s ease;
   }
   :global(.ui-pnotify.ui-pnotify-fade-in) {
     opacity: 1;
   }
   :global(.ui-pnotify .ui-pnotify-shadow) {
-    -webkit-box-shadow: 0px 6px 28px 0px rgba(0,0,0,0.1);
-    -moz-box-shadow: 0px 6px 28px 0px rgba(0,0,0,0.1);
-    box-shadow: 0px 6px 28px 0px rgba(0,0,0,0.1);
+    -webkit-box-shadow: 0px 6px 28px 0px rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: 0px 6px 28px 0px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 6px 28px 0px rgba(0, 0, 0, 0.1);
   }
   :global(.ui-pnotify-container) {
     background-position: 0 0;
-    padding: .8em;
+    padding: 0.8em;
     height: 100%;
     margin: 0;
   }
   :global(.ui-pnotify-container:after) {
-    content: " "; /* Older browser do not support empty content */
+    content: ' '; /* Older browser do not support empty content */
     visibility: hidden;
     display: block;
     height: 0;
@@ -1125,15 +1195,15 @@
   :global(.ui-pnotify-title) {
     display: block;
     white-space: pre-line;
-    margin-bottom: .4em;
+    margin-bottom: 0.4em;
     margin-top: 0;
   }
   :global(.ui-pnotify.ui-pnotify-with-icon .ui-pnotify-title),
   :global(.ui-pnotify.ui-pnotify-with-icon .ui-pnotify-text) {
     margin-left: 24px;
   }
-  :global([dir=rtl] .ui-pnotify.ui-pnotify-with-icon .ui-pnotify-title),
-  :global([dir=rtl] .ui-pnotify.ui-pnotify-with-icon .ui-pnotify-text) {
+  :global([dir='rtl'] .ui-pnotify.ui-pnotify-with-icon .ui-pnotify-title),
+  :global([dir='rtl'] .ui-pnotify.ui-pnotify-with-icon .ui-pnotify-text) {
     margin-right: 24px;
     margin-left: 0;
   }
@@ -1150,8 +1220,8 @@
     display: block;
     float: left;
   }
-  :global([dir=rtl] .ui-pnotify-icon),
-  :global([dir=rtl] .ui-pnotify-icon span) {
+  :global([dir='rtl'] .ui-pnotify-icon),
+  :global([dir='rtl'] .ui-pnotify-icon span) {
     float: right;
   }
   /* Bootstrap 3: correct positioning of icon. */
@@ -1166,7 +1236,7 @@
   }
   /* Overlay */
   :global(.ui-pnotify-modal-overlay) {
-    background-color: rgba(0, 0, 0, .4);
+    background-color: rgba(0, 0, 0, 0.4);
     top: 0;
     left: 0;
     position: absolute;

@@ -2,7 +2,7 @@
   import PNotify from './PNotify.html';
 
   export default {
-    setup (Component) {
+    setup(Component) {
       Component.key = 'History';
 
       Component.defaults = {
@@ -12,21 +12,21 @@
         maxInStack: Infinity
       };
 
-      Component.init = (notice) => {
+      Component.init = notice => {
         return new Component({ target: document.body });
       };
 
-      Component.showLast = (stack) => {
+      Component.showLast = stack => {
         if (stack === undefined) {
           stack = PNotify.defaultStack;
         }
         if (stack === false) {
           return;
         }
-        const top = (stack.push === 'top');
+        const top = stack.push === 'top';
 
         // Look up the last history notice, and display it.
-        let i = (top ? 0 : PNotify.notices.length - 1);
+        let i = top ? 0 : PNotify.notices.length - 1;
 
         let notice;
         do {
@@ -36,7 +36,7 @@
             return;
           }
 
-          i += (top ? 1 : -1);
+          i += top ? 1 : -1;
         } while (
           notice.get().stack !== stack ||
           !notice.get()._modules.History.get().history ||
@@ -47,7 +47,7 @@
         notice.open();
       };
 
-      Component.showAll = (stack) => {
+      Component.showAll = stack => {
         if (stack === undefined) {
           stack = PNotify.defaultStack;
         }
@@ -59,10 +59,7 @@
         for (let i = 0; i < PNotify.notices.length; i++) {
           const notice = PNotify.notices[i];
           if (
-            (
-              stack === true ||
-              notice.get().stack === stack
-            ) &&
+            (stack === true || notice.get().stack === stack) &&
             notice.get()._modules.History.get().history
           ) {
             notice.open();
@@ -74,27 +71,30 @@
       PNotify.modules.History = Component;
     },
 
-    data () {
-      return Object.assign({
-        '_notice': null, // The PNotify notice.
-        '_options': {} // The options for the notice.
-      }, PNotify.modules.History.defaults);
+    data() {
+      return Object.assign(
+        {
+          _notice: null, // The PNotify notice.
+          _options: {} // The options for the notice.
+        },
+        PNotify.modules.History.defaults
+      );
     },
 
     methods: {
-      initModule (options) {
+      initModule(options) {
         this.set(options);
 
         if (this.get().history) {
           // Don't destroy notices that are in history.
           const { _notice } = this.get();
           if (_notice.get().destroy) {
-            _notice.set({ 'destroy': false });
+            _notice.set({ destroy: false });
           }
         }
       },
 
-      beforeOpen () {
+      beforeOpen() {
         const { maxInStack, _options } = this.get();
         if (maxInStack === Infinity) {
           return;
@@ -106,16 +106,21 @@
         }
 
         // Remove oldest notifications leaving only maxInStack from the stack.
-        if (PNotify.notices && (PNotify.notices.length > maxInStack)) {
+        if (PNotify.notices && PNotify.notices.length > maxInStack) {
           // Oldest are normally in front of array, or if stack.push=='top' then
           // they are at the end of the array!
           const top = stack.push === 'top';
           const forRemoval = [];
           let currentOpen = 0;
 
-          for (let i = (top ? 0 : PNotify.notices.length - 1); (top ? i < PNotify.notices.length : i >= 0); (top ? i++ : i--)) {
+          for (
+            let i = top ? 0 : PNotify.notices.length - 1;
+            top ? i < PNotify.notices.length : i >= 0;
+            top ? i++ : i--
+          ) {
             if (
-              ['opening', 'open'].indexOf(PNotify.notices[i].get()._state) !== -1 &&
+              ['opening', 'open'].indexOf(PNotify.notices[i].get()._state) !==
+                -1 &&
               PNotify.notices[i].get().stack === stack
             ) {
               if (currentOpen >= maxInStack) {

@@ -1,64 +1,71 @@
 {#if confirm || prompt}
-  <div class="ui-pnotify-confirm">
-    {#if prompt}
-      <div
-          class="
+<div class="ui-pnotify-confirm">
+  {#if prompt}
+  <div
+    class="
             ui-pnotify-prompt-bar
             {_notice.get()._styles.promptBar ? _notice.get()._styles.promptBar : ''}
             {_notice.get()._styles.text ? _notice.get()._styles.text : ''}
-          ">
-        {#if promptMultiLine}
-          <textarea
-              rows="5"
-              on:keypress="handleKeyPress(event)"
-              ref:promptMulti
-              class="
+          "
+  >
+    {#if promptMultiLine}
+    <textarea
+      rows="5"
+      on:keypress="handleKeyPress(event)"
+      ref:promptMulti
+      class="
                 ui-pnotify-prompt-input
                 {_notice.get()._styles.input ? _notice.get()._styles.input : ''}
                 {promptClass}
               "
-              bind:value="promptValue"></textarea>
-        {:else}
-          <input
-              type="text"
-              on:keypress="handleKeyPress(event)"
-              ref:promptSingle
-              class="
+      bind:value="promptValue"
+    ></textarea>
+    {:else}
+    <input
+      type="text"
+      on:keypress="handleKeyPress(event)"
+      ref:promptSingle
+      class="
                 ui-pnotify-prompt-input
                 {_notice.get()._styles.input ? _notice.get()._styles.input : ''}
                 {promptClass}
               "
-              bind:value="promptValue" />
-        {/if}
-      </div>
+      bind:value="promptValue"
+    />
     {/if}
-    <div
-        class="
+  </div>
+  {/if}
+  <div
+    class="
           ui-pnotify-action-bar
           {_notice.get()._styles.actionBar ? _notice.get()._styles.actionBar : ''}
           {_notice.get()._styles.text ? _notice.get()._styles.text : ''}
         "
-        style="justify-content: {align};"
-        ref:buttons>
-      {#each buttons as button}
-        <button
-            type="button"
-            on:click="handleClick(button, event)"
-            class="
+    style="justify-content: {align};"
+    ref:buttons
+  >
+    {#each buttons as button}
+    <button
+      type="button"
+      on:click="handleClick(button, event)"
+      class="
               ui-pnotify-action-button
               {button.primary ? (_notice.get()._styles.btnPrimary ? _notice.get()._styles.btnPrimary : '') : (_notice.get()._styles.btn ? _notice.get()._styles.btn : '')}
               {button.addClass ? button.addClass : ''}
-            ">{#if button.textTrusted}{@html button.text}{:else}{button.text}{/if}</button>
-      {/each}
-    </div>
+            "
+    >
+      {#if button.textTrusted}{@html button.text}{:else}{button.text}{/if}
+    </button>
+    {/each}
   </div>
+</div>
 {/if}
 
 <script>
   import PNotify from './PNotify.html';
 
   export default {
-    setup (Component) {
+    setup(Component) {
       Component.key = 'Confirm';
 
       Component.defaults = {
@@ -92,7 +99,7 @@
             text: 'Cancel',
             textTrusted: false,
             addClass: '',
-            click: (notice) => {
+            click: notice => {
               notice.close();
               notice.fire('pnotify.cancel', { notice });
             }
@@ -139,23 +146,26 @@
       });
     },
 
-    oncreate () {
+    oncreate() {
       this.fire('init', { module: this });
     },
 
-    data () {
-      return Object.assign({
-        '_notice': null, // The PNotify notice.
-        '_options': {} // The options for the notice.
-      }, PNotify.modules.Confirm.defaults);
+    data() {
+      return Object.assign(
+        {
+          _notice: null, // The PNotify notice.
+          _options: {} // The options for the notice.
+        },
+        PNotify.modules.Confirm.defaults
+      );
     },
 
     methods: {
-      initModule (options) {
+      initModule(options) {
         this.set(options);
       },
 
-      afterOpen () {
+      afterOpen() {
         if (this.get().prompt) {
           if (this.get().promptMultiLine) {
             this.refs.promptMulti.focus();
@@ -177,19 +187,27 @@
         }
       },
 
-      handleClick (button, event) {
+      handleClick(button, event) {
         if (button.click) {
-          button.click(this.get()._notice, this.get().prompt ? this.get().promptValue : null, event);
+          button.click(
+            this.get()._notice,
+            this.get().prompt ? this.get().promptValue : null,
+            event
+          );
         }
       },
 
-      handleKeyPress (event) {
+      handleKeyPress(event) {
         if (event.keyCode === 13 && !event.shiftKey) {
           event.preventDefault();
           const { buttons } = this.get();
           for (let i = 0; i < buttons.length; i++) {
             if (buttons[i].promptTrigger && buttons[i].click) {
-              buttons[i].click(this.get()._notice, this.get().prompt ? this.get().promptValue : null, event);
+              buttons[i].click(
+                this.get()._notice,
+                this.get().prompt ? this.get().promptValue : null,
+                event
+              );
             }
           }
         }
@@ -220,7 +238,7 @@
   :global(.ui-pnotify.ui-pnotify-with-icon) .ui-pnotify-confirm-ml {
     margin-left: 24px;
   }
-  :global([dir=rtl] .ui-pnotify.ui-pnotify-with-icon) .ui-pnotify-confirm-ml {
+  :global([dir='rtl'] .ui-pnotify.ui-pnotify-with-icon) .ui-pnotify-confirm-ml {
     margin-right: 24px;
     margin-left: 0;
   }

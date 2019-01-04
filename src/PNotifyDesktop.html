@@ -51,7 +51,7 @@
   };
 
   export default {
-    setup (Component) {
+    setup(Component) {
       Component.key = 'Desktop';
 
       Component.defaults = {
@@ -73,12 +73,15 @@
         options: {}
       };
 
-      Component.init = (notice) => {
+      Component.init = notice => {
         return new Component({ target: document.body });
       };
 
       Component.permission = () => {
-        if (typeof Notification !== 'undefined' && 'requestPermission' in Notification) {
+        if (
+          typeof Notification !== 'undefined' &&
+          'requestPermission' in Notification
+        ) {
           Notification.requestPermission();
         } else if ('webkitNotifications' in window) {
           window.webkitNotifications.requestPermission();
@@ -86,8 +89,11 @@
       };
 
       Component.checkPermission = () => {
-        if (typeof Notification !== 'undefined' && 'permission' in Notification) {
-          return (Notification.permission === 'granted' ? 0 : 1);
+        if (
+          typeof Notification !== 'undefined' &&
+          'permission' in Notification
+        ) {
+          return Notification.permission === 'granted' ? 0 : 1;
         } else if ('webkitNotifications' in window) {
           return window.webkitNotifications.checkPermission() == 0 ? 0 : 1; // eslint-disable-line eqeqeq
         } else {
@@ -101,41 +107,48 @@
       PNotify.modules.Desktop = Component;
     },
 
-    data () {
-      return Object.assign({
-        '_notice': null, // The PNotify notice.
-        '_options': {} // The options for the notice.
-      }, PNotify.modules.Desktop.defaults);
+    data() {
+      return Object.assign(
+        {
+          _notice: null, // The PNotify notice.
+          _options: {} // The options for the notice.
+        },
+        PNotify.modules.Desktop.defaults
+      );
     },
 
     methods: {
-      initModule (options) {
+      initModule(options) {
         this.set(options);
 
         const { _notice } = this.get();
 
         // Animation should always be 'none' for desktop notices, but remember
         // the old animation so it can be recovered.
-        this.set({ '_oldAnimation': _notice.get().animation });
+        this.set({ _oldAnimation: _notice.get().animation });
         _notice.on('state', ({ changed, current, previous }) => {
           if (changed.animation) {
             if (
               previous.animation === undefined ||
               current.animation !== 'none' ||
-              (
-                previous.animation === 'none' &&
-                current.animation !== this.get()._oldAnimation
-              )
+              (previous.animation === 'none' &&
+                current.animation !== this.get()._oldAnimation)
             ) {
-              this.set({ '_oldAnimation': current.animation });
+              this.set({ _oldAnimation: current.animation });
             }
           }
 
           // This is necessary so desktop notices don't cause spacing problems
           // when positioning.
           if (changed._animatingClass) {
-            if (!(current._animatingClass === '' || (permission !== 0 && this.get().fallback) || !this.get().desktop)) {
-              _notice.set({ '_animatingClass': '' });
+            if (
+              !(
+                current._animatingClass === '' ||
+                (permission !== 0 && this.get().fallback) ||
+                !this.get().desktop
+              )
+            ) {
+              _notice.set({ _animatingClass: '' });
             }
           }
         });
@@ -148,31 +161,31 @@
         if (permission !== 0) {
           // Keep the notice from opening if fallback is false.
           if (!this.get().fallback) {
-            _notice.set({ 'autoDisplay': false });
+            _notice.set({ autoDisplay: false });
           }
           return;
         }
 
-        _notice.set({ 'animation': 'none' });
+        _notice.set({ animation: 'none' });
         _notice.addModuleClass('ui-pnotify-desktop-hide');
 
         this.genNotice();
       },
 
-      update () {
+      update() {
         const { _notice } = this.get();
         if ((permission !== 0 && this.get().fallback) || !this.get().desktop) {
-          _notice.set({ 'animation': this.get()._oldAnimation });
+          _notice.set({ animation: this.get()._oldAnimation });
           _notice.removeModuleClass('ui-pnotify-desktop-hide');
           return;
         } else {
-          _notice.set({ 'animation': 'none' });
+          _notice.set({ animation: 'none' });
           _notice.addModuleClass('ui-pnotify-desktop-hide');
         }
         this.genNotice();
       },
 
-      beforeOpen () {
+      beforeOpen() {
         if (this.get().desktop && permission !== 0) {
           PNotify.modules.Desktop.permission();
         }
@@ -181,51 +194,66 @@
         }
         const { _desktop } = this.get();
         if (_desktop && 'show' in _desktop) {
-          this.get()._notice.set({ '_moduleIsNoticeOpen': true });
+          this.get()._notice.set({ _moduleIsNoticeOpen: true });
           _desktop.show();
         }
       },
 
-      beforeClose () {
+      beforeClose() {
         if ((permission !== 0 && this.get().fallback) || !this.get().desktop) {
           return;
         }
         const { _desktop } = this.get();
         if (_desktop && 'close' in _desktop) {
           _desktop.close();
-          this.get()._notice.set({ '_moduleIsNoticeOpen': false });
+          this.get()._notice.set({ _moduleIsNoticeOpen: false });
         }
       },
 
-      genNotice () {
+      genNotice() {
         const { _notice, icon } = this.get();
 
         if (icon === null) {
           switch (_notice.get().type) {
             case 'error':
-              this.set({ '_icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3gQJATQg7e6HvQAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAABr0lEQVRYw8WXu0oDQRSGv7hRSFYrLTTWKihaqUgUJO+gphBLL1jYpPSCVcAggpWthYhC7Ows9An0IbSPkMRCw8ZmFuI6yczs9cAPuzNz5v92brtrESxGARtokkCcAg2hk7jNl4G2R/m4zFPAiwTgWdRFHnmJuaulOAAaPQDqUZvv9DB3tR0lwIcGwHtU5uca5q4qYZvngJbHpAZ8CtU8dS1gLEyAisegBGTFKWiL65KnzVlY5uOSId6VtNuTtMupOu/TAHiQlNmSskHNXCOAGWBeUp7VhFoApoMAXAOWJoCszBJ9+ALY6vL0JiPgjsKmKUAaOOoBZwIAcNxlJLsCrAOTIQJMAWu62y4LOIqT7lGS96TIcYCMDkBZ46h1gB+PHI28ssq8X/G6DaqG8Piz2DrjVjGXbtSBy46F5QAHwJAizwZugKKscs7gSaqS/KpB/qxsFxwafhf6Odb/eblJi8BGwJdW26BtURxQpMU83hmaDQsNiPtvYMSwj3tgAqDgYzU7wJdHjo9+CgBvEW47lV5Tgj5DMtG0xIfESkIAF+522gdWxTzGEX3i9+6KpOMXF5UBt0NKJCAAAAAASUVORK5CYII=' });
+              this.set({
+                _icon:
+                  'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3gQJATQg7e6HvQAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAABr0lEQVRYw8WXu0oDQRSGv7hRSFYrLTTWKihaqUgUJO+gphBLL1jYpPSCVcAggpWthYhC7Ows9An0IbSPkMRCw8ZmFuI6yczs9cAPuzNz5v92brtrESxGARtokkCcAg2hk7jNl4G2R/m4zFPAiwTgWdRFHnmJuaulOAAaPQDqUZvv9DB3tR0lwIcGwHtU5uca5q4qYZvngJbHpAZ8CtU8dS1gLEyAisegBGTFKWiL65KnzVlY5uOSId6VtNuTtMupOu/TAHiQlNmSskHNXCOAGWBeUp7VhFoApoMAXAOWJoCszBJ9+ALY6vL0JiPgjsKmKUAaOOoBZwIAcNxlJLsCrAOTIQJMAWu62y4LOIqT7lGS96TIcYCMDkBZ46h1gB+PHI28ssq8X/G6DaqG8Piz2DrjVjGXbtSBy46F5QAHwJAizwZugKKscs7gSaqS/KpB/qxsFxwafhf6Odb/eblJi8BGwJdW26BtURxQpMU83hmaDQsNiPtvYMSwj3tgAqDgYzU7wJdHjo9+CgBvEW47lV5Tgj5DMtG0xIfESkIAF+522gdWxTzGEX3i9+6KpOMXF5UBt0NKJCAAAAAASUVORK5CYII='
+              });
               break;
             case 'success':
-              this.set({ '_icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3gQJATQPRj+65AAAAdBJREFUWMPtlzsvRFEQx3+7HmEjoiYKolVJJDRqnS8ggvVIVEQhCIUsEYJGCEH2E4h4FPREaLTbEo1IEJXHrmY2GTf33nPuY7ud5OTenTMz//89Z86ZWShLWf5LB3AOfACFiOMF2AkC3qOc88BXxFEAxlX8ftGdaNCEen8H6oFHYBR4FocwkpTngzzHgF01fwL0aYcp9fVtMW/rsMcWXWijK1Hexgye9smRT6CxaHgjytMYwccNSXqoja9FeVbiZS+OVaeDiUBLAPAJA/i2m5MXgRSQk7llC/DBMOBeBGqAe0eAjQhfvurH3EmgQk6EW6CVEHt+ZFo6J4EU8OoTcF35jhnAl2wSx20LFgyB1yyOWtY2c72ScMAAkPeZy6g4zUBdGAIAcyEq4Z7y7xbdTFgCACMBwPVJqVDHeNqvaplkH5i0sNuUwmaNkQxww20ZSOy7gFvX7SAk0i76jPQQlJoAwAEwq35ngfmwVatSdUMArZZ+K9JQ1Bp6iGqgSt7f/AIOqSzujLEn6AV+JG6zm4HuCZ+AJuAbWAQu5aIJu7JDck0ngDugC/j1c2qPqR13jpxuvWyS8liY/kQcean/lX6ACQ99DdAQYe+Lf0zylMUgf7qDKgzv284QAAAAAElFTkSuQmCC' });
+              this.set({
+                _icon:
+                  'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3gQJATQPRj+65AAAAdBJREFUWMPtlzsvRFEQx3+7HmEjoiYKolVJJDRqnS8ggvVIVEQhCIUsEYJGCEH2E4h4FPREaLTbEo1IEJXHrmY2GTf33nPuY7ud5OTenTMz//89Z86ZWShLWf5LB3AOfACFiOMF2AkC3qOc88BXxFEAxlX8ftGdaNCEen8H6oFHYBR4FocwkpTngzzHgF01fwL0aYcp9fVtMW/rsMcWXWijK1Hexgye9smRT6CxaHgjytMYwccNSXqoja9FeVbiZS+OVaeDiUBLAPAJA/i2m5MXgRSQk7llC/DBMOBeBGqAe0eAjQhfvurH3EmgQk6EW6CVEHt+ZFo6J4EU8OoTcF35jhnAl2wSx20LFgyB1yyOWtY2c72ScMAAkPeZy6g4zUBdGAIAcyEq4Z7y7xbdTFgCACMBwPVJqVDHeNqvaplkH5i0sNuUwmaNkQxww20ZSOy7gFvX7SAk0i76jPQQlJoAwAEwq35ngfmwVatSdUMArZZ+K9JQ1Bp6iGqgSt7f/AIOqSzujLEn6AV+JG6zm4HuCZ+AJuAbWAQu5aIJu7JDck0ngDugC/j1c2qPqR13jpxuvWyS8liY/kQcean/lX6ACQ99DdAQYe+Lf0zylMUgf7qDKgzv284QAAAAAElFTkSuQmCC'
+              });
               break;
             case 'info':
-              this.set({ '_icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3gQJATQ09zRTwAAAAdxJREFUWMPtl88rRFEUxz8zBolRCgsrpOym8TMSO2WplLKwUrKi/B0W7JSFmhVLNlhSlLKx8CtRGpEsJpofpZk3Nkc9b968e++8mdlw6vTeu/edc773nl/3wl+ngOH/zUAf0AN0AmEgB7wCD8AtcFMJoM3ADpAHLHk62RIwL8B0uQwHgXVRnDfkS2DSj/EW4K0Ew05eLMV4O/CuUJwEUvJUgdgwMd4IpBUKl13kVG6aL+ZjJ20DDQqQXy5jKYVMDBhVrb5f069LLrKfGnInqh040HRTvsTAHgei9oGQ7X0YaNNUNCdFKChgQvKtQ1vAkNvEahlSToez9oXad2BCA30ceHZxRxMQMShuvZLmv+hOA32/h+KUwS7MugVhqwb6Go+5nEEwht0ABDUEzyXdFsrQYwqMJjTbdxio9Qkg6QbgvkpnkLw0uQIAZ1UCYNkXawdw4qPCmVBcuADAMZCpAoCVYr3AKtYyHZSWauakjMx50TWwrzJw6lFARjQOt3se8jM6W9TloSCqIb9bRHbN5Fg+KkEZcow/Ak+KFBsD6h3jR8CUabAMlqn7xfxEbAdwWKLhhO3sGPCbOsNSvSyF0Z/5TaCuEleziLhmAOiWG1NWrmZXwIVU1A/+SZO+AcgLC4wt0zD3AAAAAElFTkSuQmCC' });
+              this.set({
+                _icon:
+                  'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3gQJATQ09zRTwAAAAdxJREFUWMPtl88rRFEUxz8zBolRCgsrpOym8TMSO2WplLKwUrKi/B0W7JSFmhVLNlhSlLKx8CtRGpEsJpofpZk3Nkc9b968e++8mdlw6vTeu/edc773nl/3wl+ngOH/zUAf0AN0AmEgB7wCD8AtcFMJoM3ADpAHLHk62RIwL8B0uQwHgXVRnDfkS2DSj/EW4K0Ew05eLMV4O/CuUJwEUvJUgdgwMd4IpBUKl13kVG6aL+ZjJ20DDQqQXy5jKYVMDBhVrb5f069LLrKfGnInqh040HRTvsTAHgei9oGQ7X0YaNNUNCdFKChgQvKtQ1vAkNvEahlSToez9oXad2BCA30ceHZxRxMQMShuvZLmv+hOA32/h+KUwS7MugVhqwb6Go+5nEEwht0ABDUEzyXdFsrQYwqMJjTbdxio9Qkg6QbgvkpnkLw0uQIAZ1UCYNkXawdw4qPCmVBcuADAMZCpAoCVYr3AKtYyHZSWauakjMx50TWwrzJw6lFARjQOt3se8jM6W9TloSCqIb9bRHbN5Fg+KkEZcow/Ak+KFBsD6h3jR8CUabAMlqn7xfxEbAdwWKLhhO3sGPCbOsNSvSyF0Z/5TaCuEleziLhmAOiWG1NWrmZXwIVU1A/+SZO+AcgLC4wt0zD3AAAAAElFTkSuQmCC'
+              });
               break;
             case 'notice':
             default:
-              this.set({ '_icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3gQJATM4scOJLAAAAcxJREFUWMPtljtLA0EQx3+J0QRfnYqCiCA+MERBrIwgFtoFbMTOR61i5QcQBdEihZWNoEWwsNAvkMJeBLHRQtHC0iIP4utOmw2cx97d7l2SRgcGbufmv/Pf2dmdhb8uIR+YJqAPaBff30AeeAHuxLgqMgRkgS/AAEybGuLfEdBcycCTwKVYmY5mgO6gwdd8BLaqAST9Bs8EDG7VTd3gex4TbgEjwKjQOHDugZlRDb7sMZEJpCS4bYVMJOygsG1cB+wqHN0Gib1RYXFpLwL74nx7Sb3EFlXATQNjTgRagA3FbZIRiCliT5wITGgUaRACA0CPjMC4xtUcDUAgDAzLCCQ0MhALQCAE9MoIdGkQCJIBgE4ZgWiNMvDL10qgUMMMFGQEnjQmkLXbVg38s8y4qtFcTCAnHiJ5oKiJnSoHjVgIXAmHkGIl5yy+YcWruIy9dvqpupIDCfZWEXvh1gsWFVfxIbG9a3RbRwJnYiuqJYfAqxsBgBWFiQyJzfTAlIB1uzEicbwBFoBTl8lSwINoSuXKjrv4F4FBh61zlKUKvgn7/e5ZEngMEDgLdFSieHaAT42LpgTMVbqC24B54Bi4twV9E6cnDcw6PFj+RSo/l6rlSlldhx4AAAAASUVORK5CYII=' });
+              this.set({
+                _icon:
+                  'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3gQJATM4scOJLAAAAcxJREFUWMPtljtLA0EQx3+J0QRfnYqCiCA+MERBrIwgFtoFbMTOR61i5QcQBdEihZWNoEWwsNAvkMJeBLHRQtHC0iIP4utOmw2cx97d7l2SRgcGbufmv/Pf2dmdhb8uIR+YJqAPaBff30AeeAHuxLgqMgRkgS/AAEybGuLfEdBcycCTwKVYmY5mgO6gwdd8BLaqAST9Bs8EDG7VTd3gex4TbgEjwKjQOHDugZlRDb7sMZEJpCS4bYVMJOygsG1cB+wqHN0Gib1RYXFpLwL74nx7Sb3EFlXATQNjTgRagA3FbZIRiCliT5wITGgUaRACA0CPjMC4xtUcDUAgDAzLCCQ0MhALQCAE9MoIdGkQCJIBgE4ZgWiNMvDL10qgUMMMFGQEnjQmkLXbVg38s8y4qtFcTCAnHiJ5oKiJnSoHjVgIXAmHkGIl5yy+YcWruIy9dvqpupIDCfZWEXvh1gsWFVfxIbG9a3RbRwJnYiuqJYfAqxsBgBWFiQyJzfTAlIB1uzEicbwBFoBTl8lSwINoSuXKjrv4F4FBh61zlKUKvgn7/e5ZEngMEDgLdFSieHaAT42LpgTMVbqC24B54Bi4twV9E6cnDcw6PFj+RSo/l6rlSlldhx4AAAAASUVORK5CYII='
+              });
               break;
           }
         } else if (icon === false) {
-          this.set({ '_icon': null });
+          this.set({ _icon: null });
         } else {
-          this.set({ '_icon': icon });
+          this.set({ _icon: icon });
         }
 
         let { tag } = this.get();
         if (!this.get()._tag || tag !== null) {
           this.set({
-            '_tag': tag === null ? 'PNotify-' + Math.round(Math.random() * 1000000) : tag
+            _tag:
+              tag === null
+                ? 'PNotify-' + Math.round(Math.random() * 1000000)
+                : tag
           });
         }
 
@@ -252,10 +280,10 @@
           }
         );
 
-        _notice.set({ '_moduleIsNoticeOpen': true });
+        _notice.set({ _moduleIsNoticeOpen: true });
         this.set({ _desktop });
 
-        if (!('close' in _desktop) && ('cancel' in _desktop)) {
+        if (!('close' in _desktop) && 'cancel' in _desktop) {
           _desktop.close = () => {
             _desktop.cancel();
           };

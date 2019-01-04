@@ -7,59 +7,59 @@ require('shelljs/make');
 
 let pnotifySrc = {
   // Main code.
-  'core': 'PNotify.html',
-  'animate': 'PNotifyAnimate.html',
-  'buttons': 'PNotifyButtons.html',
-  'callbacks': 'PNotifyCallbacks.html',
-  'nonblock': 'PNotifyNonBlock.html',
-  'mobile': 'PNotifyMobile.html',
-  'history': 'PNotifyHistory.html',
-  'desktop': 'PNotifyDesktop.html',
-  'confirm': 'PNotifyConfirm.html',
+  core: 'PNotify.html',
+  animate: 'PNotifyAnimate.html',
+  buttons: 'PNotifyButtons.html',
+  callbacks: 'PNotifyCallbacks.html',
+  nonblock: 'PNotifyNonBlock.html',
+  mobile: 'PNotifyMobile.html',
+  history: 'PNotifyHistory.html',
+  desktop: 'PNotifyDesktop.html',
+  confirm: 'PNotifyConfirm.html',
 
   // Compat module.
-  'compat': 'PNotifyCompat.js',
+  compat: 'PNotifyCompat.js',
 
   // Styles.
-  'stylematerial': 'PNotifyStyleMaterial.html',
+  stylematerial: 'PNotifyStyleMaterial.html',
 
   // Reference module.
-  'reference': 'PNotifyReference.html'
+  reference: 'PNotifyReference.html'
 };
 
 let pnotifyJs = {
   // Main code.
-  'core': 'PNotify.js',
-  'animate': 'PNotifyAnimate.js',
-  'buttons': 'PNotifyButtons.js',
-  'callbacks': 'PNotifyCallbacks.js',
-  'nonblock': 'PNotifyNonBlock.js',
-  'mobile': 'PNotifyMobile.js',
-  'history': 'PNotifyHistory.js',
-  'desktop': 'PNotifyDesktop.js',
-  'confirm': 'PNotifyConfirm.js',
+  core: 'PNotify.js',
+  animate: 'PNotifyAnimate.js',
+  buttons: 'PNotifyButtons.js',
+  callbacks: 'PNotifyCallbacks.js',
+  nonblock: 'PNotifyNonBlock.js',
+  mobile: 'PNotifyMobile.js',
+  history: 'PNotifyHistory.js',
+  desktop: 'PNotifyDesktop.js',
+  confirm: 'PNotifyConfirm.js',
 
   // Compat module.
-  'compat': 'PNotifyCompat.js',
+  compat: 'PNotifyCompat.js',
 
   // Styles.
-  'stylematerial': 'PNotifyStyleMaterial.js',
+  stylematerial: 'PNotifyStyleMaterial.js',
 
   // Reference module.
-  'reference': 'PNotifyReference.js'
+  reference: 'PNotifyReference.js'
 };
 
 let pnotifyCss = {
-  'brighttheme': 'PNotifyBrightTheme.css'
+  brighttheme: 'PNotifyBrightTheme.css'
 };
 
 for (let module in pnotifySrc) {
-  target[module + '_lib'] = (args) => compileJs(module, pnotifySrc[module], args);
+  target[module + '_lib'] = args => compileJs(module, pnotifySrc[module], args);
 
-  ((target) => {
+  (target => {
     const existing = target[module];
 
-    target[module] = (args) => {
+    target[module] = args => {
       existing && existing(args);
       target[module + '_lib'](args);
     };
@@ -67,12 +67,12 @@ for (let module in pnotifySrc) {
 }
 
 for (let module in pnotifyJs) {
-  target[module + '_js'] = (args) => compressJs(module, pnotifyJs[module], args);
+  target[module + '_js'] = args => compressJs(module, pnotifyJs[module], args);
 
-  ((target) => {
+  (target => {
     const existing = target[module];
 
-    target[module] = (args) => {
+    target[module] = args => {
       existing && existing(args);
       target[module + '_js'](args);
     };
@@ -82,17 +82,17 @@ for (let module in pnotifyJs) {
 for (let module in pnotifyCss) {
   target[module + '_css'] = () => compressCss(module, pnotifyCss[module]);
 
-  ((target) => {
+  (target => {
     const existing = target[module];
 
-    target[module] = (args) => {
+    target[module] = args => {
       existing && existing(args);
       target[module + '_css'](args);
     };
   })(target);
 }
 
-target.dist = (args) => {
+target.dist = args => {
   for (let module in pnotifySrc) {
     target[module + '_lib'](args);
   }
@@ -110,9 +110,19 @@ let compileJs = (module, filename, args) => {
   let format = setup(args);
 
   const srcFilename = 'src/' + filename;
-  const dstFilename = 'lib/' + format + '/' + filename.replace(/\.html$/, '.js');
-  console.log('Compiling JavaScript ' + module + ' from ' + srcFilename + ' to ' + dstFilename);
-  console.log('Generating source map for ' + dstFilename + ' in ' + dstFilename + '.map');
+  const dstFilename =
+    'lib/' + format + '/' + filename.replace(/\.html$/, '.js');
+  console.log(
+    'Compiling JavaScript ' +
+      module +
+      ' from ' +
+      srcFilename +
+      ' to ' +
+      dstFilename
+  );
+  console.log(
+    'Generating source map for ' + dstFilename + ' in ' + dstFilename + '.map'
+  );
 
   // Gather code.
   let code;
@@ -125,8 +135,14 @@ let compileJs = (module, filename, args) => {
 
   // Pre-compile transforms.
   if (module === 'compat' && format === 'iife') {
-    inputCode = code = code.replace(/import PNotify(\w*) from ["']\.\/PNotify(\w*)\.html["'];/g, 'var PNotify$1 = window.PNotify$2;');
-    inputCode = code = code.replace(/export default PNotifyCompat;/g, 'window.PNotifyCompat = PNotifyCompat;');
+    inputCode = code = code.replace(
+      /import PNotify(\w*) from ["']\.\/PNotify(\w*)\.html["'];/g,
+      'var PNotify$1 = window.PNotify$2;'
+    );
+    inputCode = code = code.replace(
+      /export default PNotifyCompat;/g,
+      'window.PNotifyCompat = PNotifyCompat;'
+    );
   }
 
   // Compile.
@@ -155,7 +171,8 @@ let compileJs = (module, filename, args) => {
     ({ code, map } = js);
     [inputCode, inputMap] = [code, map];
     inputMap.file = filename.replace(/\.html$/, '.js');
-    inputCode += '\n//# sourceMappingURL=' + filename.replace(/\.html$/, '.js') + '.map';
+    inputCode +=
+      '\n//# sourceMappingURL=' + filename.replace(/\.html$/, '.js') + '.map';
   }
   if (format !== 'es') {
     const babel = require('babel-core');
@@ -167,10 +184,8 @@ let compileJs = (module, filename, args) => {
       moduleRoot: '',
       sourceMaps: 'both',
       sourceRoot: '../',
-      plugins: [
-        'transform-object-assign'
-      ],
-      sourceType: (format !== 'es' && isSvelte) ? 'script' : 'module'
+      plugins: ['transform-object-assign'],
+      sourceType: format !== 'es' && isSvelte ? 'script' : 'module'
     };
 
     if (inputMap) {
@@ -180,17 +195,23 @@ let compileJs = (module, filename, args) => {
     if (format === 'umd' && !isSvelte) {
       babelOptions.passPerPreset = true;
       babelOptions.presets = [
-        ['env', {
-          modules: 'umd'
-        }],
+        [
+          'env',
+          {
+            modules: 'umd'
+          }
+        ],
         'stage-3'
       ];
       babelOptions.plugins.push('add-module-exports');
     } else {
       babelOptions.presets = [
-        ['env', {
-          modules: false
-        }],
+        [
+          'env',
+          {
+            modules: false
+          }
+        ],
         'stage-3'
       ];
     }
@@ -200,11 +221,20 @@ let compileJs = (module, filename, args) => {
 
   // Post-compile transforms.
   if (format === 'es') {
-    code = code.replace(/import PNotify(\w*) from ["']\.\/PNotify(\w*)\.html["'];/g, 'import PNotify$1 from "./PNotify$2.js";');
+    code = code.replace(
+      /import PNotify(\w*) from ["']\.\/PNotify(\w*)\.html["'];/g,
+      'import PNotify$1 from "./PNotify$2.js";'
+    );
   }
   if (format === 'umd') {
-    code = code.replace(/require\(["']\.\/PNotify(\w*)?\.html["']\)/g, 'require(\'./PNotify$1\')');
-    code = code.replace(/, ["']\.\/PNotify(\w*)?\.html["']/g, ', \'./PNotify$1\'');
+    code = code.replace(
+      /require\(["']\.\/PNotify(\w*)?\.html["']\)/g,
+      "require('./PNotify$1')"
+    );
+    code = code.replace(
+      /, ["']\.\/PNotify(\w*)?\.html["']/g,
+      ", './PNotify$1'"
+    );
   }
 
   fs.writeFileSync(dstFilename, code);
@@ -218,10 +248,20 @@ let compressJs = (module, filename, args) => {
 
   const srcFilename = 'lib/' + format + '/' + filename;
   const dstFilename = 'dist/' + format + '/' + filename;
-  console.log('Compressing JavaScript ' + module + ' from ' + srcFilename + ' to ' + dstFilename);
-  console.log('Generating source map for ' + dstFilename + ' in ' + dstFilename + '.map');
+  console.log(
+    'Compressing JavaScript ' +
+      module +
+      ' from ' +
+      srcFilename +
+      ' to ' +
+      dstFilename
+  );
+  console.log(
+    'Generating source map for ' + dstFilename + ' in ' + dstFilename + '.map'
+  );
 
-  const UglifyJS = format === 'es' ? require('uglify-es') : require('uglify-js');
+  const UglifyJS =
+    format === 'es' ? require('uglify-es') : require('uglify-js');
   const options = {
     sourceMap: {
       root: '../',
@@ -229,9 +269,12 @@ let compressJs = (module, filename, args) => {
       url: filename + '.map'
     }
   };
-  const { code, map, error } = UglifyJS.minify({
-    [filename]: fs.readFileSync(srcFilename, 'utf8')
-  }, options);
+  const { code, map, error } = UglifyJS.minify(
+    {
+      [filename]: fs.readFileSync(srcFilename, 'utf8')
+    },
+    options
+  );
   if (!code) {
     console.log('error:', error);
   }
@@ -245,18 +288,25 @@ let compressCss = (module, filename) => {
   setup();
   const srcFilename = 'src/' + filename;
   const dstFilename = 'dist/' + filename;
-  console.log('Compressing CSS ' + module + ' from ' + srcFilename + ' to ' + dstFilename);
+  console.log(
+    'Compressing CSS ' + module + ' from ' + srcFilename + ' to ' + dstFilename
+  );
 
   const CleanCSS = require('clean-css');
   const options = {
     rebase: false
   };
-  fs.writeFileSync(dstFilename, (new CleanCSS(options).minify(fs.readFileSync(srcFilename, 'utf8'))).styles);
+  fs.writeFileSync(
+    dstFilename,
+    new CleanCSS(options).minify(fs.readFileSync(srcFilename, 'utf8')).styles
+  );
 };
 
-let setup = (args) => {
+let setup = args => {
   let format = 'iife';
-  (args || []).filter(arg => arg.match(/^--format=/)).map(arg => (format = arg.slice(9)));
+  (args || [])
+    .filter(arg => arg.match(/^--format=/))
+    .map(arg => (format = arg.slice(9)));
   cd(__dirname);
   mkdir('-p', 'lib/' + (args ? format : ''));
   mkdir('-p', 'dist/' + (args ? format : ''));

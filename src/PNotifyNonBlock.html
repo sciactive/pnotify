@@ -2,7 +2,7 @@
   import PNotify from './PNotify.html';
 
   export default {
-    setup (Component) {
+    setup(Component) {
       Component.key = 'NonBlock';
 
       Component.defaults = {
@@ -10,35 +10,40 @@
         nonblock: false
       };
 
-      Component.init = (notice) => {
-        return new Component({ target: document.body,
+      Component.init = notice => {
+        return new Component({
+          target: document.body,
           data: {
-            '_notice': notice
-          } });
+            _notice: notice
+          }
+        });
       };
 
       // Register the module with PNotify.
       PNotify.modules.NonBlock = Component;
     },
 
-    data () {
-      return Object.assign({
-        '_notice': null, // The PNotify notice.
-        '_options': {} // The options for the notice.
-      }, PNotify.modules.NonBlock.defaults);
+    data() {
+      return Object.assign(
+        {
+          _notice: null, // The PNotify notice.
+          _options: {} // The options for the notice.
+        },
+        PNotify.modules.NonBlock.defaults
+      );
     },
 
     methods: {
-      initModule (options) {
+      initModule(options) {
         this.set(options);
         this.doNonBlockClass();
       },
 
-      update () {
+      update() {
         this.doNonBlockClass();
       },
 
-      doNonBlockClass () {
+      doNonBlockClass() {
         if (this.get().nonblock) {
           this.get()._notice.addModuleClass('nonblock');
         } else {
