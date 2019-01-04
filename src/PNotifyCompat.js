@@ -3,12 +3,21 @@ import PNotify from './PNotify.html';
 // Translate v3 options to v4 options.
 const translateOptions = (options, module, moduleName) => {
   // Merge the classic default options.
-  const newOptions = module ? Object.assign({}, moduleName ? PNotifyCompat.prototype.options[moduleName] : {}, options) : Object.assign({}, PNotifyCompat.prototype.options, options);
-  const translateName = (badName) => {
+  const newOptions = module
+    ? Object.assign(
+        {},
+        moduleName ? PNotifyCompat.prototype.options[moduleName] : {},
+        options
+      )
+    : Object.assign({}, PNotifyCompat.prototype.options, options);
+  const translateName = badName => {
     let goodName = badName;
     let underscoreIndex;
     while ((underscoreIndex = goodName.indexOf('_')) !== -1) {
-      goodName = goodName.slice(0, underscoreIndex) + goodName.slice(underscoreIndex + 1, underscoreIndex + 2).toUpperCase() + goodName.slice(underscoreIndex + 2);
+      goodName =
+        goodName.slice(0, underscoreIndex) +
+        goodName.slice(underscoreIndex + 1, underscoreIndex + 2).toUpperCase() +
+        goodName.slice(underscoreIndex + 2);
     }
     return goodName;
   };
@@ -61,42 +70,78 @@ const translateOptions = (options, module, moduleName) => {
     // Translate module options.
     newOptions.modules = {};
     if (newOptions.hasOwnProperty('animate')) {
-      newOptions.modules.Animate = translateOptions(newOptions.animate, true, 'animate');
+      newOptions.modules.Animate = translateOptions(
+        newOptions.animate,
+        true,
+        'animate'
+      );
       delete newOptions.animate;
     }
     if (newOptions.hasOwnProperty('buttons')) {
-      newOptions.modules.Buttons = translateOptions(newOptions.buttons, true, 'buttons');
+      newOptions.modules.Buttons = translateOptions(
+        newOptions.buttons,
+        true,
+        'buttons'
+      );
       delete newOptions.buttons;
       if (newOptions.modules.Buttons.classes) {
-        newOptions.modules.Buttons.classes = translateOptions(newOptions.modules.Buttons.classes, true);
+        newOptions.modules.Buttons.classes = translateOptions(
+          newOptions.modules.Buttons.classes,
+          true
+        );
       }
     }
     if (newOptions.hasOwnProperty('confirm')) {
-      newOptions.modules.Confirm = translateOptions(newOptions.confirm, true, 'confirm');
+      newOptions.modules.Confirm = translateOptions(
+        newOptions.confirm,
+        true,
+        'confirm'
+      );
       if (newOptions.modules.Confirm.promptDefault) {
-        newOptions.modules.Confirm.promptValue = newOptions.modules.Confirm.promptDefault;
+        newOptions.modules.Confirm.promptValue =
+          newOptions.modules.Confirm.promptDefault;
         delete newOptions.modules.Confirm.promptDefault;
       }
       delete newOptions.confirm;
     }
     if (newOptions.hasOwnProperty('desktop')) {
-      newOptions.modules.Desktop = translateOptions(newOptions.desktop, true, 'desktop');
+      newOptions.modules.Desktop = translateOptions(
+        newOptions.desktop,
+        true,
+        'desktop'
+      );
       delete newOptions.desktop;
     }
     if (newOptions.hasOwnProperty('history')) {
-      newOptions.modules.History = translateOptions(newOptions.history, true, 'history');
+      newOptions.modules.History = translateOptions(
+        newOptions.history,
+        true,
+        'history'
+      );
       delete newOptions.history;
     }
     if (newOptions.hasOwnProperty('mobile')) {
-      newOptions.modules.Mobile = translateOptions(newOptions.mobile, true, 'mobile');
+      newOptions.modules.Mobile = translateOptions(
+        newOptions.mobile,
+        true,
+        'mobile'
+      );
       delete newOptions.mobile;
     }
     if (newOptions.hasOwnProperty('nonblock')) {
-      newOptions.modules.NonBlock = translateOptions(newOptions.nonblock, true, 'nonblock');
+      newOptions.modules.NonBlock = translateOptions(
+        newOptions.nonblock,
+        true,
+        'nonblock'
+      );
       delete newOptions.nonblock;
     }
     if (newOptions.hasOwnProperty('reference')) {
-      newOptions.modules.Reference = translateOptions(newOptions.reference, true, 'reference');
+      newOptions.modules.Reference = translateOptions(
+        newOptions.reference,
+        true,
+        'reference'
+      );
       delete newOptions.reference;
     }
     if (newOptions.hasOwnProperty('beforeInit')) {
@@ -148,9 +193,9 @@ const translateOptions = (options, module, moduleName) => {
 
 // The compatibility class.
 class PNotifyCompat extends PNotify {
-  constructor (options) {
+  constructor(options) {
     if (typeof options !== 'object') {
-      options = { 'text': options };
+      options = { text: options };
     }
 
     // These need to be called directly, since we're not using PNotify.alert().
@@ -164,20 +209,25 @@ class PNotifyCompat extends PNotify {
 
     // Override the get function to return the element like it did in v3.
     const _get = this.get;
-    this.get = function (option) {
+    this.get = function(option) {
       if (option === undefined) {
-        return Object.assign(window.jQuery ? window.jQuery(this.refs.elem) : this.refs.elem, _get.call(this));
+        return Object.assign(
+          window.jQuery ? window.jQuery(this.refs.elem) : this.refs.elem,
+          _get.call(this)
+        );
       }
       return _get.call(this, option);
     };
 
     // Confirm module events.
-    this.on('pnotify.confirm', (e) => {
+    this.on('pnotify.confirm', e => {
       if (window.jQuery) {
-        window.jQuery(this.refs.elem).trigger('pnotify.confirm', [this, e.value]);
+        window
+          .jQuery(this.refs.elem)
+          .trigger('pnotify.confirm', [this, e.value]);
       }
     });
-    this.on('pnotify.cancel', (e) => {
+    this.on('pnotify.cancel', e => {
       if (window.jQuery) {
         window.jQuery(this.refs.elem).trigger('pnotify.cancel', this);
       }
@@ -188,7 +238,7 @@ class PNotifyCompat extends PNotify {
     }
   }
 
-  update (options) {
+  update(options) {
     options = translateOptions(options);
     return super.update(options);
   }
@@ -203,8 +253,8 @@ PNotifyCompat.prototype.options = {
 // Forward static functions.
 PNotifyCompat.reload = () => PNotifyCompat;
 PNotifyCompat.removeAll = () => PNotify.removeAll();
-PNotifyCompat.removeStack = (stack) => PNotify.removeStack(stack);
-PNotifyCompat.positionAll = (animate) => PNotify.positionAll(animate);
+PNotifyCompat.removeStack = stack => PNotify.removeStack(stack);
+PNotifyCompat.positionAll = animate => PNotify.positionAll(animate);
 
 // Desktop module permission method.
 PNotifyCompat.desktop = {
@@ -216,7 +266,7 @@ PNotifyCompat.desktop = {
 // Old style showLast() in History module.
 if (window.jQuery) {
   window.jQuery(() => {
-    window.jQuery(document.body).on('pnotify.history-last', function () {
+    window.jQuery(document.body).on('pnotify.history-last', function() {
       PNotify.modules.History.showLast();
     });
   });
