@@ -1,0 +1,6 @@
+{
+  "parser": "babylon",
+  "singleQuote": true,
+  "printWidth": 80,
+  "semi": true
+}
