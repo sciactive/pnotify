@@ -1,7 +1,7 @@
 {
   "name": "pnotify",
   "version": "4.0.0",
-  "description": "Beautiful dependency free notifications.",
+  "description": "Beautiful dependency free notifications and prompts.",
   "keywords": [
     "notice",
     "notices",
