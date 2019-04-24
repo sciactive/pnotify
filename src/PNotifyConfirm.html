@@ -72,6 +72,8 @@
         promptValue: '',
         // Whether the prompt should accept multiple lines of text.
         promptMultiLine: false,
+        // For confirmation boxes, true means the first button or the button with promptTrigger will be focused, and null means focus will change only for modal notices. For prompts, true or null means focus the prompt. When false, focus will not change.
+        focus: null,
         // Where to align the buttons. (flex-start, center, flex-end, space-around, space-between)
         align: 'flex-end',
         // The buttons to display, and their callbacks.
@@ -156,13 +158,18 @@
       },
 
       afterOpen () {
-        if (this.get().prompt) {
+        if (this.get().prompt && this.get().focus !== false) {
           if (this.get().promptMultiLine) {
             this.refs.promptMulti.focus();
           } else {
             this.refs.promptSingle.focus();
           }
-        } else if (this.get().confirm && this.get()._options.stack.modal) {
+        } else if (this.get().confirm &&
+          (
+            this.get().focus === true ||
+            (this.get().focus === null && this.get()._options.stack.modal)
+          )
+        ) {
           const buttons = this.get().buttons;
           if (buttons.length) {
             let i = buttons.length - 1;

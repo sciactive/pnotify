@@ -1,6 +1,6 @@
 [![npm version](https://badge.fury.io/js/pnotify.svg)](https://www.npmjs.com/package/pnotify) [![Waffle.io - Columns and their card count](https://badge.waffle.io/sciactive/pnotify.svg?columns=all)](https://waffle.io/sciactive/pnotify) [![jsDelivr Hits](https://data.jsdelivr.com/v1/package/npm/pnotify/badge?style=rounded)](https://www.jsdelivr.com/package/npm/pnotify)
 
-PNotify is a vanilla JavaScript notification library. PNotify can provide [desktop notifications](http://sciactive.com/pnotify/#web-notifications) based on the [Web Notifications spec](http://www.w3.org/TR/notifications/) with fall back to an in-browser notice.
+PNotify is a vanilla JavaScript notification and [confirmation/prompt](http://sciactive.com/pnotify/#confirm-module) library. PNotify can provide [desktop notifications](http://sciactive.com/pnotify/#web-notifications) based on the [Web Notifications spec](http://www.w3.org/TR/notifications/) with fall back to an in-browser notice.
 
 <h1>Demos</h1>
 
@@ -9,7 +9,7 @@ PNotify is a vanilla JavaScript notification library. PNotify can provide [deskt
 
 <h1>Table of Contents</h1>
 
-<!-- TOC START min:1 max:3 link:true update:true -->
+<!-- TOC START min:1 max:3 link:true asterisk:false update:true -->
 - [Whoa there!](#whoa-there)
   - [Running PNotify 3 Code with the Compat Module](#running-pnotify-3-code-with-the-compat-module)
 - [Getting Started](#getting-started)
@@ -46,7 +46,6 @@ PNotify is a vanilla JavaScript notification library. PNotify can provide [deskt
   - [Example Stack](#example-stack)
 - [Features](#features)
 - [Licensing and Additional Info](#licensing-and-additional-info)
-
 <!-- TOC END -->
 
 # Whoa there!
@@ -464,6 +463,7 @@ The Animate module also creates a method, `attention`, on notices which accepts 
 
 `Confirm: {`
 * `confirm: false` - Make a confirmation box.
+* `focus: null` - For confirmation boxes, true means the first button or the button with promptTrigger will be focused, and null means focus will change only for modal notices. For prompts, true or null means focus the prompt. When false, focus will not change.
 * `prompt: false` - Make a prompt.
 * `promptClass: ''` - Classes to add to the input element of the prompt.
 * `promptValue: ''` - The value of the prompt. (Note that this is two-way bound to the input.)
