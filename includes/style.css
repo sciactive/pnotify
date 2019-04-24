@@ -2,14 +2,12 @@
 SciActive Mini-Project Page Styling
 Copyright (C) 2012 SciActive.com. All Rights Reserved.
 */
-.page-banner, .page-section {
-  margin-bottom: 8rem;
-}
 .page-banner {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  margin-top: 8rem;
+  margin-top: 9rem;
+  margin-bottom: 9rem;
 }
 .page-banner h1 {
   font-size: 70px;
@@ -22,6 +20,9 @@ Copyright (C) 2012 SciActive.com. All Rights Reserved.
 }
 .page-banner .btn-lg {
   font-size: 26px;
+}
+.page-section {
+  margin-bottom: 8rem;
 }
 #copyright {
   text-align: center;
