@@ -15,50 +15,49 @@
   <meta property="og:description" content="JavaScript notification plugin." />
 
   <!-- Dev Notice -->
-  <link href="devnote.css" rel="stylesheet" type="text/css" />
+  <link href="devnote.css" rel="stylesheet" />
 
   <!-- Page Style -->
-  <link href="includes/style.css" rel="stylesheet" type="text/css" />
+  <link href="includes/style.css" rel="stylesheet" />
 
   <!-- Animate.css -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css" integrity="sha256-HtCCUh9Hkh//8U1OwcbD8epVEUdBvuI8wj1KtqMhNkI=" crossorigin="anonymous" />
 
   <!-- NonBlock.js -->
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/nonblockjs@1/NonBlock.es5.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/nonblockjs@1.0.8/NonBlock.es5.js" integrity="sha256-ya57jZves9vI0hPcq0IoJMrIuwwk9w01CvkvG5xJQ1s=" crossorigin="anonymous"></script>
 
   <!-- jQuery -->
-  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.slim.min.js" integrity="sha256-ZaXnYkHGqIhqTbJ6MB4l9Frs/r7U4jlx7ir8PJYBqbI=" crossorigin="anonymous"></script>
 
   <!-- Bootstrap -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" id="bootstrap-css" crossorigin="anonymous">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+  <link id="bootstrap-css" rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" crossorigin="anonymous" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.15.0/umd/popper.min.js" integrity="sha256-fTuUgtT7O2rqoImwjrhDgbXTKUwyxxujIMRIK7TbuNU=" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha256-CjSoeELFOcH0/uxWu6mC/Vlrc1AARqbm/jiiImDGV3s=" crossorigin="anonymous"></script>
 
   <!-- FontAwesome -->
   <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/all.js"></script>
 
   <!-- Material Design Icons Font -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Material+Icons" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
   <!-- JavaScript Source Formatting -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/vs2015.min.css">
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-  <script type="text/javascript" src="https://cdn.rawgit.com/google/code-prettify/master/loader/prettify.js"></script>
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.7.5/beautify.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/atom-one-dark.min.css" integrity="sha256-GA29iW/iYj9FcuQQktvW45pRzHvZeFfgeFvA4tGVjpM=" crossorigin="anonymous" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js" integrity="sha256-aYTdUrn6Ow1DDgh5JTc3aDGnnju48y/1c8s1dgkYPQ8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.9.1/beautifier.min.js" integrity="sha256-Xxb+TZZppAU2ZHE+jU0Flp+TDTw9KTyXPsTz3bCRzaQ=" crossorigin="anonymous"></script>
 
   <!-- PNotify -->
-  <script type="text/javascript" src="lib/iife/PNotify.js"></script>
-  <link href="src/PNotifyBrightTheme.css" rel="stylesheet" type="text/css" />
-  <script type="text/javascript" src="lib/iife/PNotifyButtons.js"></script>
-  <script type="text/javascript" src="lib/iife/PNotifyAnimate.js"></script>
-  <script type="text/javascript" src="lib/iife/PNotifyCallbacks.js"></script>
-  <script type="text/javascript" src="lib/iife/PNotifyNonBlock.js"></script>
-  <script type="text/javascript" src="lib/iife/PNotifyMobile.js"></script>
-  <script type="text/javascript" src="lib/iife/PNotifyHistory.js"></script>
-  <script type="text/javascript" src="lib/iife/PNotifyDesktop.js"></script>
-  <script type="text/javascript" src="lib/iife/PNotifyConfirm.js"></script>
-  <script type="text/javascript" src="lib/iife/PNotifyStyleMaterial.js"></script>
-  <script type="text/javascript" src="lib/iife/PNotifyReference.js"></script>
+  <script src="lib/iife/PNotify.js"></script>
+  <link rel="stylesheet" href="src/PNotifyBrightTheme.css" />
+  <script src="lib/iife/PNotifyButtons.js"></script>
+  <script src="lib/iife/PNotifyAnimate.js"></script>
+  <script src="lib/iife/PNotifyCallbacks.js"></script>
+  <script src="lib/iife/PNotifyNonBlock.js"></script>
+  <script src="lib/iife/PNotifyMobile.js"></script>
+  <script src="lib/iife/PNotifyHistory.js"></script>
+  <script src="lib/iife/PNotifyDesktop.js"></script>
+  <script src="lib/iife/PNotifyConfirm.js"></script>
+  <script src="lib/iife/PNotifyStyleMaterial.js"></script>
+  <script src="lib/iife/PNotifyReference.js"></script>
 
   <!-- Custom Styling -->
   <style type="text/css">
@@ -173,6 +172,12 @@
           <li class="nav-item"><a class="nav-link" href="#comments">Comments</a></li>
         </ul>
         <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="https://github.com/sciactive/pnotify" title="Fork me on GitHub"><i class="fab fa-github"></i></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="https://twitter.com/sciactive" title="Follow me on Twitter"><i class="fab fa-twitter"></i></a>
+          </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Beyond PNotify
@@ -197,29 +202,29 @@
           Theme: <span id="bootstrap-current">Normal</span>
         </button>
         <div class="dropdown-menu" aria-labelledby="bootswatch-dropdown" style="max-height: 450px; overflow-y: auto;">
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">Normal</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">Normal</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/cerulean/bootstrap.min.css">Cerulean</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/cosmo/bootstrap.min.css">Cosmo</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/cyborg/bootstrap.min.css">Cyborg</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/darkly/bootstrap.min.css">Darkly</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/flatly/bootstrap.min.css">Flatly</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/journal/bootstrap.min.css">Journal</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/litera/bootstrap.min.css">Litera</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/lumen/bootstrap.min.css">Lumen</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/lux/bootstrap.min.css">LUX</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/materia/bootstrap.min.css">Materia</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/minty/bootstrap.min.css">Minty</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/pulse/bootstrap.min.css">Pulse</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/sandstone/bootstrap.min.css">Sandstone</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/simplex/bootstrap.min.css">Simplex</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/sketchy/bootstrap.min.css">Sketchy</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/slate/bootstrap.min.css">Slate</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/solar/bootstrap.min.css">Solar</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/spacelab/bootstrap.min.css">Spacelab</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/superhero/bootstrap.min.css">Superhero</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/united/bootstrap.min.css">United</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/yeti/bootstrap.min.css">Yeti</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/cerulean/bootstrap.min.css">Cerulean</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/cosmo/bootstrap.min.css">Cosmo</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/cyborg/bootstrap.min.css">Cyborg</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/darkly/bootstrap.min.css">Darkly</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/flatly/bootstrap.min.css">Flatly</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/journal/bootstrap.min.css">Journal</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/litera/bootstrap.min.css">Litera</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/lumen/bootstrap.min.css">Lumen</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/lux/bootstrap.min.css">LUX</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/materia/bootstrap.min.css">Materia</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/minty/bootstrap.min.css">Minty</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/pulse/bootstrap.min.css">Pulse</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/sandstone/bootstrap.min.css">Sandstone</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/simplex/bootstrap.min.css">Simplex</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/sketchy/bootstrap.min.css">Sketchy</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/slate/bootstrap.min.css">Slate</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/solar/bootstrap.min.css">Solar</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/spacelab/bootstrap.min.css">Spacelab</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/superhero/bootstrap.min.css">Superhero</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/united/bootstrap.min.css">United</a>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/yeti/bootstrap.min.css">Yeti</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="http://bootswatch.com/" target="_blank">Themes by Bootswatch</a>
         </div>
@@ -241,32 +246,8 @@
   </div>
 
   <section class="container page-banner">
-    <div>
-      <h1>PNotify</h1>
-      <h3>4-<abbr title="it should be safe to use, but please report any problems">beta</abbr></h3>
-      <p id="description">Beautiful <a href="demo/nodependencies.html" target="_blank">dependency free</a> notifications.</p>
-    </div>
-    <div>
-      <a class="btn btn-primary btn-lg my-3" href="https://github.com/sciactive/pnotify" target="_blank" title="Fork me on GitHub">PNotify on GitHub <i class="fab fa-github"></i></a>
-      <a class="btn btn-secondary btn-lg my-3" href="https://github.com/sciactive/pnotify/issues/new" target="_blank" title="Fork me on GitHub">Bug Report/Feature Request</a>
-    </div>
-  </section>
-
-  <div class="container page-section">
-    <div class="my-3">
-      <h2>About PNotify</h2>
-      <hr />
-    </div>
-    <p>
-      PNotify is a JavaScript notification library, developed by
-      <a href="https://github.com/sciactive/">SciActive</a>.
-    </p>
-    <p>
-      PNotify provides desktop notifications based on the
-      <a href="http://www.w3.org/TR/notifications/" target="_blank">Web Notifications spec</a>.
-      If desktop notifications are not available or not allowed, PNotify will
-      fall back to displaying the notice as a regular, in-browser notice.
-    </p>
+    <h1>PNotify</h1>
+    <p id="description">Beautiful <a href="demo/nodependencies.html" target="_blank">dependency free</a> notifications and prompts.</p>
     <div class="row align-items-stretch">
       <div class="col-md-4 my-3">
         <div class="card" style="height: 100%;">
@@ -315,7 +296,7 @@
         <p class="mb-0">This is the development site. It demos bleeding edge features that may not work.</p>
       </div>
     </div>
-  </div>
+  </section>
 
   <div id="demos-simple" class="container page-section">
     <div class="my-3">
@@ -2719,7 +2700,7 @@ PNotify.notice({
 
       var addPrettyCode = function (code, where) {
         code = code.replace(/(?:var )?sourceNote = ['"](.*)['"];$/gm, '// $1');
-        var codeBlock = $('<code class="js" />').text(window.js_beautify(code, { indent_size: 2 }));
+        var codeBlock = $('<code class="js" />').text(window.beautifier.js(code, { indent_size: 2 }));
         $('<pre />').append(codeBlock).appendTo(where);
         window.hljs.highlightBlock(codeBlock.get(0));
       };
@@ -2732,11 +2713,11 @@ PNotify.notice({
         makeSourceButton(this);
       });
 
-      window.hljs.initHighlightingOnLoad(); // Format source in help.
-
       // Navbar scrollspy.
       $('#navbar').scrollspy();
     });
+
+    window.hljs.initHighlightingOnLoad(); // Format source in help.
   </script>
 
   <script>
