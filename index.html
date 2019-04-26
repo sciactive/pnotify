@@ -50,14 +50,14 @@
   <link rel="stylesheet" href="src/PNotifyBrightTheme.css" />
   <script src="lib/iife/PNotifyButtons.js"></script>
   <script src="lib/iife/PNotifyAnimate.js"></script>
-  <script src="lib/iife/PNotifyCallbacks.js"></script>
-  <script src="lib/iife/PNotifyNonBlock.js"></script>
-  <script src="lib/iife/PNotifyMobile.js"></script>
-  <script src="lib/iife/PNotifyHistory.js"></script>
-  <script src="lib/iife/PNotifyDesktop.js"></script>
+  <!-- <script src="lib/iife/PNotifyCallbacks.js"></script> -->
+  <!-- <script src="lib/iife/PNotifyNonBlock.js"></script> -->
+  <!-- <script src="lib/iife/PNotifyMobile.js"></script> -->
+  <!-- <script src="lib/iife/PNotifyHistory.js"></script> -->
+  <!-- <script src="lib/iife/PNotifyDesktop.js"></script> -->
   <script src="lib/iife/PNotifyConfirm.js"></script>
-  <script src="lib/iife/PNotifyStyleMaterial.js"></script>
-  <script src="lib/iife/PNotifyReference.js"></script>
+  <!-- <script src="lib/iife/PNotifyStyleMaterial.js"></script> -->
+  <!-- <script src="lib/iife/PNotifyReference.js"></script> -->
 
   <!-- Custom Styling -->
   <style type="text/css">
@@ -121,36 +121,36 @@
   <script type="text/javascript">
     /* eslint-env browser, jquery */
     /* globals PNotify */
-    $(function () {
-      // ---
-      // Notice that opens when the page opens.
-      // ---
-      PNotify.notice({
-        title: 'PNotify',
-        text: "Welcome. Try hovering over me. You can click things behind me, because I'm non-blocking.",
-        delay: 12000,
-        addClass: 'nonblock',
-        modules: {
-          Callbacks: {
-            beforeClose: function (notice) {
-              // You can access the notice's options like this.
-              // notice.get('text');
-
-              // You can change the notice's options like this:
-              // notice.update({
-              //   title: notice.get('title') + ' - Enjoy your Stay',
-              //   modules: {
-              //     Callbacks: {}
-              //   }
-              // });
-
-              // notice.queueClose();
-              // return false;
-            }
-          }
-        }
-      });
-    });
+    // $(function () {
+    //   // ---
+    //   // Notice that opens when the page opens.
+    //   // ---
+    //   PNotify.notice({
+    //     title: 'PNotify',
+    //     text: "Welcome. Try hovering over me. You can click things behind me, because I'm non-blocking.",
+    //     delay: 12000,
+    //     addClass: 'nonblock',
+    //     modules: {
+    //       Callbacks: {
+    //         beforeClose: function (notice) {
+    //           // You can access the notice's options like this.
+    //           // notice.get('text');
+    //
+    //           // You can change the notice's options like this:
+    //           // notice.update({
+    //           //   title: notice.get('title') + ' - Enjoy your Stay',
+    //           //   modules: {
+    //           //     Callbacks: {}
+    //           //   }
+    //           // });
+    //
+    //           // notice.queueClose();
+    //           // return false;
+    //         }
+    //       }
+    //     }
+    //   });
+    // });
   </script>
 </head>
 <body id="page" data-spy="scroll" data-target=".navbar" data-offset="0" style="position: relative;">
@@ -1509,9 +1509,10 @@
             }
           });
           notice.on('pnotify.confirm', function (e) {
-            notice.cancelClose().update({
+            notice.cancelClose();
+            notice.update({
               title: 'You\'ve Chosen a Side',
-              text: 'You want ' + e.value + '.',
+              text: 'You want ' + e.detail.value + '.',
               icon: true,
               type: 'info',
               hide: true,
@@ -1526,8 +1527,9 @@
               }
             });
           });
-          notice.on('pnotify.cancel', function (e) {
-            notice.cancelClose().update({
+          notice.on('pnotify.cancel', function () {
+            notice.cancelClose();
+            notice.update({
               title: 'You Don\'t Want a Side',
               text: 'No soup for you!',
               icon: true,
@@ -1567,9 +1569,10 @@
             }
           });
           notice.on('pnotify.confirm', function (e) {
-            notice.cancelClose().update({
+            notice.cancelClose();
+            notice.update({
               title: 'Your Poem',
-              text: e.value,
+              text: e.detail.value,
               icon: true,
               type: 'info',
               hide: true,
@@ -1584,8 +1587,9 @@
               }
             });
           });
-          notice.on('pnotify.cancel', function (e) {
-            notice.cancelClose().update({
+          notice.on('pnotify.cancel', function () {
+            notice.cancelClose();
+            notice.update({
               title: 'You Don\'t Like Poetry',
               text: 'Roses are dead,\nViolets are dead,\nI suck at gardening.',
               icon: true,
@@ -1927,11 +1931,6 @@
             }
           });
         ">Reference Module Notice</button>
-      </div>
-
-      <h5 class="card-header">Compat Module <small>A backward compatibility module to run PNotify 3 code with PNotify 4.</small></h5>
-      <div class="card-body">
-        Check out the Compat demos in <a href="demo/compat-iife.html" target="_blank">IIFE</a> and <a href="demo/compat-umd.html" target="_blank">UMD</a>.
       </div>
     </div>
   </div>

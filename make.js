@@ -7,18 +7,14 @@ require('shelljs/make');
 
 let pnotifySrc = {
   // Main code.
-  'core': 'PNotify.html',
+  'core': 'PNotifyCore.html',
   'animate': 'PNotifyAnimate.html',
   'buttons': 'PNotifyButtons.html',
   'callbacks': 'PNotifyCallbacks.html',
-  'nonblock': 'PNotifyNonBlock.html',
   'mobile': 'PNotifyMobile.html',
   'history': 'PNotifyHistory.html',
   'desktop': 'PNotifyDesktop.html',
   'confirm': 'PNotifyConfirm.html',
-
-  // Compat module.
-  'compat': 'PNotifyCompat.js',
 
   // Styles.
   'stylematerial': 'PNotifyStyleMaterial.html',
@@ -29,11 +25,10 @@ let pnotifySrc = {
 
 let pnotifyJs = {
   // Main code.
-  'core': 'PNotify.js',
+  'core': 'PNotifyCore.js',
   'animate': 'PNotifyAnimate.js',
   'buttons': 'PNotifyButtons.js',
   'callbacks': 'PNotifyCallbacks.js',
-  'nonblock': 'PNotifyNonBlock.js',
   'mobile': 'PNotifyMobile.js',
   'history': 'PNotifyHistory.js',
   'desktop': 'PNotifyDesktop.js',
@@ -132,25 +127,12 @@ let compileJs = (module, filename, args) => {
   // Compile.
   if (isSvelte) {
     // Use Svelte to compile the code first.
-    const svelte = require('svelte');
+    const svelte = require('svelte/compiler');
     const { js } = svelte.compile(code, {
-      format: format,
+      format: format === 'es' ? 'esm' : format,
       filename: srcFilename,
       name: filename.replace(/\.html$/, ''),
-      amd: {
-        id: filename.replace(/\.html$/, '')
-      },
-      globals: {
-        './PNotify.html': 'PNotify'
-      },
-      onerror: err => {
-        console.error(err);
-      },
-      onwarn: warning => {
-        console.warn(warning);
-      },
-      css: true,
-      cascade: false
+      css: true
     });
     ({ code, map } = js);
     [inputCode, inputMap] = [code, map];

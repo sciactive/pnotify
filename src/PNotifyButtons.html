@@ -1,148 +1,150 @@
+<script context="module">
+  import PNotify from './PNotifyCoreLoader';
+
+  export const key = 'Buttons';
+
+  export const defaults = {
+    // Provide a button for the user to manually close the notice.
+    closer: true,
+    // Only show the closer button on hover.
+    closerHover: true,
+    // Provide a button for the user to manually stick the notice.
+    sticker: true,
+    // Only show the sticker button on hover.
+    stickerHover: true,
+    // The various displayed text, helps facilitating internationalization.
+    labels: {
+      close: 'Close',
+      stick: 'Stick',
+      unstick: 'Unstick'
+    },
+    // The classes to use for button icons. Leave them null to use the classes from the styling you're using.
+    classes: {
+      closer: null,
+      pinUp: null,
+      pinDown: null
+    }
+  };
+
+  // Add button icons to icons objects.
+  Object.assign(PNotify.icons.brighttheme, {
+    closer: 'brighttheme-icon-closer',
+    pinUp: 'brighttheme-icon-sticker',
+    pinDown: 'brighttheme-icon-sticker brighttheme-icon-stuck'
+  });
+  Object.assign(PNotify.icons.bootstrap3, {
+    closer: 'glyphicon glyphicon-remove',
+    pinUp: 'glyphicon glyphicon-pause',
+    pinDown: 'glyphicon glyphicon-play'
+  });
+  Object.assign(PNotify.icons.fontawesome4, {
+    closer: 'fa fa-times',
+    pinUp: 'fa fa-pause',
+    pinDown: 'fa fa-play'
+  });
+  Object.assign(PNotify.icons.fontawesome5, {
+    closer: 'fas fa-times',
+    pinUp: 'fas fa-pause',
+    pinDown: 'fas fa-play'
+  });
+</script>
+
 {#if _showCloser}
   <div
       class="ui-pnotify-closer {(!closerHover || _mouseIsIn) ? '' : 'ui-pnotify-buttons-hidden'}"
       role="button"
       tabindex="0"
-      title="{labels.close}"
-      on:click="handleCloserClick()">
-    <span class="{_closerClass}"></span>
+      title={labels.close}
+      on:click={handleCloserClick}>
+    <span class={_closerClass}></span>
   </div>
 {/if}
 {#if _showSticker}
   <div
       class="ui-pnotify-sticker {(!stickerHover || _mouseIsIn) ? '' : 'ui-pnotify-buttons-hidden'}"
       role="button"
-      aria-pressed="{_options.hide}"
+      aria-pressed={_options.hide}
       tabindex="0"
-      title="{_options.hide ? labels.stick : labels.unstick}"
-      on:click="handleStickerClick()">
-    <span class="{_options.hide ? _pinUpClass : _pinDownClass}"></span>
+      title={_options.hide ? labels.stick : labels.unstick}
+      on:click={handleStickerClick}>
+    <span class={_options.hide ? _pinUpClass : _pinDownClass}></span>
   </div>
 {/if}
 
 <script>
-  import PNotify from './PNotify.html';
+  import { onMount, tick, createEventDispatcher } from 'svelte';
 
-  export default {
-    setup (Component) {
-      Component.key = 'Buttons';
+  const dispatch = createEventDispatcher();
 
-      Component.defaults = {
-        // Provide a button for the user to manually close the notice.
-        closer: true,
-        // Only show the closer button on hover.
-        closerHover: true,
-        // Provide a button for the user to manually stick the notice.
-        sticker: true,
-        // Only show the sticker button on hover.
-        stickerHover: true,
-        // The various displayed text, helps facilitating internationalization.
-        labels: {
-          close: 'Close',
-          stick: 'Stick',
-          unstick: 'Unstick'
-        },
-        // The classes to use for button icons. Leave them null to use the classes from the styling you're using.
-        classes: {
-          closer: null,
-          pinUp: null,
-          pinDown: null
-        }
-      };
+  // The PNotify notice.
+  export let _notice = null;
+  // The props for the notice.
+  export let _options = {};
 
-      // Register the module with PNotify.
-      PNotify.modules.Buttons = Component;
-      // Prepend this module to the container.
-      PNotify.modulesPrependContainer.push(Component);
+  export let closer = defaults.closer;
+  export let closerHover = defaults.closerHover;
+  export let sticker = defaults.sticker;
+  export let stickerHover = defaults.stickerHover;
+  export let labels = defaults.labels;
+  export let classes = defaults.classes;
 
-      // Add button icons to icons objects.
-      Object.assign(PNotify.icons.brighttheme, {
-        closer: 'brighttheme-icon-closer',
-        pinUp: 'brighttheme-icon-sticker',
-        pinDown: 'brighttheme-icon-sticker brighttheme-icon-stuck'
-      });
-      Object.assign(PNotify.icons.bootstrap3, {
-        closer: 'glyphicon glyphicon-remove',
-        pinUp: 'glyphicon glyphicon-pause',
-        pinDown: 'glyphicon glyphicon-play'
-      });
-      Object.assign(PNotify.icons.fontawesome4, {
-        closer: 'fa fa-times',
-        pinUp: 'fa fa-pause',
-        pinDown: 'fa fa-play'
-      });
-      Object.assign(PNotify.icons.fontawesome5, {
-        closer: 'fas fa-times',
-        pinUp: 'fas fa-pause',
-        pinDown: 'fas fa-play'
-      });
-    },
+  let _mouseIsIn = false;
+  let _updatingIcon = false;
 
-    oncreate () {
-      this.fire('init', { module: this });
-    },
+  // Whether to show the sticker icon.
+  $: _showSticker = sticker && !(_notice && _notice.refs.elem.classList.contains('nonblock'));
+  // Whether to show the closer icon.
+  $: _showCloser = closer && !(_notice && _notice.refs.elem.classList.contains('nonblock'));
+  // These are button icon classes.
+  $: _pinUpClass = _notice ? (classes.pinUp === null ? _notice.getIcons().pinUp : classes.pinUp) : '';
+  $: _pinDownClass = _notice ? (classes.pinDown === null ? _notice.getIcons().pinDown : classes.pinDown) : '';
+  $: _closerClass = _notice ? (classes.closer === null ? _notice.getIcons().closer : classes.closer) : '';
 
-    data () {
-      return Object.assign({
-        '_notice': null, // The PNotify notice.
-        '_options': {}, // The options for the notice.
-        '_mouseIsIn': false
-      }, PNotify.modules.Buttons.defaults);
-    },
+  $: async () => {
+    if (_updatingIcon) {
+      return;
+    }
 
-    computed: {
-      // Whether to show the sticker icon.
-      _showSticker: ({ sticker, _notice }) => sticker && !(_notice && _notice.refs.elem.classList.contains('nonblock')),
-      // Whether to show the closer icon.
-      _showCloser: ({ closer, _notice }) => closer && !(_notice && _notice.refs.elem.classList.contains('nonblock')),
-      // These are button icon classes.
-      _pinUpClass: ({ classes, _notice }) => _notice ? (classes.pinUp === null ? _notice.get()._icons.pinUp : classes.pinUp) : '',
-      _pinDownClass: ({ classes, _notice }) => _notice ? (classes.pinDown === null ? _notice.get()._icons.pinDown : classes.pinDown) : '',
-      _closerClass: ({ classes, _notice }) => _notice ? (classes.closer === null ? _notice.get()._icons.closer : classes.closer) : ''
-    },
+    if (!sticker) {
+      return;
+    }
 
-    methods: {
-      initModule (options) {
-        this.set(options);
-        const { _notice } = this.get();
-        _notice.on('mouseenter', () => this.set({ '_mouseIsIn': true }));
-        _notice.on('mouseleave', () => this.set({ '_mouseIsIn': false }));
-        _notice.on('state', ({ changed, current }) => {
-          if (!changed.hide) {
-            return;
-          }
-
-          const { sticker } = this.get();
-
-          if (!sticker) {
-            return;
-          }
-
-          // Font Awesome 5 replaces our lovely element with a gross SVG. In
-          // order to make it play nice with Svelte, we have to clear the
-          // element and make it again.
-          const icon = current.hide ? this.get().classes.pinUp : this.get().classes.pinDown;
-          if (
-            (this.get()._notice.get().icons === 'fontawesome5') ||
-            (typeof icon === 'string' && icon.match(/(^| )fa[srlb]($| )/))
-          ) {
-            this.set({ 'sticker': false });
-            this.set({ 'sticker': true });
-          }
-        });
-      },
-
-      handleStickerClick () {
-        const { _notice } = this.get();
-        _notice.update({ hide: !_notice.get().hide });
-      },
-
-      handleCloserClick () {
-        this.get()._notice.close(false);
-        this.set({ '_mouseIsIn': false });
-      }
+    // Font Awesome 5 replaces our lovely element with a gross SVG. In
+    // order to make it play nice with Svelte, we have to clear the
+    // element and make it again.
+    const icon = _options.hide ? classes.pinUp : classes.pinDown;
+    if (
+      (_options.icons === 'fontawesome5') ||
+      (typeof icon === 'string' && icon.match(/(^| )fa[srlb]($| )/))
+    ) {
+      sticker = false;
+      _updatingIcon = true;
+      await tick();
+      sticker = true;
+      _updatingIcon = false;
     }
   };
+
+  onMount(() => {
+    dispatch('init', {
+      key,
+      init
+    });
+  });
+
+  export function init () {
+    _notice.on('mouseenter', () => _mouseIsIn = true);
+    _notice.on('mouseleave', () => _mouseIsIn = false);
+  }
+
+  function handleStickerClick () {
+    _notice.update({ hide: !_options.hide });
+  }
+
+  function handleCloserClick () {
+    _notice.close(false);
+    _mouseIsIn = false;
+  }
 </script>
 
 <style>

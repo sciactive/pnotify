@@ -34,20 +34,26 @@
     "url": "https://github.com/sciactive/pnotify.git"
   },
   "scripts": {
-    "build": "npm run build-iife && npm run build-umd && npm run build-es",
-    "build-iife": "node make.js dist -- --format=iife",
-    "build-umd": "node make.js dist -- --format=umd",
-    "build-es": "node make.js dist -- --format=es",
-    "prepare": "npm run lint && npm run build",
+    "build": "npm run build-iife && npm run build-umd && npm run build-es && npm run build-css",
+    "build-iife": "npm run build-iife-core && npm run build-iife-modules",
+    "build-iife-core": "webpack --config webpack-config/config.iife.core.js",
+    "build-iife-modules": "webpack --config webpack-config/config.iife.modules.js",
+    "build-umd": "npm run build-umd-core && npm run build-umd-modules",
+    "build-umd-core": "webpack --config webpack-config/config.umd.core.js",
+    "build-umd-modules": "webpack --config webpack-config/config.umd.modules.js",
+    "build-es": "npm run build-es-core && npm run build-es-modules",
+    "build-es-core": "webpack --config webpack-config/config.es.core.js",
+    "build-es-modules": "webpack --config webpack-config/config.es.modules.js",
+    "build-css": "node make.js dist",
+    "prepare-off": "npm run lint && npm run build",
     "lint": "eslint index.html make.js src/*.html src/*.js demo/*"
   },
   "devDependencies": {
-    "babel-core": "^6.26.3",
-    "babel-plugin-add-module-exports": "^1.0.2",
-    "babel-plugin-iife-wrap": "^1.1.0",
-    "babel-plugin-transform-object-assign": "^6.22.0",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-stage-3": "^6.24.1",
+    "@babel/core": "^7.4.3",
+    "@babel/plugin-transform-classes": "^7.4.3",
+    "@babel/preset-env": "^7.4.3",
+    "babel-eslint": "^10.0.1",
+    "babel-loader": "^8.0.5",
     "clean-css": "^4.2.1",
     "eslint": "^5.16.0",
     "eslint-config-semistandard": "^13.0.0",
@@ -59,9 +65,12 @@
     "eslint-plugin-react": "^7.12.4",
     "eslint-plugin-standard": "^4.0.0",
     "shelljs": "^0.8.3",
-    "svelte": "^2.16.1",
+    "svelte": "^3.0.0",
+    "svelte-loader": "^2.13.3",
     "uglify-es": "3.3.9",
-    "uglify-js": "^3.5.7"
+    "uglify-js": "^3.5.7",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.3.0"
   },
   "dependencies": {}
 }
