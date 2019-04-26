@@ -11,7 +11,7 @@ PNotify is a vanilla JavaScript notification and [confirmation/prompt](http://sc
 
 <!-- TOC START min:1 max:3 link:true asterisk:false update:true -->
 - [Getting Started](#getting-started)
-  - [Migrating from PNotify 3](#migrating-from-pnotify-3)
+  - [Migrating from PNotify 4](#migrating-from-pnotify-4)
 - [Installation](#installation)
   - [Svelte](#svelte)
   - [React](#react)
@@ -32,7 +32,6 @@ PNotify is a vanilla JavaScript notification and [confirmation/prompt](http://sc
 - [Module Options](#module-options)
   - [Desktop Module](#desktop-module)
   - [Buttons Module](#buttons-module)
-  - [NonBlock Module](#nonblock-module)
   - [Mobile Module](#mobile-module)
   - [Animate Module](#animate-module)
   - [Confirm Module](#confirm-module)
@@ -61,7 +60,7 @@ npm install --save material-design-icons
 # If you plan to use the Animate module:
 npm install --save animate.css
 
-# If you plan to use the NonBlock module:
+# If you plan to use NonBlock.js for non-blocking notices:
 npm install --save nonblockjs
 ```
 
@@ -76,7 +75,7 @@ Inside the pnotify module directory:
 * `dist/umd` compressed UMD modules.liz
 * `dist/iife` compressed IIFE scripts.
 
-## [Migrating from PNotify 3](MIGRATING.md)
+## [Migrating from PNotify 4](MIGRATING.md)
 
 # Installation
 
@@ -273,7 +272,7 @@ PNotify.defaults.icons = 'fontawesome5'; // Font Awesome 5
 
 # Creating Notices
 
-To make a notice, use the helper functions:
+To make a notice, use the factory functions:
 
 ```js
 // Manually set the type.
@@ -294,18 +293,6 @@ PNotify.success({
 });
 PNotify.error({
   text: "I'm an error message."
-});
-```
-
-Or you can manually create a new notice with Svelte's component API (if you know what you're doing):
-
-```js
-new PNotify({
-  target: document.body,
-  data: {
-    text: "I'm an alert.",
-    type: 'notice'
-  }
 });
 ```
 
@@ -435,20 +422,6 @@ PNotify.defaults.modules = {
   Lets you change the displayed text, facilitating internationalization.
 * `classes: {closer: null, pinUp: null, pinDown: null}`<br>
   The classes to use for button icons. Leave them null to use the classes from the styling you're using.
-
-`}`
-
-> :information_source: In v4, it's no longer possible to show closer/sticker buttons when the notice is nonblocking.
-
-## NonBlock Module
-
-Requires [NonBlock.js](https://github.com/sciactive/nonblockjs) 1.0.8 or higher.
-
-**It is also deprecated and unnecessary in v4.** All it does is add the 'nonblock' class to your notice. You can do the same yourself with `addClass: 'nonblock'`.
-
-`NonBlock: {`
-* `nonblock: false`<br>
-  Use NonBlock.js to create a non-blocking notice. It lets the user click elements underneath it.
 
 `}`
 
@@ -600,12 +573,8 @@ The callback options all expect the value to be a callback function. If the func
   Create a notice with 'error' type.
 * `PNotify.closeAll()`<br>
   Close all notices.
-* `PNotify.removeAll()`<br>
-  Alias for closeAll(). (Deprecated)
 * `PNotify.closeStack(stack)`<br>
   Close all the notices in a stack.
-* `PNotify.removeStack(stack)`<br>
-  Alias for closeStack(stack). (Deprecated)
 * `PNotify.positionAll()`<br>
   Reposition all notices.
 * `PNotify.VERSION`<br>
@@ -617,9 +586,11 @@ The callback options all expect the value to be a callback function. If the func
 * `PNotify.notices`<br>
   An array of all active notices.
 * `PNotify.modules`<br>
-  This object holds all the PNotify modules.
-* `PNotify.styling`<br>
-  Styling objects.
+  This object holds all the PNotify module constructors.
+* `PNotify.styles`<br>
+  Styles objects.
+* `PNotify.icons`<br>
+  Icons objects.
 
 # Instance Methods and Properties
 
@@ -627,8 +598,6 @@ The callback options all expect the value to be a callback function. If the func
   Open the notice.
 * `notice.close()`<br>
   Close the notice.
-* `notice.remove()`<br>
-  Alias for close(). (Deprecated)
 * `notice.update(options)`<br>
   Update the notice with new options.
 * `notice.addModuleClass(...classNames)`<br>
@@ -650,19 +619,15 @@ The callback options all expect the value to be a callback function. If the func
 
 ## From the [Svelte Component API](https://svelte.technology/guide#component-api)
 
-* `notice.get(option)`<br>
-  Get the value of an option.
-* `notice.set(options)`<br>
-  You probably want to use `update(options)` instead. It has some special PNotify secret sauce to make sure your notice doesn't break.
-* `notice.observe(key, callback[, options])`<br>
-  Observe an option. See the Svelte docs for more info.
-* `notice.destroy()`<br>
-  Removes the component from the DOM and any observers/event listeners. You probably want to use `close()` instead. It will animate the notice out and you can open it again. Once you destroy it, you can't open it again.
+* `notice.$set(options)`<br>
+  You probably want to use `update(options)` instead. The Svelte API may change.
+* `notice.$destroy()`<br>
+  Removes the component from the DOM and any observers/event listeners. You probably want to use `close()` with `destroy: true` instead. It will animate the notice out.
 
 ## Events
 
 * `notice.on(eventName, callback)`<br>
-  Assign a callback to an event. Callback receives an `event` argument.
+  Assign a callback to an event. Callback receives an `event` argument with a `detail` prop.
 * `notice.fire(eventName, event)`<br>
   Fire an event.
 

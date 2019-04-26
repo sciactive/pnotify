@@ -1,27 +1,12 @@
-# Migrating from PNotify 3
+# Migrating from PNotify 4
 
-**PNotify 4** came along with some huge changes:
+**PNotify 5** has some breaking changes:
 
-* **jQuery is no longer required.** v4 doesn't require any libraries, actually.
-* It's built using [Svelte](http://svelte.technology), which means it compiles down to vanilla JS.
-* Has an ES module build.
-* Options are in camelCase instead of snake_case.
-* `text_escape`/`title_escape` replaced by `textTrusted`/`titleTrusted`, and default behavior changed.
-* `insert_brs` went away. (Now uses `white-space: pre-line;`.)
-* Default width raised to 360px.
-* NonBlock module spun off into its own project, [NonBlock.js](https://github.com/sciactive/nonblockjs).
-* There is a Compat module available to allow you to run PNotify 3 code with PNotify 4.
-
-## Running PNotify 3 Code with PNotifyCompat
-
-You can use `PNotifyCompat` instead of `PNotify` in order to run PNotify 3 code. Check out `demo/compat-*.html` for more examples.
-
-```js
-import PNotify from 'pnotify/dist/es/PNotifyCompat';
-
-new PNotify({
-  title: 'Regular Notice',
-  text: 'Check me out! I\'m a notice.',
-  text_escape: true // <-- old options work
-});
-```
+* It's built using [Svelte](http://svelte.technology) 3, which has a slightly different component API than Svelte 2.
+* Methods are no longer chainable.
+* The deprecated `remove()`, `removeAll()`, `cancelRemove()`, etc. methods have been removed.
+* The deprecated NonBlock module has been removed.
+* There is no longer a Compat module for running PNotify 3 code.
+* `notice.get()` is no longer available.
+* `PNotify.styling` renamed to `PNotify.styles`. (Only relevant for creating modules.)
+* In v5, using the factory functions is required. Using the `new` keyword will break your notice.

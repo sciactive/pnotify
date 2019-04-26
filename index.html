@@ -121,36 +121,36 @@
   <script type="text/javascript">
     /* eslint-env browser, jquery */
     /* globals PNotify */
-    // $(function () {
-    //   // ---
-    //   // Notice that opens when the page opens.
-    //   // ---
-    //   PNotify.notice({
-    //     title: 'PNotify',
-    //     text: "Welcome. Try hovering over me. You can click things behind me, because I'm non-blocking.",
-    //     delay: 12000,
-    //     addClass: 'nonblock',
-    //     modules: {
-    //       Callbacks: {
-    //         beforeClose: function (notice) {
-    //           // You can access the notice's options like this.
-    //           // notice.get('text');
-    //
-    //           // You can change the notice's options like this:
-    //           // notice.update({
-    //           //   title: notice.get('title') + ' - Enjoy your Stay',
-    //           //   modules: {
-    //           //     Callbacks: {}
-    //           //   }
-    //           // });
-    //
-    //           // notice.queueClose();
-    //           // return false;
-    //         }
-    //       }
-    //     }
-    //   });
-    // });
+    $(function () {
+      // ---
+      // Notice that opens when the page opens.
+      // ---
+      PNotify.notice({
+        title: 'PNotify',
+        text: "Welcome. Try hovering over me. You can click things behind me, because I'm non-blocking.",
+        delay: 12000,
+        addClass: 'nonblock',
+        modules: {
+          Callbacks: {
+            beforeClose: function (notice) {
+              // You can access the notice's options like this.
+              // notice.get('text');
+
+              // You can change the notice's options like this:
+              // notice.update({
+              //   title: notice.get('title') + ' - Enjoy your Stay',
+              //   modules: {
+              //     Callbacks: {}
+              //   }
+              // });
+
+              // notice.queueClose();
+              // return false;
+            }
+          }
+        }
+      });
+    });
   </script>
 </head>
 <body id="page" data-spy="scroll" data-target=".navbar" data-offset="0" style="position: relative;">
@@ -246,8 +246,11 @@
   </div>
 
   <section class="container page-banner">
-    <h1>PNotify</h1>
+    <h1>PNotify <small>v5 pre-alpha</small></h1>
     <p id="description">Beautiful <a href="demo/nodependencies.html" target="_blank">dependency free</a> notifications and prompts.</p>
+    <p class="dev-note" style="display: none;">
+      You probably want to go to the <a href="https://sciactive.com/pnotify/">production site</a>, cause nearly everything here is broken.
+    </p>
     <div class="row align-items-stretch">
       <div class="col-md-4 my-3">
         <div class="card" style="height: 100%;">
@@ -280,7 +283,7 @@
     <div class="text-md-right">
       <a class="btn btn-primary btn-lg" href="https://github.com/sciactive/pnotify/blob/master/README.md#getting-started">Get Started with PNotify</a>
     </div>
-    <div class="dev-note" style="display: none;">
+    <div class="dev-note" style="display: none; position: fixed; z-index: -1; bottom: 20px; left: 20px; opacity: .4;">
       <div class="alert alert-danger">
         <h5 style="margin-top: 0;"><i class="fas fa-exclamation-triangle"></i> Caution warning danger attention!</h5>
         <p class="mb-0">This is the development site. It demos bleeding edge features that may not work.</p>
@@ -398,6 +401,14 @@
             icon: false
           });
         ">No Icon</button>
+        <hr />
+        <button class="btn btn-outline-dark my-1 source" onclick="
+          PNotify.notice({
+            title: 'Non-Blocking Notice',
+            text: 'I\'m a special kind of notice called &quot;non-blocking&quot;. When you hover over me I\'ll fade to show the elements underneath. Feel free to click any of them just like I wasn\'t even here.\n\nNote: HTML links don\'t trigger in some very old browsers, due to security settings.',
+            addClass: 'nonblock'
+          });
+        ">Using NonBlock.js</button> <small>(Click through to things underneath the notice.)</small>
         <hr />
         <button class="btn btn-outline-dark my-1 source" onclick="
           PNotify.notice({
@@ -991,28 +1002,6 @@
             window.permanotice.close();
           }
         ">Close Permanotice</button>
-      </div>
-
-      <h5 class="card-header">NonBlock Module (Deprecated, Replaced with <a href="https://github.com/sciactive/nonblockjs" target="_blank">NonBlock.js</a>) <small>Click through to things underneath the notice.</small></h5>
-      <div class="card-body">
-        <button class="btn btn-outline-dark my-1 source" onclick="
-          PNotify.notice({
-            title: 'Non-Blocking Notice with Class',
-            text: 'You can still use the NonBlock module, but all it does is add the &quot;nonblock&quot; class for you. You can do that yourself with &quot;addClass: \'nonblock\'&quot;.',
-            addClass: 'nonblock'
-          });
-        ">Easier Now That NonBlock.js is a Thing</button>
-        <button class="btn btn-outline-dark my-1 source" onclick="
-          PNotify.notice({
-            title: 'Non-Blocking Notice',
-            text: 'I\'m a special kind of notice called &quot;non-blocking&quot;. When you hover over me I\'ll fade to show the elements underneath. Feel free to click any of them just like I wasn\'t even here.\n\nNote: HTML links don\'t trigger in some browsers, due to security settings.',
-            modules: {
-              NonBlock: {
-                nonblock: true
-              }
-            }
-          });
-        ">Non-Blocking (The Old Way)</button>
       </div>
 
       <h5 class="card-header">Mobile Module <small>Notices on mobile phones and tablets.</small></h5>
