@@ -72,7 +72,7 @@ Inside the pnotify module directory:
 * `lib/iife` uncompressed IIFE scripts.
 * `dist` compressed Bright Theme CSS.
 * `dist/es` compressed ECMAScript modules.
-* `dist/umd` compressed UMD modules.liz
+* `dist/umd` compressed UMD modules.
 * `dist/iife` compressed IIFE scripts.
 
 ## [Migrating from PNotify 4](MIGRATING.md)
@@ -541,7 +541,7 @@ The History module also has two methods:
 
 ## Callbacks Module
 
-The callback options all expect the value to be a callback function. If the function returns false on the `beforeOpen` or `beforeClose` callback, that event will be canceled. `beforeInit` and `afterInit` will only work for notices created with the helper functions.
+The callback options all expect the value to be a callback function. If the function returns false on the `beforeOpen` or `beforeClose` callback, that event will be canceled.
 
 `Callbacks: {`
 * `beforeInit`<br>
@@ -617,7 +617,7 @@ The callback options all expect the value to be a callback function. If the func
 * `notice.refs.iconContainer`<br>
   The icon container DOM element.
 
-## From the [Svelte Component API](https://svelte.technology/guide#component-api)
+## From the [Svelte Component API](https://v2.svelte.dev/guide#component-api)
 
 * `notice.$set(options)`<br>
   You probably want to use `update(options)` instead. The Svelte API may change.
