@@ -73,7 +73,7 @@ Inside the pnotify module directory:
 * `lib/iife` uncompressed IIFE scripts.
 * `dist` compressed Bright Theme CSS.
 * `dist/es` compressed ECMAScript modules.
-* `dist/umd` compressed UMD modules.liz
+* `dist/umd` compressed UMD modules.
 * `dist/iife` compressed IIFE scripts.
 
 ## [Migrating from PNotify 3](MIGRATING.md)
