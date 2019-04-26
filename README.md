@@ -556,7 +556,7 @@ The History module also has two methods:
 
 ## Callbacks Module
 
-The callback options all expect the value to be a callback function. If the function returns false on the `beforeOpen` or `beforeClose` callback, that event will be canceled. `beforeInit` and `afterInit` will only work for notices created with the helper functions.
+The callback options all expect the value to be a callback function. If the function returns false on the `beforeOpen` or `beforeClose` callback, that event will be canceled.
 
 `Callbacks: {`
 * `beforeInit`<br>
