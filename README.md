@@ -273,7 +273,7 @@ PNotify.defaults.icons = 'fontawesome5'; // Font Awesome 5
 
 # Creating Notices
 
-To make a notice, use the helper functions:
+To make a notice, use the factory functions:
 
 ```js
 // Manually set the type.
@@ -294,18 +294,6 @@ PNotify.success({
 });
 PNotify.error({
   text: "I'm an error message."
-});
-```
-
-Or you can manually create a new notice with Svelte's component API (if you know what you're doing):
-
-```js
-new PNotify({
-  target: document.body,
-  data: {
-    text: "I'm an alert.",
-    type: 'notice'
-  }
 });
 ```
 
@@ -648,7 +636,7 @@ The callback options all expect the value to be a callback function. If the func
 * `notice.refs.iconContainer`<br>
   The icon container DOM element.
 
-## From the [Svelte Component API](https://svelte.technology/guide#component-api)
+## From the [Svelte Component API](https://v2.svelte.dev/guide#component-api)
 
 * `notice.get(option)`<br>
   Get the value of an option.
