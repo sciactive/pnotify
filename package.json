@@ -65,12 +65,13 @@
     "eslint-plugin-react": "^7.12.4",
     "eslint-plugin-standard": "^4.0.0",
     "shelljs": "^0.8.3",
-    "svelte": "^3.0.0",
     "svelte-loader": "^2.13.3",
     "uglify-es": "3.3.9",
     "uglify-js": "^3.5.7",
     "webpack": "^4.29.6",
     "webpack-cli": "^3.3.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "svelte": "^3.0.0"
+  }
 }
