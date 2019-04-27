@@ -15,18 +15,22 @@ let pnotifyComponents = [
   'PNotifyConfirmComponent'
 
   // Styles.
-  // 'PNotifyStyleMaterialComponent',
+  'PNotifyStyleMaterialComponent',
 
   // Reference module.
   // 'PNotifyReferenceComponent',
 ];
 
 let pnotifySrc = [
+  // Main code.
   'PNotifyAnimate',
   'PNotifyButtons',
   'PNotifyCallbacks',
   'PNotifyConfirm',
   'PNotifyCore'
+
+  // Styles.
+  'PNotifyStyleMaterial',
 ];
 
 try {

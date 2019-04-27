@@ -1,42 +1,37 @@
-<script>
-  import PNotify from './PNotify.html';
+<script context="module">
+  import { styles, icons } from './PNotifyCore';
 
-  export default {
-    setup (Component) {
-      Component.key = 'StyleMaterial';
+  export const key = 'StyleMaterial';
 
-      // Register the module with PNotify.
-      PNotify.modules.StyleMaterial = Component;
-      // Prepend this module to the container.
-      PNotify.modulesPrependContainer.push(Component);
+  if (!styles.material) {
+    styles.material = {};
+  }
+  styles.material = Object.assign(styles.material, {
+    container: 'pnotify-material',
+    notice: 'pnotify-material-notice',
+    info: 'pnotify-material-info',
+    success: 'pnotify-material-success',
+    error: 'pnotify-material-error',
+    actionBar: '',
+    promptBar: '',
+    btn: '',
+    btnPrimary: 'ui-pnotify-material-primary',
+    input: ''
+  });
 
-      if (!PNotify.styling.material) {
-        PNotify.styling.material = {};
-      }
-      PNotify.styling.material = Object.assign(PNotify.styling.material, {
-        container: 'pnotify-material',
-        notice: 'pnotify-material-notice',
-        info: 'pnotify-material-info',
-        success: 'pnotify-material-success',
-        error: 'pnotify-material-error'
-      });
-
-      if (!PNotify.icons.material) {
-        PNotify.icons.material = {};
-      }
-      PNotify.icons.material = Object.assign(PNotify.icons.material, {
-        notice: 'material-icons pnotify-material-icon-notice',
-        info: 'material-icons pnotify-material-icon-info',
-        success: 'material-icons pnotify-material-icon-success',
-        error: 'material-icons pnotify-material-icon-error',
-        closer: 'material-icons pnotify-material-icon-closer',
-        pinUp: 'material-icons pnotify-material-icon-sticker',
-        pinDown: 'material-icons pnotify-material-icon-sticker pnotify-material-icon-stuck'
-      });
-    }
-  };
+  if (!icons.material) {
+    icons.material = {};
+  }
+  icons.material = Object.assign(icons.material, {
+    notice: 'material-icons pnotify-material-icon-notice',
+    info: 'material-icons pnotify-material-icon-info',
+    success: 'material-icons pnotify-material-icon-success',
+    error: 'material-icons pnotify-material-icon-error',
+    closer: 'material-icons pnotify-material-icon-closer',
+    pinUp: 'material-icons pnotify-material-icon-sticker',
+    pinDown: 'material-icons pnotify-material-icon-sticker pnotify-material-icon-stuck'
+  });
 </script>
-
 <style>
   /*
   Color Scheme: https://www.google.com/design/spec/style/color.html#color-color-palette

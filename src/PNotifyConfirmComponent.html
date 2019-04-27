@@ -66,16 +66,6 @@
     btnPrimary: 'btn btn-primary mx-1',
     input: 'form-control'
   });
-  if (!styles.material) {
-    styles.material = {};
-  }
-  Object.assign(styles.material, {
-    actionBar: '',
-    promptBar: '',
-    btn: '',
-    btnPrimary: 'ui-pnotify-material-primary',
-    input: ''
-  });
 </script>
 
 {#if confirm || prompt}
@@ -155,7 +145,43 @@
   let promptSingleElem;
   let buttonsElem;
 
+  let focusNextChange = false;
+
   $: _styles = (_notice && _notice.getStyles()) || {};
+  $: {
+    if (focusNextChange) {
+      if (prompt && focus !== false) {
+        if (promptMultiLine) {
+          if (promptMultiElem) {
+            promptMultiElem.focus();
+            focusNextChange = false;
+          }
+        } else {
+          if (promptSingleElem) {
+            promptSingleElem.focus();
+            focusNextChange = false;
+          }
+        }
+      } else if (confirm &&
+        (
+          focus === true ||
+          (focus === null && _notice.stack.modal)
+        )
+      ) {
+        if (buttons.length && buttonsElem) {
+          let i = buttons.length - 1;
+          while (i >= 0) {
+            if (buttons[i].promptTrigger) {
+              break;
+            }
+            i--;
+          }
+          buttonsElem.children[i].focus();
+          focusNextChange = false;
+        }
+      }
+    }
+  }
 
   onMount(() => {
     dispatch('init', {
@@ -165,29 +191,7 @@
   });
 
   function afterOpen () {
-    if (prompt && focus !== false) {
-      if (promptMultiLine) {
-        promptMultiElem.focus();
-      } else {
-        promptSingleElem.focus();
-      }
-    } else if (confirm &&
-      (
-        focus === true ||
-        (focus === null && _notice.stack.modal)
-      )
-    ) {
-      if (buttons.length) {
-        let i = buttons.length - 1;
-        while (i >= 0) {
-          if (buttons[i].promptTrigger) {
-            break;
-          }
-          i--;
-        }
-        buttonsElem.children[i].focus();
-      }
-    }
+    focusNextChange = true;
   }
 
   function handleClick (button, event) {
