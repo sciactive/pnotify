@@ -22,29 +22,22 @@
   "author": "Hunter Perrin",
   "files": [
     "dist",
-    "lib",
     "src",
     "make.js"
   ],
   "directories": {
-    "lib": "lib/umd"
+    "lib": "dist/umd"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/sciactive/pnotify.git"
   },
   "scripts": {
-    "build": "npm run build-iife && npm run build-umd && npm run build-es && npm run build-css",
-    "build-iife": "npm run build-iife-core && npm run build-iife-modules",
-    "build-iife-core": "webpack --config webpack-config/config.iife.core.js",
-    "build-iife-modules": "webpack --config webpack-config/config.iife.modules.js",
-    "build-umd": "npm run build-umd-core && npm run build-umd-modules",
-    "build-umd-core": "webpack --config webpack-config/config.umd.core.js",
-    "build-umd-modules": "webpack --config webpack-config/config.umd.modules.js",
-    "build-es": "npm run build-es-core && npm run build-es-modules",
-    "build-es-core": "webpack --config webpack-config/config.es.core.js",
-    "build-es-modules": "webpack --config webpack-config/config.es.modules.js",
-    "build-css": "node make.js dist",
+    "build-dev": "ENV=development npm run build-umd",
+    "build": "npm run build-umd && npm run build-es && npm run build-cleanup",
+    "build-umd": "webpack",
+    "build-es": "node make.js",
+    "build-cleanup": "node cleanup.js",
     "prepare-off": "npm run lint && npm run build",
     "lint": "eslint index.html make.js src/*.html src/*.js demo/*"
   },
@@ -54,7 +47,7 @@
     "@babel/preset-env": "^7.4.3",
     "babel-eslint": "^10.0.1",
     "babel-loader": "^8.0.5",
-    "clean-css": "^4.2.1",
+    "css-loader": "^2.1.1",
     "eslint": "^5.16.0",
     "eslint-config-semistandard": "^13.0.0",
     "eslint-config-standard": "^12.0.0",
@@ -64,10 +57,9 @@
     "eslint-plugin-promise": "^4.1.1",
     "eslint-plugin-react": "^7.12.4",
     "eslint-plugin-standard": "^4.0.0",
-    "shelljs": "^0.8.3",
+    "mini-css-extract-plugin": "^0.6.0",
+    "style-loader": "^0.23.1",
     "svelte-loader": "^2.13.3",
-    "uglify-es": "3.3.9",
-    "uglify-js": "^3.5.7",
     "webpack": "^4.29.6",
     "webpack-cli": "^3.3.0"
   },

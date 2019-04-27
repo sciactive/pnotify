@@ -67,13 +67,9 @@ npm install --save nonblockjs
 Inside the pnotify module directory:
 
 * `src` Svelte components and uncompressed Bright Theme CSS.
-* `lib/es` uncompressed ECMAScript modules.
-* `lib/umd` uncompressed UMD modules.
-* `lib/iife` uncompressed IIFE scripts.
 * `dist` compressed Bright Theme CSS.
 * `dist/es` compressed ECMAScript modules.
 * `dist/umd` compressed UMD modules.
-* `dist/iife` compressed IIFE scripts.
 
 ## [Migrating from PNotify 4](MIGRATING.md)
 
@@ -83,13 +79,13 @@ In addition to the JS, be sure to [include a PNotify style](#styles).
 
 ## Svelte
 
-[PNotify in Svelte](https://codesandbox.io/s/nwoxqkvw6m). Import the Svelte files from `src`:
+[PNotify in Svelte](https://codesandbox.io/s/nwoxqkvw6m). Import the source files from `src`:
 
 ```js
-import PNotify from 'pnotify/src/PNotify.html';
-import PNotifyButtons from 'pnotify/src/PNotifyButtons.html';
+import { alert } from 'pnotify/src/PNotifyCore';
+import 'pnotify/src/PNotifyButtons';
 
-PNotify.alert('Notice me, senpai!');
+alert('Notice me, senpai!');
 ```
 
 ## React
@@ -97,10 +93,10 @@ PNotify.alert('Notice me, senpai!');
 [PNotify in React](https://codesandbox.io/s/wwqzk8472w). Import the ES modules from `dist`:
 
 ```js
-import PNotify from 'pnotify/dist/es/PNotify';
-import PNotifyButtons from 'pnotify/dist/es/PNotifyButtons';
+import { alert } from 'pnotify/dist/es/PNotify';
+import 'pnotify/dist/es/PNotifyButtons';
 
-PNotify.alert('Notice me, senpai!');
+alert('Notice me, senpai!');
 ```
 
 ## Angular
@@ -108,14 +104,14 @@ PNotify.alert('Notice me, senpai!');
 [PNotify in Angular](https://codesandbox.io/s/l3pzkl64yq). Import the ES modules from `dist` and initiate the modules:
 
 ```ts
-import PNotify from 'pnotify/dist/es/PNotify';
+import { alert } from 'pnotify/dist/es/PNotify';
 import PNotifyButtons from 'pnotify/dist/es/PNotifyButtons';
 
 //...
 export class WhateverComponent {
   constructor() {
     PNotifyButtons; // Initiate the module. Important!
-    PNotify.alert('Notice me, senpai!');
+    alert('Notice me, senpai!');
   }
 }
 ```
@@ -129,14 +125,14 @@ export class WhateverComponent {
 ```ts
 // pnotify.service.ts
 import { Injectable } from '@angular/core';
-import PNotify from 'pnotify/dist/es/PNotify';
+import { alert } from 'pnotify/dist/es/PNotify';
 import PNotifyButtons from 'pnotify/dist/es/PNotifyButtons';
 
 @Injectable()
 export class PNotifyService {
-  getPNotify() {
+  getPNotifyAlert() {
     PNotifyButtons; // Initiate the module. Important!
-    return PNotify;
+    return alert;
   }
 }
 
@@ -155,10 +151,10 @@ export class WhateverModule {}
 import { PNotifyService } from './pnotify.service';
 //...
 export class WhateverComponent {
-  pnotify = undefined;
+  alert = undefined;
   constructor(pnotifyService: PNotifyService) {
-    this.pnotify = pnotifyService.getPNotify();
-    this.pnotify.alert('Notice me, senpai!');
+    this.alert = pnotifyService.getPNotifyAlert();
+    this.alert('Notice me, senpai!');
   }
 }
 ```
@@ -170,7 +166,7 @@ export class WhateverComponent {
 ```js
 var angular = require('angular');
 var PNotify = require('pnotify/dist/umd/PNotify');
-var PNotifyButtons = require('pnotify/dist/umd/PNotifyButtons');
+require('pnotify/dist/umd/PNotifyButtons');
 
 angular.module('WhateverModule', [])
   .value('PNotify', PNotify)
@@ -181,11 +177,11 @@ angular.module('WhateverModule', [])
 
 ## Vanilla JS (ES5)
 
-PNotify in vanilla ECMAScript 5. Include the IIFE scripts from `dist`:
+PNotify in vanilla ECMAScript 5. Include the UMD scripts from `dist`:
 
 ```html
-<script type="text/javascript" src="node_modules/pnotify/dist/iife/PNotify.js"></script>
-<script type="text/javascript" src="node_modules/pnotify/dist/iife/PNotifyButtons.js"></script>
+<script type="text/javascript" src="node_modules/pnotify/dist/umd/PNotify.js"></script>
+<script type="text/javascript" src="node_modules/pnotify/dist/umd/PNotifyButtons.js"></script>
 <script type="text/javascript">
   PNotify.alert('Notice me, senpai!');
 </script>
@@ -196,10 +192,10 @@ PNotify in vanilla ECMAScript 5. Include the IIFE scripts from `dist`:
 PNotify in vanilla ECMAScript 6+. Include the ES modules from `dist`:
 
 ```js
-import PNotify from 'node_modules/pnotify/dist/es/PNotify.js';
-import PNotifyButtons from 'node_modules/pnotify/dist/es/PNotifyButtons.js';
+import { alert } from 'node_modules/pnotify/dist/es/PNotify.js';
+import 'node_modules/pnotify/dist/es/PNotifyButtons.js';
 
-PNotify.alert('Notice me, senpai!');
+alert('Notice me, senpai!');
 ```
 
 # Styles
@@ -217,14 +213,16 @@ The default, standalone theme, Bright Theme. Include the CSS file in your page:
 The Material Style module. Requires [material-design-icons](https://www.npmjs.com/package/material-design-icons). Include the module in your JS, and set it as the default:
 
 ```js
-import PNotifyStyleMaterial from 'pnotify/dist/es/PNotifyStyleMaterial.js';
+import { defaults } from 'pnotify/dist/es/PNotify';
+import 'pnotify/dist/es/PNotifyStyleMaterial.js';
 // or
-var PNotifyStyleMaterial = require('pnotify/dist/umd/PNotifyStyleMaterial.js');
+const { defaults } = require('pnotify/dist/umd/PNotify');
+require('pnotify/dist/umd/PNotifyStyleMaterial.js');
 
 // Set default styling.
-PNotify.defaults.styling = 'material';
+defaults.styling = 'material';
 // This icon setting requires the Material Icons font. (See below.)
-PNotify.defaults.icons = 'material';
+defaults.icons = 'material';
 ```
 
 ### Material Icons
@@ -251,23 +249,31 @@ Alternatively, you can use the Google Fonts CDN:
 
 ## Bootstrap
 
-To set Bootstrap as the default style, include the appropriate line(s) from below after you import PNotify:
+To set Bootstrap as the default style, include the appropriate line(s) from below:
 
 ```js
-PNotify.defaults.styling = 'bootstrap3'; // Bootstrap version 3
-PNotify.defaults.icons = 'bootstrap3'; // glyphicons
+import { defaults } from 'PNotify/dist/es/PNotify';
 // or
-PNotify.defaults.styling = 'bootstrap4'; // Bootstrap version 4
+const { defaults } = require('pnotify/dist/umd/PNotify');
+
+defaults.styling = 'bootstrap3'; // Bootstrap version 3
+defaults.icons = 'bootstrap3'; // glyphicons
+// or
+defaults.styling = 'bootstrap4'; // Bootstrap version 4
 ```
 
 ## Font Awesome (Icons)
 
-To set Font Awesome as the default icons, include the appropriate line from below after you import PNotify:
+To set Font Awesome as the default icons, include the appropriate line from below:
 
 ```js
-PNotify.defaults.icons = 'fontawesome4'; // Font Awesome 4
+import { defaults } from 'PNotify/dist/es/PNotify';
 // or
-PNotify.defaults.icons = 'fontawesome5'; // Font Awesome 5
+const { defaults } = require('pnotify/dist/umd/PNotify');
+
+defaults.icons = 'fontawesome4'; // Font Awesome 4
+// or
+defaults.icons = 'fontawesome5'; // Font Awesome 5
 ```
 
 # Creating Notices
@@ -275,23 +281,27 @@ PNotify.defaults.icons = 'fontawesome5'; // Font Awesome 5
 To make a notice, use the factory functions:
 
 ```js
+import { alert, notice, info, success, error } from 'PNotify/dist/es/PNotify';
+// or
+const { alert, notice, info, success, error } = require('pnotify/dist/umd/PNotify');
+
 // Manually set the type.
-PNotify.alert({
+alert({
   text: "I'm an alert.",
   type: 'notice'
 });
 
 // Automatically set the type.
-PNotify.notice({
+notice({
   text: "I'm a notice."
 });
-PNotify.info({
+info({
   text: "I'm an info message."
 });
-PNotify.success({
+success({
   text: "I'm a success message."
 });
-PNotify.error({
+error({
   text: "I'm an error message."
 });
 ```
@@ -300,7 +310,7 @@ PNotify.error({
 
 PNotify options and default values.
 
-`PNotify.defaults = {`
+`defaults = {`
 * `title: false`<br>
   The notice's title.
 * `titleTrusted: false`<br>
@@ -343,7 +353,7 @@ PNotify options and default values.
   Remove the notice's elements from the DOM after it is closed.
 * `destroy: true`<br>
   Whether to remove the notice from the global array when it is closed.
-* `stack: PNotify.defaultStack`<br>
+* `stack: defaultStack`<br>
   The stack on which the notices will be placed. Also controls the direction the notices stack.
 * `modules: {}`<br>
   This is where options for modules should be defined.
@@ -351,7 +361,7 @@ PNotify options and default values.
 `}`
 
 ```js
-PNotify.defaultStack = {
+defaultStack = {
   dir1: 'down',
   dir2: 'left',
   firstpos1: 25,
@@ -368,17 +378,23 @@ PNotify.defaultStack = {
 ## Changing Defaults
 
 ```js
-PNotify.defaults.width = '400px';
+defaults.width = '400px';
 ```
 
 Changing a default for modules can be done in a couple ways.
 
 ```js
 // This will change the default for every notice, and is the recommended way.
-PNotify.modules.History.defaults.maxInStack = 10;
+import { modules } from 'PNotify/dist/es/PNotify';
+// or
+const { modules } = require('pnotify/dist/umd/PNotify');
+modules.History.defaults.maxInStack = 10;
 
 // This will change the default only for notices that don't have a `modules` option.
-PNotify.defaults.modules = {
+import { defaults } from 'PNotify/dist/es/PNotify';
+// or
+const { defaults } = require('pnotify/dist/umd/PNotify');
+defaults.modules = {
   History: {
     maxInStack: 10
   }
@@ -502,7 +518,8 @@ buttons: [
 Because the default buttons fire notice events on confirmation and cancellation, you can listen for them like this:
 
 ```js
-const notice = PNotify.alert({
+import { alert } from 'PNotify/dist/es/PNotify';
+const notice = alert({
   title: 'Confirmation Needed',
   text: 'Are you sure?',
   hide: false,
@@ -532,9 +549,9 @@ notice.on('pnotify.cancel', () => {
 
 The History module also has two methods:
 
-* `PNotify.modules.History.showLast(stack)`<br>
+* `modules.History.showLast(stack)`<br>
   Reopen the last closed notice from a stack that was placed in the history. If no stack is provided, it will use the default stack.
-* `PNotify.modules.History.showAll(stack)`<br>
+* `modules.History.showAll(stack)`<br>
   Reopen all notices from a stack that were placed in the history. If no stack is provided, it will also use the default stack. If stack is `true`, it will reopen all notices from every stack.
 
 > :information_source: In v4, the History module can no longer make a dropdown for you. But hey, it's smaller now.
@@ -559,37 +576,37 @@ The callback options all expect the value to be a callback function. If the func
 
 `}`
 
-# Static Methods and Properties
+# Exported Methods and Properties
 
-* `PNotify.alert(options)`<br>
-  Create a notice.
-* `PNotify.notice(options)`<br>
-  Create a notice with 'notice' type.
-* `PNotify.info(options)`<br>
-  Create a notice with 'info' type.
-* `PNotify.success(options)`<br>
-  Create a notice with 'success' type.
-* `PNotify.error(options)`<br>
-  Create a notice with 'error' type.
-* `PNotify.closeAll()`<br>
+* `alert(options)`<br>
+  Create and return a notice with the default type.
+* `notice(options)`<br>
+  Create and return a notice with 'notice' type.
+* `info(options)`<br>
+  Create and return a notice with 'info' type.
+* `success(options)`<br>
+  Create and return a notice with 'success' type.
+* `error(options)`<br>
+  Create and return a notice with 'error' type.
+* `closeAll()`<br>
   Close all notices.
-* `PNotify.closeStack(stack)`<br>
+* `closeStack(stack)`<br>
   Close all the notices in a stack.
-* `PNotify.positionAll()`<br>
+* `positionAll()`<br>
   Reposition all notices.
-* `PNotify.VERSION`<br>
+* `VERSION`<br>
   PNotify version number.
-* `PNotify.defaults`<br>
+* `defaults`<br>
   Defaults for options.
-* `PNotify.defaultStack`<br>
+* `defaultStack`<br>
   The default stack object.
-* `PNotify.notices`<br>
+* `notices`<br>
   An array of all active notices.
-* `PNotify.modules`<br>
+* `modules`<br>
   This object holds all the PNotify module constructors.
-* `PNotify.styles`<br>
+* `styles`<br>
   Styles objects.
-* `PNotify.icons`<br>
+* `icons`<br>
   Icons objects.
 
 # Instance Methods and Properties
@@ -600,16 +617,16 @@ The callback options all expect the value to be a callback function. If the func
   Close the notice.
 * `notice.update(options)`<br>
   Update the notice with new options.
-* `notice.addModuleClass(...classNames)`<br>
-  This is for modules to add classes to the notice.
-* `notice.removeModuleClass(...classNames)`<br>
-  This is for modules to remove classes from the notice.
-* `notice.hasModuleClass(...classNames)`<br>
-  This is for modules to test classes on the notice.
+* `notice.addModuleClass(element, ...classNames)`<br>
+  This is for modules to add classes to the notice or container element.
+* `notice.removeModuleClass(element, ...classNames)`<br>
+  This is for modules to remove classes from the notice or container element.
+* `notice.hasModuleClass(element, ...classNames)`<br>
+  This is for modules to test classes on the notice or container element.
 * `notice.refs.elem`<br>
   The notice's DOM element.
 * `notice.refs.container`<br>
-  The notice container DOM element.
+  The content container DOM element.
 * `notice.refs.titleContainer`<br>
   The title container DOM element.
 * `notice.refs.textContainer`<br>
@@ -617,19 +634,21 @@ The callback options all expect the value to be a callback function. If the func
 * `notice.refs.iconContainer`<br>
   The icon container DOM element.
 
-## From the [Svelte Component API](https://v2.svelte.dev/guide#component-api)
-
-* `notice.$set(options)`<br>
-  You probably want to use `update(options)` instead. The Svelte API may change.
-* `notice.$destroy()`<br>
-  Removes the component from the DOM and any observers/event listeners. You probably want to use `close()` with `destroy: true` instead. It will animate the notice out.
-
 ## Events
 
 * `notice.on(eventName, callback)`<br>
-  Assign a callback to an event. Callback receives an `event` argument with a `detail` prop.
+  Invokes the callback whenever the notice dispatches the event. Callback receives an `event` argument with a `detail` prop. Returns a function that removes the handler when invoked.
 * `notice.fire(eventName, event)`<br>
   Fire an event.
+
+## From the [Svelte Component API](https://svelte.dev/docs#Client-side_component_API)
+
+* `notice.$set(options)`<br>
+  You probably want to use `update(options)` instead. The Svelte API may change.
+* `notice.$on(event, callback)`<br>
+  You probably want to use `on(event, callback)` instead. The Svelte API may change.
+* `notice.$destroy()`<br>
+  Removes the component from the DOM and any observers/event listeners. You probably want to use `close()` with `destroy: true` instead. It will animate the notice out and remove it from the `notices` array.
 
 # Stacks
 
@@ -670,7 +689,7 @@ Stack behavior:
 * Stacks are independent of each other, so a stack doesn't know and doesn't care if it overlaps (and blocks) another stack.
 * Stack objects are used and manipulated by PNotify, and therefore, should be a variable when passed.
 
-> :warning: Calling something like `PNotify.alert({text: 'notice', stack: {dir1: 'down', firstpos1: 25}});` may not do what you want. It will create a notice, but that notice will be in its own stack and will overlap other notices.
+> :warning: Calling something like `alert({text: 'notice', stack: {dir1: 'down', firstpos1: 25}});` may not do what you want. It will create a notice, but that notice will be in its own stack and will overlap other notices.
 
 ## Example Stack
 
@@ -692,7 +711,7 @@ const stackBottomModal = {
 If you just want to position a single notice programmatically, and don't want to add any other notices into the stack, you can use something like this:
 
 ```js
-PNotify.alert({
+alert({
   text: "Notice that's positioned in its own stack.",
   stack: {
     dir1: 'down', dir2: 'right', // Position from the top left corner.

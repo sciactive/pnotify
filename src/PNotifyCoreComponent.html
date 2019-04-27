@@ -10,6 +10,8 @@
   http://www.apache.org/licenses/LICENSE-2.0
 -->
 
+<svelte:options accessors={true} />
+
 <script context="module">
   export const VERSION = '4.0.0';
 
@@ -150,7 +152,7 @@
       return;
     }
     for (let i = 0; i < notices.length; i++) {
-      if (notices[i].close && notices[i].getStack() === stack) {
+      if (notices[i].close && notices[i].stack === stack) {
         notices[i].close(false);
       }
     }
@@ -168,7 +170,7 @@
     if (notices.length > 0) {
       for (let i = 0; i < notices.length; i++) {
         let notice = notices[i];
-        let stack = notice.getStack();
+        let stack = notice.stack;
         if (!stack) {
           continue;
         }
@@ -266,7 +268,7 @@
       {_moveClass}
       {animation === 'fade' ? 'ui-pnotify-fade-'+animateSpeed : ''}
       {stack && stack.modal ? 'ui-pnotify-modal' : ''}
-      {_moduleClasses.join(' ')}
+      {_moduleClasses.elem.join(' ')}
     "
     aria-live="assertive"
     role="alertdialog"
@@ -285,7 +287,9 @@
     on:touchstart
     on:touchmove
     on:touchend
-    on:touchcancel>
+    on:touchcancel
+    on:animationend
+    on:transitionend>
   <div bind:this={refs.container}
       class="
         ui-pnotify-container
@@ -293,13 +297,16 @@
         {_styles[type] ? _styles[type] : ''}
         {cornerClass}
         {shadow ? 'ui-pnotify-shadow' : ''}
+        {_moduleClasses.container.join(' ')}
       "
       style="{_widthStyle} {_minHeightStyle}"
       role="alert">
-    {#each modulesPrependContainer as module (module.key)}
-      <!-- <svelte:component this={module} bind:this={_modulesPrependContainerInstances[module.key]} on:init={() => initModule(_modulesPrependContainerInstances[index])} /> -->
-      <svelte:component this={module} on:init={event => saveAccessor(event.detail)} _notice={self} _options={_options} {...modules[module.key]} />
-    {/each}
+    {#if self}
+      {#each modulesPrependContainer as module (module.key)}
+        <!-- <svelte:component this={module} bind:this={_modulesPrependContainerInstances[module.key]} on:init={() => initModule(_modulesPrependContainerInstances[index])} /> -->
+        <svelte:component this={module} on:init={event => saveAccessor(event.detail)} _notice={self} {...modules[module.key]} />
+      {/each}
+    {/if}
     {#if icon !== false}
       <div bind:this={refs.iconContainer} class="ui-pnotify-icon {_styles.icon ? _styles.icon : ''}">
         <span class={icon === true ? (_icons[type] ? _icons[type] : '') : icon}></span>
@@ -323,9 +330,11 @@
         {/if}
       </div>
     {/if}
-    {#each modulesAppendContainer as module (module.key)}
-      <svelte:component this={module} on:init={event => saveAccessor(event.detail)} _notice={self} _options={_options} {...modules[module.key]} />
-    {/each}
+    {#if self}
+      {#each modulesAppendContainer as module (module.key)}
+        <svelte:component this={module} on:init={event => saveAccessor(event.detail)} _notice={self} {...modules[module.key]} />
+      {/each}
+    {/if}
   </div>
 </div>
 
@@ -383,8 +392,11 @@
   let _timerHide = false;
   // Stores the accessors of the modules.
   let _moduleAccessors = {};
-  // Modules can add classes here to be added to the notice element. (They should play nice and not remove classes that aren't theirs.)
-  let _moduleClasses = [];
+  // Holds classes that modules add for the notice element or container element.
+  let _moduleClasses = {
+    elem: [],
+    container: []
+  };
   // Modules that change how the notice displays (causing the notice element to not appear) can set this to true to make PNotify assume the notice has opened.
   let _moduleIsNoticeOpen = false;
 
@@ -404,33 +416,7 @@
   $: _icons = typeof icons === 'object' ? icons : iconRegistry[icons];
   $: _widthStyle = typeof width === 'string' ? 'width: ' + width + ';' : '';
   $: _minHeightStyle = typeof minHeight === 'string' ? 'min-height: ' + minHeight + ';' : '';
-  $: _options = {
-    title,
-    titleTrusted,
-    text,
-    textTrusted,
-    styling,
-    icons,
-    addClass,
-    cornerClass,
-    autoDisplay,
-    width,
-    minHeight,
-    type,
-    icon,
-    animation,
-    animateSpeed,
-    shadow,
-    hide,
-    delay,
-    mouseReset,
-    remove,
-    destroy,
-    stack,
-    modules
-  };
 
-  export const getStack = () => stack;
   export const getState = () => _state;
   export const getStyles = () => _styles;
   export const getIcons = () => _icons;
@@ -542,7 +528,10 @@
           continue;
         }
         if ('factory' in moduleRegistry[key]) {
-          const accessor = moduleRegistry[key].factory(self);
+          const moduleOptions = Object.assign({
+            '_notice': self
+          }, modules[key]);
+          const accessor = moduleRegistry[key].factory(self, moduleOptions);
           initModule(accessor);
         }
       }
@@ -554,8 +543,7 @@
         if (event === 'update') {
           if ('$set' in _moduleAccessors[key]) {
             const moduleOptions = Object.assign({
-              '_notice': self,
-              '_options': _options
+              '_notice': self
             }, modules[key]);
             _moduleAccessors[key].$set(moduleOptions);
           }
@@ -579,8 +567,7 @@
     }
     if ('$set' in accessor) {
       const moduleOptions = Object.assign({
-        '_notice': self,
-        '_options': _options
+        '_notice': self
       }, modules[accessor.key]);
       accessor.$set(moduleOptions);
     }
@@ -590,7 +577,7 @@
   }
 
   // Display the notice.
-  export function open () {
+  export let open = () => {
     if (_state === 'opening') {
       return;
     }
@@ -647,10 +634,10 @@
         runModules('afterOpen');
       });
     }, 0);
-  }
+  };
 
   // Remove the notice.
-  export function close (timerHide) {
+  export let close = timerHide => {
     if (_state === 'closing' || _state === 'closed') {
       return;
     }
@@ -684,7 +671,7 @@
         refs.elem && refs.elem.parentNode.removeChild(refs.elem);
       }
     });
-  }
+  };
 
   // Animate the notice in.
   export let animateIn = async callback => {
@@ -770,7 +757,7 @@
           let stillOpen = false;
           for (let i = 0; i < notices.length; i++) {
             const notice = notices[i];
-            if (notice !== self && notice.getStack() === stack && notice.getState() !== 'closed') {
+            if (notice !== self && notice.stack === stack && notice.getState() !== 'closed') {
               stillOpen = true;
               break;
             }
@@ -1046,29 +1033,31 @@
     dispatch(name, detail);
   }
 
-  export function addModuleClass (...classNames) {
+  export function addModuleClass (element, ...classNames) {
     for (let i = 0; i < classNames.length; i++) {
       let className = classNames[i];
-      if (_moduleClasses.indexOf(className) === -1) {
-        _moduleClasses.push(className);
+      if (_moduleClasses[element].indexOf(className) === -1) {
+        _moduleClasses[element].push(className);
       }
     }
+    _moduleClasses[element] = _moduleClasses[element];
   }
 
-  export function removeModuleClass (...classNames) {
+  export function removeModuleClass (element, ...classNames) {
     for (let i = 0; i < classNames.length; i++) {
       let className = classNames[i];
-      const idx = _moduleClasses.indexOf(className);
+      const idx = _moduleClasses[element].indexOf(className);
       if (idx !== -1) {
-        _moduleClasses.splice(idx, 1);
+        _moduleClasses[element].splice(idx, 1);
       }
     }
+    _moduleClasses[element] = _moduleClasses[element];
   }
 
-  export function hasModuleClass (...classNames) {
+  export function hasModuleClass (element, ...classNames) {
     for (let i = 0; i < classNames.length; i++) {
       let className = classNames[i];
-      if (_moduleClasses.indexOf(className) === -1) {
+      if (_moduleClasses[element].indexOf(className) === -1) {
         return false;
       }
     }

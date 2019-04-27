@@ -1,5 +1,5 @@
 <script context="module">
-  import PNotify from './PNotifyCoreLoader';
+  import { styles } from './PNotifyCore';
 
   export const key = 'Confirm';
 
@@ -45,31 +45,31 @@
   };
 
   // Add button styles to styling objects.
-  Object.assign(PNotify.styles.brighttheme, {
+  Object.assign(styles.brighttheme, {
     actionBar: '',
     promptBar: '',
     btn: '',
     btnPrimary: 'brighttheme-primary',
     input: ''
   });
-  Object.assign(PNotify.styles.bootstrap3, {
+  Object.assign(styles.bootstrap3, {
     actionBar: 'ui-pnotify-confirm-ml',
     promptBar: 'ui-pnotify-confirm-ml',
     btn: 'btn btn-default ui-pnotify-confirm-mx-1',
     btnPrimary: 'btn btn-default ui-pnotify-confirm-mx-1 btn-primary',
     input: 'form-control'
   });
-  Object.assign(PNotify.styles.bootstrap4, {
+  Object.assign(styles.bootstrap4, {
     actionBar: 'ui-pnotify-confirm-ml',
     promptBar: 'ui-pnotify-confirm-ml',
     btn: 'btn btn-secondary mx-1',
     btnPrimary: 'btn btn-primary mx-1',
     input: 'form-control'
   });
-  if (!PNotify.styles.material) {
-    PNotify.styles.material = {};
+  if (!styles.material) {
+    styles.material = {};
   }
-  Object.assign(PNotify.styles.material, {
+  Object.assign(styles.material, {
     actionBar: '',
     promptBar: '',
     btn: '',
@@ -141,8 +141,6 @@
 
   // The PNotify notice.
   export let _notice = null;
-  // The props for the notice.
-  export let _options = {};
 
   export let confirm = defaults.confirm;
   export let prompt = defaults.prompt;
@@ -176,7 +174,7 @@
     } else if (confirm &&
       (
         focus === true ||
-        (focus === null && _notice.getStack().modal)
+        (focus === null && _notice.stack.modal)
       )
     ) {
       if (buttons.length) {

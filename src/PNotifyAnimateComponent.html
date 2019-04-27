@@ -1,6 +1,4 @@
 <script context="module">
-  import PNotify from './PNotifyCoreLoader';
-
   export const key = 'Animate';
 
   export const defaults = {
@@ -15,8 +13,6 @@
 <script>
   // The PNotify notice.
   export let _notice = null;
-  // The options for the notice.
-  export let _options = {};
 
   export let animate = defaults.animate;
   export let inClass = defaults.inClass;
@@ -51,16 +47,14 @@
   $: {
     if (animate && _notice.refs.elem) {
       var animSpeed = 250;
-      if (_options.animateSpeed === 'slow') {
+      if (_notice.animateSpeed === 'slow') {
         animSpeed = 400;
-      } else if (_options.animateSpeed === 'fast') {
+      } else if (_notice.animateSpeed === 'fast') {
         animSpeed = 100;
-      } else if (_options.animateSpeed > 0) {
-        animSpeed = _options.animateSpeed;
+      } else if (_notice.animateSpeed > 0) {
+        animSpeed = _notice.animateSpeed;
       }
       animSpeed = animSpeed / 1000;
-      _notice.refs.elem.style.WebkitAnimationDuration = animSpeed + 's';
-      _notice.refs.elem.style.MozAnimationDuration = animSpeed + 's';
       _notice.refs.elem.style.animationDuration = animSpeed + 's';
     }
   }
@@ -69,17 +63,12 @@
     // Declare that the notice is animating in.
     _notice.setAnimating('in');
 
+    let off;
     const finished = event => {
       if (event && _notice.refs.elem && event.target !== _notice.refs.elem) {
         return;
       }
-      if (_notice.refs.elem) {
-        _notice.refs.elem.removeEventListener('webkitAnimationEnd', finished);
-        _notice.refs.elem.removeEventListener('mozAnimationEnd', finished);
-        _notice.refs.elem.removeEventListener('MSAnimationEnd', finished);
-        _notice.refs.elem.removeEventListener('oanimationend', finished);
-        _notice.refs.elem.removeEventListener('animationend', finished);
-      }
+      off();
       _notice.setAnimatingClass('ui-pnotify-in animated');
       if (callback) {
         callback.call();
@@ -88,13 +77,7 @@
       _notice.setAnimating(false);
     };
 
-    if (_notice.refs.elem) {
-      _notice.refs.elem.addEventListener('webkitAnimationEnd', finished);
-      _notice.refs.elem.addEventListener('mozAnimationEnd', finished);
-      _notice.refs.elem.addEventListener('MSAnimationEnd', finished);
-      _notice.refs.elem.addEventListener('oanimationend', finished);
-      _notice.refs.elem.addEventListener('animationend', finished);
-    }
+    off = _notice.on('animationend', finished);
     _notice.setAnimatingClass('ui-pnotify-in animated ' + inClass);
   }
 
@@ -102,17 +85,12 @@
     // Declare that the notice is animating out.
     _notice.setAnimating('out');
 
+    let off;
     const finished = event => {
       if (event && _notice.refs.elem && event.target !== _notice.refs.elem) {
         return;
       }
-      if (_notice.refs.elem) {
-        _notice.refs.elem.removeEventListener('webkitAnimationEnd', finished);
-        _notice.refs.elem.removeEventListener('mozAnimationEnd', finished);
-        _notice.refs.elem.removeEventListener('MSAnimationEnd', finished);
-        _notice.refs.elem.removeEventListener('oanimationend', finished);
-        _notice.refs.elem.removeEventListener('animationend', finished);
-      }
+      off();
       _notice.setAnimatingClass('animated');
       if (callback) {
         callback.call();
@@ -123,13 +101,20 @@
       }
     };
 
-    if (_notice.refs.elem) {
-      _notice.refs.elem.addEventListener('webkitAnimationEnd', finished);
-      _notice.refs.elem.addEventListener('mozAnimationEnd', finished);
-      _notice.refs.elem.addEventListener('MSAnimationEnd', finished);
-      _notice.refs.elem.addEventListener('oanimationend', finished);
-      _notice.refs.elem.addEventListener('animationend', finished);
-    }
+    off = _notice.on('animationend', finished);
     _notice.setAnimatingClass('ui-pnotify-in animated ' + outClass);
   }
+
+  export const attention = (aniClass, callback) => {
+    let off;
+    const cb = () => {
+      off();
+      _notice.removeModuleClass('container', 'animated', aniClass);
+      if (callback) {
+        callback.call(_notice);
+      }
+    };
+    off = _notice.on('animationend', cb);
+    _notice.addModuleClass('container', 'animated', aniClass);
+  };
 </script>

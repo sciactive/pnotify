@@ -1,5 +1,5 @@
 <script context="module">
-  import PNotify from './PNotifyCoreLoader';
+  import { icons } from './PNotifyCore';
 
   export const key = 'Buttons';
 
@@ -27,22 +27,22 @@
   };
 
   // Add button icons to icons objects.
-  Object.assign(PNotify.icons.brighttheme, {
+  Object.assign(icons.brighttheme, {
     closer: 'brighttheme-icon-closer',
     pinUp: 'brighttheme-icon-sticker',
     pinDown: 'brighttheme-icon-sticker brighttheme-icon-stuck'
   });
-  Object.assign(PNotify.icons.bootstrap3, {
+  Object.assign(icons.bootstrap3, {
     closer: 'glyphicon glyphicon-remove',
     pinUp: 'glyphicon glyphicon-pause',
     pinDown: 'glyphicon glyphicon-play'
   });
-  Object.assign(PNotify.icons.fontawesome4, {
+  Object.assign(icons.fontawesome4, {
     closer: 'fa fa-times',
     pinUp: 'fa fa-pause',
     pinDown: 'fa fa-play'
   });
-  Object.assign(PNotify.icons.fontawesome5, {
+  Object.assign(icons.fontawesome5, {
     closer: 'fas fa-times',
     pinUp: 'fas fa-pause',
     pinDown: 'fas fa-play'
@@ -63,11 +63,11 @@
   <div
       class="ui-pnotify-sticker {(!stickerHover || _mouseIsIn) ? '' : 'ui-pnotify-buttons-hidden'}"
       role="button"
-      aria-pressed={_options.hide}
+      aria-pressed={_notice.hide}
       tabindex="0"
-      title={_options.hide ? labels.stick : labels.unstick}
+      title={_notice.hide ? labels.stick : labels.unstick}
       on:click={handleStickerClick}>
-    <span class={_options.hide ? _pinUpClass : _pinDownClass}></span>
+    <span class={_notice.hide ? _pinUpClass : _pinDownClass}></span>
   </div>
 {/if}
 
@@ -78,8 +78,6 @@
 
   // The PNotify notice.
   export let _notice = null;
-  // The props for the notice.
-  export let _options = {};
 
   export let closer = defaults.closer;
   export let closerHover = defaults.closerHover;
@@ -112,9 +110,9 @@
     // Font Awesome 5 replaces our lovely element with a gross SVG. In
     // order to make it play nice with Svelte, we have to clear the
     // element and make it again.
-    const icon = _options.hide ? classes.pinUp : classes.pinDown;
+    const icon = _notice.hide ? classes.pinUp : classes.pinDown;
     if (
-      (_options.icons === 'fontawesome5') ||
+      (_notice.icons === 'fontawesome5') ||
       (typeof icon === 'string' && icon.match(/(^| )fa[srlb]($| )/))
     ) {
       sticker = false;
@@ -138,7 +136,7 @@
   }
 
   function handleStickerClick () {
-    _notice.update({ hide: !_options.hide });
+    _notice.hide = !_notice.hide;
   }
 
   function handleCloserClick () {
