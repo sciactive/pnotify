@@ -1,5 +1,5 @@
 import { modules, modulesAppendContainer } from './PNotifyCore';
-import Component, { key, defaults } from './PNotifyConfirmComponent.html';
+import Component, { key, defaults } from './PNotifyReferenceComponent.html';
 
 Component.key = key;
 
