@@ -9,7 +9,7 @@ let pnotifyComponents = [
   'PNotifyCoreComponent',
   'PNotifyAnimateComponent',
   'PNotifyButtonsComponent',
-  // 'PNotifyMobileComponent',
+  'PNotifyMobileComponent',
   // 'PNotifyHistoryComponent',
   // 'PNotifyDesktopComponent',
   'PNotifyConfirmComponent'
@@ -18,19 +18,25 @@ let pnotifyComponents = [
   'PNotifyStyleMaterialComponent',
 
   // Reference module.
-  // 'PNotifyReferenceComponent',
+  'PNotifyReferenceComponent',
 ];
 
 let pnotifySrc = [
   // Main code.
+  'PNotifyCore',
   'PNotifyAnimate',
   'PNotifyButtons',
-  'PNotifyCallbacks',
+  'PNotifyMobile',
+  // 'PNotifyHistory',
+  // 'PNotifyDesktop',
   'PNotifyConfirm',
-  'PNotifyCore'
+  'PNotifyCallbacks',
 
   // Styles.
   'PNotifyStyleMaterial',
+
+  // Reference module.
+  'PNotifyReference',
 ];
 
 try {

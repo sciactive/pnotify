@@ -51,7 +51,7 @@
 
 {#if _showCloser}
   <div
-      class="ui-pnotify-closer {(!closerHover || _mouseIsIn) ? '' : 'ui-pnotify-buttons-hidden'}"
+      class="ui-pnotify-closer {(!closerHover || mouseIsIn) ? '' : 'ui-pnotify-buttons-hidden'}"
       role="button"
       tabindex="0"
       title={labels.close}
@@ -61,7 +61,7 @@
 {/if}
 {#if _showSticker}
   <div
-      class="ui-pnotify-sticker {(!stickerHover || _mouseIsIn) ? '' : 'ui-pnotify-buttons-hidden'}"
+      class="ui-pnotify-sticker {(!stickerHover || mouseIsIn) ? '' : 'ui-pnotify-buttons-hidden'}"
       role="button"
       aria-pressed={_notice.hide}
       tabindex="0"
@@ -86,8 +86,8 @@
   export let labels = defaults.labels;
   export let classes = defaults.classes;
 
-  let _mouseIsIn = false;
-  let _updatingIcon = false;
+  let mouseIsIn = false;
+  let updatingIcon = false;
 
   // Whether to show the sticker icon.
   $: _showSticker = sticker && !(_notice && _notice.refs.elem.classList.contains('nonblock'));
@@ -99,7 +99,7 @@
   $: _closerClass = _notice ? (classes.closer === null ? _notice.getIcons().closer : classes.closer) : '';
 
   $: async () => {
-    if (_updatingIcon) {
+    if (updatingIcon) {
       return;
     }
 
@@ -116,23 +116,22 @@
       (typeof icon === 'string' && icon.match(/(^| )fa[srlb]($| )/))
     ) {
       sticker = false;
-      _updatingIcon = true;
+      updatingIcon = true;
       await tick();
       sticker = true;
-      _updatingIcon = false;
+      updatingIcon = false;
     }
   };
 
   onMount(() => {
     dispatch('init', {
-      key,
       init
     });
   });
 
   export function init () {
-    _notice.on('mouseenter', () => _mouseIsIn = true);
-    _notice.on('mouseleave', () => _mouseIsIn = false);
+    _notice.on('mouseenter', () => mouseIsIn = true);
+    _notice.on('mouseleave', () => mouseIsIn = false);
   }
 
   function handleStickerClick () {
@@ -141,7 +140,7 @@
 
   function handleCloserClick () {
     _notice.close(false);
-    _mouseIsIn = false;
+    mouseIsIn = false;
   }
 </script>
 

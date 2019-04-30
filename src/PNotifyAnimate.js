@@ -13,9 +13,5 @@ Component.factory = (notice, options) => {
 
   notice.attention = module.attention;
 
-  return {
-    key,
-    $set: (...args) => module.$set(...args),
-    $destroy: () => module.$destroy()
-  };
+  return module;
 };

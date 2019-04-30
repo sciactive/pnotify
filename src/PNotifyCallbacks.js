@@ -7,7 +7,7 @@ function getCallback (notice, options, name) {
   return (name in cbs) ? cbs[name] : () => true;
 }
 
-let init = args => {
+let factory = args => {
   getCallback(null, args.props, 'beforeInit')(args.props);
 
   let notice = _factory(args);
@@ -42,9 +42,9 @@ let init = args => {
 
 let _factory = PNotify.factory;
 
-PNotify.factory = options => init(options);
+PNotify.factory = options => factory(options);
 
-const Component = { key };
+const Component = {};
 
 // Register the module with PNotify.
 modules[key] = Component;
