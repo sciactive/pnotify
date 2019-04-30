@@ -13,3 +13,5 @@
 * In v5, using the factory functions is required. Using the `new` keyword will break your notice.
 * Animate.css support in legacy browsers has been removed.
 * `notice.off(event, callback)` is no longer needed. `on()` returns a function that will remove the listener when invoked.
+* Some styling props have changed, like pinDown, actionBar, etc.
+* Material styling is no longer a module, but rather a CSS file.

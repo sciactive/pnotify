@@ -22,7 +22,7 @@
   let windowInnerWidth = window.innerWidth;
 
   $: {
-    if (_notice) {
+    if (_notice && _notice.stack !== undefined) {
       const stack = _notice.stack;
 
       if (styling) {

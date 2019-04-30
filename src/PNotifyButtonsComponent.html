@@ -21,31 +21,30 @@
     // The classes to use for button icons. Leave them null to use the classes from the styling you're using.
     classes: {
       closer: null,
-      pinUp: null,
-      pinDown: null
+      sticker: null,
+      stuck: null,
+      unstuck: null
     }
   };
 
   // Add button icons to icons objects.
-  Object.assign(icons.brighttheme, {
-    closer: 'brighttheme-icon-closer',
-    pinUp: 'brighttheme-icon-sticker',
-    pinDown: 'brighttheme-icon-sticker brighttheme-icon-stuck'
-  });
   Object.assign(icons.bootstrap3, {
     closer: 'glyphicon glyphicon-remove',
-    pinUp: 'glyphicon glyphicon-pause',
-    pinDown: 'glyphicon glyphicon-play'
+    sticker: 'glyphicon',
+    stuck: 'glyphicon-play',
+    unstuck: 'glyphicon-pause'
   });
   Object.assign(icons.fontawesome4, {
     closer: 'fa fa-times',
-    pinUp: 'fa fa-pause',
-    pinDown: 'fa fa-play'
+    sticker: 'fa',
+    stuck: 'fa-play',
+    unstuck: 'fa-pause'
   });
   Object.assign(icons.fontawesome5, {
     closer: 'fas fa-times',
-    pinUp: 'fas fa-pause',
-    pinDown: 'fas fa-play'
+    sticker: 'fas',
+    stuck: 'fa-play',
+    unstuck: 'fa-pause'
   });
 </script>
 
@@ -67,7 +66,7 @@
       tabindex="0"
       title={_notice.hide ? labels.stick : labels.unstick}
       on:click={handleStickerClick}>
-    <span class={_notice.hide ? _pinUpClass : _pinDownClass}></span>
+    <span class="{_stickerClass} {_notice.hide ? _unstuckClass : _stuckClass}"></span>
   </div>
 {/if}
 
@@ -94,9 +93,10 @@
   // Whether to show the closer icon.
   $: _showCloser = closer && !(_notice && _notice.refs.elem.classList.contains('nonblock'));
   // These are button icon classes.
-  $: _pinUpClass = _notice ? (classes.pinUp === null ? _notice.getIcons().pinUp : classes.pinUp) : '';
-  $: _pinDownClass = _notice ? (classes.pinDown === null ? _notice.getIcons().pinDown : classes.pinDown) : '';
-  $: _closerClass = _notice ? (classes.closer === null ? _notice.getIcons().closer : classes.closer) : '';
+  $: _stickerClass = _notice ? (classes.sticker === null ? _notice.getIcon('sticker') : classes.sticker) : '';
+  $: _stuckClass = _notice ? (classes.stuck === null ? _notice.getIcon('stuck') : classes.stuck) : '';
+  $: _unstuckClass = _notice ? (classes.unstuck === null ? _notice.getIcon('unstuck') : classes.unstuck) : '';
+  $: _closerClass = _notice ? (classes.closer === null ? _notice.getIcon('closer') : classes.closer) : '';
 
   $: async () => {
     if (updatingIcon) {
@@ -110,7 +110,7 @@
     // Font Awesome 5 replaces our lovely element with a gross SVG. In
     // order to make it play nice with Svelte, we have to clear the
     // element and make it again.
-    const icon = _notice.hide ? classes.pinUp : classes.pinDown;
+    const icon = _notice.hide ? classes.sticker : classes.stuck;
     if (
       (_notice.icons === 'fontawesome5') ||
       (typeof icon === 'string' && icon.match(/(^| )fa[srlb]($| )/))

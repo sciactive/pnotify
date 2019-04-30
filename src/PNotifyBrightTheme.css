@@ -1,83 +1,83 @@
 /*
 Color Scheme: http://paletton.com/palette.php?uid=c1T3n2J040kpEKzpEKzbEPSOEyiNk9W
 */
-[ui-pnotify].ui-pnotify .brighttheme {
+[ui-pnotify].brighttheme-element {
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
   border-radius: 0;
 }
-[ui-pnotify].ui-pnotify .brighttheme.ui-pnotify-container {
+[ui-pnotify] .brighttheme-container {
   padding: 1.3rem;
 }
-[ui-pnotify].ui-pnotify-with-icon .brighttheme .ui-pnotify-title,
-[ui-pnotify].ui-pnotify-with-icon .brighttheme .ui-pnotify-text,
-[ui-pnotify].ui-pnotify-with-icon .brighttheme .ui-pnotify-confirm {
+[ui-pnotify].ui-pnotify-with-icon .brighttheme-title,
+[ui-pnotify].ui-pnotify-with-icon .brighttheme-text,
+[ui-pnotify].ui-pnotify-with-icon .brighttheme-confirm {
   margin-left: 1.8rem;
 }
-[dir=rtl] [ui-pnotify].ui-pnotify-with-icon .brighttheme .ui-pnotify-title,
-[dir=rtl] [ui-pnotify].ui-pnotify-with-icon .brighttheme .ui-pnotify-text,
-[dir=rtl] [ui-pnotify].ui-pnotify-with-icon .brighttheme .ui-pnotify-confirm {
+[dir=rtl] [ui-pnotify].ui-pnotify-with-icon .brighttheme-title,
+[dir=rtl] [ui-pnotify].ui-pnotify-with-icon .brighttheme-text,
+[dir=rtl] [ui-pnotify].ui-pnotify-with-icon .brighttheme-confirm {
   margin-right: 1.8rem;
   margin-left: 0;
 }
-[ui-pnotify].ui-pnotify .brighttheme .ui-pnotify-title {
+[ui-pnotify] .brighttheme-title {
   font-size: 1.2rem;
   line-height: 1.4rem;
   margin-top: -.2rem;
   margin-bottom: 1rem;
 }
-[ui-pnotify].ui-pnotify .brighttheme .ui-pnotify-text {
+[ui-pnotify] .brighttheme-text {
   font-size: 1rem;
   line-height: 1.2rem;
   margin-top: 0;
 }
-[ui-pnotify].ui-pnotify .brighttheme .ui-pnotify-icon {
+[ui-pnotify] .brighttheme-icon {
   line-height: 1;
 }
-[ui-pnotify].ui-pnotify .brighttheme-notice {
+[ui-pnotify] .brighttheme-notice {
   background-color: #FFFFA2;
   border: 0 solid #FFFF00;
 }
-[ui-pnotify].ui-pnotify .brighttheme-notice h4,
-[ui-pnotify].ui-pnotify .brighttheme-notice div {
+[ui-pnotify] .brighttheme-notice h4,
+[ui-pnotify] .brighttheme-notice div {
   color: #4F4F00;
 }
-[ui-pnotify].ui-pnotify .brighttheme-info {
+[ui-pnotify] .brighttheme-info {
   background-color: #8FCEDD;
   border: 0 solid #0286A5;
 }
-[ui-pnotify].ui-pnotify .brighttheme-info h4,
-[ui-pnotify].ui-pnotify .brighttheme-info div {
+[ui-pnotify] .brighttheme-info h4,
+[ui-pnotify] .brighttheme-info div {
   color: #012831;
 }
-[ui-pnotify].ui-pnotify .brighttheme-success {
+[ui-pnotify] .brighttheme-success {
   background-color: #AFF29A;
   border: 0 solid #35DB00;
 }
-[ui-pnotify].ui-pnotify .brighttheme-success h4,
-[ui-pnotify].ui-pnotify .brighttheme-success div {
+[ui-pnotify] .brighttheme-success h4,
+[ui-pnotify] .brighttheme-success div {
   color: #104300;
 }
-[ui-pnotify].ui-pnotify .brighttheme-error {
+[ui-pnotify] .brighttheme-error {
   background-color: #FFABA2;
   background-image: repeating-linear-gradient(135deg, transparent, transparent 35px, rgba(255,255,255,.3) 35px, rgba(255,255,255,.3) 70px);
   border: 0 solid #FF1800;
 }
-[ui-pnotify].ui-pnotify .brighttheme-error h4,
-[ui-pnotify].ui-pnotify .brighttheme-error div {
+[ui-pnotify] .brighttheme-error h4,
+[ui-pnotify] .brighttheme-error div {
   color: #4F0800;
 }
-[ui-pnotify].ui-pnotify .brighttheme .ui-pnotify-closer,
-[ui-pnotify].ui-pnotify .brighttheme .ui-pnotify-sticker {
+[ui-pnotify] .brighttheme-closer,
+[ui-pnotify] .brighttheme-sticker {
   font-size: 1rem;
   line-height: 1.2rem;
 }
-[ui-pnotify].ui-pnotify .brighttheme-icon-notice,
-[ui-pnotify].ui-pnotify .brighttheme-icon-info,
-[ui-pnotify].ui-pnotify .brighttheme-icon-success,
-[ui-pnotify].ui-pnotify .brighttheme-icon-error,
-[ui-pnotify].ui-pnotify .brighttheme-icon-closer,
-[ui-pnotify].ui-pnotify .brighttheme-icon-sticker {
+[ui-pnotify] .brighttheme-icon-notice,
+[ui-pnotify] .brighttheme-icon-info,
+[ui-pnotify] .brighttheme-icon-success,
+[ui-pnotify] .brighttheme-icon-error,
+[ui-pnotify] .brighttheme-icon-closer,
+[ui-pnotify] .brighttheme-icon-sticker {
   position: relative;
   width: 1rem;
   height: 1rem;
@@ -87,37 +87,37 @@ Color Scheme: http://paletton.com/palette.php?uid=c1T3n2J040kpEKzpEKzbEPSOEyiNk9
   font-family: "Courier New",Courier,monospace;
   border-radius: 50%;
 }
-[ui-pnotify].ui-pnotify .brighttheme-icon-notice:after,
-[ui-pnotify].ui-pnotify .brighttheme-icon-info:after,
-[ui-pnotify].ui-pnotify .brighttheme-icon-success:after,
-[ui-pnotify].ui-pnotify .brighttheme-icon-closer:after,
-[ui-pnotify].ui-pnotify .brighttheme-icon-sticker:after {
+[ui-pnotify] .brighttheme-icon-notice:after,
+[ui-pnotify] .brighttheme-icon-info:after,
+[ui-pnotify] .brighttheme-icon-success:after,
+[ui-pnotify] .brighttheme-icon-closer:after,
+[ui-pnotify] .brighttheme-icon-sticker:after {
   position: absolute;
   top: 0;
   left: .2rem;
 }
-[ui-pnotify].ui-pnotify .brighttheme-icon-notice {
+[ui-pnotify] .brighttheme-icon-notice {
   background-color: #2E2E00;
   color: #FFFFA2;
 }
-[ui-pnotify].ui-pnotify .brighttheme-icon-notice:after {
+[ui-pnotify] .brighttheme-icon-notice:after {
   content: "!";
 }
-[ui-pnotify].ui-pnotify .brighttheme-icon-info {
+[ui-pnotify] .brighttheme-icon-info {
   background-color: #012831;
   color: #8FCEDD;
 }
-[ui-pnotify].ui-pnotify .brighttheme-icon-info:after {
+[ui-pnotify] .brighttheme-icon-info:after {
   content: "i";
 }
-[ui-pnotify].ui-pnotify .brighttheme-icon-success {
+[ui-pnotify] .brighttheme-icon-success {
   background-color: #104300;
   color: #AFF29A;
 }
-[ui-pnotify].ui-pnotify .brighttheme-icon-success:after {
+[ui-pnotify] .brighttheme-icon-success:after {
   content: "\002713";
 }
-[ui-pnotify].ui-pnotify .brighttheme-icon-error {
+[ui-pnotify] .brighttheme-icon-error {
   width: 0;
   height: 0;
   font-size: 0;
@@ -128,7 +128,7 @@ Color Scheme: http://paletton.com/palette.php?uid=c1T3n2J040kpEKzpEKzbEPSOEyiNk9
   border-bottom: 1.2rem solid #2E0400;
   color: #FFABA2;
 }
-[ui-pnotify].ui-pnotify .brighttheme-icon-error:after {
+[ui-pnotify] .brighttheme-icon-error:after {
   position: absolute;
   top: .1rem;
   left: -0.25rem;
@@ -138,28 +138,28 @@ Color Scheme: http://paletton.com/palette.php?uid=c1T3n2J040kpEKzpEKzbEPSOEyiNk9
   font-family: "Courier New",Courier,monospace;
   content: "!";
 }
-[ui-pnotify].ui-pnotify .brighttheme-icon-closer,
-[ui-pnotify].ui-pnotify .brighttheme-icon-sticker {
+[ui-pnotify] .brighttheme-icon-closer,
+[ui-pnotify] .brighttheme-icon-sticker {
   display: inline-block;
 }
-[ui-pnotify].ui-pnotify .brighttheme-icon-closer:after {
+[ui-pnotify] .brighttheme-icon-closer:after {
   content: "\002715";
 }
-[ui-pnotify].ui-pnotify .brighttheme-icon-sticker:after {
+[ui-pnotify] .brighttheme-icon-sticker:after {
   top: -1px;
   content: "\002016";
 }
-[ui-pnotify].ui-pnotify .brighttheme-icon-sticker.brighttheme-icon-stuck:after {
+[ui-pnotify] .brighttheme-icon-sticker.brighttheme-icon-stuck:after {
   content: "\00003E";
 }
 
-[ui-pnotify].ui-pnotify .brighttheme .ui-pnotify-confirm {
+[ui-pnotify] .brighttheme-confirm {
   margin-top: 1rem;
 }
-[ui-pnotify].ui-pnotify .brighttheme .ui-pnotify-prompt-bar {
+[ui-pnotify] .brighttheme-prompt-bar {
   margin-bottom: 1rem;
 }
-[ui-pnotify].ui-pnotify .brighttheme .ui-pnotify-action-button {
+[ui-pnotify] .brighttheme-btn {
   text-transform: uppercase;
   font-weight: bold;
   padding: .4rem 1rem;
@@ -168,19 +168,19 @@ Color Scheme: http://paletton.com/palette.php?uid=c1T3n2J040kpEKzpEKzbEPSOEyiNk9
   cursor: pointer;
 }
 
-[ui-pnotify].ui-pnotify .brighttheme-notice .ui-pnotify-action-button.brighttheme-primary {
+[ui-pnotify] .brighttheme-notice .brighttheme-btn-primary {
   background-color: #FFFF00;
   color: #4F4F00;
 }
-[ui-pnotify].ui-pnotify .brighttheme-info .ui-pnotify-action-button.brighttheme-primary {
+[ui-pnotify] .brighttheme-info .brighttheme-btn-primary {
   background-color: #0286A5;
   color: #012831;
 }
-[ui-pnotify].ui-pnotify .brighttheme-success .ui-pnotify-action-button.brighttheme-primary {
+[ui-pnotify] .brighttheme-success .brighttheme-btn-primary {
   background-color: #35DB00;
   color: #104300;
 }
-[ui-pnotify].ui-pnotify .brighttheme-error .ui-pnotify-action-button.brighttheme-primary {
+[ui-pnotify] .brighttheme-error .brighttheme-btn-primary {
   background-color: #FF1800;
   color: #4F0800;
 }

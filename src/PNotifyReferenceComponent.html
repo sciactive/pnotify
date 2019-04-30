@@ -17,23 +17,14 @@
   };
 
   // This is where you would add any styling or icons classes you are using in your code.
-  Object.assign(icons.brighttheme, {
-    athing: 'bt-icon bt-icon-refresh'
-  });
   Object.assign(icons.bootstrap3, {
-    athing: 'glyphicon glyphicon-refresh'
+    refresh: 'glyphicon glyphicon-refresh'
   });
   Object.assign(icons.fontawesome4, {
-    athing: 'fa fa-refresh'
+    refresh: 'fa fa-refresh'
   });
   Object.assign(icons.fontawesome5, {
-    athing: 'fas fa-sync'
-  });
-  if (!('material' in icons)) {
-    icons.material = {};
-  }
-  Object.assign(icons.material, {
-    athing: 'material-icons pnotify-material-icon-refresh'
+    refresh: 'fas fa-sync'
   });
 </script>
 
@@ -43,11 +34,11 @@
   It will be disabled by default, so we can enable it on mouseover.
   -->
   <button
-      class="ui-pnotify-action-button ui-pnotify-reference-button {'btn' in _notice.getStyles() ? _notice.getStyles().btn : 'btn btn-secondary'}"
+      class="ui-pnotify-action-button ui-pnotify-reference-button {_notice.getStyle('btn')} {_notice.getStyle('btn-secondary')}"
       type="button"
       disabled="{!mouseIsIn}"
       on:click={doSomething}>
-    <i class={_notice.getIcons().athing} />&nbsp;{labels.text}
+    <i class={_notice.getIcon('refresh')} />&nbsp;{labels.text}
   </button>
   <!-- Since our button is floated, we have to add a clearing div. -->
   <div class="ui-pnotify-reference-clearing" />

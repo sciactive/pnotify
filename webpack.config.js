@@ -7,12 +7,13 @@ module.exports = {
   entry: {
     PNotify: path.resolve(__dirname, 'src', 'PNotifyCore.js'),
     PNotifyAnimate: path.resolve(__dirname, 'src', 'PNotifyAnimate.js'),
+    PNotifyBrightTheme: path.resolve(__dirname, 'src', 'PNotifyBrightTheme.css'),
     PNotifyButtons: path.resolve(__dirname, 'src', 'PNotifyButtons.js'),
     PNotifyCallbacks: path.resolve(__dirname, 'src', 'PNotifyCallbacks.js'),
     PNotifyConfirm: path.resolve(__dirname, 'src', 'PNotifyConfirm.js'),
+    PNotifyMaterial: path.resolve(__dirname, 'src', 'PNotifyMaterial.css'),
     PNotifyMobile: path.resolve(__dirname, 'src', 'PNotifyMobile.js'),
-    PNotifyReference: path.resolve(__dirname, 'src', 'PNotifyReference.js'),
-    PNotifyStyleMaterial: path.resolve(__dirname, 'src', 'PNotifyStyleMaterial.js')
+    PNotifyReference: path.resolve(__dirname, 'src', 'PNotifyReference.js')
     // 'PNotify.bundle': path.resolve(__dirname, 'src', 'PNotify.bundle.js')
   },
   output: {

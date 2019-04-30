@@ -80,9 +80,9 @@
     text: false,
     // Whether to trust the text or escape its contents. (Not allow HTML.)
     textTrusted: false,
-    // What styling classes to use. (Can be 'brighttheme', 'bootstrap3', 'bootstrap4', or a styling object.)
+    // What styling classes to use. (Can be 'brighttheme', 'material', 'bootstrap3', 'bootstrap4', or a styling object.)
     styling: 'brighttheme',
-    // What icons to use (Can be 'brighttheme', 'bootstrap3', 'fontawesome4', 'fontawesome5', or an icon object.)
+    // What icons to use (Can be 'brighttheme', 'material', 'bootstrap3', 'fontawesome4', 'fontawesome5', or an icon object.)
     icons: 'brighttheme',
     // Additional classes to be added to the notice. (For custom styling.)
     addClass: '',
@@ -191,42 +191,25 @@
   }
 
   const styleRegistry = {
-    brighttheme: {
-      // Bright Theme doesn't require any UI libraries.
-      container: 'brighttheme',
-      notice: 'brighttheme-notice',
-      info: 'brighttheme-info',
-      success: 'brighttheme-success',
-      error: 'brighttheme-error'
-    },
     bootstrap3: {
       container: 'alert',
       notice: 'alert-warning',
       info: 'alert-info',
       success: 'alert-success',
-      error: 'alert-danger',
-      icon: 'ui-pnotify-icon-bs3'
+      error: 'alert-danger'
     },
     bootstrap4: {
       container: 'alert',
       notice: 'alert-warning',
       info: 'alert-info',
       success: 'alert-success',
-      error: 'alert-danger',
-      icon: 'ui-pnotify-icon-bs4',
-      title: 'ui-pnotify-title-bs4'
+      error: 'alert-danger'
     }
   };
   export { styleRegistry as styles };
 
   // icons are separate from the style, since bs4 doesn't come with any
   const iconRegistry = {
-    brighttheme: {
-      notice: 'brighttheme-icon-notice',
-      info: 'brighttheme-icon-info',
-      success: 'brighttheme-icon-success',
-      error: 'brighttheme-icon-error'
-    },
     bootstrap3: {
       notice: 'glyphicon glyphicon-exclamation-sign',
       info: 'glyphicon glyphicon-info-sign',
@@ -262,7 +245,7 @@
     class="
       ui-pnotify
       {icon !== false ? 'ui-pnotify-with-icon' : ''}
-      {_styles.element ? _styles.element : ''}
+      {getStyle('element')}
       {addClass}
       {_animatingClass}
       {_moveClass}
@@ -293,8 +276,8 @@
   <div bind:this={refs.container}
       class="
         ui-pnotify-container
-        {_styles.container ? _styles.container : ''}
-        {_styles[type] ? _styles[type] : ''}
+        {getStyle('container')}
+        {getStyle(type)}
         {cornerClass}
         {shadow ? 'ui-pnotify-shadow' : ''}
         {_moduleClasses.container.join(' ')}
@@ -308,12 +291,12 @@
       {/each}
     {/if}
     {#if icon !== false}
-      <div bind:this={refs.iconContainer} class="ui-pnotify-icon {_styles.icon ? _styles.icon : ''}">
-        <span class={icon === true ? (_icons[type] ? _icons[type] : '') : icon}></span>
+      <div bind:this={refs.iconContainer} class="ui-pnotify-icon {getStyle('icon')}">
+        <span class={icon === true ? getIcon(type) : icon}></span>
       </div>
     {/if}
     {#if title !== false}
-      <h4 bind:this={refs.titleContainer} class="ui-pnotify-title {_styles.title ? _styles.title : ''}">
+      <h4 bind:this={refs.titleContainer} class="ui-pnotify-title {getStyle('title')}">
         {#if titleTrusted}
           {@html title}
         {:else}
@@ -322,7 +305,7 @@
       </h4>
     {/if}
     {#if text !== false}
-      <div bind:this={refs.textContainer} class="ui-pnotify-text {_styles.text ? _styles.text : ''}" role="alert">
+      <div bind:this={refs.textContainer} class="ui-pnotify-text {getStyle('text')}" role="alert">
         {#if textTrusted}
           {@html text}
         {:else}
@@ -418,8 +401,8 @@
   $: _minHeightStyle = typeof minHeight === 'string' ? 'min-height: ' + minHeight + ';' : '';
 
   export const getState = () => _state;
-  export const getStyles = () => _styles;
-  export const getIcons = () => _icons;
+  export const getStyle = name => (_styles && name in _styles) ? _styles[name] : styling + '-' + name;
+  export const getIcon = name => (_icons && name in _icons) ? _icons[name] : icons + '-icon-' + name;
 
   beforeUpdate(async () => {
     if (_updatingIcon) {
@@ -1174,7 +1157,7 @@
     margin-left: 0;
   }
   /* Bootstrap 4: make title text a tad smaller. */
-  :global(.ui-pnotify-title-bs4) {
+  :global(.ui-pnotify .bootstrap4-title) {
     font-size: 1.2rem;
   }
   :global(.ui-pnotify-text) {
@@ -1191,12 +1174,12 @@
     float: right;
   }
   /* Bootstrap 3: correct positioning of icon. */
-  :global(.ui-pnotify-icon-bs3 > span) {
+  :global(.ui-pnotify .bootstrap3-icon > span) {
     position: relative;
     top: 2px;
   }
   /* Bootstrap 4: correct positioning of icon. */
-  :global(.ui-pnotify-icon-bs4 > span) {
+  :global(.ui-pnotify .bootstrap4-icon > span) {
     position: relative;
     top: 4px;
   }

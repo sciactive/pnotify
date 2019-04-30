@@ -45,25 +45,20 @@
   };
 
   // Add button styles to styling objects.
-  Object.assign(styles.brighttheme, {
-    actionBar: '',
-    promptBar: '',
-    btn: '',
-    btnPrimary: 'brighttheme-primary',
-    input: ''
-  });
   Object.assign(styles.bootstrap3, {
-    actionBar: 'ui-pnotify-confirm-ml',
-    promptBar: 'ui-pnotify-confirm-ml',
+    'action-bar': 'ui-pnotify-confirm-ml',
+    'prompt-bar': 'ui-pnotify-confirm-ml',
     btn: 'btn btn-default ui-pnotify-confirm-mx-1',
-    btnPrimary: 'btn btn-default ui-pnotify-confirm-mx-1 btn-primary',
+    'btn-primary': 'btn-primary',
+    'btn-secondary': '',
     input: 'form-control'
   });
   Object.assign(styles.bootstrap4, {
-    actionBar: 'ui-pnotify-confirm-ml',
-    promptBar: 'ui-pnotify-confirm-ml',
-    btn: 'btn btn-secondary mx-1',
-    btnPrimary: 'btn btn-primary mx-1',
+    'action-bar': 'ui-pnotify-confirm-ml',
+    'prompt-bar': 'ui-pnotify-confirm-ml',
+    btn: 'btn mx-1',
+    'btn-primary': 'btn-primary',
+    'btn-secondary': 'btn-secondary',
     input: 'form-control'
   });
 </script>
@@ -74,8 +69,8 @@
       <div
           class="
             ui-pnotify-prompt-bar
-            {_styles.promptBar ? _styles.promptBar : ''}
-            {_styles.text ? _styles.text : ''}
+            {_notice.getStyle('prompt-bar')}
+            {_notice.getStyle('text')}
           ">
         {#if promptMultiLine}
           <textarea
@@ -84,7 +79,7 @@
               bind:this={promptMultiElem}
               class="
                 ui-pnotify-prompt-input
-                {_styles.input ? _styles.input : ''}
+                {_notice.getStyle('input')}
                 {promptClass}
               "
               bind:value={promptValue}></textarea>
@@ -95,7 +90,7 @@
               bind:this={promptSingleElem}
               class="
                 ui-pnotify-prompt-input
-                {_styles.input ? _styles.input : ''}
+                {_notice.getStyle('input')}
                 {promptClass}
               "
               bind:value={promptValue} />
@@ -105,8 +100,8 @@
     <div
         class="
           ui-pnotify-action-bar
-          {_styles.actionBar ? _styles.actionBar : ''}
-          {_styles.text ? _styles.text : ''}
+          {_notice.getStyle('action-bar')}
+          {_notice.getStyle('text')}
         "
         style="justify-content: {align};"
         bind:this={buttonsElem}>
@@ -116,7 +111,8 @@
             on:click={event => handleClick(button, event)}
             class="
               ui-pnotify-action-button
-              {button.primary ? (_styles.btnPrimary ? _styles.btnPrimary : '') : (_styles.btn ? _styles.btn : '')}
+              {_notice.getStyle('btn')}
+              {button.primary ? _notice.getStyle('btn-primary') : _notice.getStyle('btn-secondary')}
               {button.addClass ? button.addClass : ''}
             ">{#if button.textTrusted}{@html button.text}{:else}{button.text}{/if}</button>
       {/each}
@@ -147,7 +143,6 @@
 
   let focusNextChange = false;
 
-  $: _styles = (_notice && _notice.getStyles()) || {};
   $: {
     if (focusNextChange) {
       if (prompt && focus !== false) {

@@ -210,14 +210,16 @@ The default, standalone theme, Bright Theme. Include the CSS file in your page:
 
 ## Material
 
-The Material Style module. Requires [material-design-icons](https://www.npmjs.com/package/material-design-icons). Include the module in your JS, and set it as the default:
+The Material style. Requires [material-design-icons](https://www.npmjs.com/package/material-design-icons). Include the CSS file in your page, and set it as the default:
+
+```html
+<link href="node_modules/pnotify/dist/PNotifyMaterial.css" rel="stylesheet" type="text/css" />
+```
 
 ```js
 import { defaults } from 'pnotify/dist/es/PNotify';
-import 'pnotify/dist/es/PNotifyStyleMaterial.js';
 // or
 const { defaults } = require('pnotify/dist/umd/PNotify');
-require('pnotify/dist/umd/PNotifyStyleMaterial.js');
 
 // Set default styling.
 defaults.styling = 'material';
@@ -320,9 +322,9 @@ PNotify options and default values.
 * `textTrusted: false`<br>
   Whether to trust the text or escape its contents. (Not allow HTML.)
 * `styling: 'brighttheme'`<br>
-  What styling classes to use. (Can be 'brighttheme', 'bootstrap3', 'bootstrap4', or a styling object. See the source in PNotifyStyleMaterial.html for the properties in a style object.)
+  What styling classes to use. (Can be 'brighttheme', 'material', 'bootstrap3', 'bootstrap4', or a styling object.)
 * `icons: 'brighttheme'`<br>
-  What icons classes to use (Can be 'brighttheme', 'bootstrap3', 'fontawesome4', 'fontawesome5', or an icon object. See the source in PNotifyStyleMaterial.html for the properties in an icon object.)
+  What icons classes to use (Can be 'brighttheme', 'material', 'bootstrap3', 'fontawesome4', 'fontawesome5', or an icon object.)
 * `addClass: ''`<br>
   Additional classes to be added to the notice. (For custom styling.)
 * `cornerClass: ''`<br>
