@@ -20,25 +20,25 @@
 
   let _animateIn;
   let _animateOut;
+  let _animation;
 
   $: {
-    if (animate) {
-      _notice.$set({ 'animation': 'none' });
-      if (!_animateIn) {
-        _animateIn = _notice.animateIn;
-      }
-      if (!_animateOut) {
-        _animateOut = _notice.animateOut;
-      }
+    if (animate && !_animateIn) {
+      _animation = _notice.animation;
+      _animateIn = _notice.animateIn;
+      _animateOut = _notice.animateOut;
       _notice.$set({
+        animation: 'none',
         animateIn,
         animateOut
       });
-    } else if (_animateIn && _animateOut) {
+    } else if (!animate && _animateIn) {
       _notice.$set({
+        animation: _animation,
         animateIn: _animateIn,
         animateOut: _animateOut
       });
+      _animation = null;
       _animateIn = null;
       _animateOut = null;
     }

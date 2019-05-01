@@ -22,81 +22,28 @@
   let windowInnerWidth = window.innerWidth;
 
   $: {
-    if (_notice && _notice.stack !== undefined) {
-      const stack = _notice.stack;
+    const stack = _notice.stack;
 
-      if (styling) {
-        if (stack !== false) {
-          if (windowInnerWidth <= 480) {
-            if (!stack.mobileOrigSpacing1) {
-              stack.mobileOrigSpacing1 = stack.spacing1;
-            }
-            stack.spacing1 = 0;
-            if (!stack.mobileOrigFirstpos1) {
-              stack.mobileOrigFirstpos1 = stack.firstpos1;
-            }
-            stack.firstpos1 = 0;
-            if (!stack.mobileOrigSpacing2) {
-              stack.mobileOrigSpacing2 = stack.spacing2;
-            }
-            stack.spacing2 = 0;
-            if (!stack.mobileOrigFirstpos2) {
-              stack.mobileOrigFirstpos2 = stack.firstpos2;
-            }
-            stack.firstpos2 = 0;
-          } else {
-            if (stack.mobileOrigSpacing1) {
-              stack.spacing1 = stack.mobileOrigSpacing1;
-              delete stack.mobileOrigSpacing1;
-            }
-            if (stack.mobileOrigFirstpos1) {
-              stack.firstpos1 = stack.mobileOrigFirstpos1;
-              delete stack.mobileOrigFirstpos1;
-            }
-            if (stack.mobileOrigSpacing2) {
-              stack.spacing2 = stack.mobileOrigSpacing2;
-              delete stack.mobileOrigSpacing2;
-            }
-            if (stack.mobileOrigFirstpos2) {
-              stack.firstpos2 = stack.mobileOrigFirstpos2;
-              delete stack.mobileOrigFirstpos2;
-            }
+    if (styling && !_notice.hasModuleClass('elem', 'ui-pnotify-mobile-able')) {
+      if (stack !== false) {
+        if (windowInnerWidth <= 480) {
+          if (!stack.mobileOrigSpacing1) {
+            stack.mobileOrigSpacing1 = stack.spacing1;
           }
-          _notice.removeModuleClass(
-            'elem',
-            'ui-pnotify-mobile-top',
-            'ui-pnotify-mobile-bottom',
-            'ui-pnotify-mobile-right',
-            'ui-pnotify-mobile-left'
-          );
-          switch (stack.dir1) {
-            case 'down':
-              _notice.addModuleClass('elem', 'ui-pnotify-mobile-top');
-              break;
-            case 'up':
-              _notice.addModuleClass('elem', 'ui-pnotify-mobile-bottom');
-              break;
-            case 'left':
-              _notice.addModuleClass('elem', 'ui-pnotify-mobile-right');
-              break;
-            case 'right':
-              _notice.addModuleClass('elem', 'ui-pnotify-mobile-left');
-              break;
+          stack.spacing1 = 0;
+          if (!stack.mobileOrigFirstpos1) {
+            stack.mobileOrigFirstpos1 = stack.firstpos1;
           }
-        }
-
-        _notice.addModuleClass('elem', 'ui-pnotify-mobile-able');
-      } else {
-        _notice.removeModuleClass(
-          'elem',
-          'ui-pnotify-mobile-able',
-          'ui-pnotify-mobile-top',
-          'ui-pnotify-mobile-bottom',
-          'ui-pnotify-mobile-right',
-          'ui-pnotify-mobile-left'
-        );
-
-        if (stack !== false) {
+          stack.firstpos1 = 0;
+          if (!stack.mobileOrigSpacing2) {
+            stack.mobileOrigSpacing2 = stack.spacing2;
+          }
+          stack.spacing2 = 0;
+          if (!stack.mobileOrigFirstpos2) {
+            stack.mobileOrigFirstpos2 = stack.firstpos2;
+          }
+          stack.firstpos2 = 0;
+        } else {
           if (stack.mobileOrigSpacing1) {
             stack.spacing1 = stack.mobileOrigSpacing1;
             delete stack.mobileOrigSpacing1;
@@ -113,6 +60,57 @@
             stack.firstpos2 = stack.mobileOrigFirstpos2;
             delete stack.mobileOrigFirstpos2;
           }
+        }
+        _notice.removeModuleClass(
+          'elem',
+          'ui-pnotify-mobile-top',
+          'ui-pnotify-mobile-bottom',
+          'ui-pnotify-mobile-right',
+          'ui-pnotify-mobile-left'
+        );
+        switch (stack.dir1) {
+          case 'down':
+            _notice.addModuleClass('elem', 'ui-pnotify-mobile-top');
+            break;
+          case 'up':
+            _notice.addModuleClass('elem', 'ui-pnotify-mobile-bottom');
+            break;
+          case 'left':
+            _notice.addModuleClass('elem', 'ui-pnotify-mobile-right');
+            break;
+          case 'right':
+            _notice.addModuleClass('elem', 'ui-pnotify-mobile-left');
+            break;
+        }
+      }
+
+      _notice.addModuleClass('elem', 'ui-pnotify-mobile-able');
+    } else if (!styling && _notice.hasModuleClass('elem', 'ui-pnotify-mobile-able')) {
+      _notice.removeModuleClass(
+        'elem',
+        'ui-pnotify-mobile-able',
+        'ui-pnotify-mobile-top',
+        'ui-pnotify-mobile-bottom',
+        'ui-pnotify-mobile-right',
+        'ui-pnotify-mobile-left'
+      );
+
+      if (stack !== false) {
+        if (stack.mobileOrigSpacing1) {
+          stack.spacing1 = stack.mobileOrigSpacing1;
+          delete stack.mobileOrigSpacing1;
+        }
+        if (stack.mobileOrigFirstpos1) {
+          stack.firstpos1 = stack.mobileOrigFirstpos1;
+          delete stack.mobileOrigFirstpos1;
+        }
+        if (stack.mobileOrigSpacing2) {
+          stack.spacing2 = stack.mobileOrigSpacing2;
+          delete stack.mobileOrigSpacing2;
+        }
+        if (stack.mobileOrigFirstpos2) {
+          stack.firstpos2 = stack.mobileOrigFirstpos2;
+          delete stack.mobileOrigFirstpos2;
         }
       }
     }

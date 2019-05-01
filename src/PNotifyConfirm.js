@@ -2,7 +2,6 @@ import { modules, modulesAppendContainer } from './PNotifyCore';
 import Component, { key, defaults } from './PNotifyConfirmComponent.html';
 
 Component.key = key;
-
 Component.defaults = defaults;
 
 // Register the module with PNotify.

@@ -11,7 +11,7 @@ let pnotifyComponents = [
   'PNotifyButtonsComponent',
   'PNotifyMobileComponent',
   // 'PNotifyHistoryComponent',
-  // 'PNotifyDesktopComponent',
+  'PNotifyDesktopComponent',
   'PNotifyConfirmComponent'
 
   // Styles.
@@ -28,7 +28,7 @@ let pnotifySrc = [
   'PNotifyButtons',
   'PNotifyMobile',
   // 'PNotifyHistory',
-  // 'PNotifyDesktop',
+  'PNotifyDesktop',
   'PNotifyConfirm',
   'PNotifyCallbacks',
 

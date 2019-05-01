@@ -514,8 +514,8 @@
           const moduleOptions = Object.assign({
             '_notice': self
           }, modules[key]);
-          const accessor = moduleRegistry[key].factory(self, moduleOptions);
-          initModule(key, accessor);
+          _moduleAccessors[key] = moduleRegistry[key].factory(self, moduleOptions);
+          initModule(key, _moduleAccessors[key]);
         }
       }
     } else {
@@ -576,6 +576,22 @@
     _animatingClass = 'ui-pnotify-initial-hidden';
     runModules('beforeOpen');
 
+    const afterOpenCallback = () => {
+      // Now set it to hide.
+      if (hide) {
+        queueClose();
+      }
+
+      _state = 'open';
+
+      runModules('afterOpen');
+    };
+
+    if (_moduleIsNoticeOpen) {
+      afterOpenCallback();
+      return;
+    }
+
     // If the notice is not in the DOM, or in the wrong context, append it.
     if (
       refs.elem &&
@@ -606,16 +622,7 @@
         stack.animation = true;
       }
 
-      animateIn(() => {
-        // Now set it to hide.
-        if (hide) {
-          queueClose();
-        }
-
-        _state = 'open';
-
-        runModules('afterOpen');
-      });
+      animateIn(afterOpenCallback);
     }, 0);
   };
 
@@ -1057,6 +1064,10 @@
 
   export function setAnimating (value) {
     return _animating = value;
+  }
+
+  export function getAnimatingClass () {
+    return _animatingClass;
   }
 
   export function setAnimatingClass (value) {
