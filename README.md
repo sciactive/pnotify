@@ -380,6 +380,10 @@ defaultStack = {
 ## Changing Defaults
 
 ```js
+import { defaults } from 'PNotify/dist/es/PNotify';
+// or
+const { defaults } = require('pnotify/dist/umd/PNotify');
+
 defaults.width = '400px';
 ```
 

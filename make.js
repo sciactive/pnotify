@@ -10,7 +10,7 @@ let pnotifyComponents = [
   'PNotifyAnimateComponent',
   'PNotifyButtonsComponent',
   'PNotifyMobileComponent',
-  // 'PNotifyHistoryComponent',
+  'PNotifyHistoryComponent',
   'PNotifyDesktopComponent',
   'PNotifyConfirmComponent'
 
@@ -27,7 +27,7 @@ let pnotifySrc = [
   'PNotifyAnimate',
   'PNotifyButtons',
   'PNotifyMobile',
-  // 'PNotifyHistory',
+  'PNotifyHistory',
   'PNotifyDesktop',
   'PNotifyConfirm',
   'PNotifyCallbacks',

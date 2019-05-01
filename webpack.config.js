@@ -12,6 +12,7 @@ module.exports = {
     PNotifyCallbacks: path.resolve(__dirname, 'src', 'PNotifyCallbacks.js'),
     PNotifyConfirm: path.resolve(__dirname, 'src', 'PNotifyConfirm.js'),
     PNotifyDesktop: path.resolve(__dirname, 'src', 'PNotifyDesktop.js'),
+    PNotifyHistory: path.resolve(__dirname, 'src', 'PNotifyHistory.js'),
     PNotifyMaterial: path.resolve(__dirname, 'src', 'PNotifyMaterial.css'),
     PNotifyMobile: path.resolve(__dirname, 'src', 'PNotifyMobile.js'),
     PNotifyReference: path.resolve(__dirname, 'src', 'PNotifyReference.js')

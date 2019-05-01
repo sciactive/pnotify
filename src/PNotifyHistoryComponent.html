@@ -1,136 +1,118 @@
-<script>
-  import PNotify from './PNotify.html';
+<svelte:options accessors={true} />
+<script context="module">
+  import { defaultStack, notices } from './PNotifyCore';
 
-  export default {
-    setup (Component) {
-      Component.key = 'History';
+  export const key = 'History';
 
-      Component.defaults = {
-        // Place the notice in the history.
-        history: true,
-        // Maximum number of notices to have open in its stack.
-        maxInStack: Infinity
-      };
+  export const defaults = {
+    // Place the notice in the history.
+    history: true,
+    // Maximum number of notices to have open in its stack.
+    maxInStack: Infinity
+  };
 
-      Component.init = (notice) => {
-        return new Component({ target: document.body });
-      };
+  export function showLast (stack) {
+    if (stack === undefined) {
+      stack = defaultStack;
+    }
+    if (stack === false) {
+      return;
+    }
+    const top = (stack.push === 'top');
 
-      Component.showLast = (stack) => {
-        if (stack === undefined) {
-          stack = PNotify.defaultStack;
-        }
-        if (stack === false) {
-          return;
-        }
-        const top = (stack.push === 'top');
+    // Look up the last history notice, and display it.
+    let i = (top ? 0 : notices.length - 1);
 
-        // Look up the last history notice, and display it.
-        let i = (top ? 0 : PNotify.notices.length - 1);
+    let notice;
+    do {
+      notice = notices[i];
 
-        let notice;
-        do {
-          notice = PNotify.notices[i];
+      if (!notice) {
+        return;
+      }
 
-          if (!notice) {
-            return;
-          }
+      i += (top ? 1 : -1);
+    } while (
+      notice.stack !== stack ||
+      !notice.getModuleAccessors().History.history ||
+      notice.getState() === 'opening' ||
+      notice.getState() === 'open'
+    );
 
-          i += (top ? 1 : -1);
-        } while (
-          notice.get().stack !== stack ||
-          !notice.get()._modules.History.get().history ||
-          notice.get()._state === 'opening' ||
-          notice.get()._state === 'open'
-        );
+    notice.open();
+  }
 
+  export function showAll (stack) {
+    if (stack === undefined) {
+      stack = defaultStack;
+    }
+    if (stack === false) {
+      return;
+    }
+
+    // Display all notices. (Disregarding non-history notices.)
+    for (let i = 0; i < notices.length; i++) {
+      const notice = notices[i];
+      if (
+        (
+          stack === true ||
+          notice.stack === stack
+        ) &&
+        notice.getModuleAccessors().History.history
+      ) {
         notice.open();
-      };
+      }
+    }
+  }
+</script>
+<script>
+  // The PNotify notice.
+  export let _notice = null;
 
-      Component.showAll = (stack) => {
-        if (stack === undefined) {
-          stack = PNotify.defaultStack;
-        }
-        if (stack === false) {
-          return;
-        }
+  export let history = defaults.history;
+  export let maxInStack = defaults.maxInStack;
 
-        // Display all notices. (Disregarding non-history notices.)
-        for (let i = 0; i < PNotify.notices.length; i++) {
-          const notice = PNotify.notices[i];
-          if (
-            (
-              stack === true ||
-              notice.get().stack === stack
-            ) &&
-            notice.get()._modules.History.get().history
-          ) {
-            notice.open();
-          }
-        }
-      };
+  $: {
+    if (history && _notice.destroy) {
+      // Don't destroy notices that are in history.
+      _notice.destroy = false;
+    }
+  }
 
-      // Register the module with PNotify.
-      PNotify.modules.History = Component;
-    },
+  export function beforeOpen () {
+    if (maxInStack === Infinity) {
+      return;
+    }
 
-    data () {
-      return Object.assign({
-        '_notice': null, // The PNotify notice.
-        '_options': {} // The options for the notice.
-      }, PNotify.modules.History.defaults);
-    },
+    const stack = _notice.stack;
+    if (stack === false) {
+      return;
+    }
 
-    methods: {
-      initModule (options) {
-        this.set(options);
+    // Remove oldest notifications leaving only maxInStack from the stack.
+    if (notices && (notices.length > maxInStack)) {
+      // Oldest are normally in front of array, or if stack.push=='top' then
+      // they are at the end of the array!
+      const top = stack.push === 'top';
+      const forRemoval = [];
+      let currentOpen = 0;
 
-        if (this.get().history) {
-          // Don't destroy notices that are in history.
-          const { _notice } = this.get();
-          if (_notice.get().destroy) {
-            _notice.set({ 'destroy': false });
-          }
-        }
-      },
-
-      beforeOpen () {
-        const { maxInStack, _options } = this.get();
-        if (maxInStack === Infinity) {
-          return;
-        }
-
-        const stack = _options.stack;
-        if (stack === false) {
-          return;
-        }
-
-        // Remove oldest notifications leaving only maxInStack from the stack.
-        if (PNotify.notices && (PNotify.notices.length > maxInStack)) {
-          // Oldest are normally in front of array, or if stack.push=='top' then
-          // they are at the end of the array!
-          const top = stack.push === 'top';
-          const forRemoval = [];
-          let currentOpen = 0;
-
-          for (let i = (top ? 0 : PNotify.notices.length - 1); (top ? i < PNotify.notices.length : i >= 0); (top ? i++ : i--)) {
-            if (
-              ['opening', 'open'].indexOf(PNotify.notices[i].get()._state) !== -1 &&
-              PNotify.notices[i].get().stack === stack
-            ) {
-              if (currentOpen >= maxInStack) {
-                forRemoval.push(PNotify.notices[i]);
-              } else {
-                currentOpen++;
-              }
-            }
-          }
-
-          for (let i = 0; i < forRemoval.length; i++) {
-            forRemoval[i].close(false);
+      for (let i = (top ? 0 : notices.length - 1); (top ? i < notices.length : i >= 0); (top ? i++ : i--)) {
+        if (
+          ['opening', 'open'].indexOf(notices[i].getState()) !== -1 &&
+          notices[i].stack === stack
+        ) {
+          if (currentOpen >= maxInStack) {
+            forRemoval.push(notices[i]);
+          } else {
+            currentOpen++;
           }
         }
       }
+
+      for (let i = 0; i < forRemoval.length; i++) {
+        forRemoval[i].close(false);
+      }
     }
-  };
+  }
 </script>
