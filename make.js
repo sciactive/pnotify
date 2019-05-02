@@ -60,7 +60,9 @@ for (let name of pnotifyComponents) {
     css: false
   });
   ({ code, map } = js);
-  code += '\n//# sourceMappingURL=' + name + '.js.map';
+  if (map) {
+    code += '\n//# sourceMappingURL=' + name + '.js.map';
+  }
 
   fs.writeFileSync(dstFilename, code);
   if (map) {
