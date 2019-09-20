@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>PNotify</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css" integrity="sha256-HtCCUh9Hkh//8U1OwcbD8epVEUdBvuI8wj1KtqMhNkI=" crossorigin="anonymous" />
+
+  <!-- PNotify -->
+  <script type="text/javascript" src="../lib/iife/PNotify.js"></script>
+  <link href="../src/PNotifyBrightTheme.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="../lib/iife/PNotifyAnimate.js"></script>
+<!--   <script type="text/javascript" src="../lib/iife/PNotifyButtons.js"></script> -->
+</head>
+<body>
+  <p>
+    <input type="checkbox" id="animate">Animate </input>
+    <button onclick="showNotice()">Modal Info Message</button>
+    <hr />
+  </p>
+  <script>
+  function showNotice(){
+    window.centerModalStack = {
+      'dir1': 'down',
+      'firstpos1': 25,
+      'modal': true,
+      'overlayClose': true
+    };
+
+    var animate = document.getElementById("animate").checked;
+
+    PNotify.info({
+      title: 'New Thing',
+      text: 'Just to let you know, something happened.',
+      stack: centerModalStack,
+            modules: {
+                Animate: {
+                    animate: animate,
+                    inClass: 'zoomInLeft',
+                    outClass: 'zoomOutRight'
+                }
+            }
+
+    });
+  }
+  </script>
+  <p id="copyright">&copy; 2011-2018 Hunter Perrin. All Rights Reserved.</p>
+</body>
+</html>
