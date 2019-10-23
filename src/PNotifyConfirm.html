@@ -175,11 +175,11 @@
             let i = buttons.length - 1;
             while (i >= 0) {
               if (buttons[i].promptTrigger) {
+                this.refs.buttons.children[i].focus();
                 break;
               }
               i--;
             }
-            this.refs.buttons.children[i].focus();
           }
         }
       },
