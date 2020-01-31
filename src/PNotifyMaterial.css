@@ -3,17 +3,14 @@ Color Scheme: https://www.google.com/design/spec/style/color.html#color-color-pa
 Requires stylesheet to work: https://fonts.googleapis.com/css?family=Material+Icons
 */
 [ui-pnotify].material-element {
-  /* https://material.io/color/#!/?view.left=0&view.right=0&primary.color=FFF59D */
+  /* https://material.io/design/color/the-color-system.html#tools-for-picking-colors */
   --notice-background-color: #FFF59D;
   --notice-text-color: #000;
-  /* https://material.io/color/#!/?view.left=0&view.right=0&primary.color=80DEEA */
-  --info-background-color: #80DEEA;
+  --info-background-color: #9dfff5;
   --info-text-color: #000;
-  /* https://material.io/color/#!/?view.left=0&view.right=0&primary.color=A5D6A7 */
-  --success-background-color: #A5D6A7;
+  --success-background-color: #a7ff9d;
   --success-text-color: #000;
-  /* https://material.io/color/#!/?view.left=0&view.right=0&primary.color=EF9A9A */
-  --error-background-color: #EF9A9A;
+  --error-background-color: #ffc49d;
   --error-text-color: #000;
   --primary-button-text-color: #3F51B5;
   --primary-button-text-focus-color: #303F9F;
@@ -25,17 +22,13 @@ Requires stylesheet to work: https://fonts.googleapis.com/css?family=Material+Ic
   font-size: 14px;
 }
 [ui-pnotify].material-element.ui-pnotify-mode-dark {
-  /* https://material.io/color/#!/?view.left=0&view.right=0&primary.color=FF8F00 */
   --notice-background-color: #FF8F00;
   --notice-text-color: #FFF;
-  /* https://material.io/color/#!/?view.left=0&view.right=0&primary.color=1565C0 */
-  --info-background-color: #1565C0;
+  --info-background-color: #006eff;
   --info-text-color: #FFF;
-  /* https://material.io/color/#!/?view.left=0&view.right=0&primary.color=2E7D32 */
-  --success-background-color: #2E7D32;
+  --success-background-color: #00c000;
   --success-text-color: #FFF;
-  /* https://material.io/color/#!/?view.left=0&view.right=0&primary.color=C62828 */
-  --error-background-color: #C62828;
+  --error-background-color: #ff1100;
   --error-text-color: #FFF;
   --primary-button-text-color: #E1F5FE;
   --primary-button-text-focus-color: #E0F7FA;
