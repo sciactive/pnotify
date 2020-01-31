@@ -4,39 +4,33 @@
 const fs = require('fs');
 const svelte = require('svelte/compiler');
 
-let pnotifyComponents = [
+const pnotifyComponents = [
   // Main code.
   'PNotifyCoreComponent',
   'PNotifyAnimateComponent',
   'PNotifyButtonsComponent',
-  'PNotifyMobileComponent',
-  'PNotifyHistoryComponent',
+  'PNotifyConfirmComponent',
   'PNotifyDesktopComponent',
-  'PNotifyConfirmComponent'
-
-  // Styles.
-  'PNotifyStyleMaterialComponent',
+  'PNotifyHistoryComponent',
+  'PNotifyMobileComponent',
 
   // Reference module.
-  'PNotifyReferenceComponent',
+  'PNotifyReferenceComponent'
 ];
 
-let pnotifySrc = [
+const pnotifySrc = [
   // Main code.
   'PNotifyCore',
   'PNotifyAnimate',
   'PNotifyButtons',
-  'PNotifyMobile',
-  'PNotifyHistory',
-  'PNotifyDesktop',
-  'PNotifyConfirm',
   'PNotifyCallbacks',
-
-  // Styles.
-  'PNotifyStyleMaterial',
+  'PNotifyConfirm',
+  'PNotifyDesktop',
+  'PNotifyHistory',
+  'PNotifyMobile',
 
   // Reference module.
-  'PNotifyReference',
+  'PNotifyReference'
 ];
 
 try {
@@ -47,7 +41,7 @@ try {
 } catch (e) {}
 
 // Compile Svelte component.
-for (let name of pnotifyComponents) {
+for (const name of pnotifyComponents) {
   const srcFilename = 'src/' + name + '.html';
   const dstFilename = 'dist/es/' + name + '.js';
   let code = fs.readFileSync(srcFilename, 'utf8');
@@ -71,7 +65,7 @@ for (let name of pnotifyComponents) {
 }
 
 // Alter module to import correctly.
-for (let name of pnotifySrc) {
+for (const name of pnotifySrc) {
   const srcFilename = 'src/' + name + '.js';
   const dstFilename = 'dist/es/' + name + '.js';
   let code = fs.readFileSync(srcFilename, 'utf8');
