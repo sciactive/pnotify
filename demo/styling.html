@@ -5,17 +5,23 @@
   <title>PNotify Styling Demos</title>
   <meta name="HandheldFriendly" content="true" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script type="text/javascript" src="../lib/iife/PNotify.js"></script>
-  <script type="text/javascript" src="../lib/iife/PNotifyButtons.js"></script>
-  <script type="text/javascript" src="../lib/iife/PNotifyConfirm.js"></script>
-  <script type="text/javascript" src="../lib/iife/PNotifyMobile.js"></script>
-  <link href="../src/PNotifyBrightTheme.css" rel="stylesheet" type="text/css" />
-  <link href="../src/PNotifyMaterial.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="../dist/umd/PNotify.js"></script>
+  <script type="text/javascript" src="../dist/umd/PNotifyButtons.js"></script>
+  <script type="text/javascript" src="../dist/umd/PNotifyConfirm.js"></script>
+  <script type="text/javascript" src="../dist/umd/PNotifyMobile.js"></script>
+  <link href="../dist/PNotify.css" rel="stylesheet" type="text/css" />
+  <link href="../dist/PNotifyBrightTheme.css" rel="stylesheet" type="text/css" />
+  <link href="../dist/PNotifyMaterial.css" rel="stylesheet" type="text/css" />
+  <link href="../dist/PNotifyButtons.css" rel="stylesheet" type="text/css" />
+  <link href="../dist/PNotifyConfirm.css" rel="stylesheet" type="text/css" />
+  <link href="../dist/PNotifyMobile.css" rel="stylesheet" type="text/css" />
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="" id="bootstrap-css" rel="stylesheet" type="text/css" />
   <link href="" id="fontawesome-css" rel="stylesheet" type="text/css" />
 
   <script type="text/javascript">
+    console.log(PNotify);
+
     /* globals PNotify */
     window.setStyling = function () {
       var styling = document.getElementById('styling').value;
@@ -30,7 +36,7 @@
         loadLibraries();
       }
 
-      PNotify.removeAll();
+      PNotify.closeAll();
     };
 
     window.setIcons = function () {
@@ -49,7 +55,15 @@
         loadLibraries();
       }
 
-      PNotify.removeAll();
+      PNotify.closeAll();
+    };
+
+    window.setMode = function () {
+      var mode = document.getElementById('mode').value;
+
+      PNotify.defaults.mode = mode;
+
+      PNotify.closeAll();
     };
 
     window.setRtl = function () {
@@ -117,6 +131,10 @@
           <option value="fontawesome4">Font Awesome 4</option>
           <option value="fontawesome5">Font Awesome 5</option>
         </select>
+        Mode: <select id="mode" onchange="setMode()">
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
       </p>
       <p>
         <label><input type="checkbox" id="rtl" onchange="setRtl()" /> Make page RTL (set dir="rtl" on &lt;body&gt;)</label>
@@ -138,7 +156,7 @@
     <button onclick="PNotify.notice({title: 'Test Notice', text: 'This is a test notice.'})">Test Notice</button>
     <button onclick="PNotify.info({title: 'Test Notice', text: 'This is a test notice.'})">Test Info</button>
     <button onclick="PNotify.success({title: 'Test Notice', text: 'This is a test notice.'})">Test Success</button>
-    <button onclick="PNotify.error({title: 'Test Notice', text: 'This is a test notice.'})">Test Danger</button>
+    <button onclick="PNotify.error({title: 'Test Notice', text: 'This is a test notice.'})">Test Error</button>
     <button onclick="PNotify.info({title: 'This is a test notice.'})">Just Title</button>
     <button onclick="PNotify.info({text: 'This is a test notice.'})">Just Text</button>
     <h3>Confirm Module</h3>
