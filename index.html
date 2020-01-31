@@ -30,7 +30,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.slim.min.js" integrity="sha256-ZaXnYkHGqIhqTbJ6MB4l9Frs/r7U4jlx7ir8PJYBqbI=" crossorigin="anonymous"></script>
 
   <!-- Bootstrap -->
-  <link id="bootstrap-css" rel="stylesheet" media="(prefers-color-scheme: no-preference), (prefers-color-scheme: light)" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" crossorigin="anonymous" />
+  <link id="bootstrap-light" rel="stylesheet" media="(prefers-color-scheme: no-preference), (prefers-color-scheme: light)" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" crossorigin="anonymous" />
   <link id="bootstrap-dark" rel="stylesheet" media="(prefers-color-scheme: dark)" href="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/darkly/bootstrap.min.css" crossorigin="anonymous" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.15.0/umd/popper.min.js" integrity="sha256-fTuUgtT7O2rqoImwjrhDgbXTKUwyxxujIMRIK7TbuNU=" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha256-CjSoeELFOcH0/uxWu6mC/Vlrc1AARqbm/jiiImDGV3s=" crossorigin="anonymous"></script>
@@ -61,19 +61,6 @@
 
   <!-- Custom Styling -->
   <style type="text/css">
-    /* Bootstrap theme switcher. */
-    #switcher-container {
-      position: fixed;
-      bottom: 5px;
-      left: 5px;
-      z-index: 1021;
-    }
-    @media (max-width: 460px) {
-      #switcher-container {
-        position: static;
-      }
-    }
-
     /* Translucent notice CSS */
     [ui-pnotify].ui-pnotify.translucent.ui-pnotify-fade-in {
       opacity: 0.8;
@@ -195,55 +182,6 @@
       </div>
     </div>
   </nav>
-  <div id="switcher-container">
-    <div id="switcher-bootstrap" style="display: none;">
-      <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="bootswatch-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Theme: <span id="bootstrap-current">Normal</span>
-        </button>
-        <div class="dropdown-menu" aria-labelledby="bootswatch-dropdown" style="max-height: 450px; overflow-y: auto;">
-          <a class="dropdown-item" href="javascript:void(0);" id="light-mode-theme" data-theme="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">Normal</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/cerulean/bootstrap.min.css">Cerulean</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/cosmo/bootstrap.min.css">Cosmo</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/cyborg/bootstrap.min.css">Cyborg</a>
-          <a class="dropdown-item" href="javascript:void(0);" id="dark-mode-theme" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/darkly/bootstrap.min.css">Darkly</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/flatly/bootstrap.min.css">Flatly</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/journal/bootstrap.min.css">Journal</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/litera/bootstrap.min.css">Litera</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/lumen/bootstrap.min.css">Lumen</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/lux/bootstrap.min.css">LUX</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/materia/bootstrap.min.css">Materia</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/minty/bootstrap.min.css">Minty</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/pulse/bootstrap.min.css">Pulse</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/sandstone/bootstrap.min.css">Sandstone</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/simplex/bootstrap.min.css">Simplex</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/sketchy/bootstrap.min.css">Sketchy</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/slate/bootstrap.min.css">Slate</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/solar/bootstrap.min.css">Solar</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/spacelab/bootstrap.min.css">Spacelab</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/superhero/bootstrap.min.css">Superhero</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/united/bootstrap.min.css">United</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/yeti/bootstrap.min.css">Yeti</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="http://bootswatch.com/" target="_blank">Themes by Bootswatch</a>
-        </div>
-        <script type="text/javascript">
-          /* eslint-env browser, jquery */
-          /* globals PNotify */
-          $(function () {
-            $('#switcher-bootstrap').on('click', 'a[data-theme]', function () {
-              var $this = $(this);
-              $('#bootstrap-current').text($this.text()); $('#bootstrap-css').attr('href', $this.attr('data-theme'));
-              setTimeout(function () {
-                PNotify.positionAll();
-              }, 500);
-            });
-          });
-        </script>
-      </div>
-    </div>
-  </div>
 
   <section class="container page-banner">
     <h1>PNotify <small>v5 pre-alpha</small></h1>
@@ -339,7 +277,6 @@
               case 'style-brighttheme':
                 PNotify.defaults.styling = 'brighttheme';
                 PNotify.defaults.icons = 'brighttheme';
-                $('#switcher-bootstrap').hide();
                 $('.sharpthemes-hideme').hide();
                 PNotify.notice({
                   title: 'Styling Change',
@@ -349,7 +286,6 @@
               case 'style-material':
                 PNotify.defaults.styling = 'material';
                 PNotify.defaults.icons = 'material';
-                $('#switcher-bootstrap').hide();
                 $('.sharpthemes-hideme').hide();
                 PNotify.notice({
                   title: 'Styling Change',
@@ -359,7 +295,6 @@
               case 'style-bootstrap4':
                 PNotify.defaults.styling = 'bootstrap4';
                 PNotify.defaults.icons = 'fontawesome5';
-                $('#switcher-bootstrap').show();
                 $('.sharpthemes-hideme').show();
                 PNotify.notice({
                   title: 'Styling Change',
@@ -373,7 +308,8 @@
             switch ($('input[name=mode]:checked').attr('id')) {
               case 'mode-no-preference':
                 PNotify.defaults.mode = 'no-preference';
-                $('#light-mode-theme').click();
+                $('#bootstrap-light').attr('media', '(prefers-color-scheme: no-preference), (prefers-color-scheme: light)');
+                $('#bootstrap-dark').attr('media', '(prefers-color-scheme: dark)');
                 PNotify.notice({
                   title: 'Mode Change',
                   text: 'From now on, notices will show in system default mode.'
@@ -381,7 +317,8 @@
                 break;
               case 'mode-light':
                 PNotify.defaults.mode = 'light';
-                $('#light-mode-theme').click();
+                $('#bootstrap-light').attr('media', '(prefers-color-scheme: no-preference), (prefers-color-scheme: light), (prefers-color-scheme: dark)');
+                $('#bootstrap-dark').attr('media', '(width: 0px)');
                 PNotify.notice({
                   title: 'Mode Change',
                   text: 'From now on, notices will show in light mode.'
@@ -389,13 +326,17 @@
                 break;
               case 'mode-dark':
                 PNotify.defaults.mode = 'dark';
-                $('#dark-mode-theme').click();
+                $('#bootstrap-light').attr('media', '(width: 0px)');
+                $('#bootstrap-dark').attr('media', '(prefers-color-scheme: no-preference), (prefers-color-scheme: light), (prefers-color-scheme: dark)');
                 PNotify.notice({
                   title: 'Mode Change',
                   text: 'From now on, notices will show in dark mode.'
                 });
                 break;
             }
+            setTimeout(function () {
+              PNotify.positionAll();
+            }, 500);
           });
         });
       </script>
