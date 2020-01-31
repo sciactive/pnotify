@@ -425,8 +425,11 @@
           });
         ">No Shadow Notice</button>
         <button class="btn btn-outline-dark my-1 source" onclick="
+          PNotify.notice({title: 'Check me out! I\'m a notice.'});
+        ">Just Title</button>
+        <button class="btn btn-outline-dark my-1 source" onclick="
           PNotify.notice('Check me out! I\'m a notice.');
-        ">Simple</button>
+        ">Just Text</button>
         <button class="btn btn-outline-dark my-1 source" onclick="
           PNotify.notice(Math.round(Math.random()*9999));
         ">Number</button>

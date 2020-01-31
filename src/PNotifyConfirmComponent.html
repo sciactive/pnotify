@@ -64,13 +64,16 @@
 </script>
 
 {#if confirm || prompt}
-  <div class="ui-pnotify-confirm">
+  <div class="
+    ui-pnotify-confirm
+    {_notice.getStyle('text')}
+    {_notice.getStyle('confirm')}
+  ">
     {#if prompt}
       <div
           class="
             ui-pnotify-prompt-bar
             {_notice.getStyle('prompt-bar')}
-            {_notice.getStyle('text')}
           ">
         {#if promptMultiLine}
           <textarea
@@ -101,7 +104,6 @@
         class="
           ui-pnotify-action-bar
           {_notice.getStyle('action-bar')}
-          {_notice.getStyle('text')}
         "
         style="justify-content: {align};"
         bind:this={buttonsElem}>
@@ -208,28 +210,28 @@
 </script>
 
 <style>
-  .ui-pnotify-action-bar,
-  .ui-pnotify-prompt-bar {
+  :global(.ui-pnotify-action-bar),
+  :global(.ui-pnotify-prompt-bar) {
     margin-top: 5px;
     clear: both;
   }
-  .ui-pnotify-action-bar {
+  :global(.ui-pnotify-action-bar) {
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-end;
   }
-  .ui-pnotify-prompt-input {
+  :global(.ui-pnotify-prompt-input) {
     margin-bottom: 5px;
     display: block;
     width: 100%;
   }
-  .ui-pnotify-confirm-mx-1 {
+  :global(.ui-pnotify-confirm-mx-1) {
     margin: 0 5px;
   }
-  :global(.ui-pnotify.ui-pnotify-with-icon) .ui-pnotify-confirm-ml {
+  :global(.ui-pnotify.ui-pnotify-with-icon .ui-pnotify-confirm-ml) {
     margin-left: 24px;
   }
-  :global([dir=rtl] .ui-pnotify.ui-pnotify-with-icon) .ui-pnotify-confirm-ml {
+  :global([dir=rtl] .ui-pnotify.ui-pnotify-with-icon .ui-pnotify-confirm-ml) {
     margin-right: 24px;
     margin-left: 0;
   }

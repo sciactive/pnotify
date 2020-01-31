@@ -136,6 +136,8 @@
   // Modules can add themselves to these to be rendered in the template.
   export const modulesPrependContainer = [];
   export const modulesAppendContainer = [];
+  export const modulesPrependContent = [];
+  export const modulesAppendContent = [];
 
   // Close all notices.
   export function closeAll () {
@@ -286,7 +288,6 @@
       role="alert">
     {#if self}
       {#each modulesPrependContainer as module (module.key)}
-        <!-- <svelte:component this={module} bind:this={_modulesPrependContainerInstances[module.key]} on:init={() => initModule(_modulesPrependContainerInstances[index])} /> -->
         <svelte:component this={module} on:init={event => saveAccessor(module.key, event.detail)} _notice={self} {...modules[module.key]} />
       {/each}
     {/if}
@@ -295,24 +296,36 @@
         <span class={icon === true ? getIcon(type) : icon}></span>
       </div>
     {/if}
-    {#if title !== false}
-      <h4 bind:this={refs.titleContainer} class="ui-pnotify-title {getStyle('title')}">
-        {#if titleTrusted}
-          {@html title}
-        {:else}
-          {title}
-        {/if}
-      </h4>
-    {/if}
-    {#if text !== false}
-      <div bind:this={refs.textContainer} class="ui-pnotify-text {getStyle('text')}" role="alert">
-        {#if textTrusted}
-          {@html text}
-        {:else}
-          {text}
-        {/if}
-      </div>
-    {/if}
+    <div class="ui-pnotify-content {getStyle('content')}">
+      {#if self}
+        {#each modulesPrependContent as module (module.key)}
+          <svelte:component this={module} on:init={event => saveAccessor(module.key, event.detail)} _notice={self} {...modules[module.key]} />
+        {/each}
+      {/if}
+      {#if title !== false}
+        <h4 bind:this={refs.titleContainer} class="ui-pnotify-title {getStyle('title')}">
+          {#if titleTrusted}
+            {@html title}
+          {:else}
+            {title}
+          {/if}
+        </h4>
+      {/if}
+      {#if text !== false}
+        <div bind:this={refs.textContainer} class="ui-pnotify-text {getStyle('text')}" role="alert">
+          {#if textTrusted}
+            {@html text}
+          {:else}
+            {text}
+          {/if}
+        </div>
+      {/if}
+      {#if self}
+        {#each modulesAppendContent as module (module.key)}
+          <svelte:component this={module} on:init={event => saveAccessor(module.key, event.detail)} _notice={self} {...modules[module.key]} />
+        {/each}
+      {/if}
+    </div>
     {#if self}
       {#each modulesAppendContainer as module (module.key)}
         <svelte:component this={module} on:init={event => saveAccessor(module.key, event.detail)} _notice={self} {...modules[module.key]} />
@@ -1162,12 +1175,10 @@
     margin-bottom: .4em;
     margin-top: 0;
   }
-  :global(.ui-pnotify.ui-pnotify-with-icon .ui-pnotify-title),
-  :global(.ui-pnotify.ui-pnotify-with-icon .ui-pnotify-text) {
+  :global(.ui-pnotify.ui-pnotify-with-icon .ui-pnotify-content) {
     margin-left: 24px;
   }
-  :global([dir=rtl] .ui-pnotify.ui-pnotify-with-icon .ui-pnotify-title),
-  :global([dir=rtl] .ui-pnotify.ui-pnotify-with-icon .ui-pnotify-text) {
+  :global([dir=rtl] .ui-pnotify.ui-pnotify-with-icon .ui-pnotify-content) {
     margin-right: 24px;
     margin-left: 0;
   }
