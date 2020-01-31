@@ -84,6 +84,8 @@
     styling: 'brighttheme',
     // What icons to use (Can be 'brighttheme', 'material', 'bootstrap3', 'fontawesome4', 'fontawesome5', or an icon object.)
     icons: 'brighttheme',
+    // Light or dark version of the theme, if supported. (Can be 'light' or 'dark'.)
+    mode: 'light',
     // Additional classes to be added to the notice. (For custom styling.)
     addClass: '',
     // Class to be added to the notice for corner styling.
@@ -248,6 +250,7 @@
       ui-pnotify
       {icon !== false ? 'ui-pnotify-with-icon' : ''}
       {getStyle('element')}
+      ui-pnotify-mode-{mode}
       {addClass}
       {_animatingClass}
       {_moveClass}
@@ -346,6 +349,7 @@
   export let textTrusted = defaults.textTrusted;
   export let styling = defaults.styling;
   export let icons = defaults.icons;
+  export let mode = defaults.mode;
   export let addClass = defaults.addClass;
   export let cornerClass = defaults.cornerClass;
   export let autoDisplay = defaults.autoDisplay;

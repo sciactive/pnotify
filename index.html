@@ -201,12 +201,12 @@
           Theme: <span id="bootstrap-current">Normal</span>
         </button>
         <div class="dropdown-menu" aria-labelledby="bootswatch-dropdown" style="max-height: 450px; overflow-y: auto;">
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">Normal</a>
+          <a class="dropdown-item" href="javascript:void(0);" id="light-mode-theme" data-theme="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">Normal</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/cerulean/bootstrap.min.css">Cerulean</a>
           <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/cosmo/bootstrap.min.css">Cosmo</a>
           <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/cyborg/bootstrap.min.css">Cyborg</a>
-          <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/darkly/bootstrap.min.css">Darkly</a>
+          <a class="dropdown-item" href="javascript:void(0);" id="dark-mode-theme" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/darkly/bootstrap.min.css">Darkly</a>
           <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/flatly/bootstrap.min.css">Flatly</a>
           <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/journal/bootstrap.min.css">Journal</a>
           <a class="dropdown-item" href="javascript:void(0);" data-theme="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/litera/bootstrap.min.css">Litera</a>
@@ -311,6 +311,14 @@
               <input type="radio" name="styling" id="style-bootstrap4" autocomplete="off"> Bootstrap
             </label>
           </div>
+          <div class="btn-group btn-group-toggle ml-3" data-toggle="buttons" role="group">
+            <label class="btn btn-outline-info my-1 active">
+              <input type="radio" name="mode" id="mode-light" autocomplete="off" checked> Light
+            </label>
+            <label class="btn btn-outline-info my-1">
+              <input type="radio" name="mode" id="mode-dark" autocomplete="off"> Dark
+            </label>
+          </div>
           <div class="btn-group ml-3" role="group">
             <a class="btn btn-outline-info my-1" href="demo/styling.html" target="_blank">Demo All Styles/Icons</a>
           </div>
@@ -352,6 +360,27 @@
                 PNotify.notice({
                   title: 'Styling Change',
                   text: 'From now on, notices will be styled with Bootstrap 4 w/ Font Awesome 5 Icons.'
+                });
+                break;
+            }
+          });
+
+          $('input[name=mode]').change(function () {
+            switch ($('input[name=mode]:checked').attr('id')) {
+              case 'mode-light':
+                PNotify.defaults.mode = 'light';
+                $('#light-mode-theme').click();
+                PNotify.notice({
+                  title: 'Mode Change',
+                  text: 'From now on, notices will show in light mode.'
+                });
+                break;
+              case 'mode-dark':
+                PNotify.defaults.mode = 'dark';
+                $('#dark-mode-theme').click();
+                PNotify.notice({
+                  title: 'Mode Change',
+                  text: 'From now on, notices will show in dark mode.'
                 });
                 break;
             }

@@ -7,7 +7,7 @@ Icons: https://materialdesignicons.com/
   --notice-background-color: #FFFFA2;
   --notice-border-color: #FFFF00;
   --notice-text-color: #4F4F00;
-  --notice-icon-filter: invert(16%) sepia(94%) saturate(2813%) hue-rotate(58deg) brightness(98%) contrast(101%);
+  --notice-icon-filter: invert(25%) sepia(12%) saturate(7007%) hue-rotate(38deg) brightness(99%) contrast(101%);
   --notice-primary-button-background-color: var(--notice-border-color);
   --notice-primary-button-text-color: var(--notice-text-color);
   --info-background-color: #8FCEDD;
@@ -32,6 +32,24 @@ Icons: https://materialdesignicons.com/
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
   border-radius: 0;
+}
+[ui-pnotify].brighttheme-element.ui-pnotify-mode-dark {
+  --notice-background-color: #4F4F00;
+  --notice-border-color: #282814;
+  --notice-text-color: #FFFFA2;
+  --notice-icon-filter: invert(92%) sepia(18%) saturate(781%) hue-rotate(6deg) brightness(106%) contrast(107%);
+  --info-background-color: #012831;
+  --info-border-color: #0C1618;
+  --info-text-color: #8FCEDD;
+  --info-icon-filter: invert(85%) sepia(14%) saturate(933%) hue-rotate(153deg) brightness(92%) contrast(87%);
+  --success-background-color: #104300;
+  --success-border-color: #152111;
+  --success-text-color: #AFF29A;
+  --success-icon-filter: invert(90%) sepia(9%) saturate(1647%) hue-rotate(52deg) brightness(103%) contrast(90%);
+  --error-background-color: #4F0800;
+  --error-border-color: #281614;
+  --error-text-color: #FFABA2;
+  --error-icon-filter: invert(70%) sepia(24%) saturate(717%) hue-rotate(315deg) brightness(103%) contrast(104%);
 }
 [ui-pnotify] .brighttheme-container {
   padding: 1.3rem;
