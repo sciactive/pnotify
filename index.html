@@ -30,7 +30,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.slim.min.js" integrity="sha256-ZaXnYkHGqIhqTbJ6MB4l9Frs/r7U4jlx7ir8PJYBqbI=" crossorigin="anonymous"></script>
 
   <!-- Bootstrap -->
-  <link id="bootstrap-css" rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" crossorigin="anonymous" />
+  <link id="bootstrap-css" rel="stylesheet" media="(prefers-color-scheme: no-preference), (prefers-color-scheme: light)" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" crossorigin="anonymous" />
+  <link id="bootstrap-dark" rel="stylesheet" media="(prefers-color-scheme: dark)" href="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/darkly/bootstrap.min.css" crossorigin="anonymous" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.15.0/umd/popper.min.js" integrity="sha256-fTuUgtT7O2rqoImwjrhDgbXTKUwyxxujIMRIK7TbuNU=" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha256-CjSoeELFOcH0/uxWu6mC/Vlrc1AARqbm/jiiImDGV3s=" crossorigin="anonymous"></script>
 
@@ -313,7 +314,10 @@
           </div>
           <div class="btn-group btn-group-toggle ml-3" data-toggle="buttons" role="group">
             <label class="btn btn-outline-info my-1 active">
-              <input type="radio" name="mode" id="mode-light" autocomplete="off" checked> Light
+              <input type="radio" name="mode" id="mode-no-preference" autocomplete="off" checked> System Default
+            </label>
+            <label class="btn btn-outline-info my-1">
+              <input type="radio" name="mode" id="mode-light" autocomplete="off"> Light
             </label>
             <label class="btn btn-outline-info my-1">
               <input type="radio" name="mode" id="mode-dark" autocomplete="off"> Dark
@@ -367,6 +371,14 @@
 
           $('input[name=mode]').change(function () {
             switch ($('input[name=mode]:checked').attr('id')) {
+              case 'mode-no-preference':
+                PNotify.defaults.mode = 'no-preference';
+                $('#light-mode-theme').click();
+                PNotify.notice({
+                  title: 'Mode Change',
+                  text: 'From now on, notices will show in system default mode.'
+                });
+                break;
               case 'mode-light':
                 PNotify.defaults.mode = 'light';
                 $('#light-mode-theme').click();

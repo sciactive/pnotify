@@ -2,7 +2,8 @@
 Color Scheme: https://www.google.com/design/spec/style/color.html#color-color-palette
 Requires stylesheet to work: https://fonts.googleapis.com/css?family=Material+Icons
 */
-[ui-pnotify].material-element {
+[ui-pnotify].material-element,
+[ui-pnotify].material-element.ui-pnotify-mode-light {
   /* https://material.io/design/color/the-color-system.html#tools-for-picking-colors */
   --notice-background-color: #FFF59D;
   --notice-text-color: #000;
@@ -20,6 +21,21 @@ Requires stylesheet to work: https://fonts.googleapis.com/css?family=Material+Ic
   -moz-border-radius: 0;
   border-radius: 0;
   font-size: 14px;
+}
+@media (prefers-color-scheme: dark) {
+  [ui-pnotify].material-element.ui-pnotify-mode-no-preference {
+    --notice-background-color: #FF8F00;
+    --notice-text-color: #FFF;
+    --info-background-color: #006eff;
+    --info-text-color: #FFF;
+    --success-background-color: #00c000;
+    --success-text-color: #FFF;
+    --error-background-color: #ff1100;
+    --error-text-color: #FFF;
+    --primary-button-text-color: #E1F5FE;
+    --primary-button-text-focus-color: #E0F7FA;
+    --input-focus-underline-color: #E1F5FE;
+  }
 }
 [ui-pnotify].material-element.ui-pnotify-mode-dark {
   --notice-background-color: #FF8F00;

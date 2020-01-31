@@ -17,7 +17,7 @@ export const error = options => PNotify.factory(getDefaultArgs(options, 'error')
 // Default arguments for the new notice helper functions.
 function getDefaultArgs (options, type) {
   if (typeof options !== 'object') {
-    options = { 'text': options };
+    options = { text: options };
   }
 
   // Only assign the type if it was requested, so we don't overwrite

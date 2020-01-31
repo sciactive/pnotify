@@ -325,8 +325,8 @@ PNotify options and default values.
   What styling classes to use. (Can be 'brighttheme', 'material', 'bootstrap3', 'bootstrap4', or a styling object.)
 * `icons: 'brighttheme'`<br>
   What icons classes to use (Can be 'brighttheme', 'material', 'bootstrap3', 'fontawesome4', 'fontawesome5', or an icon object.)
-* `mode: 'light'`<br>
-  Light or dark version of the theme, if supported. (Can be 'light' or 'dark'.)
+* `mode: 'no-preference'`<br>
+  Light or dark version of the theme, if supported. This overrides the CSS media query when a preference is given. (Can be 'no-preference', 'light', or 'dark'.)
 * `addClass: ''`<br>
   Additional classes to be added to the notice. (For custom styling.)
 * `cornerClass: ''`<br>
