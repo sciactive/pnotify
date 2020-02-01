@@ -131,16 +131,17 @@
     });
   });
 
+  let removeMouseEnterHandler;
+  let removeMouseLeaveHandler;
+
   onDestroy(() => {
-    if (_notice) {
-      _notice.off('mouseenter', handleMouseEnter);
-      _notice.off('mouseleave', handleMouseLeave);
-    }
+    removeMouseEnterHandler && removeMouseEnterHandler();
+    removeMouseLeaveHandler && removeMouseLeaveHandler();
   });
 
   export function init () {
-    _notice.on('mouseenter', handleMouseEnter);
-    _notice.on('mouseleave', handleMouseLeave);
+    removeMouseEnterHandler = _notice.on('mouseenter', handleMouseEnter);
+    removeMouseLeaveHandler = _notice.on('mouseleave', handleMouseLeave);
   }
 
   function handleMouseEnter() {

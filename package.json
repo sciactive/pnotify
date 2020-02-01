@@ -1,7 +1,7 @@
 {
   "name": "pnotify",
   "version": "5.0.0-dev",
-  "description": "Beautiful dependency free notifications and prompts.",
+  "description": "Beautiful notifications and prompts.",
   "keywords": [
     "notice",
     "notices",
@@ -12,7 +12,9 @@
     "web notifications",
     "prompts",
     "non blocking",
-    "notify"
+    "notify",
+    "material",
+    "material ui"
   ],
   "homepage": "https://github.com/sciactive/pnotify",
   "bugs": {

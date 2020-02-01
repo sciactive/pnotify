@@ -13,8 +13,6 @@
 <svelte:options accessors={true} />
 
 <script context="module">
-  export const VERSION = '4.0.0';
-
   let posTimer; // Position all timer.
 
   // These actions need to be done once the DOM is ready.
@@ -72,6 +70,8 @@
   };
 
   export const defaults = {
+    // Type of the notice. 'notice', 'info', 'success', or 'error'.
+    type: 'notice',
     // The notice's title.
     title: false,
     // Whether to trust the title or escape its contents. (Not allow HTML.)
@@ -80,24 +80,26 @@
     text: false,
     // Whether to trust the text or escape its contents. (Not allow HTML.)
     textTrusted: false,
-    // What styling classes to use. (Can be 'brighttheme', 'material', 'bootstrap3', 'bootstrap4', or a styling object.)
+    // What styling classes to use. (Can be 'brighttheme', 'material',
+    // 'bootstrap3', 'bootstrap4', or a styling object.)
     styling: 'brighttheme',
-    // What icons to use (Can be 'brighttheme', 'material', 'bootstrap3', 'fontawesome4', 'fontawesome5', or an icon object.)
+    // What icons to use (Can be 'brighttheme', 'material', 'bootstrap3',
+    // 'fontawesome4', 'fontawesome5', or an icon object.)
     icons: 'brighttheme',
-    // Light or dark version of the theme, if supported. This overrides the CSS media query when set. (Can be 'no-preference', 'light', or 'dark'.)
+    // Light or dark version of the theme, if supported by the styling. This
+    // overrides the CSS media query when a preference is given. (Can be
+    // 'no-preference', 'light', or 'dark'.)
     mode: 'no-preference',
     // Additional classes to be added to the notice. (For custom styling.)
     addClass: '',
     // Class to be added to the notice for corner styling.
     cornerClass: '',
-    // Display the notice when it is created.
-    autoDisplay: true,
+    // Display the notice immediately when it is created.
+    autoOpen: true,
     // Width of the notice.
     width: '360px',
     // Minimum height of the notice. It will expand to fit content.
     minHeight: '16px',
-    // Type of the notice. 'notice', 'info', 'success', or 'error'.
-    type: 'notice',
     // Set icon to true to use the default icon for the selected
     // style/type, false for no icon, or a string for your own icon class.
     icon: true,
@@ -299,7 +301,7 @@
         <span class={icon === true ? getIcon(type) : icon}></span>
       </div>
     {/if}
-    <div class="ui-pnotify-content {getStyle('content')}">
+    <div bind:this={refs.content} class="ui-pnotify-content {getStyle('content')}">
       {#if self}
         {#each modulesPrependContent as module (module.key)}
           <svelte:component this={module} on:init={event => saveAccessor(module.key, event.detail)} _notice={self} {...modules[module.key]} />
@@ -343,6 +345,7 @@
   let self;
   const dispatch = createEventDispatcher();
 
+  export let type = defaults.type;
   export let title = defaults.title;
   export let titleTrusted = defaults.titleTrusted;
   export let text = defaults.text;
@@ -352,10 +355,9 @@
   export let mode = defaults.mode;
   export let addClass = defaults.addClass;
   export let cornerClass = defaults.cornerClass;
-  export let autoDisplay = defaults.autoDisplay;
+  export let autoOpen = defaults.autoOpen;
   export let width = defaults.width;
   export let minHeight = defaults.minHeight;
-  export let type = defaults.type;
   export let icon = defaults.icon;
   export let animation = defaults.animation;
   export let animateSpeed = defaults.animateSpeed;
@@ -371,6 +373,7 @@
   export const refs = {
     elem: null,
     container: null,
+    content: null,
     iconContainer: null,
     titleContainer: null,
     textContainer: null
@@ -511,7 +514,7 @@
     _state = 'closed';
 
     // Display the notice.
-    if (autoDisplay) {
+    if (autoOpen) {
       open();
     }
   }

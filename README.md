@@ -1,6 +1,6 @@
 [![npm version](https://badge.fury.io/js/pnotify.svg)](https://www.npmjs.com/package/pnotify) [![Waffle.io - Columns and their card count](https://badge.waffle.io/sciactive/pnotify.svg?columns=all)](https://waffle.io/sciactive/pnotify) [![jsDelivr Hits](https://data.jsdelivr.com/v1/package/npm/pnotify/badge?style=rounded)](https://www.jsdelivr.com/package/npm/pnotify)
 
-PNotify is a vanilla JavaScript notification and [confirmation/prompt](http://sciactive.com/pnotify/#confirm-module) library. PNotify can provide [desktop notifications](http://sciactive.com/pnotify/#web-notifications) based on the [Web Notifications spec](http://www.w3.org/TR/notifications/) with fall back to an in-browser notice.
+PNotify is a JavaScript notification and [confirmation/prompt](http://sciactive.com/pnotify/#confirm-module) library. PNotify can provide [desktop notifications](http://sciactive.com/pnotify/#web-notifications) based on the [Web Notifications spec](http://www.w3.org/TR/notifications/) with fall back to an in-browser notice.
 
 <h1>Demos</h1>
 
@@ -202,7 +202,7 @@ alert('Notice me, senpai!');
 
 ## Bright Theme
 
-The default, standalone theme, Bright Theme. Include the CSS file in your page:
+The default, standalone theme, Bright Theme. Supports dark mode. Include the CSS file in your page:
 
 ```html
 <link href="node_modules/pnotify/dist/PNotifyBrightTheme.css" rel="stylesheet" type="text/css" />
@@ -210,7 +210,7 @@ The default, standalone theme, Bright Theme. Include the CSS file in your page:
 
 ## Material
 
-The Material style. Requires [material-design-icons](https://www.npmjs.com/package/material-design-icons). Include the CSS file in your page, and set it as the default:
+The Material style. Supports darm mode. Requires [material-design-icons](https://www.npmjs.com/package/material-design-icons). Include the CSS file in your page, and set it as the default:
 
 ```html
 <link href="node_modules/pnotify/dist/PNotifyMaterial.css" rel="stylesheet" type="text/css" />
@@ -251,7 +251,7 @@ Alternatively, you can use the Google Fonts CDN:
 
 ## Bootstrap
 
-To set Bootstrap as the default style, include the appropriate line(s) from below:
+Styling for the popular Bootstrap library. Doesn't support dark mode (but you can use a Bootstrap theme). To set Bootstrap as the default style, include the appropriate line(s) from below:
 
 ```js
 import { defaults } from 'PNotify/dist/es/PNotify';
@@ -313,6 +313,8 @@ error({
 PNotify options and default values.
 
 `defaults = {`
+* `type: 'notice'`<br>
+  Type of the notice. 'notice', 'info', 'success', or 'error'.
 * `title: false`<br>
   The notice's title.
 * `titleTrusted: false`<br>
@@ -326,19 +328,17 @@ PNotify options and default values.
 * `icons: 'brighttheme'`<br>
   What icons classes to use (Can be 'brighttheme', 'material', 'bootstrap3', 'fontawesome4', 'fontawesome5', or an icon object.)
 * `mode: 'no-preference'`<br>
-  Light or dark version of the theme, if supported. This overrides the CSS media query when a preference is given. (Can be 'no-preference', 'light', or 'dark'.)
+  Light or dark version of the theme, if supported by the styling. This overrides the CSS media query when a preference is given. (Can be 'no-preference', 'light', or 'dark'.)
 * `addClass: ''`<br>
   Additional classes to be added to the notice. (For custom styling.)
 * `cornerClass: ''`<br>
   Class to be added to the notice for corner styling.
-* `autoDisplay: true`<br>
-  Display the notice when it is created. Turn this off to add notifications to the history without displaying them.
+* `autoOpen: true`<br>
+  Open the notice immediately when it is created.
 * `width: '360px'`<br>
   Width of the notice.
 * `minHeight: '16px'`<br>
   Minimum height of the notice. It will expand to fit content.
-* `type: 'notice'`<br>
-  Type of the notice. 'notice', 'info', 'success', or 'error'.
 * `icon: true`<br>
   Set icon to true to use the default icon for the selected style/type, false for no icon, or a string for your own icon class.
 * `animation: 'fade'`<br>
@@ -602,8 +602,6 @@ The callback options all expect the value to be a callback function. If the func
   Close all the notices in a stack.
 * `positionAll()`<br>
   Reposition all notices.
-* `VERSION`<br>
-  PNotify version number.
 * `defaults`<br>
   Defaults for options.
 * `defaultStack`<br>
@@ -634,7 +632,9 @@ The callback options all expect the value to be a callback function. If the func
 * `notice.refs.elem`<br>
   The notice's DOM element.
 * `notice.refs.container`<br>
-  The content container DOM element.
+  The container DOM element.
+* `notice.refs.content`<br>
+  The content DOM element. (Title and text containers are in here.)
 * `notice.refs.titleContainer`<br>
   The title container DOM element.
 * `notice.refs.textContainer`<br>
@@ -731,6 +731,7 @@ alert({
 # Features
 
 * Rich graphical features and effects.
+  * Automatic dark mode support.
   * Material, Bootstrap 3/4, Font Awesome 4/5, or the stand-alone theme, Bright Theme.
   * Mobile styling and swipe support.
   * Timed hiding.
@@ -760,7 +761,7 @@ alert({
 
 # Licensing and Additional Info
 
-Copyright 2009-2019 Hunter Perrin
+Copyright 2009-2020 Hunter Perrin
 Copyright 2015 Google, Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
