@@ -7,7 +7,8 @@
 * Methods are no longer chainable.
 * The deprecated `remove()`, `removeAll()`, `cancelRemove()`, etc. methods have been removed.
 * The `autoDisplay` option has been renamed `autoOpen`.
-* There is no longer a global array, and therefore, no longer a `closeAll()` method.
+* There is no longer a global array, and therefore, no longer `closeAll()` and `positionAll()` methods.
+* Stacks now have `close()` and `position()` methods. Also, stacks are based on a class now.
 * The deprecated NonBlock module has been removed.
 * There is no longer a Compat module for running PNotify 3 code, and one will not be provided for running PNotify 4 code.
 * `notice.get()` is no longer available.
