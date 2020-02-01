@@ -39,3 +39,4 @@ PNotify.prototype.update = function (...args) {
 
 export default PNotify;
 export * from './PNotifyCoreComponent.html';
+export { default as Stack } from './Stack.js';

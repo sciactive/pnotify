@@ -3,7 +3,7 @@
 
  http://sciactive.com/pnotify/
 
- Copyright 2009-2019 Hunter Perrin
+ Copyright 2009-2020 Hunter Perrin
  Copyright 2015 Google, Inc.
 
  Licensed under Apache License, Version 2.0.
@@ -13,6 +13,8 @@
 <svelte:options accessors={true} />
 
 <script context="module">
+  import Stack from './Stack.js';
+
   let posTimer; // Position all timer.
 
   // These actions need to be done once the DOM is ready.
@@ -20,45 +22,20 @@
     defaultStack.context = document.body;
     // Reposition the notices when the window resizes.
     window.addEventListener('resize', () => {
+      // This timer is used for queueing the position event so it doesn't run
+      // repeatedly.
       if (posTimer) {
         clearTimeout(posTimer);
       }
       posTimer = setTimeout(() => {
-        positionAll();
+        var event = new Event('pnotify:position');
+        document.body.dispatchEvent(event);
+        posTimer = null;
       }, 10);
     });
   }
 
-  // Creates the background overlay for modal stacks.
-  function createStackOverlay (stack) {
-    const overlay = document.createElement('div');
-    overlay.classList.add('ui-pnotify-modal-overlay');
-    if (stack.context !== document.body) {
-      overlay.style.height = stack.context.scrollHeight + 'px';
-      overlay.style.width = stack.context.scrollWidth + 'px';
-    }
-    // Close the notices on overlay click.
-    overlay.addEventListener('click', () => {
-      if (stack.overlayClose) {
-        closeStack(stack);
-      }
-    });
-    stack.overlay = overlay;
-  }
-
-  function insertStackOverlay (stack) {
-    if (stack.overlay.parentNode !== stack.context) {
-      stack.overlay = stack.context.insertBefore(stack.overlay, stack.context.firstChild);
-    }
-  }
-
-  function removeStackOverlay (stack) {
-    if (stack.overlay.parentNode) {
-      stack.overlay.parentNode.removeChild(stack.overlay);
-    }
-  }
-
-  export const defaultStack = {
+  export const defaultStack = new Stack({
     dir1: 'down',
     dir2: 'left',
     firstpos1: 25,
@@ -67,7 +44,7 @@
     spacing2: 36,
     push: 'bottom',
     context: window && document.body
-  };
+  });
 
   export const defaults = {
     // Type of the notice. 'notice', 'info', 'success', or 'error'.
@@ -120,7 +97,8 @@
     mouseReset: true,
     // Remove the notice's elements from the DOM after it is removed.
     remove: true,
-    // Whether to remove the notice from the global array when it is closed.
+    // Whether to remove the notice from the stack array (and therefore,
+    // history) when it is closed.
     destroy: true,
     // The stack on which the notices will be placed. Also controls the
     // direction the notices stack.
@@ -128,9 +106,6 @@
     // This is where options for modules should be defined.
     modules: {}
   };
-
-  // An array of all active notices.
-  export const notices = [];
 
   // This object holds all the PNotify modules. They are used to provide
   // additional functionality.
@@ -142,59 +117,6 @@
   export const modulesAppendContainer = [];
   export const modulesPrependContent = [];
   export const modulesAppendContent = [];
-
-  // Close all notices.
-  export function closeAll () {
-    for (let i = 0; i < notices.length; i++) {
-      if (notices[i].close) {
-        notices[i].close(false);
-      }
-    }
-  }
-
-  // Close all notices in a single stack.
-  export function closeStack (stack) {
-    if (stack === false) {
-      return;
-    }
-    for (let i = 0; i < notices.length; i++) {
-      if (notices[i].close && notices[i].stack === stack) {
-        notices[i].close(false);
-      }
-    }
-  }
-
-  // Position all notices.
-  export function positionAll () {
-    // This timer is used for queueing this function so it doesn't run
-    // repeatedly.
-    if (posTimer) {
-      clearTimeout(posTimer);
-    }
-    posTimer = null;
-    // Reset the next position data.
-    if (notices.length > 0) {
-      for (let i = 0; i < notices.length; i++) {
-        let notice = notices[i];
-        let stack = notice.stack;
-        if (!stack) {
-          continue;
-        }
-        if (stack.overlay) {
-          removeStackOverlay(stack);
-        }
-        stack.nextpos1 = stack.firstpos1;
-        stack.nextpos2 = stack.firstpos2;
-        stack.addpos2 = 0;
-      }
-      for (let i = 0; i < notices.length; i++) {
-        notices[i].position();
-      }
-    } else {
-      delete defaultStack.nextpos1;
-      delete defaultStack.nextpos2;
-    }
-  }
 
   const styleRegistry = {
     bootstrap3: {
@@ -489,7 +411,9 @@
     if (hide && mouseReset && _animating !== 'out') {
       queueClose();
     }
-    positionAll();
+    if (stack) {
+      stack.position();
+    }
 
     dispatch('mouseleave', e);
   }
@@ -498,11 +422,9 @@
     // Init is passed the instance, since Svelte does not give access to it.
     self = notice;
 
-    // Add the notice to the notice array.
-    if (stack && stack.push === 'top') {
-      notices.splice(0, 0, self);
-    } else {
-      notices.push(self);
+    if (stack) {
+      // Add the notice to the notice array.
+      stack.addNotice(self);
     }
 
     // Wait for self to propagate to modules.
@@ -640,8 +562,8 @@
       if (stack) {
         // Mark the stack so it won't animate the new notice.
         stack.animation = false;
-        // Now position all the notices.
-        positionAll();
+        // Now position the stack's the notices.
+        stack.position();
         // Reset animation.
         stack.animation = true;
       }
@@ -671,11 +593,8 @@
         // If we're supposed to destroy the notice, run the destroy module
         // events, remove from notices array, and let Svelte handle DOM removal.
         runModules('beforeDestroy');
-        if (notices !== null) {
-          const idx = notices.indexOf(self);
-          if (idx !== -1) {
-            notices.splice(idx, 1);
-          }
+        if (stack) {
+          stack.removeNotice(self);
         }
         self.$destroy();
         runModules('afterDestroy');
@@ -765,20 +684,8 @@
       }
       if (!refs.elem || !refs.elem.style.opacity || refs.elem.style.opacity === '0' || !visible) {
         _animatingClass = '';
-        if (stack && stack.overlay) {
-          // Go through the modal stack to see if any are left open.
-          // TODO: Rewrite this cause it sucks.
-          let stillOpen = false;
-          for (let i = 0; i < notices.length; i++) {
-            const notice = notices[i];
-            if (notice !== self && notice.stack === stack && notice.getState() !== 'closed') {
-              stillOpen = true;
-              break;
-            }
-          }
-          if (!stillOpen) {
-            removeStackOverlay(stack);
-          }
+        if (stack) {
+          stack.removeOverlayIfNoneOpenExcept(self);
         }
         if (callback) {
           callback.call();
@@ -810,9 +717,6 @@
     if (!stack || !elem) {
       return;
     }
-    if (!stack.context) {
-      stack.context = document.body;
-    }
     if (typeof stack.nextpos1 !== 'number') {
       stack.nextpos1 = stack.firstpos1;
     }
@@ -833,9 +737,9 @@
 
     if (stack.modal) {
       if (!stack.overlay) {
-        createStackOverlay(stack);
+        stack.createOverlay();
       }
-      insertStackOverlay(stack);
+      stack.insertOverlay();
     }
 
     // Read from the DOM to cause refresh.
@@ -1006,8 +910,7 @@
     }
   }
 
-  // Queue the position all function so it doesn't run repeatedly and
-  // use up resources.
+  // Queue the stack position so it doesn't run repeatedly and use up resources.
   export function queuePosition (milliseconds) {
     if (posTimer) {
       clearTimeout(posTimer);
@@ -1016,7 +919,7 @@
       milliseconds = 10;
     }
     posTimer = setTimeout(() => {
-      positionAll();
+      stack.position();
     }, milliseconds);
   }
 

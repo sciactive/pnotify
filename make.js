@@ -21,6 +21,7 @@ const pnotifyComponents = [
 const pnotifySrc = [
   // Main code.
   'PNotifyCore',
+  'Stack',
   'PNotifyAnimate',
   'PNotifyButtons',
   'PNotifyCallbacks',

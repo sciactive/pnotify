@@ -356,7 +356,7 @@ PNotify options and default values.
 * `remove: true`<br>
   Remove the notice's elements from the DOM after it is closed.
 * `destroy: true`<br>
-  Whether to remove the notice from the global array when it is closed.
+  Whether to remove the notice from the stack array (and therefore, history) when it is closed.
 * `stack: defaultStack`<br>
   The stack on which the notices will be placed. Also controls the direction the notices stack.
 * `modules: {}`<br>
@@ -365,7 +365,7 @@ PNotify options and default values.
 `}`
 
 ```js
-defaultStack = {
+defaultStack = new Stack({
   dir1: 'down',
   dir2: 'left',
   firstpos1: 25,
@@ -374,7 +374,7 @@ defaultStack = {
   spacing2: 36,
   push: 'bottom',
   context: document.body
-}
+})
 ```
 
 [Learn more about stacks.](#Stacks)
@@ -560,7 +560,7 @@ The History module also has two methods:
 * `modules.History.showLast(stack)`<br>
   Reopen the last closed notice from a stack that was placed in the history. If no stack is provided, it will use the default stack.
 * `modules.History.showAll(stack)`<br>
-  Reopen all notices from a stack that were placed in the history. If no stack is provided, it will also use the default stack. If stack is `true`, it will reopen all notices from every stack.
+  Reopen all notices from a stack that were placed in the history. If no stack is provided, it will also use the default stack.
 
 > :information_source: In v4, the History module can no longer make a dropdown for you. But hey, it's smaller now.
 
@@ -596,8 +596,6 @@ The callback options all expect the value to be a callback function. If the func
   Create and return a notice with 'success' type.
 * `error(options)`<br>
   Create and return a notice with 'error' type.
-* `closeAll()`<br>
-  Close all notices.
 * `closeStack(stack)`<br>
   Close all the notices in a stack.
 * `positionAll()`<br>
@@ -606,8 +604,6 @@ The callback options all expect the value to be a callback function. If the func
   Defaults for options.
 * `defaultStack`<br>
   The default stack object.
-* `notices`<br>
-  An array of all active notices.
 * `modules`<br>
   This object holds all the PNotify module constructors.
 * `styles`<br>
@@ -656,7 +652,7 @@ The callback options all expect the value to be a callback function. If the func
 * `notice.$on(event, callback)`<br>
   You probably want to use `on(event, callback)` instead. The Svelte API may change.
 * `notice.$destroy()`<br>
-  Removes the component from the DOM and any observers/event listeners. You probably want to use `close()` with `destroy: true` instead. It will animate the notice out and remove it from the `notices` array.
+  Removes the component from the DOM and any observers/event listeners. You probably want to use `close()` with `destroy: true` instead. It will animate the notice out and remove it from the `stack.notices` array.
 
 # Stacks
 
@@ -697,14 +693,14 @@ Stack behavior:
 * Stacks are independent of each other, so a stack doesn't know and doesn't care if it overlaps (and blocks) another stack.
 * Stack objects are used and manipulated by PNotify, and therefore, should be a variable when passed.
 
-> :warning: Calling something like `alert({text: 'notice', stack: {dir1: 'down', firstpos1: 25}});` may not do what you want. It will create a notice, but that notice will be in its own stack and will overlap other notices.
+> :warning: Calling something like `alert({text: 'notice', stack: new Stack({dir1: 'down', firstpos1: 25})});` may not do what you want. It will create a notice, but that notice will be in its own stack and will overlap other notices.
 
 ## Example Stack
 
 Here is an example stack with comments to explain. You can play with it [here](https://codesandbox.io/s/2po6zq9yrr).
 
 ```js
-const stackBottomModal = {
+const stackBottomModal = new Stack({
   dir1: 'up', // With a dir1 of 'up', the stacks will start appearing at the bottom.
   // Without a `dir2`, this stack will be horizontally centered, since the `dir1` axis is vertical.
   firstpos1: 25, // The notices will appear 25 pixels from the bottom of the context.
@@ -713,7 +709,7 @@ const stackBottomModal = {
   modal: true, // When a notice appears in this stack, a modal overlay will be created.
   overlayClose: true, // When the user clicks on the overlay, all notices in this stack will be closed.
   context: document.getElementById('page-container') // The notices will be placed in the 'page-container' element.
-};
+});
 ```
 
 If you just want to position a single notice programmatically, and don't want to add any other notices into the stack, you can use something like this:
@@ -721,10 +717,10 @@ If you just want to position a single notice programmatically, and don't want to
 ```js
 alert({
   text: "Notice that's positioned in its own stack.",
-  stack: {
+  stack: new Stack({
     dir1: 'down', dir2: 'right', // Position from the top left corner.
     firstpos1: 90, firstpos2: 90 // 90px from the top, 90px from the left.
-  }
+  })
 });
 ```
 

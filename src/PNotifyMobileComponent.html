@@ -95,7 +95,7 @@
         'ui-pnotify-mobile-left'
       );
 
-      if (stack !== false) {
+      if (stack) {
         if (stack.mobileOrigSpacing1) {
           stack.spacing1 = stack.mobileOrigSpacing1;
           delete stack.mobileOrigSpacing1;
@@ -135,7 +135,7 @@
       }
 
       const stack = _notice.stack;
-      if (stack !== false) {
+      if (stack) {
         switch (stack.dir1) {
           case 'up':
           case 'down':
