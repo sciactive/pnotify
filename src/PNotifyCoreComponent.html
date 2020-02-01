@@ -376,7 +376,8 @@
     textContainer: null
   };
 
-  // The state can be 'initializing', 'opening', 'open', 'closing', and 'closed'.
+  // The state can be 'initializing', 'opening', 'open', 'closing', and
+  // 'closed'.
   let _state = 'initializing';
   // Auto close timer.
   let _timer = null;
@@ -397,16 +398,19 @@
     elem: [],
     container: []
   };
-  // Modules that change how the notice displays (causing the notice element to not appear) can set this to true to make PNotify assume the notice has opened.
+  // Modules that change how the notice displays (causing the notice element to
+  // not appear) can set this to true to make PNotify assume the notice has
+  // opened.
   let _moduleIsNoticeOpen = false;
 
   // These hold the instances to the Svelte-loaded modules.
   // const _modulesPrependContainerInstances = [];
   // const _modulesAppendContainerInstances = [];
 
-  // This keeps the beforeUpdate handler from going into a loop when we're taming Font Awesome's magic.
+  // This keeps the beforeUpdate handler from going into a loop when we're
+  // taming Font Awesome's magic.
   let _updatingIcon = false;
-  // Save the old value of hide and icon, so we can .
+  // Save the old value of hide and icon, so we can do our magic.
   let _oldHide;
   let _oldIcon;
 

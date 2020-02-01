@@ -48,30 +48,30 @@
   });
 </script>
 
-{#if _showCloser}
+{#if closer && !(_notice && _notice.refs.elem.classList.contains('nonblock'))}
   <div
       class="ui-pnotify-closer {_notice.getStyle('closer')} {(!closerHover || mouseIsIn) ? '' : 'ui-pnotify-buttons-hidden'}"
       role="button"
       tabindex="0"
       title={labels.close}
       on:click={handleCloserClick}>
-    <span class={_closerClass}></span>
+    <span class={closerClass}></span>
   </div>
 {/if}
-{#if _showSticker}
+{#if sticker && !(_notice && _notice.refs.elem.classList.contains('nonblock'))}
   <div
       class="ui-pnotify-sticker {_notice.getStyle('sticker')} {(!stickerHover || mouseIsIn) ? '' : 'ui-pnotify-buttons-hidden'}"
       role="button"
-      aria-pressed={_notice.hide}
+      aria-pressed={!_notice.hide}
       tabindex="0"
       title={_notice.hide ? labels.stick : labels.unstick}
       on:click={handleStickerClick}>
-    <span class="{_stickerClass} {_notice.hide ? _unstuckClass : _stuckClass}"></span>
+    <span class="{stickerClass} {_notice.hide ? unstuckClass : stuckClass}"></span>
   </div>
 {/if}
 
 <script>
-  import { onMount, tick, createEventDispatcher } from 'svelte';
+  import { onMount, onDestroy, beforeUpdate, tick, createEventDispatcher } from 'svelte';
 
   const dispatch = createEventDispatcher();
 
@@ -86,42 +86,44 @@
   export let classes = defaults.classes;
 
   let mouseIsIn = false;
+
+  // This keeps the beforeUpdate handler from going into a loop when we're taming Font Awesome's magic.
   let updatingIcon = false;
+  // Save the old value of hide and icon, so we can do our magic.
+  let oldIcon;
 
-  // Whether to show the sticker icon.
-  $: _showSticker = sticker && !(_notice && _notice.refs.elem.classList.contains('nonblock'));
-  // Whether to show the closer icon.
-  $: _showCloser = closer && !(_notice && _notice.refs.elem.classList.contains('nonblock'));
   // These are button icon classes.
-  $: _stickerClass = _notice ? (classes.sticker === null ? _notice.getIcon('sticker') : classes.sticker) : '';
-  $: _stuckClass = _notice ? (classes.stuck === null ? _notice.getIcon('stuck') : classes.stuck) : '';
-  $: _unstuckClass = _notice ? (classes.unstuck === null ? _notice.getIcon('unstuck') : classes.unstuck) : '';
-  $: _closerClass = _notice ? (classes.closer === null ? _notice.getIcon('closer') : classes.closer) : '';
+  $: stickerClass = _notice ? (classes.sticker === null ? _notice.getIcon('sticker') : classes.sticker) : '';
+  $: stuckClass = _notice ? (classes.stuck === null ? _notice.getIcon('stuck') : classes.stuck) : '';
+  $: unstuckClass = _notice ? (classes.unstuck === null ? _notice.getIcon('unstuck') : classes.unstuck) : '';
+  $: closerClass = _notice ? (classes.closer === null ? _notice.getIcon('closer') : classes.closer) : '';
 
-  $: async () => {
+  beforeUpdate(async () => {
     if (updatingIcon) {
+      console.log('updating...');
       return;
     }
 
-    if (!sticker) {
-      return;
-    }
-
-    // Font Awesome 5 replaces our lovely element with a gross SVG. In
-    // order to make it play nice with Svelte, we have to clear the
-    // element and make it again.
-    const icon = _notice.hide ? classes.sticker : classes.stuck;
+    // Font Awesome 5 uses dark magic by replacing the icon element with an SVG.
+    // In order to make it play nice with Svelte, we have to clear the element
+    // and make it again.
+    const icon = _notice.hide ? unstuckClass : stuckClass;
     if (
-      (_notice.icons === 'fontawesome5') ||
-      (typeof icon === 'string' && icon.match(/(^| )fa[srlb]($| )/))
+      icon !== oldIcon &&
+      (
+        (_notice.icons === 'fontawesome5') ||
+        (typeof stickerClass === 'string' && stickerClass.match(/(^| )fa[srlb]($| )/)) ||
+        (typeof icon === 'string' && icon.match(/(^| )fa[srlb]($| )/))
+      )
     ) {
       sticker = false;
       updatingIcon = true;
       await tick();
       sticker = true;
       updatingIcon = false;
+      oldIcon = icon;
     }
-  };
+  });
 
   onMount(() => {
     dispatch('init', {
@@ -129,9 +131,24 @@
     });
   });
 
+  onDestroy(() => {
+    if (_notice) {
+      _notice.off('mouseenter', handleMouseEnter);
+      _notice.off('mouseleave', handleMouseLeave);
+    }
+  });
+
   export function init () {
-    _notice.on('mouseenter', () => mouseIsIn = true);
-    _notice.on('mouseleave', () => mouseIsIn = false);
+    _notice.on('mouseenter', handleMouseEnter);
+    _notice.on('mouseleave', handleMouseLeave);
+  }
+
+  function handleMouseEnter() {
+    mouseIsIn = true;
+  }
+
+  function handleMouseLeave() {
+    mouseIsIn = false;
   }
 
   function handleStickerClick () {
