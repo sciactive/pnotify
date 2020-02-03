@@ -132,26 +132,7 @@
         title: 'PNotify',
         text: "Welcome. Try hovering over me. You can click things behind me, because I'm non-blocking.",
         delay: 12000,
-        addClass: 'nonblock',
-        modules: {
-          Callbacks: {
-            beforeClose: function (notice) {
-              // You can access the notice's options like this.
-              // notice.get('text');
-
-              // You can change the notice's options like this:
-              // notice.update({
-              //   title: notice.get('title') + ' - Enjoy your Stay',
-              //   modules: {
-              //     Callbacks: {}
-              //   }
-              // });
-
-              // notice.queueClose();
-              // return false;
-            }
-          }
-        }
+        addClass: 'nonblock'
       });
     });
   </script>

@@ -1,4 +1,4 @@
-[![npm version](https://badge.fury.io/js/pnotify.svg)](https://www.npmjs.com/package/pnotify) [![Waffle.io - Columns and their card count](https://badge.waffle.io/sciactive/pnotify.svg?columns=all)](https://waffle.io/sciactive/pnotify) [![jsDelivr Hits](https://data.jsdelivr.com/v1/package/npm/pnotify/badge?style=rounded)](https://www.jsdelivr.com/package/npm/pnotify)
+[![npm version](https://badge.fury.io/js/pnotify.svg)](https://www.npmjs.com/package/pnotify) [![jsDelivr Hits](https://data.jsdelivr.com/v1/package/npm/pnotify/badge?style=rounded)](https://www.jsdelivr.com/package/npm/pnotify)
 
 PNotify is a JavaScript notification and [confirmation/prompt](http://sciactive.com/pnotify/#confirm-module) library. PNotify can provide [desktop notifications](http://sciactive.com/pnotify/#web-notifications) based on the [Web Notifications spec](http://www.w3.org/TR/notifications/) with fall back to an in-browser notice.
 
