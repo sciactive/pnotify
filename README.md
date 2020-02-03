@@ -316,11 +316,11 @@ PNotify options and default values.
 * `type: 'notice'`<br>
   Type of the notice. 'notice', 'info', 'success', or 'error'.
 * `title: false`<br>
-  The notice's title.
+  The notice's title. Can be a string, an element, or `false` for no title.
 * `titleTrusted: false`<br>
   Whether to trust the title or escape its contents. (Not allow HTML.)
 * `text: false`<br>
-  The notice's text.
+  The notice's text. Can be a string, an element, or `false` for no text.
 * `textTrusted: false`<br>
   Whether to trust the text or escape its contents. (Not allow HTML.)
 * `styling: 'brighttheme'`<br>

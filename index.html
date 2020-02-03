@@ -492,7 +492,8 @@
             return false;
           });
         ">Forms</button>
-        <div id="form_notice" style="display: none;"><form action="" method="post" style="white-space: normal;">
+        <div id="form_notice" style="display: none;">
+          <form action="" method="post">
             <div class="mt-0 mb-3">
               <h3>Login to Continue</h3>
               <p>Just an example.</p>
@@ -515,7 +516,66 @@
               <input class="btn btn-primary" type="submit" name="submit" value="Submit" />
               <input class="btn btn-secondary ml-3" type="button" name="cancel" value="Cancel" />
             </div>
-          </form></div>
+          </form>
+        </div>
+        <button class="btn btn-light my-1 source" onclick="
+          if (!window.domNotice) {
+            window.domNotice = PNotify.notice({
+              title: document.getElementById('dom_notice_title'),
+              text: document.getElementById('dom_notice_text'),
+              icon: false,
+            });
+          } else {
+            window.domNotice.open();
+          }
+        ">DOM Element</button>
+        <div style="display: none;">
+          <h4 id="dom_notice_title">DOM Element Notice</h4>
+          <div id="dom_notice_text" class="accordion">
+            <div class="card">
+              <div class="card-header" id="headingOne">
+                <h5 class="mb-0">
+                  <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    Check me out!
+                  </button>
+                </h5>
+              </div>
+              <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#dom_notice_text">
+                <div class="card-body">
+                  I'm a notice with a DOM element in it.
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header" id="headingTwo">
+                <h5 class="mb-0">
+                  <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    Isn't that cool!
+                  </button>
+                </h5>
+              </div>
+              <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#dom_notice_text">
+                <div class="card-body">
+                  Of course it is.
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header" id="headingThree">
+                <h5 class="mb-0">
+                  <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    Hey, one thing though!
+                  </button>
+                </h5>
+              </div>
+              <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#dom_notice_text">
+                <div class="card-body">
+                  The DOM element is inserted into the notice, so it will be ripped out of the DOM if it is already somewhere else.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <button class="btn btn-light my-1 source" onclick="
           var notice = PNotify.notice({
             title: 'Click Notice',

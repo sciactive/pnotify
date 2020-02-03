@@ -124,34 +124,22 @@ For calculating icon filters, use: https://codepen.io/sosuke/pen/Pjoqqp
 [ui-pnotify] .brighttheme-notice {
   background-color: var(--notice-background-color);
   border: 0 solid var(--notice-border-color);
-}
-[ui-pnotify] .brighttheme-notice h4,
-[ui-pnotify] .brighttheme-notice div {
   color: var(--notice-text-color);
 }
 [ui-pnotify] .brighttheme-info {
   background-color: var(--info-background-color);
   border: 0 solid var(--info-border-color);
-}
-[ui-pnotify] .brighttheme-info h4,
-[ui-pnotify] .brighttheme-info div {
   color: var(--info-text-color);
 }
 [ui-pnotify] .brighttheme-success {
   background-color: var(--success-background-color);
   border: 0 solid var(--success-border-color);
-}
-[ui-pnotify] .brighttheme-success h4,
-[ui-pnotify] .brighttheme-success div {
   color: var(--success-text-color);
 }
 [ui-pnotify] .brighttheme-error {
   background-color: var(--error-background-color);
   background-image: repeating-linear-gradient(135deg, transparent, transparent 35px, rgba(255,255,255,.3) 35px, rgba(255,255,255,.3) 70px);
   border: 0 solid var(--error-border-color);
-}
-[ui-pnotify] .brighttheme-error h4,
-[ui-pnotify] .brighttheme-error div {
   color: var(--error-text-color);
 }
 [ui-pnotify] .brighttheme-icon-notice,

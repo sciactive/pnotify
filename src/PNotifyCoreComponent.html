@@ -49,11 +49,11 @@
   export const defaults = {
     // Type of the notice. 'notice', 'info', 'success', or 'error'.
     type: 'notice',
-    // The notice's title.
+    // The notice's title. Can be a string, an element, or `false` for no title.
     title: false,
     // Whether to trust the title or escape its contents. (Not allow HTML.)
     titleTrusted: false,
-    // The notice's text.
+    // The notice's text. Can be a string, an element, or `false` for no text.
     text: false,
     // Whether to trust the text or escape its contents. (Not allow HTML.)
     textTrusted: false,
@@ -230,20 +230,24 @@
         {/each}
       {/if}
       {#if title !== false}
-        <h4 bind:this={refs.titleContainer} class="ui-pnotify-title {getStyle('title')}">
-          {#if titleTrusted}
-            {@html title}
-          {:else}
-            {title}
+        <div bind:this={refs.titleContainer} class="ui-pnotify-title {getStyle('title')}">
+          {#if !_titleElement}
+            {#if titleTrusted}
+              {@html title}
+            {:else}
+              <span class="ui-pnotify-pre-line">{title}</span>
+            {/if}
           {/if}
-        </h4>
+        </div>
       {/if}
       {#if text !== false}
         <div bind:this={refs.textContainer} class="ui-pnotify-text {getStyle('text')}" role="alert">
-          {#if textTrusted}
-            {@html text}
-          {:else}
-            {text}
+          {#if !_textElement}
+            {#if textTrusted}
+              {@html text}
+            {:else}
+            <span class="ui-pnotify-pre-line">{text}</span>
+            {/if}
           {/if}
         </div>
       {/if}
@@ -345,6 +349,8 @@
   $: _icons = typeof icons === 'object' ? icons : iconRegistry[icons];
   $: _widthStyle = typeof width === 'string' ? 'width: ' + width + ';' : '';
   $: _minHeightStyle = typeof minHeight === 'string' ? 'min-height: ' + minHeight + ';' : '';
+  $: _titleElement = title instanceof HTMLElement;
+  $: _textElement = text instanceof HTMLElement;
 
   export const getState = () => _state;
   export const getStyle = name => (_styles && name in _styles) ? _styles[name] : styling + '-' + name;
@@ -389,6 +395,14 @@
     _oldHide = hide;
     _oldIcon = icon;
   });
+
+  $: if (_titleElement && refs.titleContainer) {
+    refs.titleContainer.appendChild(title);
+  }
+
+  $: if (_textElement && refs.textContainer) {
+    refs.textContainer.appendChild(text);
+  }
 
   function mouseenter (e) {
     // Stop animation, reset the removal timer when the user mouses over.
@@ -1100,8 +1114,7 @@
   :global(.ui-pnotify .bootstrap4-title) {
     font-size: 1.2rem;
   }
-  :global(.ui-pnotify-text) {
-    display: block;
+  :global(.ui-pnotify-pre-line) {
     white-space: pre-line;
   }
   :global(.ui-pnotify-icon),
