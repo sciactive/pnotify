@@ -472,7 +472,7 @@
         }
         if ('factory' in moduleRegistry[key]) {
           const moduleOptions = Object.assign({
-            '_notice': self
+            _notice: self
           }, modules[key]);
           _moduleAccessors[key] = moduleRegistry[key].factory(self, moduleOptions);
           initModule(key, _moduleAccessors[key]);
@@ -486,7 +486,7 @@
         if (event === 'update') {
           if ('$set' in _moduleAccessors[key]) {
             const moduleOptions = Object.assign({
-              '_notice': self
+              _notice: self
             }, modules[key]);
             _moduleAccessors[key].$set(moduleOptions);
           }
@@ -510,7 +510,7 @@
     }
     if ('$set' in accessor) {
       const moduleOptions = Object.assign({
-        '_notice': self
+        _notice: self
       }, modules[key]);
       accessor.$set(moduleOptions);
     }
@@ -771,10 +771,10 @@
 
     if (stack.dir1) {
       csspos1 = {
-        'down': 'top',
-        'up': 'bottom',
-        'left': 'right',
-        'right': 'left'
+        down: 'top',
+        up: 'bottom',
+        left: 'right',
+        right: 'left'
       }[stack.dir1];
 
       // Calculate the current pos1 value.
@@ -802,10 +802,10 @@
 
     if (stack.dir1 && stack.dir2) {
       let csspos2 = {
-        'down': 'top',
-        'up': 'bottom',
-        'left': 'right',
-        'right': 'left'
+        down: 'top',
+        up: 'bottom',
+        left: 'right',
+        right: 'left'
       }[stack.dir2];
 
       // Calculate the current pos2 value.
@@ -1145,6 +1145,11 @@
     height: 100%;
     width: 100%;
     z-index: 2;
+    transition: opacity .075s linear;
+    opacity: 0;
+  }
+  :global(.ui-pnotify-modal-overlay.ui-pnotify-modal-overlay-in) {
+    opacity: 1;
   }
   :global(body > .ui-pnotify-modal-overlay) {
     position: fixed;

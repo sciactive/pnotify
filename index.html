@@ -1426,9 +1426,10 @@
             icon: 'fas fa-question-circle',
             hide: false,
             stack: new PNotify.Stack({
-              'dir1': 'down',
-              'modal': true,
-              'firstpos1': 25
+              dir1: 'down',
+              modal: true,
+              firstpos1: 25,
+              overlayClose: false
             }),
             modules: {
               Confirm: {
@@ -1918,7 +1919,7 @@
         ">Show All Notices (Default Stack)</button>
         <button class="btn btn-light my-1 source" onclick="
           if (typeof window.historyMaxStack === 'undefined') {
-            window.historyMaxStack = new PNotify.Stack({'dir1': 'up', 'dir2': 'right', 'firstpos1': 25, 'firstpos2': 25});
+            window.historyMaxStack = new PNotify.Stack({dir1: 'up', dir2: 'right', firstpos1: 25, firstpos2: 25});
           }
           PNotify.notice({
             title: 'Stack Limit Menu Notice',
@@ -1981,7 +1982,7 @@
             text: 'Stacks are used to position notices and determine where new notices will go when they\'re created. Each notice that\'s placed into a stack will be positioned related to the other notices in that stack.',
             icon: 'fas fa-bars',
             hide: false,
-            stack: new PNotify.Stack({ 'modal': true, 'overlayClose': true }),
+            stack: new PNotify.Stack({ modal: true }),
             modules: {
               History: {
                 history: false
@@ -1995,7 +1996,7 @@
           /* globals PNotify */
           window.showStackTopLeft = function showStackTopLeft (type) {
             if (typeof window.stackTopLeft === 'undefined') {
-              window.stackTopLeft = new PNotify.Stack({ 'dir1': 'down', 'dir2': 'right', 'firstpos1': 25, 'firstpos2': 25, 'push': 'top' });
+              window.stackTopLeft = new PNotify.Stack({ dir1: 'down', dir2: 'right', firstpos1: 25, firstpos2: 25, push: 'top' });
             }
             var opts = {
               title: 'Over Here',
@@ -2041,7 +2042,7 @@
           /* globals PNotify */
           window.showStackBottomLeft = function showStackBottomLeft (type) {
             if (typeof window.stackBottomLeft === 'undefined') {
-              window.stackBottomLeft = new PNotify.Stack({ 'dir1': 'right', 'dir2': 'up', 'firstpos1': 25, 'firstpos2': 25, 'push': 'top' });
+              window.stackBottomLeft = new PNotify.Stack({ dir1: 'right', dir2: 'up', firstpos1: 25, firstpos2: 25, push: 'top' });
             }
             var opts = {
               title: 'Over Here',
@@ -2087,7 +2088,7 @@
           /* globals PNotify */
           window.showStackBottomRight = function showStackBottomRight (type) {
             if (typeof window.stackBottomRight === 'undefined') {
-              window.stackBottomRight = new PNotify.Stack({ 'dir1': 'up', 'dir2': 'left', 'firstpos1': 25, 'firstpos2': 25 });
+              window.stackBottomRight = new PNotify.Stack({ dir1: 'up', dir2: 'left', firstpos1: 25, firstpos2: 25 });
             }
             var opts = {
               title: 'Over Here',
@@ -2133,7 +2134,7 @@
           /* globals PNotify */
           window.showStackTopCenter = function showStackTopCenter (type) {
             if (typeof window.stackTopCenter === 'undefined') {
-              window.stackTopCenter = new PNotify.Stack({ 'dir1': 'down', 'firstpos1': 25 });
+              window.stackTopCenter = new PNotify.Stack({ dir1: 'down', firstpos1: 25 });
             }
             var opts = {
               title: 'Over Here',
@@ -2181,7 +2182,7 @@
           /* globals PNotify */
           window.showStackModal = function showStackModal (type) {
             if (typeof window.stackModal === 'undefined') {
-              window.stackModal = new PNotify.Stack({ 'dir1': 'up', 'firstpos1': 25, 'push': 'top', 'modal': true, 'overlayClose': true });
+              window.stackModal = new PNotify.Stack({ dir1: 'up', firstpos1: 25, push: 'top', modal: true });
             }
             var opts = {
               title: 'Over Here',
@@ -2227,7 +2228,7 @@
           /* globals PNotify */
           window.showStackModalLeft = function showStackModalLeft (type) {
             if (typeof window.stackModalLeft === 'undefined') {
-              window.stackModalLeft = new PNotify.Stack({ 'dir1': 'down', 'dir2': 'right', 'firstpos1': 25, 'firstpos2': 25, 'push': 'top', 'modal': true, 'overlayClose': true });
+              window.stackModalLeft = new PNotify.Stack({ dir1: 'down', dir2: 'right', firstpos1: 25, firstpos2: 25, push: 'top', modal: true });
             }
             var opts = {
               title: 'Over Here',
@@ -2273,7 +2274,7 @@
           /* globals PNotify */
           window.showStackBarTop = function showStackBarTop (type) {
             if (typeof window.stackBarTop === 'undefined') {
-              window.stackBarTop = new PNotify.Stack({ 'dir1': 'down', 'firstpos1': 0, 'spacing1': 0, 'push': 'top' });
+              window.stackBarTop = new PNotify.Stack({ dir1: 'down', firstpos1: 0, spacing1: 0, push: 'top' });
             }
             var opts = {
               title: 'Over Here',
@@ -2328,7 +2329,7 @@
           /* globals PNotify */
           window.showStackBarBottom = function showStackBarBottom (type) {
             if (typeof window.stackBarBottom === 'undefined') {
-              window.stackBarBottom = new PNotify.Stack({ 'dir1': 'up', 'firstpos1': 0, 'spacing1': 0 });
+              window.stackBarBottom = new PNotify.Stack({ dir1: 'up', firstpos1: 0, spacing1: 0 });
             }
             var opts = {
               title: 'Over Here',
@@ -2422,10 +2423,10 @@
           /* globals PNotify */
           window.showStackContext = function showStackContext (type, modal) {
             if (typeof window.stackContext === 'undefined') {
-              window.stackContext = new PNotify.Stack({ 'dir1': 'down', 'dir2': 'left', 'firstpos1': 25, 'firstpos2': 25, 'context': document.getElementById('stack-context') });
+              window.stackContext = new PNotify.Stack({ dir1: 'down', dir2: 'left', firstpos1: 25, firstpos2: 25, context: document.getElementById('stack-context') });
             }
             if (typeof window.stackContextModal === 'undefined') {
-              window.stackContextModal = new PNotify.Stack({ 'dir1': 'down', 'firstpos1': 25, 'context': document.getElementById('stack-context'), 'modal': true, 'overlayClose': true });
+              window.stackContextModal = new PNotify.Stack({ dir1: 'down', firstpos1: 25, context: document.getElementById('stack-context'), modal: true });
             }
             var opts = {
               title: 'Over Here',
@@ -2511,11 +2512,11 @@
               <div class="card-body">
                 <pre><code class="js">PNotify.notice({
   text: 'Notice 1.',
-  stack: new PNotify.Stack({'dir1':'down', 'firstpos1':25})
+  stack: new PNotify.Stack({dir1: 'down', firstpos1: 25})
 });
 PNotify.notice({
   text: 'Notice 2.',
-  stack: new PNotify.Stack({'dir1':'down', 'firstpos1':25})
+  stack: new PNotify.Stack({dir1: 'down', firstpos1: 25})
 });</code></pre>
               </div>
             </div>
@@ -2524,7 +2525,7 @@ PNotify.notice({
             <div class="card border-success mt-3">
               <h6 class="card-header text-light bg-success">Good - Notices will flow.</h6>
               <div class="card-body text-success">
-                <pre><code class="js">var myStack = new PNotify.Stack({'dir1':'down', 'firstpos1':25});
+                <pre><code class="js">var myStack = new PNotify.Stack({dir1: 'down', firstpos1: 25});
 PNotify.notice({
   text: 'Notice 1.',
   stack: myStack

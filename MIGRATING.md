@@ -11,6 +11,7 @@
 * The `autoDisplay` option has been renamed `autoOpen`.
 * There is no longer a global array, and therefore, no longer `closeAll()` and `positionAll()` methods.
 * Stacks now have `close()` and `position()` methods. Also, stacks use a `Stack` class now.
+* The stack option `overlayClose` now defaults to true.
 * `notice.get()` is no longer available.
 * Dark mode is enabled by default if the user has enabled it on their OS! Use `PNotify.defaults.mode = 'light';` to remove this functionality.
 * Methods are no longer chainable.

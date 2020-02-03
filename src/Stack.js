@@ -8,7 +8,7 @@ export default class Stack {
     this.spacing2 = options.spacing2;
     this.push = options.push || 'bottom';
     this.modal = options.modal;
-    this.overlayClose = options.overlayClose;
+    this.overlayClose = 'overlayClose' in options ? options.overlayClose : true;
     this.context = options.context || (window && document.body) || null;
 
     this.notices = [];
@@ -42,9 +42,6 @@ export default class Stack {
   position () {
     // Reset the next position data.
     if (this.notices.length > 0) {
-      if (this.overlay) {
-        this.removeOverlay();
-      }
       this.nextpos1 = this.firstpos1;
       this.nextpos2 = this.firstpos2;
       this.addpos2 = 0;
@@ -52,6 +49,10 @@ export default class Stack {
         this.notices[i].position();
       }
     } else {
+      if (this.overlay) {
+        this.removeOverlay();
+      }
+
       delete this.nextpos1;
       delete this.nextpos2;
     }
@@ -66,30 +67,41 @@ export default class Stack {
   }
 
   createOverlay () {
-    const overlay = document.createElement('div');
-    overlay.classList.add('ui-pnotify-modal-overlay');
-    if (this.context !== document.body) {
-      overlay.style.height = this.context.scrollHeight + 'px';
-      overlay.style.width = this.context.scrollWidth + 'px';
-    }
-    // Close the notices on overlay click.
-    overlay.addEventListener('click', () => {
-      if (this.overlayClose) {
-        this.close();
+    if (!this.overlay) {
+      const overlay = document.createElement('div');
+      overlay.classList.add('ui-pnotify-modal-overlay');
+      if (this.context !== document.body) {
+        overlay.style.height = this.context.scrollHeight + 'px';
+        overlay.style.width = this.context.scrollWidth + 'px';
       }
-    });
-    this.overlay = overlay;
+      // Close the notices on overlay click.
+      overlay.addEventListener('click', () => {
+        if (this.overlayClose) {
+          this.close();
+        }
+      });
+      this.overlay = overlay;
+    }
   }
 
   insertOverlay () {
     if (this.overlay.parentNode !== this.context) {
+      this.overlay.classList.remove('ui-pnotify-modal-overlay-in');
       this.overlay = this.context.insertBefore(this.overlay, this.context.firstChild);
+      window.requestAnimationFrame(() => {
+        this.overlay.classList.add('ui-pnotify-modal-overlay-in');
+      });
     }
   }
 
   removeOverlay () {
     if (this.overlay.parentNode) {
-      this.overlay.parentNode.removeChild(this.overlay);
+      this.overlay.classList.remove('ui-pnotify-modal-overlay-in');
+      setTimeout(() => {
+        if (this.overlay.parentNode) {
+          this.overlay.parentNode.removeChild(this.overlay);
+        }
+      }, 75);
     }
   }
 
