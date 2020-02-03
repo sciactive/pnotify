@@ -70,7 +70,6 @@
   <script src="dist/umd/PNotifyAnimate.js"></script>
   <script src="dist/umd/PNotifyCallbacks.js"></script>
   <script src="dist/umd/PNotifyMobile.js"></script>
-  <script src="dist/umd/PNotifyHistory.js"></script>
   <script src="dist/umd/PNotifyDesktop.js"></script>
   <script src="dist/umd/PNotifyConfirm.js"></script>
   <script src="dist/umd/PNotifyReference.js"></script>
@@ -125,6 +124,11 @@
     /* eslint-env browser, jquery */
     /* globals PNotify */
     $(function () {
+      // ---
+      // Set defaults.
+      // ---
+      PNotify.defaults.destroy = false;
+
       // ---
       // Notice that opens when the page opens.
       // ---
@@ -763,8 +767,32 @@
         </div>
         <hr style="clear: both;" />
         <button class="btn btn-light my-1 source" onclick="
-          PNotify.closeAll();
-        ">Close All Notices</button>
+          PNotify.defaultStack.openLast();
+        ">Open Last Notice (Default Stack)</button>
+        <button class="btn btn-light my-1 source" onclick="
+          PNotify.defaultStack.open();
+        ">Open All Notices (Default Stack)</button>
+        <button class="btn btn-light my-1 source" onclick="
+          if (typeof window.historyMaxStack === 'undefined') {
+            window.historyMaxStack = new PNotify.Stack({dir1: 'up', dir2: 'right', firstpos1: 25, firstpos2: 25, maxOpen: 2});
+          }
+          PNotify.notice({
+            title: 'Stack Limit Notice',
+            text: 'I get anxious around other notices, so I\'ll keep only one friend around.',
+            stack: window.historyMaxStack
+          });
+        ">Limit a Stack to 2</button>
+        <button class="btn btn-light my-1 source" onclick="
+          PNotify.defaultStack.maxOpen = 1;
+        ">Set Max in Default Stack to 1</button>
+        <button class="btn btn-light my-1 source" onclick="
+          PNotify.defaultStack.maxOpen = Infinity;
+        ">Set Max in Default Stack Back to Infinity</button>
+        <button class="btn btn-light my-1 source" onclick="
+          PNotify.defaultStack.close();
+        ">Close All Notices (Default Stack)</button>
+        <br />
+        <small>Opening previous notices requires <code>PNotify.defaults.destroy = false;</code></small>
       </div>
     </div>
   </div>
@@ -1399,6 +1427,7 @@
             text: 'Are you sure?',
             icon: 'fas fa-question-circle',
             hide: false,
+            destroy: true,
             modules: {
               Confirm: {
                 confirm: true
@@ -1406,9 +1435,6 @@
               Buttons: {
                 closer: false,
                 sticker: false
-              },
-              History: {
-                history: false
               }
             }
           });
@@ -1425,6 +1451,7 @@
             text: 'Are you sure?',
             icon: 'fas fa-question-circle',
             hide: false,
+            destroy: true,
             stack: new PNotify.Stack({
               dir1: 'down',
               modal: true,
@@ -1438,10 +1465,7 @@
               Buttons: {
                 closer: false,
                 sticker: false
-              },
-              History: {
-                history: false
-              },
+              }
             }
           });
           notice.on('pnotify.confirm', function () {
@@ -1457,6 +1481,7 @@
             text: 'You have three options to choose from.',
             icon: 'fas fa-question-circle',
             hide: false,
+            destroy: true,
             modules: {
               Confirm: {
                 confirm: true,
@@ -1518,9 +1543,6 @@
               Buttons: {
                 closer: false,
                 sticker: false
-              },
-              History: {
-                history: false
               }
             }
           });
@@ -1531,6 +1553,7 @@
             text: 'What side would you like?',
             icon: 'fas fa-question-circle',
             hide: false,
+            destroy: true,
             modules: {
               Confirm: {
                 prompt: true
@@ -1538,9 +1561,6 @@
               Buttons: {
                 closer: false,
                 sticker: false
-              },
-              History: {
-                history: false
               }
             }
           });
@@ -1589,6 +1609,7 @@
             text: 'Write me a poem, please.',
             icon: 'fas fa-question-circle',
             hide: false,
+            destroy: true,
             modules: {
               Confirm: {
                 prompt: true,
@@ -1598,9 +1619,6 @@
               Buttons: {
                 closer: false,
                 sticker: false
-              },
-              History: {
-                history: false
               }
             }
           });
@@ -1650,6 +1668,7 @@
             text: 'You have no choice.',
             icon: 'fas fa-info-circle',
             hide: false,
+            destroy: true,
             modules: {
               Confirm: {
                 confirm: true,
@@ -1662,9 +1681,6 @@
               Buttons: {
                 closer: false,
                 sticker: false
-              },
-              History: {
-                history: false
               }
             }
           });
@@ -1675,6 +1691,7 @@
             text: 'You have no choice.',
             icon: 'fas fa-info-circle',
             hide: false,
+            destroy: true,
             modules: {
               Confirm: {
                 confirm: true,
@@ -1687,9 +1704,6 @@
               Buttons: {
                 closer: false,
                 sticker: false
-              },
-              History: {
-                history: false
               }
             }
           });
@@ -1700,6 +1714,7 @@
             text: 'You have no choice.',
             icon: 'fas fa-info-circle',
             hide: false,
+            destroy: true,
             modules: {
               Confirm: {
                 confirm: true,
@@ -1712,9 +1727,6 @@
               Buttons: {
                 closer: false,
                 sticker: false
-              },
-              History: {
-                history: false
               }
             }
           });
@@ -1725,6 +1737,7 @@
             text: 'You have no choice.',
             icon: 'fas fa-info-circle',
             hide: false,
+            destroy: true,
             modules: {
               Confirm: {
                 confirm: true,
@@ -1737,9 +1750,6 @@
               Buttons: {
                 closer: false,
                 sticker: false
-              },
-              History: {
-                history: false
               }
             }
           });
@@ -1855,13 +1865,11 @@
               textTrusted: true,
               icon: 'fas fa-cog fa-spin',
               hide: false,
+              destroy: true,
               modules: {
                 Buttons: {
                   closer: false,
                   sticker: false
-                },
-                History: {
-                  history: false
                 },
                 Callbacks: {
                   beforeOpen: function (notice) {
@@ -1909,48 +1917,6 @@
         ">Progress Loader</button>
       </div>
 
-      <h5 class="card-header">History Module <small>Redisplay old notices and limit number of notices.</small></h5>
-      <div class="card-body">
-        <button class="btn btn-light my-1 source" onclick="
-          PNotify.modules.History.showLast();
-        ">Show Last Notice (Default Stack)</button>
-        <button class="btn btn-light my-1 source" onclick="
-          PNotify.modules.History.showAll();
-        ">Show All Notices (Default Stack)</button>
-        <button class="btn btn-light my-1 source" onclick="
-          if (typeof window.historyMaxStack === 'undefined') {
-            window.historyMaxStack = new PNotify.Stack({dir1: 'up', dir2: 'right', firstpos1: 25, firstpos2: 25});
-          }
-          PNotify.notice({
-            title: 'Stack Limit Menu Notice',
-            text: 'I get anxious around other notices, so I\'ll keep only one friend around.',
-            stack: window.historyMaxStack,
-            modules: {
-              History: {
-                maxInStack: 2
-              }
-            }
-          });
-        ">Limit Stack to 2</button>
-        <button class="btn btn-light my-1 source" onclick="
-          PNotify.notice({
-            title: 'No History Notice',
-            text: 'I\'m not part of the notice history, so if you redisplay the last message, it won\'t be me.',
-            modules: {
-              History: {
-                history: false
-              }
-            }
-          });
-        ">No History Notice</button>
-        <button class="btn btn-light my-1 source" onclick="
-          PNotify.modules.History.defaults.maxInStack = 5;
-        ">Set Max in Stack Default to 5</button>
-        <button class="btn btn-light my-1 source" onclick="
-          PNotify.modules.History.defaults.maxInStack = Infinity;
-        ">Set Max in Stack Default back to Infinity</button>
-      </div>
-
       <h5 class="card-header">Reference Module <small>A reference for when you are coding your own module.</small></h5>
       <div class="card-body">
         <button class="btn btn-light my-1 source" onclick="
@@ -1982,12 +1948,8 @@
             text: 'Stacks are used to position notices and determine where new notices will go when they\'re created. Each notice that\'s placed into a stack will be positioned related to the other notices in that stack.',
             icon: 'fas fa-bars',
             hide: false,
-            stack: new PNotify.Stack({ modal: true }),
-            modules: {
-              History: {
-                history: false
-              }
-            }
+            destroy: true,
+            stack: new PNotify.Stack({ modal: true })
           });
         ">What are stacks?</button>
         <hr />
@@ -2391,7 +2353,6 @@
                 animateSpeed: 'fast',
                 icon: 'fas fa-comment',
                 // Setting stack to null causes PNotify to ignore this notice when positioning.
-                // It also causes the History module to ignore it.
                 stack: null,
                 autoOpen: false,
                 destroy: false,

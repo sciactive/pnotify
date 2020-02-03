@@ -304,8 +304,8 @@
     textContainer: null
   };
 
-  // The state can be 'initializing', 'opening', 'open', 'closing', and
-  // 'closed'.
+  // The state can be 'initializing', 'waiting', 'opening', 'open', 'closing',
+  // or 'closed'.
   let _state = 'initializing';
   // Auto close timer.
   let _timer = null;
@@ -339,8 +339,8 @@
   // taming Font Awesome's magic.
   let _updatingIcon = false;
   // Save the old value of hide and icon, so we can do our magic.
-  let _oldHide;
-  let _oldIcon;
+  let _oldHide = hide;
+  let _oldIcon = icon;
 
   // Grab styles from the styling object or use the styles provided.
   $: _styles = typeof styling === 'object' ? styling : styleRegistry[styling];
@@ -363,14 +363,16 @@
     runModules('update');
 
     // Update the timed hiding.
-    if (hide !== _oldHide) {
-      if (!hide) {
-        cancelClose();
-      } else if (!_oldHide) {
-        queueClose();
+    if (_state !== 'closed' && _state !== 'waiting') {
+      if (hide !== _oldHide) {
+        if (!hide) {
+          cancelClose();
+        } else if (!_oldHide) {
+          queueClose();
+        }
       }
+      queuePosition();
     }
-    queuePosition();
 
     // Font Awesome 5 uses dark magic by replacing the icon element with an SVG.
     // In order to make it play nice with Svelte, we have to clear the element
@@ -529,6 +531,32 @@
       }
       return;
     }
+
+    // Check the max in stack.
+    if (_state !== 'waiting' && stack) {
+      if (stack.maxOpen !== Infinity) {
+        if (stack._openNotices >= stack.maxOpen) {
+          if (stack.maxStrategy === 'close') {
+            stack.forEach(notice => {
+              if (
+                ['opening', 'open'].indexOf(notice.getState()) !== -1
+              ) {
+                // Close oldest notification, leaving only stack.maxOpen from
+                // the stack.
+                notice.close(false);
+                return false;
+              }
+            });
+          } else if (stack.maxStrategy === 'wait') {
+            _state = 'waiting';
+            return;
+          } else {
+            throw new Error(`Bad stack maxStrategy option: ${stack.maxStrategy}`);
+          }
+        }
+      }
+    }
+
     _state = 'opening';
     // This makes the notice visibity: hidden; so its dimensions can be
     // determined.
@@ -545,6 +573,11 @@
 
       runModules('afterOpen');
     };
+
+    if (stack) {
+      // Notify the stack that a notice has opened.
+      stack.noticeOpenedHandler();
+    }
 
     if (_moduleIsNoticeOpen) {
       afterOpenCallback();
@@ -591,6 +624,27 @@
     if (_state === 'closing' || _state === 'closed') {
       return;
     }
+
+    const runDestroy = () => {
+      runModules('beforeDestroy');
+      if (stack) {
+        stack.removeNotice(self);
+      }
+      self.$destroy();
+      runModules('afterDestroy');
+      runModules('$destroy');
+    };
+
+    if (_state = 'waiting') {
+      _state = 'closed';
+      // It's debatable whether the notice should be destroyed in this case, but
+      // I'm going to go ahead and say yes.
+      if (destroy) {
+        runDestroy();
+      }
+      return;
+    }
+
     _state = 'closing';
     _timerHide = !!timerHide; // Make sure it's a boolean.
     runModules('beforeClose');
@@ -606,16 +660,13 @@
       if (destroy) {
         // If we're supposed to destroy the notice, run the destroy module
         // events, remove from notices array, and let Svelte handle DOM removal.
-        runModules('beforeDestroy');
-        if (stack) {
-          stack.removeNotice(self);
-        }
-        self.$destroy();
-        runModules('afterDestroy');
-        runModules('$destroy');
+        runDestroy();
       } else if (remove) {
         // If we're supposed to remove the notice from the DOM, do it.
         refs.elem && refs.elem.parentNode.removeChild(refs.elem);
+      }
+      if (stack) {
+        stack.noticeClosedHandler();
       }
     });
   };
@@ -698,9 +749,6 @@
       }
       if (!refs.elem || !refs.elem.style.opacity || refs.elem.style.opacity === '0' || !visible) {
         _animatingClass = '';
-        if (stack) {
-          stack.removeOverlayIfNoneOpenExcept(self);
-        }
         if (callback) {
           callback.call();
         }
@@ -747,13 +795,6 @@
       !elem.classList.contains('ui-pnotify-initial-hidden')
     ) {
       return;
-    }
-
-    if (stack.modal) {
-      if (!stack.overlay) {
-        stack.createOverlay();
-      }
-      stack.insertOverlay();
     }
 
     // Read from the DOM to cause refresh.
@@ -933,7 +974,11 @@
       milliseconds = 10;
     }
     posTimer = setTimeout(() => {
-      stack.position();
+      if (stack) {
+        stack.position();
+      } else {
+        position();
+      }
     }, milliseconds);
   }
 

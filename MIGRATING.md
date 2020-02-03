@@ -10,10 +10,14 @@
 * The deprecated `remove()`, `removeAll()`, `cancelRemove()`, etc. methods have been removed.
 * The `autoDisplay` option has been renamed `autoOpen`.
 * There is no longer a global array, and therefore, no longer `closeAll()` and `positionAll()` methods.
-* Stacks now have `close()` and `position()` methods. Also, stacks use a `Stack` class now.
-* The stack option `overlayClose` now defaults to true.
+* Stacks use a `Stack` class now.
+  * Stacks now have `close()` and `position()` methods.
+  * The stack option `overlayClose` now defaults to true.
 * `notice.get()` is no longer available.
 * Dark mode is enabled by default if the user has enabled it on their OS! Use `PNotify.defaults.mode = 'light';` to remove this functionality.
+* The History module has been removed.
+  * The `showLast()` and `showAll()` methods are now the `openLast()` and `open()` methods of the Stack, respectively.
+  * The `maxInStack` option has been replaced with `stack.maxOpen`. To use the old behavior, set `stack.maxStrategy` to 'close'.
 * Methods are no longer chainable.
 
 ## Minor Breaking Changes.

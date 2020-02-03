@@ -7,13 +7,26 @@ export default class Stack {
     this.spacing1 = options.spacing1;
     this.spacing2 = options.spacing2;
     this.push = options.push || 'bottom';
-    this.modal = options.modal;
+    this.maxOpen = 'maxOpen' in options ? options.maxOpen : Infinity;
+    this.maxStrategy = 'maxStrategy' in options ? options.maxStrategy : 'wait';
+    this.modal = 'modal' in options ? options.modal : false;
     this.overlayClose = 'overlayClose' in options ? options.overlayClose : true;
     this.context = options.context || (window && document.body) || null;
+
+    this._openNotices = 0;
 
     this.notices = [];
     this.animation = true;
     this.listener = null;
+  }
+
+  forEach (callback, newestFirst) {
+    const zeroStart = newestFirst ? this.push === 'top' : this.push === 'bottom';
+    for (let i = (zeroStart ? 0 : this.notices.length - 1); (zeroStart ? i < this.notices.length : i >= 0); (zeroStart ? i++ : i--)) {
+      if (callback(this.notices[i]) === false) {
+        break;
+      }
+    }
   }
 
   addNotice (notice) {
@@ -39,6 +52,39 @@ export default class Stack {
     }
   }
 
+  noticeClosedHandler () {
+    this._openNotices--;
+    if (this.maxOpen !== Infinity && this.maxStrategy === 'wait') {
+      // Check for the next waiting notice and open it.
+      this.forEach(notice => {
+        if (notice.getState() === 'waiting') {
+          notice.open();
+          if (this._openNotices >= this.maxOpen) {
+            return false;
+          }
+        }
+      });
+    }
+
+    if (this._openNotices <= 0) {
+      this._openNotices = 0;
+      if (this.overlay) {
+        this.removeOverlay();
+      }
+    }
+  }
+
+  noticeOpenedHandler () {
+    this._openNotices++;
+
+    if (this.modal) {
+      if (!this.overlay) {
+        this.createOverlay();
+      }
+      this.insertOverlay();
+    }
+  }
+
   position () {
     // Reset the next position data.
     if (this.notices.length > 0) {
@@ -59,11 +105,21 @@ export default class Stack {
   }
 
   close () {
-    for (let i = 0; i < this.notices.length; i++) {
-      if (this.notices[i].close) {
-        this.notices[i].close(false);
+    this.forEach(notice => notice.close(false));
+  }
+
+  open () {
+    this.forEach(notice => notice.open());
+  }
+
+  openLast () {
+    // Look up the last notice, and display it.
+    this.forEach(notice => {
+      if (['opening', 'open', 'waiting'].indexOf(notice.getState()) === -1) {
+        notice.open();
+        return false;
       }
-    }
+    }, true);
   }
 
   createOverlay () {
@@ -102,25 +158,6 @@ export default class Stack {
           this.overlay.parentNode.removeChild(this.overlay);
         }
       }, 75);
-    }
-  }
-
-  removeOverlayIfNoneOpenExcept (currentNotice) {
-    if (!this.overlay) {
-      return;
-    }
-
-    // Go through the modal stack to see if any are left open.
-    let stillOpen = false;
-    for (let i = 0; i < this.notices.length; i++) {
-      const notice = this.notices[i];
-      if (notice !== currentNotice && notice.getState() !== 'closed') {
-        stillOpen = true;
-        break;
-      }
-    }
-    if (!stillOpen) {
-      this.removeOverlay();
     }
   }
 }

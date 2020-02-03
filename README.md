@@ -35,7 +35,6 @@ PNotify is a JavaScript notification and [confirmation/prompt](http://sciactive.
   - [Mobile Module](#Mobile-Module)
   - [Animate Module](#Animate-Module)
   - [Confirm Module](#Confirm-Module)
-  - [History Module](#History-Module)
   - [Callbacks Module](#Callbacks-Module)
 - [Exported Methods and Properties](#Exported-Methods-and-Properties)
 - [Instance Methods and Properties](#Instance-Methods-and-Properties)
@@ -356,7 +355,7 @@ PNotify options and default values.
 * `remove: true`<br>
   Remove the notice's elements from the DOM after it is closed.
 * `destroy: true`<br>
-  Whether to remove the notice from the stack array (and therefore, history) when it is closed.
+  Whether to remove the notice from the stack array (and therefore, stack history) when it is closed.
 * `stack: defaultStack`<br>
   The stack on which the notices will be placed. Also controls the direction the notices stack.
 * `modules: {}`<br>
@@ -396,15 +395,15 @@ Changing a default for modules can be done in a couple ways.
 import { modules } from 'PNotify/dist/es/PNotify';
 // or
 const { modules } = require('pnotify/dist/umd/PNotify');
-modules.History.defaults.maxInStack = 10;
+modules.Desktop.defaults.desktop = true;
 
 // This will change the default only for notices that don't have a `modules` option.
 import { defaults } from 'PNotify/dist/es/PNotify';
 // or
 const { defaults } = require('pnotify/dist/umd/PNotify');
 defaults.modules = {
-  History: {
-    maxInStack: 10
+  Desktop: {
+    desktop: true
   }
 };
 ```
@@ -545,25 +544,6 @@ notice.on('pnotify.cancel', () => {
 });
 ```
 
-## History Module
-
-`History: {`
-* `history: true`<br>
-  Place the notice in the history.
-* `maxInStack: Infinity`<br>
-  Maximum number of notices to have open in its stack.
-
-`}`
-
-The History module also has two methods:
-
-* `modules.History.showLast(stack)`<br>
-  Reopen the last closed notice from a stack that was placed in the history. If no stack is provided, it will use the default stack.
-* `modules.History.showAll(stack)`<br>
-  Reopen all notices from a stack that were placed in the history. If no stack is provided, it will also use the default stack.
-
-> :information_source: In v4, the History module can no longer make a dropdown for you. But hey, it's smaller now.
-
 ## Callbacks Module
 
 The callback options all expect the value to be a callback function. If the function returns false on the `beforeOpen` or `beforeClose` callback, that event will be canceled.
@@ -596,10 +576,6 @@ The callback options all expect the value to be a callback function. If the func
   Create and return a notice with 'success' type.
 * `error(options)`<br>
   Create and return a notice with 'error' type.
-* `closeStack(stack)`<br>
-  Close all the notices in a stack.
-* `positionAll()`<br>
-  Reposition all notices.
 * `defaults`<br>
   Defaults for options.
 * `defaultStack`<br>
@@ -656,30 +632,34 @@ The callback options all expect the value to be a callback function. If the func
 
 # Stacks
 
-A stack is an object used to determine where to position notices.
+A stack is an instance of the `Stack` class used to determine where to position notices and how they interact with each other.
 
-Stack properties:
+Stack options and their defaults:
 
-* `dir1`<br>
+* `dir1: null`<br>
   The primary stacking direction. Can be `'up'`, `'down'`, `'right'`, or `'left'`.
-* `firstpos1`<br>
+* `firstpos1: undefined`<br>
   Number of pixels from the edge of the context, relative to `dir1`, the first notice will appear. If undefined, the current position of the notice, whatever that is, will be used.
-* `spacing1`<br>
+* `spacing1: undefined`<br>
   Number of pixels between notices along `dir1`. If undefined, `25` will be used.
-* `dir2`<br>
+* `dir2: null`<br>
   The secondary stacking direction. Should be a perpendicular direction to `dir1`. The notices will continue in this direction when they reach the edge of the viewport along `dir1`.
-* `firstpos2`<br>
+* `firstpos2: undefined`<br>
   Number of pixels from the edge of the context, relative to `dir2`, the first notice will appear. If undefined, the current position of the notice, whatever that is, will be used.
-* `spacing2`<br>
+* `spacing2: undefined`<br>
   Number of pixels between notices along `dir2`. If undefined, `25` will be used.
-* `push`<br>
+* `push: 'bottom'`<br>
   Where, in the stack, to push new notices. Can be `'top'` or `'bottom'`.
-* `modal`<br>
+* `maxOpen: Infinity`<br>
+  How many notices are allowed to be open in this stack at once.
+* `maxStrategy: 'wait'`<br>
+  The strategy to use to ensure `maxOpen`. Can be `'wait'`, which will cause new notices to wait their turn, or `'close'`, which will remove the oldest notice to make room for a new one.
+* `modal: false`<br>
   Whether to create a modal overlay when this stack's notices are open.
-* `overlayClose`<br>
+* `overlayClose: true`<br>
   Whether clicking on the modal overlay should close the stack's notices.
-* `context`<br>
-  The DOM element this stack's notices should appear in. If undefined, `document.body` will be used.
+* `context: document.body`<br>
+  The DOM element this stack's notices should appear in.
 
 Stack behavior:
 
@@ -692,6 +672,21 @@ Stack behavior:
   * `dirX === 'right'` means `firstposX` is relative to the **left** edge.
 * Stacks are independent of each other, so a stack doesn't know and doesn't care if it overlaps (and blocks) another stack.
 * Stack objects are used and manipulated by PNotify, and therefore, should be a variable when passed.
+
+Stack methods:
+
+* `forEach(callback, newestFirst)`<br>
+  Run a callback for all the notices in the stack.
+* `position()`<br>
+  Position all the notices in the stack.
+* `close()`<br>
+  Close all the notices in the stack.
+* `open()`<br>
+  Open all the notices in the stack.
+* `openLast()`<br>
+  Open the last closed/closing notice in the stack.
+
+There are other methods on the stack class, but you shouldn't use them. They're meant to be internal.
 
 > :warning: Calling something like `alert({text: 'notice', stack: new Stack({dir1: 'down', firstpos1: 25})});` may not do what you want. It will create a notice, but that notice will be in its own stack and will overlap other notices.
 

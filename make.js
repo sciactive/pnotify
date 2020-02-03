@@ -11,7 +11,6 @@ const pnotifyComponents = [
   'PNotifyButtonsComponent',
   'PNotifyConfirmComponent',
   'PNotifyDesktopComponent',
-  'PNotifyHistoryComponent',
   'PNotifyMobileComponent',
 
   // Reference module.
@@ -27,7 +26,6 @@ const pnotifySrc = [
   'PNotifyCallbacks',
   'PNotifyConfirm',
   'PNotifyDesktop',
-  'PNotifyHistory',
   'PNotifyMobile',
 
   // Reference module.
