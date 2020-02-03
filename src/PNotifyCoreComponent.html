@@ -635,7 +635,7 @@
       runModules('$destroy');
     };
 
-    if (_state = 'waiting') {
+    if (_state === 'waiting') {
       _state = 'closed';
       // It's debatable whether the notice should be destroyed in this case, but
       // I'm going to go ahead and say yes.
