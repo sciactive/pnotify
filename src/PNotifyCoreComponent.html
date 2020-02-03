@@ -42,8 +42,7 @@
     firstpos2: 25,
     spacing1: 36,
     spacing2: 36,
-    push: 'bottom',
-    context: window && document.body
+    push: 'bottom'
   });
 
   export const defaults = {
@@ -562,17 +561,18 @@
         stack.context !== refs.elem.parentNode
       )
     ) {
-      if (stack && stack.context) {
+      if (stack && (stack.context || document.body)) {
+        if (!stack.context) {
+          stack.context = document.body;
+        }
         stack.context.appendChild(refs.elem);
-      } else if (document.body) {
-        document.body.appendChild(refs.elem);
       } else {
         throw new Error('No context to open this notice in.');
       }
     }
 
     // Wait until the DOM is updated.
-    setTimeout(() => {
+    window.requestAnimationFrame(() => {
       if (stack) {
         // Mark the stack so it won't animate the new notice.
         stack.animation = false;
@@ -583,7 +583,7 @@
       }
 
       animateIn(afterOpenCallback);
-    }, 0);
+    });
   };
 
   // Remove the notice.
