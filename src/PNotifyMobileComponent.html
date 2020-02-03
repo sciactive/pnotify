@@ -25,7 +25,7 @@
     const stack = _notice.stack;
 
     if (styling && !_notice.hasModuleClass('elem', 'ui-pnotify-mobile-able')) {
-      if (stack !== false) {
+      if (stack) {
         if (windowInnerWidth <= 480) {
           if (!stack.mobileOrigSpacing1) {
             stack.mobileOrigSpacing1 = stack.spacing1;
