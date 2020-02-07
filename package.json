@@ -36,11 +36,11 @@
   },
   "scripts": {
     "build-dev": "ENV=development npm run build-umd && npm run build-cleanup",
-    "watch": "ENV=development webpack --watch",
     "build": "npm run build-umd && npm run build-es && npm run build-cleanup",
     "build-umd": "webpack",
     "build-es": "node make.js",
     "build-cleanup": "node cleanup.js",
+    "watch": "ENV=development webpack --watch",
     "prepare-off": "npm run lint && npm run build",
     "lint": "eslint index.html make.js src/*.html src/*.js demo/*"
   },

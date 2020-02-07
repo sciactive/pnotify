@@ -15,7 +15,7 @@
 <script context="module">
   import Stack from './Stack.js';
 
-  let posTimer; // Position all timer.
+  let posTimer;
 
   // These actions need to be done once the DOM is ready.
   function onDocumentLoaded () {
@@ -178,16 +178,21 @@
       {_animatingClass}
       {_moveClass}
       {animation === 'fade' ? 'ui-pnotify-fade-'+animateSpeed : ''}
-      {stack && stack.modal ? 'ui-pnotify-modal' : ''}
+      {stack && (stack.modal === true || stack._overlayInserted) ? 'ui-pnotify-modal' : ''}
+      {_masking ? 'ui-pnotify-masking' : ''}
       {_moduleClasses.elem.join(' ')}
     "
     aria-live="assertive"
     role="alertdialog"
+    on:mouseenter={handleInteraction}
+    on:mouseleave={handleLeaveInteraction}
+    on:focusin={handleInteraction}
+    on:focusout={handleLeaveInteraction}
     ui-pnotify
     on:mouseover
     on:mouseout
-    on:mouseenter={mouseenter}
-    on:mouseleave={mouseleave}
+    on:mouseenter
+    on:mouseleave
     on:mousemove
     on:mousedown
     on:mouseup
@@ -195,6 +200,8 @@
     on:dblclick
     on:focus
     on:blur
+    on:focusin
+    on:focusout
     on:touchstart
     on:touchmove
     on:touchend
@@ -330,6 +337,9 @@
   // not appear) can set this to true to make PNotify assume the notice has
   // opened.
   let _moduleIsNoticeOpen = false;
+  // The masking control for the second notice in a modalish stack when the
+  // first notice is hovered.
+  let _masking = false;
 
   // These hold the instances to the Svelte-loaded modules.
   // const _modulesPrependContainerInstances = [];
@@ -363,15 +373,17 @@
     runModules('update');
 
     // Update the timed hiding.
-    if (_state !== 'closed' && _state !== 'waiting') {
-      if (hide !== _oldHide) {
-        if (!hide) {
-          cancelClose();
-        } else if (!_oldHide) {
-          queueClose();
-        }
+    if (_state !== 'closed' && _state !== 'waiting' && hide !== _oldHide) {
+      if (!hide) {
+        cancelClose();
+      } else if (!_oldHide) {
+        queueClose();
       }
-      queuePosition();
+    }
+
+    // Queue a position
+    if (_state !== 'closed' && stack) {
+      stack.queuePosition();
     }
 
     // Font Awesome 5 uses dark magic by replacing the icon element with an SVG.
@@ -405,9 +417,9 @@
     refs.textContainer.appendChild(text);
   }
 
-  function mouseenter (e) {
-    // Stop animation, reset the removal timer when the user mouses over.
-    if (mouseReset && _animating === 'out') {
+  function handleInteraction (e) {
+    // Stop animation, reset the removal timer when the user interacts.
+    if (mouseReset && _state === 'closing') {
       if (!_timerHide) {
         return;
       }
@@ -417,11 +429,9 @@
     if (hide && mouseReset) {
       cancelClose();
     }
-
-    dispatch('mouseenter', e);
   }
 
-  function mouseleave (e) {
+  function handleLeaveInteraction (e) {
     // Start the close timer.
     if (hide && mouseReset && _animating !== 'out') {
       queueClose();
@@ -429,8 +439,6 @@
     if (stack) {
       stack.position();
     }
-
-    dispatch('mouseleave', e);
   }
 
   export async function init (notice) {
@@ -439,7 +447,7 @@
 
     if (stack) {
       // Add the notice to the notice array.
-      stack.addNotice(self);
+      stack._addNotice(self);
     }
 
     // Wait for self to propagate to modules.
@@ -533,7 +541,7 @@
     }
 
     // Check the max in stack.
-    if (_state !== 'waiting' && stack) {
+    if (_state !== 'waiting' && stack && !(stack.modal === 'ish' && stack._overlayOpen)) {
       if (stack.maxOpen !== Infinity) {
         if (stack._openNotices >= stack.maxOpen) {
           if (stack.maxStrategy === 'close') {
@@ -576,7 +584,7 @@
 
     if (stack) {
       // Notify the stack that a notice has opened.
-      stack.noticeOpenedHandler();
+      stack._handleNoticeOpened(self);
     }
 
     if (_moduleIsNoticeOpen) {
@@ -608,11 +616,11 @@
     window.requestAnimationFrame(() => {
       if (stack) {
         // Mark the stack so it won't animate the new notice.
-        stack.animation = false;
+        stack._animation = false;
         // Now position the stack's the notices.
         stack.position();
         // Reset animation.
-        stack.animation = true;
+        stack._animation = true;
       }
 
       animateIn(afterOpenCallback);
@@ -620,7 +628,7 @@
   };
 
   // Remove the notice.
-  export let close = timerHide => {
+  export let close = (timerHide, waitAfterward) => {
     if (_state === 'closing' || _state === 'closed') {
       return;
     }
@@ -628,7 +636,7 @@
     const runDestroy = () => {
       runModules('beforeDestroy');
       if (stack) {
-        stack.removeNotice(self);
+        stack._removeNotice(self);
       }
       self.$destroy();
       runModules('afterDestroy');
@@ -639,7 +647,7 @@
       _state = 'closed';
       // It's debatable whether the notice should be destroyed in this case, but
       // I'm going to go ahead and say yes.
-      if (destroy) {
+      if (destroy && !waitAfterward) {
         runDestroy();
       }
       return;
@@ -649,24 +657,24 @@
     _timerHide = !!timerHide; // Make sure it's a boolean.
     runModules('beforeClose');
 
-    if (_timer && clearTimeout) {
+    if (_timer && _timer !== 'prevented' && clearTimeout) {
       clearTimeout(_timer);
       _timer = null;
     }
     animateOut(() => {
-      _state = 'closed';
+      _timerHide = false;
+      _state = waitAfterward ? 'waiting' : 'closed';
       runModules('afterClose');
-      queuePosition();
-      if (destroy) {
+      if (destroy && !waitAfterward) {
         // If we're supposed to destroy the notice, run the destroy module
         // events, remove from notices array, and let Svelte handle DOM removal.
         runDestroy();
-      } else if (remove) {
+      } else if (remove && !waitAfterward) {
         // If we're supposed to remove the notice from the DOM, do it.
         refs.elem && refs.elem.parentNode.removeChild(refs.elem);
       }
       if (stack) {
-        stack.noticeClosedHandler();
+        stack._handleNoticeClosed(self);
       }
     });
   };
@@ -779,14 +787,14 @@
     if (!stack || !elem) {
       return;
     }
-    if (typeof stack.nextpos1 !== 'number') {
-      stack.nextpos1 = stack.firstpos1;
+    if (typeof stack._nextpos1 !== 'number') {
+      stack._nextpos1 = stack.firstpos1;
     }
-    if (typeof stack.nextpos2 !== 'number') {
-      stack.nextpos2 = stack.firstpos2;
+    if (typeof stack._nextpos2 !== 'number') {
+      stack._nextpos2 = stack.firstpos2;
     }
-    if (typeof stack.addpos2 !== 'number') {
-      stack.addpos2 = 0;
+    if (typeof stack._addpos2 !== 'number') {
+      stack._addpos2 = 0;
     }
 
     // Skip this notice if it's not shown.
@@ -797,10 +805,20 @@
       return;
     }
 
+    // Use local variables, since a masking notice position shouldn't update the
+    // stack.
+    let [firstpos1, firstpos2, _nextpos1, _nextpos2, _addpos2] = [
+      stack.firstpos1,
+      stack.firstpos2,
+      stack._nextpos1,
+      stack._nextpos2,
+      stack._addpos2
+    ];
+
     // Read from the DOM to cause refresh.
     elem.getBoundingClientRect();
 
-    if (stack.animation) {
+    if (stack._animation && !_masking) {
       // Add animate class.
       _moveClass = 'ui-pnotify-move';
     }
@@ -835,9 +853,9 @@
           break;
       }
       // Remember the first pos1, so the first notice goes there.
-      if (typeof stack.firstpos1 === 'undefined') {
-        stack.firstpos1 = curpos1;
-        stack.nextpos1 = stack.firstpos1;
+      if (typeof firstpos1 === 'undefined') {
+        firstpos1 = curpos1;
+        _nextpos1 = firstpos1;
       }
     }
 
@@ -866,28 +884,28 @@
           break;
       }
       // Remember the first pos2, so the first notice goes there.
-      if (typeof stack.firstpos2 === 'undefined') {
-        stack.firstpos2 = curpos2;
-        stack.nextpos2 = stack.firstpos2;
+      if (typeof firstpos2 === 'undefined') {
+        firstpos2 = curpos2;
+        _nextpos2 = firstpos2;
       }
 
       // Check that it's not beyond the viewport edge.
-      const endY = stack.nextpos1 + elem.offsetHeight + (typeof stack.spacing1 === 'undefined' ? 25 : stack.spacing1);
-      const endX = stack.nextpos1 + elem.offsetWidth + (typeof stack.spacing1 === 'undefined' ? 25 : stack.spacing1);
+      const endY = _nextpos1 + elem.offsetHeight + (typeof stack.spacing1 === 'undefined' ? 25 : stack.spacing1);
+      const endX = _nextpos1 + elem.offsetWidth + (typeof stack.spacing1 === 'undefined' ? 25 : stack.spacing1);
       if (
         ((stack.dir1 === 'down' || stack.dir1 === 'up') && endY > spaceY) ||
         ((stack.dir1 === 'left' || stack.dir1 === 'right') && endX > spaceX)
       ) {
         // If it is, it needs to go back to the first pos1, and over on pos2.
-        stack.nextpos1 = stack.firstpos1;
-        stack.nextpos2 += stack.addpos2 + (typeof stack.spacing2 === 'undefined' ? 25 : stack.spacing2);
-        stack.addpos2 = 0;
+        _nextpos1 = firstpos1;
+        _nextpos2 += _addpos2 + (typeof stack.spacing2 === 'undefined' ? 25 : stack.spacing2);
+        _addpos2 = 0;
       }
 
       // Move the notice on dir2.
-      if (typeof stack.nextpos2 === 'number') {
-        elem.style[csspos2] = stack.nextpos2 + 'px';
-        if (!stack.animation) {
+      if (typeof _nextpos2 === 'number') {
+        elem.style[csspos2] = _nextpos2 + 'px';
+        if (!stack._animation) {
           // eslint-disable-next-line no-unused-expressions
           elem.style[csspos2]; // Read from the DOM for update.
         }
@@ -897,14 +915,14 @@
       switch (stack.dir2) {
         case 'down':
         case 'up':
-          if (elem.offsetHeight + (parseFloat(elem.style.marginTop, 10) || 0) + (parseFloat(elem.style.marginBottom, 10) || 0) > stack.addpos2) {
-            stack.addpos2 = elem.offsetHeight;
+          if (elem.offsetHeight + (parseFloat(elem.style.marginTop, 10) || 0) + (parseFloat(elem.style.marginBottom, 10) || 0) > _addpos2) {
+            _addpos2 = elem.offsetHeight;
           }
           break;
         case 'left':
         case 'right':
-          if (elem.offsetWidth + (parseFloat(elem.style.marginLeft, 10) || 0) + (parseFloat(elem.style.marginRight, 10) || 0) > stack.addpos2) {
-            stack.addpos2 = elem.offsetWidth;
+          if (elem.offsetWidth + (parseFloat(elem.style.marginLeft, 10) || 0) + (parseFloat(elem.style.marginRight, 10) || 0) > _addpos2) {
+            _addpos2 = elem.offsetWidth;
           }
           break;
       }
@@ -925,7 +943,7 @@
       }
       elem.style[cssposCross[0]] = cssMiddle + 'px';
       elem.style[cssposCross[1]] = 'auto';
-      if (!stack.animation) {
+      if (!stack._animation) {
         // eslint-disable-next-line no-unused-expressions
         elem.style[cssposCross[0]]; // Read from the DOM for update.
       }
@@ -933,9 +951,9 @@
 
     if (stack.dir1) {
       // Move the notice on dir1.
-      if (typeof stack.nextpos1 === 'number') {
-        elem.style[csspos1] = stack.nextpos1 + 'px';
-        if (!stack.animation) {
+      if (typeof _nextpos1 === 'number') {
+        elem.style[csspos1] = _nextpos1 + 'px';
+        if (!stack._animation) {
           // eslint-disable-next-line no-unused-expressions
           elem.style[csspos1]; // Read from the DOM for update.
         }
@@ -945,11 +963,11 @@
       switch (stack.dir1) {
         case 'down':
         case 'up':
-          stack.nextpos1 += elem.offsetHeight + (typeof stack.spacing1 === 'undefined' ? 25 : stack.spacing1);
+          _nextpos1 += elem.offsetHeight + (typeof stack.spacing1 === 'undefined' ? 25 : stack.spacing1);
           break;
         case 'left':
         case 'right':
-          stack.nextpos1 += elem.offsetWidth + (typeof stack.spacing1 === 'undefined' ? 25 : stack.spacing1);
+          _nextpos1 += elem.offsetWidth + (typeof stack.spacing1 === 'undefined' ? 25 : stack.spacing1);
           break;
       }
     } else {
@@ -958,33 +976,25 @@
       let cssMiddleTop = (spaceY / 2) - (elem.offsetHeight / 2);
       elem.style.left = cssMiddleLeft + 'px';
       elem.style.top = cssMiddleTop + 'px';
-      if (!stack.animation) {
+      if (!stack._animation) {
         // eslint-disable-next-line no-unused-expressions
         elem.style.left; // Read from the DOM for update.
       }
     }
-  }
 
-  // Queue the stack position so it doesn't run repeatedly and use up resources.
-  export function queuePosition (milliseconds) {
-    if (posTimer) {
-      clearTimeout(posTimer);
+    // If we're not positioning a masking notice, update the stack properties.
+    if (!_masking) {
+      stack.firstpos1 = firstpos1;
+      stack.firstpos2 = firstpos2;
+      stack._nextpos1 = _nextpos1;
+      stack._nextpos2 = _nextpos2;
+      stack._addpos2 = _addpos2;
     }
-    if (!milliseconds) {
-      milliseconds = 10;
-    }
-    posTimer = setTimeout(() => {
-      if (stack) {
-        stack.position();
-      } else {
-        position();
-      }
-    }, milliseconds);
   }
 
   // Cancel any pending removal timer.
   export function cancelClose () {
-    if (_timer) {
+    if (_timer && _timer !== 'prevented') {
       clearTimeout(_timer);
     }
     if (_animTimer) {
@@ -1000,9 +1010,24 @@
 
   // Queue a close timer.
   export function queueClose () {
+    if (_timer === 'prevented') {
+      return;
+    }
     // Cancel any current close timer.
     cancelClose();
     _timer = setTimeout(() => close(true), (isNaN(delay) ? 0 : delay));
+  }
+
+  export function preventTimerClose (prevent) {
+    if (prevent) {
+      cancelClose();
+      _timer = 'prevented';
+    } else if (_timer === 'prevented') {
+      _timer = null;
+      if (_state === 'open' && hide) {
+        queueClose();
+      }
+    }
   }
 
   export function fire (name, detail) {
@@ -1063,6 +1088,20 @@
   export function setAnimatingClass (value) {
     return _animatingClass = value;
   }
+
+  export function setMasking (value) {
+    if (value) {
+      _animatingClass = 'ui-pnotify-initial-hidden';
+      // Wait for the DOM to update.
+      window.requestAnimationFrame(() => {
+        _masking = true;
+        position();
+        _animatingClass = '';
+      })
+    } else {
+      _masking = false;
+    }
+  }
 </script>
 
 <style>
@@ -1081,12 +1120,15 @@
     height: auto;
     z-index: 1;
     display: none;
+    transition: opacity .1s linear;
+    opacity: 0;
   }
   :global(.ui-pnotify.ui-pnotify-modal) {
     z-index: 3;
   }
   :global(.ui-pnotify.ui-pnotify-in) {
     display: block;
+    opacity: 1;
   }
   :global(.ui-pnotify.ui-pnotify-initial-hidden) {
     display: block;
@@ -1115,6 +1157,12 @@
   }
   :global(.ui-pnotify.ui-pnotify-fade-fast.ui-pnotify.ui-pnotify-move) {
     transition: opacity .1s linear, left .4s ease, top .4s ease, right .4s ease, bottom .4s ease;
+  }
+  :global(.ui-pnotify.ui-pnotify-masking) {
+    display: block;
+    opacity: 1;
+    -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0) 30px, rgba(0, 0, 0, 0));
+    mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0) 30px, rgba(0, 0, 0, 0));
   }
   :global(.ui-pnotify.ui-pnotify-fade-in) {
     opacity: 1;
@@ -1192,9 +1240,18 @@
     z-index: 2;
     transition: opacity .075s linear;
     opacity: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
   }
   :global(.ui-pnotify-modal-overlay.ui-pnotify-modal-overlay-in) {
     opacity: 1;
+  }
+  :global(.ui-pnotify-modal-overlay-closes:after) {
+    content: "×";
+    font-family: Arial;
+    font-size: 3rem;
+    color: rgba(0, 0, 0, .2);
   }
   :global(body > .ui-pnotify-modal-overlay) {
     position: fixed;
