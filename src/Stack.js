@@ -11,6 +11,7 @@ export default class Stack {
     this.maxStrategy = 'maxStrategy' in options ? options.maxStrategy : 'wait';
     this.modal = 'modal' in options ? options.modal : 'ish';
     this.overlayClose = 'overlayClose' in options ? options.overlayClose : true;
+    this.overlayClosesPinned = options.overlayClosesPinned || false;
     this.context = options.context || (window && document.body) || null;
 
     // Public properties.
@@ -298,7 +299,17 @@ export default class Stack {
       // Close the notices on overlay click.
       overlay.addEventListener('click', () => {
         if (this.overlayClose) {
-          this.close();
+          this.forEach(notice => {
+            if (notice.hide || this.overlayClosesPinned) {
+              notice.close(false);
+            }
+          });
+
+          if (this._overlayOpen) {
+            this._removeOverlay();
+            // todo: exit modal state here (from the code above)
+            // like, cause the notices won't fold up.
+          }
         }
       });
       this._overlay = overlay;
