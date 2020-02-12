@@ -1,13 +1,14 @@
 # Migrating from PNotify 4
 
-**PNotify 5** has some breaking changes:
+**PNotify 5** has breaking changes:
 
 ## Major Breaking Changes
 
 * It's built using [Svelte](https://svelte.dev) 3, which has a slightly different component API than Svelte 2.
+* The new modalish flow is the default flow. The default stack is configured to use it. To go back to the old behavior, use `PNotify.defaultStack.maxOpen = Infinity; PNotify.defaultStack.modal = false;`.
 * Using the factory functions is required. Using the `new` keyword will break your notice.
 * IIFE scripts have been replaced with UMD scripts, since static methods and properties are now module exports.
-* The deprecated `remove()`, `removeAll()`, `cancelRemove()`, etc. methods have been removed.
+* The deprecated `remove()`, `removeAll()`, `cancelRemove()`, etc. methods have been removed. (Use `close()`, `stack.closeAll()`, `cancelClose()`.)
 * The `autoDisplay` option has been renamed `autoOpen`.
 * There is no longer a global array, and therefore, no longer `closeAll()` and `positionAll()` methods.
 * Stacks use a `Stack` class now.
