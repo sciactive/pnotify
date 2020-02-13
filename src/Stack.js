@@ -25,10 +25,14 @@ export default class Stack {
     this._listener = null;
     this._overlayOpen = false;
     this._overlayInserted = false;
+    this._leavingModalState = false;
     // The masking leader is the first open notice in the stack. It is not
     // masked, but mousing over it resets the masking if the notices are out.
     this._maskingLeader = null;
     this._maskingLeaderOff = null;
+    // The next waiting notice that is masking.
+    this._masking = null;
+    this._maskingOff = null;
   }
 
   forEach (callback, newestFirst) {
@@ -40,6 +44,24 @@ export default class Stack {
     }
   }
 
+  close () {
+    this.forEach(notice => notice.close(false));
+  }
+
+  open () {
+    this.forEach(notice => notice.open());
+  }
+
+  openLast () {
+    // Look up the last notice, and display it.
+    this.forEach(notice => {
+      if (['opening', 'open', 'waiting'].indexOf(notice.getState()) === -1) {
+        notice.open();
+        return false;
+      }
+    }, true);
+  }
+
   position () {
     // Reset the next position data.
     if (this.notices.length > 0) {
@@ -47,8 +69,9 @@ export default class Stack {
       this._nextpos2 = this.firstpos2;
       this._addpos2 = 0;
       for (let i = 0; i < this.notices.length; i++) {
-        this.notices[i].position();
+        this._positionNotice(this.notices[i]);
       }
+      this._leavingModalState = false;
     } else {
       if (this._overlay) {
         this._removeOverlay();
@@ -70,22 +93,218 @@ export default class Stack {
     this._posTimer = setTimeout(() => this.position(), milliseconds);
   }
 
-  close () {
-    this.forEach(notice => notice.close(false));
-  }
+  // Position the notice.
+  _positionNotice (notice) {
+    // Get the notice's stack.
+    const elem = notice.refs.elem;
+    if (!elem) {
+      return;
+    }
+    if (typeof this._nextpos1 !== 'number') {
+      this._nextpos1 = this.firstpos1;
+    }
+    if (typeof this._nextpos2 !== 'number') {
+      this._nextpos2 = this.firstpos2;
+    }
+    if (typeof this._addpos2 !== 'number') {
+      this._addpos2 = 0;
+    }
 
-  open () {
-    this.forEach(notice => notice.open());
-  }
+    // Skip this notice if it's not shown.
+    if (
+      !elem.classList.contains('ui-pnotify-in') &&
+      !elem.classList.contains('ui-pnotify-initial-hidden')
+    ) {
+      return;
+    }
 
-  openLast () {
-    // Look up the last notice, and display it.
-    this.forEach(notice => {
-      if (['opening', 'open', 'waiting'].indexOf(notice.getState()) === -1) {
-        notice.open();
-        return false;
+    // Use local variables, since a masking notice position shouldn't update the
+    // stack.
+    let [firstpos1, firstpos2, _nextpos1, _nextpos2, _addpos2] = [
+      this.firstpos1,
+      this.firstpos2,
+      this._nextpos1,
+      this._nextpos2,
+      this._addpos2
+    ];
+
+    // Read from the DOM to cause refresh.
+    elem.getBoundingClientRect();
+
+    if (this._animation && notice !== this._masking && !this._leavingModalState) {
+      // Add animate class.
+      notice._setMoveClass('ui-pnotify-move');
+    } else {
+      notice._setMoveClass('');
+    }
+
+    const spaceY = (this.context === document.body ? window.innerHeight : this.context.scrollHeight);
+    const spaceX = (this.context === document.body ? window.innerWidth : this.context.scrollWidth);
+
+    let csspos1;
+
+    if (this.dir1) {
+      csspos1 = {
+        down: 'top',
+        up: 'bottom',
+        left: 'right',
+        right: 'left'
+      }[this.dir1];
+
+      // Calculate the current pos1 value.
+      let curpos1;
+      switch (this.dir1) {
+        case 'down':
+          curpos1 = elem.offsetTop;
+          break;
+        case 'up':
+          curpos1 = spaceY - elem.scrollHeight - elem.offsetTop;
+          break;
+        case 'left':
+          curpos1 = spaceX - elem.scrollWidth - elem.offsetLeft;
+          break;
+        case 'right':
+          curpos1 = elem.offsetLeft;
+          break;
       }
-    }, true);
+      // Remember the first pos1, so the first notice goes there.
+      if (typeof firstpos1 === 'undefined') {
+        firstpos1 = curpos1;
+        _nextpos1 = firstpos1;
+      }
+    }
+
+    if (this.dir1 && this.dir2) {
+      const csspos2 = {
+        down: 'top',
+        up: 'bottom',
+        left: 'right',
+        right: 'left'
+      }[this.dir2];
+
+      // Calculate the current pos2 value.
+      let curpos2;
+      switch (this.dir2) {
+        case 'down':
+          curpos2 = elem.offsetTop;
+          break;
+        case 'up':
+          curpos2 = spaceY - elem.scrollHeight - elem.offsetTop;
+          break;
+        case 'left':
+          curpos2 = spaceX - elem.scrollWidth - elem.offsetLeft;
+          break;
+        case 'right':
+          curpos2 = elem.offsetLeft;
+          break;
+      }
+      // Remember the first pos2, so the first notice goes there.
+      if (typeof firstpos2 === 'undefined') {
+        firstpos2 = curpos2;
+        _nextpos2 = firstpos2;
+      }
+
+      // Check that it's not beyond the viewport edge.
+      const endY = _nextpos1 + elem.offsetHeight + (typeof this.spacing1 === 'undefined' ? 25 : this.spacing1);
+      const endX = _nextpos1 + elem.offsetWidth + (typeof this.spacing1 === 'undefined' ? 25 : this.spacing1);
+      if (
+        ((this.dir1 === 'down' || this.dir1 === 'up') && endY > spaceY) ||
+        ((this.dir1 === 'left' || this.dir1 === 'right') && endX > spaceX)
+      ) {
+        // If it is, it needs to go back to the first pos1, and over on pos2.
+        _nextpos1 = firstpos1;
+        _nextpos2 += _addpos2 + (typeof this.spacing2 === 'undefined' ? 25 : this.spacing2);
+        _addpos2 = 0;
+      }
+
+      // Move the notice on dir2.
+      if (typeof _nextpos2 === 'number') {
+        elem.style[csspos2] = _nextpos2 + 'px';
+        if (!this._animation) {
+          // eslint-disable-next-line no-unused-expressions
+          elem.style[csspos2]; // Read from the DOM for update.
+        }
+      }
+
+      // Keep track of the widest/tallest notice in the column/row, so we can push the next column/row.
+      switch (this.dir2) {
+        case 'down':
+        case 'up':
+          if (elem.offsetHeight + (parseFloat(elem.style.marginTop, 10) || 0) + (parseFloat(elem.style.marginBottom, 10) || 0) > _addpos2) {
+            _addpos2 = elem.offsetHeight;
+          }
+          break;
+        case 'left':
+        case 'right':
+          if (elem.offsetWidth + (parseFloat(elem.style.marginLeft, 10) || 0) + (parseFloat(elem.style.marginRight, 10) || 0) > _addpos2) {
+            _addpos2 = elem.offsetWidth;
+          }
+          break;
+      }
+    } else if (this.dir1) {
+      // Center the notice along dir1 axis, because the stack has no dir2.
+      let cssMiddle, cssposCross;
+      switch (this.dir1) {
+        case 'down':
+        case 'up':
+          cssposCross = ['left', 'right'];
+          cssMiddle = (this.context.scrollWidth / 2) - (elem.offsetWidth / 2);
+          break;
+        case 'left':
+        case 'right':
+          cssposCross = ['top', 'bottom'];
+          cssMiddle = (spaceY / 2) - (elem.offsetHeight / 2);
+          break;
+      }
+      elem.style[cssposCross[0]] = cssMiddle + 'px';
+      elem.style[cssposCross[1]] = 'auto';
+      if (!this._animation) {
+        // eslint-disable-next-line no-unused-expressions
+        elem.style[cssposCross[0]]; // Read from the DOM for update.
+      }
+    }
+
+    if (this.dir1) {
+      // Move the notice on dir1.
+      if (typeof _nextpos1 === 'number') {
+        elem.style[csspos1] = _nextpos1 + 'px';
+        if (!this._animation) {
+          // eslint-disable-next-line no-unused-expressions
+          elem.style[csspos1]; // Read from the DOM for update.
+        }
+      }
+
+      // Calculate the next dir1 position.
+      switch (this.dir1) {
+        case 'down':
+        case 'up':
+          _nextpos1 += elem.offsetHeight + (typeof this.spacing1 === 'undefined' ? 25 : this.spacing1);
+          break;
+        case 'left':
+        case 'right':
+          _nextpos1 += elem.offsetWidth + (typeof this.spacing1 === 'undefined' ? 25 : this.spacing1);
+          break;
+      }
+    } else {
+      // Center the notice on the screen, because the stack has no dir1.
+      const cssMiddleLeft = (spaceX / 2) - (elem.offsetWidth / 2);
+      const cssMiddleTop = (spaceY / 2) - (elem.offsetHeight / 2);
+      elem.style.left = cssMiddleLeft + 'px';
+      elem.style.top = cssMiddleTop + 'px';
+      if (!this._animation) {
+        // eslint-disable-next-line no-unused-expressions
+        elem.style.left; // Read from the DOM for update.
+      }
+    }
+
+    // If we're not positioning the masking notice, update the stack properties.
+    if (notice !== this._masking) {
+      this.firstpos1 = firstpos1;
+      this.firstpos2 = firstpos2;
+      this._nextpos1 = _nextpos1;
+      this._nextpos2 = _nextpos2;
+      this._addpos2 = _addpos2;
+    }
   }
 
   _addNotice (notice) {
@@ -120,10 +339,6 @@ export default class Stack {
     this._maskingLeader = leader;
 
     if (this._maskingLeader) {
-      // The next waiting notice that is masking.
-      let masking = null;
-      let maskingOff = null;
-
       const maskingInteraction = () => {
         turnMaskingOff();
 
@@ -155,6 +370,8 @@ export default class Stack {
 
         // If the masking leader is moused over:
         if (this._overlayOpen) {
+          this._leavingModalState = true;
+
           this.forEach(notice => {
             // Allow the notices to timed close.
             notice.preventTimerClose(false);
@@ -189,9 +406,9 @@ export default class Stack {
           // "waiting" is usually fine, but if we're leaving the modal state, it
           // will still be "closing" here, so we have to work around that. :P
           if (notice.getState() === 'waiting' || notice === nextNoticeFromModalState) {
-            notice.setMasking(true);
-            masking = notice;
-            maskingOff = (offs => () => offs.map(off => off()))([
+            notice._setMasking(true);
+            this._masking = notice;
+            this._maskingOff = (offs => () => offs.map(off => off()))([
               notice.on('mouseenter', maskingInteraction),
               notice.on('focusin', maskingInteraction)
             ]);
@@ -208,13 +425,13 @@ export default class Stack {
           clearTimeout(maskingOffTimer);
           maskingOffTimer = null;
         }
-        if (maskingOff) {
-          maskingOff();
-          maskingOff = null;
+        if (this._maskingOff) {
+          this._maskingOff();
+          this._maskingOff = null;
         }
-        if (masking) {
-          masking.setMasking(false);
-          masking = null;
+        if (this._masking) {
+          this._masking._setMasking(false);
+          this._masking = null;
         }
       };
       const leaderLeaveInteraction = () => {

@@ -780,218 +780,6 @@
     }
   };
 
-  // Position the notice.
-  export function position () {
-    // Get the notice's stack.
-    let elem = refs.elem;
-    if (!stack || !elem) {
-      return;
-    }
-    if (typeof stack._nextpos1 !== 'number') {
-      stack._nextpos1 = stack.firstpos1;
-    }
-    if (typeof stack._nextpos2 !== 'number') {
-      stack._nextpos2 = stack.firstpos2;
-    }
-    if (typeof stack._addpos2 !== 'number') {
-      stack._addpos2 = 0;
-    }
-
-    // Skip this notice if it's not shown.
-    if (
-      !elem.classList.contains('ui-pnotify-in') &&
-      !elem.classList.contains('ui-pnotify-initial-hidden')
-    ) {
-      return;
-    }
-
-    // Use local variables, since a masking notice position shouldn't update the
-    // stack.
-    let [firstpos1, firstpos2, _nextpos1, _nextpos2, _addpos2] = [
-      stack.firstpos1,
-      stack.firstpos2,
-      stack._nextpos1,
-      stack._nextpos2,
-      stack._addpos2
-    ];
-
-    // Read from the DOM to cause refresh.
-    elem.getBoundingClientRect();
-
-    if (stack._animation && !_masking) {
-      // Add animate class.
-      _moveClass = 'ui-pnotify-move';
-    }
-
-    let spaceY = (stack.context === document.body ? window.innerHeight : stack.context.scrollHeight);
-    let spaceX = (stack.context === document.body ? window.innerWidth : stack.context.scrollWidth);
-
-    let csspos1;
-
-    if (stack.dir1) {
-      csspos1 = {
-        down: 'top',
-        up: 'bottom',
-        left: 'right',
-        right: 'left'
-      }[stack.dir1];
-
-      // Calculate the current pos1 value.
-      let curpos1;
-      switch (stack.dir1) {
-        case 'down':
-          curpos1 = elem.offsetTop;
-          break;
-        case 'up':
-          curpos1 = spaceY - elem.scrollHeight - elem.offsetTop;
-          break;
-        case 'left':
-          curpos1 = spaceX - elem.scrollWidth - elem.offsetLeft;
-          break;
-        case 'right':
-          curpos1 = elem.offsetLeft;
-          break;
-      }
-      // Remember the first pos1, so the first notice goes there.
-      if (typeof firstpos1 === 'undefined') {
-        firstpos1 = curpos1;
-        _nextpos1 = firstpos1;
-      }
-    }
-
-    if (stack.dir1 && stack.dir2) {
-      let csspos2 = {
-        down: 'top',
-        up: 'bottom',
-        left: 'right',
-        right: 'left'
-      }[stack.dir2];
-
-      // Calculate the current pos2 value.
-      let curpos2;
-      switch (stack.dir2) {
-        case 'down':
-          curpos2 = elem.offsetTop;
-          break;
-        case 'up':
-          curpos2 = spaceY - elem.scrollHeight - elem.offsetTop;
-          break;
-        case 'left':
-          curpos2 = spaceX - elem.scrollWidth - elem.offsetLeft;
-          break;
-        case 'right':
-          curpos2 = elem.offsetLeft;
-          break;
-      }
-      // Remember the first pos2, so the first notice goes there.
-      if (typeof firstpos2 === 'undefined') {
-        firstpos2 = curpos2;
-        _nextpos2 = firstpos2;
-      }
-
-      // Check that it's not beyond the viewport edge.
-      const endY = _nextpos1 + elem.offsetHeight + (typeof stack.spacing1 === 'undefined' ? 25 : stack.spacing1);
-      const endX = _nextpos1 + elem.offsetWidth + (typeof stack.spacing1 === 'undefined' ? 25 : stack.spacing1);
-      if (
-        ((stack.dir1 === 'down' || stack.dir1 === 'up') && endY > spaceY) ||
-        ((stack.dir1 === 'left' || stack.dir1 === 'right') && endX > spaceX)
-      ) {
-        // If it is, it needs to go back to the first pos1, and over on pos2.
-        _nextpos1 = firstpos1;
-        _nextpos2 += _addpos2 + (typeof stack.spacing2 === 'undefined' ? 25 : stack.spacing2);
-        _addpos2 = 0;
-      }
-
-      // Move the notice on dir2.
-      if (typeof _nextpos2 === 'number') {
-        elem.style[csspos2] = _nextpos2 + 'px';
-        if (!stack._animation) {
-          // eslint-disable-next-line no-unused-expressions
-          elem.style[csspos2]; // Read from the DOM for update.
-        }
-      }
-
-      // Keep track of the widest/tallest notice in the column/row, so we can push the next column/row.
-      switch (stack.dir2) {
-        case 'down':
-        case 'up':
-          if (elem.offsetHeight + (parseFloat(elem.style.marginTop, 10) || 0) + (parseFloat(elem.style.marginBottom, 10) || 0) > _addpos2) {
-            _addpos2 = elem.offsetHeight;
-          }
-          break;
-        case 'left':
-        case 'right':
-          if (elem.offsetWidth + (parseFloat(elem.style.marginLeft, 10) || 0) + (parseFloat(elem.style.marginRight, 10) || 0) > _addpos2) {
-            _addpos2 = elem.offsetWidth;
-          }
-          break;
-      }
-    } else if (stack.dir1) {
-      // Center the notice along dir1 axis, because the stack has no dir2.
-      let cssMiddle, cssposCross;
-      switch (stack.dir1) {
-        case 'down':
-        case 'up':
-          cssposCross = ['left', 'right'];
-          cssMiddle = (stack.context.scrollWidth / 2) - (elem.offsetWidth / 2);
-          break;
-        case 'left':
-        case 'right':
-          cssposCross = ['top', 'bottom'];
-          cssMiddle = (spaceY / 2) - (elem.offsetHeight / 2);
-          break;
-      }
-      elem.style[cssposCross[0]] = cssMiddle + 'px';
-      elem.style[cssposCross[1]] = 'auto';
-      if (!stack._animation) {
-        // eslint-disable-next-line no-unused-expressions
-        elem.style[cssposCross[0]]; // Read from the DOM for update.
-      }
-    }
-
-    if (stack.dir1) {
-      // Move the notice on dir1.
-      if (typeof _nextpos1 === 'number') {
-        elem.style[csspos1] = _nextpos1 + 'px';
-        if (!stack._animation) {
-          // eslint-disable-next-line no-unused-expressions
-          elem.style[csspos1]; // Read from the DOM for update.
-        }
-      }
-
-      // Calculate the next dir1 position.
-      switch (stack.dir1) {
-        case 'down':
-        case 'up':
-          _nextpos1 += elem.offsetHeight + (typeof stack.spacing1 === 'undefined' ? 25 : stack.spacing1);
-          break;
-        case 'left':
-        case 'right':
-          _nextpos1 += elem.offsetWidth + (typeof stack.spacing1 === 'undefined' ? 25 : stack.spacing1);
-          break;
-      }
-    } else {
-      // Center the notice on the screen, because the stack has no dir1.
-      let cssMiddleLeft = (spaceX / 2) - (elem.offsetWidth / 2);
-      let cssMiddleTop = (spaceY / 2) - (elem.offsetHeight / 2);
-      elem.style.left = cssMiddleLeft + 'px';
-      elem.style.top = cssMiddleTop + 'px';
-      if (!stack._animation) {
-        // eslint-disable-next-line no-unused-expressions
-        elem.style.left; // Read from the DOM for update.
-      }
-    }
-
-    // If we're not positioning a masking notice, update the stack properties.
-    if (!_masking) {
-      stack.firstpos1 = firstpos1;
-      stack.firstpos2 = firstpos2;
-      stack._nextpos1 = _nextpos1;
-      stack._nextpos2 = _nextpos2;
-      stack._addpos2 = _addpos2;
-    }
-  }
-
   // Cancel any pending removal timer.
   export function cancelClose () {
     if (_timer && _timer !== 'prevented') {
@@ -1089,13 +877,21 @@
     return _animatingClass = value;
   }
 
-  export function setMasking (value) {
+  export function _getMoveClass () {
+    return _moveClass;
+  }
+
+  export function _setMoveClass (value) {
+    return _moveClass = value;
+  }
+
+  export function _setMasking (value) {
     if (value) {
       _animatingClass = 'ui-pnotify-initial-hidden';
       // Wait for the DOM to update.
       window.requestAnimationFrame(() => {
         _masking = true;
-        position();
+        stack.position();
         _animatingClass = '';
       })
     } else {
