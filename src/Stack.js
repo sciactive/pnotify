@@ -147,15 +147,6 @@ export default class Stack {
     if (!elem) {
       return;
     }
-    if (typeof this._nextpos1 !== 'number') {
-      this._nextpos1 = this.firstpos1;
-    }
-    if (typeof this._nextpos2 !== 'number') {
-      this._nextpos2 = this.firstpos2;
-    }
-    if (typeof this._addpos2 !== 'number') {
-      this._addpos2 = 0;
-    }
 
     // Skip this notice if it's not shown.
     if (
