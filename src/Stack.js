@@ -338,117 +338,119 @@ export default class Stack {
 
     this._maskingLeader = leader;
 
-    if (this._maskingLeader) {
-      const maskingInteraction = () => {
-        turnMaskingOff();
+    if (!this._maskingLeader) {
+      return;
+    }
 
-        // If the masked notice is moused over or focused, the stack enters the
-        // modal state, and the notices appear.
-        if (this.modal === 'ish') {
-          if (!this._overlay) {
-            this._createOverlay();
-          }
-          this._insertOverlay();
+    const maskingInteraction = () => {
+      turnMaskingOff();
 
-          this.forEach(notice => {
-            // Prevent the notices from timed closing.
-            notice.preventTimerClose(true);
-
-            if (notice.getState() === 'waiting') {
-              notice.open();
-            }
-          });
+      // If the masked notice is moused over or focused, the stack enters the
+      // modal state, and the notices appear.
+      if (this.modal === 'ish') {
+        if (!this._overlay) {
+          this._createOverlay();
         }
-      };
+        this._insertOverlay();
 
-      // If the mouse enters this notice while it's the masking leader, then the
-      // next waiting notice should start masking.
-      const leaderInteraction = () => {
-        turnMaskingOff();
-        // This is a workaround for leaving the modal state.
-        let nextNoticeFromModalState = null;
-
-        // If the masking leader is moused over:
-        if (this._overlayOpen) {
-          this._leavingModalState = true;
-
-          this.forEach(notice => {
-            // Allow the notices to timed close.
-            notice.preventTimerClose(false);
-
-            // Close and set to wait any open notices other than the masking
-            // leader.
-            if (notice !== this._maskingLeader && ['opening', 'open'].indexOf(notice.getState()) !== -1) {
-              if (!nextNoticeFromModalState) {
-                nextNoticeFromModalState = notice;
-              }
-              notice.close(false, true);
-            }
-          });
-
-          // Queue position.
-          this.queuePosition(0);
-
-          // Remove the modal state overlay.
-          this._removeOverlay();
-        }
-
-        // Set the next waiting notice to be masking.
-        let foundMaskingLeader = false;
         this.forEach(notice => {
-          if (!foundMaskingLeader) {
-            if (notice === this._maskingLeader) {
-              foundMaskingLeader = true;
-            }
-            return;
-          }
-          // After the masking leader if found, the next notice that is
-          // "waiting" is usually fine, but if we're leaving the modal state, it
-          // will still be "closing" here, so we have to work around that. :P
-          if (notice.getState() === 'waiting' || notice === nextNoticeFromModalState) {
-            notice._setMasking(true);
-            this._masking = notice;
-            this._maskingOff = (offs => () => offs.map(off => off()))([
-              notice.on('mouseenter', maskingInteraction),
-              notice.on('focusin', maskingInteraction)
-            ]);
-            return false;
+          // Prevent the notices from timed closing.
+          notice.preventTimerClose(true);
+
+          if (notice.getState() === 'waiting') {
+            notice.open();
           }
         });
-      };
+      }
+    };
 
-      // If the mouse leaves this notice while it's the masking leader, then the
-      // next waiting notice should stop masking.
-      let maskingOffTimer = null;
-      const turnMaskingOff = () => {
-        if (maskingOffTimer) {
-          clearTimeout(maskingOffTimer);
-          maskingOffTimer = null;
-        }
-        if (this._maskingOff) {
-          this._maskingOff();
-          this._maskingOff = null;
-        }
-        if (this._masking) {
-          this._masking._setMasking(false);
-          this._masking = null;
-        }
-      };
-      const leaderLeaveInteraction = () => {
-        if (maskingOffTimer) {
-          clearTimeout(maskingOffTimer);
-          maskingOffTimer = null;
-        }
-        maskingOffTimer = setTimeout(turnMaskingOff, 1000);
-      };
+    // If the mouse enters this notice while it's the masking leader, then the
+    // next waiting notice should start masking.
+    const leaderInteraction = () => {
+      turnMaskingOff();
+      // This is a workaround for leaving the modal state.
+      let nextNoticeFromModalState = null;
 
-      this._maskingLeaderOff = (offs => () => offs.map(off => off()))([
-        this._maskingLeader.on('mouseenter', leaderInteraction),
-        this._maskingLeader.on('focusin', leaderInteraction),
-        this._maskingLeader.on('mouseleave', leaderLeaveInteraction),
-        this._maskingLeader.on('focusout', leaderLeaveInteraction)
-      ]);
-    }
+      // If the masking leader is moused over:
+      if (this._overlayOpen) {
+        this._leavingModalState = true;
+
+        this.forEach(notice => {
+          // Allow the notices to timed close.
+          notice.preventTimerClose(false);
+
+          // Close and set to wait any open notices other than the masking
+          // leader.
+          if (notice !== this._maskingLeader && ['opening', 'open'].indexOf(notice.getState()) !== -1) {
+            if (!nextNoticeFromModalState) {
+              nextNoticeFromModalState = notice;
+            }
+            notice.close(false, true);
+          }
+        });
+
+        // Queue position.
+        this.queuePosition(0);
+
+        // Remove the modal state overlay.
+        this._removeOverlay();
+      }
+
+      // Set the next waiting notice to be masking.
+      let foundMaskingLeader = false;
+      this.forEach(notice => {
+        if (!foundMaskingLeader) {
+          if (notice === this._maskingLeader) {
+            foundMaskingLeader = true;
+          }
+          return;
+        }
+        // After the masking leader if found, the next notice that is
+        // "waiting" is usually fine, but if we're leaving the modal state, it
+        // will still be "closing" here, so we have to work around that. :P
+        if (notice.getState() === 'waiting' || notice === nextNoticeFromModalState) {
+          notice._setMasking(true);
+          this._masking = notice;
+          this._maskingOff = (offs => () => offs.map(off => off()))([
+            notice.on('mouseenter', maskingInteraction),
+            notice.on('focusin', maskingInteraction)
+          ]);
+          return false;
+        }
+      });
+    };
+
+    // If the mouse leaves this notice while it's the masking leader, then the
+    // next waiting notice should stop masking.
+    let maskingOffTimer = null;
+    const turnMaskingOff = () => {
+      if (maskingOffTimer) {
+        clearTimeout(maskingOffTimer);
+        maskingOffTimer = null;
+      }
+      if (this._maskingOff) {
+        this._maskingOff();
+        this._maskingOff = null;
+      }
+      if (this._masking) {
+        this._masking._setMasking(false);
+        this._masking = null;
+      }
+    };
+    const leaderLeaveInteraction = () => {
+      if (maskingOffTimer) {
+        clearTimeout(maskingOffTimer);
+        maskingOffTimer = null;
+      }
+      maskingOffTimer = setTimeout(turnMaskingOff, 1000);
+    };
+
+    this._maskingLeaderOff = (offs => () => offs.map(off => off()))([
+      this._maskingLeader.on('mouseenter', leaderInteraction),
+      this._maskingLeader.on('focusin', leaderInteraction),
+      this._maskingLeader.on('mouseleave', leaderLeaveInteraction),
+      this._maskingLeader.on('focusout', leaderLeaveInteraction)
+    ]);
   }
 
   _handleNoticeClosed (notice) {
@@ -516,9 +518,20 @@ export default class Stack {
       // Close the notices on overlay click.
       overlay.addEventListener('click', () => {
         if (this.overlayClose) {
+          if (this._maskingLeader) {
+            // Clear the masking leader. A new one will be found while closing.
+            this._setMaskingLeader(null);
+          }
+
           this.forEach(notice => {
             if (notice.hide || this.overlayClosesPinned) {
-              notice.close(false);
+              notice.close();
+            } else if (!notice.hide && this.modal === 'ish') {
+              if (this._maskingLeader) {
+                notice.close(false, true);
+              } else {
+                this._setMaskingLeader(notice);
+              }
             }
           });
 
