@@ -9,37 +9,88 @@ export default class Stack {
     this.push = options.push || 'bottom';
     this.maxOpen = 'maxOpen' in options ? options.maxOpen : 1;
     this.maxStrategy = 'maxStrategy' in options ? options.maxStrategy : 'wait';
+    this.maxClosureCausesWait = 'maxClosureCausesWait' in options ? options.maxClosureCausesWait : true;
     this.modal = 'modal' in options ? options.modal : 'ish';
     this.overlayClose = 'overlayClose' in options ? options.overlayClose : true;
     this.overlayClosesPinned = options.overlayClosesPinned || false;
     this.context = options.context || (window && document.body) || null;
 
-    // Public properties.
-    this.notices = [];
+    // -- Private properties.
 
-    // Private properties.
+    // The head of the notice double linked list.
+    this._noticeHead = {
+      notice: null,
+      prev: null,
+      next: null
+    };
+    // The tail of the notice double linked list.
+    this._noticeTail = {
+      notice: null,
+      prev: this._noticeHead,
+      next: null
+    };
+    this._noticeHead.next = this._noticeTail;
+    // The map of notices to nodes.
+    this._noticeMap = new WeakMap();
+    // The number of notices in the stack.
+    this._length = 0;
+
+    // How much space to add along the secondary axis when moving notices to the
+    // next column/row.
     this._addpos2 = 0;
+    // Whether the stack's notices should animate while moving.
     this._animation = true;
+    // A timer to debounce positioning.
     this._posTimer = null;
+    // The number of open notices.
     this._openNotices = 0;
+    // A listener for positioning events.
     this._listener = null;
+    // Whether the overlay is currently open.
     this._overlayOpen = false;
+    // Whether the overlay is currently inserted into the DOM.
     this._overlayInserted = false;
-    this._leavingModalState = false;
-    // The masking leader is the first open notice in the stack. It is not
-    // masked, but mousing over it resets the masking if the notices are out.
-    this._maskingLeader = null;
-    this._maskingLeaderOff = null;
+    // Whether the modal state is collapsing. (Notices go back to waiting and shouldn't resposition.)
+    this._collapsingModalState = false;
+    // The leader is the first open notice in a modalish stack.
+    this._leader = null;
+    this._leaderOff = null;
     // The next waiting notice that is masking.
     this._masking = null;
     this._maskingOff = null;
   }
 
-  forEach (callback, newestFirst) {
-    const zeroStart = newestFirst ? this.push === 'top' : this.push === 'bottom';
-    for (let i = (zeroStart ? 0 : this.notices.length - 1); (zeroStart ? i < this.notices.length : i >= 0); (zeroStart ? i++ : i--)) {
-      if (callback(this.notices[i]) === false) {
+  get notices () {
+    const notices = [];
+    this.forEach(notice => notices.push(notice));
+    return notices;
+  }
+
+  get length () {
+    return this._length;
+  }
+
+  forEach (callback, { start = 'oldest', dir = 'newer' } = {}) {
+    let node;
+    if (start === 'head' || (start === 'newest' && this.push === 'top') || (start === 'oldest' && this.push === 'bottom')) {
+      node = this._noticeHead.next;
+    } else if (start === 'tail' || (start === 'newest' && this.push === 'bottom') || (start === 'oldest' && this.push === 'top')) {
+      node = this._noticeTail.prev;
+    } else if (this._noticeMap.has(start)) {
+      node = this._noticeMap.get(start);
+    } else {
+      throw new Error('Invalid start param.');
+    }
+    while (node.notice) {
+      if (callback(node.notice) === false) {
         break;
+      }
+      if (dir === 'prev' || (this.push === 'top' && dir === 'newer') || (this.push === 'bottom' && dir === 'older')) {
+        node = node.prev;
+      } else if (dir === 'next' || (this.push === 'top' && dir === 'older') || (this.push === 'bottom' && dir === 'newer')) {
+        node = node.next;
+      } else {
+        throw new Error('Invalid dir param.');
       }
     }
   }
@@ -59,24 +110,20 @@ export default class Stack {
         notice.open();
         return false;
       }
-    }, true);
+    }, { start: 'newest', dir: 'older' });
   }
 
   position () {
     // Reset the next position data.
-    if (this.notices.length > 0) {
+    if (this._length > 0) {
       this._nextpos1 = this.firstpos1;
       this._nextpos2 = this.firstpos2;
       this._addpos2 = 0;
-      for (let i = 0; i < this.notices.length; i++) {
-        this._positionNotice(this.notices[i]);
-      }
-      this._leavingModalState = false;
+      this.forEach(notice => {
+        this._positionNotice(notice);
+      }, { start: 'head', dir: 'next' });
+      this._collapsingModalState = false;
     } else {
-      if (this._overlay) {
-        this._removeOverlay();
-      }
-
       delete this._nextpos1;
       delete this._nextpos2;
     }
@@ -131,7 +178,7 @@ export default class Stack {
     // Read from the DOM to cause refresh.
     elem.getBoundingClientRect();
 
-    if (this._animation && notice !== this._masking && !this._leavingModalState) {
+    if (this._animation && notice !== this._masking && !this._collapsingModalState) {
       // Add animate class.
       notice._setMoveClass('ui-pnotify-move');
     } else {
@@ -308,11 +355,24 @@ export default class Stack {
   }
 
   _addNotice (notice) {
+    const node = {
+      notice,
+      prev: null,
+      next: null
+    };
     if (this.push === 'top') {
-      this.notices.splice(0, 0, notice);
+      node.next = this._noticeHead.next;
+      node.prev = this._noticeHead;
+      this._noticeHead.next.prev = node;
+      this._noticeHead.next = node;
     } else {
-      this.notices.push(notice);
+      node.prev = this._noticeTail.prev;
+      node.next = this._noticeTail;
+      this._noticeTail.prev.next = node;
+      this._noticeTail.prev = node;
     }
+    this._noticeMap.set(notice, node);
+    this._length++;
     if (!this._listener) {
       this._listener = () => this.position();
       this.context.addEventListener('pnotify:position', this._listener);
@@ -320,25 +380,50 @@ export default class Stack {
   }
 
   _removeNotice (notice) {
-    const idx = this.notices.indexOf(notice);
-    if (idx !== -1) {
-      this.notices.splice(idx, 1);
+    if (!this._noticeMap.has(notice)) {
+      return;
     }
-    if (!this.notices.length && this._listener) {
+    const node = this._noticeMap.get(notice);
+
+    if (this._leader === notice) {
+      // Clear the leader.
+      this._setLeader(null);
+    }
+
+    if (this._masking === notice) {
+      // Clear masking.
+      this._maskingOff();
+      this._masking = null;
+      this._maskingOff = null;
+    }
+
+    // Remove the notice from the DLL.
+    node.prev.next = node.next;
+    node.next.prev = node.prev;
+    node.prev = null;
+    node.next = null;
+    this._length--;
+
+    if (!this._length && this._listener) {
+      // Remove the listener.
       this.context.removeEventListener('pnotify:position', this._listener);
       this._listener = null;
     }
+
+    if (!this._length && this._overlayOpen) {
+      this._removeOverlay();
+    }
   }
 
-  _setMaskingLeader (leader) {
-    if (this._maskingLeaderOff) {
-      this._maskingLeaderOff();
-      this._maskingLeaderOff = null;
+  _setLeader (leader) {
+    if (this._leaderOff) {
+      this._leaderOff();
+      this._leaderOff = null;
     }
 
-    this._maskingLeader = leader;
+    this._leader = leader;
 
-    if (!this._maskingLeader) {
+    if (!this._leader) {
       return;
     }
 
@@ -348,45 +433,45 @@ export default class Stack {
       // If the masked notice is moused over or focused, the stack enters the
       // modal state, and the notices appear.
       if (this.modal === 'ish') {
-        if (!this._overlay) {
-          this._createOverlay();
-        }
         this._insertOverlay();
 
         this.forEach(notice => {
           // Prevent the notices from timed closing.
-          notice.preventTimerClose(true);
+          notice._preventTimerClose(true);
 
           if (notice.getState() === 'waiting') {
             notice.open();
           }
+        }, {
+          start: this._leader
         });
       }
     };
 
-    // If the mouse enters this notice while it's the masking leader, then the
-    // next waiting notice should start masking.
+    // If the mouse enters this notice while it's the leader, then the next
+    // waiting notice should start masking.
     const leaderInteraction = () => {
-      turnMaskingOff();
       // This is a workaround for leaving the modal state.
       let nextNoticeFromModalState = null;
 
-      // If the masking leader is moused over:
+      // If the leader is moused over:
       if (this._overlayOpen) {
-        this._leavingModalState = true;
+        this._collapsingModalState = true;
 
         this.forEach(notice => {
           // Allow the notices to timed close.
-          notice.preventTimerClose(false);
+          notice._preventTimerClose(false);
 
           // Close and set to wait any open notices other than the masking
           // leader.
-          if (notice !== this._maskingLeader && ['opening', 'open'].indexOf(notice.getState()) !== -1) {
+          if (notice !== this._leader && ['opening', 'open'].indexOf(notice.getState()) !== -1) {
             if (!nextNoticeFromModalState) {
               nextNoticeFromModalState = notice;
             }
             notice.close(false, true);
           }
+        }, {
+          start: this._leader
         });
 
         // Queue position.
@@ -397,18 +482,16 @@ export default class Stack {
       }
 
       // Set the next waiting notice to be masking.
-      let foundMaskingLeader = false;
       this.forEach(notice => {
-        if (!foundMaskingLeader) {
-          if (notice === this._maskingLeader) {
-            foundMaskingLeader = true;
-          }
+        if (notice === this._leader) {
+          // Skip the leader, and start with the next one.
           return;
         }
-        // After the masking leader if found, the next notice that is
-        // "waiting" is usually fine, but if we're leaving the modal state, it
-        // will still be "closing" here, so we have to work around that. :P
+        // The next notice that is "waiting" is usually fine, but if we're
+        // leaving the modal state, it will still be "closing" here, so we have
+        // to work around that. :P
         if (notice.getState() === 'waiting' || notice === nextNoticeFromModalState) {
+          turnMaskingOff();
           notice._setMasking(true);
           this._masking = notice;
           this._maskingOff = (offs => () => offs.map(off => off()))([
@@ -417,11 +500,13 @@ export default class Stack {
           ]);
           return false;
         }
+      }, {
+        start: this._leader
       });
     };
 
-    // If the mouse leaves this notice while it's the masking leader, then the
-    // next waiting notice should stop masking.
+    // If the mouse leaves this notice while it's the leader, then the next
+    // waiting notice should stop masking.
     let maskingOffTimer = null;
     const turnMaskingOff = () => {
       if (maskingOffTimer) {
@@ -445,44 +530,59 @@ export default class Stack {
       maskingOffTimer = setTimeout(turnMaskingOff, 1000);
     };
 
-    this._maskingLeaderOff = (offs => () => offs.map(off => off()))([
-      this._maskingLeader.on('mouseenter', leaderInteraction),
-      this._maskingLeader.on('focusin', leaderInteraction),
-      this._maskingLeader.on('mouseleave', leaderLeaveInteraction),
-      this._maskingLeader.on('focusout', leaderLeaveInteraction)
+    this._leaderOff = (offs => () => offs.map(off => off()))([
+      this._leader.on('mouseenter', leaderInteraction),
+      this._leader.on('focusin', leaderInteraction),
+      this._leader.on('mouseleave', leaderLeaveInteraction),
+      this._leader.on('focusout', leaderLeaveInteraction)
     ]);
   }
 
   _handleNoticeClosed (notice) {
     this._openNotices--;
 
-    if (this.maxOpen !== Infinity && this.maxStrategy === 'wait' && this._openNotices < this.maxOpen) {
-      // Check for the next waiting notice and open it.
-      this.forEach(notice => {
+    if (this.maxOpen !== Infinity && this._openNotices < this.maxOpen) {
+      const open = notice => {
         if (notice.getState() === 'waiting') {
           notice.open();
           if (this._openNotices >= this.maxOpen) {
             return false;
           }
         }
-      });
+      };
+      if (this.maxStrategy === 'wait') {
+        // Check for the next waiting notice and open it.
+        this.forEach(open, {
+          start: notice,
+          dir: 'next'
+        });
+      } else if (this.maxStrategy === 'close' && this.maxClosureCausesWait) {
+        // Check for the last closed notice and re-open it.
+        this.forEach(open, {
+          start: notice,
+          dir: 'older'
+        });
+      }
     }
 
     if (this._openNotices <= 0) {
       this._openNotices = 0;
-      if (this._overlay) {
+      if (this._overlayOpen) {
         this._removeOverlay();
       }
     }
 
-    if (this.modal === 'ish' && notice === this._maskingLeader) {
-      this._setMaskingLeader(null);
-      // Find a new masking leader.
+    if (this.modal === 'ish' && notice === this._leader) {
+      this._setLeader(null);
+      // Find a new leader.
       this.forEach(notice => {
         if (['opening', 'open'].indexOf(notice.getState()) !== -1) {
-          this._setMaskingLeader(notice);
+          this._setLeader(notice);
           return false;
         }
+      }, {
+        start: notice,
+        dir: 'next'
       });
     }
 
@@ -492,61 +592,71 @@ export default class Stack {
   _handleNoticeOpened (notice) {
     this._openNotices++;
 
+    // Check the max in stack.
+    if (!(this.modal === 'ish' && this._overlayOpen) && this.maxOpen !== Infinity && this._openNotices >= this.maxOpen && this.maxStrategy === 'close') {
+      let toClose = this._openNotices - this.maxOpen;
+      this.forEach(notice => {
+        if (
+          ['opening', 'open'].indexOf(notice.getState()) !== -1
+        ) {
+          // Close oldest notices, leaving only stack.maxOpen from the stack.
+          notice.close(false, this.maxClosureCausesWait);
+          toClose--;
+          return !!toClose;
+        }
+      });
+    }
+
     if (this.modal === true) {
-      if (!this._overlay) {
-        this._createOverlay();
-      }
       this._insertOverlay();
     }
 
-    if (this.modal === 'ish' && !this._maskingLeader) {
-      this._setMaskingLeader(notice);
+    if (this.modal === 'ish' && !this._leader) {
+      this._setLeader(notice);
     }
   }
 
-  _createOverlay () {
+  _shouldNoticeWait () {
+    return (!(this.modal === 'ish' && this._overlayOpen) && this.maxOpen !== Infinity && this._openNotices >= this.maxOpen && this.maxStrategy === 'wait');
+  }
+
+  _insertOverlay () {
     if (!this._overlay) {
-      const overlay = document.createElement('div');
-      overlay.classList.add('ui-pnotify-modal-overlay');
+      this._overlay = document.createElement('div');
+      this._overlay.classList.add('ui-pnotify-modal-overlay');
       if (this.overlayClose) {
-        overlay.classList.add('ui-pnotify-modal-overlay-closes');
+        this._overlay.classList.add('ui-pnotify-modal-overlay-closes');
       }
       if (this.context !== document.body) {
-        overlay.style.height = this.context.scrollHeight + 'px';
-        overlay.style.width = this.context.scrollWidth + 'px';
+        this._overlay.style.height = this.context.scrollHeight + 'px';
+        this._overlay.style.width = this.context.scrollWidth + 'px';
       }
       // Close the notices on overlay click.
-      overlay.addEventListener('click', () => {
+      this._overlay.addEventListener('click', () => {
         if (this.overlayClose) {
-          if (this._maskingLeader) {
-            // Clear the masking leader. A new one will be found while closing.
-            this._setMaskingLeader(null);
+          if (this._leader) {
+            // Clear the leader. A new one will be found while closing.
+            this._setLeader(null);
           }
 
           this.forEach(notice => {
             if (notice.hide || this.overlayClosesPinned) {
               notice.close();
             } else if (!notice.hide && this.modal === 'ish') {
-              if (this._maskingLeader) {
+              if (this._leader) {
                 notice.close(false, true);
               } else {
-                this._setMaskingLeader(notice);
+                this._setLeader(notice);
               }
             }
           });
 
           if (this._overlayOpen) {
             this._removeOverlay();
-            // todo: exit modal state here (from the code above)
-            // like, cause the notices won't fold up.
           }
         }
       });
-      this._overlay = overlay;
     }
-  }
-
-  _insertOverlay () {
     if (this._overlay.parentNode !== this.context) {
       this._overlay.classList.remove('ui-pnotify-modal-overlay-in');
       this._overlay = this.context.insertBefore(this._overlay, this.context.firstChild);

@@ -540,29 +540,9 @@
       return;
     }
 
-    // Check the max in stack.
-    if (_state !== 'waiting' && stack && !(stack.modal === 'ish' && stack._overlayOpen)) {
-      if (stack.maxOpen !== Infinity) {
-        if (stack._openNotices >= stack.maxOpen) {
-          if (stack.maxStrategy === 'close') {
-            stack.forEach(notice => {
-              if (
-                ['opening', 'open'].indexOf(notice.getState()) !== -1
-              ) {
-                // Close oldest notification, leaving only stack.maxOpen from
-                // the stack.
-                notice.close(false);
-                return false;
-              }
-            });
-          } else if (stack.maxStrategy === 'wait') {
-            _state = 'waiting';
-            return;
-          } else {
-            throw new Error(`Bad stack maxStrategy option: ${stack.maxStrategy}`);
-          }
-        }
-      }
+    if (stack && stack._shouldNoticeWait()) {
+      _state = 'waiting';
+      return;
     }
 
     _state = 'opening';
@@ -659,8 +639,9 @@
 
     if (_timer && _timer !== 'prevented' && clearTimeout) {
       clearTimeout(_timer);
-      _timer = null;
     }
+    _timer = null;
+
     animateOut(() => {
       _timerHide = false;
       _state = waitAfterward ? 'waiting' : 'closed';
@@ -806,7 +787,7 @@
     _timer = setTimeout(() => close(true), (isNaN(delay) ? 0 : delay));
   }
 
-  export function preventTimerClose (prevent) {
+  export function _preventTimerClose (prevent) {
     if (prevent) {
       cancelClose();
       _timer = 'prevented';
