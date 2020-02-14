@@ -482,6 +482,7 @@ export default class Stack {
         clearTimeout(maskingOffTimer);
         maskingOffTimer = null;
       }
+      // TODO: Something wrong here when you come right back from the modal state.
       maskingOffTimer = setTimeout(() => {
         maskingOffTimer = null;
         this._setMasking(null);
@@ -544,7 +545,7 @@ export default class Stack {
   _handleNoticeClosed (notice) {
     this._openNotices--;
 
-    if (this.modal === 'ish' && notice === this._leader) {
+    if (this.modal === 'ish' && this._leader) {
       this._setLeader(null);
       if (this._masking) {
         const next = this._masking;
