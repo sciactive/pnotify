@@ -179,7 +179,7 @@
       {_moveClass}
       {animation === 'fade' ? 'ui-pnotify-fade-'+animateSpeed : ''}
       {stack && (stack.modal === true || (stack.modal === 'ish' && _timer === 'prevented')) ? 'ui-pnotify-modal' : ''}
-      {_masking ? 'ui-pnotify-masking' : ''}
+      {_masking ? 'ui-pnotify-masking ui-pnotify-masking-' + _masking : ''}
       {_maskingIn ? 'ui-pnotify-masking-in' : ''}
       {_moduleClasses.elem.join(' ')}
     "
@@ -385,7 +385,7 @@
     }
 
     // Queue a position
-    if (_state !== 'closed' && stack) {
+    if (_state !== 'closed' && _state !== 'closing' && stack && !stack._collapsingModalState) {
       stack.queuePosition();
     }
 
@@ -438,9 +438,6 @@
     // Start the close timer.
     if (hide && mouseReset && _animating !== 'out') {
       queueClose();
-    }
-    if (stack) {
-      stack.position();
     }
   }
 
@@ -878,7 +875,7 @@
 
   export function _setMasking (value, immediate) {
     if (value) {
-      _masking = true;
+      _masking = value;
       if (immediate) {
         _maskingIn = true;
       } else {
@@ -971,6 +968,18 @@
     -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, .8), rgba(0, 0, 0, 0) 30px, rgba(0, 0, 0, 0));
     mask-image: linear-gradient(to bottom, rgba(0, 0, 0, .8), rgba(0, 0, 0, 0) 30px, rgba(0, 0, 0, 0));
   }
+  :global(.ui-pnotify.ui-pnotify-masking-up) {
+    -webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, .8), rgba(0, 0, 0, 0) 30px, rgba(0, 0, 0, 0));
+    mask-image: linear-gradient(to top, rgba(0, 0, 0, .8), rgba(0, 0, 0, 0) 30px, rgba(0, 0, 0, 0));
+  }
+  :global(.ui-pnotify.ui-pnotify-masking-left) {
+    -webkit-mask-image: linear-gradient(to left, rgba(0, 0, 0, .8), rgba(0, 0, 0, 0) 30px, rgba(0, 0, 0, 0));
+    mask-image: linear-gradient(to left, rgba(0, 0, 0, .8), rgba(0, 0, 0, 0) 30px, rgba(0, 0, 0, 0));
+  }
+  :global(.ui-pnotify.ui-pnotify-masking-right) {
+    -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, .8), rgba(0, 0, 0, 0) 30px, rgba(0, 0, 0, 0));
+    mask-image: linear-gradient(to right, rgba(0, 0, 0, .8), rgba(0, 0, 0, 0) 30px, rgba(0, 0, 0, 0));
+  }
   :global(.ui-pnotify.ui-pnotify-fade-in, .ui-pnotify.ui-pnotify-masking-in) {
     opacity: 1;
   }
@@ -1045,7 +1054,7 @@
     height: 100%;
     width: 100%;
     z-index: 2;
-    transition: opacity .075s linear;
+    transition: opacity .25s linear;
     opacity: 0;
     padding: 0 1rem;
     display: flex;

@@ -133,7 +133,6 @@ export default class Stack {
       this.forEach(notice => {
         this._positionNotice(notice);
       }, { start: 'head', dir: 'next' });
-      this._collapsingModalState = false;
     } else {
       delete this._nextpos1;
       delete this._nextpos2;
@@ -168,7 +167,8 @@ export default class Stack {
     // Skip this notice if it's not shown.
     if (
       !elem.classList.contains('ui-pnotify-in') &&
-      !elem.classList.contains('ui-pnotify-initial-hidden')
+      !elem.classList.contains('ui-pnotify-initial-hidden') &&
+      notice !== this._masking
     ) {
       return;
     }
@@ -259,17 +259,21 @@ export default class Stack {
         _nextpos2 = firstpos2;
       }
 
-      // Check that it's not beyond the viewport edge.
-      const endY = _nextpos1 + elem.offsetHeight + this.spacing1;
-      const endX = _nextpos1 + elem.offsetWidth + this.spacing1;
-      if (
-        ((this.dir1 === 'down' || this.dir1 === 'up') && endY > spaceY) ||
-        ((this.dir1 === 'left' || this.dir1 === 'right') && endX > spaceX)
-      ) {
-        // If it is, it needs to go back to the first pos1, and over on pos2.
-        _nextpos1 = firstpos1;
-        _nextpos2 += _addpos2 + this.spacing2;
-        _addpos2 = 0;
+      // Don't move masking notices along dir2. They should always be beside the
+      // leader along dir1.
+      if (notice !== this._masking) {
+        // Check that it's not beyond the viewport edge.
+        const endY = _nextpos1 + elem.offsetHeight + this.spacing1;
+        const endX = _nextpos1 + elem.offsetWidth + this.spacing1;
+        if (
+          ((this.dir1 === 'down' || this.dir1 === 'up') && endY > spaceY) ||
+          ((this.dir1 === 'left' || this.dir1 === 'right') && endX > spaceX)
+        ) {
+          // If it is, it needs to go back to the first pos1, and over on pos2.
+          _nextpos1 = firstpos1;
+          _nextpos2 += _addpos2 + this.spacing2;
+          _addpos2 = 0;
+        }
       }
 
       // Move the notice on dir2.
@@ -459,9 +463,6 @@ export default class Stack {
           dir: 'next'
         });
 
-        // Queue position.
-        this.queuePosition(0);
-
         // Remove the modal state overlay.
         this._removeOverlay();
       }
@@ -518,6 +519,10 @@ export default class Stack {
 
   _setMasking (masking, immediate) {
     if (this._masking) {
+      if (this._masking === masking) {
+        // Nothing to do.
+        return;
+      }
       this._masking._setMasking(false, immediate);
     }
 
@@ -539,14 +544,14 @@ export default class Stack {
     }
 
     // Get this notice ready for positioning.
-    this._masking.setAnimatingClass('ui-pnotify-initial-hidden');
-    this._masking._setMasking(true, immediate);
+    // this._masking.setAnimatingClass('ui-pnotify-initial-hidden');
+    this._masking._setMasking(this.dir1, immediate);
 
     // Wait for the DOM to update.
     window.requestAnimationFrame(() => {
       if (this._masking) {
         this._positionNotice(this._masking);
-        this._masking.setAnimatingClass('');
+        // this._masking.setAnimatingClass('');
       }
     });
 
@@ -617,9 +622,9 @@ export default class Stack {
       if (this._overlayOpen) {
         this._removeOverlay();
       }
+    } else if (!this._collapsingModalState) {
+      this.queuePosition(0);
     }
-
-    this.queuePosition(0);
   }
 
   _handleNoticeOpened (notice) {
@@ -708,6 +713,7 @@ export default class Stack {
         this._overlay.classList.add('ui-pnotify-modal-overlay-in');
       });
     }
+    this._collapsingModalState = false;
   }
 
   _removeOverlay () {
@@ -719,7 +725,10 @@ export default class Stack {
         if (this._overlay.parentNode) {
           this._overlay.parentNode.removeChild(this._overlay);
         }
-      }, 75);
+      }, 250);
+      setTimeout(() => {
+        this._collapsingModalState = false;
+      }, 400);
     }
   }
 }
