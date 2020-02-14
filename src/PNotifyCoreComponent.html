@@ -878,14 +878,8 @@
 
   export function _setMasking (value) {
     if (value) {
-      _animatingClass = 'ui-pnotify-initial-hidden';
       _masking = true;
-      // Wait for the DOM to update.
-      window.requestAnimationFrame(() => {
-        stack.position();
-        _animatingClass = '';
-        _maskingIn = true;
-      });
+      _maskingIn = true;
     } else {
       const finished = () => {
         refs.elem && refs.elem.removeEventListener('transitionend', finished);
@@ -1042,9 +1036,21 @@
     z-index: 2;
     transition: opacity .075s linear;
     opacity: 0;
+    padding: 0 1rem;
     display: flex;
     justify-content: center;
     align-items: flex-end;
+  }
+  :global(.ui-pnotify-modal-overlay-up) {
+    align-items: flex-start;
+  }
+  :global(.ui-pnotify-modal-overlay-left) {
+    justify-content: flex-start;
+    align-items: center;
+  }
+  :global(.ui-pnotify-modal-overlay-right) {
+    justify-content: flex-end;
+    align-items: center;
   }
   :global(.ui-pnotify-modal-overlay.ui-pnotify-modal-overlay-in) {
     opacity: 1;

@@ -1956,7 +1956,7 @@
           /* globals PNotify */
           window.showStackTopLeft = function showStackTopLeft (type) {
             if (typeof window.stackTopLeft === 'undefined') {
-              window.stackTopLeft = new PNotify.Stack({ dir1: 'down', dir2: 'right', firstpos1: 25, firstpos2: 25, push: 'top' });
+              window.stackTopLeft = new PNotify.Stack({ dir1: 'down', dir2: 'right', firstpos1: 25, firstpos2: 25, push: 'top', maxStrategy: 'close' });
             }
             var opts = {
               title: 'Over Here',
@@ -2002,7 +2002,7 @@
           /* globals PNotify */
           window.showStackBottomLeft = function showStackBottomLeft (type) {
             if (typeof window.stackBottomLeft === 'undefined') {
-              window.stackBottomLeft = new PNotify.Stack({ dir1: 'right', dir2: 'up', firstpos1: 25, firstpos2: 25, push: 'top' });
+              window.stackBottomLeft = new PNotify.Stack({ dir1: 'right', dir2: 'up', firstpos1: 25, firstpos2: 25, push: 'top', maxStrategy: 'close' });
             }
             var opts = {
               title: 'Over Here',
@@ -2234,7 +2234,7 @@
           /* globals PNotify */
           window.showStackBarTop = function showStackBarTop (type) {
             if (typeof window.stackBarTop === 'undefined') {
-              window.stackBarTop = new PNotify.Stack({ dir1: 'down', firstpos1: 0, spacing1: 0, push: 'top' });
+              window.stackBarTop = new PNotify.Stack({ modal: false, dir1: 'down', firstpos1: 0, spacing1: 0, push: 'top', maxOpen: Infinity });
             }
             var opts = {
               title: 'Over Here',
@@ -2277,9 +2277,9 @@
         <button class="btn btn-light my-1 source" onclick="
           showStackBarTop('error');
         ">Error</button>
-        Top bar style. (Like Old Microsoft Notification Bars.) Moves down, then right. Pushes to stack top.<br />
+        Top bar style. Moves down, then right. Pushes to stack top.<br />
         <br />
-        You also need this CSS:
+        This demo uses this CSS:
         <pre><code class="css">[ui-pnotify].ui-pnotify.stack-bar-top {
   width: 100%;
 }</code></pre>
@@ -2332,9 +2332,9 @@
         <button class="btn btn-light my-1 source" onclick="
           showStackBarBottom('error');
         ">Error</button>
-        Bottom bar style. (Like New Microsoft Notification Bars.) Moves up, then right. Pushes to stack bottom.<br />
+        Bottom bar style. Moves up, then right. Pushes to stack bottom.<br />
         <br />
-        You also need this CSS:
+        This demo uses this CSS:
         <pre><code class="css">[ui-pnotify].ui-pnotify.stack-bar-bottom {
   width: 70%;
 }</code></pre>
