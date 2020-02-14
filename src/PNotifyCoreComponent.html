@@ -178,7 +178,7 @@
       {_animatingClass}
       {_moveClass}
       {animation === 'fade' ? 'ui-pnotify-fade-'+animateSpeed : ''}
-      {stack && stack.modal ? 'ui-pnotify-modal' : ''}
+      {stack && (stack.modal === true || (stack.modal === 'ish' && _timer === 'prevented')) ? 'ui-pnotify-modal' : ''}
       {_masking ? 'ui-pnotify-masking' : ''}
       {_maskingIn ? 'ui-pnotify-masking-in' : ''}
       {_moduleClasses.elem.join(' ')}
@@ -532,7 +532,7 @@
   }
 
   // Display the notice.
-  export let open = () => {
+  export let open = immediate => {
     if (_state === 'opening') {
       return;
     }
@@ -613,12 +613,12 @@
         stack._animation = true;
       }
 
-      animateIn(afterOpenCallback);
+      animateIn(afterOpenCallback, immediate);
     });
   };
 
   // Remove the notice.
-  export let close = (timerHide, waitAfterward) => {
+  export let close = (immediate, timerHide, waitAfterward) => {
     if (_state === 'closing' || _state === 'closed') {
       return;
     }
@@ -656,22 +656,22 @@
       _timerHide = false;
       _state = waitAfterward ? 'waiting' : 'closed';
       runModules('afterClose');
+      if (stack) {
+        stack._handleNoticeClosed(self);
+      }
       if (destroy && !waitAfterward) {
         // If we're supposed to destroy the notice, run the destroy module
-        // events, remove from notices array, and let Svelte handle DOM removal.
+        // events, remove from stack, and let Svelte handle DOM removal.
         runDestroy();
       } else if (remove && !waitAfterward) {
         // If we're supposed to remove the notice from the DOM, do it.
         refs.elem && refs.elem.parentNode.removeChild(refs.elem);
       }
-      if (stack) {
-        stack._handleNoticeClosed(self);
-      }
-    });
+    }, immediate);
   };
 
   // Animate the notice in.
-  export let animateIn = async callback => {
+  export let animateIn = async (callback, immediate) => {
     // Declare that the notice is animating in.
     _animating = 'in';
     const finished = event => {
@@ -706,7 +706,7 @@
       }
     };
 
-    if (animation === 'fade') {
+    if (animation === 'fade' && !immediate) {
       refs.elem && refs.elem.addEventListener('transitionend', finished);
       _animatingClass = 'ui-pnotify-in';
       // eslint-disable-next-line no-unused-expressions
@@ -722,7 +722,7 @@
   };
 
   // Animate the notice out.
-  export let animateOut = async callback => {
+  export let animateOut = async (callback, immediate) => {
     // Declare that the notice is animating out.
     _animating = 'out';
     const finished = event => {
@@ -759,7 +759,7 @@
       }
     };
 
-    if (animation === 'fade') {
+    if (animation === 'fade' && !immediate) {
       refs.elem && refs.elem.addEventListener('transitionend', finished);
       _animatingClass = 'ui-pnotify-in';
       // Just in case the event doesn't fire, call it after 650 ms.
@@ -794,7 +794,7 @@
     }
     // Cancel any current close timer.
     cancelClose();
-    _timer = setTimeout(() => close(true), (isNaN(delay) ? 0 : delay));
+    _timer = setTimeout(() => close(false, true), (isNaN(delay) ? 0 : delay));
   }
 
   export function _preventTimerClose (prevent) {
@@ -876,10 +876,21 @@
     return _moveClass = value;
   }
 
-  export function _setMasking (value) {
+  export function _setMasking (value, immediate) {
     if (value) {
       _masking = true;
-      _maskingIn = true;
+      if (immediate) {
+        _maskingIn = true;
+      } else {
+        window.requestAnimationFrame(() => {
+          if (_masking) {
+            _maskingIn = true;
+          }
+        });
+      }
+    } else if (immediate) {
+      _masking = false;
+      _maskingIn = false;
     } else {
       const finished = () => {
         refs.elem && refs.elem.removeEventListener('transitionend', finished);

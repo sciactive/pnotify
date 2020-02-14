@@ -59,7 +59,7 @@
     }
   }
 
-  function animateIn (callback) {
+  function animateIn (callback, immediate) {
     // Declare that the notice is animating in.
     _notice.setAnimating('in');
 
@@ -78,10 +78,14 @@
     };
 
     off = _notice.on('animationend', finished);
-    _notice.setAnimatingClass('ui-pnotify-in animated ' + inClass);
+    if (immediate) {
+      finished();
+    } else {
+      _notice.setAnimatingClass('ui-pnotify-in animated ' + inClass);
+    }
   }
 
-  function animateOut (callback) {
+  function animateOut (callback, immediate) {
     // Declare that the notice is animating out.
     _notice.setAnimating('out');
 
@@ -102,7 +106,11 @@
     };
 
     off = _notice.on('animationend', finished);
-    _notice.setAnimatingClass('ui-pnotify-in animated ' + outClass);
+    if (immediate) {
+      finished();
+    } else {
+      _notice.setAnimatingClass('ui-pnotify-in animated ' + outClass);
+    }
   }
 
   export const attention = (aniClass, callback) => {

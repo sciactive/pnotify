@@ -1,19 +1,5 @@
 export default class Stack {
   constructor (options) {
-    // this.dir1 = options.dir1 || null;
-    // this.dir2 = options.dir2 || null;
-    // this.firstpos1 = options.firstpos1;
-    // this.firstpos2 = options.firstpos2;
-    // this.spacing1 = options.spacing1;
-    // this.spacing2 = options.spacing2;
-    // this.push = options.push || 'bottom';
-    // this.maxOpen = 'maxOpen' in options ? options.maxOpen : 1;
-    // this.maxStrategy = options.maxStrategy || 'wait';
-    // this.maxClosureCausesWait = 'maxClosureCausesWait' in options ? options.maxClosureCausesWait : true;
-    // this.modal = 'modal' in options ? options.modal : 'ish';
-    // this.overlayClose = 'overlayClose' in options ? options.overlayClose : true;
-    // this.overlayClosesPinned = options.overlayClosesPinned || false;
-    // this.context = options.context || (window && document.body) || null;
     Object.assign(this, {
       dir1: null,
       dir2: null,
@@ -123,7 +109,7 @@ export default class Stack {
   }
 
   close () {
-    this.forEach(notice => notice.close(false));
+    this.forEach(notice => notice.close(false, false));
   }
 
   open () {
@@ -466,7 +452,7 @@ export default class Stack {
             if (!nextNoticeFromModalState) {
               nextNoticeFromModalState = notice;
             }
-            notice.close(false, true);
+            notice.close(notice === nextNoticeFromModalState, false, true);
           }
         }, {
           start: this._leader,
@@ -480,6 +466,12 @@ export default class Stack {
         this._removeOverlay();
       }
 
+      // Turn off any masking off timer that may still be running.
+      if (maskingOffTimer) {
+        clearTimeout(maskingOffTimer);
+        maskingOffTimer = null;
+      }
+
       // Set the next waiting notice to be masking.
       this.forEach(notice => {
         if (notice === this._leader) {
@@ -489,12 +481,10 @@ export default class Stack {
         // The next notice that is "waiting" is usually fine, but if we're
         // leaving the modal state, it will still be "closing" here, so we have
         // to work around that. :P
+        // Also, when coming back from modal state, the notice should
+        // immediately be masking instead of fading in.
         if (notice.getState() === 'waiting' || notice === nextNoticeFromModalState) {
-          if (maskingOffTimer) {
-            clearTimeout(maskingOffTimer);
-            maskingOffTimer = null;
-          }
-          this._setMasking(notice);
+          this._setMasking(notice, !!nextNoticeFromModalState);
           return false;
         }
       }, {
@@ -526,9 +516,9 @@ export default class Stack {
     ]);
   }
 
-  _setMasking (masking) {
+  _setMasking (masking, immediate) {
     if (this._masking) {
-      this._masking._setMasking(false);
+      this._masking._setMasking(false, immediate);
     }
 
     if (this._maskingOff) {
@@ -550,7 +540,7 @@ export default class Stack {
 
     // Get this notice ready for positioning.
     this._masking.setAnimatingClass('ui-pnotify-initial-hidden');
-    this._masking._setMasking(true);
+    this._masking._setMasking(true, immediate);
 
     // Wait for the DOM to update.
     window.requestAnimationFrame(() => {
@@ -566,7 +556,7 @@ export default class Stack {
       if (this.modal === 'ish') {
         this._insertOverlay();
 
-        this._setMasking(null);
+        this._setMasking(null, true);
 
         this.forEach(notice => {
           // Prevent the notices from timed closing.
@@ -643,7 +633,10 @@ export default class Stack {
           ['opening', 'open'].indexOf(notice.getState()) !== -1
         ) {
           // Close oldest notices, leaving only stack.maxOpen from the stack.
-          notice.close(false, this.maxClosureCausesWait);
+          notice.close(false, false, this.maxClosureCausesWait);
+          if (notice === this._leader) {
+            this._setLeader(null);
+          }
           toClose--;
           return !!toClose;
         }
@@ -693,7 +686,7 @@ export default class Stack {
               notice.close();
             } else if (!notice.hide && this.modal === 'ish') {
               if (this._leader) {
-                notice.close(false, true);
+                notice.close(false, false, true);
               } else {
                 this._setLeader(notice);
               }
