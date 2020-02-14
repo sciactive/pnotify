@@ -1955,14 +1955,15 @@
         <button class="btn btn-light my-1 source" onclick="
           PNotify.info({
             title: 'PNotify Stacks',
-            text: 'Stacks are used to position notices and determine where new notices will go when they\'re created. Each notice that\'s placed into a stack will be positioned related to the other notices in that stack.',
+            text: 'Stacks are used to position notices and determine where new notices will go when they\'re created. Each notice that\'s placed into a stack will be positioned related to the other notices in that stack.\n\nModeless stacks don\'t block the page. Modal stacks block the page so the user can only interact with the notices. Modalish stacks show only one notice, until the user interacts, then they can block the page and show all the notices.',
             icon: 'fas fa-bars',
             hide: false,
             destroy: true,
-            stack: new PNotify.Stack({ modal: true })
+            stack: new PNotify.Stack({ modal: true, overlayClosesPinned: true })
           });
         ">What are stacks?</button>
         <hr />
+        Modalish. Top Left. Moves down, then right. Pushes to stack top.<br />
         <script type="text/javascript">
           /* eslint-env browser, jquery */
           /* globals PNotify */
@@ -2007,8 +2008,8 @@
         <button class="btn btn-light my-1 source" onclick="
           showStackTopLeft('error');
         ">Error</button>
-        Top Left. Moves down, then right. Pushes to stack top.
         <hr />
+        Modalish. Bottom Left. Moves right, then up. Pushes to stack top.<br />
         <script type="text/javascript">
           /* eslint-env browser, jquery */
           /* globals PNotify */
@@ -2053,8 +2054,8 @@
         <button class="btn btn-light my-1 source" onclick="
           showStackBottomLeft('error');
         ">Error</button>
-        Bottom Left. Moves right, then up. Pushes to stack top.
         <hr />
+        Modalish. Bottom Right. Moves up, then left. Pushes to stack bottom.<br />
         <script type="text/javascript">
           /* eslint-env browser, jquery */
           /* globals PNotify */
@@ -2099,14 +2100,14 @@
         <button class="btn btn-light my-1 source" onclick="
           showStackBottomRight('error');
         ">Error</button>
-        Bottom Right. Moves up, then left. Pushes to stack bottom.
         <hr />
+        Modeless. Top Center. Moves down. Pushes to stack bottom.<br />
         <script type="text/javascript">
           /* eslint-env browser, jquery */
           /* globals PNotify */
           window.showStackTopCenter = function showStackTopCenter (type) {
             if (typeof window.stackTopCenter === 'undefined') {
-              window.stackTopCenter = new PNotify.Stack({ dir1: 'down', firstpos1: 25 });
+              window.stackTopCenter = new PNotify.Stack({ dir1: 'down', firstpos1: 25, modal: false, maxOpen: Infinity });
             }
             var opts = {
               title: 'Over Here',
@@ -2145,21 +2146,31 @@
         <button class="btn btn-light my-1 source" onclick="
           showStackTopCenter('error');
         ">Error</button>
-        Top Center. Moves down. Pushes to stack bottom.
-      </div>
-      <h5 class="card-header">Really Different Stacks</h5>
-      <div class="card-body">
+        <hr />
+        Modal. Centered. Moves up. Pushes to stack top.<br />
         <script type="text/javascript">
           /* eslint-env browser, jquery */
           /* globals PNotify */
           window.showStackModal = function showStackModal (type) {
             if (typeof window.stackModal === 'undefined') {
-              window.stackModal = new PNotify.Stack({ dir1: 'up', firstpos1: 25, push: 'top', modal: true });
+              window.stackModal = new PNotify.Stack({ dir1: 'up', firstpos1: 25, push: 'top', modal: true, maxOpen: Infinity });
             }
             var opts = {
               title: 'Over Here',
               text: "Check me out. I'm in a different stack.",
-              stack: window.stackModal
+              stack: window.stackModal,
+              modules: {
+                Confirm: {
+                  confirm: true,
+                  buttons: [{
+                    text: 'Another',
+                    primary: true,
+                    click: function () {
+                      showStackModal(type);
+                    }
+                  }]
+                }
+              }
             };
             switch (type) {
               case 'error':
@@ -2193,19 +2204,31 @@
         <button class="btn btn-light my-1 source" onclick="
           showStackModal('error');
         ">Error</button>
-        Modal stack, centered. Moves up. Pushes to stack top.
         <hr />
+        Modal. Moves down, then right. Pushes to stack top.<br />
         <script type="text/javascript">
           /* eslint-env browser, jquery */
           /* globals PNotify */
           window.showStackModalLeft = function showStackModalLeft (type) {
             if (typeof window.stackModalLeft === 'undefined') {
-              window.stackModalLeft = new PNotify.Stack({ dir1: 'down', dir2: 'right', firstpos1: 25, firstpos2: 25, push: 'top', modal: true });
+              window.stackModalLeft = new PNotify.Stack({ dir1: 'down', dir2: 'right', firstpos1: 25, firstpos2: 25, push: 'top', modal: true, maxOpen: Infinity });
             }
             var opts = {
               title: 'Over Here',
               text: "Check me out. I'm in a different stack.",
-              stack: window.stackModalLeft
+              stack: window.stackModalLeft,
+              modules: {
+                Confirm: {
+                  confirm: true,
+                  buttons: [{
+                    text: 'Another',
+                    primary: true,
+                    click: function () {
+                      showStackModalLeft(type);
+                    }
+                  }]
+                }
+              }
             };
             switch (type) {
               case 'error':
@@ -2239,8 +2262,8 @@
         <button class="btn btn-light my-1 source" onclick="
           showStackModalLeft('error');
         ">Error</button>
-        Modal stack. Moves down, then right. Pushes to stack top.
         <hr />
+        Top bar style. Modeless. Moves down, then right. Pushes to stack top.<br />
         <script type="text/javascript">
           /* eslint-env browser, jquery */
           /* globals PNotify */
@@ -2289,13 +2312,13 @@
         <button class="btn btn-light my-1 source" onclick="
           showStackBarTop('error');
         ">Error</button>
-        Top bar style. Moves down, then right. Pushes to stack top.<br />
         <br />
         This demo uses this CSS:
         <pre><code class="css">[ui-pnotify].ui-pnotify.stack-bar-top {
   width: 100%;
 }</code></pre>
         <hr />
+        Bottom bar style. Modalish. Moves up, then right. Pushes to stack bottom.<br />
         <script type="text/javascript">
           /* eslint-env browser, jquery */
           /* globals PNotify */
@@ -2344,7 +2367,6 @@
         <button class="btn btn-light my-1 source" onclick="
           showStackBarBottom('error');
         ">Error</button>
-        Bottom bar style. Moves up, then right. Pushes to stack bottom.<br />
         <br />
         This demo uses this CSS:
         <pre><code class="css">[ui-pnotify].ui-pnotify.stack-bar-bottom {
@@ -2387,7 +2409,7 @@
       </div>
       <h5 class="card-header">Stack Contexts</h5>
       <div class="card-body">
-        By default, a stack will place its notices underneath the body node. You can also specify a context for your notices to be placed in.
+        You can specify a context element for your notices to be placed in.
         <hr />
         <script type="text/javascript">
           /* eslint-env browser, jquery */
@@ -2396,13 +2418,16 @@
             if (typeof window.stackContext === 'undefined') {
               window.stackContext = new PNotify.Stack({ dir1: 'down', dir2: 'left', firstpos1: 25, firstpos2: 25, context: document.getElementById('stack-context') });
             }
+            if (typeof window.stackContextModeless === 'undefined') {
+              window.stackContextModeless = new PNotify.Stack({ dir1: 'down', dir2: 'right', firstpos1: 25, firstpos2: 25, context: document.getElementById('stack-context'), modal: false, maxOpen: Infinity });
+            }
             if (typeof window.stackContextModal === 'undefined') {
-              window.stackContextModal = new PNotify.Stack({ dir1: 'down', firstpos1: 25, context: document.getElementById('stack-context'), modal: true });
+              window.stackContextModal = new PNotify.Stack({ dir1: 'down', firstpos1: 25, context: document.getElementById('stack-context'), modal: true, maxOpen: Infinity });
             }
             var opts = {
               title: 'Over Here',
               text: "Check me out. I'm in a different stack.",
-              stack: modal ? window.stackContextModal : window.stackContext
+              stack: modal === 'ish' ? window.stackContext : (modal ? window.stackContextModal : window.stackContextModeless)
             };
             switch (type) {
               case 'error':
@@ -2424,20 +2449,35 @@
             PNotify.alert(opts);
           };
         </script>
+        Modalish (the default):<br />
         <button class="btn btn-light my-1 source" onclick="
-          showStackContext('notice');
+          showStackContext('notice', 'ish');
         ">Notice</button>
         <button class="btn btn-light my-1 source" onclick="
-          showStackContext('info');
+          showStackContext('info', 'ish');
         ">Info</button>
         <button class="btn btn-light my-1 source" onclick="
-          showStackContext('success');
+          showStackContext('success', 'ish');
         ">Success</button>
         <button class="btn btn-light my-1 source" onclick="
-          showStackContext('error');
+          showStackContext('error', 'ish');
         ">Error</button>
         <br />
-        Modal:
+        Modeless:<br />
+        <button class="btn btn-light my-1 source" onclick="
+          showStackContext('notice', false);
+        ">Notice</button>
+        <button class="btn btn-light my-1 source" onclick="
+          showStackContext('info', false);
+        ">Info</button>
+        <button class="btn btn-light my-1 source" onclick="
+          showStackContext('success', false);
+        ">Success</button>
+        <button class="btn btn-light my-1 source" onclick="
+          showStackContext('error', false);
+        ">Error</button>
+        <br />
+        Modal:<br />
         <button class="btn btn-light my-1 source" onclick="
           showStackContext('notice', true);
         ">Notice</button>
@@ -2471,10 +2511,10 @@
       </div>
       <div class="card-footer">
         <p class="alert alert-warning">
-          <i class="fas fa-exclamation-triangle"></i> You can't just pass an
-          object literal as a stack if you want multiple notices. You need to
-          create a new variable and pass that. This is because PNotify will use
-          that object to store the notices that go into it.
+          <i class="fas fa-exclamation-triangle"></i> You can't just pass in a
+          new stack if you want multiple notices to line up. You need to assign
+          the stack to a variable and pass that. This is because PNotify will
+          use that object to store the notices that go into it.
         </p>
         <div class="row">
           <div class="col-md-6">
@@ -2494,7 +2534,7 @@ PNotify.notice({
           </div>
           <div class="col-md-6">
             <div class="card border-success mt-3">
-              <h6 class="card-header text-light bg-success">Good - Notices will flow.</h6>
+              <h6 class="card-header text-light bg-success">Good - Notices will flow in line.</h6>
               <div class="card-body text-success">
                 <pre><code class="js">var myStack = new PNotify.Stack({dir1: 'down', firstpos1: 25});
 PNotify.notice({
