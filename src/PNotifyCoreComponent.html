@@ -528,6 +528,32 @@
     }
   }
 
+  function insertIntoDOM () {
+    // If the notice is not in the DOM, or in the wrong context, append it.
+    if (
+      refs.elem &&
+      !refs.elem.parentNode ||
+      (
+        stack &&
+        stack.context &&
+        stack.context !== refs.elem.parentNode
+      )
+    ) {
+      if (stack && (stack.context || document.body)) {
+        if (!stack.context) {
+          stack.context = document.body;
+        }
+        stack.context.appendChild(refs.elem);
+      } else {
+        throw new Error('No context to insert this notice into.');
+      }
+    }
+  }
+
+  function removeFromDOM () {
+    refs.elem && refs.elem.parentNode.removeChild(refs.elem);
+  }
+
   // Display the notice.
   export let open = immediate => {
     if (_state === 'opening') {
@@ -573,25 +599,7 @@
       return;
     }
 
-    // If the notice is not in the DOM, or in the wrong context, append it.
-    if (
-      refs.elem &&
-      !refs.elem.parentNode ||
-      (
-        stack &&
-        stack.context &&
-        stack.context !== refs.elem.parentNode
-      )
-    ) {
-      if (stack && (stack.context || document.body)) {
-        if (!stack.context) {
-          stack.context = document.body;
-        }
-        stack.context.appendChild(refs.elem);
-      } else {
-        throw new Error('No context to open this notice in.');
-      }
-    }
+    insertIntoDOM();
 
     // Wait until the DOM is updated.
     window.requestAnimationFrame(() => {
@@ -662,7 +670,7 @@
         runDestroy();
       } else if (remove && !waitAfterward) {
         // If we're supposed to remove the notice from the DOM, do it.
-        refs.elem && refs.elem.parentNode.removeChild(refs.elem);
+        removeFromDOM();
       }
     }, immediate);
   };
@@ -874,7 +882,11 @@
   }
 
   export function _setMasking (value, immediate) {
+    if (_maskingTimer) {
+      clearTimeout(_maskingTimer);
+    }
     if (value) {
+      insertIntoDOM();
       _masking = value;
       if (immediate) {
         _maskingIn = true;
@@ -888,6 +900,9 @@
     } else if (immediate) {
       _masking = false;
       _maskingIn = false;
+      if (remove && ['open', 'opening', 'closing'].indexOf(_state) === -1) {
+        removeFromDOM();
+      }
     } else {
       const finished = () => {
         refs.elem && refs.elem.removeEventListener('transitionend', finished);
@@ -896,6 +911,9 @@
         }
         if (!_maskingIn) {
           _masking = false;
+          if (remove && ['open', 'opening', 'closing'].indexOf(_state) === -1) {
+            removeFromDOM();
+          }
         }
       };
 
