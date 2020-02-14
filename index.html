@@ -2205,13 +2205,13 @@
           showStackModal('error');
         ">Error</button>
         <hr />
-        Modal. Moves down, then right. Pushes to stack top.<br />
+        Modal. Moves down, then right. Pushes to stack bottom.<br />
         <script type="text/javascript">
           /* eslint-env browser, jquery */
           /* globals PNotify */
           window.showStackModalLeft = function showStackModalLeft (type) {
             if (typeof window.stackModalLeft === 'undefined') {
-              window.stackModalLeft = new PNotify.Stack({ dir1: 'down', dir2: 'right', firstpos1: 25, firstpos2: 25, push: 'top', modal: true, maxOpen: Infinity });
+              window.stackModalLeft = new PNotify.Stack({ dir1: 'down', dir2: 'right', firstpos1: 25, firstpos2: 25, modal: true, maxOpen: Infinity });
             }
             var opts = {
               title: 'Over Here',
