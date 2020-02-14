@@ -178,7 +178,7 @@
       {_animatingClass}
       {_moveClass}
       {animation === 'fade' ? 'ui-pnotify-fade-'+animateSpeed : ''}
-      {stack && (stack.modal === true || stack._overlayInserted) ? 'ui-pnotify-modal' : ''}
+      {stack && stack.modal ? 'ui-pnotify-modal' : ''}
       {_masking ? 'ui-pnotify-masking' : ''}
       {_maskingIn ? 'ui-pnotify-masking-in' : ''}
       {_moduleClasses.elem.join(' ')}
@@ -601,8 +601,14 @@
       if (stack) {
         // Mark the stack so it won't animate the new notice.
         stack._animation = false;
+        if (stack.push === 'top') {
+          // Reset the position data so the notice is positioned as the first
+          // notice.
+          stack._resetPositionData();
+        }
         // Now position the stack's the notices.
-        stack.position();
+        stack._positionNotice(self);
+        stack.queuePosition(0);
         // Reset animation.
         stack._animation = true;
       }
