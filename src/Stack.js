@@ -1,5 +1,6 @@
 export default class Stack {
   constructor (options) {
+    // TODO: label for close all button
     Object.assign(this, {
       dir1: null,
       dir2: null,
@@ -631,7 +632,7 @@ export default class Stack {
     this._openNotices++;
 
     // Check the max in stack.
-    if (!(this.modal === 'ish' && this._overlayOpen) && this.maxOpen !== Infinity && this._openNotices >= this.maxOpen && this.maxStrategy === 'close') {
+    if (!(this.modal === 'ish' && this._overlayOpen) && this.maxOpen !== Infinity && this._openNotices > this.maxOpen && this.maxStrategy === 'close') {
       let toClose = this._openNotices - this.maxOpen;
       this.forEach(notice => {
         if (

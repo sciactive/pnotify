@@ -317,8 +317,9 @@
   let _state = 'initializing';
   // Auto close timer.
   let _timer = null;
-  // Animation timer.
-  let _animTimer = null;
+  // Animation timers.
+  let _animInTimer = null;
+  let _animOutTimer = null;
   // Stores what is currently being animated (in or out).
   let _animating = false;
   // Stores the class that adds entry/exit animation effects.
@@ -603,6 +604,10 @@
 
     // Wait until the DOM is updated.
     window.requestAnimationFrame(() => {
+      if (_state !== 'opening') {
+        return;
+      }
+
       if (stack) {
         // Mark the stack so it won't animate the new notice.
         stack._animation = false;
@@ -639,6 +644,9 @@
     };
 
     if (_state === 'waiting') {
+      if (waitAfterward) {
+        return;
+      }
       _state = 'closed';
       // It's debatable whether the notice should be destroyed in this case, but
       // I'm going to go ahead and say yes.
@@ -684,8 +692,8 @@
         return;
       }
       refs.elem && refs.elem.removeEventListener('transitionend', finished);
-      if (_animTimer) {
-        clearTimeout(_animTimer);
+      if (_animInTimer) {
+        clearTimeout(_animInTimer);
       }
       if (_animating !== 'in') {
         return;
@@ -707,7 +715,7 @@
         // Declare that the notice has completed animating.
         _animating = false;
       } else {
-        _animTimer = setTimeout(finished, 40);
+        _animInTimer = setTimeout(finished, 40);
       }
     };
 
@@ -718,7 +726,7 @@
       refs.elem && refs.elem.style.opacity; // This line is necessary for some reason. Some notices don't fade without it.
       _animatingClass = 'ui-pnotify-in ui-pnotify-fade-in';
       // Just in case the event doesn't fire, call it after 650 ms.
-      _animTimer = setTimeout(finished, 650);
+      _animInTimer = setTimeout(finished, 650);
     } else {
       _animatingClass = 'ui-pnotify-in';
       await tick();
@@ -735,8 +743,8 @@
         return;
       }
       refs.elem && refs.elem.removeEventListener('transitionend', finished);
-      if (_animTimer) {
-        clearTimeout(_animTimer);
+      if (_animOutTimer) {
+        clearTimeout(_animOutTimer);
       }
       if (_animating !== 'out') {
         return;
@@ -760,7 +768,7 @@
         _animating = false;
       } else {
         // In case this was called before the notice finished animating.
-        _animTimer = setTimeout(finished, 40);
+        _animOutTimer = setTimeout(finished, 40);
       }
     };
 
@@ -768,7 +776,7 @@
       refs.elem && refs.elem.addEventListener('transitionend', finished);
       _animatingClass = 'ui-pnotify-in';
       // Just in case the event doesn't fire, call it after 650 ms.
-      _animTimer = setTimeout(finished, 650);
+      _animOutTimer = setTimeout(finished, 650);
     } else {
       _animatingClass = '';
       await tick();
@@ -781,8 +789,8 @@
     if (_timer && _timer !== 'prevented') {
       clearTimeout(_timer);
     }
-    if (_animTimer) {
-      clearTimeout(_animTimer);
+    if (_animOutTimer) {
+      clearTimeout(_animOutTimer);
     }
     if (_state === 'closing') {
       // If it's animating out, stop it.
