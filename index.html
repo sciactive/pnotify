@@ -26,14 +26,10 @@
   <!-- NonBlock.js -->
   <script src="https://cdn.jsdelivr.net/npm/nonblockjs@1.0.8/NonBlock.es5.js" integrity="sha256-ya57jZves9vI0hPcq0IoJMrIuwwk9w01CvkvG5xJQ1s=" crossorigin="anonymous"></script>
 
-  <!-- jQuery -->
-  <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.slim.min.js" integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=" crossorigin="anonymous"></script>
-
   <!-- Bootstrap -->
   <link id="bootstrap-light" media="(prefers-color-scheme: no-preference), (prefers-color-scheme: light)" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha256-L/W5Wfqfa0sdBNIKN9cG6QA5F2qx4qICmU2VgLruv9Y=" crossorigin="anonymous">
   <link id="bootstrap-dark" media="(prefers-color-scheme: dark)" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.4.1/dist/darkly/bootstrap.min.css" integrity="sha256-WzKrnqJMmUZVHL8Im0hFLIOJ3UiQtgwK7zNfwxb5Bx0=" crossorigin="anonymous">
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha256-WqU1JavFxSAMcLP2WIOI+GB2zWmShMI82mTpLDcqFUg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap.native@2.0.27/dist/bootstrap-native-v4.min.js" integrity="sha256-k5gE8gnbCCVtz/4z2LzbAIpMdH8K1Bjl4cTCjm6SZS8=" crossorigin="anonymous"></script>
 
   <!-- FontAwesome -->
   <script src="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.0/js/all.min.js" integrity="sha256-0vuk8LXoyrmCjp1f0O300qo1M75ZQyhH9X3J6d+scmk=" crossorigin="anonymous"></script>
@@ -123,7 +119,7 @@
   <script type="text/javascript">
     /* eslint-env browser, jquery */
     /* globals PNotify */
-    $(function () {
+    window.addEventListener('DOMContentLoaded', () => {
       // ---
       // Set defaults.
       // ---
@@ -139,7 +135,7 @@
     });
   </script>
 </head>
-<body id="page" data-spy="scroll" data-target=".navbar" data-offset="0" style="position: relative;">
+<body data-spy="scroll" data-target=".navbar" data-offset="0" style="position: relative;">
   <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light">
     <div class="container">
       <a class="navbar-brand" href="https://sciactive.com/pnotify/">PNotify</a>
@@ -150,7 +146,7 @@
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item"><a class="nav-link" href="#page">Overview</a></li>
+          <li class="nav-item"><a class="nav-link" href="#overview">Overview</a></li>
           <li class="nav-item"><a class="nav-link" href="#demos-simple">Simple Demos</a></li>
           <li class="nav-item"><a class="nav-link" href="#demos-modules">Module Demos</a></li>
           <li class="nav-item"><a class="nav-link" href="#stacks">Stacks</a></li>
@@ -182,7 +178,7 @@
     </div>
   </nav>
 
-  <section class="container page-banner">
+  <section class="container page-banner" id="overview">
     <h1>PNotify <small>v5 pre-alpha</small></h1>
     <p id="description">Beautiful notifications and prompts.</p>
     <p class="dev-note" style="display: none;">
@@ -202,8 +198,9 @@
         <div class="card" style="height: 100%;">
           <h5 class="card-header"><i class="fas fa-asterisk"></i> Unobtrusive</h5>
           <div class="card-body">
-            PNotify can provide non-blocking notices that allow the user to
-            click elements underneath the notice.
+            PNotify uses the
+            <a href="https://sciactive.com/2020/02/11/the-modalish-notification-flow/" target="_blank">modalish notification flow</a>
+            to provide unobtrusive support for many notifications at once.
           </div>
         </div>
       </div>
@@ -236,106 +233,104 @@
     <div class="card border-dark">
       <h5 class="card-header bg-dark text-white">Choose the Styling</h5>
       <div class="card-body">
-        PNotify supports multiple styling methods and icon sets.
-        <div class="btn-toolbar" role="toolbar">
-          <div class="btn-group btn-group-toggle" data-toggle="buttons" role="group">
-            <label class="btn btn-info my-1 active">
-              <input type="radio" name="styling" id="style-brighttheme" autocomplete="off" checked> Bright Theme
-            </label>
-            <label class="btn btn-info my-1">
-              <input type="radio" name="styling" id="style-material" autocomplete="off"> Material
-            </label>
-            <label class="btn btn-info my-1">
-              <input type="radio" name="styling" id="style-bootstrap4" autocomplete="off"> Bootstrap
-            </label>
+        PNotify supports multiple styling methods, icon sets, and display modes.
+
+        <div class="my-1">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="styling" id="style-brighttheme" autocomplete="off" checked />
+            <label class="form-check-label" for="style-brighttheme">Bright Theme</label>
           </div>
-          <div class="btn-group btn-group-toggle ml-3" data-toggle="buttons" role="group">
-            <label class="btn btn-info my-1 active">
-              <input type="radio" name="mode" id="mode-no-preference" autocomplete="off" checked> System Default
-            </label>
-            <label class="btn btn-info my-1">
-              <input type="radio" name="mode" id="mode-light" autocomplete="off"> Light
-            </label>
-            <label class="btn btn-info my-1">
-              <input type="radio" name="mode" id="mode-dark" autocomplete="off"> Dark
-            </label>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="styling" id="style-material" autocomplete="off" />
+            <label class="form-check-label" for="style-material">Material</label>
           </div>
-          <div class="btn-group ml-3" role="group">
-            <a class="btn btn-info my-1" href="demo/styling.html" target="_blank">Demo All Styles/Icons</a>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="styling" id="style-bootstrap4" autocomplete="off" />
+            <label class="form-check-label" for="style-bootstrap4">Bootstrap</label>
           </div>
         </div>
+
+        <div class="my-1">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="mode" id="mode-no-preference" autocomplete="off" checked />
+            <label class="form-check-label" for="mode-no-preference">System Default</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="mode" id="mode-light" autocomplete="off" />
+            <label class="form-check-label" for="mode-light">Light</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="mode" id="mode-dark" autocomplete="off" />
+            <label class="form-check-label" for="mode-dark">Dark</label>
+          </div>
+        </div>
+
+        <a class="btn btn-info my-1" href="demo/styling.html" target="_blank">Demo All Styles/Icons</a>
       </div>
       <script type="text/javascript">
         /* eslint-env browser, jquery */
         /* globals PNotify */
-        $(function () {
-          $('.sharpthemes-hideme').hide();
+        window.addEventListener('DOMContentLoaded', () => {
+          document.querySelectorAll('.sharpthemes-hideme').forEach(el => el.style.display = 'none');
 
-          $('input[name=styling]').change(function () {
-            switch ($('input[name=styling]:checked').attr('id')) {
-              case 'style-brighttheme':
-                PNotify.defaults.styling = 'brighttheme';
-                PNotify.defaults.icons = 'brighttheme';
-                $('.sharpthemes-hideme').hide();
-                PNotify.notice({
-                  title: 'Styling Change',
-                  text: 'From now on, notices will be styled with Bright Theme, the stand alone theme.'
-                });
-                break;
-              case 'style-material':
-                PNotify.defaults.styling = 'material';
-                PNotify.defaults.icons = 'material';
-                $('.sharpthemes-hideme').hide();
-                PNotify.notice({
-                  title: 'Styling Change',
-                  text: 'From now on, notices will be styled with Material Style Module.'
-                });
-                break;
-              case 'style-bootstrap4':
-                PNotify.defaults.styling = 'bootstrap4';
-                PNotify.defaults.icons = 'fontawesome5';
-                $('.sharpthemes-hideme').show();
-                PNotify.notice({
-                  title: 'Styling Change',
-                  text: 'From now on, notices will be styled with Bootstrap 4 w/ Font Awesome 5 Icons.'
-                });
-                break;
-            }
+          document.getElementById('style-brighttheme').addEventListener('change', e => {
+            PNotify.defaults.styling = 'brighttheme';
+            PNotify.defaults.icons = 'brighttheme';
+            document.querySelectorAll('.sharpthemes-hideme').forEach(el => el.style.display = 'none');
+            PNotify.notice({
+              title: 'Styling Change',
+              text: 'From now on, notices will be styled with Bright Theme, the stand alone theme.'
+            });
           });
 
-          $('input[name=mode]').change(function () {
-            switch ($('input[name=mode]:checked').attr('id')) {
-              case 'mode-no-preference':
-                PNotify.defaults.mode = 'no-preference';
-                $('#bootstrap-light').attr('media', '(prefers-color-scheme: no-preference), (prefers-color-scheme: light)');
-                $('#bootstrap-dark').attr('media', '(prefers-color-scheme: dark)');
-                PNotify.notice({
-                  title: 'Mode Change',
-                  text: 'From now on, notices will show in system default mode.'
-                });
-                break;
-              case 'mode-light':
-                PNotify.defaults.mode = 'light';
-                $('#bootstrap-light').attr('media', '(prefers-color-scheme: no-preference), (prefers-color-scheme: light), (prefers-color-scheme: dark)');
-                $('#bootstrap-dark').attr('media', '(width: 0px)');
-                PNotify.notice({
-                  title: 'Mode Change',
-                  text: 'From now on, notices will show in light mode.'
-                });
-                break;
-              case 'mode-dark':
-                PNotify.defaults.mode = 'dark';
-                $('#bootstrap-light').attr('media', '(width: 0px)');
-                $('#bootstrap-dark').attr('media', '(prefers-color-scheme: no-preference), (prefers-color-scheme: light), (prefers-color-scheme: dark)');
-                PNotify.notice({
-                  title: 'Mode Change',
-                  text: 'From now on, notices will show in dark mode.'
-                });
-                break;
-            }
-            setTimeout(function () {
-              PNotify.positionAll();
-            }, 500);
+          document.getElementById('style-material').addEventListener('change', e => {
+            PNotify.defaults.styling = 'material';
+            PNotify.defaults.icons = 'material';
+            document.querySelectorAll('.sharpthemes-hideme').forEach(el => el.style.display = 'none');
+            PNotify.notice({
+              title: 'Styling Change',
+              text: 'From now on, notices will be styled with Material Style Module.'
+            });
+          });
+
+          document.getElementById('style-bootstrap4').addEventListener('change', e => {
+            PNotify.defaults.styling = 'bootstrap4';
+            PNotify.defaults.icons = 'fontawesome5';
+            document.querySelectorAll('.sharpthemes-hideme').forEach(el => el.style.display = 'initial');
+            PNotify.notice({
+              title: 'Styling Change',
+              text: 'From now on, notices will be styled with Bootstrap 4 w/ Font Awesome 5 Icons.'
+            });
+          });
+
+          document.getElementById('mode-no-preference').addEventListener('change', e => {
+            PNotify.defaults.mode = 'no-preference';
+            document.getElementById('bootstrap-light').attributes.media.value = '(prefers-color-scheme: no-preference), (prefers-color-scheme: light)';
+            document.getElementById('bootstrap-dark').attributes.media.value = '(prefers-color-scheme: dark)';
+            PNotify.notice({
+              title: 'Mode Change',
+              text: 'From now on, notices will show in system default mode.'
+            });
+          });
+
+          document.getElementById('mode-light').addEventListener('change', e => {
+            PNotify.defaults.mode = 'light';
+            document.getElementById('bootstrap-light').attributes.media.value = '(prefers-color-scheme: no-preference), (prefers-color-scheme: light), (prefers-color-scheme: dark)';
+            document.getElementById('bootstrap-dark').attributes.media.value = '(width: 0px)';
+            PNotify.notice({
+              title: 'Mode Change',
+              text: 'From now on, notices will show in light mode.'
+            });
+          });
+
+          document.getElementById('mode-dark').addEventListener('change', e => {
+            PNotify.defaults.mode = 'dark';
+            document.getElementById('bootstrap-light').attributes.media.value = '(width: 0px)';
+            document.getElementById('bootstrap-dark').attributes.media.value = '(prefers-color-scheme: no-preference), (prefers-color-scheme: light), (prefers-color-scheme: dark)';
+            PNotify.notice({
+              title: 'Mode Change',
+              text: 'From now on, notices will show in dark mode.'
+            });
           });
         });
       </script>
@@ -396,7 +391,7 @@
             text: 'No one ever pays attention to me. Why should they? I\'m practically invisible.',
             addClass: 'translucent'
           });
-          var sourceNote = 'You need this CSS: [ui-pnotify].ui-pnotify.translucent.ui-pnotify-fade-in {opacity: 0.8;}';
+          const sourceNote = 'You need this CSS: [ui-pnotify].ui-pnotify.translucent.ui-pnotify-fade-in {opacity: 0.8;}';
         ">Translucent</button>
         <button class="btn btn-light my-1 source" onclick="
           PNotify.notice({
@@ -436,8 +431,8 @@
           });
         ">No Effect</button>
         <button class="btn btn-light my-1 source" onclick="
-          var notice = PNotify.notice({
-            text: $('#form_notice').html(),
+          const notice = PNotify.notice({
+            text: document.getElementById('form_notice').innerHTML,
             textTrusted: true,
             icon: false,
             width: 'auto',
@@ -449,13 +444,13 @@
               }
             }
           });
-          $(notice.refs.elem).find('form').on('click', '[name=cancel]', function () {
-            notice.close();
-          }).submit(function () {
-            var username = $(this).find('input[name=username]').val();
+          notice.refs.elem.querySelector('form [name=cancel]').addEventListener('click', () => notice.close());
+          notice.refs.elem.querySelector('form').addEventListener('submit', e => {
+            e.preventDefault();
+            const username = notice.refs.elem.querySelector('form input[name=username]').value;
             if (!username) {
               alert('Please provide a username.');
-              return false;
+              return;
             }
             notice.update({
               title: 'Welcome',
@@ -472,7 +467,6 @@
                 }
               }
             });
-            return false;
           });
         ">Forms</button>
         <div id="form_notice" style="display: none;">
@@ -560,13 +554,13 @@
           </div>
         </div>
         <button class="btn btn-light my-1 source" onclick="
-          var notice = PNotify.notice({
+          const notice = PNotify.notice({
             title: 'Click Notice',
             text: 'I wish someone would click me.'
           });
           notice.refs.elem.style.cursor = 'pointer';
-          notice.on('click', function (e) {
-            if ($(e.target).is('.ui-pnotify-closer *, .ui-pnotify-sticker *')) {
+          notice.on('click', e => {
+            if ([...notice.refs.elem.querySelectorAll('.ui-pnotify-closer *, .ui-pnotify-sticker *')].indexOf(e.target) !== -1) {
               return;
             }
             notice.update({
@@ -577,7 +571,7 @@
           });
         ">Click on It</button>
         <button class="btn btn-light my-1 source" onclick="
-          var notice = PNotify.notice({
+          const notice = PNotify.notice({
             title: 'Click Close Notice',
             text: 'Click me anywhere to dismiss me.',
             modules: {
@@ -587,7 +581,7 @@
               }
             }
           });
-          notice.on('click', function () {
+          notice.on('click', () => {
             notice.close();
           });
         ">Click to Close</button>
@@ -617,14 +611,14 @@
         <button class="btn btn-light my-1 source" onclick="
           PNotify.notice({
             title: '&lt;em&gt;Escaped Notice&lt;/em&gt;',
-            text: $('#evil_html').html(),
+            text: document.getElementById('evil_html').innerHTML,
           });
         ">Or Keep it Safe</button>
         <div id="evil_html" style="display: none;">
           <div>As you can see, I don't allow HTML in my content.</div>
           <div>This prevents things like cross site scripting attacks:</div>
           <script type="text/javascript">
-            (function () {
+            (() => {
               // Here would be the XSS attack.
             })();
           </script>
@@ -633,8 +627,8 @@
           /* eslint-env browser, jquery */
           /* globals PNotify */
           window.dynNotice = function dynNotice () {
-            var percent = 0;
-            var notice = PNotify.info({
+            let percent = 0;
+            const notice = PNotify.info({
               text: 'Please Wait',
               icon: 'fas fa-spinner fa-pulse',
               hide: false,
@@ -648,11 +642,11 @@
               }
             });
 
-            setTimeout(function () {
+            setTimeout(() => {
               notice.update({ title: false });
-              var interval = setInterval(function () {
+              const interval = setInterval(() => {
                 percent += 2;
-                var options = {
+                const options = {
                   text: percent + '% complete.'
                 };
                 if (percent === 80) {
@@ -700,25 +694,36 @@
             icon: 'far fa-file-image fa-3x'
           });
         ">Custom Styles</button>
-        <div style="float: right;"><a data-toggle="modal" href="#growl">How to style like Growl.</a></div>
-        <div class="modal fade" id="growl" tabindex="-1" role="dialog" aria-labelledby="growl-title" aria-hidden="true">
-          <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="growl-title">Styling Notices Like Growl</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <p>
-                  To custom style a notice, you need to use a class. For this
-                  example, we'll use "<strong>custom</strong>".
-                </p>
-                <p>
-                  Here's some CSS to make custom notices look like Growl:
-                </p>
-                <pre style="min-width: 100%;"><code class="css">/* Notice that your selectors need to be more specific than PNotify's selectors. */
+        <div style="float: right;"><a href="javascript:void(0);" onclick="
+          if (!window.growlModal) {
+            window.growlModal = PNotify.info({
+              title: 'Styling Notices Like Growl',
+              text: document.getElementById('growl'),
+              icon: 'fas fa-code',
+              hide: false,
+              destroy: false,
+              autoOpen: false,
+              width: '80vw',
+              stack: new PNotify.Stack({ modal: true, overlayClosesPinned: true }),
+              modules: {
+                Buttons: {
+                  sticker: false
+                }
+              }
+            });
+          }
+          window.growlModal.open();
+        ">How to style like Growl.</a></div>
+        <div style="display: none;">
+          <div id="growl" style="max-height: 70vh; overflow-y: auto;">
+            <p>
+              To custom style a notice, you need to use a class. For this
+              example, we'll use "<strong>custom</strong>".
+            </p>
+            <p>
+              Here's some CSS to make custom notices look like Growl:
+            </p>
+            <pre style="min-width: 100%;"><code class="css">/* Notice that your selectors need to be more specific than PNotify's selectors. */
 [ui-pnotify].ui-pnotify<strong>.custom</strong> .ui-pnotify-container {
   background-color: #404040;
   background-image: none;
@@ -746,21 +751,16 @@
 [ui-pnotify].ui-pnotify<strong>.custom</strong> .ui-pnotify-icon {
   color: #FFA;
 }</code></pre>
-                <p>
-                  And here's the JavaScript to use this styling:
-                </p>
-                <pre style="min-width: 100%;"><code class="js">PNotify.notice({
+            <p>
+              And here's the JavaScript to use this styling:
+            </p>
+            <pre style="min-width: 100%;"><code class="js">PNotify.notice({
   title: 'Custom Styling',
   text: 'I have an additional class that\'s used to give me special styling. I always wanted to be pretty.',
   <strong>styling: {}</strong>,
   <strong>addClass: 'custom nonblock'</strong>,
   icon: 'far fa-file-image fa-3x'
 });</code></pre>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-light" data-dismiss="modal">Ok, got it.</button>
-              </div>
-            </div>
           </div>
         </div>
         <hr style="clear: both;" />
@@ -914,8 +914,8 @@
                 icon: false
               }
             }
-          }).on('click', function (e) {
-            if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target)) {
+          }).on('click', e => {
+            if ([...notice.refs.elem.querySelectorAll('.ui-pnotify-closer *, .ui-pnotify-sticker *')].indexOf(e.target) !== -1) {
               return;
             }
             alert('Hey! You clicked the desktop notification!');
@@ -932,15 +932,15 @@
                 icon: false
               }
             }
-          }).on('click', function (e) {
-            if ($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target)) {
+          }).on('click', e => {
+            if ([...notice.refs.elem.querySelectorAll('.ui-pnotify-closer *, .ui-pnotify-sticker *')].indexOf(e.target) !== -1) {
               return;
             }
             alert('Hey! You clicked the desktop notification!');
           });
         ">Sticky Clicky</button>
         <button class="btn btn-light my-1 source" onclick="
-          var notice = PNotify.notice({
+          const notice = PNotify.notice({
             title: 'Dynamic Desktop Notice',
             text: 'I\'m a dynamic desktop notice.',
             modules: {
@@ -949,7 +949,7 @@
               }
             }
           });
-          setTimeout(function () {
+          setTimeout(() => {
             notice.update({
               type: 'info',
               text: 'Now I\'m an info box!'
@@ -1245,8 +1245,8 @@
             </select>
           </div>
           <button class="btn btn-light my-1 source" onclick="
-            var animateIn = $('#animate_in').val();
-            var animateOut = $('#animate_out').val();
+            const animateIn = document.getElementById('animate_in').value;
+            const animateOut = document.getElementById('animate_out').value;
             PNotify.notice({
               title: 'Animate.css Effect',
               text: 'I use effects from Animate.css. Such smooth CSS3 transitions make me feel like butter.',
@@ -1262,7 +1262,7 @@
         </div>
         Attention seekers:<br />
         <button class="btn btn-light my-1 source" onclick="
-          var notice = PNotify.notice({
+          PNotify.notice({
             title: 'Attention Seeker',
             text: 'Click the button to see how you can highlight the notice with the Animate module:',
             textTrusted: true,
@@ -1272,14 +1272,14 @@
                 buttons: [{
                   text: 'Bounce!',
                   primary: true,
-                  click: function (notice) { notice.attention('bounce'); }
+                  click: notice => notice.attention('bounce')
                 }]
               }
             }
           });
         ">Bounce</button>
         <button class="btn btn-light my-1 source" onclick="
-          var notice = PNotify.notice({
+          PNotify.notice({
             title: 'Attention Seeker',
             text: 'Click the button to see how you can highlight the notice with the Animate module:',
             textTrusted: true,
@@ -1289,14 +1289,14 @@
                 buttons: [{
                   text: 'Flash!',
                   primary: true,
-                  click: function (notice) { notice.attention('flash'); }
+                  click: notice => notice.attention('flash')
                 }]
               }
             }
           });
         ">Flash</button>
         <button class="btn btn-light my-1 source" onclick="
-          var notice = PNotify.notice({
+          PNotify.notice({
             title: 'Attention Seeker',
             text: 'Click the button to see how you can highlight the notice with the Animate module:',
             textTrusted: true,
@@ -1306,14 +1306,14 @@
                 buttons: [{
                   text: 'Pulse!',
                   primary: true,
-                  click: function (notice) { notice.attention('pulse'); }
+                  click: notice => notice.attention('pulse')
                 }]
               }
             }
           });
         ">Pulse</button>
         <button class="btn btn-light my-1 source" onclick="
-          var notice = PNotify.notice({
+          PNotify.notice({
             title: 'Attention Seeker',
             text: 'Click the button to see how you can highlight the notice with the Animate module:',
             textTrusted: true,
@@ -1323,14 +1323,14 @@
                 buttons: [{
                   text: 'Rubber Band!',
                   primary: true,
-                  click: function (notice) { notice.attention('rubberBand'); }
+                  click: notice => notice.attention('rubberBand')
                 }]
               }
             }
           });
         ">Rubber Band</button>
         <button class="btn btn-light my-1 source" onclick="
-          var notice = PNotify.notice({
+          PNotify.notice({
             title: 'Attention Seeker',
             text: 'Click the button to see how you can highlight the notice with the Animate module:',
             textTrusted: true,
@@ -1340,14 +1340,14 @@
                 buttons: [{
                   text: 'Shake!',
                   primary: true,
-                  click: function (notice) { notice.attention('shake'); }
+                  click: notice => notice.attention('shake')
                 }]
               }
             }
           });
         ">Shake</button>
         <button class="btn btn-light my-1 source" onclick="
-          var notice = PNotify.notice({
+          PNotify.notice({
             title: 'Attention Seeker',
             text: 'Click the button to see how you can highlight the notice with the Animate module:',
             textTrusted: true,
@@ -1357,14 +1357,14 @@
                 buttons: [{
                   text: 'Swing!',
                   primary: true,
-                  click: function (notice) { notice.attention('swing'); }
+                  click: notice => notice.attention('swing')
                 }]
               }
             }
           });
         ">Swing</button>
         <button class="btn btn-light my-1 source" onclick="
-          var notice = PNotify.notice({
+          PNotify.notice({
             title: 'Attention Seeker',
             text: 'Click the button to see how you can highlight the notice with the Animate module:',
             textTrusted: true,
@@ -1374,14 +1374,14 @@
                 buttons: [{
                   text: 'Tada!',
                   primary: true,
-                  click: function (notice) { notice.attention('tada'); }
+                  click: notice => notice.attention('tada')
                 }]
               }
             }
           });
         ">Tada</button>
         <button class="btn btn-light my-1 source" onclick="
-          var notice = PNotify.notice({
+          PNotify.notice({
             title: 'Attention Seeker',
             text: 'Click the button to see how you can highlight the notice with the Animate module:',
             textTrusted: true,
@@ -1391,14 +1391,14 @@
                 buttons: [{
                   text: 'Wobble!',
                   primary: true,
-                  click: function (notice) { notice.attention('wobble'); }
+                  click: notice => notice.attention('wobble')
                 }]
               }
             }
           });
         ">Wobble</button>
         <button class="btn btn-light my-1 source" onclick="
-          var notice = PNotify.notice({
+          PNotify.notice({
             title: 'Attention Seeker',
             text: 'Click the button to see how you can highlight the notice with the Animate module:',
             textTrusted: true,
@@ -1408,7 +1408,7 @@
                 buttons: [{
                   text: 'Jello!',
                   primary: true,
-                  click: function (notice) { notice.attention('jello'); }
+                  click: notice => notice.attention('jello')
                 }]
               }
             }
@@ -1420,7 +1420,7 @@
       <h5 class="card-header">Confirm Module <small>Confirmation dialogs and prompts.</small></h5>
       <div class="card-body">
         <button class="btn btn-light my-1 source" onclick="
-          var notice = PNotify.notice({
+          const notice = PNotify.notice({
             title: 'Confirmation Needed',
             text: 'Are you sure?',
             icon: 'fas fa-question-circle',
@@ -1436,15 +1436,11 @@
               }
             }
           });
-          notice.on('pnotify.confirm', function () {
-            alert('Ok, cool.');
-          });
-          notice.on('pnotify.cancel', function () {
-            alert('Oh ok. Chicken, I see.');
-          });
+          notice.on('pnotify.confirm', () => alert('Ok, cool.'));
+          notice.on('pnotify.cancel', () => alert('Oh ok. Chicken, I see.'));
         ">Confirm Dialog</button>
         <button class="btn btn-light my-1 source" onclick="
-          var notice = PNotify.notice({
+          const notice = PNotify.notice({
             title: 'Confirmation Needed',
             text: 'Are you sure?',
             icon: 'fas fa-question-circle',
@@ -1466,12 +1462,8 @@
               }
             }
           });
-          notice.on('pnotify.confirm', function () {
-            alert('Ok, cool.');
-          });
-          notice.on('pnotify.cancel', function () {
-            alert('Oh ok. Chicken, I see.');
-          });
+          notice.on('pnotify.confirm', () => alert('Ok, cool.'));
+          notice.on('pnotify.cancel', () => alert('Oh ok. Chicken, I see.'));
         ">Modal Confirm Dialog</button>
         <button class="btn btn-light my-1 source" onclick="
           PNotify.notice({
@@ -1487,66 +1479,60 @@
                   {
                     text: 'Fries',
                     primary: true,
-                    click: function (notice) {
-                      notice.update({
-                        title: 'You\'ve Chosen a Side',
-                        text: 'You want fries.',
-                        icon: true,
-                        type: 'info',
-                        hide: true,
-                        modules: {
-                          Confirm: {
-                            confirm: false
-                          },
-                          Buttons: {
-                            closer: true,
-                            sticker: true
-                          }
+                    click: notice => notice.update({
+                      title: 'You\'ve Chosen a Side',
+                      text: 'You want fries.',
+                      icon: true,
+                      type: 'info',
+                      hide: true,
+                      modules: {
+                        Confirm: {
+                          confirm: false
+                        },
+                        Buttons: {
+                          closer: true,
+                          sticker: true
                         }
-                      });
-                    }
+                      }
+                    })
                   },
                   {
                     text: 'Mash',
-                    click: function (notice) {
-                      notice.update({
-                        title: 'You\'ve Chosen a Side',
-                        text: 'You want mashed potatoes.',
-                        icon: true,
-                        type: 'info',
-                        hide: true,
-                        modules: {
-                          Confirm: {
-                            confirm: false
-                          },
-                          Buttons: {
-                            closer: true,
-                            sticker: true
-                          }
+                    click: notice => notice.update({
+                      title: 'You\'ve Chosen a Side',
+                      text: 'You want mashed potatoes.',
+                      icon: true,
+                      type: 'info',
+                      hide: true,
+                      modules: {
+                        Confirm: {
+                          confirm: false
+                        },
+                        Buttons: {
+                          closer: true,
+                          sticker: true
                         }
-                      });
-                    }
+                      }
+                    })
                   },
                   {
                     text: 'Fruit',
-                    click: function (notice) {
-                      notice.update({
-                        title: 'You\'ve Chosen a Side',
-                        text: 'You want fruit.',
-                        icon: true,
-                        type: 'info',
-                        hide: true,
-                        modules: {
-                          Confirm: {
-                            confirm: false
-                          },
-                          Buttons: {
-                            closer: true,
-                            sticker: true
-                          }
+                    click: notice => notice.update({
+                      title: 'You\'ve Chosen a Side',
+                      text: 'You want fruit.',
+                      icon: true,
+                      type: 'info',
+                      hide: true,
+                      modules: {
+                        Confirm: {
+                          confirm: false
+                        },
+                        Buttons: {
+                          closer: true,
+                          sticker: true
                         }
-                      });
-                    }
+                      }
+                    })
                   }
                 ]
               },
@@ -1558,7 +1544,7 @@
           });
         ">Custom Buttons</button>
         <button class="btn btn-light my-1 source" onclick="
-          var notice = PNotify.notice({
+          const notice = PNotify.notice({
             title: 'Input Needed',
             text: 'What side would you like?',
             icon: 'fas fa-question-circle',
@@ -1574,7 +1560,7 @@
               }
             }
           });
-          notice.on('pnotify.confirm', function (e) {
+          notice.on('pnotify.confirm', e => {
             notice.cancelClose();
             notice.update({
               title: 'You\'ve Chosen a Side',
@@ -1593,7 +1579,7 @@
               }
             });
           });
-          notice.on('pnotify.cancel', function () {
+          notice.on('pnotify.cancel', () => {
             notice.cancelClose();
             notice.update({
               title: 'You Don\'t Want a Side',
@@ -1614,7 +1600,7 @@
           });
         ">Prompt Dialog</button>
         <button class="btn btn-light my-1 source" onclick="
-          var notice = PNotify.notice({
+          const notice = PNotify.notice({
             title: 'Input Needed',
             text: 'Write me a poem, please.',
             icon: 'fas fa-question-circle',
@@ -1632,7 +1618,7 @@
               }
             }
           });
-          notice.on('pnotify.confirm', function (e) {
+          notice.on('pnotify.confirm', e => {
             notice.cancelClose();
             notice.update({
               title: 'Your Poem',
@@ -1651,7 +1637,7 @@
               }
             });
           });
-          notice.on('pnotify.cancel', function () {
+          notice.on('pnotify.cancel', () => {
             notice.cancelClose();
             notice.update({
               title: 'You Don\'t Like Poetry',
@@ -1685,7 +1671,7 @@
                 buttons: [{
                   text: 'Ok',
                   primary: true,
-                  click: function (notice) { notice.close(); }
+                  click: notice => notice.close()
                 }]
               },
               Buttons: {
@@ -1708,7 +1694,7 @@
                 buttons: [{
                   text: 'Ok',
                   primary: true,
-                  click: function (notice) { notice.close(); }
+                  click: notice => notice.close()
                 }]
               },
               Buttons: {
@@ -1731,7 +1717,7 @@
                 buttons: [{
                   text: 'Ok',
                   primary: true,
-                  click: function (notice) { notice.close(); }
+                  click: notice => notice.close()
                 }]
               },
               Buttons: {
@@ -1754,7 +1740,7 @@
                 buttons: [{
                   text: 'Ok',
                   primary: true,
-                  click: function (notice) { notice.close(); }
+                  click: notice => notice.close()
                 }]
               },
               Buttons: {
@@ -1769,37 +1755,37 @@
       <h5 class="card-header">Callbacks Module <small>Manipulate the notice during its lifecycle.</small></h5>
       <div class="card-body">
         <button class="btn btn-light my-1 source" onclick="
-          var dontAlert = function () {};
+          const dontAlert = () => {};
           PNotify.notice({
             title: 'I\'m Here',
             text: 'I have a callback for each of my events. I\'ll call all my callbacks while I change states.',
             modules: {
               Callbacks: {
-                beforeInit: function (opts) {
+                beforeInit: opts => {
                   console.log('beforeInit', opts);
                   alert('I\'m called before the notice initializes. I\'m passed the options used to make the notice. I can modify them. Watch me replace the word callback with tire iron!');
                   opts.text = opts.text.replace(/callback/g, 'tire iron');
                 },
-                afterInit: function (notice) {
+                afterInit: notice => {
                   console.log('afterInit', notice);
                   alert('I\'m called after the notice initializes. I\'m passed the PNotify object for the current notice: ' + notice + '\n\nThere are more callbacks you can assign, but this is the last notice you\'ll see. Check the code to see them all.');
                 },
-                beforeOpen: function (notice) {
+                beforeOpen: notice => {
                   console.log('beforeOpen', notice);
-                  var sourceNote = 'Return false to cancel opening.';
+                  const sourceNote = 'Return false to cancel opening.';
                   dontAlert('I\'m called before the notice opens. I\'m passed the PNotify object for the current notice: ' + notice);
                 },
-                afterOpen: function (notice) {
+                afterOpen: notice => {
                   console.log('afterOpen', notice);
                   dontAlert('I\'m called after the notice opens. I\'m passed the PNotify object for the current notice: ' + notice);
                 },
-                beforeClose: function (notice, timerHide) {
+                beforeClose: (notice, timerHide) => {
                   console.log('beforeClose', notice, timerHide);
-                  var sourceNote = 'Return false to cancel close. Use PNotify.queueClose() to set the close timer again.';
+                  const sourceNote = 'Return false to cancel close. Use PNotify.queueClose() to set the close timer again.';
                   dontAlert('I\'m called before the notice closes. I\'m passed the PNotify object for the current notice: ' + notice);
                   dontAlert('I also have an argument called timerHide, which is true if the notice was closed because the timer ran down. Value: ' + timerHide);
                 },
-                afterClose: function (notice, timerHide) {
+                afterClose: (notice, timerHide) => {
                   console.log('afterClose', notice, timerHide);
                   dontAlert('I\'m called after the notice closes. I\'m passed the PNotify object for the current notice: ' + notice);
                   dontAlert('I also have an argument called timerHide, which is true if the notice was closed because the timer ran down. Value: ' + timerHide);
@@ -1814,21 +1800,21 @@
             text: 'Right now I\'m a notice.',
             modules: {
               Callbacks: {
-                beforeClose: function (notice) {
+                beforeClose: notice => {
                   notice.update({
                     title: 'Error',
                     text: 'Uh oh. Now I\'ve become an error.',
                     type: 'error',
                     modules: {
                       Callbacks: {
-                        beforeClose: function (notice) {
+                        beforeClose: notice => {
                           notice.update({
                             title: 'Success',
                             text: 'I fixed the error!',
                             type: 'success',
                             modules: {
                               Callbacks: {
-                                beforeClose: function (notice) {
+                                beforeClose: notice => {
                                   notice.update({
                                     title: 'Info',
                                     text: 'Everything\'s cool now.',
@@ -1863,11 +1849,11 @@
           /* eslint-env browser, jquery */
           /* globals PNotify */
           window.fakeLoad = function fakeLoad () {
-            var curValue = 1;
-            var progress;
+            let curValue = 1;
+            let progress;
 
             // Make a loader.
-            var loader = PNotify.notice({
+            PNotify.notice({
               title: 'Creating series of tubes',
               text: '<div class="progress">\n' +
                     '  <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></' + 'div>\n' +
@@ -1882,27 +1868,28 @@
                   sticker: false
                 },
                 Callbacks: {
-                  beforeOpen: function (notice) {
-                    progress = $(notice.refs.elem).find('div.progress-bar');
-                    progress.width(curValue + '%').attr('aria-valuenow', curValue);
+                  afterOpen: notice => {
+                    progress = notice.refs.elem.querySelector('.progress-bar');
+                    progress.style.width = (curValue + '%');
+                    progress.attributes['aria-valuenow'].value = curValue;
                     // Pretend to do something.
-                    var plus = 1;
-                    var timer = setInterval(function () {
+                    let plus = 1;
+                    const timer = setInterval(() => {
                       if (curValue === 70) {
                         plus = 0.25;
-                        loader.update({
+                        notice.update({
                           title: 'Aligning discrete worms',
                           icon: 'fas fa-circle-notch fa-spin'
                         });
                       }
                       if (curValue === 80) {
-                        loader.update({
+                        notice.update({
                           title: 'Connecting end points',
                           icon: 'fas fa-sync fa-spin'
                         });
                       }
                       if (curValue === 90) {
-                        loader.update({
+                        notice.update({
                           title: 'Dividing and conquering',
                           icon: 'fas fa-spinner fa-pulse'
                         });
@@ -1910,11 +1897,12 @@
                       if (curValue >= 100) {
                         // Clean up the interval.
                         window.clearInterval(timer);
-                        loader.close();
+                        notice.close();
                         return;
                       }
                       curValue += plus;
-                      progress.width(curValue + '%').attr('aria-valuenow', curValue);
+                      progress.style.width = (curValue + '%');
+                      progress.attributes['aria-valuenow'].value = curValue;
                     }, 65);
                   }
                 }
@@ -1959,7 +1947,12 @@
             icon: 'fas fa-bars',
             hide: false,
             destroy: true,
-            stack: new PNotify.Stack({ modal: true, overlayClosesPinned: true })
+            stack: new PNotify.Stack({ modal: true, overlayClosesPinned: true }),
+            modules: {
+              Buttons: {
+                sticker: false
+              }
+            }
           });
         ">What are stacks?</button>
         <hr />
@@ -1971,7 +1964,7 @@
             if (typeof window.stackTopLeft === 'undefined') {
               window.stackTopLeft = new PNotify.Stack({ dir1: 'down', dir2: 'right', firstpos1: 25, firstpos2: 25, push: 'top', maxStrategy: 'close' });
             }
-            var opts = {
+            const opts = {
               title: 'Over Here',
               text: "Check me out. I'm in a different stack.",
               stack: window.stackTopLeft
@@ -2017,7 +2010,7 @@
             if (typeof window.stackBottomLeft === 'undefined') {
               window.stackBottomLeft = new PNotify.Stack({ dir1: 'right', dir2: 'up', firstpos1: 25, firstpos2: 25, push: 'top', maxStrategy: 'close' });
             }
-            var opts = {
+            const opts = {
               title: 'Over Here',
               text: "Check me out. I'm in a different stack.",
               stack: window.stackBottomLeft
@@ -2063,7 +2056,7 @@
             if (typeof window.stackBottomRight === 'undefined') {
               window.stackBottomRight = new PNotify.Stack({ dir1: 'up', dir2: 'left', firstpos1: 25, firstpos2: 25 });
             }
-            var opts = {
+            const opts = {
               title: 'Over Here',
               text: "Check me out. I'm in a different stack.",
               stack: window.stackBottomRight
@@ -2109,7 +2102,7 @@
             if (typeof window.stackTopCenter === 'undefined') {
               window.stackTopCenter = new PNotify.Stack({ dir1: 'down', firstpos1: 25, modal: false, maxOpen: Infinity });
             }
-            var opts = {
+            const opts = {
               title: 'Over Here',
               text: "Check me out. I'm in a different stack.",
               stack: window.stackTopCenter
@@ -2155,7 +2148,7 @@
             if (typeof window.stackModal === 'undefined') {
               window.stackModal = new PNotify.Stack({ dir1: 'up', firstpos1: 25, push: 'top', modal: true, maxOpen: Infinity });
             }
-            var opts = {
+            const opts = {
               title: 'Over Here',
               text: "Check me out. I'm in a different stack.",
               stack: window.stackModal,
@@ -2165,9 +2158,7 @@
                   buttons: [{
                     text: 'Another',
                     primary: true,
-                    click: function () {
-                      showStackModal(type);
-                    }
+                    click: () => showStackModal(type)
                   }]
                 }
               }
@@ -2213,7 +2204,7 @@
             if (typeof window.stackModalLeft === 'undefined') {
               window.stackModalLeft = new PNotify.Stack({ dir1: 'down', dir2: 'right', firstpos1: 25, firstpos2: 25, modal: true, maxOpen: Infinity });
             }
-            var opts = {
+            const opts = {
               title: 'Over Here',
               text: "Check me out. I'm in a different stack.",
               stack: window.stackModalLeft,
@@ -2223,9 +2214,7 @@
                   buttons: [{
                     text: 'Another',
                     primary: true,
-                    click: function () {
-                      showStackModalLeft(type);
-                    }
+                    click: () => showStackModalLeft(type)
                   }]
                 }
               }
@@ -2271,7 +2260,7 @@
             if (typeof window.stackBarTop === 'undefined') {
               window.stackBarTop = new PNotify.Stack({ modal: false, dir1: 'down', firstpos1: 0, spacing1: 0, push: 'top', maxOpen: Infinity });
             }
-            var opts = {
+            const opts = {
               title: 'Over Here',
               text: "Check me out. I'm in a different stack.",
               addClass: 'stack-bar-top',
@@ -2326,7 +2315,7 @@
             if (typeof window.stackBarBottom === 'undefined') {
               window.stackBarBottom = new PNotify.Stack({ dir1: 'up', firstpos1: 0, spacing1: 0 });
             }
-            var opts = {
+            const opts = {
               title: 'Over Here',
               text: "Check me out. I'm in a different stack.",
               addClass: 'stack-bar-bottom',
@@ -2376,7 +2365,7 @@
         <script type="text/javascript">
           /* eslint-env browser, jquery */
           /* globals PNotify */
-          $(function () {
+          window.addEventListener('DOMContentLoaded', () => {
             window.makeTooltip = function makeTooltip () {
               window.tooltip = PNotify.notice({
                 title: 'Tooltip',
@@ -2396,9 +2385,7 @@
                 }
               });
               // Close the notice if the user mouses over it.
-              window.tooltip.on('mouseout', function () {
-                window.tooltip.close();
-              });
+              window.tooltip.on('mouseout', () => window.tooltip.close());
             };
             // I put it in a function so I could show the source easily.
             window.makeTooltip();
@@ -2424,7 +2411,7 @@
             if (typeof window.stackContextModal === 'undefined') {
               window.stackContextModal = new PNotify.Stack({ dir1: 'down', firstpos1: 25, context: document.getElementById('stack-context'), modal: true, maxOpen: Infinity });
             }
-            var opts = {
+            const opts = {
               title: 'Over Here',
               text: "Check me out. I'm in a different stack.",
               stack: modal === 'ish' ? window.stackContext : (modal ? window.stackContextModal : window.stackContextModeless)
@@ -2536,7 +2523,7 @@ PNotify.notice({
             <div class="card border-success mt-3">
               <h6 class="card-header text-light bg-success">Good - Notices will flow in line.</h6>
               <div class="card-body text-success">
-                <pre><code class="js">var myStack = new PNotify.Stack({dir1: 'down', firstpos1: 25});
+                <pre><code class="js">const myStack = new PNotify.Stack({dir1: 'down', firstpos1: 25});
 PNotify.notice({
   text: 'Notice 1.',
   stack: myStack
@@ -2559,30 +2546,30 @@ PNotify.notice({
       <hr />
     </div>
     <div class="card">
-      <h5 class="card-header">Timer</h5>
+      <h5 class="card-header">Close Delay</h5>
       <div class="card-body">
-        Current Timer: <span id="timer" style="font-family: monospace;"></span>
+        Current Default Delay: <span id="delay" style="font-family: monospace;"></span>
         <script type="text/javascript">
           /* eslint-env browser, jquery */
           /* globals PNotify */
           window.updateTimerDisplay = function updateTimerDisplay () {
-            $('#timer').text((PNotify.defaults.delay / 1000) + ' seconds');
+            document.getElementById('delay').textContent = (PNotify.defaults.delay / 1000) + ' seconds';
           };
-          $(function () {
+          window.addEventListener('DOMContentLoaded', () => {
             window.updateTimerDisplay();
           });
         </script>
         <br style="margin-bottom: 3px;" />
         <button class="btn btn-light my-1 source" onclick="
           PNotify.defaults.delay ?
-            (function () {
+            (() => {
               PNotify.defaults.delay -= 500;
               updateTimerDisplay();
             })() :
             alert('Timer is already at zero.');
         ">Lower Timer</button>
         <button class="btn btn-light my-1 source" onclick="
-          (function () {
+          (() => {
             PNotify.defaults.delay += 500;
             updateTimerDisplay();
           })();
@@ -2642,7 +2629,7 @@ PNotify.notice({
     <div id="commentContainer">
       <div style="text-align: center;">
         <button class="btn btn-primary" onclick="
-          $('#commentContainer').html($('#disqusLoader').html().replace(/screeept/g, 'script'));
+          document.getElementById('commentContainer').innerHTML = document.getElementById('disqusLoader').innerHTML.replace(/screeept/g, 'script');
         ">Load Comments</button>
       </div>
       <script type="text/html" id="disqusLoader">
@@ -2667,87 +2654,101 @@ PNotify.notice({
 
   <script type="text/javascript">
     /* eslint-env browser, jquery */
-    $(function () {
+    window.addEventListener('DOMContentLoaded', () => {
       // ---
       // This creates all those source code view buttons.
       // ---
-      var makeSourceButton = function (elem) {
-        var button = $(elem);
-        button.removeClass('source');
-        var classList = button.attr('class');
+      const makeSourceButton = button => {
+        button.classList.remove('source');
         // Wrap the button in a container.
-        var contain = $('<div class="btn-group" />');
-        contain = button.wrap(contain).parent();
-        $('<button type="button"><i class="fas fa-code fa-sm"></' + 'i></' + 'button>').appendTo(contain).addClass(classList).on('click', function () {
-          $(this).blur();
-          var text = button.attr('onclick');
-          if (!text && button.attr('onmouseover')) {
-            text = '// Mouse Over:\n' + button.attr('onmouseover') + '\n\n// Mouse Move:\n' + button.attr('onmousemove') + '\n\n// Mouse Out:\n' + button.attr('onmouseout');
+        const contain = document.createElement('div');
+        contain.classList.add('btn-group');
+        button.parentNode.insertBefore(contain, button);
+        contain.appendChild(button);
+
+        const sourceButton = document.createElement('button');
+        button.setAttribute('type', 'button');
+        const icon = document.createElement('i');
+        icon.classList.add('fas', 'fa-code', 'fa-sm');
+        sourceButton.appendChild(icon);
+        sourceButton.classList.add(...button.classList.values());
+        contain.appendChild(sourceButton);
+
+        sourceButton.addEventListener('click', e => {
+          let text = '';
+          if (button.hasAttribute('onclick')) {
+            text += button.attributes.onclick.value;
           }
-          // IE needs this.
-          if (text.toString) {
-            text = text.toString();
-            if (text.match(/^\s*function (onclick|anonymous)[\n ]*\([^\)]*\)[\n ]*\{[\n\t ]*/)) { // eslint-disable-line no-useless-escape
-              text = text.replace(/^\s*function (onclick|anonymous)[\n ]*\([^\)]*\)[\n ]*\{[\n\t ]*/, '').replace(/[\n\t ]*}[\n\t ]*$/, ''); // eslint-disable-line no-useless-escape
+          if (button.hasAttribute('onmouseover')) {
+            text += (text ? '\n\n' : '')+'// Mouse Over:\n' + button.attributes.onmouseover.value;
+          }
+          if (button.hasAttribute('onmousemove')) {
+            text += (text ? '\n\n' : '')+'// Mouse Move:\n' + button.attributes.onmousemove.value;
+          }
+          if (button.hasAttribute('onmouseout')) {
+            text += (text ? '\n\n' : '')+'// Mouse Out:\n' + button.attributes.onmouseout.value;
+          }
+
+          const sourceElement = document.createElement('div');
+          sourceElement.style.maxHeight = '70vh';
+          sourceElement.style.overflowY = 'auto';
+
+          PNotify.info({
+            title: button.textContent + ' - Source',
+            text: sourceElement,
+            icon: 'fas fa-code',
+            hide: false,
+            destroy: true,
+            width: '80vw',
+            stack: new PNotify.Stack({ modal: true, overlayClosesPinned: true }),
+            modules: {
+              Buttons: {
+                sticker: false
+              }
             }
-          }
+          });
 
-          // Is there a better way to do this?
-          var dialog = $('<div class="modal fade" tabindex="-1" role="dialog">\n' +
-                         '  <div class="modal-dialog modal-lg" role="document">\n' +
-                         '    <div class="modal-content">\n' +
-                         '      <div class="modal-header">\n' +
-                         '        <h5 class="modal-title">' + button.text() + ' - Source</' + 'h5>\n' +
-                         '        <button type="button" class="close" data-dismiss="modal" aria-label="Close">\n' +
-                         '          <span aria-hidden="true">&times;</' + 'span>\n' +
-                         '        </' + 'button>\n' +
-                         '      </' + 'div>\n' +
-                         '      <div class="modal-body"></' + 'div>\n' +
-                         '      <div class="modal-footer">\n' +
-                         '        <button type="button" class="btn btn-light" data-dismiss="modal">Ok, got it.</' + 'button>\n' +
-                         '      </' + 'div>\n' +
-                         '    </' + 'div>\n' +
-                         '  </' + 'div>\n' +
-                         '</' + 'div>');
-
-          addPrettyCode(text, dialog.find('.modal-body'));
+          addPrettyCode(text, sourceElement);
 
           // Check if the code is just calling a function. Include that function.
-          var match = text.match(/^\s*(?:window\.)?(\w+)\s*\([^\)]*\);\s*$/); // eslint-disable-line no-useless-escape
+          const match = text.match(/^\s*(?:window\.)?(\w+)\s*\([^\)]*\);\s*$/); // eslint-disable-line no-useless-escape
           if (match) {
-            var fName = match[1];
+            const fName = match[1];
             text = window[fName].toString();
-            addPrettyCode(text, dialog.find('.modal-body'));
+            addPrettyCode(text, sourceElement);
           }
 
           // Check if this is the tooltip button. Include the tooltip function.
           if (text.match(/tooltip\.open\(\);/)) {
-            addPrettyCode(window.makeTooltip.toString(), dialog.find('.modal-body'));
+            addPrettyCode(window.makeTooltip.toString(), sourceElement);
           }
-
-          dialog.on('hidden.bs.modal', function () {
-            dialog.remove();
-          }).modal();
-        }).appendTo(contain);
+        });
       };
 
-      var addPrettyCode = function (code, where) {
-        code = code.replace(/(?:var )?sourceNote = ['"](.*)['"];$/gm, '// $1');
-        var codeBlock = $('<code class="js" />').text(window.beautifier.js(code, { indent_size: 2 }));
-        $('<pre />').append(codeBlock).appendTo(where);
-        window.hljs.highlightBlock(codeBlock.get(0));
+      const addPrettyCode = (code, where) => {
+        code = code.replace(/(?:const )?sourceNote = ['"](.*)['"];$/gm, '// $1');
+        const codeBlock = document.createElement('code');
+        codeBlock.classList.add('js');
+        codeBlock.textContent = window.beautifier.js(code, { indent_size: 2 });
+        const pre = document.createElement('pre');
+        pre.appendChild(codeBlock);
+        where.appendChild(pre);
+        window.hljs.highlightBlock(codeBlock);
       };
 
-      $('body').on('mouseenter click', '.source', function () {
-        makeSourceButton(this);
+      document.body.addEventListener('mouseenter', e => {
+        if (e.target.classList.contains('source')) {
+          makeSourceButton(e.target);
+        }
       });
 
-      $('.source', 'body').each(function () {
-        makeSourceButton(this);
+      document.body.addEventListener('click', e => {
+        if (e.target.classList.contains('source')) {
+          makeSourceButton(e.target);
+        }
       });
 
-      // Navbar scrollspy.
-      $('#navbar').scrollspy();
+      document.querySelectorAll('.source').forEach(el => makeSourceButton(el));
     });
 
     window.hljs.initHighlightingOnLoad(); // Format source in help.

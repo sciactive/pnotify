@@ -20,8 +20,6 @@
   <link href="" id="fontawesome-css" rel="stylesheet" type="text/css" />
 
   <script type="text/javascript">
-    console.log(PNotify);
-
     /* globals PNotify */
     window.setStyling = function () {
       var styling = document.getElementById('styling').value;
@@ -36,7 +34,7 @@
         loadLibraries();
       }
 
-      PNotify.closeAll();
+      PNotify.defaultStack.close();
     };
 
     window.setIcons = function () {
@@ -55,7 +53,7 @@
         loadLibraries();
       }
 
-      PNotify.closeAll();
+      PNotify.defaultStack.close();
     };
 
     window.setMode = function () {
@@ -63,7 +61,7 @@
 
       PNotify.defaults.mode = mode;
 
-      PNotify.closeAll();
+      PNotify.defaultStack.close();
     };
 
     window.setRtl = function () {
@@ -85,20 +83,20 @@
       output.innerText = '';
 
       if (bootstrap === '3') {
-        bootstrapCss.href = 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css';
+        bootstrapCss.href = 'https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css';
         output.innerText += ' Loaded Bootstrap 3.';
       } else if (bootstrap === '4') {
-        bootstrapCss.href = 'https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css';
+        bootstrapCss.href = 'https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css';
         output.innerText += ' Loaded Bootstrap 4.';
       } else {
         bootstrapCss.href = '';
       }
 
       if (fontAwesome === '4') {
-        fontAwesomeCss.href = 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css';
+        fontAwesomeCss.href = 'https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css';
         output.innerText += ' Loaded Font Awesome 4.';
       } else if (fontAwesome === '5') {
-        fontAwesomeCss.href = 'https://use.fontawesome.com/releases/v5.0.13/css/all.css';
+        fontAwesomeCss.href = 'https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css';
         output.innerText += ' Loaded Font Awesome 5.';
       } else {
         fontAwesomeCss.href = '';
@@ -236,5 +234,8 @@
       modules: {Confirm: {prompt: true, promptMultiLine: true}, Buttons: {closer: false, sticker: false}}
     });">Multi Line Prompt Error</button>
   </div>
+  <script type="text/javascript">
+    loadLibraries();
+  </script>
 </body>
 </html>
