@@ -48,7 +48,7 @@
   });
 </script>
 
-{#if closer && !(_notice && _notice.refs.elem.classList.contains('nonblock'))}
+{#if closer && !(_notice.refs.elem && _notice.refs.elem.classList.contains('nonblock'))}
   <div
       class="ui-pnotify-closer {_notice.getStyle('closer')} {(!closerHover || mouseIsIn) ? '' : 'ui-pnotify-buttons-hidden'}"
       role="button"
@@ -58,7 +58,7 @@
     <span class={closerClass}></span>
   </div>
 {/if}
-{#if sticker && !(_notice && _notice.refs.elem.classList.contains('nonblock'))}
+{#if sticker && !(_notice.refs.elem && _notice.refs.elem.classList.contains('nonblock'))}
   <div
       class="ui-pnotify-sticker {_notice.getStyle('sticker')} {(!stickerHover || mouseIsIn) ? '' : 'ui-pnotify-buttons-hidden'}"
       role="button"
@@ -100,7 +100,6 @@
 
   beforeUpdate(async () => {
     if (updatingIcon) {
-      console.log('updating...');
       return;
     }
 

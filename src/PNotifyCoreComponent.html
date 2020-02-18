@@ -220,22 +220,18 @@
       "
       style="{_widthStyle} {_minHeightStyle}"
       role="alert">
-    {#if self}
-      {#each modulesPrependContainer as module (module.key)}
-        <svelte:component this={module} on:init={event => saveAccessor(module.key, event.detail)} _notice={self} {...modules[module.key]} />
-      {/each}
-    {/if}
+    {#each modulesPrependContainer as module (module.key)}
+      <svelte:component this={module} on:init={event => saveAccessor(module.key, event.detail)} _notice={self} {...modules[module.key]} />
+    {/each}
     {#if icon !== false}
       <div bind:this={refs.iconContainer} class="ui-pnotify-icon {getStyle('icon')}">
         <span class={icon === true ? getIcon(type) : icon}></span>
       </div>
     {/if}
     <div bind:this={refs.content} class="ui-pnotify-content {getStyle('content')}">
-      {#if self}
-        {#each modulesPrependContent as module (module.key)}
-          <svelte:component this={module} on:init={event => saveAccessor(module.key, event.detail)} _notice={self} {...modules[module.key]} />
-        {/each}
-      {/if}
+      {#each modulesPrependContent as module (module.key)}
+        <svelte:component this={module} on:init={event => saveAccessor(module.key, event.detail)} _notice={self} {...modules[module.key]} />
+      {/each}
       {#if title !== false}
         <div bind:this={refs.titleContainer} class="ui-pnotify-title {getStyle('title')}">
           {#if !_titleElement}
@@ -258,24 +254,21 @@
           {/if}
         </div>
       {/if}
-      {#if self}
-        {#each modulesAppendContent as module (module.key)}
-          <svelte:component this={module} on:init={event => saveAccessor(module.key, event.detail)} _notice={self} {...modules[module.key]} />
-        {/each}
-      {/if}
-    </div>
-    {#if self}
-      {#each modulesAppendContainer as module (module.key)}
+      {#each modulesAppendContent as module (module.key)}
         <svelte:component this={module} on:init={event => saveAccessor(module.key, event.detail)} _notice={self} {...modules[module.key]} />
       {/each}
-    {/if}
+    </div>
+    {#each modulesAppendContainer as module (module.key)}
+      <svelte:component this={module} on:init={event => saveAccessor(module.key, event.detail)} _notice={self} {...modules[module.key]} />
+    {/each}
   </div>
 </div>
 
 <script>
   import { onMount, beforeUpdate, tick, createEventDispatcher } from 'svelte';
+  import { current_component } from 'svelte/internal';
 
-  let self;
+  const self = current_component;
   const dispatch = createEventDispatcher();
 
   export let type = defaults.type;
@@ -442,17 +435,11 @@
     }
   }
 
-  export async function init (notice) {
-    // Init is passed the instance, since Svelte does not give access to it.
-    self = notice;
-
+  export function init () {
     if (stack) {
       // Add the notice to the notice array.
       stack._addNotice(self);
     }
-
-    // Wait for self to propagate to modules.
-    await tick();
 
     runModules('init');
 
