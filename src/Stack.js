@@ -401,6 +401,11 @@ export default class Stack {
       this._listener = () => this.position();
       this.context.addEventListener('pnotify:position', this._listener);
     }
+
+    // If the notice is already open, handle it immediately.
+    if (['open', 'opening', 'closing'].indexOf(notice.getState()) !== -1) {
+      this._handleNoticeOpened(notice);
+    }
   }
 
   _removeNotice (notice) {
@@ -439,6 +444,11 @@ export default class Stack {
 
     if (!this._length && this._overlayOpen) {
       this._removeOverlay();
+    }
+
+    // If the notice is open, handle it as if it had closed.
+    if (['open', 'opening', 'closing'].indexOf(notice.getState()) !== -1) {
+      this._handleNoticeClosed(notice);
     }
   }
 
