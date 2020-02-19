@@ -682,6 +682,10 @@ export default class Stack {
     if (this.modal === 'ish' && (!this._leader || ['opening', 'open', 'closing'].indexOf(this._leader.getState()) === -1)) {
       this._setLeader(notice);
     }
+
+    if (this.modal === 'ish' && this._overlayOpen) {
+      notice._preventTimerClose(true);
+    }
   }
 
   _shouldNoticeWait () {
