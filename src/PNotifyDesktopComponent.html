@@ -104,11 +104,11 @@
   let _desktop;
   // Animation should always be 'none' for desktop notices, but remember
   // the old animation so it can be recovered.
-  let _oldAnimation = self.animation;
+  let _oldAnimation = 'none';
   let _icon;
   let _tag;
 
-  $: _disabled = (!_permission && fallback) || !desktop;
+  $: _enabled = _permission && desktop;
   $: {
     if (self.animation !== 'none') {
       _oldAnimation = self.animation;
@@ -116,15 +116,15 @@
 
     // This is necessary so desktop notices don't cause spacing problems
     // when positioning.
-    if (self.getAnimatingClass() !== '' && !_disabled) {
+    if (self.getAnimatingClass() !== '' && _enabled) {
       self.setAnimatingClass('');
     }
 
-    if (_disabled && self.hasModuleClass('ui-pnotify-desktop-hide')) {
-      self.removeModuleClass('ui-pnotify-desktop-hide');
+    if (!_enabled && self.hasModuleClass('elem', 'ui-pnotify-desktop-hide')) {
+      self.removeModuleClass('elem', 'ui-pnotify-desktop-hide');
       self.animation = _oldAnimation;
-    } else if (!_disabled && !self.hasModuleClass('ui-pnotify-desktop-hide')) {
-      self.addModuleClass('ui-pnotify-desktop-hide');
+    } else if (_enabled && !self.hasModuleClass('elem', 'ui-pnotify-desktop-hide')) {
+      self.addModuleClass('elem', 'ui-pnotify-desktop-hide');
       self.animation = 'none';
       genNotice();
     }
@@ -134,7 +134,7 @@
     if (desktop && !_permission) {
       requestPermission();
     }
-    if (_disabled) {
+    if (!_enabled) {
       return;
     }
     if (_desktop && 'show' in _desktop) {
@@ -144,7 +144,7 @@
   });
 
   self.on('pnotify:beforeClose', () => {
-    if (_disabled) {
+    if (!_enabled) {
       return;
     }
     if (_desktop && 'close' in _desktop) {
@@ -157,7 +157,7 @@
     _permission = checkPermission();
 
     if (_permission) {
-      self.addModuleClass('ui-pnotify-desktop-hide');
+      self.addModuleClass('elem', 'ui-pnotify-desktop-hide');
       self.animation = 'none';
       genNotice();
     } else if (!fallback) {
