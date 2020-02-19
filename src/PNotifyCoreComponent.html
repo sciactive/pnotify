@@ -845,27 +845,46 @@
     return _moveClass = value;
   }
 
-  export function _setMasking (value, immediate) {
+  export async function _setMasking (value, immediate, callback) {
     if (_maskingTimer) {
       clearTimeout(_maskingTimer);
     }
+    if (_masking === value) {
+      return;
+    }
     if (value) {
-      insertIntoDOM();
       _masking = value;
-      if (immediate) {
-        _maskingIn = true;
-      } else {
-        window.requestAnimationFrame(() => {
-          if (_masking) {
+      _maskingIn = !!immediate;
+      insertIntoDOM();
+      await tick();
+      window.requestAnimationFrame(() => {
+        if (_masking) {
+          if (immediate && callback) {
+            callback();
+          } else {
             _maskingIn = true;
+            const finished = () => {
+              refs.elem && refs.elem.removeEventListener('transitionend', finished);
+              if (_maskingTimer) {
+                clearTimeout(_maskingTimer);
+              }
+              if (_maskingIn && callback) {
+                callback();
+              }
+            };
+            refs.elem && refs.elem.addEventListener('transitionend', finished);
+            _maskingTimer = setTimeout(finished, 650);
           }
-        });
-      }
+        }
+      });
     } else if (immediate) {
       _masking = false;
       _maskingIn = false;
       if (remove && ['open', 'opening', 'closing'].indexOf(_state) === -1) {
         removeFromDOM();
+      }
+      if (callback) {
+        callback();
       }
     } else {
       const finished = () => {
@@ -877,6 +896,9 @@
           _masking = false;
           if (remove && ['open', 'opening', 'closing'].indexOf(_state) === -1) {
             removeFromDOM();
+          }
+          if (callback) {
+            callback();
           }
         }
       };

@@ -13,6 +13,7 @@ export default class Stack {
       maxStrategy: 'wait',
       maxClosureCausesWait: true,
       modal: 'ish',
+      modalishFlash: true,
       overlayClose: true,
       overlayClosesPinned: false,
       context: (window && document.body) || null
@@ -161,7 +162,7 @@ export default class Stack {
   }
 
   // Position the notice.
-  _positionNotice (notice) {
+  _positionNotice (notice, masking = notice === this._masking) {
     // Get the notice's stack.
     const elem = notice.refs.elem;
     if (!elem) {
@@ -172,7 +173,7 @@ export default class Stack {
     if (
       !elem.classList.contains('ui-pnotify-in') &&
       !elem.classList.contains('ui-pnotify-initial-hidden') &&
-      notice !== this._masking
+      !masking
     ) {
       return;
     }
@@ -190,7 +191,7 @@ export default class Stack {
     // Read from the DOM to cause refresh.
     elem.getBoundingClientRect();
 
-    if (this._animation && notice !== this._masking && !this._collapsingModalState) {
+    if (this._animation && !masking && !this._collapsingModalState) {
       // Add animate class.
       notice._setMoveClass('ui-pnotify-move');
     } else {
@@ -265,7 +266,7 @@ export default class Stack {
 
       // Don't move masking notices along dir2. They should always be beside the
       // leader along dir1.
-      if (notice !== this._masking) {
+      if (!masking) {
         // Check that it's not beyond the viewport edge.
         const endY = _nextpos1 + elem.offsetHeight + this.spacing1;
         const endX = _nextpos1 + elem.offsetWidth + this.spacing1;
@@ -361,7 +362,7 @@ export default class Stack {
     }
 
     // If we're not positioning the masking notice, update the stack properties.
-    if (notice !== this._masking) {
+    if (!masking) {
       this.firstpos1 = firstpos1;
       this.firstpos2 = firstpos2;
       this._nextpos1 = _nextpos1;
@@ -402,9 +403,22 @@ export default class Stack {
       this.context.addEventListener('pnotify:position', this._listener);
     }
 
-    // If the notice is already open, handle it immediately.
     if (['open', 'opening', 'closing'].indexOf(notice.getState()) !== -1) {
+      // If the notice is already open, handle it immediately.
       this._handleNoticeOpened(notice);
+    } else if (this.modal === 'ish' && this.modalishFlash && this._shouldNoticeWait()) {
+      // If it's not open, and it's going to be a waiting notice, flash it.
+      const off = notice.on('pnotify:mount', () => {
+        off();
+        notice._setMasking(this.dir1, false, () => {
+          notice._setMasking(false);
+        });
+        this._resetPositionData();
+        this._positionNotice(this._leader);
+        window.requestAnimationFrame(() => {
+          this._positionNotice(notice, true);
+        });
+      });
     }
   }
 
