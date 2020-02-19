@@ -435,6 +435,7 @@
             textTrusted: true,
             icon: false,
             width: 'auto',
+            maxTextHeight: null,
             hide: false,
             modules: {
               Buttons: {
@@ -500,6 +501,7 @@
               title: document.getElementById('dom_notice_title'),
               text: document.getElementById('dom_notice_text'),
               icon: false,
+              maxTextHeight: null
             });
           } else {
             window.domNotice.open();
@@ -565,7 +567,8 @@
             notice.update({
               type: 'success',
               text: 'Yay, you clicked me!&lt;div style=&quot;text-align: center;&quot;&gt;&lt;img src=&quot;https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Happy_smiley_face.png/240px-Happy_smiley_face.png&quot; /&gt;&lt;/div&gt;',
-              textTrusted: true
+              textTrusted: true,
+              maxTextHeight: null
             });
           });
         ">Click on It</button>
@@ -592,6 +595,13 @@
             minHeight: '400px'
           });
         ">Huge</button>
+        <button class="btn btn-light my-1 source" onclick="
+          PNotify.notice({
+            title: 'Max Text Height Notice',
+            text: 'Check me out! I\'ve got a ton of text, but a pretty small max text height. Since my text is too tall, I\'ve got scrollbars to help you. '+[...(new Array(100))].map((v, i) => i).join(', '),
+            maxTextHeight: '180px'
+          });
+        ">Max Text Height</button>
         <script type="text/javascript">
           /* eslint-env browser, jquery */
           /* globals PNotify */
@@ -600,7 +610,8 @@
               title: '<span style="color: green;">Rich Content Notice</' + 'span>',
               titleTrusted: true,
               text: '<span style="color: blue;">Look at my beautiful <strong>strong</' + 'strong>, <em>emphasized</' + 'em>, and <span style="font-size: 1.5em;">large</' + 'span> text.</' + 'span>',
-              textTrusted: true
+              textTrusted: true,
+              maxTextHeight: null
             });
           };
         </script>
@@ -1950,7 +1961,7 @@
         <button class="btn btn-light my-1 source" onclick="
           PNotify.info({
             title: 'Reference Module',
-            text: 'The reference module is a basic module that demonstrates how to write a PNotify module by implementing many of its features. You can find it in PNotifyReference.html.',
+            text: 'The reference module is a basic module that demonstrates how to write a PNotify module by implementing many of its features. You can find it in PNotifyReferenceComponent.html.',
             modules: {
               Reference: {
                 putThing: true
@@ -2720,8 +2731,6 @@ PNotify.notice({
           }
 
           const sourceElement = document.createElement('div');
-          sourceElement.style.maxHeight = '70vh';
-          sourceElement.style.overflowY = 'auto';
 
           PNotify.info({
             title: button.textContent + ' - Source',
@@ -2730,6 +2739,7 @@ PNotify.notice({
             hide: false,
             destroy: true,
             width: '80vw',
+            maxTextHeight: null,
             stack: new PNotify.Stack({ modal: true, overlayClosesPinned: true }),
             modules: {
               Buttons: {
@@ -2758,6 +2768,8 @@ PNotify.notice({
       const addPrettyCode = (code, where) => {
         code = code.replace(/(?:const )?sourceNote = ['"](.*)['"];$/gm, '// $1');
         const codeBlock = document.createElement('code');
+        codeBlock.style.maxHeight = '200px';
+        codeBlock.style.overflowY = 'auto';
         codeBlock.classList.add('js');
         codeBlock.textContent = window.beautifier.js(code, { indent_size: 2 });
         const pre = document.createElement('pre');

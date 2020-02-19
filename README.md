@@ -337,6 +337,8 @@ PNotify options and default values.
   Width of the notice.
 * `minHeight: '16px'`<br>
   Minimum height of the notice. It will expand to fit content.
+* `maxTextHeight: '200px'`
+  Maximum height of the text container. If the text goes beyond this height, scrollbars will appear. Use null to remove this restriction.
 * `icon: true`<br>
   Set icon to true to use the default icon for the selected style/type, false for no icon, or a string for your own icon class.
 * `animation: 'fade'`<br>

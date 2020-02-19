@@ -76,6 +76,9 @@
     width: '360px',
     // Minimum height of the notice. It will expand to fit content.
     minHeight: '16px',
+    // Maximum height of the text container. If the text goes beyond this
+    // height, scrollbars will appear. Use null to remove this restriction.
+    maxTextHeight: '200px',
     // Set icon to true to use the default icon for the selected
     // style/type, false for no icon, or a string for your own icon class.
     icon: true,
@@ -253,7 +256,10 @@
         </div>
       {/if}
       {#if text !== false}
-        <div bind:this={refs.textContainer} class="ui-pnotify-text {getStyle('text')}" role="alert">
+        <div bind:this={refs.textContainer}
+            class="ui-pnotify-text {getStyle('text')}"
+            style="{_maxTextHeightStyle}"
+            role="alert">
           {#if !_textElement}
             {#if textTrusted}
               {@html text}
@@ -293,6 +299,7 @@
   export let autoOpen = defaults.autoOpen;
   export let width = defaults.width;
   export let minHeight = defaults.minHeight;
+  export let maxTextHeight = defaults.maxTextHeight;
   export let icon = defaults.icon;
   export let animation = defaults.animation;
   export let animateSpeed = defaults.animateSpeed;
@@ -361,6 +368,7 @@
   $: _icons = typeof icons === 'object' ? icons : iconRegistry[icons];
   $: _widthStyle = typeof width === 'string' ? 'width: ' + width + ';' : '';
   $: _minHeightStyle = typeof minHeight === 'string' ? 'min-height: ' + minHeight + ';' : '';
+  $: _maxTextHeightStyle = typeof maxTextHeight === 'string' ? 'max-height: ' + maxTextHeight + '; overflow-y: auto;' : '';
   $: _titleElement = title instanceof HTMLElement;
   $: _textElement = text instanceof HTMLElement;
 
