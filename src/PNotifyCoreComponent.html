@@ -477,10 +477,10 @@
       notice: self,
       ...detail
     };
-    let target = refs.elem || (stack && stack.context);
+    let target = refs.elem || (stack && stack.context) || document.body;
     if (!target) {
       dispatch('pnotify:'+event, eventDetail);
-      return;
+      return true;
     }
     const eventObj = new Event('pnotify:'+event, {
       bubbles: event === 'init' || event === 'mount',
@@ -493,23 +493,15 @@
 
   function insertIntoDOM () {
     // If the notice is not in the DOM, or in the wrong context, append it.
-    if (
-      refs.elem &&
-      !refs.elem.parentNode ||
-      (
-        stack &&
-        stack.context &&
-        stack.context !== refs.elem.parentNode
-      )
-    ) {
-      if (stack && (stack.context || document.body)) {
-        if (!stack.context) {
-          stack.context = document.body;
-        }
-        stack.context.appendChild(refs.elem);
-      } else {
-        throw new Error('No context to insert this notice into.');
-      }
+    const target = stack && stack.context || document.body;
+    if (!target) {
+      throw new Error('No context to insert this notice into.');
+    }
+    if (!refs.elem) {
+      throw new Error('Trying to insert notice before element is available.');
+    }
+    if (refs.elem.parentNode !== target) {
+      target.appendChild(refs.elem);
     }
   }
 
