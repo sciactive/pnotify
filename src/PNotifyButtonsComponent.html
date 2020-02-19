@@ -48,9 +48,9 @@
   });
 </script>
 
-{#if closer && !(_notice.refs.elem && _notice.refs.elem.classList.contains('nonblock'))}
+{#if closer && !(self.refs.elem && self.refs.elem.classList.contains('nonblock'))}
   <div
-      class="ui-pnotify-closer {_notice.getStyle('closer')} {(!closerHover || mouseIsIn) ? '' : 'ui-pnotify-buttons-hidden'}"
+      class="ui-pnotify-closer {self.getStyle('closer')} {(!closerHover || mouseIsIn) ? '' : 'ui-pnotify-buttons-hidden'}"
       role="button"
       tabindex="0"
       title={labels.close}
@@ -58,25 +58,23 @@
     <span class={closerClass}></span>
   </div>
 {/if}
-{#if sticker && !(_notice.refs.elem && _notice.refs.elem.classList.contains('nonblock'))}
+{#if sticker && !(self.refs.elem && self.refs.elem.classList.contains('nonblock'))}
   <div
-      class="ui-pnotify-sticker {_notice.getStyle('sticker')} {(!stickerHover || mouseIsIn) ? '' : 'ui-pnotify-buttons-hidden'}"
+      class="ui-pnotify-sticker {self.getStyle('sticker')} {(!stickerHover || mouseIsIn) ? '' : 'ui-pnotify-buttons-hidden'}"
       role="button"
-      aria-pressed={!_notice.hide}
+      aria-pressed={!self.hide}
       tabindex="0"
-      title={_notice.hide ? labels.stick : labels.unstick}
+      title={self.hide ? labels.stick : labels.unstick}
       on:click={handleStickerClick}>
-    <span class="{stickerClass} {_notice.hide ? unstuckClass : stuckClass}"></span>
+    <span class="{stickerClass} {self.hide ? unstuckClass : stuckClass}"></span>
   </div>
 {/if}
 
 <script>
-  import { onMount, onDestroy, beforeUpdate, tick, createEventDispatcher } from 'svelte';
-
-  const dispatch = createEventDispatcher();
+  import { onDestroy, beforeUpdate, tick } from 'svelte';
 
   // The PNotify notice.
-  export let _notice = null;
+  export let self = null;
 
   export let closer = defaults.closer;
   export let closerHover = defaults.closerHover;
@@ -93,10 +91,10 @@
   let oldIcon;
 
   // These are button icon classes.
-  $: stickerClass = _notice ? (classes.sticker === null ? _notice.getIcon('sticker') : classes.sticker) : '';
-  $: stuckClass = _notice ? (classes.stuck === null ? _notice.getIcon('stuck') : classes.stuck) : '';
-  $: unstuckClass = _notice ? (classes.unstuck === null ? _notice.getIcon('unstuck') : classes.unstuck) : '';
-  $: closerClass = _notice ? (classes.closer === null ? _notice.getIcon('closer') : classes.closer) : '';
+  $: stickerClass = self ? (classes.sticker === null ? self.getIcon('sticker') : classes.sticker) : '';
+  $: stuckClass = self ? (classes.stuck === null ? self.getIcon('stuck') : classes.stuck) : '';
+  $: unstuckClass = self ? (classes.unstuck === null ? self.getIcon('unstuck') : classes.unstuck) : '';
+  $: closerClass = self ? (classes.closer === null ? self.getIcon('closer') : classes.closer) : '';
 
   beforeUpdate(async () => {
     if (updatingIcon) {
@@ -106,11 +104,11 @@
     // Font Awesome 5 uses dark magic by replacing the icon element with an SVG.
     // In order to make it play nice with Svelte, we have to clear the element
     // and make it again.
-    const icon = _notice.hide ? unstuckClass : stuckClass;
+    const icon = self.hide ? unstuckClass : stuckClass;
     if (
       icon !== oldIcon &&
       (
-        (_notice.icons === 'fontawesome5') ||
+        (self.icons === 'fontawesome5') ||
         (typeof stickerClass === 'string' && stickerClass.match(/(^| )fa[srlb]($| )/)) ||
         (typeof icon === 'string' && icon.match(/(^| )fa[srlb]($| )/))
       )
@@ -124,24 +122,13 @@
     }
   });
 
-  onMount(() => {
-    dispatch('init', {
-      init
-    });
-  });
-
-  let removeMouseEnterHandler;
-  let removeMouseLeaveHandler;
+  let removeMouseEnterHandler = self.on('mouseenter', handleMouseEnter);
+  let removeMouseLeaveHandler = self.on('mouseleave', handleMouseLeave);
 
   onDestroy(() => {
     removeMouseEnterHandler && removeMouseEnterHandler();
     removeMouseLeaveHandler && removeMouseLeaveHandler();
   });
-
-  export function init () {
-    removeMouseEnterHandler = _notice.on('mouseenter', handleMouseEnter);
-    removeMouseLeaveHandler = _notice.on('mouseleave', handleMouseLeave);
-  }
 
   function handleMouseEnter() {
     mouseIsIn = true;
@@ -152,11 +139,11 @@
   }
 
   function handleStickerClick () {
-    _notice.hide = !_notice.hide;
+    self.hide = !self.hide;
   }
 
   function handleCloserClick () {
-    _notice.close(false);
+    self.close(false);
     mouseIsIn = false;
   }
 </script>

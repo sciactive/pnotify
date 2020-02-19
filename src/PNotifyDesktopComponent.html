@@ -91,7 +91,7 @@
 </script>
 <script>
   // The PNotify notice.
-  export let _notice = null;
+  export let self = null;
 
   export let desktop = defaults.desktop;
   export let fallback = defaults.fallback;
@@ -102,57 +102,35 @@
   export let options = defaults.options;
 
   let _desktop;
-  let _oldAnimation;
+  // Animation should always be 'none' for desktop notices, but remember
+  // the old animation so it can be recovered.
+  let _oldAnimation = self.animation;
   let _icon;
   let _tag;
 
   $: _disabled = (!_permission && fallback) || !desktop;
   $: {
-    if (_notice.animation !== 'none') {
-      _oldAnimation = _notice.animation;
+    if (self.animation !== 'none') {
+      _oldAnimation = self.animation;
     }
 
     // This is necessary so desktop notices don't cause spacing problems
     // when positioning.
-    if (_notice.getAnimatingClass() !== '' && !_disabled) {
-      _notice.setAnimatingClass('');
+    if (self.getAnimatingClass() !== '' && !_disabled) {
+      self.setAnimatingClass('');
     }
 
-    if (_disabled && _notice.hasModuleClass('ui-pnotify-desktop-hide')) {
-      _notice.removeModuleClass('ui-pnotify-desktop-hide');
-      _notice.animation = _oldAnimation;
-    } else if (!_disabled && !_notice.hasModuleClass('ui-pnotify-desktop-hide')) {
-      _notice.addModuleClass('ui-pnotify-desktop-hide');
-      _notice.animation = 'none';
+    if (_disabled && self.hasModuleClass('ui-pnotify-desktop-hide')) {
+      self.removeModuleClass('ui-pnotify-desktop-hide');
+      self.animation = _oldAnimation;
+    } else if (!_disabled && !self.hasModuleClass('ui-pnotify-desktop-hide')) {
+      self.addModuleClass('ui-pnotify-desktop-hide');
+      self.animation = 'none';
       genNotice();
     }
   }
 
-  export function init () {
-    // Animation should always be 'none' for desktop notices, but remember
-    // the old animation so it can be recovered.
-    _oldAnimation = _notice.animation;
-
-    if (!desktop) {
-      return;
-    }
-
-    _permission = checkPermission();
-
-    if (!_permission) {
-      // Keep the notice from opening if fallback is false.
-      if (!fallback) {
-        _notice.autoOpen = false;
-      }
-      return;
-    }
-
-    _notice.addModuleClass('ui-pnotify-desktop-hide');
-    _notice.animation = 'none';
-    genNotice();
-  }
-
-  export function beforeOpen () {
+  self.on('pnotify:beforeOpen', () => {
     if (desktop && !_permission) {
       requestPermission();
     }
@@ -160,24 +138,37 @@
       return;
     }
     if (_desktop && 'show' in _desktop) {
-      _notice.setModuleIsNoticeOpen(true);
+      self.setModuleIsNoticeOpen(true);
       _desktop.show();
     }
-  }
+  });
 
-  export function beforeClose () {
+  self.on('pnotify:beforeClose', () => {
     if (_disabled) {
       return;
     }
     if (_desktop && 'close' in _desktop) {
       _desktop.close();
-      _notice.setModuleIsNoticeOpen(false);
+      self.setModuleIsNoticeOpen(false);
+    }
+  });
+
+  if (desktop) {
+    _permission = checkPermission();
+
+    if (_permission) {
+      self.addModuleClass('ui-pnotify-desktop-hide');
+      self.animation = 'none';
+      genNotice();
+    } else if (!fallback) {
+      // Keep the notice from opening if fallback is false.
+      self.autoOpen = false;
     }
   }
 
   function genNotice () {
     if (icon === null) {
-      switch (_notice.type) {
+      switch (self.type) {
         case 'error':
           _icon = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3gQJATQg7e6HvQAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAABr0lEQVRYw8WXu0oDQRSGv7hRSFYrLTTWKihaqUgUJO+gphBLL1jYpPSCVcAggpWthYhC7Ows9An0IbSPkMRCw8ZmFuI6yczs9cAPuzNz5v92brtrESxGARtokkCcAg2hk7jNl4G2R/m4zFPAiwTgWdRFHnmJuaulOAAaPQDqUZvv9DB3tR0lwIcGwHtU5uca5q4qYZvngJbHpAZ8CtU8dS1gLEyAisegBGTFKWiL65KnzVlY5uOSId6VtNuTtMupOu/TAHiQlNmSskHNXCOAGWBeUp7VhFoApoMAXAOWJoCszBJ9+ALY6vL0JiPgjsKmKUAaOOoBZwIAcNxlJLsCrAOTIQJMAWu62y4LOIqT7lGS96TIcYCMDkBZ46h1gB+PHI28ssq8X/G6DaqG8Piz2DrjVjGXbtSBy46F5QAHwJAizwZugKKscs7gSaqS/KpB/qxsFxwafhf6Odb/eblJi8BGwJdW26BtURxQpMU83hmaDQsNiPtvYMSwj3tgAqDgYzU7wJdHjo9+CgBvEW47lV5Tgj5DMtG0xIfESkIAF+522gdWxTzGEX3i9+6KpOMXF5UBt0NKJCAAAAAASUVORK5CYII=';
           break;
@@ -203,10 +194,10 @@
     }
 
     const desktopOptions = {
-      body: text || _notice.text,
+      body: text || self.text,
       tag: _tag
     };
-    if (!_notice.hide) {
+    if (!self.hide) {
       desktopOptions.requireInteraction = true;
     }
     if (_icon !== null) {
@@ -215,13 +206,13 @@
     Object.apply(desktopOptions, options);
 
     _desktop = notify(
-      title || _notice.title,
+      title || self.title,
       desktopOptions,
       () => {
-        _notice.fire && _notice.fire('click', { target: _desktop });
+        self.fire && self.fire('click', { target: _desktop });
       },
       () => {
-        _notice.close && _notice.close();
+        self.close && self.close();
       }
     );
 

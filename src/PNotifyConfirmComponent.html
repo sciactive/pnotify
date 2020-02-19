@@ -66,14 +66,14 @@
 {#if confirm || prompt}
   <div class="
     ui-pnotify-confirm
-    {_notice.getStyle('text')}
-    {_notice.getStyle('confirm')}
+    {self.getStyle('text')}
+    {self.getStyle('confirm')}
   ">
     {#if prompt}
       <div
           class="
             ui-pnotify-prompt-bar
-            {_notice.getStyle('prompt-bar')}
+            {self.getStyle('prompt-bar')}
           ">
         {#if promptMultiLine}
           <textarea
@@ -82,7 +82,7 @@
               bind:this={promptMultiElem}
               class="
                 ui-pnotify-prompt-input
-                {_notice.getStyle('input')}
+                {self.getStyle('input')}
                 {promptClass}
               "
               bind:value={promptValue}></textarea>
@@ -93,7 +93,7 @@
               bind:this={promptSingleElem}
               class="
                 ui-pnotify-prompt-input
-                {_notice.getStyle('input')}
+                {self.getStyle('input')}
                 {promptClass}
               "
               bind:value={promptValue} />
@@ -103,7 +103,7 @@
     <div
         class="
           ui-pnotify-action-bar
-          {_notice.getStyle('action-bar')}
+          {self.getStyle('action-bar')}
         "
         style="justify-content: {align};"
         bind:this={buttonsElem}>
@@ -113,8 +113,8 @@
             on:click={event => handleClick(button, event)}
             class="
               ui-pnotify-action-button
-              {_notice.getStyle('btn')}
-              {button.primary ? _notice.getStyle('btn-primary') : _notice.getStyle('btn-secondary')}
+              {self.getStyle('btn')}
+              {button.primary ? self.getStyle('btn-primary') : self.getStyle('btn-secondary')}
               {button.addClass ? button.addClass : ''}
             ">{#if button.textTrusted}{@html button.text}{:else}{button.text}{/if}</button>
       {/each}
@@ -123,12 +123,8 @@
 {/if}
 
 <script>
-  import { onMount, createEventDispatcher } from 'svelte';
-
-  const dispatch = createEventDispatcher();
-
   // The PNotify notice.
-  export let _notice = null;
+  export let self = null;
 
   export let confirm = defaults.confirm;
   export let prompt = defaults.prompt;
@@ -162,7 +158,7 @@
       } else if (confirm &&
         (
           focus === true ||
-          (focus === null && _notice.stack.modal === true)
+          (focus === null && self.stack.modal === true)
         )
       ) {
         if (buttons.length && buttonsElem) {
@@ -180,19 +176,13 @@
     }
   }
 
-  onMount(() => {
-    dispatch('init', {
-      afterOpen
-    });
-  });
-
-  function afterOpen () {
+  self.on('pnotify:afterOpen', () => {
     focusNextChange = true;
-  }
+  });
 
   function handleClick (button, event) {
     if (button.click) {
-      button.click(_notice, prompt ? promptValue : null, event);
+      button.click(self, prompt ? promptValue : null, event);
     }
   }
 
@@ -202,7 +192,7 @@
       const { buttons } = this.get();
       for (let i = 0; i < buttons.length; i++) {
         if (buttons[i].promptTrigger && buttons[i].click) {
-          buttons[i].click(_notice, prompt ? promptValue : null, event);
+          buttons[i].click(self, prompt ? promptValue : null, event);
         }
       }
     }

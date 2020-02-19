@@ -14,17 +14,24 @@
 
 <script>
   // The PNotify notice.
-  export let _notice = null;
+  export let self = null;
 
   export let swipeDismiss = defaults.swipeDismiss;
   export let styling = defaults.styling;
 
+  let origXY = null;
+  let diffXY = null;
+  let noticeWidthHeight = null;
+  let noticeOpacity = null;
+  let csspos = 'left';
+  let direction = 'X';
+  let span = 'Width';
   let windowInnerWidth = window.innerWidth;
 
   $: {
-    const stack = _notice.stack;
+    const stack = self.stack;
 
-    if (styling && !_notice.hasModuleClass('elem', 'ui-pnotify-mobile-able')) {
+    if (styling && !self.hasModuleClass('elem', 'ui-pnotify-mobile-able')) {
       if (stack) {
         if (windowInnerWidth <= 480) {
           if (!stack.mobileOrigSpacing1) {
@@ -61,7 +68,7 @@
             delete stack.mobileOrigFirstpos2;
           }
         }
-        _notice.removeModuleClass(
+        self.removeModuleClass(
           'elem',
           'ui-pnotify-mobile-top',
           'ui-pnotify-mobile-bottom',
@@ -70,23 +77,23 @@
         );
         switch (stack.dir1) {
           case 'down':
-            _notice.addModuleClass('elem', 'ui-pnotify-mobile-top');
+            self.addModuleClass('elem', 'ui-pnotify-mobile-top');
             break;
           case 'up':
-            _notice.addModuleClass('elem', 'ui-pnotify-mobile-bottom');
+            self.addModuleClass('elem', 'ui-pnotify-mobile-bottom');
             break;
           case 'left':
-            _notice.addModuleClass('elem', 'ui-pnotify-mobile-right');
+            self.addModuleClass('elem', 'ui-pnotify-mobile-right');
             break;
           case 'right':
-            _notice.addModuleClass('elem', 'ui-pnotify-mobile-left');
+            self.addModuleClass('elem', 'ui-pnotify-mobile-left');
             break;
         }
       }
 
-      _notice.addModuleClass('elem', 'ui-pnotify-mobile-able');
-    } else if (!styling && _notice.hasModuleClass('elem', 'ui-pnotify-mobile-able')) {
-      _notice.removeModuleClass(
+      self.addModuleClass('elem', 'ui-pnotify-mobile-able');
+    } else if (!styling && self.hasModuleClass('elem', 'ui-pnotify-mobile-able')) {
+      self.removeModuleClass(
         'elem',
         'ui-pnotify-mobile-able',
         'ui-pnotify-mobile-top',
@@ -116,106 +123,96 @@
     }
   }
 
-  function windowResize () {
-    windowInnerWidth = window.innerWidth;
-  }
+  self.on('touchstart', e => {
+    if (!swipeDismiss) {
+      return;
+    }
 
-  export function init () {
-    let origXY = null;
-    let diffXY = null;
-    let noticeWidthHeight = null;
-    let noticeOpacity = null;
-    let csspos = 'left';
-    let direction = 'X';
-    let span = 'Width';
-
-    _notice.on('touchstart', e => {
-      if (!swipeDismiss) {
-        return;
+    const stack = self.stack;
+    if (stack) {
+      switch (stack.dir1) {
+        case 'up':
+        case 'down':
+          csspos = 'left';
+          direction = 'X';
+          span = 'Width';
+          break;
+        case 'left':
+        case 'right':
+          csspos = 'top';
+          direction = 'Y';
+          span = 'Height';
+          break;
       }
+    }
 
-      const stack = _notice.stack;
-      if (stack) {
-        switch (stack.dir1) {
-          case 'up':
-          case 'down':
-            csspos = 'left';
-            direction = 'X';
-            span = 'Width';
-            break;
-          case 'left':
-          case 'right':
-            csspos = 'top';
-            direction = 'Y';
-            span = 'Height';
-            break;
-        }
-      }
+    origXY = e.touches[0]['screen' + direction];
+    noticeWidthHeight = self.refs.elem['scroll' + span];
+    noticeOpacity = window.getComputedStyle(self.refs.elem)['opacity'];
+    self.refs.container.style[csspos] = 0;
+  });
 
-      origXY = e.touches[0]['screen' + direction];
-      noticeWidthHeight = _notice.refs.elem['scroll' + span];
-      noticeOpacity = window.getComputedStyle(_notice.refs.elem)['opacity'];
-      _notice.refs.container.style[csspos] = 0;
-    });
+  self.on('touchmove', e => {
+    if (!origXY || !swipeDismiss) {
+      return;
+    }
 
-    _notice.on('touchmove', e => {
-      if (!origXY || !swipeDismiss) {
-        return;
-      }
+    const curXY = e.touches[0]['screen' + direction];
 
-      const curXY = e.touches[0]['screen' + direction];
+    diffXY = curXY - origXY;
+    const opacity = (1 - (Math.abs(diffXY) / noticeWidthHeight)) * noticeOpacity;
 
-      diffXY = curXY - origXY;
-      const opacity = (1 - (Math.abs(diffXY) / noticeWidthHeight)) * noticeOpacity;
+    self.refs.elem.style.opacity = opacity;
+    self.refs.container.style[csspos] = diffXY + 'px';
+  });
 
-      _notice.refs.elem.style.opacity = opacity;
-      _notice.refs.container.style[csspos] = diffXY + 'px';
-    });
+  self.on('touchend', () => {
+    if (!origXY || !swipeDismiss) {
+      return;
+    }
 
-    _notice.on('touchend', () => {
-      if (!origXY || !swipeDismiss) {
-        return;
-      }
+    self.refs.container.classList.add('ui-pnotify-mobile-animate-left');
+    if (Math.abs(diffXY) > 40) {
+      const goLeft = (diffXY < 0) ? noticeWidthHeight * -2 : noticeWidthHeight * 2;
+      self.refs.elem.style.opacity = 0;
+      self.refs.container.style[csspos] = goLeft + 'px';
+      self.close();
+    } else {
+      self.refs.elem.style.removeProperty('opacity');
+      self.refs.container.style.removeProperty(csspos);
+    }
+    origXY = null;
+    diffXY = null;
+    noticeWidthHeight = null;
+    noticeOpacity = null;
+  });
 
-      _notice.refs.container.classList.add('ui-pnotify-mobile-animate-left');
-      if (Math.abs(diffXY) > 40) {
-        const goLeft = (diffXY < 0) ? noticeWidthHeight * -2 : noticeWidthHeight * 2;
-        _notice.refs.elem.style.opacity = 0;
-        _notice.refs.container.style[csspos] = goLeft + 'px';
-        _notice.close();
-      } else {
-        _notice.refs.elem.style.removeProperty('opacity');
-        _notice.refs.container.style.removeProperty(csspos);
-      }
-      origXY = null;
-      diffXY = null;
-      noticeWidthHeight = null;
-      noticeOpacity = null;
-    });
+  self.on('touchcancel', () => {
+    if (!origXY || !swipeDismiss) {
+      return;
+    }
 
-    _notice.on('touchcancel', () => {
-      if (!origXY || !swipeDismiss) {
-        return;
-      }
+    self.refs.elem.style.removeProperty('opacity');
+    self.refs.container.style.removeProperty(csspos);
+    origXY = null;
+    diffXY = null;
+    noticeWidthHeight = null;
+    noticeOpacity = null;
+  });
 
-      _notice.refs.elem.style.removeProperty('opacity');
-      _notice.refs.container.style.removeProperty(csspos);
-      origXY = null;
-      diffXY = null;
-      noticeWidthHeight = null;
-      noticeOpacity = null;
-    });
-  }
-
-  export function afterClose () {
+  self.on('pnotify:afterClose', () => {
     // Remove any styling we added to close it.
     if (!swipeDismiss) {
       return;
     }
 
-    _notice.refs.elem.style.removeProperty('opacity');
-    _notice.refs.container.style.removeProperty('left');
-    _notice.refs.container.style.removeProperty('top');
+    self.refs.elem.style.removeProperty('opacity');
+    self.refs.container.style.removeProperty('left');
+    self.refs.container.style.removeProperty('top');
+  });
+
+  function windowResize () {
+    windowInnerWidth = window.innerWidth;
   }
 </script>
 <style>

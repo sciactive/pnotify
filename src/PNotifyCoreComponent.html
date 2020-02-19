@@ -229,7 +229,7 @@
       style="{_widthStyle} {_minHeightStyle}"
       role="alert">
     {#each modulesPrependContainer as module (module.key)}
-      <svelte:component this={module} on:init={event => saveAccessor(module.key, event.detail)} _notice={self} {...modules[module.key]} />
+      <svelte:component this={module} on:init={event => saveAccessor(module.key, event.detail)} self={self} {...modules[module.key]} />
     {/each}
     {#if icon !== false}
       <div bind:this={refs.iconContainer} class="ui-pnotify-icon {getStyle('icon')}">
@@ -238,7 +238,7 @@
     {/if}
     <div bind:this={refs.content} class="ui-pnotify-content {getStyle('content')}">
       {#each modulesPrependContent as module (module.key)}
-        <svelte:component this={module} on:init={event => saveAccessor(module.key, event.detail)} _notice={self} {...modules[module.key]} />
+        <svelte:component this={module} on:init={event => saveAccessor(module.key, event.detail)} self={self} {...modules[module.key]} />
       {/each}
       {#if title !== false}
         <div bind:this={refs.titleContainer} class="ui-pnotify-title {getStyle('title')}">
@@ -257,17 +257,17 @@
             {#if textTrusted}
               {@html text}
             {:else}
-            <span class="ui-pnotify-pre-line">{text}</span>
+              <span class="ui-pnotify-pre-line">{text}</span>
             {/if}
           {/if}
         </div>
       {/if}
       {#each modulesAppendContent as module (module.key)}
-        <svelte:component this={module} on:init={event => saveAccessor(module.key, event.detail)} _notice={self} {...modules[module.key]} />
+        <svelte:component this={module} on:init={event => saveAccessor(module.key, event.detail)} self={self} {...modules[module.key]} />
       {/each}
     </div>
     {#each modulesAppendContainer as module (module.key)}
-      <svelte:component this={module} on:init={event => saveAccessor(module.key, event.detail)} _notice={self} {...modules[module.key]} />
+      <svelte:component this={module} on:init={event => saveAccessor(module.key, event.detail)} self={self} {...modules[module.key]} />
     {/each}
   </div>
 </div>
@@ -477,7 +477,7 @@
         }
         if ('factory' in moduleRegistry[key]) {
           const moduleOptions = Object.assign({
-            _notice: self
+            self
           }, modules[key]);
           _moduleAccessors[key] = moduleRegistry[key].factory(self, moduleOptions);
           initModule(key, _moduleAccessors[key]);
@@ -491,13 +491,9 @@
         if (event === 'update') {
           if ('$set' in _moduleAccessors[key]) {
             const moduleOptions = Object.assign({
-              _notice: self
+              self
             }, modules[key]);
             _moduleAccessors[key].$set(moduleOptions);
-          }
-        } else {
-          if (event in _moduleAccessors[key]) {
-            _moduleAccessors[key][event]();
           }
         }
       }
@@ -533,12 +529,9 @@
     }
     if ('$set' in accessor) {
       const moduleOptions = Object.assign({
-        _notice: self
+        self
       }, modules[key]);
       accessor.$set(moduleOptions);
-    }
-    if ('init' in accessor) {
-      accessor.init();
     }
   }
 

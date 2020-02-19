@@ -12,7 +12,7 @@
 </script>
 <script>
   // The PNotify notice.
-  export let _notice = null;
+  export let self = null;
 
   export let animate = defaults.animate;
   export let inClass = defaults.inClass;
@@ -24,16 +24,16 @@
 
   $: {
     if (animate && !_animateIn) {
-      _animation = _notice.animation;
-      _animateIn = _notice.animateIn;
-      _animateOut = _notice.animateOut;
-      _notice.$set({
+      _animation = self.animation;
+      _animateIn = self.animateIn;
+      _animateOut = self.animateOut;
+      self.$set({
         animation: 'none',
         animateIn,
         animateOut
       });
     } else if (!animate && _animateIn) {
-      _notice.$set({
+      self.$set({
         animation: _animation,
         animateIn: _animateIn,
         animateOut: _animateOut
@@ -45,71 +45,71 @@
   }
 
   $: {
-    if (animate && _notice.refs.elem) {
+    if (animate && self.refs.elem) {
       var animSpeed = 250;
-      if (_notice.animateSpeed === 'slow') {
+      if (self.animateSpeed === 'slow') {
         animSpeed = 400;
-      } else if (_notice.animateSpeed === 'fast') {
+      } else if (self.animateSpeed === 'fast') {
         animSpeed = 100;
-      } else if (_notice.animateSpeed > 0) {
-        animSpeed = _notice.animateSpeed;
+      } else if (self.animateSpeed > 0) {
+        animSpeed = self.animateSpeed;
       }
       animSpeed = animSpeed / 1000;
-      _notice.refs.elem.style.animationDuration = animSpeed + 's';
+      self.refs.elem.style.animationDuration = animSpeed + 's';
     }
   }
 
   function animateIn (callback, immediate) {
     // Declare that the notice is animating in.
-    _notice.setAnimating('in');
+    self.setAnimating('in');
 
     let off;
     const finished = event => {
-      if (event && _notice.refs.elem && event.target !== _notice.refs.elem) {
+      if (event && self.refs.elem && event.target !== self.refs.elem) {
         return;
       }
       off();
-      _notice.setAnimatingClass('ui-pnotify-in animated');
+      self.setAnimatingClass('ui-pnotify-in animated');
       if (callback) {
         callback.call();
       }
       // Declare that the notice has completed animating.
-      _notice.setAnimating(false);
+      self.setAnimating(false);
     };
 
-    off = _notice.on('animationend', finished);
+    off = self.on('animationend', finished);
     if (immediate) {
       finished();
     } else {
-      _notice.setAnimatingClass('ui-pnotify-in animated ' + inClass);
+      self.setAnimatingClass('ui-pnotify-in animated ' + inClass);
     }
   }
 
   function animateOut (callback, immediate) {
     // Declare that the notice is animating out.
-    _notice.setAnimating('out');
+    self.setAnimating('out');
 
     let off;
     const finished = event => {
-      if (event && _notice.refs.elem && event.target !== _notice.refs.elem) {
+      if (event && self.refs.elem && event.target !== self.refs.elem) {
         return;
       }
       off();
-      _notice.setAnimatingClass('animated');
+      self.setAnimatingClass('animated');
       if (callback) {
         callback.call();
       }
       // Declare that the notice has completed animating.
-      if (_notice.setAnimating) {
-        _notice.setAnimating(false);
+      if (self.setAnimating) {
+        self.setAnimating(false);
       }
     };
 
-    off = _notice.on('animationend', finished);
+    off = self.on('animationend', finished);
     if (immediate) {
       finished();
     } else {
-      _notice.setAnimatingClass('ui-pnotify-in animated ' + outClass);
+      self.setAnimatingClass('ui-pnotify-in animated ' + outClass);
     }
   }
 
@@ -117,12 +117,12 @@
     let off;
     const cb = () => {
       off();
-      _notice.removeModuleClass('container', 'animated', aniClass);
+      self.removeModuleClass('container', 'animated', aniClass);
       if (callback) {
-        callback.call(_notice);
+        callback.call(self);
       }
     };
-    off = _notice.on('animationend', cb);
-    _notice.addModuleClass('container', 'animated', aniClass);
+    off = self.on('animationend', cb);
+    self.addModuleClass('container', 'animated', aniClass);
   };
 </script>

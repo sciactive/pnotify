@@ -34,23 +34,19 @@
   It will be disabled by default, so we can enable it on mouseover.
   -->
   <button
-      class="ui-pnotify-action-button ui-pnotify-reference-button {_notice.getStyle('btn')} {_notice.getStyle('btn-secondary')}"
+      class="ui-pnotify-action-button ui-pnotify-reference-button {self.getStyle('btn')} {self.getStyle('btn-secondary')}"
       type="button"
       disabled="{!mouseIsIn}"
       on:click={doSomething}>
-    <i class={_notice.getIcon('refresh')} />&nbsp;{labels.text}
+    <i class={self.getIcon('refresh')} />&nbsp;{labels.text}
   </button>
   <!-- Since our button is floated, we have to add a clearing div. -->
   <div class="ui-pnotify-reference-clearing" />
 {/if}
 
 <script>
-  import { onMount, createEventDispatcher } from 'svelte';
-
-  const dispatch = createEventDispatcher();
-
   // The PNotify notice.
-  export let _notice = null;
+  export let self = null;
 
   // Your options must be exported and set to the defaults.
   export let putThing = defaults.putThing;
@@ -59,28 +55,29 @@
   // Here you can define variables not meant to be exported as options.
   let mouseIsIn = false;
 
-  // This is the second way to init a module. Because we put markup in the
-  // template, we have to fire this event to tell PNotifyCore that we are ready
-  // to be initialized.
-  onMount(() => {
-    dispatch('init', {
-      // This is optional, and will be called after the DOM is ready and options
-      // have been set.
-      init,
-      // Include these if you need them to run.
-      beforeOpen,
-      afterOpen,
-      beforeClose,
-      afterClose,
-      beforeDestroy,
-      afterDestroy
-    });
-  });
+  self.on('mouseenter', () => mouseIsIn = true);
+  self.on('mouseleave', () => mouseIsIn = false);
 
-  export function init () {
-    _notice.on('mouseenter', () => mouseIsIn = true);
-    _notice.on('mouseleave', () => mouseIsIn = false);
-  }
+  // I have nothing to put in these, just showing you that they exist. You
+  // won't need to include them if you aren't using them.
+  self.on('pnotify:beforeOpen', () => {
+    // Called before the notice is opened.
+  });
+  self.on('pnotify:afterOpen', () => {
+    // Called after the notice is opened.
+  });
+  self.on('pnotify:beforeClose', () => {
+    // Called before the notice is closed.
+  });
+  self.on('pnotify:afterClose', () => {
+    // Called after the notice is closed.
+  });
+  self.on('pnotify:beforeDestroy', () => {
+    // Called before the notice is destroyed.
+  });
+  self.on('pnotify:afterDestroy', () => {
+    // Called after the notice is destroyed.
+  });
 
   function doSomething () {
     // Spin the notice around.
@@ -91,29 +88,8 @@
         curAngle = 0;
         clearInterval(timer);
       }
-      _notice.refs.elem.style.transform = 'rotate(' + curAngle + 'deg)';
+      self.refs.elem.style.transform = 'rotate(' + curAngle + 'deg)';
     }, 20);
-  }
-
-  // I have nothing to put in these, just showing you that they exist. You
-  // won't need to include them if you aren't using them.
-  function beforeOpen () {
-    // Called before the notice is opened.
-  }
-  function afterOpen () {
-    // Called after the notice is opened.
-  }
-  function beforeClose () {
-    // Called before the notice is closed.
-  }
-  function afterClose () {
-    // Called after the notice is closed.
-  }
-  function beforeDestroy () {
-    // Called before the notice is destroyed.
-  }
-  function afterDestroy () {
-    // Called after the notice is destroyed.
   }
 </script>
 
