@@ -1,4 +1,4 @@
-import { modules } from './PNotifyCore';
+import { modules, modulesPrependContainer } from './PNotifyCore';
 import Component, { key, defaults } from './PNotifyAnimateComponent.html';
 
 Component.key = key;
@@ -6,11 +6,5 @@ Component.defaults = defaults;
 
 // Register the module with PNotify.
 modules[key] = Component;
-
-Component.factory = (notice, options) => {
-  const module = new Component({ target: document.body, props: options });
-
-  notice.attention = module.attention;
-
-  return module;
-};
+// This module doesn't render anything, so it doesn't matter where it goes.
+modulesPrependContainer.push(Component);

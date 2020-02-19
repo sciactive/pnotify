@@ -191,6 +191,7 @@
     on:focusout={handleLeaveInteraction}
     ui-pnotify
     on:pnotify:init
+    on:pnotify:mount
     on:pnotify:update
     on:pnotify:beforeOpen
     on:pnotify:afterOpen
@@ -229,7 +230,7 @@
       style="{_widthStyle} {_minHeightStyle}"
       role="alert">
     {#each modulesPrependContainer as module (module.key)}
-      <svelte:component this={module} on:init={event => saveAccessor(module.key, event.detail)} self={self} {...modules[module.key]} />
+      <svelte:component this={module} self={self} {...modules[module.key]} />
     {/each}
     {#if icon !== false}
       <div bind:this={refs.iconContainer} class="ui-pnotify-icon {getStyle('icon')}">
@@ -238,7 +239,7 @@
     {/if}
     <div bind:this={refs.content} class="ui-pnotify-content {getStyle('content')}">
       {#each modulesPrependContent as module (module.key)}
-        <svelte:component this={module} on:init={event => saveAccessor(module.key, event.detail)} self={self} {...modules[module.key]} />
+        <svelte:component this={module} self={self} {...modules[module.key]} />
       {/each}
       {#if title !== false}
         <div bind:this={refs.titleContainer} class="ui-pnotify-title {getStyle('title')}">
@@ -263,11 +264,11 @@
         </div>
       {/if}
       {#each modulesAppendContent as module (module.key)}
-        <svelte:component this={module} on:init={event => saveAccessor(module.key, event.detail)} self={self} {...modules[module.key]} />
+        <svelte:component this={module} self={self} {...modules[module.key]} />
       {/each}
     </div>
     {#each modulesAppendContainer as module (module.key)}
-      <svelte:component this={module} on:init={event => saveAccessor(module.key, event.detail)} self={self} {...modules[module.key]} />
+      <svelte:component this={module} self={self} {...modules[module.key]} />
     {/each}
   </div>
 </div>
@@ -313,9 +314,8 @@
     textContainer: null
   };
 
-  // The state can be 'initializing', 'waiting', 'opening', 'open', 'closing',
-  // or 'closed'.
-  let _state = 'initializing';
+  // The state can be 'waiting', 'opening', 'open', 'closing', or 'closed'.
+  let _state = 'closed';
   // Auto close timer.
   let _timer = null;
   // Animation timers.
@@ -329,8 +329,6 @@
   let _moveClass = '';
   // Stores whether the notice was hidden by a timer.
   let _timerHide = false;
-  // Stores the accessors of the modules.
-  let _moduleAccessors = {};
   // Holds classes that modules add for the notice element or container element.
   let _moduleClasses = {
     elem: [],
@@ -375,7 +373,7 @@
       return;
     }
 
-    runModules('update');
+    dispatchLifecycleEvent('update');
 
     // Update the timed hiding.
     if (_state !== 'closed' && _state !== 'waiting' && hide !== _oldHide) {
@@ -422,6 +420,28 @@
     refs.textContainer.appendChild(text);
   }
 
+  let _oldStack = NaN;
+  $: if (_oldStack !== stack) {
+    if (_oldStack) {
+      // Remove the notice from the old stack.
+      _oldStack._removeNotice(self);
+    }
+    if (stack) {
+      // Add the notice to the stack.
+      stack._addNotice(self);
+    }
+    _oldStack = stack;
+  }
+
+  onMount(() => {
+    dispatchLifecycleEvent('mount');
+
+    // Display the notice.
+    if (autoOpen) {
+      open();
+    }
+  });
+
   function handleInteraction (e) {
     // Stop animation, reset the removal timer when the user interacts.
     if (mouseReset && _state === 'closing') {
@@ -443,96 +463,24 @@
     }
   }
 
-  export function init () {
-    if (stack) {
-      // Add the notice to the notice array.
-      stack._addNotice(self);
-    }
-
-    runModules('init');
-
-    // We're now initialized, but haven't been opened yet.
-    _state = 'closed';
-
-    // Display the notice.
-    if (autoOpen) {
-      open();
-    }
-  }
-
   // This runs an event on all the modules.
-  function runModules (event, detail = {}) {
-    if (event === 'init') {
-      // Initializing a module should only be done if it has an init
-      // function, which means it's not rendered in the template.
-      for (let key in _moduleAccessors) {
-        if (!_moduleAccessors.hasOwnProperty(key)) {
-          continue;
-        }
-        initModule(key, _moduleAccessors[key]);
-      }
-      for (let key in moduleRegistry) {
-        if (!moduleRegistry.hasOwnProperty(key)) {
-          continue;
-        }
-        if ('factory' in moduleRegistry[key]) {
-          const moduleOptions = Object.assign({
-            self
-          }, modules[key]);
-          _moduleAccessors[key] = moduleRegistry[key].factory(self, moduleOptions);
-          initModule(key, _moduleAccessors[key]);
-        }
-      }
-    } else {
-      for (let key in _moduleAccessors) {
-        if (!_moduleAccessors.hasOwnProperty(key)) {
-          continue;
-        }
-        if (event === 'update') {
-          if ('$set' in _moduleAccessors[key]) {
-            const moduleOptions = Object.assign({
-              self
-            }, modules[key]);
-            _moduleAccessors[key].$set(moduleOptions);
-          }
-        }
-      }
+  function dispatchLifecycleEvent (event, detail = {}) {
+    const eventDetail = {
+      notice: self,
+      ...detail
+    };
+    let target = refs.elem || (stack && stack.context);
+    if (!target) {
+      dispatch('pnotify:'+event, eventDetail);
+      return;
     }
-
-    if (!event.startsWith('$')) {
-      const eventDetail = {
-        notice: self,
-        ...detail
-      };
-      if (refs.elem) {
-        const eventObj = new Event('pnotify:'+event, {
-          bubbles: event === 'init',
-          cancelable: event.startsWith('before')
-        });
-        eventObj.detail = eventDetail;
-        refs.elem.dispatchEvent(eventObj);
-        return !eventObj.defaultPrevented;
-      } else {
-        fire('pnotify:'+event, eventDetail);
-      }
-    }
-  }
-
-  function saveAccessor (key, accessor) {
-    _moduleAccessors[key] = accessor;
-  }
-
-  // This passes module options to a module.
-  function initModule (key, accessor) {
-    if (!modules.hasOwnProperty(key)) {
-      modules[key] = {};
-    }
-    if ('$set' in accessor) {
-      const moduleOptions = Object.assign({
-        self
-      }, modules[key]);
-      accessor.$set(moduleOptions);
-    }
+    const eventObj = new Event('pnotify:'+event, {
+      bubbles: event === 'init' || event === 'mount',
+      cancelable: event.startsWith('before')
+    });
+    eventObj.detail = eventDetail;
+    target.dispatchEvent(eventObj);
+    return !eventObj.defaultPrevented;
   }
 
   function insertIntoDOM () {
@@ -578,7 +526,7 @@
       return;
     }
 
-    if (!runModules('beforeOpen', { immediate })) {
+    if (!dispatchLifecycleEvent('beforeOpen', { immediate })) {
       return;
     }
 
@@ -596,7 +544,7 @@
 
       _state = 'open';
 
-      runModules('afterOpen', { immediate });
+      dispatchLifecycleEvent('afterOpen', { immediate });
     };
 
     if (stack) {
@@ -643,15 +591,14 @@
     }
 
     const runDestroy = () => {
-      if (!runModules('beforeDestroy')) {
+      if (!dispatchLifecycleEvent('beforeDestroy')) {
         return;
       }
       if (stack) {
         stack._removeNotice(self);
       }
       self.$destroy();
-      runModules('afterDestroy');
-      runModules('$destroy');
+      dispatchLifecycleEvent('afterDestroy');
     };
 
     if (_state === 'waiting') {
@@ -667,7 +614,7 @@
       return;
     }
 
-    if (!runModules('beforeClose', { immediate, timerHide, waitAfterward })) {
+    if (!dispatchLifecycleEvent('beforeClose', { immediate, timerHide, waitAfterward })) {
       return;
     }
 
@@ -682,7 +629,7 @@
     animateOut(() => {
       _timerHide = false;
       _state = waitAfterward ? 'waiting' : 'closed';
-      runModules('afterClose', { immediate, timerHide, waitAfterward });
+      dispatchLifecycleEvent('afterClose', { immediate, timerHide, waitAfterward });
       if (stack) {
         stack._handleNoticeClosed(self);
       }
@@ -736,8 +683,7 @@
     if (animation === 'fade' && !immediate) {
       refs.elem && refs.elem.addEventListener('transitionend', finished);
       _animatingClass = 'ui-pnotify-in';
-      // eslint-disable-next-line no-unused-expressions
-      refs.elem && refs.elem.style.opacity; // This line is necessary for some reason. Some notices don't fade without it.
+      await tick();
       _animatingClass = 'ui-pnotify-in ui-pnotify-fade-in';
       // Just in case the event doesn't fire, call it after 650 ms.
       _animInTimer = setTimeout(finished, 650);
@@ -871,10 +817,6 @@
     return true;
   }
 
-  export function getModuleAccessors () {
-    return _moduleAccessors;
-  }
-
   export function getModuleIsNoticeOpen () {
     return _moduleIsNoticeOpen;
   }
@@ -947,6 +889,8 @@
       _maskingTimer = setTimeout(finished, 650);
     }
   }
+
+  dispatchLifecycleEvent('init');
 </script>
 
 <style>

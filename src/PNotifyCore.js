@@ -1,18 +1,11 @@
 import PNotify from './PNotifyCoreComponent.html';
 
-// The factory is responsible for giving the instance access to itself.
-PNotify.factory = options => {
-  const notice = new PNotify(options);
-  notice.init(notice);
-  return notice;
-};
-
 // Factory functions.
-export const alert = options => PNotify.factory(getDefaultArgs(options));
-export const notice = options => PNotify.factory(getDefaultArgs(options, 'notice'));
-export const info = options => PNotify.factory(getDefaultArgs(options, 'info'));
-export const success = options => PNotify.factory(getDefaultArgs(options, 'success'));
-export const error = options => PNotify.factory(getDefaultArgs(options, 'error'));
+export const alert = options => new PNotify(getDefaultArgs(options));
+export const notice = options => new PNotify(getDefaultArgs(options, 'notice'));
+export const info = options => new PNotify(getDefaultArgs(options, 'info'));
+export const success = options => new PNotify(getDefaultArgs(options, 'success'));
+export const error = options => new PNotify(getDefaultArgs(options, 'error'));
 
 // Default arguments for the new notice helper functions.
 function getDefaultArgs (options, type) {
@@ -26,7 +19,14 @@ function getDefaultArgs (options, type) {
     options.type = type;
   }
 
-  return { target: document.body, props: options };
+  // Experiment that doesn't work:
+  let target = document.body;
+
+  if ('stack' in options && options.stack && options.stack.context) {
+    target = options.stack.context;
+  }
+
+  return { target, props: options };
 }
 
 // Some shortcut functions.

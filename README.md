@@ -578,6 +578,8 @@ notice.on('pnotify:cancel', () => {
   Invokes the callback whenever the notice dispatches the event. Callback receives an `event` argument with a `detail` prop. Returns a function that removes the handler when invoked.
 * `notice.fire(eventName, detail)`<br>
   Fire an event.
+* `notice.getState()`<br>
+  Returns the state of the notice. Can be 'waiting', 'opening', 'open', 'closing', or 'closed'.
 * `notice.addModuleClass(element, ...classNames)`<br>
   This is for modules to add classes to the notice or container element.
 * `notice.removeModuleClass(element, ...classNames)`<br>
@@ -601,7 +603,8 @@ notice.on('pnotify:cancel', () => {
 
 Event objects have a `detail` property that contains information about the event, including a reference to the notice itself.
 
-* `pnotify:init` - Fired upon initialization of a new notice. This event is the only `pnotify:*` event that bubbles.
+* `pnotify:init` - Fired upon initialization of a new notice. This event bubbles.
+* `pnotify:mount` - Fired when the notice has been mounted into the DOM. This event bubbles.
 * `pnotify:update` - Fired when the notice's state changes. Careful, this includes internal state and can be very noisy.
 * `pnotify:beforeOpen` - Fired before the notice opens. Use `preventDefault()` on the event to cancel this action.
 * `pnotify:afterOpen` - Fired after the notice opens.
@@ -649,6 +652,8 @@ Stack options and their defaults:
   Whether clicking on the modal overlay should close the stack's notices.
 * `context: document.body`<br>
   The DOM element this stack's notices should appear in.
+
+TODO: Update the above.
 
 Stack behavior:
 

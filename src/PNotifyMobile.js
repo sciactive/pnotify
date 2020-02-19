@@ -1,4 +1,4 @@
-import { modules } from './PNotifyCore';
+import { modules, modulesPrependContainer } from './PNotifyCore';
 import Component, { key, defaults } from './PNotifyMobileComponent.html';
 
 Component.key = key;
@@ -6,5 +6,5 @@ Component.defaults = defaults;
 
 // Register the module with PNotify.
 modules[key] = Component;
-
-Component.factory = (_notice, options) => new Component({ target: document.body, props: options });
+// This module doesn't render anything, so it doesn't matter where it goes.
+modulesPrependContainer.push(Component);

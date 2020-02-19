@@ -817,16 +817,21 @@
           const dontAlert = () => {};
           const initListener = event => {
             console.log(event.type, event.detail);
-            alert('I\'m listening for when the notice initializes. This is the only PNotify lifecycle event that bubbles. The event object has a reference to the notice. Watch me replace the word listener with tire iron!');
-            event.detail.notice.text = event.detail.notice.text.replace(/listener/g, 'tire iron');
+            alert('I\'m listening for when the notice initializes. This and mount are the only PNotify lifecycle event that bubble. The event object has a reference to the notice.');
+          };
+          const mountListener = event => {
+            console.log(event.type, event.detail);
+            dontAlert('I\'m listening for when the notice has mounted into the DOM.');
           };
           document.body.addEventListener('pnotify:init', initListener);
+          document.body.addEventListener('pnotify:mount', mountListener);
           const notice = PNotify.notice({
             title: 'I\'m Here',
             text: 'I have a listener for each of my lifecycle events. I\'ll fire events for all my listeners while I change states.',
             autoOpen: false,
           });
           document.body.removeEventListener('pnotify:init', initListener);
+          document.body.removeEventListener('pnotify:mount', mountListener);
           notice.on('pnotify:update', event => {
             console.log(event.type, event.detail);
             dontAlert('I\'m listening for when the notice changes state.');

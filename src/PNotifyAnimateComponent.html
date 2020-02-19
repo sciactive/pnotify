@@ -44,7 +44,7 @@
     }
   }
 
-  $: {
+  self.on('pnotify:update', () => {
     if (animate && self.refs.elem) {
       var animSpeed = 250;
       if (self.animateSpeed === 'slow') {
@@ -55,9 +55,11 @@
         animSpeed = self.animateSpeed;
       }
       animSpeed = animSpeed / 1000;
-      self.refs.elem.style.animationDuration = animSpeed + 's';
+      if (self.refs.elem.style.animationDuration !== animSpeed + 's') {
+        self.refs.elem.style.animationDuration = animSpeed + 's';
+      }
     }
-  }
+  });
 
   function animateIn (callback, immediate) {
     // Declare that the notice is animating in.
@@ -113,7 +115,7 @@
     }
   }
 
-  export const attention = (aniClass, callback) => {
+  self.attention = (aniClass, callback) => {
     let off;
     const cb = () => {
       off();
