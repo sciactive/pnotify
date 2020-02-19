@@ -96,15 +96,18 @@ export default class Stack {
       throw new Error('Invalid start param.');
     }
     while (node.notice) {
-      if (callback(node.notice) === false) {
-        break;
-      }
+      const notice = node.notice;
+      // Get the next node first.
       if (dir === 'prev' || (this.push === 'top' && dir === 'newer') || (this.push === 'bottom' && dir === 'older')) {
         node = node.prev;
       } else if (dir === 'next' || (this.push === 'top' && dir === 'older') || (this.push === 'bottom' && dir === 'newer')) {
         node = node.next;
       } else {
         throw new Error('Invalid dir param.');
+      }
+      // Call the callback last, just in case the callback removes the notice.
+      if (callback(notice) === false) {
+        break;
       }
     }
   }
@@ -368,24 +371,32 @@ export default class Stack {
   }
 
   _addNotice (notice) {
+    // This is the linked list node.
     const node = {
       notice,
       prev: null,
       next: null
     };
+
+    // Push to the correct side of the linked list.
     if (this.push === 'top') {
       node.next = this._noticeHead.next;
       node.prev = this._noticeHead;
-      this._noticeHead.next.prev = node;
-      this._noticeHead.next = node;
+      node.next.prev = node;
+      node.prev.next = node;
     } else {
       node.prev = this._noticeTail.prev;
       node.next = this._noticeTail;
-      this._noticeTail.prev.next = node;
-      this._noticeTail.prev = node;
+      node.prev.next = node;
+      node.next.prev = node;
     }
+
+    // Add to the map.
     this._noticeMap.set(notice, node);
+
+    // Increment the length to match.
     this._length++;
+
     if (!this._listener) {
       this._listener = () => this.position();
       this.context.addEventListener('pnotify:position', this._listener);
@@ -408,11 +419,16 @@ export default class Stack {
       this._setMasking(null);
     }
 
-    // Remove the notice from the DLL.
+    // Remove the notice from the linked list.
     node.prev.next = node.next;
     node.next.prev = node.prev;
     node.prev = null;
     node.next = null;
+
+    // Remove the notice from the map.
+    this._noticeMap.delete(notice);
+
+    // Reduce the length to match.
     this._length--;
 
     if (!this._length && this._listener) {
