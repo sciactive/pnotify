@@ -23,7 +23,6 @@ const pnotifySrc = [
   'Stack',
   'PNotifyAnimate',
   'PNotifyButtons',
-  'PNotifyCallbacks',
   'PNotifyConfirm',
   'PNotifyDesktop',
   'PNotifyMobile',

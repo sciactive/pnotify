@@ -64,7 +64,6 @@
   <link rel="stylesheet" href="src/PNotifyMaterial.css" />
   <script src="dist/umd/PNotifyButtons.js"></script>
   <script src="dist/umd/PNotifyAnimate.js"></script>
-  <script src="dist/umd/PNotifyCallbacks.js"></script>
   <script src="dist/umd/PNotifyMobile.js"></script>
   <script src="dist/umd/PNotifyDesktop.js"></script>
   <script src="dist/umd/PNotifyConfirm.js"></script>
@@ -642,34 +641,36 @@
               }
             });
 
-            setTimeout(() => {
-              notice.update({ title: false });
-              const interval = setInterval(() => {
-                percent += 2;
-                const options = {
-                  text: percent + '% complete.'
-                };
-                if (percent === 80) {
-                  options.title = 'Almost There';
-                }
-                if (percent >= 100) {
-                  window.clearInterval(interval);
-                  options.title = 'Done!';
-                  options.type = 'success';
-                  options.hide = true;
-                  options.icon = 'fas fa-check';
-                  options.shadow = true;
-                  options.width = PNotify.defaults.width;
-                  options.modules = {
-                    Buttons: {
-                      closer: true,
-                      sticker: true
-                    }
+            notice.on('pnotify:afterOpen', () => {
+              setTimeout(() => {
+                notice.update({ title: false });
+                const interval = setInterval(() => {
+                  percent += 2;
+                  const options = {
+                    text: percent + '% complete.'
                   };
-                }
-                notice.update(options);
-              }, 120);
-            }, 2000);
+                  if (percent === 80) {
+                    options.title = 'Almost There';
+                  }
+                  if (percent >= 100) {
+                    window.clearInterval(interval);
+                    options.title = 'Done!';
+                    options.type = 'success';
+                    options.hide = true;
+                    options.icon = 'fas fa-check';
+                    options.shadow = true;
+                    options.width = PNotify.defaults.width;
+                    options.modules = {
+                      Buttons: {
+                        closer: true,
+                        sticker: true
+                      }
+                    };
+                  }
+                  notice.update(options);
+                }, 120);
+              }, 2000);
+            });
           };
         </script>
         <button class="btn btn-light my-1 source" onclick="
@@ -763,7 +764,10 @@
 });</code></pre>
           </div>
         </div>
-        <hr style="clear: both;" />
+      </div>
+
+      <h5 class="card-header">Stacks <small>Position, order, and group notices. See the <a href="#stacks">main stacks section</a> for even more demos.</small></h5>
+      <div class="card-body">
         <button class="btn btn-light my-1 source" onclick="
           PNotify.defaultStack.openLast();
         ">Open Last Notice (Default Stack)</button>
@@ -771,26 +775,210 @@
           PNotify.defaultStack.open();
         ">Open All Notices (Default Stack)</button>
         <button class="btn btn-light my-1 source" onclick="
-          if (typeof window.historyMaxStack === 'undefined') {
-            window.historyMaxStack = new PNotify.Stack({dir1: 'up', dir2: 'right', firstpos1: 25, firstpos2: 25, maxOpen: 2});
+          if (typeof window.maxOpenWait === 'undefined') {
+            window.maxOpenWait = new PNotify.Stack({dir1: 'down', dir2: 'right', firstpos1: 25, firstpos2: 25, modal: false, maxOpen: 2, maxStrategy: 'wait', maxClosureCausesWait: false});
           }
           PNotify.notice({
             title: 'Stack Limit Notice',
             text: 'I get anxious around other notices, so I\'ll keep only one friend around.',
-            stack: window.historyMaxStack
+            stack: window.maxOpenWait
           });
-        ">Limit a Stack to 2</button>
+        ">Limit a Stack by Holding Notices</button>
+          <button class="btn btn-light my-1 source" onclick="
+          if (typeof window.maxOpenClose === 'undefined') {
+            window.maxOpenClose = new PNotify.Stack({dir1: 'up', dir2: 'right', firstpos1: 25, firstpos2: 25, modal: false, maxOpen: 2, maxStrategy: 'close', maxClosureCausesWait: false});
+          }
+          PNotify.notice({
+            title: 'Stack Limit Notice',
+            text: 'I get anxious around other notices, so I\'ll keep only one friend around.',
+            stack: window.maxOpenClose
+          });
+        ">Limit a Stack by Closing Notices</button>
         <button class="btn btn-light my-1 source" onclick="
-          PNotify.defaultStack.maxOpen = 1;
-        ">Set Max in Default Stack to 1</button>
-        <button class="btn btn-light my-1 source" onclick="
+          PNotify.defaultStack.close(true);
           PNotify.defaultStack.maxOpen = Infinity;
-        ">Set Max in Default Stack Back to Infinity</button>
+          PNotify.defaultStack.modal = false;
+        ">Default Stack to Modeless</button>
+        <button class="btn btn-light my-1 source" onclick="
+          PNotify.defaultStack.close(true);
+          PNotify.defaultStack.maxOpen = 1;
+          PNotify.defaultStack.modal = 'ish';
+        ">Default Stack Back to Modalish</button>
         <button class="btn btn-light my-1 source" onclick="
           PNotify.defaultStack.close();
         ">Close All Notices (Default Stack)</button>
         <br />
         <small>Opening previous notices requires <code>PNotify.defaults.destroy = false;</code></small>
+      </div>
+
+      <h5 class="card-header">Lifecycle Events <small>Manipulate the notice during its lifecycle.</small></h5>
+      <div class="card-body">
+        <button class="btn btn-light my-1 source" onclick="
+          const dontAlert = () => {};
+          const initListener = event => {
+            console.log(event.type, event.detail);
+            alert('I\'m listening for when the notice initializes. This is the only PNotify lifecycle event that bubbles. The event object has a reference to the notice. Watch me replace the word listener with tire iron!');
+            event.detail.notice.text = event.detail.notice.text.replace(/listener/g, 'tire iron');
+          };
+          document.body.addEventListener('pnotify:init', initListener);
+          const notice = PNotify.notice({
+            title: 'I\'m Here',
+            text: 'I have a listener for each of my lifecycle events. I\'ll fire events for all my listeners while I change states.',
+            autoOpen: false,
+          });
+          document.body.removeEventListener('pnotify:init', initListener);
+          notice.on('pnotify:update', event => {
+            console.log(event.type, event.detail);
+            dontAlert('I\'m listening for when the notice changes state.');
+          });
+          notice.on('pnotify:beforeOpen', event => {
+            console.log(event.type, event.detail);
+            const sourceNote = 'Use event.preventDefault() to cancel opening.';
+            alert('I\'m listening for before the notice opens.\n\nThere are more events you can listen for, but this is the last alert you\'ll see. Check the code to see them all.');
+          });
+          notice.on('pnotify:afterOpen', event => {
+            console.log(event.type, event.detail);
+            dontAlert('I\'m listening for after the notice opens.');
+          });
+          notice.on('pnotify:beforeClose', event => {
+            console.log(event.type, event.detail);
+            const sourceNote = 'Use event.preventDefault() to cancel close. Use notice.queueClose() to set the close timer again.';
+            dontAlert('I\'m listening for before the notice closes.');
+          });
+          notice.on('pnotify:afterClose', event => {
+            console.log(event.type, event.detail);
+            dontAlert('I\'m listening for after the notice closes.');
+          });
+          notice.on('pnotify:beforeDestroy', event => {
+            console.log(event.type, event.detail);
+            const sourceNote = 'Use event.preventDefault() to cancel destroy.';
+            dontAlert('I\'m listening for before the notice is destroyed.');
+          });
+          notice.on('pnotify:afterDestroy', event => {
+            console.log(event.type, event.detail);
+            dontAlert('I\'m listening for after the notice is destroyed.');
+          });
+          notice.open();
+        ">Notice with Event Listeners</button>
+        <button class="btn btn-light my-1 source" onclick="
+          const notice = PNotify.notice({
+            title: 'Notice',
+            text: 'Right now I\'m a notice.'
+          });
+
+          const listener1 = event => {
+            notice.update({
+              title: 'Error',
+              text: 'Uh oh. Now I\'ve become an error.',
+              type: 'error'
+            });
+            notice.attention('swing');
+            notice.queueClose();
+            event.preventDefault();
+            const off = notice.on('pnotify:beforeClose', event => {
+              listener2(event);
+              off();
+            });
+          };
+
+          const listener2 = event => {
+            notice.update({
+              title: 'Success',
+              text: 'I fixed the error!',
+              type: 'success'
+            });
+            notice.attention('swing');
+            notice.queueClose();
+            event.preventDefault();
+            const off = notice.on('pnotify:beforeClose', event => {
+              listener3(event);
+              off();
+            });
+          };
+
+          const listener3 = event => {
+            notice.update({
+              title: 'Info',
+              text: 'Everything\'s cool now.',
+              type: 'info'
+            });
+            notice.attention('swing');
+            notice.queueClose();
+            event.preventDefault();
+          };
+
+          const off = notice.on('pnotify:beforeClose', event => {
+            listener1(event);
+            off();
+          });
+        ">Notice to Error to Success to Info</button>
+        <script type="text/javascript">
+          /* eslint-env browser, jquery */
+          /* globals PNotify */
+          window.fakeLoad = function fakeLoad () {
+            let curValue = 1;
+            let progress;
+
+            // Make a loader.
+            const notice = PNotify.notice({
+              title: 'Creating series of tubes',
+              text: '<div class="progress">\n' +
+                    '  <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></' + 'div>\n' +
+                    '</' + 'div>',
+              textTrusted: true,
+              icon: 'fas fa-cog fa-spin',
+              hide: false,
+              destroy: true,
+              modules: {
+                Buttons: {
+                  closer: false,
+                  sticker: false
+                }
+              }
+            });
+
+            notice.on('pnotify:afterOpen', () => {
+              progress = notice.refs.elem.querySelector('.progress-bar');
+              progress.style.width = (curValue + '%');
+              progress.attributes['aria-valuenow'].value = curValue;
+              // Pretend to do something.
+              let plus = 1;
+              const timer = setInterval(() => {
+                if (curValue === 70) {
+                  plus = 0.25;
+                  notice.update({
+                    title: 'Aligning discrete worms',
+                    icon: 'fas fa-circle-notch fa-spin'
+                  });
+                }
+                if (curValue === 80) {
+                  notice.update({
+                    title: 'Connecting end points',
+                    icon: 'fas fa-sync fa-spin'
+                  });
+                }
+                if (curValue === 90) {
+                  notice.update({
+                    title: 'Dividing and conquering',
+                    icon: 'fas fa-spinner fa-pulse'
+                  });
+                }
+                if (curValue >= 100) {
+                  // Clean up the interval.
+                  window.clearInterval(timer);
+                  notice.close();
+                  return;
+                }
+                curValue += plus;
+                progress.style.width = (curValue + '%');
+                progress.attributes['aria-valuenow'].value = curValue;
+              }, 65);
+            });
+          };
+        </script>
+        <button class="btn btn-light my-1 source" onclick="
+          fakeLoad();
+        ">Progress Loader</button>
       </div>
     </div>
   </div>
@@ -1436,8 +1624,8 @@
               }
             }
           });
-          notice.on('pnotify.confirm', () => alert('Ok, cool.'));
-          notice.on('pnotify.cancel', () => alert('Oh ok. Chicken, I see.'));
+          notice.on('pnotify:confirm', () => alert('Ok, cool.'));
+          notice.on('pnotify:cancel', () => alert('Oh ok. Chicken, I see.'));
         ">Confirm Dialog</button>
         <button class="btn btn-light my-1 source" onclick="
           const notice = PNotify.notice({
@@ -1462,8 +1650,8 @@
               }
             }
           });
-          notice.on('pnotify.confirm', () => alert('Ok, cool.'));
-          notice.on('pnotify.cancel', () => alert('Oh ok. Chicken, I see.'));
+          notice.on('pnotify:confirm', () => alert('Ok, cool.'));
+          notice.on('pnotify:cancel', () => alert('Oh ok. Chicken, I see.'));
         ">Modal Confirm Dialog</button>
         <button class="btn btn-light my-1 source" onclick="
           PNotify.notice({
@@ -1560,7 +1748,7 @@
               }
             }
           });
-          notice.on('pnotify.confirm', e => {
+          notice.on('pnotify:confirm', e => {
             notice.cancelClose();
             notice.update({
               title: 'You\'ve Chosen a Side',
@@ -1579,7 +1767,7 @@
               }
             });
           });
-          notice.on('pnotify.cancel', () => {
+          notice.on('pnotify:cancel', () => {
             notice.cancelClose();
             notice.update({
               title: 'You Don\'t Want a Side',
@@ -1618,7 +1806,7 @@
               }
             }
           });
-          notice.on('pnotify.confirm', e => {
+          notice.on('pnotify:confirm', e => {
             notice.cancelClose();
             notice.update({
               title: 'Your Poem',
@@ -1637,7 +1825,7 @@
               }
             });
           });
-          notice.on('pnotify.cancel', () => {
+          notice.on('pnotify:cancel', () => {
             notice.cancelClose();
             notice.update({
               title: 'You Don\'t Like Poetry',
@@ -1750,169 +1938,6 @@
             }
           });
         ">Alert Style Error</button>
-      </div>
-
-      <h5 class="card-header">Callbacks Module <small>Manipulate the notice during its lifecycle.</small></h5>
-      <div class="card-body">
-        <button class="btn btn-light my-1 source" onclick="
-          const dontAlert = () => {};
-          PNotify.notice({
-            title: 'I\'m Here',
-            text: 'I have a callback for each of my events. I\'ll call all my callbacks while I change states.',
-            modules: {
-              Callbacks: {
-                beforeInit: opts => {
-                  console.log('beforeInit', opts);
-                  alert('I\'m called before the notice initializes. I\'m passed the options used to make the notice. I can modify them. Watch me replace the word callback with tire iron!');
-                  opts.text = opts.text.replace(/callback/g, 'tire iron');
-                },
-                afterInit: notice => {
-                  console.log('afterInit', notice);
-                  alert('I\'m called after the notice initializes. I\'m passed the PNotify object for the current notice: ' + notice + '\n\nThere are more callbacks you can assign, but this is the last notice you\'ll see. Check the code to see them all.');
-                },
-                beforeOpen: notice => {
-                  console.log('beforeOpen', notice);
-                  const sourceNote = 'Return false to cancel opening.';
-                  dontAlert('I\'m called before the notice opens. I\'m passed the PNotify object for the current notice: ' + notice);
-                },
-                afterOpen: notice => {
-                  console.log('afterOpen', notice);
-                  dontAlert('I\'m called after the notice opens. I\'m passed the PNotify object for the current notice: ' + notice);
-                },
-                beforeClose: (notice, timerHide) => {
-                  console.log('beforeClose', notice, timerHide);
-                  const sourceNote = 'Return false to cancel close. Use PNotify.queueClose() to set the close timer again.';
-                  dontAlert('I\'m called before the notice closes. I\'m passed the PNotify object for the current notice: ' + notice);
-                  dontAlert('I also have an argument called timerHide, which is true if the notice was closed because the timer ran down. Value: ' + timerHide);
-                },
-                afterClose: (notice, timerHide) => {
-                  console.log('afterClose', notice, timerHide);
-                  dontAlert('I\'m called after the notice closes. I\'m passed the PNotify object for the current notice: ' + notice);
-                  dontAlert('I also have an argument called timerHide, which is true if the notice was closed because the timer ran down. Value: ' + timerHide);
-                }
-              }
-            }
-          });
-        ">Notice with Callbacks</button>
-        <button class="btn btn-light my-1 source" onclick="
-          PNotify.notice({
-            title: 'Notice',
-            text: 'Right now I\'m a notice.',
-            modules: {
-              Callbacks: {
-                beforeClose: notice => {
-                  notice.update({
-                    title: 'Error',
-                    text: 'Uh oh. Now I\'ve become an error.',
-                    type: 'error',
-                    modules: {
-                      Callbacks: {
-                        beforeClose: notice => {
-                          notice.update({
-                            title: 'Success',
-                            text: 'I fixed the error!',
-                            type: 'success',
-                            modules: {
-                              Callbacks: {
-                                beforeClose: notice => {
-                                  notice.update({
-                                    title: 'Info',
-                                    text: 'Everything\'s cool now.',
-                                    type: 'info',
-                                    modules: {
-                                      Callbacks: {}
-                                    }
-                                  });
-                                  notice.attention('swing');
-                                  notice.queueClose();
-                                  return false;
-                                }
-                              }
-                            }
-                          });
-                          notice.attention('swing');
-                          notice.queueClose();
-                          return false;
-                        }
-                      }
-                    }
-                  });
-                  notice.attention('swing');
-                  notice.queueClose();
-                  return false;
-                }
-              }
-            }
-          });
-        ">Notice to Error to Success to Info</button>
-        <script type="text/javascript">
-          /* eslint-env browser, jquery */
-          /* globals PNotify */
-          window.fakeLoad = function fakeLoad () {
-            let curValue = 1;
-            let progress;
-
-            // Make a loader.
-            PNotify.notice({
-              title: 'Creating series of tubes',
-              text: '<div class="progress">\n' +
-                    '  <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></' + 'div>\n' +
-                    '</' + 'div>',
-              textTrusted: true,
-              icon: 'fas fa-cog fa-spin',
-              hide: false,
-              destroy: true,
-              modules: {
-                Buttons: {
-                  closer: false,
-                  sticker: false
-                },
-                Callbacks: {
-                  afterOpen: notice => {
-                    progress = notice.refs.elem.querySelector('.progress-bar');
-                    progress.style.width = (curValue + '%');
-                    progress.attributes['aria-valuenow'].value = curValue;
-                    // Pretend to do something.
-                    let plus = 1;
-                    const timer = setInterval(() => {
-                      if (curValue === 70) {
-                        plus = 0.25;
-                        notice.update({
-                          title: 'Aligning discrete worms',
-                          icon: 'fas fa-circle-notch fa-spin'
-                        });
-                      }
-                      if (curValue === 80) {
-                        notice.update({
-                          title: 'Connecting end points',
-                          icon: 'fas fa-sync fa-spin'
-                        });
-                      }
-                      if (curValue === 90) {
-                        notice.update({
-                          title: 'Dividing and conquering',
-                          icon: 'fas fa-spinner fa-pulse'
-                        });
-                      }
-                      if (curValue >= 100) {
-                        // Clean up the interval.
-                        window.clearInterval(timer);
-                        notice.close();
-                        return;
-                      }
-                      curValue += plus;
-                      progress.style.width = (curValue + '%');
-                      progress.attributes['aria-valuenow'].value = curValue;
-                    }, 65);
-                  }
-                }
-              }
-            });
-          };
-        </script>
-        <button class="btn btn-light my-1 source" onclick="
-          fakeLoad();
-        ">Progress Loader</button>
       </div>
 
       <h5 class="card-header">Reference Module <small>A reference for when you are coding your own module.</small></h5>

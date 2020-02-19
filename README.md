@@ -35,7 +35,6 @@ PNotify is a JavaScript notification and [confirmation/prompt](http://sciactive.
   - [Mobile Module](#Mobile-Module)
   - [Animate Module](#Animate-Module)
   - [Confirm Module](#Confirm-Module)
-  - [Callbacks Module](#Callbacks-Module)
 - [Exported Methods and Properties](#Exported-Methods-and-Properties)
 - [Instance Methods and Properties](#Instance-Methods-and-Properties)
   - [Events](#Events)
@@ -504,7 +503,7 @@ buttons: [
     promptTrigger: true,
     click: (notice, value) => {
       notice.close();
-      notice.fire('pnotify.confirm', {notice, value});
+      notice.fire('pnotify:confirm', {notice, value});
     }
   },
   {
@@ -513,7 +512,7 @@ buttons: [
     addClass: '',
     click: (notice) => {
       notice.close();
-      notice.fire('pnotify.cancel', {notice});
+      notice.fire('pnotify:cancel', {notice});
     }
   }
 ]
@@ -536,33 +535,13 @@ const notice = alert({
     }
   }
 });
-notice.on('pnotify.confirm', () => {
+notice.on('pnotify:confirm', () => {
   // User confirmed, continue here...
 });
-notice.on('pnotify.cancel', () => {
+notice.on('pnotify:cancel', () => {
   // User canceled, continue here...
 });
 ```
-
-## Callbacks Module
-
-The callback options all expect the value to be a callback function. If the function returns false on the `beforeOpen` or `beforeClose` callback, that event will be canceled.
-
-`Callbacks: {`
-* `beforeInit`<br>
-  Called before the notice has been initialized. Given one argument, the options object.
-* `afterInit`<br>
-  Called after the notice has been initialized. Given one argument, the notice object.
-* `beforeOpen`<br>
-  Called before the notice opens. Given one argument, the notice object.
-* `afterOpen`<br>
-  Called after the notice opens. Given one argument, the notice object.
-* `beforeClose`<br>
-  Called before the notice closes. Given one argument, the notice object.
-* `afterClose`<br>
-  Called after the notice closes. Given one argument, the notice object.
-
-`}`
 
 # Exported Methods and Properties
 
@@ -595,6 +574,10 @@ The callback options all expect the value to be a callback function. If the func
   Close the notice.
 * `notice.update(options)`<br>
   Update the notice with new options.
+* `notice.on(eventName, callback)`<br>
+  Invokes the callback whenever the notice dispatches the event. Callback receives an `event` argument with a `detail` prop. Returns a function that removes the handler when invoked.
+* `notice.fire(eventName, detail)`<br>
+  Fire an event.
 * `notice.addModuleClass(element, ...classNames)`<br>
   This is for modules to add classes to the notice or container element.
 * `notice.removeModuleClass(element, ...classNames)`<br>
@@ -616,10 +599,16 @@ The callback options all expect the value to be a callback function. If the func
 
 ## Events
 
-* `notice.on(eventName, callback)`<br>
-  Invokes the callback whenever the notice dispatches the event. Callback receives an `event` argument with a `detail` prop. Returns a function that removes the handler when invoked.
-* `notice.fire(eventName, event)`<br>
-  Fire an event.
+Event objects have a `detail` property that contains information about the event, including a reference to the notice itself.
+
+* `pnotify:init` - Fired upon initialization of a new notice. This event is the only `pnotify:*` event that bubbles.
+* `pnotify:update` - Fired when the notice's state changes. Careful, this includes internal state and can be very noisy.
+* `pnotify:beforeOpen` - Fired before the notice opens. Use `preventDefault()` on the event to cancel this action.
+* `pnotify:afterOpen` - Fired after the notice opens.
+* `pnotify:beforeClose` - Fired before the notice closes. Use `preventDefault()` on the event to cancel this action.
+* `pnotify:afterClose` - Fired after the notice closes.
+* `pnotify:beforeDestroy` - Fired before the notice is destroyed. Use `preventDefault()` on the event to cancel this action.
+* `pnotify:afterDestroy` - Fired after the notice is destroyed.
 
 ## From the [Svelte Component API](https://svelte.dev/docs#Client-side_component_API)
 
@@ -743,8 +732,7 @@ alert({
   * Dynamically update existing notices.
   * Put forms and other HTML in notices.
     * By default, escapes text to prevent XSS attack.
-  * Callbacks for lifespan events.
-  * Notice history for reshowing old notices.
+  * Optional notice history for reshowing old notices.
 * Universally compatible.
   * Works with any frontend library (React, Angular, Svelte, Vue, Ember, etc.).
   * Works well with bundlers (Webpack, Rollup, etc.).

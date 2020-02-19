@@ -29,16 +29,16 @@
         promptTrigger: true,
         click: (notice, value) => {
           notice.close();
-          notice.fire('pnotify.confirm', { notice, value });
+          notice.fire('pnotify:confirm', { notice, value });
         }
       },
       {
         text: 'Cancel',
         textTrusted: false,
         addClass: '',
-        click: (notice) => {
+        click: notice => {
           notice.close();
-          notice.fire('pnotify.cancel', { notice });
+          notice.fire('pnotify:cancel', { notice });
         }
       }
     ]

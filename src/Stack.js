@@ -109,12 +109,12 @@ export default class Stack {
     }
   }
 
-  close () {
-    this.forEach(notice => notice.close(false, false));
+  close (immediate) {
+    this.forEach(notice => notice.close(immediate, false, false));
   }
 
-  open () {
-    this.forEach(notice => notice.open());
+  open (immediate) {
+    this.forEach(notice => notice.open(immediate));
   }
 
   openLast () {

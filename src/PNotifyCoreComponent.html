@@ -28,7 +28,7 @@
         clearTimeout(posTimer);
       }
       posTimer = setTimeout(() => {
-        var event = new Event('pnotify:position');
+        const event = new Event('pnotify:position');
         document.body.dispatchEvent(event);
         posTimer = null;
       }, 10);
@@ -190,6 +190,14 @@
     on:focusin={handleInteraction}
     on:focusout={handleLeaveInteraction}
     ui-pnotify
+    on:pnotify:init
+    on:pnotify:update
+    on:pnotify:beforeOpen
+    on:pnotify:afterOpen
+    on:pnotify:beforeClose
+    on:pnotify:afterClose
+    on:pnotify:beforeDestroy
+    on:pnotify:afterDestroy
     on:mouseover
     on:mouseout
     on:mouseenter
@@ -453,7 +461,7 @@
   }
 
   // This runs an event on all the modules.
-  function runModules (event) {
+  function runModules (event, detail = {}) {
     if (event === 'init') {
       // Initializing a module should only be done if it has an init
       // function, which means it's not rendered in the template.
@@ -492,6 +500,24 @@
             _moduleAccessors[key][event]();
           }
         }
+      }
+    }
+
+    if (!event.startsWith('$')) {
+      const eventDetail = {
+        notice: self,
+        ...detail
+      };
+      if (refs.elem) {
+        const eventObj = new Event('pnotify:'+event, {
+          bubbles: event === 'init',
+          cancelable: event.startsWith('before')
+        });
+        eventObj.detail = eventDetail;
+        refs.elem.dispatchEvent(eventObj);
+        return !eventObj.defaultPrevented;
+      } else {
+        fire('pnotify:'+event, eventDetail);
       }
     }
   }
@@ -559,12 +585,15 @@
       return;
     }
 
+    if (!runModules('beforeOpen', { immediate })) {
+      return;
+    }
+
     _state = 'opening';
     _masking = false;
     // This makes the notice visibity: hidden; so its dimensions can be
     // determined.
     _animatingClass = 'ui-pnotify-initial-hidden';
-    runModules('beforeOpen');
 
     const afterOpenCallback = () => {
       // Now set it to hide.
@@ -574,7 +603,7 @@
 
       _state = 'open';
 
-      runModules('afterOpen');
+      runModules('afterOpen', { immediate });
     };
 
     if (stack) {
@@ -621,7 +650,9 @@
     }
 
     const runDestroy = () => {
-      runModules('beforeDestroy');
+      if (!runModules('beforeDestroy')) {
+        return;
+      }
       if (stack) {
         stack._removeNotice(self);
       }
@@ -643,9 +674,12 @@
       return;
     }
 
+    if (!runModules('beforeClose', { immediate, timerHide, waitAfterward })) {
+      return;
+    }
+
     _state = 'closing';
     _timerHide = !!timerHide; // Make sure it's a boolean.
-    runModules('beforeClose');
 
     if (_timer && _timer !== 'prevented' && clearTimeout) {
       clearTimeout(_timer);
@@ -655,7 +689,7 @@
     animateOut(() => {
       _timerHide = false;
       _state = waitAfterward ? 'waiting' : 'closed';
-      runModules('afterClose');
+      runModules('afterClose', { immediate, timerHide, waitAfterward });
       if (stack) {
         stack._handleNoticeClosed(self);
       }

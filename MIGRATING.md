@@ -19,6 +19,8 @@
 * The History module has been removed.
   * The `showLast()` and `showAll()` methods are now the `openLast()` and `open()` methods of the Stack, respectively.
   * The `maxInStack` option has been replaced with `stack.maxOpen`. To use the old behavior, set `stack.maxStrategy` to 'close'.
+* The Callbacks module has been removed.
+  * The lifecycle events have been turned into actual events. You can use `notice.on('pnotify:beforeOpen')` and the like.
 * Methods are no longer chainable.
 
 ## Minor Breaking Changes.
@@ -27,6 +29,7 @@
 * The deprecated NonBlock module has been removed.
 * White space formatting has changed. HTML notices no longer use `white-space: pre-line;`. Only regular text notices. But also titles do too now.
 * `notice.off(event, callback)` is no longer needed. `on()` returns a function that will remove the listener when invoked.
+* Confirm modules events changed from `pnotify.confirm` and `pnotify.cancel` to `pnotify:confirm` and `pnotify:cancel`.
 * Animate.css support in legacy browsers has been removed.
 * Some styling props and classes have changed, like pinDown, actionBar, etc.
 * Material styling is no longer a module, but rather a CSS file.
