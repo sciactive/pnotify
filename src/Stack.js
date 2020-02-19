@@ -571,14 +571,12 @@ export default class Stack {
     }
 
     // Get this notice ready for positioning.
-    // this._masking.setAnimatingClass('ui-pnotify-initial-hidden');
     this._masking._setMasking(this.dir1, immediate);
 
     // Wait for the DOM to update.
     window.requestAnimationFrame(() => {
       if (this._masking) {
         this._positionNotice(this._masking);
-        // this._masking.setAnimatingClass('');
       }
     });
 
