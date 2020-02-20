@@ -8,7 +8,7 @@
 * The new modalish flow is the default flow. The default stack is configured to use it. To go back to the old behavior, use `PNotify.defaultStack.maxOpen = Infinity; PNotify.defaultStack.modal = false;`.
 * Using the factory functions is required. Using the `new` keyword will break your notice.
 * IIFE scripts have been replaced with UMD scripts, since static methods and properties are now module exports.
-* The deprecated `remove()`, `removeAll()`, `cancelRemove()`, etc. methods have been removed. (Use `close()`, `stack.closeAll()`, `cancelClose()`.)
+* The deprecated `remove()`, `removeAll()`, `cancelRemove()`, etc. methods have been removed. (Use `close()`, `stack.close()`, `cancelClose()`.)
 * The `autoDisplay` option has been renamed `autoOpen`.
 * There is no longer a global array, and therefore, no longer `closeAll()` and `positionAll()` methods.
 * Stacks use a `Stack` class now.
