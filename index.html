@@ -178,7 +178,7 @@
   </nav>
 
   <section class="container page-banner" id="overview">
-    <h1>PNotify <small>v5 pre-alpha</small></h1>
+    <h1>PNotify <small>v5-alpha</small></h1>
     <p id="description">Beautiful notifications and prompts.</p>
     <p class="dev-note" style="display: none;">
       You probably want to go to the <a href="https://sciactive.com/pnotify/">production site</a>, cause things will be broken here.
@@ -828,7 +828,7 @@
           const dontAlert = () => {};
           const initListener = event => {
             console.log(event.type, event.detail);
-            alert('I\'m listening for when the notice initializes. This and mount are the only PNotify lifecycle event that bubble. The event object has a reference to the notice.');
+            alert('I\'m listening for when the notice initializes. This and \'mount\' are the only PNotify lifecycle events that bubble. The event object has a reference to the notice.');
           };
           const mountListener = event => {
             console.log(event.type, event.detail);
