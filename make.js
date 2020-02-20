@@ -68,7 +68,7 @@ for (const name of pnotifySrc) {
   const dstFilename = 'dist/es/' + name + '.js';
   let code = fs.readFileSync(srcFilename, 'utf8');
 
-  code = code.replace(/import (.*) from (["'])\.\/(\w*)\.html(["'])/g, 'import $1 from $2./$3$4');
+  code = code.replace(/(import|export) (.*) from (["'])\.\/(\w*)\.html(["'])/g, '$1 $2 from $3./$4.js$5');
 
   fs.writeFileSync(dstFilename, code);
 }
