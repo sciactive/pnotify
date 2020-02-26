@@ -176,6 +176,8 @@
 </script>
 
 <div bind:this={refs.elem}
+    ui-pnotify
+    use:forwardEvents
     class="
       ui-pnotify
       {icon !== false ? 'ui-pnotify-with-icon' : ''}
@@ -195,38 +197,7 @@
     on:mouseenter={handleInteraction}
     on:mouseleave={handleLeaveInteraction}
     on:focusin={handleInteraction}
-    on:focusout={handleLeaveInteraction}
-    ui-pnotify
-    on:pnotify:init
-    on:pnotify:mount
-    on:pnotify:update
-    on:pnotify:beforeOpen
-    on:pnotify:afterOpen
-    on:pnotify:enterModal
-    on:pnotify:leaveModal
-    on:pnotify:beforeClose
-    on:pnotify:afterClose
-    on:pnotify:beforeDestroy
-    on:pnotify:afterDestroy
-    on:mouseover
-    on:mouseout
-    on:mouseenter
-    on:mouseleave
-    on:mousemove
-    on:mousedown
-    on:mouseup
-    on:click
-    on:dblclick
-    on:focus
-    on:blur
-    on:focusin
-    on:focusout
-    on:touchstart
-    on:touchmove
-    on:touchend
-    on:touchcancel
-    on:animationend
-    on:transitionend>
+    on:focusout={handleLeaveInteraction}>
   <div bind:this={refs.container}
       class="
         ui-pnotify-container
@@ -288,9 +259,27 @@
 <script>
   import { onMount, beforeUpdate, tick, createEventDispatcher } from 'svelte';
   import { current_component } from 'svelte/internal';
+  import { forwardEventsBuilder } from '@smui/common/forwardEvents.js';
 
   const self = current_component;
   const dispatch = createEventDispatcher();
+  const forwardEvents = forwardEventsBuilder(current_component, [
+    'pnotify:init',
+    'pnotify:mount',
+    'pnotify:update',
+    'pnotify:beforeOpen',
+    'pnotify:afterOpen',
+    'pnotify:enterModal',
+    'pnotify:leaveModal',
+    'pnotify:beforeClose',
+    'pnotify:afterClose',
+    'pnotify:beforeDestroy',
+    'pnotify:afterDestroy',
+    'focusin',
+    'focusout',
+    'animationend',
+    'transitionend'
+  ]);
 
   export let type = defaults.type;
   export let title = defaults.title;

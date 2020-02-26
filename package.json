@@ -48,6 +48,7 @@
     "@babel/core": "^7.8.4",
     "@babel/plugin-transform-classes": "^7.8.3",
     "@babel/preset-env": "^7.8.4",
+    "@smui/common": "^1.0.0-beta.20",
     "babel-eslint": "^10.0.3",
     "babel-loader": "^8.0.6",
     "css-loader": "^3.4.2",
