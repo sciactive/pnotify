@@ -85,7 +85,11 @@ export default class Stack {
     return this._length;
   }
 
-  forEach (callback, { start = 'oldest', dir = 'newer' } = {}) {
+  get leader () {
+    return this._leader;
+  }
+
+  forEach (callback, { start = 'oldest', dir = 'newer', skipModuleHandled = false } = {}) {
     let node;
     if (start === 'head' || (start === 'newest' && this.push === 'top') || (start === 'oldest' && this.push === 'bottom')) {
       node = this._noticeHead.next;
@@ -107,7 +111,7 @@ export default class Stack {
         throw new Error('Invalid dir param.');
       }
       // Call the callback last, just in case the callback removes the notice.
-      if (callback(notice) === false) {
+      if ((!skipModuleHandled || !notice.getModuleHandled()) && callback(notice) === false) {
         break;
       }
     }
@@ -137,7 +141,7 @@ export default class Stack {
       this._resetPositionData();
       this.forEach(notice => {
         this._positionNotice(notice);
-      }, { start: 'head', dir: 'next' });
+      }, { start: 'head', dir: 'next', skipModuleHandled: true });
     } else {
       delete this._nextpos1;
       delete this._nextpos2;
@@ -145,12 +149,9 @@ export default class Stack {
   }
 
   // Queue the position so it doesn't run repeatedly and use up resources.
-  queuePosition (milliseconds) {
+  queuePosition (milliseconds = 10) {
     if (this._posTimer) {
       clearTimeout(this._posTimer);
-    }
-    if (!milliseconds) {
-      milliseconds = 10;
     }
     this._posTimer = setTimeout(() => this.position(), milliseconds);
   }
@@ -501,7 +502,8 @@ export default class Stack {
           }
         }, {
           start: this._leader,
-          dir: 'next'
+          dir: 'next',
+          skipModuleHandled: true
         });
 
         // Remove the modal state overlay.
@@ -531,7 +533,8 @@ export default class Stack {
         }
       }, {
         start: this._leader,
-        dir: 'next'
+        dir: 'next',
+        skipModuleHandled: true
       });
     };
 
@@ -611,7 +614,8 @@ export default class Stack {
           }
         }, {
           start: this._leader,
-          dir: 'next'
+          dir: 'next',
+          skipModuleHandled: true
         });
       }
     };
@@ -623,6 +627,11 @@ export default class Stack {
   }
 
   _handleNoticeClosed (notice) {
+    if (notice.getModuleHandled()) {
+      // We don't deal with notices that are handled by a module.
+      return;
+    }
+
     this._openNotices--;
 
     if (this.modal === 'ish' && notice === this._leader) {
@@ -667,6 +676,11 @@ export default class Stack {
   }
 
   _handleNoticeOpened (notice) {
+    if (notice.getModuleHandled()) {
+      // We don't deal with notices that are handled by a module.
+      return;
+    }
+
     this._openNotices++;
 
     // Check the max in stack.
@@ -739,6 +753,8 @@ export default class Stack {
                 this._setLeader(notice);
               }
             }
+          }, {
+            skipModuleHandled: true
           });
 
           if (this._overlayOpen) {

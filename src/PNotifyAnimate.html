@@ -1,51 +1,51 @@
 <script context="module">
-  export const key = 'Animate';
   export const position = 'PrependContainer';
   export const defaults = {
-    // Use animate.css to animate the notice.
-    animate: false,
-    // The class to use to animate the notice in.
-    inClass: '',
-    // The class to use to animate the notice out.
-    outClass: ''
+    // The class to use to animate the notice in. If only one of these is set,
+    // it will be used for both.
+    inClass: null,
+    // The class to use to animate the notice out. If only one of these is set,
+    // it will be used for both.
+    outClass: null
   };
 </script>
 <script>
+  import { onDestroy } from 'svelte';
+
   // The PNotify notice.
   export let self = null;
 
-  export let animate = defaults.animate;
   export let inClass = defaults.inClass;
   export let outClass = defaults.outClass;
 
-  let _animateIn;
-  let _animateOut;
-  let _animation;
+  let _animation = self.animation;
+  let _animateIn = self.animateIn;
+  let _animateOut = self.animateOut;
 
-  $: {
-    if (animate && !_animateIn) {
-      _animation = self.animation;
-      _animateIn = self.animateIn;
-      _animateOut = self.animateOut;
-      self.$set({
-        animation: 'none',
-        animateIn,
-        animateOut
-      });
-    } else if (!animate && _animateIn) {
-      self.$set({
-        animation: _animation,
-        animateIn: _animateIn,
-        animateOut: _animateOut
-      });
-      _animation = null;
-      _animateIn = null;
-      _animateOut = null;
-    }
+  $: if (inClass || outClass) {
+    self.$set({
+      animation: 'none',
+      animateIn,
+      animateOut
+    });
+  } else {
+    self.$set({
+      animation: _animation,
+      animateIn: _animateIn,
+      animateOut: _animateOut
+    });
   }
 
+  onDestroy(() => {
+    self.$set({
+      animation: _animation,
+      animateIn: _animateIn,
+      animateOut: _animateOut
+    });
+  });
+
   self.on('pnotify:update', () => {
-    if (animate && self.refs.elem) {
+    if (self.refs.elem) {
       var animSpeed = 250;
       if (self.animateSpeed === 'slow') {
         animSpeed = 400;
@@ -83,7 +83,7 @@
     if (immediate) {
       finished();
     } else {
-      self.setAnimatingClass('ui-pnotify-in animated ' + inClass);
+      self.setAnimatingClass('ui-pnotify-in animated ' + (inClass || outClass));
     }
   }
 
@@ -111,7 +111,7 @@
     if (immediate) {
       finished();
     } else {
-      self.setAnimatingClass('ui-pnotify-in animated ' + outClass);
+      self.setAnimatingClass('ui-pnotify-in animated ' + (outClass || inClass));
     }
   }
 

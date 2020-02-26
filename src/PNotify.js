@@ -1,4 +1,4 @@
-import PNotify from './PNotifyCoreComponent.html';
+import PNotify from './PNotifyCore.html';
 
 // Factory functions.
 export const alert = options => new PNotify(getDefaultArgs(options));
@@ -29,14 +29,6 @@ function getDefaultArgs (options, type) {
   return { target, props: options };
 }
 
-// Some shortcut functions.
-PNotify.prototype.on = function (...args) {
-  return this.$on(...args);
-};
-PNotify.prototype.update = function (...args) {
-  return this.$set(...args);
-};
-
 export default PNotify;
-export * from './PNotifyCoreComponent.html';
+export * from './PNotifyCore.html';
 export { default as Stack } from './Stack.js';

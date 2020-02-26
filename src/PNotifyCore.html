@@ -109,15 +109,10 @@
     // The stack on which the notices will be placed. Also controls the
     // direction the notices stack.
     stack: defaultStack,
-    // This is where modules and their options should be defined.
-    modules: {}
+    // This is where modules and their options should be added. It is a map of
+    // `module => options` entries.
+    modules: new Map()
   };
-
-  // Modules can add themselves to these to be rendered in the template.
-  export const modulesPrependContainer = [];
-  export const modulesAppendContainer = [];
-  export const modulesPrependContent = [];
-  export const modulesAppendContent = [];
 
   const styleRegistry = {
     bootstrap3: {
@@ -204,8 +199,8 @@
       "
       style="{_widthStyle} {_minHeightStyle}"
       role="alert">
-    {#each modulesPrependContainer as module (module.key)}
-      <svelte:component this={module.default} self={self} {...module.options} />
+    {#each modulesPrependContainer as [module, options] (module)}
+      <svelte:component this={module.default} self={self} {...options} />
     {/each}
     {#if icon !== false}
       <div bind:this={refs.iconContainer} class="ui-pnotify-icon {getStyle('icon')}">
@@ -213,8 +208,8 @@
       </div>
     {/if}
     <div bind:this={refs.content} class="ui-pnotify-content {getStyle('content')}">
-      {#each modulesPrependContent as module (module.key)}
-        <svelte:component this={module.default} self={self} {...module.options} />
+      {#each modulesPrependContent as [module, options] (module)}
+        <svelte:component this={module.default} self={self} {...options} />
       {/each}
       {#if title !== false}
         <div bind:this={refs.titleContainer} class="ui-pnotify-title {getStyle('title')}">
@@ -241,12 +236,12 @@
           {/if}
         </div>
       {/if}
-      {#each modulesAppendContent as module (module.key)}
-        <svelte:component this={module.default} self={self} {...module.options} />
+      {#each modulesAppendContent as [module, options] (module)}
+        <svelte:component this={module.default} self={self} {...options} />
       {/each}
     </div>
-    {#each modulesAppendContainer as module (module.key)}
-      <svelte:component this={module.default} self={self} {...module.options} />
+    {#each modulesAppendContainer as [module, options] (module)}
+      <svelte:component this={module.default} self={self} {...options} />
     {/each}
   </div>
 </div>
@@ -302,7 +297,7 @@
   export let remove = defaults.remove;
   export let destroy = defaults.destroy;
   export let stack = defaults.stack;
-  export let modules = Object.assign({}, defaults.modules);
+  export let modules = new Map(defaults.modules);
 
   export const refs = {
     elem: null,
@@ -334,18 +329,14 @@
     container: []
   };
   // Modules that change how the notice displays (causing the notice element to
-  // not appear) can set this to true to make PNotify assume the notice has
-  // opened.
-  let _moduleIsNoticeOpen = false;
+  // not appear) can set these to true to make PNotify handle it correctly.
+  let _moduleHandled = false;
+  let _moduleOpen = false;
   // The masking control for the second notice in a modalish stack when the
   // first notice is hovered.
   let _masking = false;
   let _maskingIn = false;
   let _maskingTimer = null;
-
-  // These hold the instances to the Svelte-loaded modules.
-  // const _modulesPrependContainerInstances = [];
-  // const _modulesAppendContainerInstances = [];
 
   // This keeps the beforeUpdate handler from going into a loop when we're
   // taming Font Awesome's magic.
@@ -367,10 +358,11 @@
   // modal state).
   $: _modal = stack && (stack.modal === true || (stack.modal === 'ish' && _timer === 'prevented')) && ['open', 'opening', 'closing'].indexOf(_state) !== -1;
 
-  $: modulesPrependContainer = Object.entries(modules).filter(([key, module]) => module.position === 'PrependContainer').map(([key, module]) => ({key, options: {}, ...module}));
-  $: modulesPrependContent = Object.entries(modules).filter(([key, module]) => module.position === 'PrependContent').map(([key, module]) => ({key, options: {}, ...module}));
-  $: modulesAppendContent = Object.entries(modules).filter(([key, module]) => module.position === 'AppendContent').map(([key, module]) => ({key, options: {}, ...module}));
-  $: modulesAppendContainer = Object.entries(modules).filter(([key, module]) => module.position === 'AppendContainer').map(([key, module]) => ({key, options: {}, ...module}));
+  // Filter through the module objects, getting an array for each position.
+  $: modulesPrependContainer = Array.from(modules).filter(([module, options]) => module.position === 'PrependContainer');
+  $: modulesPrependContent = Array.from(modules).filter(([module, options]) => module.position === 'PrependContent');
+  $: modulesAppendContent = Array.from(modules).filter(([module, options]) => module.position === 'AppendContent');
+  $: modulesAppendContainer = Array.from(modules).filter(([module, options]) => module.position === 'AppendContainer');
 
   export const getState = () => _state;
   export const getStyle = name => (_styles && name in _styles) ? _styles[name] : styling + '-' + name;
@@ -527,7 +519,7 @@
       return;
     }
 
-    if (stack && stack._shouldNoticeWait()) {
+    if (!_moduleHandled && stack && stack._shouldNoticeWait()) {
       _state = 'waiting';
       return;
     }
@@ -558,7 +550,7 @@
       stack._handleNoticeOpened(self);
     }
 
-    if (_moduleIsNoticeOpen) {
+    if (_moduleOpen) {
       afterOpenCallback();
       return;
     }
@@ -665,7 +657,7 @@
       if (_animating !== 'in') {
         return;
       }
-      let visible = _moduleIsNoticeOpen;
+      let visible = _moduleOpen;
       if (!visible && refs.elem) {
         const domRect = refs.elem.getBoundingClientRect();
         for (let prop in domRect) {
@@ -715,7 +707,7 @@
       if (_animating !== 'out') {
         return;
       }
-      let visible = _moduleIsNoticeOpen;
+      let visible = _moduleOpen;
       if (!visible && refs.elem) {
         const domRect = refs.elem.getBoundingClientRect();
         for (let prop in domRect) {
@@ -788,6 +780,15 @@
     }
   }
 
+  // Some shortcut functions.
+  export function on (...args) {
+    return self.$on(...args);
+  }
+
+  export function update (...args) {
+    return self.$set(...args);
+  }
+
   export function fire (name, detail) {
     dispatch(name, detail);
   }
@@ -823,12 +824,20 @@
     return true;
   }
 
-  export function getModuleIsNoticeOpen () {
-    return _moduleIsNoticeOpen;
+  export function getModuleHandled () {
+    return _moduleHandled;
   }
 
-  export function setModuleIsNoticeOpen (value) {
-    return _moduleIsNoticeOpen = value;
+  export function setModuleHandled (value) {
+    return _moduleHandled = value;
+  }
+
+  export function getModuleOpen () {
+    return _moduleOpen;
+  }
+
+  export function setModuleOpen (value) {
+    return _moduleOpen = value;
   }
 
   export function setAnimating (value) {

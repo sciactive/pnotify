@@ -38,7 +38,6 @@ PNotify is a JavaScript notification and [confirmation/prompt](http://sciactive.
 - [Exported Methods and Properties](#Exported-Methods-and-Properties)
 - [Instance Methods and Properties](#Instance-Methods-and-Properties)
   - [Events](#Events)
-  - [From the Svelte Component API](#From-the-Svelte-Component-API)
 - [Stacks](#Stacks)
   - [Example Stack](#Example-Stack)
 - [Features](#Features)
@@ -64,8 +63,8 @@ npm install --save nonblockjs
 
 Inside the pnotify module directory:
 
-* `src` Svelte components and uncompressed Bright Theme CSS.
-* `dist` compressed Bright Theme CSS.
+* `src` Svelte components and uncompressed CSS.
+* `dist` compressed CSS.
 * `dist/es` compressed ECMAScript modules.
 * `dist/umd` compressed UMD modules.
 
@@ -247,6 +246,13 @@ Alternatively, you can use the Google Fonts CDN:
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Material+Icons" />
 ```
 
+Or a clone from jsDelivr:
+
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/material-icons-font@2.0.0/material-icons-font.css" />
+
+```
+
 ## Bootstrap
 
 Styling for the popular Bootstrap library. Doesn't support dark mode (but you can use a Bootstrap theme). To set Bootstrap as the default style, include the appropriate line(s) from below:
@@ -363,8 +369,8 @@ PNotify options and default values.
   Whether to remove the notice from the stack array (and therefore, stack history) when it is closed.
 * `stack: defaultStack`<br>
   The stack on which the notices will be placed. Also controls the direction the notices stack.
-* `modules: {}`<br>
-  This is where options for modules should be defined.
+* `modules: new Map()`<br>
+  This is where modules and their options should be added. It is a map of `module => options` entries.
 
 `}`
 
@@ -418,8 +424,6 @@ defaults.modules = {
 ## Desktop Module
 
 `Desktop: {`
-* `desktop: false`<br>
-  Display the notification as a desktop notification.
 * `fallback: true`<br>
   If desktop notifications are not supported or allowed, fall back to a regular notice.
 * `icon: null`<br>
@@ -468,12 +472,10 @@ defaults.modules = {
 Requires [Animate.css](https://daneden.github.io/animate.css/).
 
 `Animate: {`
-* `animate: false`<br>
-  Use animate.css to animate the notice.
-* `inClass: ''`<br>
-  The class to use to animate the notice in.
-* `outClass: ''`<br>
-  The class to use to animate the notice out.
+* `inClass: null`<br>
+  The class to use to animate the notice in. If only one of these is set, it will be used for both.
+* `outClass: null`<br>
+  The class to use to animate the notice out. If only one of these is set, it will be used for both.
 
 `}`
 
@@ -565,8 +567,6 @@ notice.on('pnotify:cancel', () => {
   Defaults for options.
 * `defaultStack`<br>
   The default stack object.
-* `modules`<br>
-  This object holds all the PNotify module constructors.
 * `styles`<br>
   Styles objects.
 * `icons`<br>
@@ -614,52 +614,73 @@ Event objects have a `detail` property that contains information about the event
 * `pnotify:update` - Fired when the notice's state changes. Careful, this includes internal state and can be very noisy.
 * `pnotify:beforeOpen` - Fired before the notice opens. Use `preventDefault()` on the event to cancel this action.
 * `pnotify:afterOpen` - Fired after the notice opens.
+* `pnotify:enterModal` - Fired when the notice enters a modal state. (Opens in a modal stack, or a modalish stack that is in modal state.)
+* `pnotify:leaveModal` - Fired when the notice leaves a modal state.
 * `pnotify:beforeClose` - Fired before the notice closes. Use `preventDefault()` on the event to cancel this action.
 * `pnotify:afterClose` - Fired after the notice closes.
 * `pnotify:beforeDestroy` - Fired before the notice is destroyed. Use `preventDefault()` on the event to cancel this action.
 * `pnotify:afterDestroy` - Fired after the notice is destroyed.
 
-## From the [Svelte Component API](https://svelte.dev/docs#Client-side_component_API)
+From the [Svelte Component API](https://svelte.dev/docs#Client-side_component_API).
+
+Don't use these. I'm putting them in here to document that you should not use them. That way, if you do, and you file a bug report, I can point to this section in the README, and tell you that you did a bad.
 
 * `notice.$set(options)`<br>
-  You probably want to use `update(options)` instead. The Svelte API may change.
+  You should use `update(options)` instead. The Svelte API may change.
 * `notice.$on(event, callback)`<br>
-  You probably want to use `on(event, callback)` instead. The Svelte API may change.
+  You should use `on(event, callback)` instead. The Svelte API may change.
 * `notice.$destroy()`<br>
-  Removes the component from the DOM and any observers/event listeners. You probably want to use `close()` with `destroy: true` instead. It will animate the notice out and remove it from the `stack.notices` array.
+  You should use `close()` with `destroy: true` instead. It will animate the notice out and remove it from the `stack.notices` array. Removes the component from the DOM and any observers/event listeners.
 
 # Stacks
 
 A stack is an instance of the `Stack` class used to determine where to position notices and how they interact with each other.
 
+```js
+import {alert, Stack} from 'pnotify';
+
+const myStack = new Stack({
+  dir1: 'up'
+});
+
+alert({
+  text: 'I\'m a notice centered at the bottom!',
+  stack: myStack
+});
+```
+
 Stack options and their defaults:
 
 * `dir1: null`<br>
   The primary stacking direction. Can be `'up'`, `'down'`, `'right'`, or `'left'`.
-* `firstpos1: undefined`<br>
-  Number of pixels from the edge of the context, relative to `dir1`, the first notice will appear. If undefined, the current position of the notice, whatever that is, will be used.
-* `spacing1: undefined`<br>
-  Number of pixels between notices along `dir1`. If undefined, `25` will be used.
+* `firstpos1: null`<br>
+  Number of pixels from the edge of the context, relative to `dir1`, the first notice will appear. If null, the current position of the notice, whatever that is, will be used.
+* `spacing1: 25`<br>
+  Number of pixels between notices along `dir1`.
 * `dir2: null`<br>
   The secondary stacking direction. Should be a perpendicular direction to `dir1`. The notices will continue in this direction when they reach the edge of the viewport along `dir1`.
-* `firstpos2: undefined`<br>
-  Number of pixels from the edge of the context, relative to `dir2`, the first notice will appear. If undefined, the current position of the notice, whatever that is, will be used.
-* `spacing2: undefined`<br>
-  Number of pixels between notices along `dir2`. If undefined, `25` will be used.
+* `firstpos2: null`<br>
+  Number of pixels from the edge of the context, relative to `dir2`, the first notice will appear. If null, the current position of the notice, whatever that is, will be used.
+* `spacing2: 25`<br>
+  Number of pixels between notices along `dir2`.
 * `push: 'bottom'`<br>
   Where, in the stack, to push new notices. Can be `'top'` or `'bottom'`.
-* `maxOpen: Infinity`<br>
+* `maxOpen: 1`<br>
   How many notices are allowed to be open in this stack at once.
 * `maxStrategy: 'wait'`<br>
   The strategy to use to ensure `maxOpen`. Can be `'wait'`, which will cause new notices to wait their turn, or `'close'`, which will remove the oldest notice to make room for a new one.
-* `modal: false`<br>
-  Whether to create a modal overlay when this stack's notices are open.
+* `maxClosureCausesWait: true`<br>
+  Whether the notices that are closed to abide by `maxOpen` when `maxStrategy === 'close'` should wait and reopen in turn.
+* `modal: 'ish'`<br>
+  Whether the stack should be modal (`true`), modeless (`false`), or modalish (`'ish'`). Modalish stacks are cool. See https://sciactive.com/2020/02/11/the-modalish-notification-flow/.
+* `modalishFlash: true`<br>
+  Whether new notices that start waiting in a modalish stack should flash under the leader notice to show that they have been added.
 * `overlayClose: true`<br>
   Whether clicking on the modal overlay should close the stack's notices.
+* `overlayClosesPinned: false`<br>
+  Whether clicking on the modal to close notices also closes notices that have been pinned (`hide === false`).
 * `context: document.body`<br>
   The DOM element this stack's notices should appear in.
-
-TODO: Update the above.
 
 Stack behavior:
 
@@ -671,14 +692,16 @@ Stack behavior:
   * `dirX === 'left'` means `firstposX` is relative to the **right** edge.
   * `dirX === 'right'` means `firstposX` is relative to the **left** edge.
 * Stacks are independent of each other, so a stack doesn't know and doesn't care if it overlaps (and blocks) another stack.
-* Stack objects are used and manipulated by PNotify, and therefore, should be a variable when passed.
+* Stack objects are used and manipulated by PNotify, and therefore, should likely be a variable when passed. Only use `stack: new Stack({...})` in your options if you intend to have only one notice open like that.
 
 Stack methods:
 
-* `forEach(callback, newestFirst)`<br>
-  Run a callback for all the notices in the stack.
+* `forEach(callback, { start = 'oldest', dir = 'newer', skipModuleHandled = false } = {})`<br>
+  Run a callback for all the notices in the stack. `start` can be 'head', 'tail', 'oldest', or 'newest'. `dir` can be 'next', 'prev', 'older', or 'newer'.
 * `position()`<br>
   Position all the notices in the stack.
+* `queuePosition(milliseconds = 10)`<br>
+  Queue a position call in that many milliseconds, unless another one is queued beforehand.
 * `close()`<br>
   Close all the notices in the stack.
 * `open()`<br>
@@ -686,7 +709,15 @@ Stack methods:
 * `openLast()`<br>
   Open the last closed/closing notice in the stack.
 
-There are other methods on the stack class, but you shouldn't use them. They're meant to be internal.
+There are other methods on the stack class, but you shouldn't use them. They're meant to be internal, so they begin with an underscore.
+
+Stack properties:
+
+* `stack.notices` - An "array" of notices. It's actually built on the fly from the double linked list the notices are actually stored in.
+* `stack.length` - How many notices there are in the stack.
+* `stack.leader` - When a stack is modalish, this is the notice that is open in the non-modal state.
+
+All of the options are properties as well.
 
 > :warning: Calling something like `alert({text: 'notice', stack: new Stack({dir1: 'down', firstpos1: 25})});` may not do what you want. It will create a notice, but that notice will be in its own stack and will overlap other notices.
 

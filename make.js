@@ -6,21 +6,7 @@ const svelte = require('svelte/compiler');
 
 const pnotifyComponents = [
   // Main code.
-  'PNotifyCoreComponent',
-  'PNotifyAnimateComponent',
-  'PNotifyButtonsComponent',
-  'PNotifyConfirmComponent',
-  'PNotifyDesktopComponent',
-  'PNotifyMobileComponent',
-
-  // Reference module.
-  'PNotifyReferenceComponent'
-];
-
-const pnotifySrc = [
-  // Main code.
   'PNotifyCore',
-  'Stack',
   'PNotifyAnimate',
   'PNotifyButtons',
   'PNotifyConfirm',
@@ -29,6 +15,12 @@ const pnotifySrc = [
 
   // Reference module.
   'PNotifyReference'
+];
+
+const pnotifySrc = [
+  // Main code.
+  'PNotify',
+  'Stack'
 ];
 
 try {

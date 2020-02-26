@@ -5,16 +5,15 @@ const devMode = process.env.ENV === 'development';
 module.exports = {
   mode: devMode ? 'development' : 'production',
   entry: {
-    PNotify: path.resolve(__dirname, 'src', 'PNotifyCore.js'),
-    PNotifyAnimate: path.resolve(__dirname, 'src', 'PNotifyAnimate.js'),
+    PNotify: path.resolve(__dirname, 'src', 'PNotify.js'),
+    PNotifyAnimate: path.resolve(__dirname, 'src', 'PNotifyAnimate.html'),
     PNotifyBrightTheme: path.resolve(__dirname, 'src', 'PNotifyBrightTheme.css'),
-    PNotifyButtons: path.resolve(__dirname, 'src', 'PNotifyButtons.js'),
-    PNotifyConfirm: path.resolve(__dirname, 'src', 'PNotifyConfirm.js'),
-    PNotifyDesktop: path.resolve(__dirname, 'src', 'PNotifyDesktop.js'),
+    PNotifyButtons: path.resolve(__dirname, 'src', 'PNotifyButtons.html'),
+    PNotifyConfirm: path.resolve(__dirname, 'src', 'PNotifyConfirm.html'),
+    PNotifyDesktop: path.resolve(__dirname, 'src', 'PNotifyDesktop.html'),
     PNotifyMaterial: path.resolve(__dirname, 'src', 'PNotifyMaterial.css'),
-    PNotifyMobile: path.resolve(__dirname, 'src', 'PNotifyMobile.js'),
-    PNotifyReference: path.resolve(__dirname, 'src', 'PNotifyReference.js')
-    // 'PNotify.bundle': path.resolve(__dirname, 'src', 'PNotify.bundle.js')
+    PNotifyMobile: path.resolve(__dirname, 'src', 'PNotifyMobile.html'),
+    PNotifyReference: path.resolve(__dirname, 'src', 'PNotifyReference.html')
   },
   output: {
     path: path.resolve(__dirname, 'dist', 'umd'),
@@ -22,7 +21,7 @@ module.exports = {
     library: ['[name]']
   },
   externals: {
-    './PNotifyCore': 'PNotify'
+    './PNotify': 'PNotify'
   },
   optimization: {
     usedExports: true

@@ -1,9 +1,6 @@
 <!-- This file is for referencing while you are making a PNotify module. -->
 <script context="module">
-  import { icons } from './PNotifyCore';
-
-  // This is the key you use for registering your module with PNotify.
-  export const key = 'Reference';
+  import { icons } from './PNotify';
 
   // This is the position your component will be placed inside the notice's DOM
   // structure. It can be 'PrependContainer', 'PrependContent', 'AppendContent',
@@ -12,8 +9,6 @@
 
   // This if the default values of your options.
   export const defaults = {
-    // Provide a thing for stuff. Turned off by default.
-    putThing: false,
     // If you are displaying any text, you should use a labels options to
     // support internationalization.
     labels: {
@@ -33,55 +28,39 @@
   });
 </script>
 
-{#if putThing} <!-- We want to check to make sure the notice should include our thing. -->
-  <!--
-  We're going to create a button that will be appended to the notice.
-  It will be disabled by default, so we can enable it on mouseover.
-  -->
-  <button
-      class="ui-pnotify-action-button ui-pnotify-reference-button {self.getStyle('btn')} {self.getStyle('btn-secondary')}"
-      type="button"
-      disabled="{!mouseIsIn}"
-      on:click={doSomething}>
-    <i class={self.getIcon('refresh')} />&nbsp;{labels.text}
-  </button>
-  <!-- Since our button is floated, we have to add a clearing div. -->
-  <div class="ui-pnotify-reference-clearing" />
-{/if}
+<!--
+We're going to create a button that will be appended to the notice.
+It will be disabled by default, so we can enable it on mouseover.
+-->
+<button
+    class="ui-pnotify-action-button ui-pnotify-reference-button {self.getStyle('btn')} {self.getStyle('btn-secondary')}"
+    type="button"
+    disabled="{!mouseIsIn}"
+    on:click={doSomething}>
+  <i class={self.getIcon('refresh')} />&nbsp;{labels.text}
+</button>
+<!-- Since our button is floated, we have to add a clearing div. -->
+<div class="ui-pnotify-reference-clearing" />
 
 <script>
+  import { onDestroy } from 'svelte';
+
   // The PNotify notice.
   export let self = null;
 
   // Your options must be exported and set to the defaults.
-  export let putThing = defaults.putThing;
   export let labels = defaults.labels;
 
   // Here you can define variables not meant to be exported as options.
   let mouseIsIn = false;
 
-  self.on('mouseenter', () => mouseIsIn = true);
-  self.on('mouseleave', () => mouseIsIn = false);
+  let removeMouseEnter = self.on('mouseenter', () => mouseIsIn = true);
+  let removeMouseLeave = self.on('mouseleave', () => mouseIsIn = false);
 
-  // I have nothing to put in these, just showing you that they exist. You
-  // won't need to include them if you aren't using them.
-  self.on('pnotify:beforeOpen', () => {
-    // Called before the notice is opened.
-  });
-  self.on('pnotify:afterOpen', () => {
-    // Called after the notice is opened.
-  });
-  self.on('pnotify:beforeClose', () => {
-    // Called before the notice is closed.
-  });
-  self.on('pnotify:afterClose', () => {
-    // Called after the notice is closed.
-  });
-  self.on('pnotify:beforeDestroy', () => {
-    // Called before the notice is destroyed.
-  });
-  self.on('pnotify:afterDestroy', () => {
-    // Called after the notice is destroyed.
+  onDestroy(() => {
+    // Remember to clean up.
+    removeMouseEnter && removeMouseEnter();
+    removeMouseLeave && removeMouseLeave();
   });
 
   function doSomething () {

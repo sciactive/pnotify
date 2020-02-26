@@ -128,10 +128,8 @@
       // Set defaults.
       // ---
       PNotify.defaults.destroy = false;
-      PNotify.defaults.modules = {
-        [PNotifyButtons.key]: PNotifyButtons,
-        [PNotifyMobile.key]: PNotifyMobile
-      };
+      PNotify.defaults.modules.set(PNotifyButtons, {});
+      PNotify.defaults.modules.set(PNotifyMobile, {});
 
       // ---
       // Notice that opens when the page opens.
@@ -446,12 +444,13 @@
             width: 'auto',
             maxTextHeight: null,
             hide: false,
-            modules: {
-              Buttons: {
+            modules: new Map([
+              ...PNotify.defaults.modules,
+              [PNotifyButtons, {
                 closer: false,
                 sticker: false
-              }
-            }
+              }]
+            ])
           });
           notice.refs.elem.querySelector('form [name=cancel]').addEventListener('click', () => notice.close());
           notice.refs.elem.querySelector('form').addEventListener('submit', e => {
@@ -469,12 +468,13 @@
               width: PNotify.defaults.width,
               hide: true,
               type: 'success',
-              modules: {
-                Buttons: {
+              modules: new Map([
+                ...PNotify.defaults.modules,
+                [PNotifyButtons, {
                   closer: true,
                   sticker: true
-                }
-              }
+                }]
+              ])
             });
           });
         ">Forms</button>
@@ -585,12 +585,13 @@
           const notice = PNotify.notice({
             title: 'Click Close Notice',
             text: 'Click me anywhere to dismiss me.',
-            modules: {
-              Buttons: {
+            modules: new Map([
+              ...PNotify.defaults.modules,
+              [PNotifyButtons, {
                 closer: false,
                 sticker: false
-              }
-            }
+              }]
+            ])
           });
           notice.on('click', () => {
             notice.close();
@@ -653,12 +654,13 @@
               hide: false,
               shadow: false,
               width: '200px',
-              modules: {
-                Buttons: {
+              modules: new Map([
+                ...PNotify.defaults.modules,
+                [PNotifyButtons, {
                   closer: false,
                   sticker: false
-                }
-              }
+                }]
+              ])
             });
 
             notice.on('pnotify:afterOpen', () => {
@@ -680,12 +682,7 @@
                     options.icon = 'fas fa-check';
                     options.shadow = true;
                     options.width = PNotify.defaults.width;
-                    options.modules = {
-                      Buttons: {
-                        closer: true,
-                        sticker: true
-                      }
-                    };
+                    options.modules = new Map(PNotify.defaults.modules);
                   }
                   notice.update(options);
                 }, 120);
@@ -726,12 +723,14 @@
               destroy: false,
               autoOpen: false,
               width: '80vw',
+              maxTextHeight: null,
               stack: new PNotify.Stack({ modal: true, overlayClosesPinned: true }),
-              modules: {
-                Buttons: {
+              modules: new Map([
+                ...PNotify.defaults.modules,
+                [PNotifyButtons, {
                   sticker: false
-                }
-              }
+                }]
+              ])
             });
           }
           window.growlModal.open();
@@ -964,12 +963,13 @@
               icon: 'fas fa-cog fa-spin',
               hide: false,
               destroy: true,
-              modules: {
-                Buttons: {
+              modules: new Map([
+                ...PNotify.defaults.modules,
+                [PNotifyButtons, {
                   closer: false,
                   sticker: false
-                }
-              }
+                }]
+              ])
             });
 
             notice.on('pnotify:afterOpen', () => {
@@ -1043,55 +1043,52 @@
           PNotify.notice({
             title: 'Desktop Notice',
             text: 'I\'ll appear as a desktop notification. Unless I can\'t. I\'ll still appear as a regular PNotify notice then.',
-            modules: {
+            modules: new Map([
               ...PNotify.defaults.modules,
-              [PNotifyDesktop.key]: PNotifyDesktop
-            }
+              [PNotifyDesktop, {}]
+            ])
           });
         ">Notice</button>
         <button class="btn btn-light my-1 source" onclick="
           PNotify.info({
             title: 'Desktop Info',
             text: 'Hey there. Something happened.',
-            modules: {
+            modules: new Map([
               ...PNotify.defaults.modules,
-              [PNotifyDesktop.key]: PNotifyDesktop
-            }
+              [PNotifyDesktop, {}]
+            ])
           });
         ">Info</button>
         <button class="btn btn-light my-1 source" onclick="
           PNotify.success({
             title: 'Desktop Success',
             text: 'All done! Come back to my tab!',
-            modules: {
+            modules: new Map([
               ...PNotify.defaults.modules,
-              [PNotifyDesktop.key]: PNotifyDesktop
-            }
+              [PNotifyDesktop, {}]
+            ])
           });
         ">Success</button>
         <button class="btn btn-light my-1 source" onclick="
           PNotify.error({
             title: 'Desktop Error',
             text: 'Serious error is serious.',
-            modules: {
+            modules: new Map([
               ...PNotify.defaults.modules,
-              [PNotifyDesktop.key]: PNotifyDesktop
-            }
+              [PNotifyDesktop, {}]
+            ])
           });
         ">Error</button>
         <button class="btn btn-light my-1 source" onclick="
           PNotify.notice({
             title: 'Desktop Custom Icon',
             text: 'I\'ve got a custom icon.',
-            modules: {
+            modules: new Map([
               ...PNotify.defaults.modules,
-              [PNotifyDesktop.key]: {
-                ...PNotifyDesktop,
-                options: {
-                  icon: 'includes/le_happy_face_by_luchocas-32.png'
-                }
-              }
-            }
+              [PNotifyDesktop, {
+                icon: 'includes/le_happy_face_by_luchocas-32.png'
+              }]
+            ])
           });
         ">Custom Icon</button>
         <!-- <button class="btn btn-light my-1 source" onclick="
@@ -1100,19 +1097,16 @@
             type: 'info',
             text: 'I\'ve got an image.&lt;div style=&quot;text-align: center;&quot;&gt;&lt;img src=&quot;https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Happy_smiley_face.png/240px-Happy_smiley_face.png&quot; /&gt;&lt;/div&gt;',
             textTrusted: true,
-            modules: {
+            modules: new Map([
               ...PNotify.defaults.modules,
-              [PNotifyDesktop.key]: {
-                ...PNotifyDesktop,
+              [PNotifyDesktop, {
+                text: 'I\'ve got an image.',
+                icon: false,
                 options: {
-                  text: 'I\'ve got an image.',
-                  icon: false,
-                  options: {
-                    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Happy_smiley_face.png/240px-Happy_smiley_face.png'
-                  }
+                  image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Happy_smiley_face.png/240px-Happy_smiley_face.png'
                 }
-              }
-            }
+              }]
+            ])
           });
         ">Image</button> -->
         <button class="btn btn-light my-1 source" onclick="
@@ -1120,31 +1114,25 @@
             title: 'Alternate Text Notice - Browser',
             text: 'This text appears on the &lt;strong&gt;browser&lt;/strong&gt;.',
             textTrusted: true,
-            modules: {
+            modules: new Map([
               ...PNotify.defaults.modules,
-              [PNotifyDesktop.key]: {
-                ...PNotifyDesktop,
-                options: {
-                  title: 'Alternate Text Notice - Desktop',
-                  text: 'This text appears on the *desktop*.'
-                }
-              }
-            }
+              [PNotifyDesktop, {
+                title: 'Alternate Text Notice - Desktop',
+                text: 'This text appears on the *desktop*.'
+              }]
+            ])
           });
         ">Alternate Text and Title</button>
         <button class="btn btn-light my-1 source" onclick="
           PNotify.notice({
             title: 'Clicky Desktop Notice',
             text: 'Click me.',
-            modules: {
+            modules: new Map([
               ...PNotify.defaults.modules,
-              [PNotifyDesktop.key]: {
-                ...PNotifyDesktop,
-                options: {
-                  icon: false
-                }
-              }
-            }
+              [PNotifyDesktop, {
+                icon: false
+              }]
+            ])
           }).on('click', e => {
             if ([...notice.refs.elem.querySelectorAll('.ui-pnotify-closer *, .ui-pnotify-sticker *')].indexOf(e.target) !== -1) {
               return;
@@ -1157,15 +1145,12 @@
             title: 'Sticky Desktop Notice',
             text: 'I\'m a sticky notice. (Some browsers don\'t allow sticky Web Notifications.)',
             hide: false,
-            modules: {
+            modules: new Map([
               ...PNotify.defaults.modules,
-              [PNotifyDesktop.key]: {
-                ...PNotifyDesktop,
-                options: {
-                  icon: false
-                }
-              }
-            }
+              [PNotifyDesktop, {
+                icon: false
+              }]
+            ])
           }).on('click', e => {
             if ([...notice.refs.elem.querySelectorAll('.ui-pnotify-closer *, .ui-pnotify-sticker *')].indexOf(e.target) !== -1) {
               return;
@@ -1177,10 +1162,10 @@
           const notice = PNotify.notice({
             title: 'Dynamic Desktop Notice',
             text: 'I\'m a dynamic desktop notice.',
-            modules: {
+            modules: new Map([
               ...PNotify.defaults.modules,
-              [PNotifyDesktop.key]: PNotifyDesktop
-            }
+              [PNotifyDesktop, {}]
+            ])
           });
           setTimeout(() => {
             notice.update({
@@ -1193,19 +1178,16 @@
           PNotify.notice({
             title: 'Desktop Notice',
             text: 'I won\'t fall back to a regular notice.',
-            modules: {
+            modules: new Map([
               ...PNotify.defaults.modules,
-              [PNotifyDesktop.key]: {
-                ...PNotifyDesktop,
-                options: {
-                  fallback: false
-                }
-              }
-            }
+              [PNotifyDesktop, {
+                fallback: false
+              }]
+            ])
           });
         ">No Fallback</button>
         <button class="btn btn-light my-1 source" onclick="
-          PNotify.modules.Desktop.permission();
+          PNotifyDesktop.permission();
         ">Explicitly Ask for Notice Permission</button>
       </div>
 
@@ -1245,16 +1227,17 @@
             title: 'Custom Icon Button Notice',
             text: 'Check me out! My sticker and close buttons have custom icons!',
             hide: false,
-            modules: {
-              Buttons: {
+            modules: new Map([
+              ...PNotify.defaults.modules,
+              [PNotifyButtons, {
                 classes: {
                   closer: 'fas fa-bomb',
                   sticker: 'fas',
                   stuck: 'fa-hourglass',
                   unstuck: 'fa-anchor'
                 }
-              }
-            }
+              }]
+            ])
           });
         ">Custom Icons</button>
         <button class="btn btn-light my-1 source" onclick="
@@ -1262,23 +1245,25 @@
             title: 'No Sticky Button Notice',
             text: 'Check me out! I\'m a sticky notice with no unsticky button. You\'ll have to close me yourself.',
             hide: false,
-            modules: {
-              Buttons: {
+            modules: new Map([
+              ...PNotify.defaults.modules,
+              [PNotifyButtons, {
                 sticker: false
-              }
-            }
+              }]
+            ])
           });
         ">No Sticky Button</button>
         <button class="btn btn-light my-1 source" onclick="
           PNotify.notice({
             title: 'Permanent Buttons Notice',
             text: 'My buttons are really lonely, so they\'re gonna hang out with us.',
-            modules: {
-              Buttons: {
+            modules: new Map([
+              ...PNotify.defaults.modules,
+              [PNotifyButtons, {
                 closerHover: false,
                 stickerHover: false
-              }
-            }
+              }]
+            ])
           });
         ">Permanent Buttons</button>
         <button class="btn btn-light my-1 source" onclick="
@@ -1289,15 +1274,16 @@
               title: 'Now Look Here',
               text: 'There\'s something you need to know, and I won\'t go away until you come to grips with it.',
               hide: false,
-              modules: {
-                Buttons: {
+              modules: new Map([
+                ...PNotify.defaults.modules,
+                [PNotifyButtons, {
                   closer: false,
                   sticker: false
-                },
-                Mobile: {
+                }],
+                [PNotifyMobile, {
                   swipeDismiss: false
-                }
-              }
+                }]
+              ])
             });
           }
         ">Permanotice</button>
@@ -1315,22 +1301,24 @@
           PNotify.notice({
             title: 'No Mobile Support Notice',
             text: 'If you\'re on a mobile device, I won\'t respond to your swipes.',
-            modules: {
-              Mobile: {
+            modules: new Map([
+              ...PNotify.defaults.modules,
+              [PNotifyMobile, {
                 swipeDismiss: false
-              }
-            }
+              }]
+            ])
           });
         ">No Mobile Support</button>
         <button class="btn btn-light my-1 source" onclick="
           PNotify.notice({
             title: 'No Mobile Styling Notice',
             text: 'If you\'re on a mobile device, I\'ll look terrible.',
-            modules: {
-              Mobile: {
+            modules: new Map([
+              ...PNotify.defaults.modules,
+              [PNotifyMobile, {
                 styling: false
-              }
-            }
+              }]
+            ])
           });
         ">No Mobile Styling</button>
       </div>
@@ -1342,65 +1330,65 @@
           PNotify.notice({
             title: 'Animate.css Effect',
             text: 'I use effects from Animate.css. Such smooth CSS3 transitions make me feel like butter.',
-            modules: {
-              Animate: {
-                animate: true,
+            modules: new Map([
+              ...PNotify.defaults.modules,
+              [PNotifyAnimate, {
                 inClass: 'rotateInUpRight',
                 outClass: 'rotateOutUpRight'
-              }
-            }
+              }]
+            ])
           });
         ">Sidenote</button>
         <button class="btn btn-light my-1 source" onclick="
           PNotify.notice({
             title: 'Animate.css Effect',
             text: 'I use effects from Animate.css. Such smooth CSS3 transitions make me feel like butter.',
-            modules: {
-              Animate: {
-                animate: true,
+            modules: new Map([
+              ...PNotify.defaults.modules,
+              [PNotifyAnimate, {
                 inClass: 'zoomInLeft',
                 outClass: 'zoomOutRight'
-              }
-            }
+              }]
+            ])
           });
         ">Zoom, Zoom</button>
         <button class="btn btn-light my-1 source" onclick="
           PNotify.notice({
             title: 'Animate.css Effect',
             text: 'I use effects from Animate.css. Such smooth CSS3 transitions make me feel like butter.',
-            modules: {
-              Animate: {
-                animate: true,
+            modules: new Map([
+              ...PNotify.defaults.modules,
+              [PNotifyAnimate, {
                 inClass: 'rotateInDownLeft',
                 outClass: 'rotateOutUpRight'
-              }
-            }
+              }]
+            ])
           });
         ">Shuffling Cards</button>
         <button class="btn btn-light my-1 source" onclick="
           PNotify.notice({
             title: 'Animate.css Effect',
             text: 'I use effects from Animate.css. Such smooth CSS3 transitions make me feel like butter.',
-            modules: {
-              Animate: {
-                animate: true,
+            modules: new Map([
+              ...PNotify.defaults.modules,
+              [PNotifyAnimate, {
                 inClass: 'bounceInLeft',
                 outClass: 'bounceOutRight'
-              }
-            }
+              }]
+            ])
           });
         ">Zippy</button>
         <button class="btn btn-light my-1 source" onclick="
           PNotify.notice({
             title: 'Animate.css Effect',
             text: 'I use effects from Animate.css. Such smooth CSS3 transitions make me feel like butter.',
-            modules: {
-              Animate: {
-                animate: true,
+            modules: new Map([
+              ...PNotify.defaults.modules,
+              [PNotifyAnimate, {
                 inClass: 'bounceInDown',
                 outClass: 'hinge'
-              }
-            }
+              }]
+            ])
           });
         ">Off the Handle</button>
         <div class="my-3">
@@ -1486,13 +1474,13 @@
             PNotify.notice({
               title: 'Animate.css Effect',
               text: 'I use effects from Animate.css. Such smooth CSS3 transitions make me feel like butter.',
-              modules: {
-                Animate: {
-                  animate: true,
+              modules: new Map([
+                ...PNotify.defaults.modules,
+                [PNotifyAnimate, {
                   inClass: animateIn,
                   outClass: animateOut
-                }
-              }
+                }]
+              ])
             });
           ">Notify!</button>
         </div>
@@ -1502,16 +1490,18 @@
             title: 'Attention Seeker',
             text: 'Click the button to see how you can highlight the notice with the Animate module:',
             textTrusted: true,
-            modules: {
-              Confirm: {
+            modules: new Map([
+              ...PNotify.defaults.modules,
+              [PNotifyAnimate, {}],
+              [PNotifyConfirm, {
                 confirm: true,
                 buttons: [{
                   text: 'Bounce!',
                   primary: true,
                   click: notice => notice.attention('bounce')
                 }]
-              }
-            }
+              }]
+            ])
           });
         ">Bounce</button>
         <button class="btn btn-light my-1 source" onclick="
@@ -1519,16 +1509,18 @@
             title: 'Attention Seeker',
             text: 'Click the button to see how you can highlight the notice with the Animate module:',
             textTrusted: true,
-            modules: {
-              Confirm: {
+            modules: new Map([
+              ...PNotify.defaults.modules,
+              [PNotifyAnimate, {}],
+              [PNotifyConfirm, {
                 confirm: true,
                 buttons: [{
                   text: 'Flash!',
                   primary: true,
                   click: notice => notice.attention('flash')
                 }]
-              }
-            }
+              }]
+            ])
           });
         ">Flash</button>
         <button class="btn btn-light my-1 source" onclick="
@@ -1536,16 +1528,18 @@
             title: 'Attention Seeker',
             text: 'Click the button to see how you can highlight the notice with the Animate module:',
             textTrusted: true,
-            modules: {
-              Confirm: {
+            modules: new Map([
+              ...PNotify.defaults.modules,
+              [PNotifyAnimate, {}],
+              [PNotifyConfirm, {
                 confirm: true,
                 buttons: [{
                   text: 'Pulse!',
                   primary: true,
                   click: notice => notice.attention('pulse')
                 }]
-              }
-            }
+              }]
+            ])
           });
         ">Pulse</button>
         <button class="btn btn-light my-1 source" onclick="
@@ -1553,16 +1547,18 @@
             title: 'Attention Seeker',
             text: 'Click the button to see how you can highlight the notice with the Animate module:',
             textTrusted: true,
-            modules: {
-              Confirm: {
+            modules: new Map([
+              ...PNotify.defaults.modules,
+              [PNotifyAnimate, {}],
+              [PNotifyConfirm, {
                 confirm: true,
                 buttons: [{
                   text: 'Rubber Band!',
                   primary: true,
                   click: notice => notice.attention('rubberBand')
                 }]
-              }
-            }
+              }]
+            ])
           });
         ">Rubber Band</button>
         <button class="btn btn-light my-1 source" onclick="
@@ -1570,16 +1566,18 @@
             title: 'Attention Seeker',
             text: 'Click the button to see how you can highlight the notice with the Animate module:',
             textTrusted: true,
-            modules: {
-              Confirm: {
+            modules: new Map([
+              ...PNotify.defaults.modules,
+              [PNotifyAnimate, {}],
+              [PNotifyConfirm, {
                 confirm: true,
                 buttons: [{
                   text: 'Shake!',
                   primary: true,
                   click: notice => notice.attention('shake')
                 }]
-              }
-            }
+              }]
+            ])
           });
         ">Shake</button>
         <button class="btn btn-light my-1 source" onclick="
@@ -1587,16 +1585,18 @@
             title: 'Attention Seeker',
             text: 'Click the button to see how you can highlight the notice with the Animate module:',
             textTrusted: true,
-            modules: {
-              Confirm: {
+            modules: new Map([
+              ...PNotify.defaults.modules,
+              [PNotifyAnimate, {}],
+              [PNotifyConfirm, {
                 confirm: true,
                 buttons: [{
                   text: 'Swing!',
                   primary: true,
                   click: notice => notice.attention('swing')
                 }]
-              }
-            }
+              }]
+            ])
           });
         ">Swing</button>
         <button class="btn btn-light my-1 source" onclick="
@@ -1604,16 +1604,18 @@
             title: 'Attention Seeker',
             text: 'Click the button to see how you can highlight the notice with the Animate module:',
             textTrusted: true,
-            modules: {
-              Confirm: {
+            modules: new Map([
+              ...PNotify.defaults.modules,
+              [PNotifyAnimate, {}],
+              [PNotifyConfirm, {
                 confirm: true,
                 buttons: [{
                   text: 'Tada!',
                   primary: true,
                   click: notice => notice.attention('tada')
                 }]
-              }
-            }
+              }]
+            ])
           });
         ">Tada</button>
         <button class="btn btn-light my-1 source" onclick="
@@ -1621,16 +1623,18 @@
             title: 'Attention Seeker',
             text: 'Click the button to see how you can highlight the notice with the Animate module:',
             textTrusted: true,
-            modules: {
-              Confirm: {
+            modules: new Map([
+              ...PNotify.defaults.modules,
+              [PNotifyAnimate, {}],
+              [PNotifyConfirm, {
                 confirm: true,
                 buttons: [{
                   text: 'Wobble!',
                   primary: true,
                   click: notice => notice.attention('wobble')
                 }]
-              }
-            }
+              }]
+            ])
           });
         ">Wobble</button>
         <button class="btn btn-light my-1 source" onclick="
@@ -1638,16 +1642,18 @@
             title: 'Attention Seeker',
             text: 'Click the button to see how you can highlight the notice with the Animate module:',
             textTrusted: true,
-            modules: {
-              Confirm: {
+            modules: new Map([
+              ...PNotify.defaults.modules,
+              [PNotifyAnimate, {}],
+              [PNotifyConfirm, {
                 confirm: true,
                 buttons: [{
                   text: 'Jello!',
                   primary: true,
                   click: notice => notice.attention('jello')
                 }]
-              }
-            }
+              }]
+            ])
           });
         ">Jello</button>
       </div>
@@ -1662,15 +1668,16 @@
             icon: 'fas fa-question-circle',
             hide: false,
             destroy: true,
-            modules: {
-              Confirm: {
-                confirm: true
-              },
-              Buttons: {
+            modules: new Map([
+              ...PNotify.defaults.modules,
+              [PNotifyButtons, {
                 closer: false,
                 sticker: false
-              }
-            }
+              }],
+              [PNotifyConfirm, {
+                confirm: true
+              }]
+            ])
           });
           notice.on('pnotify:confirm', () => alert('Ok, cool.'));
           notice.on('pnotify:cancel', () => alert('Oh ok. Chicken, I see.'));
@@ -1688,15 +1695,16 @@
               firstpos1: 25,
               overlayClose: false
             }),
-            modules: {
-              Confirm: {
-                confirm: true
-              },
-              Buttons: {
+            modules: new Map([
+              ...PNotify.defaults.modules,
+              [PNotifyButtons, {
                 closer: false,
                 sticker: false
-              }
-            }
+              }],
+              [PNotifyConfirm, {
+                confirm: true
+              }]
+            ])
           });
           notice.on('pnotify:confirm', () => alert('Ok, cool.'));
           notice.on('pnotify:cancel', () => alert('Oh ok. Chicken, I see.'));
@@ -1708,8 +1716,13 @@
             icon: 'fas fa-question-circle',
             hide: false,
             destroy: true,
-            modules: {
-              Confirm: {
+            modules: new Map([
+              ...PNotify.defaults.modules,
+              [PNotifyButtons, {
+                closer: false,
+                sticker: false
+              }],
+              [PNotifyConfirm, {
                 confirm: true,
                 buttons: [
                   {
@@ -1721,15 +1734,7 @@
                       icon: true,
                       type: 'info',
                       hide: true,
-                      modules: {
-                        Confirm: {
-                          confirm: false
-                        },
-                        Buttons: {
-                          closer: true,
-                          sticker: true
-                        }
-                      }
+                      modules: new Map(PNotify.defaults.modules)
                     })
                   },
                   {
@@ -1740,15 +1745,7 @@
                       icon: true,
                       type: 'info',
                       hide: true,
-                      modules: {
-                        Confirm: {
-                          confirm: false
-                        },
-                        Buttons: {
-                          closer: true,
-                          sticker: true
-                        }
-                      }
+                      modules: new Map(PNotify.defaults.modules)
                     })
                   },
                   {
@@ -1759,24 +1756,12 @@
                       icon: true,
                       type: 'info',
                       hide: true,
-                      modules: {
-                        Confirm: {
-                          confirm: false
-                        },
-                        Buttons: {
-                          closer: true,
-                          sticker: true
-                        }
-                      }
+                      modules: new Map(PNotify.defaults.modules)
                     })
                   }
                 ]
-              },
-              Buttons: {
-                closer: false,
-                sticker: false
-              }
-            }
+              }]
+            ])
           });
         ">Custom Buttons</button>
         <button class="btn btn-light my-1 source" onclick="
@@ -1786,15 +1771,16 @@
             icon: 'fas fa-question-circle',
             hide: false,
             destroy: true,
-            modules: {
-              Confirm: {
-                prompt: true
-              },
-              Buttons: {
+            modules: new Map([
+              ...PNotify.defaults.modules,
+              [PNotifyButtons, {
                 closer: false,
                 sticker: false
-              }
-            }
+              }],
+              [PNotifyConfirm, {
+                prompt: true
+              }]
+            ])
           });
           notice.on('pnotify:confirm', e => {
             notice.cancelClose();
@@ -1804,15 +1790,7 @@
               icon: true,
               type: 'info',
               hide: true,
-              modules: {
-                Confirm: {
-                  prompt: false
-                },
-                Buttons: {
-                  closer: true,
-                  sticker: true
-                }
-              }
+              modules: new Map(PNotify.defaults.modules)
             });
           });
           notice.on('pnotify:cancel', () => {
@@ -1823,15 +1801,7 @@
               icon: true,
               type: 'info',
               hide: true,
-              modules: {
-                Confirm: {
-                  prompt: false
-                },
-                Buttons: {
-                  closer: true,
-                  sticker: true
-                }
-              }
+              modules: new Map(PNotify.defaults.modules)
             });
           });
         ">Prompt Dialog</button>
@@ -1842,17 +1812,18 @@
             icon: 'fas fa-question-circle',
             hide: false,
             destroy: true,
-            modules: {
-              Confirm: {
+            modules: new Map([
+              ...PNotify.defaults.modules,
+              [PNotifyButtons, {
+                closer: false,
+                sticker: false
+              }],
+              [PNotifyConfirm, {
                 prompt: true,
                 promptMultiLine: true,
                 promptValue: 'Roses are red,\nViolets are blue,\n'
-              },
-              Buttons: {
-                closer: false,
-                sticker: false
-              }
-            }
+              }]
+            ])
           });
           notice.on('pnotify:confirm', e => {
             notice.cancelClose();
@@ -1862,15 +1833,7 @@
               icon: true,
               type: 'info',
               hide: true,
-              modules: {
-                Confirm: {
-                  prompt: false
-                },
-                Buttons: {
-                  closer: true,
-                  sticker: true
-                }
-              }
+              modules: new Map(PNotify.defaults.modules)
             });
           });
           notice.on('pnotify:cancel', () => {
@@ -1881,15 +1844,7 @@
               icon: true,
               type: 'info',
               hide: true,
-              modules: {
-                Confirm: {
-                  prompt: false
-                },
-                Buttons: {
-                  closer: true,
-                  sticker: true
-                }
-              }
+              modules: new Map(PNotify.defaults.modules)
             });
           });
         ">Multi Line Prompt Dialog</button>
@@ -1901,20 +1856,21 @@
             icon: 'fas fa-info-circle',
             hide: false,
             destroy: true,
-            modules: {
-              Confirm: {
+            modules: new Map([
+              ...PNotify.defaults.modules,
+              [PNotifyButtons, {
+                closer: false,
+                sticker: false
+              }],
+              [PNotifyConfirm, {
                 confirm: true,
                 buttons: [{
                   text: 'Ok',
                   primary: true,
                   click: notice => notice.close()
                 }]
-              },
-              Buttons: {
-                closer: false,
-                sticker: false
-              }
-            }
+              }]
+            ])
           });
         ">Alert Style Notice</button>
         <button class="btn btn-light my-1 source" onclick="
@@ -1924,20 +1880,21 @@
             icon: 'fas fa-info-circle',
             hide: false,
             destroy: true,
-            modules: {
-              Confirm: {
+            modules: new Map([
+              ...PNotify.defaults.modules,
+              [PNotifyButtons, {
+                closer: false,
+                sticker: false
+              }],
+              [PNotifyConfirm, {
                 confirm: true,
                 buttons: [{
                   text: 'Ok',
                   primary: true,
                   click: notice => notice.close()
                 }]
-              },
-              Buttons: {
-                closer: false,
-                sticker: false
-              }
-            }
+              }]
+            ])
           });
         ">Alert Style Info</button>
         <button class="btn btn-light my-1 source" onclick="
@@ -1947,20 +1904,21 @@
             icon: 'fas fa-info-circle',
             hide: false,
             destroy: true,
-            modules: {
-              Confirm: {
+            modules: new Map([
+              ...PNotify.defaults.modules,
+              [PNotifyButtons, {
+                closer: false,
+                sticker: false
+              }],
+              [PNotifyConfirm, {
                 confirm: true,
                 buttons: [{
                   text: 'Ok',
                   primary: true,
                   click: notice => notice.close()
                 }]
-              },
-              Buttons: {
-                closer: false,
-                sticker: false
-              }
-            }
+              }]
+            ])
           });
         ">Alert Style Success</button>
         <button class="btn btn-light my-1 source" onclick="
@@ -1970,20 +1928,21 @@
             icon: 'fas fa-info-circle',
             hide: false,
             destroy: true,
-            modules: {
-              Confirm: {
+            modules: new Map([
+              ...PNotify.defaults.modules,
+              [PNotifyButtons, {
+                closer: false,
+                sticker: false
+              }],
+              [PNotifyConfirm, {
                 confirm: true,
                 buttons: [{
                   text: 'Ok',
                   primary: true,
                   click: notice => notice.close()
                 }]
-              },
-              Buttons: {
-                closer: false,
-                sticker: false
-              }
-            }
+              }]
+            ])
           });
         ">Alert Style Error</button>
       </div>
@@ -1994,11 +1953,14 @@
           PNotify.info({
             title: 'Reference Module',
             text: 'The reference module is a basic module that demonstrates how to write a PNotify module by implementing many of its features. You can find it in PNotifyReferenceComponent.html.',
-            modules: {
-              Reference: {
-                putThing: true
-              }
-            }
+            modules: new Map([
+              ...PNotify.defaults.modules,
+              [PNotifyReference, {
+                labels: {
+                  text: 'BARREL ROLL!'
+                }
+              }]
+            ])
           });
         ">Reference Module Notice</button>
       </div>
@@ -2021,11 +1983,12 @@
             hide: false,
             destroy: true,
             stack: new PNotify.Stack({ modal: true, overlayClosesPinned: true }),
-            modules: {
-              Buttons: {
+            modules: new Map([
+              ...PNotify.defaults.modules,
+              [PNotifyButtons, {
                 sticker: false
-              }
-            }
+              }]
+            ])
           });
         ">What are stacks?</button>
         <hr />
@@ -2225,16 +2188,17 @@
               title: 'Over Here',
               text: "Check me out. I'm in a different stack.",
               stack: window.stackModal,
-              modules: {
-                Confirm: {
+              modules: new Map([
+                ...PNotify.defaults.modules,
+                [PNotifyConfirm, {
                   confirm: true,
                   buttons: [{
                     text: 'Another',
                     primary: true,
                     click: () => showStackModal(type)
                   }]
-                }
-              }
+                }]
+              ])
             };
             switch (type) {
               case 'error':
@@ -2281,16 +2245,17 @@
               title: 'Over Here',
               text: "Check me out. I'm in a different stack.",
               stack: window.stackModalLeft,
-              modules: {
-                Confirm: {
+              modules: new Map([
+                ...PNotify.defaults.modules,
+                [PNotifyConfirm, {
                   confirm: true,
                   buttons: [{
                     text: 'Another',
                     primary: true,
                     click: () => showStackModalLeft(type)
                   }]
-                }
-              }
+                }]
+              ])
             };
             switch (type) {
               case 'error':
@@ -2450,12 +2415,13 @@
                 stack: null,
                 autoOpen: false,
                 destroy: false,
-                modules: {
-                  Buttons: {
+                modules: new Map([
+                  ...PNotify.defaults.modules,
+                  [PNotifyButtons, {
                     closer: false,
                     sticker: false
-                  }
-                }
+                  }]
+                ])
               });
               // Close the notice if the user mouses over it.
               window.tooltip.on('mouseout', () => window.tooltip.close());
@@ -2773,11 +2739,12 @@ PNotify.notice({
             width: '80vw',
             maxTextHeight: null,
             stack: new PNotify.Stack({ modal: true, overlayClosesPinned: true }),
-            modules: {
-              Buttons: {
+            modules: new Map([
+              ...PNotify.defaults.modules,
+              [PNotifyButtons, {
                 sticker: false
-              }
-            }
+              }]
+            ])
           });
 
           addPrettyCode(text, sourceElement);
