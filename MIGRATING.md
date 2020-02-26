@@ -30,6 +30,7 @@
 * White space formatting has changed. HTML notices no longer use `white-space: pre-line;`. Only regular text notices. But also titles do too now.
 * `notice.off(event, callback)` is no longer needed. `on()` returns a function that will remove the listener when invoked.
 * Confirm modules events changed from `pnotify.confirm` and `pnotify.cancel` to `pnotify:confirm` and `pnotify:cancel`.
+  * The event value for prompts moved from `event.value` to `event.detail.value`.
 * Animate.css support in legacy browsers has been removed.
 * Some styling props and classes have changed, like pinDown, actionBar, etc.
 * Material styling is no longer a module, but rather a CSS file.
