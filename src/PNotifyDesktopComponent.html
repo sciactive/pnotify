@@ -2,7 +2,7 @@
   import PNotify from './PNotifyCore';
 
   export const key = 'Desktop';
-
+  export const position = 'PrependContainer';
   export const defaults = {
     // Display the notification as a desktop notification.
     desktop: false,
@@ -22,13 +22,14 @@
     options: {}
   };
 
-  export function requestPermission () {
+  function requestPermission () {
     if (typeof Notification !== 'undefined' && 'requestPermission' in Notification) {
       Notification.requestPermission();
     } else if ('webkitNotifications' in window) {
       window.webkitNotifications.requestPermission();
     }
   }
+  export { requestPermission as permission };
 
   const Notification = window.Notification;
 

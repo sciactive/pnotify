@@ -109,14 +109,9 @@
     // The stack on which the notices will be placed. Also controls the
     // direction the notices stack.
     stack: defaultStack,
-    // This is where options for modules should be defined.
+    // This is where modules and their options should be defined.
     modules: {}
   };
-
-  // This object holds all the PNotify modules. They are used to provide
-  // additional functionality.
-  const moduleRegistry = {};
-  export { moduleRegistry as modules };
 
   // Modules can add themselves to these to be rendered in the template.
   export const modulesPrependContainer = [];
@@ -210,7 +205,7 @@
       style="{_widthStyle} {_minHeightStyle}"
       role="alert">
     {#each modulesPrependContainer as module (module.key)}
-      <svelte:component this={module} self={self} {...modules[module.key]} />
+      <svelte:component this={module.default} self={self} {...module.options} />
     {/each}
     {#if icon !== false}
       <div bind:this={refs.iconContainer} class="ui-pnotify-icon {getStyle('icon')}">
@@ -219,7 +214,7 @@
     {/if}
     <div bind:this={refs.content} class="ui-pnotify-content {getStyle('content')}">
       {#each modulesPrependContent as module (module.key)}
-        <svelte:component this={module} self={self} {...modules[module.key]} />
+        <svelte:component this={module.default} self={self} {...module.options} />
       {/each}
       {#if title !== false}
         <div bind:this={refs.titleContainer} class="ui-pnotify-title {getStyle('title')}">
@@ -247,11 +242,11 @@
         </div>
       {/if}
       {#each modulesAppendContent as module (module.key)}
-        <svelte:component this={module} self={self} {...modules[module.key]} />
+        <svelte:component this={module.default} self={self} {...module.options} />
       {/each}
     </div>
     {#each modulesAppendContainer as module (module.key)}
-      <svelte:component this={module} self={self} {...modules[module.key]} />
+      <svelte:component this={module.default} self={self} {...module.options} />
     {/each}
   </div>
 </div>
@@ -371,6 +366,11 @@
   // Whether the notification is open in a modal stack (or a modalish stack in
   // modal state).
   $: _modal = stack && (stack.modal === true || (stack.modal === 'ish' && _timer === 'prevented')) && ['open', 'opening', 'closing'].indexOf(_state) !== -1;
+
+  $: modulesPrependContainer = Object.entries(modules).filter(([key, module]) => module.position === 'PrependContainer').map(([key, module]) => ({key, options: {}, ...module}));
+  $: modulesPrependContent = Object.entries(modules).filter(([key, module]) => module.position === 'PrependContent').map(([key, module]) => ({key, options: {}, ...module}));
+  $: modulesAppendContent = Object.entries(modules).filter(([key, module]) => module.position === 'AppendContent').map(([key, module]) => ({key, options: {}, ...module}));
+  $: modulesAppendContainer = Object.entries(modules).filter(([key, module]) => module.position === 'AppendContainer').map(([key, module]) => ({key, options: {}, ...module}));
 
   export const getState = () => _state;
   export const getStyle = name => (_styles && name in _styles) ? _styles[name] : styling + '-' + name;

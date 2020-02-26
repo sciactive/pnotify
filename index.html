@@ -128,6 +128,10 @@
       // Set defaults.
       // ---
       PNotify.defaults.destroy = false;
+      PNotify.defaults.modules = {
+        [PNotifyButtons.key]: PNotifyButtons,
+        [PNotifyMobile.key]: PNotifyMobile
+      };
 
       // ---
       // Notice that opens when the page opens.
@@ -1040,9 +1044,8 @@
             title: 'Desktop Notice',
             text: 'I\'ll appear as a desktop notification. Unless I can\'t. I\'ll still appear as a regular PNotify notice then.',
             modules: {
-              Desktop: {
-                desktop: true
-              }
+              ...PNotify.defaults.modules,
+              [PNotifyDesktop.key]: PNotifyDesktop
             }
           });
         ">Notice</button>
@@ -1051,9 +1054,8 @@
             title: 'Desktop Info',
             text: 'Hey there. Something happened.',
             modules: {
-              Desktop: {
-                desktop: true
-              }
+              ...PNotify.defaults.modules,
+              [PNotifyDesktop.key]: PNotifyDesktop
             }
           });
         ">Info</button>
@@ -1062,9 +1064,8 @@
             title: 'Desktop Success',
             text: 'All done! Come back to my tab!',
             modules: {
-              Desktop: {
-                desktop: true
-              }
+              ...PNotify.defaults.modules,
+              [PNotifyDesktop.key]: PNotifyDesktop
             }
           });
         ">Success</button>
@@ -1073,9 +1074,8 @@
             title: 'Desktop Error',
             text: 'Serious error is serious.',
             modules: {
-              Desktop: {
-                desktop: true
-              }
+              ...PNotify.defaults.modules,
+              [PNotifyDesktop.key]: PNotifyDesktop
             }
           });
         ">Error</button>
@@ -1084,9 +1084,12 @@
             title: 'Desktop Custom Icon',
             text: 'I\'ve got a custom icon.',
             modules: {
-              Desktop: {
-                desktop: true,
-                icon: 'includes/le_happy_face_by_luchocas-32.png'
+              ...PNotify.defaults.modules,
+              [PNotifyDesktop.key]: {
+                ...PNotifyDesktop,
+                options: {
+                  icon: 'includes/le_happy_face_by_luchocas-32.png'
+                }
               }
             }
           });
@@ -1098,12 +1101,15 @@
             text: 'I\'ve got an image.&lt;div style=&quot;text-align: center;&quot;&gt;&lt;img src=&quot;https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Happy_smiley_face.png/240px-Happy_smiley_face.png&quot; /&gt;&lt;/div&gt;',
             textTrusted: true,
             modules: {
-              Desktop: {
-                desktop: true,
-                text: 'I\'ve got an image.',
-                icon: false,
-                options {
-                  image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Happy_smiley_face.png/240px-Happy_smiley_face.png'
+              ...PNotify.defaults.modules,
+              [PNotifyDesktop.key]: {
+                ...PNotifyDesktop,
+                options: {
+                  text: 'I\'ve got an image.',
+                  icon: false,
+                  options: {
+                    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Happy_smiley_face.png/240px-Happy_smiley_face.png'
+                  }
                 }
               }
             }
@@ -1115,10 +1121,13 @@
             text: 'This text appears on the &lt;strong&gt;browser&lt;/strong&gt;.',
             textTrusted: true,
             modules: {
-              Desktop: {
-                desktop: true,
-                title: 'Alternate Text Notice - Desktop',
-                text: 'This text appears on the *desktop*.'
+              ...PNotify.defaults.modules,
+              [PNotifyDesktop.key]: {
+                ...PNotifyDesktop,
+                options: {
+                  title: 'Alternate Text Notice - Desktop',
+                  text: 'This text appears on the *desktop*.'
+                }
               }
             }
           });
@@ -1128,9 +1137,12 @@
             title: 'Clicky Desktop Notice',
             text: 'Click me.',
             modules: {
-              Desktop: {
-                desktop: true,
-                icon: false
+              ...PNotify.defaults.modules,
+              [PNotifyDesktop.key]: {
+                ...PNotifyDesktop,
+                options: {
+                  icon: false
+                }
               }
             }
           }).on('click', e => {
@@ -1146,9 +1158,12 @@
             text: 'I\'m a sticky notice. (Some browsers don\'t allow sticky Web Notifications.)',
             hide: false,
             modules: {
-              Desktop: {
-                desktop: true,
-                icon: false
+              ...PNotify.defaults.modules,
+              [PNotifyDesktop.key]: {
+                ...PNotifyDesktop,
+                options: {
+                  icon: false
+                }
               }
             }
           }).on('click', e => {
@@ -1163,9 +1178,8 @@
             title: 'Dynamic Desktop Notice',
             text: 'I\'m a dynamic desktop notice.',
             modules: {
-              Desktop: {
-                desktop: true
-              }
+              ...PNotify.defaults.modules,
+              [PNotifyDesktop.key]: PNotifyDesktop
             }
           });
           setTimeout(() => {
@@ -1180,9 +1194,12 @@
             title: 'Desktop Notice',
             text: 'I won\'t fall back to a regular notice.',
             modules: {
-              Desktop: {
-                desktop: true,
-                fallback: false
+              ...PNotify.defaults.modules,
+              [PNotifyDesktop.key]: {
+                ...PNotifyDesktop,
+                options: {
+                  fallback: false
+                }
               }
             }
           });
