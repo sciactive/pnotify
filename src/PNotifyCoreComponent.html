@@ -68,6 +68,10 @@
     mode: 'no-preference',
     // Additional classes to be added to the notice. (For custom styling.)
     addClass: '',
+    // Additional classes to be added to the notice, only when in modal.
+    addModalClass: '',
+    // Additional classes to be added to the notice, only when in modeless.
+    addModelessClass: '',
     // Class to be added to the notice for corner styling.
     cornerClass: '',
     // Display the notice immediately when it is created.
@@ -181,7 +185,7 @@
       {_animatingClass}
       {_moveClass}
       {animation === 'fade' ? 'ui-pnotify-fade-'+animateSpeed : ''}
-      {stack && (stack.modal === true || (stack.modal === 'ish' && _timer === 'prevented')) ? 'ui-pnotify-modal' : ''}
+      {_modal ? 'ui-pnotify-modal '+addModalClass : addModelessClass}
       {_masking ? 'ui-pnotify-masking ui-pnotify-masking-' + _masking : ''}
       {_maskingIn ? 'ui-pnotify-masking-in' : ''}
       {_moduleClasses.elem.join(' ')}
@@ -198,6 +202,8 @@
     on:pnotify:update
     on:pnotify:beforeOpen
     on:pnotify:afterOpen
+    on:pnotify:enterModal
+    on:pnotify:leaveModal
     on:pnotify:beforeClose
     on:pnotify:afterClose
     on:pnotify:beforeDestroy
@@ -295,6 +301,8 @@
   export let icons = defaults.icons;
   export let mode = defaults.mode;
   export let addClass = defaults.addClass;
+  export let addModalClass = defaults.addModalClass;
+  export let addModelessClass = defaults.addModelessClass;
   export let cornerClass = defaults.cornerClass;
   export let autoOpen = defaults.autoOpen;
   export let width = defaults.width;
@@ -371,10 +379,49 @@
   $: _maxTextHeightStyle = typeof maxTextHeight === 'string' ? 'max-height: ' + maxTextHeight + '; overflow-y: auto;' : '';
   $: _titleElement = title instanceof HTMLElement;
   $: _textElement = text instanceof HTMLElement;
+  // Whether the notification is open in a modal stack (or a modalish stack in
+  // modal state).
+  $: _modal = stack && (stack.modal === true || (stack.modal === 'ish' && _timer === 'prevented')) && ['open', 'opening', 'closing'].indexOf(_state) !== -1;
 
   export const getState = () => _state;
   export const getStyle = name => (_styles && name in _styles) ? _styles[name] : styling + '-' + name;
   export const getIcon = name => (_icons && name in _icons) ? _icons[name] : icons + '-icon-' + name;
+
+  $: if (_titleElement && refs.titleContainer) {
+    refs.titleContainer.appendChild(title);
+  }
+
+  $: if (_textElement && refs.textContainer) {
+    refs.textContainer.appendChild(text);
+  }
+
+  let _oldStack = NaN;
+  $: if (_oldStack !== stack) {
+    if (_oldStack) {
+      // Remove the notice from the old stack.
+      _oldStack._removeNotice(self);
+    }
+    if (stack) {
+      // Add the notice to the stack.
+      stack._addNotice(self);
+    }
+    _oldStack = stack;
+  }
+
+  let _oldModal = false;
+  $: if (_oldModal !== _modal) {
+    dispatchLifecycleEvent(_modal ? 'enterModal' : 'leaveModal');
+    _oldModal = _modal;
+  }
+
+  onMount(() => {
+    dispatchLifecycleEvent('mount');
+
+    // Display the notice.
+    if (autoOpen) {
+      open();
+    }
+  });
 
   beforeUpdate(async () => {
     if (_updatingIcon) {
@@ -418,36 +465,6 @@
     // Save old options.
     _oldHide = hide;
     _oldIcon = icon;
-  });
-
-  $: if (_titleElement && refs.titleContainer) {
-    refs.titleContainer.appendChild(title);
-  }
-
-  $: if (_textElement && refs.textContainer) {
-    refs.textContainer.appendChild(text);
-  }
-
-  let _oldStack = NaN;
-  $: if (_oldStack !== stack) {
-    if (_oldStack) {
-      // Remove the notice from the old stack.
-      _oldStack._removeNotice(self);
-    }
-    if (stack) {
-      // Add the notice to the stack.
-      stack._addNotice(self);
-    }
-    _oldStack = stack;
-  }
-
-  onMount(() => {
-    dispatchLifecycleEvent('mount');
-
-    // Display the notice.
-    if (autoOpen) {
-      open();
-    }
   });
 
   function handleInteraction (e) {

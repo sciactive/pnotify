@@ -385,7 +385,7 @@
           PNotify.notice({
             title: 'Non-Blocking Notice',
             text: 'I\'m a special kind of notice called &quot;non-blocking&quot;. When you hover over me I\'ll fade to show the elements underneath. Feel free to click any of them just like I wasn\'t even here.\n\nNote: HTML links don\'t trigger in some very old browsers, due to security settings.',
-            addClass: 'nonblock'
+            addModelessClass: 'nonblock'
           });
         ">Using NonBlock.js</button> <small>(Click through to things underneath the notice.)</small>
         <hr />
@@ -705,9 +705,10 @@
         <button class="btn btn-light my-1 source" onclick="
           PNotify.notice({
             title: 'Custom Styling',
-            text: 'I have an additional class that\'s used to give me special styling. I always wanted to be pretty. I also use NonBlock.js.',
+            text: 'I have an additional class that\'s used to give me special styling. I always wanted to be pretty. I also use NonBlock.js when modeless.',
             styling: {},
-            addClass: 'custom nonblock',
+            addClass: 'custom',
+            addModelessClass: 'nonblock',
             icon: 'far fa-file-image fa-3x'
           });
         ">Custom Styles</button>
@@ -775,7 +776,8 @@
   title: 'Custom Styling',
   text: 'I have an additional class that\'s used to give me special styling. I always wanted to be pretty.',
   <strong>styling: {}</strong>,
-  <strong>addClass: 'custom nonblock'</strong>,
+  <strong>addClass: 'custom'</strong>,
+  addModelessClass: 'nonblock',
   icon: 'far fa-file-image fa-3x'
 });</code></pre>
           </div>
@@ -860,6 +862,14 @@
           notice.on('pnotify:afterOpen', event => {
             console.log(event.type, event.detail);
             dontAlert('I\'m listening for after the notice opens.');
+          });
+          notice.on('pnotify:enterModal', event => {
+            console.log(event.type, event.detail);
+            dontAlert('I\'m listening for when the notice enters a modal state.');
+          });
+          notice.on('pnotify:leaveModal', event => {
+            console.log(event.type, event.detail);
+            dontAlert('I\'m listening for when the notice leaves a modal state.');
           });
           notice.on('pnotify:beforeClose', event => {
             console.log(event.type, event.detail);

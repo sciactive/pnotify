@@ -48,24 +48,24 @@
   });
 </script>
 
-{#if closer && !(self.refs.elem && self.refs.elem.classList.contains('nonblock'))}
+{#if closer && !nonBlock}
   <div
       class="ui-pnotify-closer {self.getStyle('closer')} {(!closerHover || mouseIsIn) ? '' : 'ui-pnotify-buttons-hidden'}"
       role="button"
       tabindex="0"
       title={labels.close}
-      on:click={handleCloserClick}>
+      on:click={() => self.close(false)}>
     <span class={closerClass}></span>
   </div>
 {/if}
-{#if sticker && !(self.refs.elem && self.refs.elem.classList.contains('nonblock'))}
+{#if sticker && !nonBlock}
   <div
       class="ui-pnotify-sticker {self.getStyle('sticker')} {(!stickerHover || mouseIsIn) ? '' : 'ui-pnotify-buttons-hidden'}"
       role="button"
       aria-pressed={!self.hide}
       tabindex="0"
       title={self.hide ? labels.stick : labels.unstick}
-      on:click={handleStickerClick}>
+      on:click={() => self.hide = !self.hide}>
     <span class="{stickerClass} {self.hide ? unstuckClass : stuckClass}"></span>
   </div>
 {/if}
@@ -89,12 +89,15 @@
   let updatingIcon = false;
   // Save the old value of hide and icon, so we can do our magic.
   let oldIcon;
+  // Whether the notice is in a modal state.
+  let modal = false;
 
   // These are button icon classes.
-  $: stickerClass = self ? (classes.sticker === null ? self.getIcon('sticker') : classes.sticker) : '';
-  $: stuckClass = self ? (classes.stuck === null ? self.getIcon('stuck') : classes.stuck) : '';
-  $: unstuckClass = self ? (classes.unstuck === null ? self.getIcon('unstuck') : classes.unstuck) : '';
-  $: closerClass = self ? (classes.closer === null ? self.getIcon('closer') : classes.closer) : '';
+  $: stickerClass = classes.sticker === null ? self.getIcon('sticker') : classes.sticker;
+  $: stuckClass = classes.stuck === null ? self.getIcon('stuck') : classes.stuck;
+  $: unstuckClass = classes.unstuck === null ? self.getIcon('unstuck') : classes.unstuck;
+  $: closerClass = classes.closer === null ? self.getIcon('closer') : classes.closer;
+  $: nonBlock = self.addClass.match(/\bnonblock\b/) || (self.addModalClass.match(/\bnonblock\b/) && modal) || (self.addModelessClass.match(/\bnonblock\b/) && !modal);
 
   beforeUpdate(async () => {
     if (updatingIcon) {
@@ -122,30 +125,19 @@
     }
   });
 
-  let removeMouseEnterHandler = self.on('mouseenter', handleMouseEnter);
-  let removeMouseLeaveHandler = self.on('mouseleave', handleMouseLeave);
+  let removeMouseEnterHandler = self.on('mouseenter', () => mouseIsIn = true);
+  let removeMouseLeaveHandler = self.on('mouseleave', () => mouseIsIn = false);
+  let removeEnterModalHandler = self.on('pnotify:enterModal', () => modal = true);
+  let removeLeavModalHandler = self.on('pnotify:leaveModal', () => modal = false);
+  let removeAfterCloseHandler = self.on('pnotify:afterClose', () => mouseIsIn = false);
 
   onDestroy(() => {
     removeMouseEnterHandler && removeMouseEnterHandler();
     removeMouseLeaveHandler && removeMouseLeaveHandler();
+    removeEnterModalHandler && removeEnterModalHandler();
+    removeLeavModalHandler && removeLeavModalHandler();
+    removeAfterCloseHandler && removeAfterCloseHandler();
   });
-
-  function handleMouseEnter() {
-    mouseIsIn = true;
-  }
-
-  function handleMouseLeave() {
-    mouseIsIn = false;
-  }
-
-  function handleStickerClick () {
-    self.hide = !self.hide;
-  }
-
-  function handleCloserClick () {
-    self.close(false);
-    mouseIsIn = false;
-  }
 </script>
 
 <style>

@@ -208,7 +208,7 @@ The default, standalone theme, Bright Theme. Supports dark mode. Include the CSS
 
 ## Material
 
-The Material style. Supports darm mode. Requires [material-design-icons](https://www.npmjs.com/package/material-design-icons). Include the CSS file in your page, and set it as the default:
+The Material style. Supports dark mode. Requires [material-design-icons](https://www.npmjs.com/package/material-design-icons). Include the CSS file in your page, and set it as the default:
 
 ```html
 <link href="node_modules/pnotify/dist/PNotifyMaterial.css" rel="stylesheet" type="text/css" />
@@ -329,6 +329,10 @@ PNotify options and default values.
   Light or dark version of the theme, if supported by the styling. This overrides the CSS media query when a preference is given. (Can be 'no-preference', 'light', or 'dark'.)
 * `addClass: ''`<br>
   Additional classes to be added to the notice. (For custom styling.)
+* `addModalClass: ''`<br>
+  Additional classes to be added to the notice, only when in modal.
+* `addModelessClass: ''`<br>
+  Additional classes to be added to the notice, only when in modeless.
 * `cornerClass: ''`<br>
   Class to be added to the notice for corner styling.
 * `autoOpen: true`<br>
