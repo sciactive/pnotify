@@ -348,7 +348,7 @@
   $: _icons = typeof icons === 'object' ? icons : iconRegistry[icons];
   $: _widthStyle = typeof width === 'string' ? 'width: ' + width + ';' : '';
   $: _minHeightStyle = typeof minHeight === 'string' ? 'min-height: ' + minHeight + ';' : '';
-  $: _maxTextHeightStyle = typeof maxTextHeight === 'string' ? 'max-height: ' + maxTextHeight + '; overflow-y: auto;' : '';
+  $: _maxTextHeightStyle = typeof maxTextHeight === 'string' ? 'max-height: ' + maxTextHeight + '; overflow-y: auto; overscroll-behavior: contain;' : '';
   $: _titleElement = title instanceof HTMLElement;
   $: _textElement = text instanceof HTMLElement;
   // Whether the notification is open in a modal stack (or a modalish stack in
