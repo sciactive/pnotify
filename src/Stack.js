@@ -411,7 +411,7 @@ export default class Stack {
       // If it's not open, and it's going to be a waiting notice, flash it.
       const off = notice.on('pnotify:mount', () => {
         off();
-        notice._setMasking(this.dir1, false, () => {
+        notice._setMasking(true, false, () => {
           notice._setMasking(false);
         });
         this._resetPositionData();
@@ -588,7 +588,7 @@ export default class Stack {
     }
 
     // Get this notice ready for positioning.
-    this._masking._setMasking(this.dir1, immediate);
+    this._masking._setMasking(true, immediate);
 
     // Wait for the DOM to update.
     window.requestAnimationFrame(() => {

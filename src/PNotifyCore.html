@@ -176,9 +176,10 @@
       {addClass}
       {_animatingClass}
       {_moveClass}
+      {_stackDirClass}
       {animation === 'fade' ? 'ui-pnotify-fade-'+animateSpeed : ''}
       {_modal ? 'ui-pnotify-modal '+addModalClass : addModelessClass}
-      {_masking ? 'ui-pnotify-masking ui-pnotify-masking-' + _masking : ''}
+      {_masking ? 'ui-pnotify-masking' : ''}
       {_maskingIn ? 'ui-pnotify-masking-in' : ''}
       {_moduleClasses.elem.join(' ')}
     "
@@ -357,6 +358,8 @@
   // Whether the notification is open in a modal stack (or a modalish stack in
   // modal state).
   $: _modal = stack && (stack.modal === true || (stack.modal === 'ish' && _timer === 'prevented')) && ['open', 'opening', 'closing'].indexOf(_state) !== -1;
+  // This is for specific styling for how notices stack.
+  $: _stackDirClass = (stack && stack.dir1) ? 'ui-pnotify-stack-'+stack.dir1 : '';
 
   // Filter through the module objects, getting an array for each position.
   $: modulesPrependContainer = Array.from(modules).filter(([module, options]) => module.position === 'PrependContainer');
@@ -868,7 +871,7 @@
       return;
     }
     if (value) {
-      _masking = value;
+      _masking = true;
       _maskingIn = !!immediate;
       insertIntoDOM();
       await tick();
@@ -989,15 +992,15 @@
     -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, .8), rgba(0, 0, 0, 0) 30px, rgba(0, 0, 0, 0));
     mask-image: linear-gradient(to bottom, rgba(0, 0, 0, .8), rgba(0, 0, 0, 0) 30px, rgba(0, 0, 0, 0));
   }
-  :global(.ui-pnotify.ui-pnotify-masking-up) {
+  :global(.ui-pnotify.ui-pnotify-masking.ui-pnotify-stack-up) {
     -webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, .8), rgba(0, 0, 0, 0) 30px, rgba(0, 0, 0, 0));
     mask-image: linear-gradient(to top, rgba(0, 0, 0, .8), rgba(0, 0, 0, 0) 30px, rgba(0, 0, 0, 0));
   }
-  :global(.ui-pnotify.ui-pnotify-masking-left) {
+  :global(.ui-pnotify.ui-pnotify-masking.ui-pnotify-stack-left) {
     -webkit-mask-image: linear-gradient(to left, rgba(0, 0, 0, .8), rgba(0, 0, 0, 0) 30px, rgba(0, 0, 0, 0));
     mask-image: linear-gradient(to left, rgba(0, 0, 0, .8), rgba(0, 0, 0, 0) 30px, rgba(0, 0, 0, 0));
   }
-  :global(.ui-pnotify.ui-pnotify-masking-right) {
+  :global(.ui-pnotify.ui-pnotify-masking.ui-pnotify-stack-right) {
     -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, .8), rgba(0, 0, 0, 0) 30px, rgba(0, 0, 0, 0));
     mask-image: linear-gradient(to right, rgba(0, 0, 0, .8), rgba(0, 0, 0, 0) 30px, rgba(0, 0, 0, 0));
   }

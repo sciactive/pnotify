@@ -1299,7 +1299,7 @@
         <div class="alert alert-info">Since the Mobile module provides support by default, most of the demos on this page work on mobile.</div>
         <button class="btn btn-light my-1 source" onclick="
           PNotify.notice({
-            title: 'No Mobile Support Notice',
+            title: 'No Swipe Dismiss Notice',
             text: 'If you\'re on a mobile device, I won\'t respond to your swipes.',
             modules: new Map([
               ...PNotify.defaults.modules,
@@ -1308,19 +1308,7 @@
               }]
             ])
           });
-        ">No Mobile Support</button>
-        <button class="btn btn-light my-1 source" onclick="
-          PNotify.notice({
-            title: 'No Mobile Styling Notice',
-            text: 'If you\'re on a mobile device, I\'ll look terrible.',
-            modules: new Map([
-              ...PNotify.defaults.modules,
-              [PNotifyMobile, {
-                styling: false
-              }]
-            ])
-          });
-        ">No Mobile Styling</button>
+        ">No Swipe Dismiss</button>
       </div>
 
       <h5 class="card-header">Animate Module <small>Fluid CSS animations using <a href="https://daneden.github.io/animate.css/" target="_blank">Animate.css</a>.</small></h5>
