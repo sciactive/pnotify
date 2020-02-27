@@ -37,6 +37,7 @@
 * The Mobile module now always styles notices. If you don't want styling, don't use the module.
 * Animate.css support in legacy browsers has been removed.
 * Some styling props and classes have changed, like pinDown, actionBar, etc.
+* The styling class ending in '-element' has changed to '-elem'.
 * Material styling is no longer a module, but rather a CSS file.
 * There is no longer a Compat module for running PNotify 3 code, and one will not be provided for running PNotify 4 code.
 * `PNotify.styling` renamed to `PNotify.styles`. (Only relevant for creating modules.)

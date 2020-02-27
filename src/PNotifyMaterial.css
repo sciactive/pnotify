@@ -2,8 +2,8 @@
 Color Scheme: https://www.google.com/design/spec/style/color.html#color-color-palette
 Requires stylesheet to work: https://fonts.googleapis.com/css?family=Material+Icons
 */
-[data-pnotify].material-element,
-[data-pnotify].material-element.pnotify-mode-light {
+[data-pnotify].material-elem,
+[data-pnotify].material-elem.pnotify-mode-light {
   /* https://material.io/design/color/the-color-system.html#tools-for-picking-colors */
   --notice-background-color: #FFF59D;
   --notice-text-color: #000;
@@ -23,7 +23,7 @@ Requires stylesheet to work: https://fonts.googleapis.com/css?family=Material+Ic
   font-size: 14px;
 }
 @media (prefers-color-scheme: dark) {
-  [data-pnotify].material-element.pnotify-mode-no-preference {
+  [data-pnotify].material-elem.pnotify-mode-no-preference {
     --notice-background-color: #FF8F00;
     --notice-text-color: #FFF;
     --info-background-color: #006eff;
@@ -37,7 +37,7 @@ Requires stylesheet to work: https://fonts.googleapis.com/css?family=Material+Ic
     --input-focus-underline-color: #E1F5FE;
   }
 }
-[data-pnotify].material-element.pnotify-mode-dark {
+[data-pnotify].material-elem.pnotify-mode-dark {
   --notice-background-color: #FF8F00;
   --notice-text-color: #FFF;
   --info-background-color: #006eff;
@@ -50,7 +50,7 @@ Requires stylesheet to work: https://fonts.googleapis.com/css?family=Material+Ic
   --primary-button-text-focus-color: #E0F7FA;
   --input-focus-underline-color: #E1F5FE;
 }
-[data-pnotify].material-element.pnotify-shadow {
+[data-pnotify].material-elem.pnotify-shadow {
   -webkit-box-shadow: 0px 6px 24px 0px rgba(0,0,0,0.2);
   -moz-box-shadow: 0px 6px 24px 0px rgba(0,0,0,0.2);
   box-shadow: 0px 6px 24px 0px rgba(0,0,0,0.2);

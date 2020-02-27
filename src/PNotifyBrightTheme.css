@@ -3,7 +3,7 @@ Color Scheme: http://paletton.com/palette.php?uid=c1T3n2J040kpEKzpEKzbEPSOEyiNk9
 Icons: https://materialdesignicons.com/
 For calculating icon filters, use: https://codepen.io/sosuke/pen/Pjoqqp
 */
-[data-pnotify].brighttheme-element {
+[data-pnotify].brighttheme-elem {
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
   border-radius: 0;
@@ -16,8 +16,8 @@ For calculating icon filters, use: https://codepen.io/sosuke/pen/Pjoqqp
   --error-primary-button-background-color: var(--error-border-color);
   --error-primary-button-text-color: var(--error-text-color);
 }
-[data-pnotify].brighttheme-element,
-[data-pnotify].brighttheme-element.pnotify-mode-light {
+[data-pnotify].brighttheme-elem,
+[data-pnotify].brighttheme-elem.pnotify-mode-light {
   --notice-background-color: #FFFFA2;
   --notice-border-color: #FFFF00;
   --notice-text-color: #4F4F00;
@@ -36,7 +36,7 @@ For calculating icon filters, use: https://codepen.io/sosuke/pen/Pjoqqp
   --error-icon-filter: invert(9%) sepia(27%) saturate(7347%) hue-rotate(359deg) brightness(96%) contrast(108%);
 }
 @media (prefers-color-scheme: dark) {
-  [data-pnotify].brighttheme-element.pnotify-mode-no-preference {
+  [data-pnotify].brighttheme-elem.pnotify-mode-no-preference {
     --notice-background-color: #4F4F00;
     --notice-border-color: #282814;
     --notice-text-color: #FFFFA2;
@@ -55,7 +55,7 @@ For calculating icon filters, use: https://codepen.io/sosuke/pen/Pjoqqp
     --error-icon-filter: invert(70%) sepia(24%) saturate(717%) hue-rotate(315deg) brightness(103%) contrast(104%);
   }
 }
-[data-pnotify].brighttheme-element.pnotify-mode-dark {
+[data-pnotify].brighttheme-elem.pnotify-mode-dark {
   --notice-background-color: #4F4F00;
   --notice-border-color: #282814;
   --notice-text-color: #FFFFA2;
