@@ -23,6 +23,7 @@
   * The lifecycle events have been turned into actual events. You can use `notice.on('pnotify:beforeOpen')` and the like.
 * The 'ui-pnotify' class and 'ui-pnotify-\*' classes have been changed to just 'pnotify' and 'pnotify-\*', respectively.
 * The 'ui-pnotify' attribute has been changed to 'data-pnotify'.
+* The `cornerClass` options has been removed, as has the `ui-pnotify-sharp` class. If you want `border-radius: 0;`, just use a custom class.
 * Methods are no longer chainable.
 
 ## Minor Breaking Changes.

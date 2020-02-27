@@ -113,9 +113,11 @@
     /* Browser bar stacks. */
     [data-pnotify].pnotify.stack-bar-top {
       width: 100%;
+      border-radius: 0;
     }
     [data-pnotify].pnotify.stack-bar-bottom {
       width: 70%;
+      border-radius: 0;
     }
   </style>
 
@@ -277,12 +279,9 @@
         /* eslint-env browser, jquery */
         /* globals PNotify */
         window.addEventListener('DOMContentLoaded', () => {
-          document.querySelectorAll('.sharpthemes-hideme').forEach(el => el.style.display = 'none');
-
           document.getElementById('style-brighttheme').addEventListener('change', e => {
             PNotify.defaults.styling = 'brighttheme';
             PNotify.defaults.icons = 'brighttheme';
-            document.querySelectorAll('.sharpthemes-hideme').forEach(el => el.style.display = 'none');
             PNotify.notice({
               title: 'Styling Change',
               text: 'From now on, notices will be styled with Bright Theme, the stand alone theme.'
@@ -292,7 +291,6 @@
           document.getElementById('style-material').addEventListener('change', e => {
             PNotify.defaults.styling = 'material';
             PNotify.defaults.icons = 'material';
-            document.querySelectorAll('.sharpthemes-hideme').forEach(el => el.style.display = 'none');
             PNotify.notice({
               title: 'Styling Change',
               text: 'From now on, notices will be styled with Material Style Module.'
@@ -302,7 +300,6 @@
           document.getElementById('style-bootstrap4').addEventListener('change', e => {
             PNotify.defaults.styling = 'bootstrap4';
             PNotify.defaults.icons = 'fontawesome5';
-            document.querySelectorAll('.sharpthemes-hideme').forEach(el => el.style.display = 'initial');
             PNotify.notice({
               title: 'Styling Change',
               text: 'From now on, notices will be styled with Bootstrap 4 w/ Font Awesome 5 Icons.'
@@ -693,15 +690,6 @@
         <button class="btn btn-light my-1 source" onclick="
           dynNotice();
         ">Dynamic</button>
-        <div class="sharpthemes-hideme" style="display: inline-block;">
-          <button class="btn btn-light my-1 source" onclick="
-            PNotify.notice({
-              title: 'No Rounded Corners Notice',
-              text: 'Warning: Contains sharp objects. Not suitable for browsers under the age of CSS3.',
-              cornerClass: 'pnotify-sharp'
-            });
-          ">No Rounded Corners</button>
-        </div>
         <hr />
         <button class="btn btn-light my-1 source" onclick="
           PNotify.notice({
@@ -2290,7 +2278,6 @@
               title: 'Over Here',
               text: "Check me out. I'm in a different stack.",
               addClass: 'stack-bar-top',
-              cornerClass: 'pnotify-sharp',
               shadow: false,
               width: '100%',
               stack: window.stackBarTop
@@ -2331,6 +2318,7 @@
         This demo uses this CSS:
         <pre><code class="css">[data-pnotify].pnotify.stack-bar-top {
   width: 100%;
+  border-radius: 0;
 }</code></pre>
         <hr />
         Bottom bar style. Modalish. Moves up, then right. Pushes to stack bottom.<br />
@@ -2345,7 +2333,6 @@
               title: 'Over Here',
               text: "Check me out. I'm in a different stack.",
               addClass: 'stack-bar-bottom',
-              cornerClass: 'pnotify-sharp',
               shadow: false,
               width: '100%',
               stack: window.stackBarBottom
@@ -2386,6 +2373,7 @@
         This demo uses this CSS:
         <pre><code class="css">[data-pnotify].pnotify.stack-bar-bottom {
   width: 70%;
+  border-radius: 0;
 }</code></pre>
         <hr />
         <script type="text/javascript">

@@ -339,8 +339,6 @@ PNotify options and default values.
   Additional classes to be added to the notice, only when in modal.
 * `addModelessClass: ''`<br>
   Additional classes to be added to the notice, only when in modeless.
-* `cornerClass: ''`<br>
-  Class to be added to the notice for corner styling.
 * `autoOpen: true`<br>
   Open the notice immediately when it is created.
 * `width: '360px'`<br>
@@ -366,7 +364,7 @@ PNotify options and default values.
 * `remove: true`<br>
   Remove the notice's elements from the DOM after it is closed.
 * `destroy: true`<br>
-  Whether to remove the notice from the stack array (and therefore, stack history) when it is closed.
+  Whether to remove the notice from the stack (and therefore, stack history) when it is closed.
 * `stack: defaultStack`<br>
   The stack on which the notices will be placed. Also controls the direction the notices stack.
 * `modules: new Map()`<br>
@@ -462,8 +460,6 @@ defaults.modules = {
 `Mobile: {`
 * `swipeDismiss: true`<br>
   Let the user swipe the notice away.
-* `styling: true`<br>
-  Styles the notice to look good on mobile.
 
 `}`
 
@@ -760,20 +756,20 @@ alert({
   * Slick animations with Animate.css.
   * Attention getters with Animate.css.
 * Highly customizable UI.
+  * [Modalish](https://sciactive.com/2020/02/11/the-modalish-notification-flow/), modal, and modeless notification flows.
   * Sticky notices.
   * Optional close and stick buttons.
-  * Non-blocking notices for less intrusive use.
+  * Supports non-blocking notices for less intrusive use.
   * Notification types: notice, info, success, and error.
   * Stacks allow notices to position together or independently.
   * Control stack direction and push to top or bottom.
-  * Modal notices.
   * Confirm dialogs, alert buttons, and prompts.
   * RTL language support.
 * Feature rich API.
   * Desktop notifications based on the Web Notifications standard.
   * Dynamically update existing notices.
-  * Put forms and other HTML in notices.
-    * By default, escapes text to prevent XSS attack.
+  * Put text, HTML, or DOM elements in notices.
+    * By default, escapes text to prevent XSS attacks.
   * Optional notice history for reshowing old notices.
 * Universally compatible.
   * Works with any frontend library (React, Angular, Svelte, Vue, Ember, etc.).

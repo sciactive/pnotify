@@ -72,8 +72,6 @@
     addModalClass: '',
     // Additional classes to be added to the notice, only when in modeless.
     addModelessClass: '',
-    // Class to be added to the notice for corner styling.
-    cornerClass: '',
     // Display the notice immediately when it is created.
     autoOpen: true,
     // Width of the notice.
@@ -103,7 +101,7 @@
     mouseReset: true,
     // Remove the notice's elements from the DOM after it is removed.
     remove: true,
-    // Whether to remove the notice from the stack array (and therefore,
+    // Whether to remove the notice from the stack (and therefore, stack
     // history) when it is closed.
     destroy: true,
     // The stack on which the notices will be placed. Also controls the
@@ -194,7 +192,6 @@
         pnotify-container
         {getStyle('container')}
         {getStyle(type)}
-        {cornerClass}
         {shadow ? 'pnotify-shadow' : ''}
         {_moduleClasses.container.join(' ')}
       "
@@ -283,7 +280,6 @@
   export let addClass = defaults.addClass;
   export let addModalClass = defaults.addModalClass;
   export let addModelessClass = defaults.addModelessClass;
-  export let cornerClass = defaults.cornerClass;
   export let autoOpen = defaults.autoOpen;
   export let width = defaults.width;
   export let minHeight = defaults.minHeight;
@@ -1024,11 +1020,6 @@
     display: block;
     height: 0;
     clear: both;
-  }
-  :global(.pnotify-container.pnotify-sharp) {
-    -webkit-border-radius: 0;
-    -moz-border-radius: 0;
-    border-radius: 0;
   }
   :global(.pnotify-title) {
     display: block;
