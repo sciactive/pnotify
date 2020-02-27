@@ -77,12 +77,12 @@
   <!-- Custom Styling -->
   <style type="text/css">
     /* Translucent notice CSS */
-    [ui-pnotify].ui-pnotify.translucent.ui-pnotify-fade-in {
+    [data-pnotify].pnotify.translucent.pnotify-fade-in {
       opacity: 0.8;
     }
 
     /* Custom styled notice CSS */
-    [ui-pnotify].ui-pnotify.custom .ui-pnotify-container {
+    [data-pnotify].pnotify.custom .pnotify-container {
       background-color: #404040;
       background-image: none;
       border: none;
@@ -92,29 +92,29 @@
       padding: 15px;
       font-size: 15px;
     }
-    [ui-pnotify].ui-pnotify.custom {
+    [data-pnotify].pnotify.custom {
       font-family: Arial, Helvetica, sans-serif;
       font-size: 10pt;
       line-height: 1.1;
     }
-    [ui-pnotify].ui-pnotify.custom .ui-pnotify-title,
-    [ui-pnotify].ui-pnotify.custom .ui-pnotify-text {
+    [data-pnotify].pnotify.custom .pnotify-title,
+    [data-pnotify].pnotify.custom .pnotify-text {
       margin-left: 50px;
       color: #FFF;
     }
-    [ui-pnotify].ui-pnotify.custom .ui-pnotify-title {
+    [data-pnotify].pnotify.custom .pnotify-title {
       font-weight: bold;
       font-size: 15px;
     }
-    [ui-pnotify].ui-pnotify.custom .ui-pnotify-icon {
+    [data-pnotify].pnotify.custom .pnotify-icon {
       color: #FFA;
     }
 
     /* Browser bar stacks. */
-    [ui-pnotify].ui-pnotify.stack-bar-top {
+    [data-pnotify].pnotify.stack-bar-top {
       width: 100%;
     }
-    [ui-pnotify].ui-pnotify.stack-bar-bottom {
+    [data-pnotify].pnotify.stack-bar-bottom {
       width: 70%;
     }
   </style>
@@ -397,7 +397,7 @@
             text: 'No one ever pays attention to me. Why should they? I\'m practically invisible.',
             addClass: 'translucent'
           });
-          const sourceNote = 'You need this CSS: [ui-pnotify].ui-pnotify.translucent.ui-pnotify-fade-in {opacity: 0.8;}';
+          const sourceNote = 'You need this CSS: [data-pnotify].pnotify.translucent.pnotify-fade-in {opacity: 0.8;}';
         ">Translucent</button>
         <button class="btn btn-light my-1 source" onclick="
           PNotify.notice({
@@ -570,7 +570,7 @@
           });
           notice.refs.elem.style.cursor = 'pointer';
           notice.on('click', e => {
-            if ([...notice.refs.elem.querySelectorAll('.ui-pnotify-closer *, .ui-pnotify-sticker *')].indexOf(e.target) !== -1) {
+            if ([...notice.refs.elem.querySelectorAll('.pnotify-closer *, .pnotify-sticker *')].indexOf(e.target) !== -1) {
               return;
             }
             notice.update({
@@ -698,7 +698,7 @@
             PNotify.notice({
               title: 'No Rounded Corners Notice',
               text: 'Warning: Contains sharp objects. Not suitable for browsers under the age of CSS3.',
-              cornerClass: 'ui-pnotify-sharp'
+              cornerClass: 'pnotify-sharp'
             });
           ">No Rounded Corners</button>
         </div>
@@ -745,7 +745,7 @@
               Here's some CSS to make custom notices look like Growl:
             </p>
             <pre style="min-width: 100%;"><code class="css">/* Notice that your selectors need to be more specific than PNotify's selectors. */
-[ui-pnotify].ui-pnotify<strong>.custom</strong> .ui-pnotify-container {
+[data-pnotify].pnotify<strong>.custom</strong> .pnotify-container {
   background-color: #404040;
   background-image: none;
   border: none;
@@ -755,21 +755,21 @@
   padding: 15px;
   font-size: 15px;
 }
-[ui-pnotify].ui-pnotify<strong>.custom</strong> {
+[data-pnotify].pnotify<strong>.custom</strong> {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 10pt;
   line-height: 1.1;
 }
-[ui-pnotify].ui-pnotify<strong>.custom</strong> .ui-pnotify-title,
-[ui-pnotify].ui-pnotify<strong>.custom</strong> .ui-pnotify-text {
+[data-pnotify].pnotify<strong>.custom</strong> .pnotify-title,
+[data-pnotify].pnotify<strong>.custom</strong> .pnotify-text {
   margin-left: 50px;
   color: #FFF;
 }
-[ui-pnotify].ui-pnotify<strong>.custom</strong> .ui-pnotify-title {
+[data-pnotify].pnotify<strong>.custom</strong> .pnotify-title {
   font-weight: bold;
   font-size: 15px;
 }
-[ui-pnotify].ui-pnotify<strong>.custom</strong> .ui-pnotify-icon {
+[data-pnotify].pnotify<strong>.custom</strong> .pnotify-icon {
   color: #FFA;
 }</code></pre>
             <p>
@@ -1134,7 +1134,7 @@
               }]
             ])
           }).on('click', e => {
-            if ([...notice.refs.elem.querySelectorAll('.ui-pnotify-closer *, .ui-pnotify-sticker *')].indexOf(e.target) !== -1) {
+            if ([...notice.refs.elem.querySelectorAll('.pnotify-closer *, .pnotify-sticker *')].indexOf(e.target) !== -1) {
               return;
             }
             alert('Hey! You clicked the desktop notification!');
@@ -1152,7 +1152,7 @@
               }]
             ])
           }).on('click', e => {
-            if ([...notice.refs.elem.querySelectorAll('.ui-pnotify-closer *, .ui-pnotify-sticker *')].indexOf(e.target) !== -1) {
+            if ([...notice.refs.elem.querySelectorAll('.pnotify-closer *, .pnotify-sticker *')].indexOf(e.target) !== -1) {
               return;
             }
             alert('Hey! You clicked the desktop notification!');
@@ -2290,7 +2290,7 @@
               title: 'Over Here',
               text: "Check me out. I'm in a different stack.",
               addClass: 'stack-bar-top',
-              cornerClass: 'ui-pnotify-sharp',
+              cornerClass: 'pnotify-sharp',
               shadow: false,
               width: '100%',
               stack: window.stackBarTop
@@ -2329,7 +2329,7 @@
         ">Error</button>
         <br />
         This demo uses this CSS:
-        <pre><code class="css">[ui-pnotify].ui-pnotify.stack-bar-top {
+        <pre><code class="css">[data-pnotify].pnotify.stack-bar-top {
   width: 100%;
 }</code></pre>
         <hr />
@@ -2345,7 +2345,7 @@
               title: 'Over Here',
               text: "Check me out. I'm in a different stack.",
               addClass: 'stack-bar-bottom',
-              cornerClass: 'ui-pnotify-sharp',
+              cornerClass: 'pnotify-sharp',
               shadow: false,
               width: '100%',
               stack: window.stackBarBottom
@@ -2384,7 +2384,7 @@
         ">Error</button>
         <br />
         This demo uses this CSS:
-        <pre><code class="css">[ui-pnotify].ui-pnotify.stack-bar-bottom {
+        <pre><code class="css">[data-pnotify].pnotify.stack-bar-bottom {
   width: 70%;
 }</code></pre>
         <hr />

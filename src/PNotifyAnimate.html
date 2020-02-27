@@ -71,7 +71,7 @@
         return;
       }
       off();
-      self.setAnimatingClass('ui-pnotify-in animated');
+      self.setAnimatingClass('pnotify-in animated');
       if (callback) {
         callback.call();
       }
@@ -83,7 +83,7 @@
     if (immediate) {
       finished();
     } else {
-      self.setAnimatingClass('ui-pnotify-in animated ' + (inClass || outClass));
+      self.setAnimatingClass('pnotify-in animated ' + (inClass || outClass));
     }
   }
 
@@ -111,7 +111,7 @@
     if (immediate) {
       finished();
     } else {
-      self.setAnimatingClass('ui-pnotify-in animated ' + (outClass || inClass));
+      self.setAnimatingClass('pnotify-in animated ' + (outClass || inClass));
     }
   }
 

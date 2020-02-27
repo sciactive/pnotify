@@ -45,16 +45,16 @@
 
   // Add button styles to styling objects.
   Object.assign(styles.bootstrap3, {
-    'action-bar': 'ui-pnotify-confirm-ml',
-    'prompt-bar': 'ui-pnotify-confirm-ml',
-    btn: 'btn btn-default ui-pnotify-confirm-mx-1',
+    'action-bar': 'pnotify-confirm-ml',
+    'prompt-bar': 'pnotify-confirm-ml',
+    btn: 'btn btn-default pnotify-confirm-mx-1',
     'btn-primary': 'btn-primary',
     'btn-secondary': '',
     input: 'form-control'
   });
   Object.assign(styles.bootstrap4, {
-    'action-bar': 'ui-pnotify-confirm-ml',
-    'prompt-bar': 'ui-pnotify-confirm-ml',
+    'action-bar': 'pnotify-confirm-ml',
+    'prompt-bar': 'pnotify-confirm-ml',
     btn: 'btn mx-1',
     'btn-primary': 'btn-primary',
     'btn-secondary': 'btn-secondary',
@@ -64,14 +64,14 @@
 
 {#if confirm || prompt}
   <div class="
-    ui-pnotify-confirm
+    pnotify-confirm
     {self.getStyle('text')}
     {self.getStyle('confirm')}
   ">
     {#if prompt}
       <div
           class="
-            ui-pnotify-prompt-bar
+            pnotify-prompt-bar
             {self.getStyle('prompt-bar')}
           ">
         {#if promptMultiLine}
@@ -80,7 +80,7 @@
               on:keypress={handleKeyPress}
               bind:this={promptMultiElem}
               class="
-                ui-pnotify-prompt-input
+                pnotify-prompt-input
                 {self.getStyle('input')}
                 {promptClass}
               "
@@ -91,7 +91,7 @@
               on:keypress={handleKeyPress}
               bind:this={promptSingleElem}
               class="
-                ui-pnotify-prompt-input
+                pnotify-prompt-input
                 {self.getStyle('input')}
                 {promptClass}
               "
@@ -101,7 +101,7 @@
     {/if}
     <div
         class="
-          ui-pnotify-action-bar
+          pnotify-action-bar
           {self.getStyle('action-bar')}
         "
         style="justify-content: {align};"
@@ -111,7 +111,7 @@
             type="button"
             on:click={event => handleClick(button, event)}
             class="
-              ui-pnotify-action-button
+              pnotify-action-button
               {self.getStyle('btn')}
               {button.primary ? self.getStyle('btn-primary') : self.getStyle('btn-secondary')}
               {button.addClass ? button.addClass : ''}
@@ -199,28 +199,28 @@
 </script>
 
 <style>
-  :global(.ui-pnotify-action-bar),
-  :global(.ui-pnotify-prompt-bar) {
+  :global(.pnotify-action-bar),
+  :global(.pnotify-prompt-bar) {
     margin-top: 5px;
     clear: both;
   }
-  :global(.ui-pnotify-action-bar) {
+  :global(.pnotify-action-bar) {
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-end;
   }
-  :global(.ui-pnotify-prompt-input) {
+  :global(.pnotify-prompt-input) {
     margin-bottom: 5px;
     display: block;
     width: 100%;
   }
-  :global(.ui-pnotify-confirm-mx-1) {
+  :global(.pnotify-confirm-mx-1) {
     margin: 0 5px;
   }
-  :global(.ui-pnotify.ui-pnotify-with-icon .ui-pnotify-confirm-ml) {
+  :global(.pnotify.pnotify-with-icon .pnotify-confirm-ml) {
     margin-left: 24px;
   }
-  :global([dir=rtl] .ui-pnotify.ui-pnotify-with-icon .ui-pnotify-confirm-ml) {
+  :global([dir=rtl] .pnotify.pnotify-with-icon .pnotify-confirm-ml) {
     margin-right: 24px;
     margin-left: 0;
   }

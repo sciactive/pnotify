@@ -21,6 +21,8 @@
   * The `maxInStack` option has been replaced with `stack.maxOpen`. To use the old behavior, set `stack.maxStrategy` to 'close'.
 * The Callbacks module has been removed.
   * The lifecycle events have been turned into actual events. You can use `notice.on('pnotify:beforeOpen')` and the like.
+* The 'ui-pnotify' class and 'ui-pnotify-\*' classes have been changed to just 'pnotify' and 'pnotify-\*', respectively.
+* The 'ui-pnotify' attribute has been changed to 'data-pnotify'.
 * Methods are no longer chainable.
 
 ## Minor Breaking Changes.

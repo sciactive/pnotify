@@ -33,14 +33,14 @@ We're going to create a button that will be appended to the notice.
 It will be disabled by default, so we can enable it on mouseover.
 -->
 <button
-    class="ui-pnotify-action-button ui-pnotify-reference-button {self.getStyle('btn')} {self.getStyle('btn-secondary')}"
+    class="pnotify-action-button pnotify-reference-button {self.getStyle('btn')} {self.getStyle('btn-secondary')}"
     type="button"
     disabled="{!mouseIsIn}"
     on:click={doSomething}>
   <i class={self.getIcon('refresh')} />&nbsp;{labels.text}
 </button>
 <!-- Since our button is floated, we have to add a clearing div. -->
-<div class="ui-pnotify-reference-clearing" />
+<div class="pnotify-reference-clearing" />
 
 <script>
   import { onDestroy } from 'svelte';
@@ -78,11 +78,11 @@ It will be disabled by default, so we can enable it on mouseover.
 </script>
 
 <style>
-  .ui-pnotify-reference-button {
+  .pnotify-reference-button {
     float: right;
     margin-top: 1em;
   }
-  .ui-pnotify-reference-clearing {
+  .pnotify-reference-clearing {
     clear: right;
     line-height: 0;
   }

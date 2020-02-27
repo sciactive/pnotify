@@ -49,7 +49,7 @@
 
 {#if closer && !nonBlock}
   <div
-      class="ui-pnotify-closer {self.getStyle('closer')} {(!closerHover || mouseIsIn) ? '' : 'ui-pnotify-buttons-hidden'}"
+      class="pnotify-closer {self.getStyle('closer')} {(!closerHover || mouseIsIn) ? '' : 'pnotify-buttons-hidden'}"
       role="button"
       tabindex="0"
       title={labels.close}
@@ -59,7 +59,7 @@
 {/if}
 {#if sticker && !nonBlock}
   <div
-      class="ui-pnotify-sticker {self.getStyle('sticker')} {(!stickerHover || mouseIsIn) ? '' : 'ui-pnotify-buttons-hidden'}"
+      class="pnotify-sticker {self.getStyle('sticker')} {(!stickerHover || mouseIsIn) ? '' : 'pnotify-buttons-hidden'}"
       role="button"
       aria-pressed={!self.hide}
       tabindex="0"
@@ -140,19 +140,19 @@
 </script>
 
 <style>
-  :global(.ui-pnotify-closer),
-  :global(.ui-pnotify-sticker) {
+  :global(.pnotify-closer),
+  :global(.pnotify-sticker) {
     float: right;
     margin-left: .5em;
     cursor: pointer;
   }
-  :global([dir=rtl] .ui-pnotify-closer),
-  :global([dir=rtl] .ui-pnotify-sticker) {
+  :global([dir=rtl] .pnotify-closer),
+  :global([dir=rtl] .pnotify-sticker) {
     float: left;
     margin-right: .5em;
     margin-left: 0;
   }
-  :global(.ui-pnotify-buttons-hidden) {
+  :global(.pnotify-buttons-hidden) {
     visibility: hidden;
   }
 </style>

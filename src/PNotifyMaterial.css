@@ -2,8 +2,8 @@
 Color Scheme: https://www.google.com/design/spec/style/color.html#color-color-palette
 Requires stylesheet to work: https://fonts.googleapis.com/css?family=Material+Icons
 */
-[ui-pnotify].material-element,
-[ui-pnotify].material-element.ui-pnotify-mode-light {
+[data-pnotify].material-element,
+[data-pnotify].material-element.pnotify-mode-light {
   /* https://material.io/design/color/the-color-system.html#tools-for-picking-colors */
   --notice-background-color: #FFF59D;
   --notice-text-color: #000;
@@ -23,7 +23,7 @@ Requires stylesheet to work: https://fonts.googleapis.com/css?family=Material+Ic
   font-size: 14px;
 }
 @media (prefers-color-scheme: dark) {
-  [ui-pnotify].material-element.ui-pnotify-mode-no-preference {
+  [data-pnotify].material-element.pnotify-mode-no-preference {
     --notice-background-color: #FF8F00;
     --notice-text-color: #FFF;
     --info-background-color: #006eff;
@@ -37,7 +37,7 @@ Requires stylesheet to work: https://fonts.googleapis.com/css?family=Material+Ic
     --input-focus-underline-color: #E1F5FE;
   }
 }
-[ui-pnotify].material-element.ui-pnotify-mode-dark {
+[data-pnotify].material-element.pnotify-mode-dark {
   --notice-background-color: #FF8F00;
   --notice-text-color: #FFF;
   --info-background-color: #006eff;
@@ -50,39 +50,39 @@ Requires stylesheet to work: https://fonts.googleapis.com/css?family=Material+Ic
   --primary-button-text-focus-color: #E0F7FA;
   --input-focus-underline-color: #E1F5FE;
 }
-[ui-pnotify].material-element.ui-pnotify-shadow {
+[data-pnotify].material-element.pnotify-shadow {
   -webkit-box-shadow: 0px 6px 24px 0px rgba(0,0,0,0.2);
   -moz-box-shadow: 0px 6px 24px 0px rgba(0,0,0,0.2);
   box-shadow: 0px 6px 24px 0px rgba(0,0,0,0.2);
 }
-[ui-pnotify] .material-container {
+[data-pnotify] .material-container {
   padding: 24px;
 }
-[ui-pnotify] .material-title {
+[data-pnotify] .material-title {
   font-size: 20px;
   margin-bottom: 20px;
   line-height: 24px;
 }
-[ui-pnotify] .material-title:last-child {
+[data-pnotify] .material-title:last-child {
   margin-bottom: 0;
 }
-[ui-pnotify] .material-text {
+[data-pnotify] .material-text {
   font-size: 16px;
   line-height: 24px;
 }
-[ui-pnotify].ui-pnotify-with-icon .material-content {
+[data-pnotify].pnotify-with-icon .material-content {
   margin-left: 32px;
 }
-[dir=rtl] [ui-pnotify].ui-pnotify-with-icon .material-content {
+[dir=rtl] [data-pnotify].pnotify-with-icon .material-content {
   margin-right: 32px;
   margin-left: 0;
 }
-[ui-pnotify] .material-icon,
-[ui-pnotify] .material-closer,
-[ui-pnotify] .material-sticker,
-[ui-pnotify] .material-icon > span:after,
-[ui-pnotify] .material-icon-closer:after,
-[ui-pnotify] .material-icon-sticker:after {
+[data-pnotify] .material-icon,
+[data-pnotify] .material-closer,
+[data-pnotify] .material-sticker,
+[data-pnotify] .material-icon > span:after,
+[data-pnotify] .material-icon-closer:after,
+[data-pnotify] .material-icon-sticker:after {
   font-family: 'Material Icons';
   height: 20px;
   width: 20px;
@@ -90,59 +90,59 @@ Requires stylesheet to work: https://fonts.googleapis.com/css?family=Material+Ic
   line-height: 24px;
   position: relative;
 }
-[ui-pnotify] .material-action-bar {
+[data-pnotify] .material-action-bar {
   margin-top: 20px;
   margin-right: -16px;
   margin-bottom: -16px;
 }
-[dir=rtl] [ui-pnotify] .material-action-bar {
+[dir=rtl] [data-pnotify] .material-action-bar {
   margin-left: -16px;
   margin-right: 0;
 }
 
-[ui-pnotify] .material-notice {
+[data-pnotify] .material-notice {
   background-color: var(--notice-background-color);
   border: none;
   color: var(--notice-text-color);
 }
-[ui-pnotify] .material-info {
+[data-pnotify] .material-info {
   background-color: var(--info-background-color);
   border: none;
   color: var(--info-text-color);
 }
-[ui-pnotify] .material-success {
+[data-pnotify] .material-success {
   background-color: var(--success-background-color);
   border: none;
   color: var(--success-text-color);
 }
-[ui-pnotify] .material-error {
+[data-pnotify] .material-error {
   background-color: var(--error-background-color);
   border: none;
   color: var(--error-text-color);
 }
-[ui-pnotify] .material-icon-notice:after {
+[data-pnotify] .material-icon-notice:after {
   content: "priority_high";
 }
-[ui-pnotify] .material-icon-info:after {
+[data-pnotify] .material-icon-info:after {
   content: "info";
 }
-[ui-pnotify] .material-icon-success:after {
+[data-pnotify] .material-icon-success:after {
   content: "done";
 }
-[ui-pnotify] .material-icon-error:after {
+[data-pnotify] .material-icon-error:after {
   content: "error";
 }
-[ui-pnotify] .material-icon-closer:after {
+[data-pnotify] .material-icon-closer:after {
   content: "close";
 }
-[ui-pnotify] .material-icon-unstuck:after {
+[data-pnotify] .material-icon-unstuck:after {
   content: "pause";
 }
-[ui-pnotify] .material-icon-stuck:after {
+[data-pnotify] .material-icon-stuck:after {
   content: "play_arrow";
 }
 
-[ui-pnotify] .material-input {
+[data-pnotify] .material-input {
   display: block;
   width: 100%;
   margin-bottom: 8px;
@@ -159,14 +159,14 @@ Requires stylesheet to work: https://fonts.googleapis.com/css?family=Material+Ic
   border-bottom-color: inherit;
   border-bottom-width: 1px;
 }
-[ui-pnotify] .material-input:focus {
+[data-pnotify] .material-input:focus {
   outline: none;
   border-bottom-color: var(--input-focus-underline-color);
   border-bottom-width: 2px;
 }
 
 /* CSS Material Buttons from https://codepen.io/sebj54/pen/oxluI */
-[ui-pnotify] .material-btn {
+[data-pnotify] .material-btn {
   position: relative;
 
   padding: 0 16px;
@@ -188,19 +188,19 @@ Requires stylesheet to work: https://fonts.googleapis.com/css?family=Material+Ic
   min-width: 64px;
   font-weight: bold;
 }
-[ui-pnotify] .material-btn.material-btn-primary {
+[data-pnotify] .material-btn.material-btn-primary {
   color: var(--primary-button-text-color);
 }
-[ui-pnotify] .material-btn:hover,
-[ui-pnotify] .material-btn:focus {
+[data-pnotify] .material-btn:hover,
+[data-pnotify] .material-btn:focus {
   background-color: rgba(0, 0, 0, .12);
   color: inherit;
 }
-[ui-pnotify] .material-btn.material-btn-primary:hover,
-[ui-pnotify] .material-btn.material-btn-primary:focus {
+[data-pnotify] .material-btn.material-btn-primary:hover,
+[data-pnotify] .material-btn.material-btn-primary:focus {
   color: var(--primary-button-text-focus-color);
 }
-[ui-pnotify] .material-btn:before {
+[data-pnotify] .material-btn:before {
   content: "";
 
   position: absolute;
@@ -221,7 +221,7 @@ Requires stylesheet to work: https://fonts.googleapis.com/css?family=Material+Ic
   -o-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 }
-[ui-pnotify] .material-btn:active:before {
+[data-pnotify] .material-btn:active:before {
   width: 120%;
   padding-top: 120%;
 

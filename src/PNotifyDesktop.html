@@ -116,11 +116,11 @@
       self.setAnimatingClass('');
     }
 
-    if (!_permission && self.hasModuleClass('elem', 'ui-pnotify-desktop-hide')) {
-      self.removeModuleClass('elem', 'ui-pnotify-desktop-hide');
+    if (!_permission && self.hasModuleClass('elem', 'pnotify-desktop-hide')) {
+      self.removeModuleClass('elem', 'pnotify-desktop-hide');
       self.animation = _oldAnimation;
-    } else if (_permission && !self.hasModuleClass('elem', 'ui-pnotify-desktop-hide')) {
-      self.addModuleClass('elem', 'ui-pnotify-desktop-hide');
+    } else if (_permission && !self.hasModuleClass('elem', 'pnotify-desktop-hide')) {
+      self.addModuleClass('elem', 'pnotify-desktop-hide');
       self.animation = 'none';
       genNotice();
     }
@@ -152,7 +152,7 @@
   _permission = checkPermission();
 
   if (_permission) {
-    self.addModuleClass('elem', 'ui-pnotify-desktop-hide');
+    self.addModuleClass('elem', 'pnotify-desktop-hide');
     self.animation = 'none';
     genNotice();
   } else if (!fallback) {
@@ -218,7 +218,7 @@
   }
 </script>
 <style>
-  :global([ui-pnotify].ui-pnotify-desktop-hide) {
+  :global([data-pnotify].pnotify-desktop-hide) {
     left: -10000px !important;
     display: none !important;
   }

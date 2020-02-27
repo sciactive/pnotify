@@ -166,21 +166,21 @@
 </script>
 
 <div bind:this={refs.elem}
-    ui-pnotify
+    data-pnotify
     use:forwardEvents
     class="
-      ui-pnotify
-      {icon !== false ? 'ui-pnotify-with-icon' : ''}
+      pnotify
+      {icon !== false ? 'pnotify-with-icon' : ''}
       {getStyle('element')}
-      ui-pnotify-mode-{mode}
+      pnotify-mode-{mode}
       {addClass}
       {_animatingClass}
       {_moveClass}
       {_stackDirClass}
-      {animation === 'fade' ? 'ui-pnotify-fade-'+animateSpeed : ''}
-      {_modal ? 'ui-pnotify-modal '+addModalClass : addModelessClass}
-      {_masking ? 'ui-pnotify-masking' : ''}
-      {_maskingIn ? 'ui-pnotify-masking-in' : ''}
+      {animation === 'fade' ? 'pnotify-fade-'+animateSpeed : ''}
+      {_modal ? 'pnotify-modal '+addModalClass : addModelessClass}
+      {_masking ? 'pnotify-masking' : ''}
+      {_maskingIn ? 'pnotify-masking-in' : ''}
       {_moduleClasses.elem.join(' ')}
     "
     aria-live="assertive"
@@ -191,11 +191,11 @@
     on:focusout={handleLeaveInteraction}>
   <div bind:this={refs.container}
       class="
-        ui-pnotify-container
+        pnotify-container
         {getStyle('container')}
         {getStyle(type)}
         {cornerClass}
-        {shadow ? 'ui-pnotify-shadow' : ''}
+        {shadow ? 'pnotify-shadow' : ''}
         {_moduleClasses.container.join(' ')}
       "
       style="{_widthStyle} {_minHeightStyle}"
@@ -204,35 +204,35 @@
       <svelte:component this={module.default} self={self} {...options} />
     {/each}
     {#if icon !== false}
-      <div bind:this={refs.iconContainer} class="ui-pnotify-icon {getStyle('icon')}">
+      <div bind:this={refs.iconContainer} class="pnotify-icon {getStyle('icon')}">
         <span class={icon === true ? getIcon(type) : icon}></span>
       </div>
     {/if}
-    <div bind:this={refs.content} class="ui-pnotify-content {getStyle('content')}">
+    <div bind:this={refs.content} class="pnotify-content {getStyle('content')}">
       {#each modulesPrependContent as [module, options] (module)}
         <svelte:component this={module.default} self={self} {...options} />
       {/each}
       {#if title !== false}
-        <div bind:this={refs.titleContainer} class="ui-pnotify-title {getStyle('title')}">
+        <div bind:this={refs.titleContainer} class="pnotify-title {getStyle('title')}">
           {#if !_titleElement}
             {#if titleTrusted}
               {@html title}
             {:else}
-              <span class="ui-pnotify-pre-line">{title}</span>
+              <span class="pnotify-pre-line">{title}</span>
             {/if}
           {/if}
         </div>
       {/if}
       {#if text !== false}
         <div bind:this={refs.textContainer}
-            class="ui-pnotify-text {getStyle('text')}"
+            class="pnotify-text {getStyle('text')}"
             style="{_maxTextHeightStyle}"
             role="alert">
           {#if !_textElement}
             {#if textTrusted}
               {@html text}
             {:else}
-              <span class="ui-pnotify-pre-line">{text}</span>
+              <span class="pnotify-pre-line">{text}</span>
             {/if}
           {/if}
         </div>
@@ -359,7 +359,7 @@
   // modal state).
   $: _modal = stack && (stack.modal === true || (stack.modal === 'ish' && _timer === 'prevented')) && ['open', 'opening', 'closing'].indexOf(_state) !== -1;
   // This is for specific styling for how notices stack.
-  $: _stackDirClass = (stack && stack.dir1) ? 'ui-pnotify-stack-'+stack.dir1 : '';
+  $: _stackDirClass = (stack && stack.dir1) ? 'pnotify-stack-'+stack.dir1 : '';
 
   // Filter through the module objects, getting an array for each position.
   $: modulesPrependContainer = Array.from(modules).filter(([module, options]) => module.position === 'PrependContainer');
@@ -535,7 +535,7 @@
     _masking = false;
     // This makes the notice visibity: hidden; so its dimensions can be
     // determined.
-    _animatingClass = 'ui-pnotify-initial-hidden';
+    _animatingClass = 'pnotify-initial-hidden';
 
     const afterOpenCallback = () => {
       // Now set it to hide.
@@ -683,13 +683,13 @@
 
     if (animation === 'fade' && !immediate) {
       refs.elem && refs.elem.addEventListener('transitionend', finished);
-      _animatingClass = 'ui-pnotify-in';
+      _animatingClass = 'pnotify-in';
       await tick();
-      _animatingClass = 'ui-pnotify-in ui-pnotify-fade-in';
+      _animatingClass = 'pnotify-in pnotify-fade-in';
       // Just in case the event doesn't fire, call it after 650 ms.
       _animInTimer = setTimeout(finished, 650);
     } else {
-      _animatingClass = 'ui-pnotify-in';
+      _animatingClass = 'pnotify-in';
       await tick();
       finished();
     }
@@ -735,7 +735,7 @@
 
     if (animation === 'fade' && !immediate) {
       refs.elem && refs.elem.addEventListener('transitionend', finished);
-      _animatingClass = 'ui-pnotify-in';
+      _animatingClass = 'pnotify-in';
       // Just in case the event doesn't fire, call it after 650 ms.
       _animOutTimer = setTimeout(finished, 650);
     } else {
@@ -757,7 +757,7 @@
       // If it's animating out, stop it.
       _state = 'open';
       _animating = false;
-      _animatingClass = animation === 'fade' ? 'ui-pnotify-in ui-pnotify-fade-in' : 'ui-pnotify-in';
+      _animatingClass = animation === 'fade' ? 'pnotify-in pnotify-fade-in' : 'pnotify-in';
     }
   }
 
@@ -935,16 +935,16 @@
 
 <style>
   /* -- Notice */
-  :global(body > .ui-pnotify) {
+  :global(body > .pnotify) {
     /* Notices in the body context should be fixed to the viewport. */
     position: fixed;
     /* Ensures notices are above everything */
     z-index: 100040;
   }
-  :global(body > .ui-pnotify.ui-pnotify-modal) {
+  :global(body > .pnotify.pnotify-modal) {
     z-index: 100042;
   }
-  :global(.ui-pnotify) {
+  :global(.pnotify) {
     position: absolute;
     height: auto;
     z-index: 1;
@@ -952,125 +952,125 @@
     transition: opacity .1s linear;
     opacity: 0;
   }
-  :global(.ui-pnotify.ui-pnotify-modal) {
+  :global(.pnotify.pnotify-modal) {
     z-index: 3;
   }
-  :global(.ui-pnotify.ui-pnotify-in) {
+  :global(.pnotify.pnotify-in) {
     display: block;
     opacity: 1;
   }
-  :global(.ui-pnotify.ui-pnotify-initial-hidden) {
+  :global(.pnotify.pnotify-initial-hidden) {
     display: block;
     visibility: hidden;
   }
-  :global(.ui-pnotify.ui-pnotify-move) {
+  :global(.pnotify.pnotify-move) {
     transition: left .4s ease, top .4s ease, right .4s ease, bottom .4s ease;
   }
-  :global(.ui-pnotify.ui-pnotify-fade-slow) {
+  :global(.pnotify.pnotify-fade-slow) {
     transition: opacity .4s linear;
     opacity: 0;
   }
-  :global(.ui-pnotify.ui-pnotify-fade-slow.ui-pnotify.ui-pnotify-move) {
+  :global(.pnotify.pnotify-fade-slow.pnotify.pnotify-move) {
     transition: opacity .4s linear, left .4s ease, top .4s ease, right .4s ease, bottom .4s ease;
   }
-  :global(.ui-pnotify.ui-pnotify-fade-normal) {
+  :global(.pnotify.pnotify-fade-normal) {
     transition: opacity .25s linear;
     opacity: 0;
   }
-  :global(.ui-pnotify.ui-pnotify-fade-normal.ui-pnotify.ui-pnotify-move) {
+  :global(.pnotify.pnotify-fade-normal.pnotify.pnotify-move) {
     transition: opacity .25s linear, left .4s ease, top .4s ease, right .4s ease, bottom .4s ease;
   }
-  :global(.ui-pnotify.ui-pnotify-fade-fast) {
+  :global(.pnotify.pnotify-fade-fast) {
     transition: opacity .1s linear;
     opacity: 0;
   }
-  :global(.ui-pnotify.ui-pnotify-fade-fast.ui-pnotify.ui-pnotify-move) {
+  :global(.pnotify.pnotify-fade-fast.pnotify.pnotify-move) {
     transition: opacity .1s linear, left .4s ease, top .4s ease, right .4s ease, bottom .4s ease;
   }
-  :global(.ui-pnotify.ui-pnotify-masking) {
+  :global(.pnotify.pnotify-masking) {
     display: block;
     -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, .8), rgba(0, 0, 0, 0) 30px, rgba(0, 0, 0, 0));
     mask-image: linear-gradient(to bottom, rgba(0, 0, 0, .8), rgba(0, 0, 0, 0) 30px, rgba(0, 0, 0, 0));
   }
-  :global(.ui-pnotify.ui-pnotify-masking.ui-pnotify-stack-up) {
+  :global(.pnotify.pnotify-masking.pnotify-stack-up) {
     -webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, .8), rgba(0, 0, 0, 0) 30px, rgba(0, 0, 0, 0));
     mask-image: linear-gradient(to top, rgba(0, 0, 0, .8), rgba(0, 0, 0, 0) 30px, rgba(0, 0, 0, 0));
   }
-  :global(.ui-pnotify.ui-pnotify-masking.ui-pnotify-stack-left) {
+  :global(.pnotify.pnotify-masking.pnotify-stack-left) {
     -webkit-mask-image: linear-gradient(to left, rgba(0, 0, 0, .8), rgba(0, 0, 0, 0) 30px, rgba(0, 0, 0, 0));
     mask-image: linear-gradient(to left, rgba(0, 0, 0, .8), rgba(0, 0, 0, 0) 30px, rgba(0, 0, 0, 0));
   }
-  :global(.ui-pnotify.ui-pnotify-masking.ui-pnotify-stack-right) {
+  :global(.pnotify.pnotify-masking.pnotify-stack-right) {
     -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, .8), rgba(0, 0, 0, 0) 30px, rgba(0, 0, 0, 0));
     mask-image: linear-gradient(to right, rgba(0, 0, 0, .8), rgba(0, 0, 0, 0) 30px, rgba(0, 0, 0, 0));
   }
-  :global(.ui-pnotify.ui-pnotify-fade-in, .ui-pnotify.ui-pnotify-masking-in) {
+  :global(.pnotify.pnotify-fade-in, .pnotify.pnotify-masking-in) {
     opacity: 1;
   }
-  :global(.ui-pnotify .ui-pnotify-shadow) {
+  :global(.pnotify .pnotify-shadow) {
     -webkit-box-shadow: 0px 6px 28px 0px rgba(0,0,0,0.1);
     -moz-box-shadow: 0px 6px 28px 0px rgba(0,0,0,0.1);
     box-shadow: 0px 6px 28px 0px rgba(0,0,0,0.1);
   }
-  :global(.ui-pnotify-container) {
+  :global(.pnotify-container) {
     background-position: 0 0;
     padding: .8em;
     height: 100%;
     margin: 0;
   }
-  :global(.ui-pnotify-container:after) {
+  :global(.pnotify-container:after) {
     content: " "; /* Older browser do not support empty content */
     visibility: hidden;
     display: block;
     height: 0;
     clear: both;
   }
-  :global(.ui-pnotify-container.ui-pnotify-sharp) {
+  :global(.pnotify-container.pnotify-sharp) {
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
     border-radius: 0;
   }
-  :global(.ui-pnotify-title) {
+  :global(.pnotify-title) {
     display: block;
     white-space: pre-line;
     margin-bottom: .4em;
     margin-top: 0;
   }
-  :global(.ui-pnotify.ui-pnotify-with-icon .ui-pnotify-content) {
+  :global(.pnotify.pnotify-with-icon .pnotify-content) {
     margin-left: 24px;
   }
-  :global([dir=rtl] .ui-pnotify.ui-pnotify-with-icon .ui-pnotify-content) {
+  :global([dir=rtl] .pnotify.pnotify-with-icon .pnotify-content) {
     margin-right: 24px;
     margin-left: 0;
   }
   /* Bootstrap 4: make title text a tad smaller. */
-  :global(.ui-pnotify .bootstrap4-title) {
+  :global(.pnotify .bootstrap4-title) {
     font-size: 1.2rem;
   }
-  :global(.ui-pnotify-pre-line) {
+  :global(.pnotify-pre-line) {
     white-space: pre-line;
   }
-  :global(.ui-pnotify-icon),
-  :global(.ui-pnotify-icon span) {
+  :global(.pnotify-icon),
+  :global(.pnotify-icon span) {
     display: block;
     float: left;
   }
-  :global([dir=rtl] .ui-pnotify-icon),
-  :global([dir=rtl] .ui-pnotify-icon span) {
+  :global([dir=rtl] .pnotify-icon),
+  :global([dir=rtl] .pnotify-icon span) {
     float: right;
   }
   /* Bootstrap 3: correct positioning of icon. */
-  :global(.ui-pnotify .bootstrap3-icon > span) {
+  :global(.pnotify .bootstrap3-icon > span) {
     position: relative;
     top: 2px;
   }
   /* Bootstrap 4: correct positioning of icon. */
-  :global(.ui-pnotify .bootstrap4-icon > span) {
+  :global(.pnotify .bootstrap4-icon > span) {
     position: relative;
     top: 4px;
   }
   /* Overlay */
-  :global(.ui-pnotify-modal-overlay) {
+  :global(.pnotify-modal-overlay) {
     background-color: rgba(0, 0, 0, .6);
     top: 0;
     left: 0;
@@ -1085,28 +1085,28 @@
     justify-content: center;
     align-items: flex-end;
   }
-  :global(.ui-pnotify-modal-overlay-up) {
+  :global(.pnotify-modal-overlay-up) {
     align-items: flex-start;
   }
-  :global(.ui-pnotify-modal-overlay-left) {
+  :global(.pnotify-modal-overlay-left) {
     justify-content: flex-start;
     align-items: center;
   }
-  :global(.ui-pnotify-modal-overlay-right) {
+  :global(.pnotify-modal-overlay-right) {
     justify-content: flex-end;
     align-items: center;
   }
-  :global(.ui-pnotify-modal-overlay.ui-pnotify-modal-overlay-in) {
+  :global(.pnotify-modal-overlay.pnotify-modal-overlay-in) {
     opacity: 1;
   }
-  :global(.ui-pnotify-modal-overlay-closes:after) {
+  :global(.pnotify-modal-overlay-closes:after) {
     content: "×";
     font-family: Arial;
     font-size: 3rem;
     color: #fff;
     text-shadow: 0 0 .4rem #FFF;
   }
-  :global(body > .ui-pnotify-modal-overlay) {
+  :global(body > .pnotify-modal-overlay) {
     position: fixed;
     z-index: 100041;
   }

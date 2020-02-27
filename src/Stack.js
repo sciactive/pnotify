@@ -172,8 +172,8 @@ export default class Stack {
 
     // Skip this notice if it's not shown.
     if (
-      !elem.classList.contains('ui-pnotify-in') &&
-      !elem.classList.contains('ui-pnotify-initial-hidden') &&
+      !elem.classList.contains('pnotify-in') &&
+      !elem.classList.contains('pnotify-initial-hidden') &&
       !masking
     ) {
       return;
@@ -194,7 +194,7 @@ export default class Stack {
 
     if (this._animation && !masking && !this._collapsingModalState) {
       // Add animate class.
-      notice._setMoveClass('ui-pnotify-move');
+      notice._setMoveClass('pnotify-move');
     } else {
       notice._setMoveClass('');
     }
@@ -721,12 +721,12 @@ export default class Stack {
   _insertOverlay () {
     if (!this._overlay) {
       this._overlay = document.createElement('div');
-      this._overlay.classList.add('ui-pnotify-modal-overlay');
+      this._overlay.classList.add('pnotify-modal-overlay');
       if (this.dir1) {
-        this._overlay.classList.add('ui-pnotify-modal-overlay-' + this.dir1);
+        this._overlay.classList.add('pnotify-modal-overlay-' + this.dir1);
       }
       if (this.overlayClose) {
-        this._overlay.classList.add('ui-pnotify-modal-overlay-closes');
+        this._overlay.classList.add('pnotify-modal-overlay-closes');
       }
       if (this.context !== document.body) {
         this._overlay.style.height = this.context.scrollHeight + 'px';
@@ -764,12 +764,12 @@ export default class Stack {
       });
     }
     if (this._overlay.parentNode !== this.context) {
-      this._overlay.classList.remove('ui-pnotify-modal-overlay-in');
+      this._overlay.classList.remove('pnotify-modal-overlay-in');
       this._overlay = this.context.insertBefore(this._overlay, this.context.firstChild);
       this._overlayOpen = true;
       this._overlayInserted = true;
       window.requestAnimationFrame(() => {
-        this._overlay.classList.add('ui-pnotify-modal-overlay-in');
+        this._overlay.classList.add('pnotify-modal-overlay-in');
       });
     }
     this._collapsingModalState = false;
@@ -777,7 +777,7 @@ export default class Stack {
 
   _removeOverlay () {
     if (this._overlay.parentNode) {
-      this._overlay.classList.remove('ui-pnotify-modal-overlay-in');
+      this._overlay.classList.remove('pnotify-modal-overlay-in');
       this._overlayOpen = false;
       setTimeout(() => {
         this._overlayInserted = false;
