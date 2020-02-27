@@ -6,10 +6,17 @@
   <meta name="HandheldFriendly" content="true" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script type="text/javascript" src="../dist/umd/PNotify.js"></script>
+  <script type="text/javascript" src="../dist/umd/PNotifyBootstrap3.js"></script>
+  <script type="text/javascript" src="../dist/umd/PNotifyBootstrap4.js"></script>
+  <script type="text/javascript" src="../dist/umd/PNotifyFontAwesome4.js"></script>
+  <script type="text/javascript" src="../dist/umd/PNotifyFontAwesome5.js"></script>
+  <script type="text/javascript" src="../dist/umd/PNotifyGlyphicon.js"></script>
   <script type="text/javascript" src="../dist/umd/PNotifyButtons.js"></script>
   <script type="text/javascript" src="../dist/umd/PNotifyConfirm.js"></script>
   <script type="text/javascript" src="../dist/umd/PNotifyMobile.js"></script>
   <link href="../dist/PNotify.css" rel="stylesheet" type="text/css" />
+  <link href="../dist/PNotifyBootstrap3.css" rel="stylesheet" type="text/css" />
+  <link href="../dist/PNotifyBootstrap4.css" rel="stylesheet" type="text/css" />
   <link href="../dist/PNotifyBrightTheme.css" rel="stylesheet" type="text/css" />
   <link href="../dist/PNotifyMaterial.css" rel="stylesheet" type="text/css" />
   <link href="../dist/PNotifyButtons.css" rel="stylesheet" type="text/css" />
@@ -24,14 +31,24 @@
     window.setStyling = function () {
       var styling = document.getElementById('styling').value;
 
-      PNotify.defaults.styling = styling;
-
-      if (styling === 'bootstrap3') {
-        document.forms.libraries.elements.libraryBootstrap.value = '3';
-        loadLibraries();
-      } else if (styling === 'bootstrap4') {
-        document.forms.libraries.elements.libraryBootstrap.value = '4';
-        loadLibraries();
+      switch (styling) {
+        case 'bootstrap3':
+          document.forms.libraries.elements.libraryBootstrap.value = '3';
+          loadLibraries();
+          PNotify.defaults.modules.set(PNotifyBootstrap3, {});
+          PNotify.defaults.modules.delete(PNotifyBootstrap4);
+          break;
+        case 'bootstrap4':
+          document.forms.libraries.elements.libraryBootstrap.value = '4';
+          loadLibraries();
+          PNotify.defaults.modules.set(PNotifyBootstrap4, {});
+          PNotify.defaults.modules.delete(PNotifyBootstrap3);
+          break;
+        default:
+          PNotify.defaults.modules.delete(PNotifyBootstrap3);
+          PNotify.defaults.modules.delete(PNotifyBootstrap4);
+          PNotify.defaults.styling = styling;
+          break;
       }
 
       PNotify.defaultStack.close();
@@ -40,17 +57,34 @@
     window.setIcons = function () {
       var icons = document.getElementById('icons').value;
 
-      PNotify.defaults.icons = icons;
-
-      if (icons === 'bootstrap3') {
-        document.forms.libraries.elements.libraryBootstrap.value = '3';
-        loadLibraries();
-      } else if (icons === 'fontawesome4') {
-        document.forms.libraries.elements.libraryFontAwesome.value = '4';
-        loadLibraries();
-      } else if (icons === 'fontawesome5') {
-        document.forms.libraries.elements.libraryFontAwesome.value = '5';
-        loadLibraries();
+      switch (icons) {
+        case 'bootstrap3':
+          document.forms.libraries.elements.libraryBootstrap.value = '3';
+          loadLibraries();
+          PNotify.defaults.modules.set(PNotifyGlyphicon, {});
+          PNotify.defaults.modules.delete(PNotifyFontAwesome4);
+          PNotify.defaults.modules.delete(PNotifyFontAwesome5);
+          break;
+        case 'fontawesome4':
+          document.forms.libraries.elements.libraryFontAwesome.value = '4';
+          loadLibraries();
+          PNotify.defaults.modules.set(PNotifyFontAwesome4, {});
+          PNotify.defaults.modules.delete(PNotifyGlyphicon);
+          PNotify.defaults.modules.delete(PNotifyFontAwesome5);
+          break;
+        case 'fontawesome5':
+          document.forms.libraries.elements.libraryFontAwesome.value = '5';
+          loadLibraries();
+          PNotify.defaults.modules.set(PNotifyFontAwesome5, {});
+          PNotify.defaults.modules.delete(PNotifyFontAwesome4);
+          PNotify.defaults.modules.delete(PNotifyGlyphicon);
+          break;
+        default:
+          PNotify.defaults.modules.delete(PNotifyGlyphicon);
+          PNotify.defaults.modules.delete(PNotifyFontAwesome4);
+          PNotify.defaults.modules.delete(PNotifyFontAwesome5);
+          PNotify.defaults.icons = icons;
+          break;
       }
 
       PNotify.defaultStack.close();
@@ -125,7 +159,7 @@
         Icons: <select id="icons" onchange="setIcons()">
           <option value="brighttheme">Bright Theme</option>
           <option value="material">Material</option>
-          <option value="bootstrap3">Bootstrap 3</option>
+          <option value="bootstrap3">Bootstrap 3 (Glyphicon)</option>
           <option value="fontawesome4">Font Awesome 4</option>
           <option value="fontawesome5">Font Awesome 5</option>
         </select>
@@ -152,86 +186,162 @@
     </section>
     <hr />
     <h2>Test Notices</h2>
-    <button onclick="PNotify.notice({title: 'Test Notice', text: 'This is a test notice.'})">Test Notice</button>
-    <button onclick="PNotify.info({title: 'Test Notice', text: 'This is a test notice.'})">Test Info</button>
-    <button onclick="PNotify.success({title: 'Test Notice', text: 'This is a test notice.'})">Test Success</button>
-    <button onclick="PNotify.error({title: 'Test Notice', text: 'This is a test notice.'})">Test Error</button>
-    <button onclick="PNotify.info({title: 'This is a test notice.'})">Just Title</button>
-    <button onclick="PNotify.info({text: 'This is a test notice.'})">Just Text</button>
+    <button onclick="PNotify.notice({
+      title: 'Test Notice',
+      text: 'This is a test notice.',
+      modules: new Map([
+        [PNotifyMobile, {}],
+        [PNotifyButtons, {}]
+      ])
+    })">Test Notice</button>
+    <button onclick="PNotify.info({
+      title: 'Test Notice',
+      text: 'This is a test notice.',
+      modules: new Map([
+        [PNotifyMobile, {}],
+        [PNotifyButtons, {}]
+      ])
+    })">Test Info</button>
+    <button onclick="PNotify.success({
+      title: 'Test Notice',
+      text: 'This is a test notice.',
+      modules: new Map([
+        [PNotifyMobile, {}],
+        [PNotifyButtons, {}]
+      ])
+    })">Test Success</button>
+    <button onclick="PNotify.error({
+      title: 'Test Notice',
+      text: 'This is a test notice.',
+      modules: new Map([
+        [PNotifyMobile, {}],
+        [PNotifyButtons, {}]
+      ])
+    })">Test Error</button>
+    <button onclick="PNotify.info({
+      title: 'This is a test notice.',
+      modules: new Map([
+        [PNotifyMobile, {}],
+        [PNotifyButtons, {}]
+      ])
+    })">Just Title</button>
+    <button onclick="PNotify.info({
+      text: 'This is a test notice.',
+      modules: new Map([
+        [PNotifyMobile, {}],
+        [PNotifyButtons, {}]
+      ])
+    })">Just Text</button>
     <h3>Confirm Module</h3>
     <button onclick="PNotify.notice({
       title: 'Confirmation Needed',
       text: 'Are you sure?',
       hide: false,
-      modules: {Confirm: {confirm: true}, Buttons: {closer: false, sticker: false}}
+      modules: new Map([
+        [PNotifyMobile, {}],
+        [PNotifyConfirm, {confirm: true}]
+      ])
     });">Confirm Notice</button>
     <button onclick="PNotify.info({
       title: 'Confirmation Needed',
       text: 'Are you sure?',
       hide: false,
-      modules: {Confirm: {confirm: true}, Buttons: {closer: false, sticker: false}}
+      modules: new Map([
+        [PNotifyMobile, {}],
+        [PNotifyConfirm, {confirm: true}]
+      ])
     });">Confirm Info</button>
     <button onclick="PNotify.success({
       title: 'Confirmation Needed',
       text: 'Are you sure?',
       hide: false,
-      modules: {Confirm: {confirm: true}, Buttons: {closer: false, sticker: false}}
+      modules: new Map([
+        [PNotifyMobile, {}],
+        [PNotifyConfirm, {confirm: true}]
+      ])
     });">Confirm Success</button>
     <button onclick="PNotify.error({
       title: 'Confirmation Needed',
       text: 'Are you sure?',
       hide: false,
-      modules: {Confirm: {confirm: true}, Buttons: {closer: false, sticker: false}}
+      modules: new Map([
+        [PNotifyMobile, {}],
+        [PNotifyConfirm, {confirm: true}]
+      ])
     });">Confirm Error</button>
     <br />
     <button onclick="PNotify.notice({
       title: 'Input Needed',
       text: 'What side would you like?',
       hide: false,
-      modules: {Confirm: {prompt: true}, Buttons: {closer: false, sticker: false}}
+      modules: new Map([
+        [PNotifyMobile, {}],
+        [PNotifyConfirm, {prompt: true}]
+      ])
     });">Prompt Notice</button>
     <button onclick="PNotify.info({
       title: 'Input Needed',
       text: 'What side would you like?',
       hide: false,
-      modules: {Confirm: {prompt: true}, Buttons: {closer: false, sticker: false}}
+      modules: new Map([
+        [PNotifyMobile, {}],
+        [PNotifyConfirm, {prompt: true}]
+      ])
     });">Prompt Info</button>
     <button onclick="PNotify.success({
       title: 'Input Needed',
       text: 'What side would you like?',
       hide: false,
-      modules: {Confirm: {prompt: true}, Buttons: {closer: false, sticker: false}}
+      modules: new Map([
+        [PNotifyMobile, {}],
+        [PNotifyConfirm, {prompt: true}]
+      ])
     });">Prompt Success</button>
     <button onclick="PNotify.error({
       title: 'Input Needed',
       text: 'What side would you like?',
       hide: false,
-      modules: {Confirm: {prompt: true}, Buttons: {closer: false, sticker: false}}
+      modules: new Map([
+        [PNotifyMobile, {}],
+        [PNotifyConfirm, {prompt: true}]
+      ])
     });">Prompt Error</button>
     <br />
     <button onclick="PNotify.notice({
       title: 'Input Needed',
       text: 'Describe the color blue.',
       hide: false,
-      modules: {Confirm: {prompt: true, promptMultiLine: true}, Buttons: {closer: false, sticker: false}}
+      modules: new Map([
+        [PNotifyMobile, {}],
+        [PNotifyConfirm, {prompt: true, promptMultiLine: true}]
+      ])
     });">Multi Line Prompt Notice</button>
     <button onclick="PNotify.info({
       title: 'Input Needed',
       text: 'Describe the color blue.',
       hide: false,
-      modules: {Confirm: {prompt: true, promptMultiLine: true}, Buttons: {closer: false, sticker: false}}
+      modules: new Map([
+        [PNotifyMobile, {}],
+        [PNotifyConfirm, {prompt: true, promptMultiLine: true}]
+      ])
     });">Multi Line Prompt Info</button>
     <button onclick="PNotify.success({
       title: 'Input Needed',
       text: 'Describe the color blue.',
       hide: false,
-      modules: {Confirm: {prompt: true, promptMultiLine: true}, Buttons: {closer: false, sticker: false}}
+      modules: new Map([
+        [PNotifyMobile, {}],
+        [PNotifyConfirm, {prompt: true, promptMultiLine: true}]
+      ])
     });">Multi Line Prompt Success</button>
     <button onclick="PNotify.error({
       title: 'Input Needed',
       text: 'Describe the color blue.',
       hide: false,
-      modules: {Confirm: {prompt: true, promptMultiLine: true}, Buttons: {closer: false, sticker: false}}
+      modules: new Map([
+        [PNotifyMobile, {}],
+        [PNotifyConfirm, {prompt: true, promptMultiLine: true}]
+      ])
     });">Multi Line Prompt Error</button>
   </div>
   <script type="text/javascript">

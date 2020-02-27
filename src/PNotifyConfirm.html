@@ -1,6 +1,4 @@
 <script context="module">
-  import { styles } from './PNotify';
-
   export const position = 'AppendContent';
   export const defaults = {
     // Make a confirmation box.
@@ -42,24 +40,6 @@
       }
     ]
   };
-
-  // Add button styles to styling objects.
-  Object.assign(styles.bootstrap3, {
-    'action-bar': 'pnotify-confirm-ml',
-    'prompt-bar': 'pnotify-confirm-ml',
-    btn: 'btn btn-default pnotify-confirm-mx-1',
-    'btn-primary': 'btn-primary',
-    'btn-secondary': '',
-    input: 'form-control'
-  });
-  Object.assign(styles.bootstrap4, {
-    'action-bar': 'pnotify-confirm-ml',
-    'prompt-bar': 'pnotify-confirm-ml',
-    btn: 'btn mx-1',
-    'btn-primary': 'btn-primary',
-    'btn-secondary': 'btn-secondary',
-    input: 'form-control'
-  });
 </script>
 
 {#if confirm || prompt}
@@ -213,15 +193,5 @@
     margin-bottom: 5px;
     display: block;
     width: 100%;
-  }
-  :global(.pnotify-confirm-mx-1) {
-    margin: 0 5px;
-  }
-  :global(.pnotify.pnotify-with-icon .pnotify-confirm-ml) {
-    margin-left: 24px;
-  }
-  :global([dir=rtl] .pnotify.pnotify-with-icon .pnotify-confirm-ml) {
-    margin-right: 24px;
-    margin-left: 0;
   }
 </style>

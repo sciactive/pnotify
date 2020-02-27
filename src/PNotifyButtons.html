@@ -1,6 +1,4 @@
 <script context="module">
-  import { icons } from './PNotify';
-
   export const position = 'PrependContainer';
   export const defaults = {
     // Provide a button for the user to manually close the notice.
@@ -25,26 +23,6 @@
       unstuck: null
     }
   };
-
-  // Add button icons to icons objects.
-  Object.assign(icons.bootstrap3, {
-    closer: 'glyphicon glyphicon-remove',
-    sticker: 'glyphicon',
-    stuck: 'glyphicon-play',
-    unstuck: 'glyphicon-pause'
-  });
-  Object.assign(icons.fontawesome4, {
-    closer: 'fa fa-times',
-    sticker: 'fa',
-    stuck: 'fa-play',
-    unstuck: 'fa-pause'
-  });
-  Object.assign(icons.fontawesome5, {
-    closer: 'fas fa-times',
-    sticker: 'fas',
-    stuck: 'fa-play',
-    unstuck: 'fa-pause'
-  });
 </script>
 
 {#if closer && !nonBlock}

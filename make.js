@@ -8,9 +8,15 @@ const pnotifyComponents = [
   // Main code.
   'PNotifyCore',
   'PNotifyAnimate',
+  'PNotifyBootstrap3',
+  'PNotifyBootstrap4',
   'PNotifyButtons',
   'PNotifyConfirm',
   'PNotifyDesktop',
+  'PNotifyFontAwesome',
+  'PNotifyFontAwesome4',
+  'PNotifyFontAwesome5',
+  'PNotifyGlyphicon',
   'PNotifyMobile',
 
   // Reference module.

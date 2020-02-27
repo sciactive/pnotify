@@ -61,6 +61,10 @@
   <!-- PNotify -->
   <script src="dist/umd/PNotify.js"></script>
   <!-- <link rel="stylesheet" href="dist/PNotify.css" /> -->
+  <script src="dist/umd/PNotifyBootstrap4.js"></script>
+  <!-- <link rel="stylesheet" href="dist/PNotifyBootstrap4.css" /> -->
+  <script src="dist/umd/PNotifyFontAwesome5.js"></script>
+  <!-- <link rel="stylesheet" href="dist/PNotifyFontAwesome5.css" /> -->
   <link rel="stylesheet" href="src/PNotifyBrightTheme.css" />
   <link rel="stylesheet" href="src/PNotifyMaterial.css" />
   <script src="dist/umd/PNotifyButtons.js"></script>
@@ -70,6 +74,7 @@
   <!-- <link rel="stylesheet" href="dist/PNotifyMobile.css" /> -->
   <script src="dist/umd/PNotifyDesktop.js"></script>
   <!-- <link rel="stylesheet" href="dist/PNotifyDesktop.css" /> -->
+  <script src="dist/umd/PNotifyFontAwesome.js"></script>
   <script src="dist/umd/PNotifyConfirm.js"></script>
   <script src="dist/umd/PNotifyReference.js"></script>
   <!-- <link rel="stylesheet" href="dist/PNotifyReference.css" /> -->
@@ -132,6 +137,7 @@
       PNotify.defaults.destroy = false;
       PNotify.defaults.modules.set(PNotifyButtons, {});
       PNotify.defaults.modules.set(PNotifyMobile, {});
+      PNotify.defaults.modules.set(PNotifyFontAwesome, {});
 
       // ---
       // Notice that opens when the page opens.
@@ -280,6 +286,8 @@
         /* globals PNotify */
         window.addEventListener('DOMContentLoaded', () => {
           document.getElementById('style-brighttheme').addEventListener('change', e => {
+            PNotify.defaults.modules.delete(PNotifyBootstrap4);
+            PNotify.defaults.modules.delete(PNotifyFontAwesome5);
             PNotify.defaults.styling = 'brighttheme';
             PNotify.defaults.icons = 'brighttheme';
             PNotify.notice({
@@ -289,6 +297,8 @@
           });
 
           document.getElementById('style-material').addEventListener('change', e => {
+            PNotify.defaults.modules.delete(PNotifyBootstrap4);
+            PNotify.defaults.modules.delete(PNotifyFontAwesome5);
             PNotify.defaults.styling = 'material';
             PNotify.defaults.icons = 'material';
             PNotify.notice({
@@ -298,8 +308,8 @@
           });
 
           document.getElementById('style-bootstrap4').addEventListener('change', e => {
-            PNotify.defaults.styling = 'bootstrap4';
-            PNotify.defaults.icons = 'fontawesome5';
+            PNotify.defaults.modules.set(PNotifyBootstrap4, {});
+            PNotify.defaults.modules.set(PNotifyFontAwesome5, {});
             PNotify.notice({
               title: 'Styling Change',
               text: 'From now on, notices will be styled with Bootstrap 4 w/ Font Awesome 5 Icons.'

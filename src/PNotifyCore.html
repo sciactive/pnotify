@@ -15,26 +15,6 @@
 <script context="module">
   import Stack from './Stack.js';
 
-  let posTimer;
-
-  // These actions need to be done once the DOM is ready.
-  function onDocumentLoaded () {
-    defaultStack.context = document.body;
-    // Reposition the notices when the window resizes.
-    window.addEventListener('resize', () => {
-      // This timer is used for queueing the position event so it doesn't run
-      // repeatedly.
-      if (posTimer) {
-        clearTimeout(posTimer);
-      }
-      posTimer = setTimeout(() => {
-        const event = new Event('pnotify:position');
-        document.body.dispatchEvent(event);
-        posTimer = null;
-      }, 10);
-    });
-  }
-
   export const defaultStack = new Stack({
     dir1: 'down',
     dir2: 'left',
@@ -112,48 +92,27 @@
     modules: new Map()
   };
 
-  const styleRegistry = {
-    bootstrap3: {
-      container: 'alert',
-      notice: 'alert-warning',
-      info: 'alert-info',
-      success: 'alert-success',
-      error: 'alert-danger'
-    },
-    bootstrap4: {
-      container: 'alert',
-      notice: 'alert-warning',
-      info: 'alert-info',
-      success: 'alert-success',
-      error: 'alert-danger'
-    }
-  };
-  export { styleRegistry as styles };
+  let posTimer;
 
-  // icons are separate from the style, since bs4 doesn't come with any
-  const iconRegistry = {
-    bootstrap3: {
-      notice: 'glyphicon glyphicon-exclamation-sign',
-      info: 'glyphicon glyphicon-info-sign',
-      success: 'glyphicon glyphicon-ok-sign',
-      error: 'glyphicon glyphicon-warning-sign'
-    },
-    // User must have Font Awesome v4.0+
-    fontawesome4: {
-      notice: 'fa fa-exclamation-circle',
-      info: 'fa fa-info-circle',
-      success: 'fa fa-check-circle',
-      error: 'fa fa-exclamation-triangle'
-    },
-    // User must have Font Awesome v5.0+
-    fontawesome5: {
-      notice: 'fas fa-exclamation-circle',
-      info: 'fas fa-info-circle',
-      success: 'fas fa-check-circle',
-      error: 'fas fa-exclamation-triangle'
+  // These actions need to be done once the DOM is ready.
+  function onDocumentLoaded () {
+    if (!defaultStack.context) {
+      defaultStack.context = document.body;
     }
-  };
-  export { iconRegistry as icons };
+    // Reposition the notices when the window resizes.
+    window.addEventListener('resize', () => {
+      // This timer is used for queueing the position event so it doesn't run
+      // repeatedly.
+      if (posTimer) {
+        clearTimeout(posTimer);
+      }
+      posTimer = setTimeout(() => {
+        const event = new Event('pnotify:position');
+        document.body.dispatchEvent(event);
+        posTimer = null;
+      }, 10);
+    });
+  }
 
   // Run the deferred actions once the DOM is ready.
   if (window && document.body) {
@@ -169,7 +128,7 @@
     class="
       pnotify
       {icon !== false ? 'pnotify-with-icon' : ''}
-      {getStyle('element')}
+      {getStyle('elem')}
       pnotify-mode-{mode}
       {addClass}
       {_animatingClass}
@@ -269,33 +228,12 @@
     'transitionend'
   ]);
 
-  export let type = defaults.type;
-  export let title = defaults.title;
-  export let titleTrusted = defaults.titleTrusted;
-  export let text = defaults.text;
-  export let textTrusted = defaults.textTrusted;
-  export let styling = defaults.styling;
-  export let icons = defaults.icons;
-  export let mode = defaults.mode;
-  export let addClass = defaults.addClass;
-  export let addModalClass = defaults.addModalClass;
-  export let addModelessClass = defaults.addModelessClass;
-  export let autoOpen = defaults.autoOpen;
-  export let width = defaults.width;
-  export let minHeight = defaults.minHeight;
-  export let maxTextHeight = defaults.maxTextHeight;
-  export let icon = defaults.icon;
-  export let animation = defaults.animation;
-  export let animateSpeed = defaults.animateSpeed;
-  export let shadow = defaults.shadow;
-  export let hide = defaults.hide;
-  export let delay = defaults.delay;
-  export let mouseReset = defaults.mouseReset;
-  export let remove = defaults.remove;
-  export let destroy = defaults.destroy;
-  export let stack = defaults.stack;
+  // Modules must be declared for init. (We need to run init inside modules.)
   export let modules = new Map(defaults.modules);
+  // Stack must be declared for init. (We need the context to fire the event.)
+  export let stack = defaults.stack;
 
+  // Refs are needed for init event.
   export const refs = {
     elem: null,
     container: null,
@@ -304,6 +242,35 @@
     titleContainer: null,
     textContainer: null
   };
+
+  // Run init to give a chance for modules to override defaults.
+  const myDefaults = { ...defaults };
+  dispatchLifecycleEvent('init', { defaults: myDefaults });
+
+  export let type = myDefaults.type;
+  export let title = myDefaults.title;
+  export let titleTrusted = myDefaults.titleTrusted;
+  export let text = myDefaults.text;
+  export let textTrusted = myDefaults.textTrusted;
+  export let styling = myDefaults.styling;
+  export let icons = myDefaults.icons;
+  export let mode = myDefaults.mode;
+  export let addClass = myDefaults.addClass;
+  export let addModalClass = myDefaults.addModalClass;
+  export let addModelessClass = myDefaults.addModelessClass;
+  export let autoOpen = myDefaults.autoOpen;
+  export let width = myDefaults.width;
+  export let minHeight = myDefaults.minHeight;
+  export let maxTextHeight = myDefaults.maxTextHeight;
+  export let icon = myDefaults.icon;
+  export let animation = myDefaults.animation;
+  export let animateSpeed = myDefaults.animateSpeed;
+  export let shadow = myDefaults.shadow;
+  export let hide = myDefaults.hide;
+  export let delay = myDefaults.delay;
+  export let mouseReset = myDefaults.mouseReset;
+  export let remove = myDefaults.remove;
+  export let destroy = myDefaults.destroy;
 
   // The state can be 'waiting', 'opening', 'open', 'closing', or 'closed'.
   let _state = 'closed';
@@ -335,17 +302,10 @@
   let _maskingIn = false;
   let _maskingTimer = null;
 
-  // This keeps the beforeUpdate handler from going into a loop when we're
-  // taming Font Awesome's magic.
-  let _updatingIcon = false;
-  // Save the old value of hide and icon, so we can do our magic.
+  // Save the old value of hide, so we can reset the timer if it changes.
   let _oldHide = hide;
-  let _oldIcon = icon;
 
-  // Grab styles from the styling object or use the styles provided.
-  $: _styles = typeof styling === 'object' ? styling : styleRegistry[styling];
   // Grab the icons from the icons object or use provided icons
-  $: _icons = typeof icons === 'object' ? icons : iconRegistry[icons];
   $: _widthStyle = typeof width === 'string' ? 'width: ' + width + ';' : '';
   $: _minHeightStyle = typeof minHeight === 'string' ? 'min-height: ' + minHeight + ';' : '';
   $: _maxTextHeightStyle = typeof maxTextHeight === 'string' ? 'max-height: ' + maxTextHeight + '; overflow-y: auto; overscroll-behavior: contain;' : '';
@@ -364,8 +324,8 @@
   $: modulesAppendContainer = Array.from(modules).filter(([module, options]) => module.position === 'AppendContainer');
 
   export const getState = () => _state;
-  export const getStyle = name => (_styles && name in _styles) ? _styles[name] : styling + '-' + name;
-  export const getIcon = name => (_icons && name in _icons) ? _icons[name] : icons + '-icon-' + name;
+  export const getStyle = name => typeof styling === 'string' ? styling + '-' + name : (name in styling ? styling[name] : styling.prefix + '-' + name);
+  export const getIcon = name => typeof icons === 'string' ? icons + '-icon-' + name : (name in icons ? icons[name] : icons.prefix + '-' + name);
 
   $: if (_titleElement && refs.titleContainer) {
     refs.titleContainer.appendChild(title);
@@ -404,10 +364,6 @@
   });
 
   beforeUpdate(async () => {
-    if (_updatingIcon) {
-      return;
-    }
-
     dispatchLifecycleEvent('update');
 
     // Update the timed hiding.
@@ -424,27 +380,8 @@
       stack.queuePosition();
     }
 
-    // Font Awesome 5 uses dark magic by replacing the icon element with an SVG.
-    // In order to make it play nice with Svelte, we have to clear the element
-    // and make it again.
-    if (
-      icon !== _oldIcon &&
-      (
-        (icon === true && icons === 'fontawesome5') ||
-        (typeof icon === 'string' && icon.match(/(^| )fa[srlb]($| )/))
-      )
-    ) {
-      const newIcon = icon;
-      icon = false;
-      _updatingIcon = true;
-      await tick();
-      icon = newIcon;
-      _updatingIcon = false;
-    }
-
     // Save old options.
     _oldHide = hide;
-    _oldIcon = icon;
   });
 
   function handleInteraction (e) {
@@ -474,6 +411,9 @@
       notice: self,
       ...detail
     };
+    if (event === 'init') {
+      Array.from(modules).forEach(([module, options]) => 'init' in module && module.init(eventDetail));
+    }
     let target = refs.elem || (stack && stack.context) || document.body;
     if (!target) {
       dispatch('pnotify:'+event, eventDetail);
@@ -925,8 +865,6 @@
       _maskingTimer = setTimeout(finished, 650);
     }
   }
-
-  dispatchLifecycleEvent('init');
 </script>
 
 <style>
@@ -1034,10 +972,6 @@
     margin-right: 24px;
     margin-left: 0;
   }
-  /* Bootstrap 4: make title text a tad smaller. */
-  :global(.pnotify .bootstrap4-title) {
-    font-size: 1.2rem;
-  }
   :global(.pnotify-pre-line) {
     white-space: pre-line;
   }
@@ -1049,16 +983,6 @@
   :global([dir=rtl] .pnotify-icon),
   :global([dir=rtl] .pnotify-icon span) {
     float: right;
-  }
-  /* Bootstrap 3: correct positioning of icon. */
-  :global(.pnotify .bootstrap3-icon > span) {
-    position: relative;
-    top: 2px;
-  }
-  /* Bootstrap 4: correct positioning of icon. */
-  :global(.pnotify .bootstrap4-icon > span) {
-    position: relative;
-    top: 4px;
   }
   /* Overlay */
   :global(.pnotify-modal-overlay) {
