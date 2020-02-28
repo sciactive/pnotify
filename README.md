@@ -652,8 +652,8 @@ Confirmation dialogs and prompts.
   The value of the prompt. (Note that this is two-way bound to the input.)
 * `promptMultiLine: false`<br>
   Whether the prompt should accept multiple lines of text.
-* `align: 'right'`<br>
-  Where to align the buttons. (right, center, left, justify)
+* `align: 'flex-end'`<br>
+  Where to align the buttons. (flex-start, center, flex-end, space-around, space-between)
 
 ```js
 buttons: [
