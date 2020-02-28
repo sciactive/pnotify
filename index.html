@@ -158,10 +158,9 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item"><a class="nav-link" href="#overview">Overview</a></li>
-          <li class="nav-item"><a class="nav-link" href="#demos-simple">Simple Demos</a></li>
+          <li class="nav-item"><a class="nav-link" href="#demos-core">Core Demos</a></li>
           <li class="nav-item"><a class="nav-link" href="#demos-modules">Module Demos</a></li>
           <li class="nav-item"><a class="nav-link" href="#stacks">Stacks</a></li>
-          <li class="nav-item"><a class="nav-link" href="#customization">Customization</a></li>
           <li class="nav-item"><a class="nav-link" href="#comments">Comments</a></li>
         </ul>
         <ul class="navbar-nav">
@@ -236,7 +235,7 @@
     </div>
   </section>
 
-  <div id="demos-simple" class="container page-section">
+  <div id="demos-core" class="container page-section">
     <div class="my-3">
       <h2>Simple Demos <small>These demos only use core PNotify features.</small></h2>
       <hr />
@@ -386,6 +385,13 @@
             icon: false
           });
         ">No Icon</button>
+        <button class="btn btn-light my-1 source" onclick="
+          PNotify.notice({
+            title: 'There\'s No Time to Explain',
+            text: 'OMG READ ME FAST, I\'M ABOUT TO GO AWAY!',
+            delay: 1000
+          });
+        ">Fast Notice</button>
         <hr />
         <button class="btn btn-light my-1 source" onclick="
           PNotify.notice({
@@ -493,7 +499,10 @@
             text: 'No one ever pays attention to me. Why should they? I\'m practically invisible.',
             addClass: 'translucent'
           });
-          const sourceNote = 'You need this CSS: [data-pnotify].pnotify.translucent.pnotify-fade-in {opacity: 0.8;}';
+          // You need this CSS:
+          // [data-pnotify].pnotify.translucent.pnotify-fade-in {
+          //   opacity: 0.8;
+          // }
         ">Translucent</button>
         <button class="btn btn-light my-1 source" onclick="
           PNotify.notice({
@@ -853,9 +862,17 @@
       <h5 class="card-header">Stacks <small>Position, order, and group notices. See the <a href="#stacks">main stacks section</a> for even more demos.</small></h5>
       <div class="card-body">
         <button class="btn btn-light my-1 source" onclick="
+          // In order to keep all notices around once they close, set the
+          // default destroy option to false.
+          //
+          // PNotify.defaults.destroy = false;
           PNotify.defaultStack.openLast();
         ">Open Last Notice (Default Stack)</button>
         <button class="btn btn-light my-1 source" onclick="
+          // In order to keep all notices around once they close, set the
+          // default destroy option to false.
+          //
+          // PNotify.defaults.destroy = false;
           PNotify.defaultStack.open();
         ">Open All Notices (Default Stack)</button>
         <button class="btn btn-light my-1 source" onclick="
@@ -922,7 +939,7 @@
           });
           notice.on('pnotify:beforeOpen', event => {
             console.log(event.type, event.detail);
-            const sourceNote = 'Use event.preventDefault() to cancel opening.';
+            // Use event.preventDefault() to cancel opening.
             alert('I\'m listening for before the notice opens.\n\nThere are more events you can listen for, but this is the last alert you\'ll see. Check the code to see them all.');
           });
           notice.on('pnotify:afterOpen', event => {
@@ -939,7 +956,7 @@
           });
           notice.on('pnotify:beforeClose', event => {
             console.log(event.type, event.detail);
-            const sourceNote = 'Use event.preventDefault() to cancel close. Use notice.queueClose() to set the close timer again.';
+            // Use event.preventDefault() to cancel close. Use notice.queueClose() to set the close timer again.
             dontAlert('I\'m listening for before the notice closes.');
           });
           notice.on('pnotify:afterClose', event => {
@@ -948,7 +965,7 @@
           });
           notice.on('pnotify:beforeDestroy', event => {
             console.log(event.type, event.detail);
-            const sourceNote = 'Use event.preventDefault() to cancel destroy.';
+            // Use event.preventDefault() to cancel destroy.
             dontAlert('I\'m listening for before the notice is destroyed.');
           });
           notice.on('pnotify:afterDestroy', event => {
@@ -2324,6 +2341,7 @@
   border-radius: 0;
 }</code></pre>
         <hr />
+        No stack.<br />
         <script type="text/javascript">
           /* eslint-env browser, jquery */
           /* globals PNotify */
@@ -2353,7 +2371,6 @@
           });
         </script>
         <button class="btn btn-light my-1 source" onmouseover="window.tooltip.open();" onmousemove="window.tooltip.refs.elem.style.top = (event.clientY + 12) + 'px'; window.tooltip.refs.elem.style.left = (event.clientX + 12) + 'px';" onmouseout="window.tooltip.close();">Hover Over Me</button>
-        Tooltip
       </div>
       <h5 class="card-header">Stack Contexts</h5>
       <div class="card-body">
@@ -2501,87 +2518,6 @@ PNotify.notice({
     </div>
   </div>
 
-  <div id="customization" class="container page-section">
-    <div class="my-3">
-      <h2>Customization and Tools</h2>
-      <hr />
-    </div>
-    <div class="card">
-      <h5 class="card-header">Close Delay</h5>
-      <div class="card-body">
-        Current Default Delay: <span id="delay" style="font-family: monospace;"></span>
-        <script type="text/javascript">
-          /* eslint-env browser, jquery */
-          /* globals PNotify */
-          window.updateTimerDisplay = function updateTimerDisplay () {
-            document.getElementById('delay').textContent = (PNotify.defaults.delay / 1000) + ' seconds';
-          };
-          window.addEventListener('DOMContentLoaded', () => {
-            window.updateTimerDisplay();
-          });
-        </script>
-        <br style="margin-bottom: 3px;" />
-        <button class="btn btn-light my-1 source" onclick="
-          PNotify.defaults.delay ?
-            (() => {
-              PNotify.defaults.delay -= 500;
-              updateTimerDisplay();
-            })() :
-            alert('Timer is already at zero.');
-        ">Lower Timer</button>
-        <button class="btn btn-light my-1 source" onclick="
-          (() => {
-            PNotify.defaults.delay += 500;
-            updateTimerDisplay();
-          })();
-        ">Raise Timer</button>
-      </div>
-    </div>
-
-    <div class="card mt-3">
-      <h5 class="card-header">Consuming the Alert Function</h5>
-      <div class="card-body">
-        This isn't really a feature of PNotify, but it's cool.
-        <ol>
-          <li style="margin-bottom: 1em;"><button class="btn btn-light my-1 source" onclick="
-            alert('I\'m a standard alert, called with alert().');
-          ">Display a JavaScript Alert</button></li>
-          <li style="margin-bottom: 1em;"><button class="btn btn-light my-1 source" onclick="
-            consumeAlert();
-          ">Consume alert()</button></li>
-          <li style="margin-bottom: 1em;">Repeat step 1.</li>
-          <li style="margin-bottom: 1em;"><button class="btn btn-light my-1 source" onclick="
-            releaseAlert();
-          ">Release alert()</button></li>
-        </ol>
-        <script type="text/javascript">
-          /* eslint-env browser, jquery */
-          /* globals PNotify */
-          window.consumeAlert = function consumeAlert () {
-            if (window._alert) {
-              return;
-            }
-            window._alert = window.alert;
-            window.alert = function alert (message) {
-              PNotify.notice({
-                title: 'Alert',
-                text: message
-              });
-            };
-          };
-
-          window.releaseAlert = function releaseAlert () {
-            if (!window._alert) {
-              return;
-            }
-            window.alert = window._alert;
-            window._alert = null;
-          };
-        </script>
-      </div>
-    </div>
-  </div>
-
   <div id="comments" class="container page-section" style="margin-bottom: 20px;">
     <div class="my-3">
       <h2>Comments</h2>
@@ -2637,17 +2573,22 @@ PNotify.notice({
 
         sourceButton.addEventListener('click', e => {
           let text = '';
+
+          function addText (more) {
+            text += (text ? '\n\n' : '')+more;
+          }
+
           if (button.hasAttribute('onclick')) {
-            text += button.attributes.onclick.value;
+            addText(button.attributes.onclick.value);
           }
           if (button.hasAttribute('onmouseover')) {
-            text += (text ? '\n\n' : '')+'// Mouse Over:\n' + button.attributes.onmouseover.value;
+            addText('// Mouse Over:\n' + button.attributes.onmouseover.value);
           }
           if (button.hasAttribute('onmousemove')) {
-            text += (text ? '\n\n' : '')+'// Mouse Move:\n' + button.attributes.onmousemove.value;
+            addText('// Mouse Move:\n' + button.attributes.onmousemove.value);
           }
           if (button.hasAttribute('onmouseout')) {
-            text += (text ? '\n\n' : '')+'// Mouse Out:\n' + button.attributes.onmouseout.value;
+            addText('// Mouse Out:\n' + button.attributes.onmouseout.value);
           }
 
           const sourceElement = document.createElement('div');
@@ -2666,12 +2607,11 @@ PNotify.notice({
 
           addPrettyCode(text, sourceElement);
 
-          // Check if the code is just calling a function. Include that function.
+          // Check if the code is calling a function. Include that function.
           const match = text.match(/^\s*(?:window\.)?(\w+)\s*\([^\)]*\);\s*$/); // eslint-disable-line no-useless-escape
           if (match) {
             const fName = match[1];
-            text = window[fName].toString();
-            addPrettyCode(text, sourceElement);
+            addPrettyCode(window[fName].toString(), sourceElement);
           }
 
           // Check if this is the tooltip button. Include the tooltip function.
@@ -2682,7 +2622,6 @@ PNotify.notice({
       };
 
       const addPrettyCode = (code, where) => {
-        code = code.replace(/(?:const )?sourceNote = ['"](.*)['"];$/gm, '// $1');
         const codeBlock = document.createElement('code');
         codeBlock.style.maxHeight = '200px';
         codeBlock.style.overflowY = 'auto';
