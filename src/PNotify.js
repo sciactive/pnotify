@@ -19,7 +19,6 @@ function getDefaultArgs (options, type) {
     options.type = type;
   }
 
-  // Experiment that doesn't work:
   let target = document.body;
 
   if ('stack' in options && options.stack && options.stack.context) {
