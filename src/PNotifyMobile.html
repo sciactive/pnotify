@@ -33,11 +33,12 @@
           stack._m_firstpos1 = stack.firstpos1;
           stack._m_spacing2 = stack.spacing2;
           stack._m_firstpos2 = stack.firstpos2;
+          stack.spacing1 = 0;
+          stack.firstpos1 = 0;
+          stack.spacing2 = 0;
+          stack.firstpos2 = 0;
+          stack.queuePosition();
         }
-        stack.spacing1 = 0;
-        stack.firstpos1 = 0;
-        stack.spacing2 = 0;
-        stack.firstpos2 = 0;
       } else {
         if ('_m_spacing1' in stack) {
           stack.spacing1 = stack._m_spacing1;
@@ -48,6 +49,7 @@
           delete stack._m_spacing2;
           stack.firstpos2 = stack._m_firstpos2;
           delete stack._m_firstpos2;
+          stack.queuePosition();
         }
       }
     }
