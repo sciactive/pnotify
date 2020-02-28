@@ -21,7 +21,7 @@ module.exports = {
     PNotifyReference: path.resolve(__dirname, 'src', 'PNotifyReference.html')
   },
   output: {
-    path: path.resolve(__dirname, 'dist', 'umd'),
+    path: path.resolve(__dirname, 'dist'),
     filename: '[name].js',
     library: ['[name]']
   },
@@ -33,8 +33,8 @@ module.exports = {
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: '../[name].css',
-      chunkFilename: '../[id].css'
+      filename: '[name].css',
+      chunkFilename: '[id].css'
     })
   ],
   resolve: {

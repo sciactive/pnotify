@@ -24,11 +24,10 @@
   "author": "Hunter Perrin",
   "files": [
     "dist",
-    "src",
-    "make.js"
+    "src"
   ],
   "directories": {
-    "lib": "dist/umd"
+    "lib": "dist"
   },
   "repository": {
     "type": "git",
