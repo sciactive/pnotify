@@ -4,6 +4,6 @@
 const fs = require('fs');
 
 try {
-  fs.unlinkSync('dist/umd/PNotifyBrightTheme.js');
-  fs.unlinkSync('dist/umd/PNotifyMaterial.js');
+  fs.unlinkSync('dist/PNotifyBrightTheme.js');
+  fs.unlinkSync('dist/PNotifyMaterial.js');
 } catch (e) {}
