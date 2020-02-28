@@ -25,6 +25,8 @@
     push: 'bottom'
   });
 
+  export const defaultModules = new Map();
+
   export const defaults = {
     // Type of the notice. 'notice', 'info', 'success', or 'error'.
     type: 'notice',
@@ -105,7 +107,7 @@
     stack: defaultStack,
     // This is where modules and their options should be added. It is a map of
     // `module => options` entries.
-    modules: new Map()
+    modules: defaultModules
   };
 
   let posTimer;
@@ -286,38 +288,38 @@
   };
 
   // Run init to give a chance for modules to override defaults.
-  const myDefaults = { ...defaults };
-  dispatchLifecycleEvent('init', { defaults: myDefaults });
+  const selfDefaults = { ...defaults };
+  dispatchLifecycleEvent('init', { notice: self, defaults: selfDefaults });
 
-  export let type = myDefaults.type;
-  export let title = myDefaults.title;
-  export let titleTrusted = myDefaults.titleTrusted;
-  export let text = myDefaults.text;
-  export let textTrusted = myDefaults.textTrusted;
-  export let styling = myDefaults.styling;
-  export let icons = myDefaults.icons;
-  export let mode = myDefaults.mode;
-  export let addClass = myDefaults.addClass;
-  export let addModalClass = myDefaults.addModalClass;
-  export let addModelessClass = myDefaults.addModelessClass;
-  export let autoOpen = myDefaults.autoOpen;
-  export let width = myDefaults.width;
-  export let minHeight = myDefaults.minHeight;
-  export let maxTextHeight = myDefaults.maxTextHeight;
-  export let icon = myDefaults.icon;
-  export let animation = myDefaults.animation;
-  export let animateSpeed = myDefaults.animateSpeed;
-  export let shadow = myDefaults.shadow;
-  export let hide = myDefaults.hide;
-  export let delay = myDefaults.delay;
-  export let mouseReset = myDefaults.mouseReset;
-  export let closer = myDefaults.closer;
-  export let closerHover = myDefaults.closerHover;
-  export let sticker = myDefaults.sticker;
-  export let stickerHover = myDefaults.stickerHover;
-  export let labels = myDefaults.labels;
-  export let remove = myDefaults.remove;
-  export let destroy = myDefaults.destroy;
+  export let type = selfDefaults.type;
+  export let title = selfDefaults.title;
+  export let titleTrusted = selfDefaults.titleTrusted;
+  export let text = selfDefaults.text;
+  export let textTrusted = selfDefaults.textTrusted;
+  export let styling = selfDefaults.styling;
+  export let icons = selfDefaults.icons;
+  export let mode = selfDefaults.mode;
+  export let addClass = selfDefaults.addClass;
+  export let addModalClass = selfDefaults.addModalClass;
+  export let addModelessClass = selfDefaults.addModelessClass;
+  export let autoOpen = selfDefaults.autoOpen;
+  export let width = selfDefaults.width;
+  export let minHeight = selfDefaults.minHeight;
+  export let maxTextHeight = selfDefaults.maxTextHeight;
+  export let icon = selfDefaults.icon;
+  export let animation = selfDefaults.animation;
+  export let animateSpeed = selfDefaults.animateSpeed;
+  export let shadow = selfDefaults.shadow;
+  export let hide = selfDefaults.hide;
+  export let delay = selfDefaults.delay;
+  export let mouseReset = selfDefaults.mouseReset;
+  export let closer = selfDefaults.closer;
+  export let closerHover = selfDefaults.closerHover;
+  export let sticker = selfDefaults.sticker;
+  export let stickerHover = selfDefaults.stickerHover;
+  export let labels = selfDefaults.labels;
+  export let remove = selfDefaults.remove;
+  export let destroy = selfDefaults.destroy;
 
   // The state can be 'waiting', 'opening', 'open', 'closing', or 'closed'.
   let _state = 'closed';

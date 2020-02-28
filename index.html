@@ -133,8 +133,8 @@
       // Set defaults.
       // ---
       PNotify.defaults.destroy = false;
-      PNotify.defaults.modules.set(PNotifyMobile, {});
-      PNotify.defaults.modules.set(PNotifyFontAwesome, {});
+      PNotify.defaultModules.set(PNotifyMobile, {});
+      PNotify.defaultModules.set(PNotifyFontAwesome, {});
 
       // ---
       // Notice that opens when the page opens.
@@ -282,8 +282,8 @@
         /* globals PNotify */
         window.addEventListener('DOMContentLoaded', () => {
           document.getElementById('style-brighttheme').addEventListener('change', e => {
-            PNotify.defaults.modules.delete(PNotifyBootstrap4);
-            PNotify.defaults.modules.delete(PNotifyFontAwesome5);
+            PNotify.defaultModules.delete(PNotifyBootstrap4);
+            PNotify.defaultModules.delete(PNotifyFontAwesome5);
             PNotify.defaults.styling = 'brighttheme';
             PNotify.defaults.icons = 'brighttheme';
             PNotify.notice({
@@ -293,8 +293,8 @@
           });
 
           document.getElementById('style-material').addEventListener('change', e => {
-            PNotify.defaults.modules.delete(PNotifyBootstrap4);
-            PNotify.defaults.modules.delete(PNotifyFontAwesome5);
+            PNotify.defaultModules.delete(PNotifyBootstrap4);
+            PNotify.defaultModules.delete(PNotifyFontAwesome5);
             PNotify.defaults.styling = 'material';
             PNotify.defaults.icons = 'material';
             PNotify.notice({
@@ -304,8 +304,8 @@
           });
 
           document.getElementById('style-bootstrap4').addEventListener('change', e => {
-            PNotify.defaults.modules.set(PNotifyBootstrap4, {});
-            PNotify.defaults.modules.set(PNotifyFontAwesome5, {});
+            PNotify.defaultModules.set(PNotifyBootstrap4, {});
+            PNotify.defaultModules.set(PNotifyFontAwesome5, {});
             PNotify.notice({
               title: 'Styling Change',
               text: 'From now on, notices will be styled with Bootstrap 4 w/ Font Awesome 5 Icons.'
@@ -471,7 +471,7 @@
               closer: false,
               sticker: false,
               modules: new Map([
-                ...PNotify.defaults.modules,
+                ...PNotify.defaultModules,
                 [PNotifyMobile, {
                   swipeDismiss: false
                 }]
@@ -979,7 +979,7 @@
             title: 'Notice',
             text: 'Right now I\'m a notice.',
             modules: new Map([
-              ...PNotify.defaults.modules,
+              ...PNotify.defaultModules,
               [PNotifyAnimate, {}]
             ])
           });
@@ -1123,7 +1123,7 @@
             title: 'Desktop Notice',
             text: 'I\'ll appear as a desktop notification. Unless I can\'t. I\'ll still appear as a regular PNotify notice then.',
             modules: new Map([
-              ...PNotify.defaults.modules,
+              ...PNotify.defaultModules,
               [PNotifyDesktop, {}]
             ])
           });
@@ -1133,7 +1133,7 @@
             title: 'Desktop Info',
             text: 'Hey there. Something happened.',
             modules: new Map([
-              ...PNotify.defaults.modules,
+              ...PNotify.defaultModules,
               [PNotifyDesktop, {}]
             ])
           });
@@ -1143,7 +1143,7 @@
             title: 'Desktop Success',
             text: 'All done! Come back to my tab!',
             modules: new Map([
-              ...PNotify.defaults.modules,
+              ...PNotify.defaultModules,
               [PNotifyDesktop, {}]
             ])
           });
@@ -1153,7 +1153,7 @@
             title: 'Desktop Error',
             text: 'Serious error is serious.',
             modules: new Map([
-              ...PNotify.defaults.modules,
+              ...PNotify.defaultModules,
               [PNotifyDesktop, {}]
             ])
           });
@@ -1163,7 +1163,7 @@
             title: 'Desktop Custom Icon',
             text: 'I\'ve got a custom icon.',
             modules: new Map([
-              ...PNotify.defaults.modules,
+              ...PNotify.defaultModules,
               [PNotifyDesktop, {
                 icon: 'includes/le_happy_face_by_luchocas-32.png'
               }]
@@ -1177,7 +1177,7 @@
             text: 'I\'ve got an image.&lt;div style=&quot;text-align: center;&quot;&gt;&lt;img src=&quot;https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Happy_smiley_face.png/240px-Happy_smiley_face.png&quot; /&gt;&lt;/div&gt;',
             textTrusted: true,
             modules: new Map([
-              ...PNotify.defaults.modules,
+              ...PNotify.defaultModules,
               [PNotifyDesktop, {
                 text: 'I\'ve got an image.',
                 icon: false,
@@ -1194,7 +1194,7 @@
             text: 'This text appears on the &lt;strong&gt;browser&lt;/strong&gt;.',
             textTrusted: true,
             modules: new Map([
-              ...PNotify.defaults.modules,
+              ...PNotify.defaultModules,
               [PNotifyDesktop, {
                 title: 'Alternate Text Notice - Desktop',
                 text: 'This text appears on the *desktop*.'
@@ -1207,7 +1207,7 @@
             title: 'Clicky Desktop Notice',
             text: 'Click me.',
             modules: new Map([
-              ...PNotify.defaults.modules,
+              ...PNotify.defaultModules,
               [PNotifyDesktop, {
                 icon: false
               }]
@@ -1225,7 +1225,7 @@
             text: 'I\'m a sticky notice. (Some browsers don\'t allow sticky Web Notifications.)',
             hide: false,
             modules: new Map([
-              ...PNotify.defaults.modules,
+              ...PNotify.defaultModules,
               [PNotifyDesktop, {
                 icon: false
               }]
@@ -1242,7 +1242,7 @@
             title: 'Dynamic Desktop Notice',
             text: 'I\'m a dynamic desktop notice.',
             modules: new Map([
-              ...PNotify.defaults.modules,
+              ...PNotify.defaultModules,
               [PNotifyDesktop, {}]
             ])
           });
@@ -1258,7 +1258,7 @@
             title: 'Desktop Notice',
             text: 'I won\'t fall back to a regular notice.',
             modules: new Map([
-              ...PNotify.defaults.modules,
+              ...PNotify.defaultModules,
               [PNotifyDesktop, {
                 fallback: false
               }]
@@ -1272,13 +1272,13 @@
 
       <h5 class="card-header">Mobile Module <small>Notices on mobile phones and tablets.</small></h5>
       <div class="card-body">
-        <div class="alert alert-info">The Mobile module is added to PNotify.defaults.modules on this page, so most of the demos on this page work on mobile.</div>
+        <div class="alert alert-info">The Mobile module is added to PNotify.defaultModules on this page, so most of the demos on this page work on mobile.</div>
         <button class="btn btn-light my-1 source" onclick="
           PNotify.notice({
             title: 'No Swipe Dismiss Notice',
             text: 'If you\'re on a mobile device, I won\'t respond to your swipes.',
             modules: new Map([
-              ...PNotify.defaults.modules,
+              ...PNotify.defaultModules,
               [PNotifyMobile, {
                 swipeDismiss: false
               }]
@@ -1295,7 +1295,7 @@
             title: 'Animate.css Effect',
             text: 'I use effects from Animate.css. Such smooth CSS3 transitions make me feel like butter.',
             modules: new Map([
-              ...PNotify.defaults.modules,
+              ...PNotify.defaultModules,
               [PNotifyAnimate, {
                 inClass: 'rotateInUpRight',
                 outClass: 'rotateOutUpRight'
@@ -1308,7 +1308,7 @@
             title: 'Animate.css Effect',
             text: 'I use effects from Animate.css. Such smooth CSS3 transitions make me feel like butter.',
             modules: new Map([
-              ...PNotify.defaults.modules,
+              ...PNotify.defaultModules,
               [PNotifyAnimate, {
                 inClass: 'zoomInLeft',
                 outClass: 'zoomOutRight'
@@ -1321,7 +1321,7 @@
             title: 'Animate.css Effect',
             text: 'I use effects from Animate.css. Such smooth CSS3 transitions make me feel like butter.',
             modules: new Map([
-              ...PNotify.defaults.modules,
+              ...PNotify.defaultModules,
               [PNotifyAnimate, {
                 inClass: 'rotateInDownLeft',
                 outClass: 'rotateOutUpRight'
@@ -1334,7 +1334,7 @@
             title: 'Animate.css Effect',
             text: 'I use effects from Animate.css. Such smooth CSS3 transitions make me feel like butter.',
             modules: new Map([
-              ...PNotify.defaults.modules,
+              ...PNotify.defaultModules,
               [PNotifyAnimate, {
                 inClass: 'bounceInLeft',
                 outClass: 'bounceOutRight'
@@ -1347,7 +1347,7 @@
             title: 'Animate.css Effect',
             text: 'I use effects from Animate.css. Such smooth CSS3 transitions make me feel like butter.',
             modules: new Map([
-              ...PNotify.defaults.modules,
+              ...PNotify.defaultModules,
               [PNotifyAnimate, {
                 inClass: 'bounceInDown',
                 outClass: 'hinge'
@@ -1439,7 +1439,7 @@
               title: 'Animate.css Effect',
               text: 'I use effects from Animate.css. Such smooth CSS3 transitions make me feel like butter.',
               modules: new Map([
-                ...PNotify.defaults.modules,
+                ...PNotify.defaultModules,
                 [PNotifyAnimate, {
                   inClass: animateIn,
                   outClass: animateOut
@@ -1455,7 +1455,7 @@
             text: 'Click the button to see how you can highlight the notice with the Animate module:',
             textTrusted: true,
             modules: new Map([
-              ...PNotify.defaults.modules,
+              ...PNotify.defaultModules,
               [PNotifyAnimate, {}],
               [PNotifyConfirm, {
                 confirm: true,
@@ -1474,7 +1474,7 @@
             text: 'Click the button to see how you can highlight the notice with the Animate module:',
             textTrusted: true,
             modules: new Map([
-              ...PNotify.defaults.modules,
+              ...PNotify.defaultModules,
               [PNotifyAnimate, {}],
               [PNotifyConfirm, {
                 confirm: true,
@@ -1493,7 +1493,7 @@
             text: 'Click the button to see how you can highlight the notice with the Animate module:',
             textTrusted: true,
             modules: new Map([
-              ...PNotify.defaults.modules,
+              ...PNotify.defaultModules,
               [PNotifyAnimate, {}],
               [PNotifyConfirm, {
                 confirm: true,
@@ -1512,7 +1512,7 @@
             text: 'Click the button to see how you can highlight the notice with the Animate module:',
             textTrusted: true,
             modules: new Map([
-              ...PNotify.defaults.modules,
+              ...PNotify.defaultModules,
               [PNotifyAnimate, {}],
               [PNotifyConfirm, {
                 confirm: true,
@@ -1531,7 +1531,7 @@
             text: 'Click the button to see how you can highlight the notice with the Animate module:',
             textTrusted: true,
             modules: new Map([
-              ...PNotify.defaults.modules,
+              ...PNotify.defaultModules,
               [PNotifyAnimate, {}],
               [PNotifyConfirm, {
                 confirm: true,
@@ -1550,7 +1550,7 @@
             text: 'Click the button to see how you can highlight the notice with the Animate module:',
             textTrusted: true,
             modules: new Map([
-              ...PNotify.defaults.modules,
+              ...PNotify.defaultModules,
               [PNotifyAnimate, {}],
               [PNotifyConfirm, {
                 confirm: true,
@@ -1569,7 +1569,7 @@
             text: 'Click the button to see how you can highlight the notice with the Animate module:',
             textTrusted: true,
             modules: new Map([
-              ...PNotify.defaults.modules,
+              ...PNotify.defaultModules,
               [PNotifyAnimate, {}],
               [PNotifyConfirm, {
                 confirm: true,
@@ -1588,7 +1588,7 @@
             text: 'Click the button to see how you can highlight the notice with the Animate module:',
             textTrusted: true,
             modules: new Map([
-              ...PNotify.defaults.modules,
+              ...PNotify.defaultModules,
               [PNotifyAnimate, {}],
               [PNotifyConfirm, {
                 confirm: true,
@@ -1607,7 +1607,7 @@
             text: 'Click the button to see how you can highlight the notice with the Animate module:',
             textTrusted: true,
             modules: new Map([
-              ...PNotify.defaults.modules,
+              ...PNotify.defaultModules,
               [PNotifyAnimate, {}],
               [PNotifyConfirm, {
                 confirm: true,
@@ -1635,7 +1635,7 @@
             closer: false,
             sticker: false,
             modules: new Map([
-              ...PNotify.defaults.modules,
+              ...PNotify.defaultModules,
               [PNotifyConfirm, {
                 confirm: true
               }]
@@ -1660,7 +1660,7 @@
               overlayClose: false
             }),
             modules: new Map([
-              ...PNotify.defaults.modules,
+              ...PNotify.defaultModules,
               [PNotifyConfirm, {
                 confirm: true
               }]
@@ -1679,7 +1679,7 @@
             sticker: false,
             destroy: true,
             modules: new Map([
-              ...PNotify.defaults.modules,
+              ...PNotify.defaultModules,
               [PNotifyConfirm, {
                 confirm: true,
                 buttons: [
@@ -1692,7 +1692,7 @@
                       icon: true,
                       type: 'info',
                       hide: true,
-                      modules: new Map(PNotify.defaults.modules)
+                      modules: new Map(PNotify.defaultModules)
                     })
                   },
                   {
@@ -1703,7 +1703,7 @@
                       icon: true,
                       type: 'info',
                       hide: true,
-                      modules: new Map(PNotify.defaults.modules)
+                      modules: new Map(PNotify.defaultModules)
                     })
                   },
                   {
@@ -1714,7 +1714,7 @@
                       icon: true,
                       type: 'info',
                       hide: true,
-                      modules: new Map(PNotify.defaults.modules)
+                      modules: new Map(PNotify.defaultModules)
                     })
                   }
                 ]
@@ -1732,7 +1732,7 @@
             sticker: false,
             destroy: true,
             modules: new Map([
-              ...PNotify.defaults.modules,
+              ...PNotify.defaultModules,
               [PNotifyConfirm, {
                 prompt: true
               }]
@@ -1746,7 +1746,7 @@
               icon: true,
               type: 'info',
               hide: true,
-              modules: new Map(PNotify.defaults.modules)
+              modules: new Map(PNotify.defaultModules)
             });
           });
           notice.on('pnotify:cancel', () => {
@@ -1757,7 +1757,7 @@
               icon: true,
               type: 'info',
               hide: true,
-              modules: new Map(PNotify.defaults.modules)
+              modules: new Map(PNotify.defaultModules)
             });
           });
         ">Prompt Dialog</button>
@@ -1771,7 +1771,7 @@
             sticker: false,
             destroy: true,
             modules: new Map([
-              ...PNotify.defaults.modules,
+              ...PNotify.defaultModules,
               [PNotifyConfirm, {
                 prompt: true,
                 promptMultiLine: true,
@@ -1787,7 +1787,7 @@
               icon: true,
               type: 'info',
               hide: true,
-              modules: new Map(PNotify.defaults.modules)
+              modules: new Map(PNotify.defaultModules)
             });
           });
           notice.on('pnotify:cancel', () => {
@@ -1798,7 +1798,7 @@
               icon: true,
               type: 'info',
               hide: true,
-              modules: new Map(PNotify.defaults.modules)
+              modules: new Map(PNotify.defaultModules)
             });
           });
         ">Multi Line Prompt Dialog</button>
@@ -1813,7 +1813,7 @@
             sticker: false,
             destroy: true,
             modules: new Map([
-              ...PNotify.defaults.modules,
+              ...PNotify.defaultModules,
               [PNotifyConfirm, {
                 confirm: true,
                 buttons: [{
@@ -1835,7 +1835,7 @@
             sticker: false,
             destroy: true,
             modules: new Map([
-              ...PNotify.defaults.modules,
+              ...PNotify.defaultModules,
               [PNotifyConfirm, {
                 confirm: true,
                 buttons: [{
@@ -1857,7 +1857,7 @@
             sticker: false,
             destroy: true,
             modules: new Map([
-              ...PNotify.defaults.modules,
+              ...PNotify.defaultModules,
               [PNotifyConfirm, {
                 confirm: true,
                 buttons: [{
@@ -1879,7 +1879,7 @@
             sticker: false,
             destroy: true,
             modules: new Map([
-              ...PNotify.defaults.modules,
+              ...PNotify.defaultModules,
               [PNotifyConfirm, {
                 confirm: true,
                 buttons: [{
@@ -1900,7 +1900,7 @@
             title: 'Reference Module',
             text: 'The reference module is a basic module that demonstrates how to write a PNotify module by implementing many of its features. You can find it in PNotifyReferenceComponent.html.',
             modules: new Map([
-              ...PNotify.defaults.modules,
+              ...PNotify.defaultModules,
               [PNotifyReference, {
                 labels: {
                   text: 'BARREL ROLL!'
@@ -2130,7 +2130,7 @@
               text: "Check me out. I'm in a different stack.",
               stack: window.stackModal,
               modules: new Map([
-                ...PNotify.defaults.modules,
+                ...PNotify.defaultModules,
                 [PNotifyConfirm, {
                   confirm: true,
                   buttons: [{
@@ -2187,7 +2187,7 @@
               text: "Check me out. I'm in a different stack.",
               stack: window.stackModalLeft,
               modules: new Map([
-                ...PNotify.defaults.modules,
+                ...PNotify.defaultModules,
                 [PNotifyConfirm, {
                   confirm: true,
                   buttons: [{
@@ -2360,7 +2360,7 @@
                 autoOpen: false,
                 destroy: false,
                 modules: new Map([
-                  ...[...PNotify.defaults.modules].filter(([mod]) => mod !== PNotifyMobile)
+                  ...[...PNotify.defaultModules].filter(([mod]) => mod !== PNotifyMobile)
                 ])
               });
               // Close the notice if the user mouses over it.

@@ -380,7 +380,7 @@ PNotify options and default values.
   Whether to remove the notice from the stack (and therefore, stack history) when it is closed.
 * `stack: defaultStack`<br>
   The stack on which the notices will be placed. Also controls the direction the notices stack.
-* `modules: new Map()`<br>
+* `modules: defaultModules`<br>
   This is where modules and their options should be added. It is a map of `module => options` entries.
 
 `}`
@@ -396,6 +396,10 @@ defaultStack = new Stack({
   push: 'bottom',
   context: document.body
 })
+```
+
+```js
+defaultModules = new Map()
 ```
 
 [Learn more about stacks.](#Stacks)

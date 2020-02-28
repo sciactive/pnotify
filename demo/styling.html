@@ -33,18 +33,18 @@
         case 'bootstrap3':
           document.forms.libraries.elements.libraryBootstrap.value = '3';
           loadLibraries();
-          PNotify.defaults.modules.set(PNotifyBootstrap3, {});
-          PNotify.defaults.modules.delete(PNotifyBootstrap4);
+          PNotify.defaultModules.set(PNotifyBootstrap3, {});
+          PNotify.defaultModules.delete(PNotifyBootstrap4);
           break;
         case 'bootstrap4':
           document.forms.libraries.elements.libraryBootstrap.value = '4';
           loadLibraries();
-          PNotify.defaults.modules.set(PNotifyBootstrap4, {});
-          PNotify.defaults.modules.delete(PNotifyBootstrap3);
+          PNotify.defaultModules.set(PNotifyBootstrap4, {});
+          PNotify.defaultModules.delete(PNotifyBootstrap3);
           break;
         default:
-          PNotify.defaults.modules.delete(PNotifyBootstrap3);
-          PNotify.defaults.modules.delete(PNotifyBootstrap4);
+          PNotify.defaultModules.delete(PNotifyBootstrap3);
+          PNotify.defaultModules.delete(PNotifyBootstrap4);
           PNotify.defaults.styling = styling;
           break;
       }
@@ -59,28 +59,28 @@
         case 'bootstrap3':
           document.forms.libraries.elements.libraryBootstrap.value = '3';
           loadLibraries();
-          PNotify.defaults.modules.set(PNotifyGlyphicon, {});
-          PNotify.defaults.modules.delete(PNotifyFontAwesome4);
-          PNotify.defaults.modules.delete(PNotifyFontAwesome5);
+          PNotify.defaultModules.set(PNotifyGlyphicon, {});
+          PNotify.defaultModules.delete(PNotifyFontAwesome4);
+          PNotify.defaultModules.delete(PNotifyFontAwesome5);
           break;
         case 'fontawesome4':
           document.forms.libraries.elements.libraryFontAwesome.value = '4';
           loadLibraries();
-          PNotify.defaults.modules.set(PNotifyFontAwesome4, {});
-          PNotify.defaults.modules.delete(PNotifyGlyphicon);
-          PNotify.defaults.modules.delete(PNotifyFontAwesome5);
+          PNotify.defaultModules.set(PNotifyFontAwesome4, {});
+          PNotify.defaultModules.delete(PNotifyGlyphicon);
+          PNotify.defaultModules.delete(PNotifyFontAwesome5);
           break;
         case 'fontawesome5':
           document.forms.libraries.elements.libraryFontAwesome.value = '5';
           loadLibraries();
-          PNotify.defaults.modules.set(PNotifyFontAwesome5, {});
-          PNotify.defaults.modules.delete(PNotifyFontAwesome4);
-          PNotify.defaults.modules.delete(PNotifyGlyphicon);
+          PNotify.defaultModules.set(PNotifyFontAwesome5, {});
+          PNotify.defaultModules.delete(PNotifyFontAwesome4);
+          PNotify.defaultModules.delete(PNotifyGlyphicon);
           break;
         default:
-          PNotify.defaults.modules.delete(PNotifyGlyphicon);
-          PNotify.defaults.modules.delete(PNotifyFontAwesome4);
-          PNotify.defaults.modules.delete(PNotifyFontAwesome5);
+          PNotify.defaultModules.delete(PNotifyGlyphicon);
+          PNotify.defaultModules.delete(PNotifyFontAwesome4);
+          PNotify.defaultModules.delete(PNotifyFontAwesome5);
           PNotify.defaults.icons = icons;
           break;
       }
