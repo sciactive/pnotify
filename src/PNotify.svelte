@@ -13,8 +13,8 @@
 <svelte:options accessors={true} />
 
 <script context="module">
-  import Stack from './Stack.js';
   import { component } from './Component.js';
+  import Stack from './Stack.js';
   export { Stack };
 
   // Factory functions.

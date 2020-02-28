@@ -81,8 +81,8 @@ In addition to the JS and CSS, be sure to [include a PNotify style](#styles).
 [PNotify in Svelte](https://codesandbox.io/s/nwoxqkvw6m). (Use the source files.)
 
 ```js
-import { alert, defaultModules } from 'pnotify/src/PNotify';
-import * as PNotifyMobile from 'pnotify/src/PNotifyMobile';
+import { alert, defaultModules } from 'pnotify/src/PNotify.svelte';
+import * as PNotifyMobile from 'pnotify/src/PNotifyMobile.svelte';
 
 defaultModules.set(PNotifyMobile, {});
 
@@ -94,9 +94,9 @@ alert('Notice me, senpai!');
 [PNotify in React](https://codesandbox.io/s/wwqzk8472w).
 
 ```js
-import { alert, defaultModules } from 'pnotify/dist/PNotify';
+import { alert, defaultModules } from 'pnotify/dist/PNotify.js';
 import 'pnotify/dist/PNotify.css';
-import * as PNotifyMobile from 'pnotify/dist/PNotifyMobile';
+import * as PNotifyMobile from 'pnotify/dist/PNotifyMobile.js';
 import 'pnotify/dist/PNotifyMobile.css';
 
 defaultModules.set(PNotifyMobile, {});
@@ -109,9 +109,9 @@ alert('Notice me, senpai!');
 [PNotify in Angular](https://codesandbox.io/s/l3pzkl64yq).
 
 ```ts
-import { alert, defaultModules } from 'pnotify/dist/PNotify';
+import { alert, defaultModules } from 'pnotify/dist/PNotify.js';
 import 'pnotify/dist/PNotify.css';
-import * as PNotifyMobile from 'pnotify/dist/PNotifyMobile';
+import * as PNotifyMobile from 'pnotify/dist/PNotifyMobile.js';
 import 'pnotify/dist/PNotifyMobile.css';
 
 defaultModules.set(PNotifyMobile, {});
@@ -133,9 +133,9 @@ export class WhateverComponent {
 ```ts
 // pnotify.service.ts
 import { Injectable } from '@angular/core';
-import { alert, defaultModules } from 'pnotify/dist/PNotify';
+import { alert, defaultModules } from 'pnotify/dist/PNotify.js';
 import 'pnotify/dist/PNotify.css';
-import * as PNotifyMobile from 'pnotify/dist/PNotifyMobile';
+import * as PNotifyMobile from 'pnotify/dist/PNotifyMobile.js';
 import 'pnotify/dist/PNotifyMobile.css';
 
 defaultModules.set(PNotifyMobile, {});
@@ -180,8 +180,8 @@ export class WhateverComponent {
 ```
 ```js
 var angular = require('angular');
-var PNotify = require('pnotify/dist/PNotify');
-var PNotifyMobile = require('pnotify/dist/PNotifyMobile');
+var PNotify = require('pnotify/dist/PNotify.js');
+var PNotifyMobile = require('pnotify/dist/PNotifyMobile.js');
 
 PNotify.defaultModules.set(PNotifyMobile, {});
 
@@ -258,9 +258,9 @@ import 'pnotify/dist/PNotifyMaterial.css';
 Then set the default styling and icons to 'material':
 
 ```js
-import { defaults } from 'pnotify/dist/PNotify';
+import { defaults } from 'pnotify/dist/PNotify.js';
 // or
-const { defaults } = require('pnotify/dist/PNotify');
+const { defaults } = require('pnotify/dist/PNotify.js');
 
 // Set default styling.
 defaults.styling = 'material';
@@ -322,11 +322,11 @@ import 'pnotify/dist/PNotifyBootstrap4.css';
 Include the appropriate line(s) from below:
 
 ```js
-import { defaultModules } from 'pnotify/dist/PNotify';
-import * as PNotifyBootstrap4 from 'pnotify/dist/PNotifyBootstrap4';
+import { defaultModules } from 'pnotify/dist/PNotify.js';
+import * as PNotifyBootstrap4 from 'pnotify/dist/PNotifyBootstrap4.js';
 // or
-const { defaultModules } = require('pnotify/dist/PNotify');
-const PNotifyBootstrap4 = require('pnotify/dist/PNotifyBootstrap4');
+const { defaultModules } = require('pnotify/dist/PNotify.js');
+const PNotifyBootstrap4 = require('pnotify/dist/PNotifyBootstrap4.js');
 ```
 
 Then set it as a default module:
@@ -342,11 +342,11 @@ Change the "4" to "3" for Bootstrap 3, and also import and set `PNotifyGlyphicon
 To set Font Awesome 4 as the default icons, include the appropriate line from below:
 
 ```js
-import { defaultModules } from 'pnotify/dist/PNotify';
-import * as PNotifyFontAwesome4 from 'pnotify/dist/PNotifyFontAwesome4';
+import { defaultModules } from 'pnotify/dist/PNotify.js';
+import * as PNotifyFontAwesome4 from 'pnotify/dist/PNotifyFontAwesome4.js';
 // or
-const { defaultModules } = require('pnotify/dist/PNotify');
-const PNotifyFontAwesome4 = require('pnotify/dist/PNotifyFontAwesome4');
+const { defaultModules } = require('pnotify/dist/PNotify.js');
+const PNotifyFontAwesome4 = require('pnotify/dist/PNotifyFontAwesome4.js');
 ```
 
 Then set it as a default module:
@@ -360,13 +360,13 @@ defaultModules.set(PNotifyFontAwesome4, {});
 To set Font Awesome 5 as the default icons, include the appropriate line from below:
 
 ```js
-import { defaultModules } from 'pnotify/dist/PNotify';
-import * as PNotifyFontAwesome from 'pnotify/dist/PNotifyFontAwesome';
-import * as PNotifyFontAwesome5 from 'pnotify/dist/PNotifyFontAwesome5';
+import { defaultModules } from 'pnotify/dist/PNotify.js';
+import * as PNotifyFontAwesome from 'pnotify/dist/PNotifyFontAwesome.js';
+import * as PNotifyFontAwesome5 from 'pnotify/dist/PNotifyFontAwesome5.js';
 // or
-const { defaultModules } = require('pnotify/dist/PNotify');
-const PNotifyFontAwesome = require('pnotify/dist/PNotifyFontAwesome');
-const PNotifyFontAwesome5 = require('pnotify/dist/PNotifyFontAwesome5');
+const { defaultModules } = require('pnotify/dist/PNotify.js');
+const PNotifyFontAwesome = require('pnotify/dist/PNotifyFontAwesome.js');
+const PNotifyFontAwesome5 = require('pnotify/dist/PNotifyFontAwesome5.js');
 ```
 
 Then set them as default modules:
@@ -383,9 +383,9 @@ If you don't want to use Font Awesome 5 as your default icons, but you still wan
 To make a notice, use the factory functions. Each one takes an options object as its only argument. It will return a PNotify notice instance.
 
 ```js
-import { alert, notice, info, success, error } from 'PNotify/dist/PNotify';
+import { alert, notice, info, success, error } from 'PNotify/dist/PNotify.js';
 // or
-const { alert, notice, info, success, error } = require('pnotify/dist/PNotify');
+const { alert, notice, info, success, error } = require('pnotify/dist/PNotify.js');
 
 // Manually set the type.
 const myAlert = alert({
@@ -503,9 +503,9 @@ defaultModules = new Map()
 ## Changing Defaults
 
 ```js
-import { defaults } from 'PNotify/dist/PNotify';
+import { defaults } from 'PNotify/dist/PNotify.js';
 // or
-const { defaults } = require('pnotify/dist/PNotify');
+const { defaults } = require('pnotify/dist/PNotify.js');
 
 defaults.width = '400px';
 ```
@@ -513,11 +513,11 @@ defaults.width = '400px';
 Adding/removing a module to the defaults:
 
 ```js
-import { defaultModules } from 'PNotify/dist/PNotify';
-import * as PNotifyMobile from 'PNotify/dist/PNotifyMobile';
+import { defaultModules } from 'PNotify/dist/PNotify.js';
+import * as PNotifyMobile from 'PNotify/dist/PNotifyMobile.js';
 // or
-const { defaultModules } = require('pnotify/dist/PNotify');
-const PNotifyMobile = require('pnotify/dist/PNotifyMobile');
+const { defaultModules } = require('pnotify/dist/PNotify.js');
+const PNotifyMobile = require('pnotify/dist/PNotifyMobile.js');
 
 // Add a module to the defaults. Note that the second argument should
 // always be `{}`.
@@ -530,9 +530,9 @@ defaultModules.delete(PNotifyMobile);
 Changing a module's defaults:
 
 ```js
-import { defaults } from 'PNotify/dist/PNotifyAnimate';
+import { defaults } from 'PNotify/dist/PNotifyAnimate.js';
 // or
-const { defaults } = require('pnotify/dist/PNotifyAnimate');
+const { defaults } = require('pnotify/dist/PNotifyAnimate.js');
 
 // then
 defaults.inClass = 'fadeInDown';
@@ -546,11 +546,11 @@ defaults.outClass = 'fadeOutUp';
 Besides using the default modules, you can remove or add modules and set their options when you call a notice. The modules Map has modules themselves as keys, and an options object as values.
 
 ```js
-import { notice, defaultModules } from 'PNotify/dist/PNotify';
-import * as PNotifyBootstrap4 from 'PNotify/dist/PNotifyBootstrap4';
-import * as PNotifyFontAwesome4 from 'PNotify/dist/PNotifyFontAwesome4';
-import * as PNotifyMobile from 'PNotify/dist/PNotifyMobile';
-import * as PNotifyAnimate from 'PNotify/dist/PNotifyAnimate';
+import { notice, defaultModules } from 'PNotify/dist/PNotify.js';
+import * as PNotifyBootstrap4 from 'PNotify/dist/PNotifyBootstrap4.js';
+import * as PNotifyFontAwesome4 from 'PNotify/dist/PNotifyFontAwesome4.js';
+import * as PNotifyMobile from 'PNotify/dist/PNotifyMobile.js';
+import * as PNotifyAnimate from 'PNotify/dist/PNotifyAnimate.js';
 
 defaultModules.set(PNotifyBootstrap4, {});
 defaultModules.set(PNotifyFontAwesome4, {});
@@ -688,7 +688,7 @@ buttons: [
 Because the default buttons fire notice events on confirmation and cancellation, you can listen for them like this:
 
 ```js
-import { alert } from 'PNotify/dist/es/PNotify';
+import { alert } from 'PNotify/dist/es/PNotify.js';
 const notice = alert({
   title: 'Confirmation Needed',
   text: 'Are you sure?',
@@ -793,7 +793,7 @@ Don't use these. I'm putting them in here to document that you should not use th
 A stack is an instance of the `Stack` class used to determine where to position notices and how they interact with each other.
 
 ```js
-import {alert, Stack} from 'pnotify';
+import {alert, Stack} from 'pnotify/dist/PNotify.js';
 
 const myStack = new Stack({
   dir1: 'up'

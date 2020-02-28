@@ -5,20 +5,20 @@ const devMode = process.env.ENV === 'development';
 module.exports = {
   mode: devMode ? 'development' : 'production',
   entry: {
-    PNotify: path.resolve(__dirname, 'src', 'PNotify.html'),
-    PNotifyAnimate: path.resolve(__dirname, 'src', 'PNotifyAnimate.html'),
-    PNotifyBootstrap3: path.resolve(__dirname, 'src', 'PNotifyBootstrap3.html'),
-    PNotifyBootstrap4: path.resolve(__dirname, 'src', 'PNotifyBootstrap4.html'),
+    PNotify: path.resolve(__dirname, 'src', 'PNotify.svelte'),
+    PNotifyAnimate: path.resolve(__dirname, 'src', 'PNotifyAnimate.svelte'),
+    PNotifyBootstrap3: path.resolve(__dirname, 'src', 'PNotifyBootstrap3.svelte'),
+    PNotifyBootstrap4: path.resolve(__dirname, 'src', 'PNotifyBootstrap4.svelte'),
     PNotifyBrightTheme: path.resolve(__dirname, 'src', 'PNotifyBrightTheme.css'),
-    PNotifyConfirm: path.resolve(__dirname, 'src', 'PNotifyConfirm.html'),
-    PNotifyDesktop: path.resolve(__dirname, 'src', 'PNotifyDesktop.html'),
-    PNotifyFontAwesome: path.resolve(__dirname, 'src', 'PNotifyFontAwesome.html'),
-    PNotifyFontAwesome4: path.resolve(__dirname, 'src', 'PNotifyFontAwesome4.html'),
-    PNotifyFontAwesome5: path.resolve(__dirname, 'src', 'PNotifyFontAwesome5.html'),
-    PNotifyGlyphicon: path.resolve(__dirname, 'src', 'PNotifyGlyphicon.html'),
+    PNotifyConfirm: path.resolve(__dirname, 'src', 'PNotifyConfirm.svelte'),
+    PNotifyDesktop: path.resolve(__dirname, 'src', 'PNotifyDesktop.svelte'),
+    PNotifyFontAwesome: path.resolve(__dirname, 'src', 'PNotifyFontAwesome.svelte'),
+    PNotifyFontAwesome4: path.resolve(__dirname, 'src', 'PNotifyFontAwesome4.svelte'),
+    PNotifyFontAwesome5: path.resolve(__dirname, 'src', 'PNotifyFontAwesome5.svelte'),
+    PNotifyGlyphicon: path.resolve(__dirname, 'src', 'PNotifyGlyphicon.svelte'),
     PNotifyMaterial: path.resolve(__dirname, 'src', 'PNotifyMaterial.css'),
-    PNotifyMobile: path.resolve(__dirname, 'src', 'PNotifyMobile.html'),
-    PNotifyReference: path.resolve(__dirname, 'src', 'PNotifyReference.html')
+    PNotifyMobile: path.resolve(__dirname, 'src', 'PNotifyMobile.svelte'),
+    PNotifyReference: path.resolve(__dirname, 'src', 'PNotifyReference.svelte')
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -38,7 +38,7 @@ module.exports = {
     })
   ],
   resolve: {
-    extensions: ['.wasm', '.mjs', '.js', '.json', '.html', '.css']
+    extensions: ['.wasm', '.mjs', '.js', '.json', '.svelte', '.html', '.css']
   },
   module: {
     rules: [

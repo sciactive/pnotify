@@ -1,3 +1,3 @@
-import PNotify from './PNotify.html';
+import PNotify from './PNotify.svelte';
 
 export const component = (...args) => new PNotify(...args);

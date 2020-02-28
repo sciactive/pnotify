@@ -37,7 +37,7 @@ try {
 
 // Compile Svelte component.
 for (const name of pnotifyComponents) {
-  const srcFilename = 'src/' + name + '.html';
+  const srcFilename = 'src/' + name + '.svelte';
   const dstFilename = 'dist/es/' + name + '.js';
   let code = fs.readFileSync(srcFilename, 'utf8');
   let map;
@@ -65,7 +65,7 @@ for (const name of pnotifySrc) {
   const dstFilename = 'dist/es/' + name + '.js';
   let code = fs.readFileSync(srcFilename, 'utf8');
 
-  code = code.replace(/(import|export) (.*) from (["'])\.\/(\w*)\.html(["'])/g, '$1 $2 from $3./$4.js$5');
+  code = code.replace(/(import|export) (.*) from (["'])\.\/(\w*)\.svelte(["'])/g, '$1 $2 from $3./$4.js$5');
 
   fs.writeFileSync(dstFilename, code);
 }
