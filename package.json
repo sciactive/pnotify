@@ -40,6 +40,7 @@
     "build-es": "node make.js",
     "build-cleanup": "node cleanup.js",
     "watch": "ENV=development webpack --watch",
+    "deploy": "git checkout gh-pages && git merge develop && rm -rf ./dist/ && npm run build && npm run build-dev && git add . && git commit -m 'Update built files.' && git push && git checkout develop",
     "prepare-off": "npm run lint && npm run build",
     "lint": "eslint index.html make.js src/*.html src/*.js demo/*"
   },
