@@ -6,7 +6,7 @@ const svelte = require('svelte/compiler');
 
 const pnotifyComponents = [
   // Main code.
-  'PNotifyCore',
+  'PNotify',
   'PNotifyAnimate',
   'PNotifyBootstrap3',
   'PNotifyBootstrap4',
@@ -24,7 +24,7 @@ const pnotifyComponents = [
 
 const pnotifySrc = [
   // Main code.
-  'PNotify',
+  'Component',
   'Stack'
 ];
 

@@ -5,7 +5,7 @@ const devMode = process.env.ENV === 'development';
 module.exports = {
   mode: devMode ? 'development' : 'production',
   entry: {
-    PNotify: path.resolve(__dirname, 'src', 'PNotify.js'),
+    PNotify: path.resolve(__dirname, 'src', 'PNotify.html'),
     PNotifyAnimate: path.resolve(__dirname, 'src', 'PNotifyAnimate.html'),
     PNotifyBootstrap3: path.resolve(__dirname, 'src', 'PNotifyBootstrap3.html'),
     PNotifyBootstrap4: path.resolve(__dirname, 'src', 'PNotifyBootstrap4.html'),
