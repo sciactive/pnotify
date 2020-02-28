@@ -451,13 +451,7 @@
             width: 'auto',
             maxTextHeight: null,
             hide: false,
-            modules: new Map([
-              ...PNotify.defaults.modules,
-              [PNotifyButtons, {
-                closer: false,
-                sticker: false
-              }]
-            ])
+            modules: new Map([...PNotify.defaults.modules].filter(([mod]) => mod !== PNotifyButtons))
           });
           notice.refs.elem.querySelector('form [name=cancel]').addEventListener('click', () => notice.close());
           notice.refs.elem.querySelector('form').addEventListener('submit', e => {
@@ -475,13 +469,7 @@
               width: PNotify.defaults.width,
               hide: true,
               type: 'success',
-              modules: new Map([
-                ...PNotify.defaults.modules,
-                [PNotifyButtons, {
-                  closer: true,
-                  sticker: true
-                }]
-              ])
+              modules: new Map(PNotify.defaults.modules)
             });
           });
         ">Forms</button>
@@ -592,13 +580,7 @@
           const notice = PNotify.notice({
             title: 'Click Close Notice',
             text: 'Click me anywhere to dismiss me.',
-            modules: new Map([
-              ...PNotify.defaults.modules,
-              [PNotifyButtons, {
-                closer: false,
-                sticker: false
-              }]
-            ])
+            modules: new Map([...PNotify.defaults.modules].filter(([mod]) => mod !== PNotifyButtons))
           });
           notice.on('click', () => {
             notice.close();
@@ -661,13 +643,7 @@
               hide: false,
               shadow: false,
               width: '200px',
-              modules: new Map([
-                ...PNotify.defaults.modules,
-                [PNotifyButtons, {
-                  closer: false,
-                  sticker: false
-                }]
-              ])
+              modules: new Map([...PNotify.defaults.modules].filter(([mod]) => mod !== PNotifyButtons))
             });
 
             notice.on('pnotify:afterOpen', () => {
@@ -895,7 +871,11 @@
         <button class="btn btn-light my-1 source" onclick="
           const notice = PNotify.notice({
             title: 'Notice',
-            text: 'Right now I\'m a notice.'
+            text: 'Right now I\'m a notice.',
+            modules: new Map([
+              ...PNotify.defaults.modules,
+              [PNotifyAnimate, {}]
+            ])
           });
 
           const listener1 = event => {
@@ -961,13 +941,7 @@
               icon: 'fas fa-cog fa-spin',
               hide: false,
               destroy: true,
-              modules: new Map([
-                ...PNotify.defaults.modules,
-                [PNotifyButtons, {
-                  closer: false,
-                  sticker: false
-                }]
-              ])
+              modules: new Map([...PNotify.defaults.modules].filter(([mod]) => mod !== PNotifyButtons))
             });
 
             notice.on('pnotify:afterOpen', () => {
@@ -1191,7 +1165,7 @@
 
       <h5 class="card-header">Buttons Module <small>Sticker and a closer buttons.</small></h5>
       <div class="card-body">
-        <div class="alert alert-info">Since the Buttons module provides buttons by default, many of the demos on this page include the buttons.</div>
+        <div class="alert alert-info">The Buttons module is added to PNotify.defaults.modules on this page, so most of the demos on this page include the buttons.</div>
         <button class="btn btn-light my-1 source" onclick="
           PNotify.notice({
             title: 'Sticky Notice',
@@ -1253,6 +1227,19 @@
         ">No Sticky Button</button>
         <button class="btn btn-light my-1 source" onclick="
           PNotify.notice({
+            title: 'No Close Button Notice',
+            text: 'But, how are you supposed to close me?',
+            hide: false,
+            modules: new Map([
+              ...PNotify.defaults.modules,
+              [PNotifyButtons, {
+                closer: false
+              }]
+            ])
+          });
+        ">No Close Button</button>
+        <button class="btn btn-light my-1 source" onclick="
+          PNotify.notice({
             title: 'Permanent Buttons Notice',
             text: 'My buttons are really lonely, so they\'re gonna hang out with us.',
             modules: new Map([
@@ -1265,6 +1252,7 @@
           });
         ">Permanent Buttons</button>
         <button class="btn btn-light my-1 source" onclick="
+          const sourceNote = 'Instead of turning off the sticker and closer, you can also just leave out PNotifyButtons.';
           if (window.permanotice) {
             window.permanotice.open();
           } else {
@@ -1294,7 +1282,7 @@
 
       <h5 class="card-header">Mobile Module <small>Notices on mobile phones and tablets.</small></h5>
       <div class="card-body">
-        <div class="alert alert-info">Since the Mobile module provides support by default, most of the demos on this page work on mobile.</div>
+        <div class="alert alert-info">The Mobile module is added to PNotify.defaults.modules on this page, so most of the demos on this page work on mobile.</div>
         <button class="btn btn-light my-1 source" onclick="
           PNotify.notice({
             title: 'No Swipe Dismiss Notice',
@@ -1655,11 +1643,7 @@
             hide: false,
             destroy: true,
             modules: new Map([
-              ...PNotify.defaults.modules,
-              [PNotifyButtons, {
-                closer: false,
-                sticker: false
-              }],
+              ...[...PNotify.defaults.modules].filter(([mod]) => mod !== PNotifyButtons),
               [PNotifyConfirm, {
                 confirm: true
               }]
@@ -1682,11 +1666,7 @@
               overlayClose: false
             }),
             modules: new Map([
-              ...PNotify.defaults.modules,
-              [PNotifyButtons, {
-                closer: false,
-                sticker: false
-              }],
+              ...[...PNotify.defaults.modules].filter(([mod]) => mod !== PNotifyButtons),
               [PNotifyConfirm, {
                 confirm: true
               }]
@@ -1703,11 +1683,7 @@
             hide: false,
             destroy: true,
             modules: new Map([
-              ...PNotify.defaults.modules,
-              [PNotifyButtons, {
-                closer: false,
-                sticker: false
-              }],
+              ...[...PNotify.defaults.modules].filter(([mod]) => mod !== PNotifyButtons),
               [PNotifyConfirm, {
                 confirm: true,
                 buttons: [
@@ -1758,11 +1734,7 @@
             hide: false,
             destroy: true,
             modules: new Map([
-              ...PNotify.defaults.modules,
-              [PNotifyButtons, {
-                closer: false,
-                sticker: false
-              }],
+              ...[...PNotify.defaults.modules].filter(([mod]) => mod !== PNotifyButtons),
               [PNotifyConfirm, {
                 prompt: true
               }]
@@ -1799,11 +1771,7 @@
             hide: false,
             destroy: true,
             modules: new Map([
-              ...PNotify.defaults.modules,
-              [PNotifyButtons, {
-                closer: false,
-                sticker: false
-              }],
+              ...[...PNotify.defaults.modules].filter(([mod]) => mod !== PNotifyButtons),
               [PNotifyConfirm, {
                 prompt: true,
                 promptMultiLine: true,
@@ -1843,11 +1811,7 @@
             hide: false,
             destroy: true,
             modules: new Map([
-              ...PNotify.defaults.modules,
-              [PNotifyButtons, {
-                closer: false,
-                sticker: false
-              }],
+              ...[...PNotify.defaults.modules].filter(([mod]) => mod !== PNotifyButtons),
               [PNotifyConfirm, {
                 confirm: true,
                 buttons: [{
@@ -1867,11 +1831,7 @@
             hide: false,
             destroy: true,
             modules: new Map([
-              ...PNotify.defaults.modules,
-              [PNotifyButtons, {
-                closer: false,
-                sticker: false
-              }],
+              ...[...PNotify.defaults.modules].filter(([mod]) => mod !== PNotifyButtons),
               [PNotifyConfirm, {
                 confirm: true,
                 buttons: [{
@@ -1891,11 +1851,7 @@
             hide: false,
             destroy: true,
             modules: new Map([
-              ...PNotify.defaults.modules,
-              [PNotifyButtons, {
-                closer: false,
-                sticker: false
-              }],
+              ...[...PNotify.defaults.modules].filter(([mod]) => mod !== PNotifyButtons),
               [PNotifyConfirm, {
                 confirm: true,
                 buttons: [{
@@ -1915,11 +1871,7 @@
             hide: false,
             destroy: true,
             modules: new Map([
-              ...PNotify.defaults.modules,
-              [PNotifyButtons, {
-                closer: false,
-                sticker: false
-              }],
+              ...[...PNotify.defaults.modules].filter(([mod]) => mod !== PNotifyButtons),
               [PNotifyConfirm, {
                 confirm: true,
                 buttons: [{
@@ -2402,11 +2354,7 @@
                 autoOpen: false,
                 destroy: false,
                 modules: new Map([
-                  ...PNotify.defaults.modules,
-                  [PNotifyButtons, {
-                    closer: false,
-                    sticker: false
-                  }]
+                  ...[...PNotify.defaults.modules].filter(([mod]) => mod !== PNotifyButtons && mod !== PNotifyMobile)
                 ])
               });
               // Close the notice if the user mouses over it.
