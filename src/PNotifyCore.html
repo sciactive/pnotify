@@ -139,60 +139,64 @@
 </script>
 
 <div bind:this={refs.elem}
-    data-pnotify
-    use:forwardEvents
-    class="
-      pnotify
-      {icon !== false ? 'pnotify-with-icon' : ''}
-      {getStyle('elem')}
-      pnotify-mode-{mode}
-      {addClass}
-      {_animatingClass}
-      {_moveClass}
-      {_stackDirClass}
-      {animation === 'fade' ? 'pnotify-fade-'+animateSpeed : ''}
-      {_modal ? 'pnotify-modal '+addModalClass : addModelessClass}
-      {_masking ? 'pnotify-masking' : ''}
-      {_maskingIn ? 'pnotify-masking-in' : ''}
-      {_moduleClasses.elem.join(' ')}
-    "
-    aria-live="assertive"
-    role="alertdialog"
-    on:mouseenter={handleInteraction}
-    on:mouseleave={handleLeaveInteraction}
-    on:focusin={handleInteraction}
-    on:focusout={handleLeaveInteraction}>
+  data-pnotify
+  use:forwardEvents
+  class="
+    pnotify
+    {icon !== false ? 'pnotify-with-icon' : ''}
+    {getStyle('elem')}
+    pnotify-mode-{mode}
+    {addClass}
+    {_animatingClass}
+    {_moveClass}
+    {_stackDirClass}
+    {animation === 'fade' ? 'pnotify-fade-'+animateSpeed : ''}
+    {_modal ? 'pnotify-modal '+addModalClass : addModelessClass}
+    {_masking ? 'pnotify-masking' : ''}
+    {_maskingIn ? 'pnotify-masking-in' : ''}
+    {_moduleClasses.elem.join(' ')}
+  "
+  aria-live="assertive"
+  role="alertdialog"
+  on:mouseenter={handleInteraction}
+  on:mouseleave={handleLeaveInteraction}
+  on:focusin={handleInteraction}
+  on:focusout={handleLeaveInteraction}
+>
   <div bind:this={refs.container}
-      class="
-        pnotify-container
-        {getStyle('container')}
-        {getStyle(type)}
-        {shadow ? 'pnotify-shadow' : ''}
-        {_moduleClasses.container.join(' ')}
-      "
-      style="{_widthStyle} {_minHeightStyle}"
-      role="alert">
+    class="
+      pnotify-container
+      {getStyle('container')}
+      {getStyle(type)}
+      {shadow ? 'pnotify-shadow' : ''}
+      {_moduleClasses.container.join(' ')}
+    "
+    style="{_widthStyle} {_minHeightStyle}"
+    role="alert"
+  >
     {#each modulesPrependContainer as [module, options] (module)}
       <svelte:component this={module.default} self={self} {...options} />
     {/each}
     {#if closer && !_nonBlock}
       <div
-          class="pnotify-closer {getStyle('closer')} {(!closerHover || _interacting) ? '' : 'pnotify-hidden'}"
-          role="button"
-          tabindex="0"
-          title={labels.close}
-          on:click={() => close(false)}>
+        class="pnotify-closer {getStyle('closer')} {(!closerHover || _interacting) ? '' : 'pnotify-hidden'}"
+        role="button"
+        tabindex="0"
+        title={labels.close}
+        on:click={() => close(false)}
+      >
         <span class={getIcon('closer')}></span>
       </div>
     {/if}
     {#if sticker && !_nonBlock}
       <div
-          class="pnotify-sticker {getStyle('sticker')} {(!stickerHover || _interacting) ? '' : 'pnotify-hidden'}"
-          role="button"
-          aria-pressed={!hide}
-          tabindex="0"
-          title={hide ? labels.stick : labels.unstick}
-          on:click={() => hide = !hide}>
+        class="pnotify-sticker {getStyle('sticker')} {(!stickerHover || _interacting) ? '' : 'pnotify-hidden'}"
+        role="button"
+        aria-pressed={!hide}
+        tabindex="0"
+        title={hide ? labels.stick : labels.unstick}
+        on:click={() => hide = !hide}
+      >
         <span class="{getIcon('sticker')} {hide ? getIcon('unstuck') : getIcon('stuck')}"></span>
       </div>
     {/if}
@@ -218,9 +222,10 @@
       {/if}
       {#if text !== false}
         <div bind:this={refs.textContainer}
-            class="pnotify-text {getStyle('text')}"
-            style="{_maxTextHeightStyle}"
-            role="alert">
+          class="pnotify-text {getStyle('text')}"
+          style="{_maxTextHeightStyle}"
+          role="alert"
+        >
           {#if !_textElement}
             {#if textTrusted}
               {@html text}

@@ -7,7 +7,7 @@
   // or 'AppendContainer'.
   export const position = 'AppendContent';
 
-  // This if the default values of your options.
+  // This is the default values of your options.
   export const defaults = {
     // If you are displaying any text, you should use a labels options to
     // support internationalization.
@@ -22,10 +22,11 @@ We're going to create a button that will be appended to the notice.
 It will be disabled by default, so we can enable it on mouseover.
 -->
 <button
-    class="pnotify-action-button pnotify-reference-button {self.getStyle('btn')} {self.getStyle('btn-secondary')}"
-    type="button"
-    disabled="{!mouseIsIn}"
-    on:click={doSomething}>
+  class="pnotify-action-button pnotify-reference-button {self.getStyle('btn')} {self.getStyle('btn-secondary')}"
+  type="button"
+  disabled="{!mouseIsIn}"
+  on:click={doSomething}
+>
   <i class={self.getIcon('refresh')} />&nbsp;{labels.text}
 </button>
 <!-- Since our button is floated, we have to add a clearing div. -->
