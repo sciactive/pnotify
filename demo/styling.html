@@ -26,6 +26,13 @@
 
   <script type="text/javascript">
     /* globals PNotify */
+    window.addEventListener('DOMContentLoaded', () => {
+      // ---
+      // Set defaults.
+      // ---
+      PNotify.defaultModules.set(PNotifyMobile, {});
+    });
+
     window.setStyling = function () {
       var styling = document.getElementById('styling').value;
 
@@ -186,43 +193,25 @@
     <h2>Test Notices</h2>
     <button onclick="PNotify.notice({
       title: 'Test Notice',
-      text: 'This is a test notice.',
-      modules: new Map([
-        [PNotifyMobile, {}]
-      ])
+      text: 'This is a test notice.'
     })">Test Notice</button>
     <button onclick="PNotify.info({
       title: 'Test Notice',
-      text: 'This is a test notice.',
-      modules: new Map([
-        [PNotifyMobile, {}]
-      ])
+      text: 'This is a test notice.'
     })">Test Info</button>
     <button onclick="PNotify.success({
       title: 'Test Notice',
-      text: 'This is a test notice.',
-      modules: new Map([
-        [PNotifyMobile, {}]
-      ])
+      text: 'This is a test notice.'
     })">Test Success</button>
     <button onclick="PNotify.error({
       title: 'Test Notice',
-      text: 'This is a test notice.',
-      modules: new Map([
-        [PNotifyMobile, {}]
-      ])
+      text: 'This is a test notice.'
     })">Test Error</button>
     <button onclick="PNotify.info({
-      title: 'This is a test notice.',
-      modules: new Map([
-        [PNotifyMobile, {}]
-      ])
+      title: 'This is a test notice.'
     })">Just Title</button>
     <button onclick="PNotify.info({
-      text: 'This is a test notice.',
-      modules: new Map([
-        [PNotifyMobile, {}]
-      ])
+      text: 'This is a test notice.'
     })">Just Text</button>
     <h3>Confirm Module</h3>
     <button onclick="PNotify.notice({
@@ -232,7 +221,7 @@
       closer: false,
       sticker: false,
       modules: new Map([
-        [PNotifyMobile, {}],
+        ...PNotify.defaultModules,
         [PNotifyConfirm, {confirm: true}]
       ])
     });">Confirm Notice</button>
@@ -243,7 +232,7 @@
       closer: false,
       sticker: false,
       modules: new Map([
-        [PNotifyMobile, {}],
+        ...PNotify.defaultModules,
         [PNotifyConfirm, {confirm: true}]
       ])
     });">Confirm Info</button>
@@ -254,7 +243,7 @@
       closer: false,
       sticker: false,
       modules: new Map([
-        [PNotifyMobile, {}],
+        ...PNotify.defaultModules,
         [PNotifyConfirm, {confirm: true}]
       ])
     });">Confirm Success</button>
@@ -265,7 +254,7 @@
       closer: false,
       sticker: false,
       modules: new Map([
-        [PNotifyMobile, {}],
+        ...PNotify.defaultModules,
         [PNotifyConfirm, {confirm: true}]
       ])
     });">Confirm Error</button>
@@ -277,7 +266,7 @@
       closer: false,
       sticker: false,
       modules: new Map([
-        [PNotifyMobile, {}],
+        ...PNotify.defaultModules,
         [PNotifyConfirm, {prompt: true}]
       ])
     });">Prompt Notice</button>
@@ -288,7 +277,7 @@
       closer: false,
       sticker: false,
       modules: new Map([
-        [PNotifyMobile, {}],
+        ...PNotify.defaultModules,
         [PNotifyConfirm, {prompt: true}]
       ])
     });">Prompt Info</button>
@@ -299,7 +288,7 @@
       closer: false,
       sticker: false,
       modules: new Map([
-        [PNotifyMobile, {}],
+        ...PNotify.defaultModules,
         [PNotifyConfirm, {prompt: true}]
       ])
     });">Prompt Success</button>
@@ -310,7 +299,7 @@
       closer: false,
       sticker: false,
       modules: new Map([
-        [PNotifyMobile, {}],
+        ...PNotify.defaultModules,
         [PNotifyConfirm, {prompt: true}]
       ])
     });">Prompt Error</button>
@@ -322,7 +311,7 @@
       closer: false,
       sticker: false,
       modules: new Map([
-        [PNotifyMobile, {}],
+        ...PNotify.defaultModules,
         [PNotifyConfirm, {prompt: true, promptMultiLine: true}]
       ])
     });">Multi Line Prompt Notice</button>
@@ -333,7 +322,7 @@
       closer: false,
       sticker: false,
       modules: new Map([
-        [PNotifyMobile, {}],
+        ...PNotify.defaultModules,
         [PNotifyConfirm, {prompt: true, promptMultiLine: true}]
       ])
     });">Multi Line Prompt Info</button>
@@ -344,7 +333,7 @@
       closer: false,
       sticker: false,
       modules: new Map([
-        [PNotifyMobile, {}],
+        ...PNotify.defaultModules,
         [PNotifyConfirm, {prompt: true, promptMultiLine: true}]
       ])
     });">Multi Line Prompt Success</button>
@@ -355,13 +344,15 @@
       closer: false,
       sticker: false,
       modules: new Map([
-        [PNotifyMobile, {}],
+        ...PNotify.defaultModules,
         [PNotifyConfirm, {prompt: true, promptMultiLine: true}]
       ])
     });">Multi Line Prompt Error</button>
   </div>
   <script type="text/javascript">
     loadLibraries();
+    window.setStyling();
+    window.setIcons();
   </script>
 </body>
 </html>
