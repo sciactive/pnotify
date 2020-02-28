@@ -36,11 +36,13 @@
     text: false,
     // Whether to trust the text or escape its contents. (Not allow HTML.)
     textTrusted: false,
-    // What styling classes to use. (Can be 'brighttheme', 'material',
-    // 'bootstrap3', 'bootstrap4', or a styling object.)
+    // What styling classes to use. (Can be 'brighttheme', 'material', or a
+    // styling object.) (Note that the Bootstrap modules provide a different
+    // default.)
     styling: 'brighttheme',
-    // What icons to use (Can be 'brighttheme', 'material', 'bootstrap3',
-    // 'fontawesome4', 'fontawesome5', or an icon object.)
+    // What icons classes to use (Can be 'brighttheme', 'material', or an icon
+    // object.) (Note that the Font Awesome and Glyphicon modules provide a
+    // different default.)
     icons: 'brighttheme',
     // Light or dark version of the theme, if supported by the styling. This
     // overrides the CSS media query when a preference is given. (Can be
@@ -79,6 +81,20 @@
     delay: 8000,
     // Reset the hide timer if the mouse moves over the notice.
     mouseReset: true,
+    // Provide a button for the user to manually close the notice.
+    closer: true,
+    // Only show the closer button on hover.
+    closerHover: true,
+    // Provide a button for the user to manually stick the notice.
+    sticker: true,
+    // Only show the sticker button on hover.
+    stickerHover: true,
+    // The various displayed text, helps facilitating internationalization.
+    labels: {
+      close: 'Close',
+      stick: 'Stick',
+      unstick: 'Unstick'
+    },
     // Remove the notice's elements from the DOM after it is removed.
     remove: true,
     // Whether to remove the notice from the stack (and therefore, stack
@@ -159,6 +175,27 @@
     {#each modulesPrependContainer as [module, options] (module)}
       <svelte:component this={module.default} self={self} {...options} />
     {/each}
+    {#if closer && !_nonBlock}
+      <div
+          class="pnotify-closer {getStyle('closer')} {(!closerHover || _interacting) ? '' : 'pnotify-hidden'}"
+          role="button"
+          tabindex="0"
+          title={labels.close}
+          on:click={() => close(false)}>
+        <span class={getIcon('closer')}></span>
+      </div>
+    {/if}
+    {#if sticker && !_nonBlock}
+      <div
+          class="pnotify-sticker {getStyle('sticker')} {(!stickerHover || _interacting) ? '' : 'pnotify-hidden'}"
+          role="button"
+          aria-pressed={!hide}
+          tabindex="0"
+          title={hide ? labels.stick : labels.unstick}
+          on:click={() => hide = !hide}>
+        <span class="{getIcon('sticker')} {hide ? getIcon('unstuck') : getIcon('stuck')}"></span>
+      </div>
+    {/if}
     {#if icon !== false}
       <div bind:this={refs.iconContainer} class="pnotify-icon {getStyle('icon')}">
         <span class={icon === true ? getIcon(type) : icon}></span>
@@ -269,6 +306,11 @@
   export let hide = myDefaults.hide;
   export let delay = myDefaults.delay;
   export let mouseReset = myDefaults.mouseReset;
+  export let closer = myDefaults.closer;
+  export let closerHover = myDefaults.closerHover;
+  export let sticker = myDefaults.sticker;
+  export let stickerHover = myDefaults.stickerHover;
+  export let labels = myDefaults.labels;
   export let remove = myDefaults.remove;
   export let destroy = myDefaults.destroy;
 
@@ -287,6 +329,8 @@
   let _moveClass = '';
   // Stores whether the notice was hidden by a timer.
   let _timerHide = false;
+  // Whether the mouse is over the notice or the notice is focused.
+  let _interacting = false;
   // Holds classes that modules add for the notice element or container element.
   let _moduleClasses = {
     elem: [],
@@ -314,6 +358,7 @@
   // Whether the notification is open in a modal stack (or a modalish stack in
   // modal state).
   $: _modal = stack && (stack.modal === true || (stack.modal === 'ish' && _timer === 'prevented')) && ['open', 'opening', 'closing'].indexOf(_state) !== -1;
+  $: _nonBlock = addClass.match(/\bnonblock\b/) || (addModalClass.match(/\bnonblock\b/) && _modal) || (addModelessClass.match(/\bnonblock\b/) && !_modal);
   // This is for specific styling for how notices stack.
   $: _stackDirClass = (stack && stack.dir1) ? 'pnotify-stack-'+stack.dir1 : '';
 
@@ -325,7 +370,7 @@
 
   export const getState = () => _state;
   export const getStyle = name => typeof styling === 'string' ? styling + '-' + name : (name in styling ? styling[name] : styling.prefix + '-' + name);
-  export const getIcon = name => typeof icons === 'string' ? icons + '-icon-' + name : (name in icons ? icons[name] : icons.prefix + '-' + name);
+  export const getIcon = name => typeof icons === 'string' ? icons + '-icon-' + name : (name in icons ? icons[name] : icons.prefix + '-icon-' + name);
 
   $: if (_titleElement && refs.titleContainer) {
     refs.titleContainer.appendChild(title);
@@ -385,6 +430,8 @@
   });
 
   function handleInteraction (e) {
+    _interacting = true;
+
     // Stop animation, reset the removal timer when the user interacts.
     if (mouseReset && _state === 'closing') {
       if (!_timerHide) {
@@ -392,6 +439,7 @@
       }
       cancelClose();
     }
+
     // Stop the close timer.
     if (hide && mouseReset) {
       cancelClose();
@@ -399,6 +447,8 @@
   }
 
   function handleLeaveInteraction (e) {
+    _interacting = false;
+
     // Start the close timer.
     if (hide && mouseReset && _animating !== 'out') {
       queueClose();
@@ -471,7 +521,7 @@
     _masking = false;
     // This makes the notice visibity: hidden; so its dimensions can be
     // determined.
-    _animatingClass = 'pnotify-initial-hidden';
+    _animatingClass = 'pnotify-initial pnotify-hidden';
 
     const afterOpenCallback = () => {
       // Now set it to hide.
@@ -564,6 +614,7 @@
     _timer = null;
 
     animateOut(() => {
+      _interacting = false;
       _timerHide = false;
       _state = waitAfterward ? 'waiting' : 'closed';
       dispatchLifecycleEvent('afterClose', { immediate, timerHide, waitAfterward });
@@ -893,8 +944,10 @@
     display: block;
     opacity: 1;
   }
-  :global(.pnotify.pnotify-initial-hidden) {
+  :global(.pnotify.pnotify-initial) {
     display: block;
+  }
+  :global(.pnotify-hidden) {
     visibility: hidden;
   }
   :global(.pnotify.pnotify-move) {
@@ -958,6 +1011,18 @@
     display: block;
     height: 0;
     clear: both;
+  }
+  :global(.pnotify-closer),
+  :global(.pnotify-sticker) {
+    float: right;
+    margin-left: .5em;
+    cursor: pointer;
+  }
+  :global([dir=rtl] .pnotify-closer),
+  :global([dir=rtl] .pnotify-sticker) {
+    float: left;
+    margin-right: .5em;
+    margin-left: 0;
   }
   :global(.pnotify-title) {
     display: block;

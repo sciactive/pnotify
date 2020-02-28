@@ -8,6 +8,10 @@
 * The new modalish flow is the default flow. The default stack is configured to use it. To go back to the old behavior, use `PNotify.defaultStack.maxOpen = Infinity; PNotify.defaultStack.modal = false;`.
 * Using the factory functions is required. Using the `new` keyword will break your notice.
 * IIFE scripts have been replaced with UMD scripts, since static methods and properties are now module exports.
+* The Buttons module has been integrated into PNotify Core. Everyone was using it anyway. All the options are the same (except for `classes`), they're just core options now.
+* Modules dont alter PNotify Core anymore. Instead, they are only used when they are explicitly added to the `modules` option.
+  * Since they don't add themselves to PNotify anymore, the ones with a single option to toggle on/off, like Desktop, don't have that option anymore. If you don't want the functionality, don't include the module.
+  * The way you add them and their options is different. Now `modules` is a `Map`, where the module itself is the key, and the options are the value.
 * Bootstrap styling, Glyphicon icons, and Font Awesome icons are now provided by modules, rather than being built in.
 * The deprecated `remove()`, `removeAll()`, `cancelRemove()`, etc. methods have been removed. (Use `close()`, `stack.close()`, `cancelClose()`.)
 * The `autoDisplay` option has been renamed `autoOpen`.

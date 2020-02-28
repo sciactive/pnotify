@@ -173,7 +173,7 @@ export default class Stack {
     // Skip this notice if it's not shown.
     if (
       !elem.classList.contains('pnotify-in') &&
-      !elem.classList.contains('pnotify-initial-hidden') &&
+      !elem.classList.contains('pnotify-initial') &&
       !masking
     ) {
       return;

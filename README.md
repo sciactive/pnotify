@@ -31,7 +31,6 @@ PNotify is a JavaScript notification and [confirmation/prompt](http://sciactive.
   - [Changing Defaults](#Changing-Defaults)
 - [Module Options](#Module-Options)
   - [Desktop Module](#Desktop-Module)
-  - [Buttons Module](#Buttons-Module)
   - [Mobile Module](#Mobile-Module)
   - [Animate Module](#Animate-Module)
   - [Confirm Module](#Confirm-Module)
@@ -80,7 +79,7 @@ In addition to the JS, be sure to [include a PNotify style](#styles).
 
 ```js
 import { alert } from 'pnotify/src/PNotifyCore';
-import 'pnotify/src/PNotifyButtons';
+import 'pnotify/src/PNotifyMobile';
 
 alert('Notice me, senpai!');
 ```
@@ -91,7 +90,7 @@ alert('Notice me, senpai!');
 
 ```js
 import { alert } from 'pnotify/dist/es/PNotify';
-import 'pnotify/dist/es/PNotifyButtons';
+import 'pnotify/dist/es/PNotifyMobile';
 
 alert('Notice me, senpai!');
 ```
@@ -102,12 +101,12 @@ alert('Notice me, senpai!');
 
 ```ts
 import { alert } from 'pnotify/dist/es/PNotify';
-import PNotifyButtons from 'pnotify/dist/es/PNotifyButtons';
+import PNotifyMobile from 'pnotify/dist/es/PNotifyMobile';
 
 //...
 export class WhateverComponent {
   constructor() {
-    PNotifyButtons; // Initiate the module. Important!
+    PNotifyMobile; // Initiate the module. Important!
     alert('Notice me, senpai!');
   }
 }
@@ -123,12 +122,12 @@ export class WhateverComponent {
 // pnotify.service.ts
 import { Injectable } from '@angular/core';
 import { alert } from 'pnotify/dist/es/PNotify';
-import PNotifyButtons from 'pnotify/dist/es/PNotifyButtons';
+import PNotifyMobile from 'pnotify/dist/es/PNotifyMobile';
 
 @Injectable()
 export class PNotifyService {
   getPNotifyAlert() {
-    PNotifyButtons; // Initiate the module. Important!
+    PNotifyMobile; // Initiate the module. Important!
     return alert;
   }
 }
@@ -163,7 +162,7 @@ export class WhateverComponent {
 ```js
 var angular = require('angular');
 var PNotify = require('pnotify/dist/umd/PNotify');
-require('pnotify/dist/umd/PNotifyButtons');
+require('pnotify/dist/umd/PNotifyMobile');
 
 angular.module('WhateverModule', [])
   .value('PNotify', PNotify)
@@ -178,7 +177,7 @@ PNotify in vanilla ECMAScript 5. Include the UMD scripts from `dist`:
 
 ```html
 <script type="text/javascript" src="node_modules/pnotify/dist/umd/PNotify.js"></script>
-<script type="text/javascript" src="node_modules/pnotify/dist/umd/PNotifyButtons.js"></script>
+<script type="text/javascript" src="node_modules/pnotify/dist/umd/PNotifyMobile.js"></script>
 <script type="text/javascript">
   PNotify.alert('Notice me, senpai!');
 </script>
@@ -190,7 +189,7 @@ PNotify in vanilla ECMAScript 6+. Include the ES modules from `dist`:
 
 ```js
 import { alert } from 'node_modules/pnotify/dist/es/PNotify.js';
-import 'node_modules/pnotify/dist/es/PNotifyButtons.js';
+import 'node_modules/pnotify/dist/es/PNotifyMobile.js';
 
 alert('Notice me, senpai!');
 ```
@@ -255,6 +254,8 @@ Or a clone from jsDelivr:
 
 ## Bootstrap
 
+TODO: Update this.
+
 Styling for the popular Bootstrap library. Doesn't support dark mode (but you can use a Bootstrap theme). To set Bootstrap as the default style, include the appropriate line(s) from below:
 
 ```js
@@ -269,6 +270,8 @@ defaults.styling = 'bootstrap4'; // Bootstrap version 4
 ```
 
 ## Font Awesome (Icons)
+
+TODO: Update this.
 
 To set Font Awesome as the default icons, include the appropriate line from below:
 
@@ -328,9 +331,9 @@ PNotify options and default values.
 * `textTrusted: false`<br>
   Whether to trust the text or escape its contents. (Not allow HTML.)
 * `styling: 'brighttheme'`<br>
-  What styling classes to use. (Can be 'brighttheme', 'material', 'bootstrap3', 'bootstrap4', or a styling object.)
+  What styling classes to use. (Can be 'brighttheme', 'material', or a styling object.) (Note that the Bootstrap modules provide a different default.)
 * `icons: 'brighttheme'`<br>
-  What icons classes to use (Can be 'brighttheme', 'material', 'bootstrap3', 'fontawesome4', 'fontawesome5', or an icon object.)
+  What icons classes to use (Can be 'brighttheme', 'material', or an icon object.) (Note that the Font Awesome and Glyphicon modules provide a different default.)
 * `mode: 'no-preference'`<br>
   Light or dark version of the theme, if supported by the styling. This overrides the CSS media query when a preference is given. (Can be 'no-preference', 'light', or 'dark'.)
 * `addClass: ''`<br>
@@ -361,6 +364,16 @@ PNotify options and default values.
   Delay in milliseconds before the notice is closed.
 * `mouseReset: true`<br>
   Reset the hide timer if the mouse moves over the notice.
+* `closer: true`<br>
+  Provide a button for the user to manually close the notice.
+* `closerHover: true`<br>
+  Only show the closer button on hover.
+* `sticker: true`<br>
+  Provide a button for the user to manually stick the notice.
+* `stickerHover: true`<br>
+  Only show the sticker button on hover.
+* `labels: {close: 'Close', stick: 'Stick', unstick: 'Unstick'}`<br>
+  Lets you change the displayed text, facilitating internationalization.
 * `remove: true`<br>
   Remove the notice's elements from the DOM after it is closed.
 * `destroy: true`<br>
@@ -397,24 +410,26 @@ const { defaults } = require('pnotify/dist/umd/PNotify');
 defaults.width = '400px';
 ```
 
-Changing a default for modules can be done in a couple ways.
+Enabling a module by default:
 
 ```js
-// This will change the default for every notice, and is the recommended way.
-import { modules } from 'PNotify/dist/es/PNotify';
-// or
-const { modules } = require('pnotify/dist/umd/PNotify');
-modules.Desktop.defaults.desktop = true;
-
-// This will change the default only for notices that don't have a `modules` option.
 import { defaults } from 'PNotify/dist/es/PNotify';
+import * as PNotifyMobile from 'PNotify/dist/es/PNotifyMobile';
 // or
 const { defaults } = require('pnotify/dist/umd/PNotify');
-defaults.modules = {
-  Desktop: {
-    desktop: true
-  }
-};
+const PNotifyMobile = require('pnotify/dist/umd/PNotifyMobile');
+
+defaults.modules.set(PNotifyMobile, {});
+```
+
+Changing module defaults:
+
+```js
+import { defaults } from 'PNotify/dist/es/PNotifyAnimate';
+// or
+const { defaults } = require('pnotify/dist/umd/PNotifyAnimate');
+defaults.inClass = 'fadeInDown';
+defaults.outClass = 'fadeOutUp';
 ```
 
 # Module Options
@@ -434,24 +449,6 @@ defaults.modules = {
   Optionally display different text for the desktop.
 * `options: {}`<br>
   Any additional options to be passed to the Notification constructor.
-
-`}`
-
-## Buttons Module
-
-`Buttons: {`
-* `closer: true`<br>
-  Provide a button for the user to manually close the notice.
-* `closerHover: true`<br>
-  Only show the closer button on hover.
-* `sticker: true`<br>
-  Provide a button for the user to manually stick the notice.
-* `stickerHover: true`<br>
-  Only show the sticker button on hover.
-* `labels: {close: 'Close', stick: 'Stick', unstick: 'Unstick'}`<br>
-  Lets you change the displayed text, facilitating internationalization.
-* `classes: {closer: null, pinUp: null, pinDown: null}`<br>
-  The classes to use for button icons. Leave them null to use the classes from the styling you're using.
 
 `}`
 

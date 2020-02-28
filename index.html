@@ -67,8 +67,6 @@
   <!-- <link rel="stylesheet" href="dist/PNotifyFontAwesome5.css" /> -->
   <link rel="stylesheet" href="src/PNotifyBrightTheme.css" />
   <link rel="stylesheet" href="src/PNotifyMaterial.css" />
-  <script src="dist/umd/PNotifyButtons.js"></script>
-  <!-- <link rel="stylesheet" href="dist/PNotifyButtons.css" /> -->
   <script src="dist/umd/PNotifyAnimate.js"></script>
   <script src="dist/umd/PNotifyMobile.js"></script>
   <!-- <link rel="stylesheet" href="dist/PNotifyMobile.css" /> -->
@@ -135,7 +133,6 @@
       // Set defaults.
       // ---
       PNotify.defaults.destroy = false;
-      PNotify.defaults.modules.set(PNotifyButtons, {});
       PNotify.defaults.modules.set(PNotifyMobile, {});
       PNotify.defaults.modules.set(PNotifyFontAwesome, {});
 
@@ -381,7 +378,7 @@
             text: 'I have an icon that uses the Font Awesome icon styles.',
             icon: 'far fa-envelope'
           });
-        ">Specific Icon (Font Awesome)</button>
+        ">Custom Icon (Font Awesome)</button>
         <button class="btn btn-light my-1 source" onclick="
           PNotify.notice({
             title: 'No Icon Notice',
@@ -389,6 +386,98 @@
             icon: false
           });
         ">No Icon</button>
+        <hr />
+        <button class="btn btn-light my-1 source" onclick="
+          PNotify.notice({
+            title: 'Sticky Notice',
+            text: 'Check me out! I\'m a sticky notice. You\'ll have to close me yourself.',
+            hide: false
+          });
+        ">Sticky Notice</button>
+        <button class="btn btn-light my-1 source" onclick="
+          PNotify.info({
+            title: 'Sticky Info',
+            text: 'Sticky info, you know, like a newspaper covered in honey.',
+            hide: false
+          });
+        ">Sticky Info</button>
+        <button class="btn btn-light my-1 source" onclick="
+          PNotify.success({
+            title: 'Sticky Success',
+            text: 'Sticky success... I\'m not even gonna make a joke.',
+            hide: false
+          });
+        ">Sticky Success</button>
+        <button class="btn btn-light my-1 source" onclick="
+          PNotify.error({
+            title: 'Uh Oh!',
+            text: 'Something really terrible happened. You really need to read this, so I won\'t close automatically.',
+            hide: false
+          });
+        ">Sticky Error</button>
+        <button class="btn btn-light my-1 source" onclick="
+          PNotify.notice({
+            title: 'Custom Button Icons Notice',
+            text: 'Check me out! My sticker and close buttons have custom icons!',
+            hide: false,
+            icons: {
+              prefix: PNotify.defaults.icons,
+
+              closer: 'fas fa-bomb',
+              sticker: 'fas',
+              stuck: 'fa-hourglass',
+              unstuck: 'fa-anchor'
+            }
+          });
+        ">Custom Button Icons</button>
+        <button class="btn btn-light my-1 source" onclick="
+          PNotify.notice({
+            title: 'No Sticky Button Notice',
+            text: 'Check me out! I\'m a sticky notice with no unsticky button. You\'ll have to close me manually.',
+            hide: false,
+            sticker: false
+          });
+        ">No Sticky Button</button>
+        <button class="btn btn-light my-1 source" onclick="
+          PNotify.notice({
+            title: 'No Close Button Notice',
+            text: 'But, how are you supposed to close me?',
+            hide: false,
+            closer: false
+          });
+        ">No Close Button</button>
+        <button class="btn btn-light my-1 source" onclick="
+          PNotify.notice({
+            title: 'Permanent Buttons Notice',
+            text: 'My buttons are really lonely, so they\'re gonna hang out with us.',
+            closerHover: false,
+            stickerHover: false
+          });
+        ">Permanent Buttons</button>
+        <button class="btn btn-light my-1 source" onclick="
+          if (window.permanotice) {
+            window.permanotice.open();
+          } else {
+            window.permanotice = PNotify.notice({
+              title: 'Now Look Here',
+              text: 'There\'s something you need to know, and I won\'t go away until you come to grips with it.',
+              hide: false,
+              closer: false,
+              sticker: false,
+              modules: new Map([
+                ...PNotify.defaults.modules,
+                [PNotifyMobile, {
+                  swipeDismiss: false
+                }]
+              ])
+            });
+          }
+        ">Permanotice</button>
+        <button class="btn btn-light my-1 source" onclick="
+          if (window.permanotice) {
+            window.permanotice.close();
+          }
+        ">Close Permanotice</button>
         <hr />
         <button class="btn btn-light my-1 source" onclick="
           PNotify.notice({
@@ -451,7 +540,8 @@
             width: 'auto',
             maxTextHeight: null,
             hide: false,
-            modules: new Map([...PNotify.defaults.modules].filter(([mod]) => mod !== PNotifyButtons))
+            closer: false,
+            sticker: false
           });
           notice.refs.elem.querySelector('form [name=cancel]').addEventListener('click', () => notice.close());
           notice.refs.elem.querySelector('form').addEventListener('submit', e => {
@@ -469,7 +559,8 @@
               width: PNotify.defaults.width,
               hide: true,
               type: 'success',
-              modules: new Map(PNotify.defaults.modules)
+              closer: true,
+              sticker: true
             });
           });
         ">Forms</button>
@@ -580,7 +671,8 @@
           const notice = PNotify.notice({
             title: 'Click Close Notice',
             text: 'Click me anywhere to dismiss me.',
-            modules: new Map([...PNotify.defaults.modules].filter(([mod]) => mod !== PNotifyButtons))
+            closer: false,
+            sticker: false
           });
           notice.on('click', () => {
             notice.close();
@@ -643,7 +735,8 @@
               hide: false,
               shadow: false,
               width: '200px',
-              modules: new Map([...PNotify.defaults.modules].filter(([mod]) => mod !== PNotifyButtons))
+              closer: false,
+              sticker: false
             });
 
             notice.on('pnotify:afterOpen', () => {
@@ -665,7 +758,8 @@
                     options.icon = 'fas fa-check';
                     options.shadow = true;
                     options.width = PNotify.defaults.width;
-                    options.modules = new Map(PNotify.defaults.modules);
+                    options.closer = true;
+                    options.sticker = true;
                   }
                   notice.update(options);
                 }, 120);
@@ -698,13 +792,8 @@
               autoOpen: false,
               width: '80vw',
               maxTextHeight: null,
-              stack: new PNotify.Stack({ modal: true, overlayClosesPinned: true }),
-              modules: new Map([
-                ...PNotify.defaults.modules,
-                [PNotifyButtons, {
-                  sticker: false
-                }]
-              ])
+              sticker: false,
+              stack: new PNotify.Stack({ modal: true, overlayClosesPinned: true })
             });
           }
           window.growlModal.open();
@@ -941,7 +1030,8 @@
               icon: 'fas fa-cog fa-spin',
               hide: false,
               destroy: true,
-              modules: new Map([...PNotify.defaults.modules].filter(([mod]) => mod !== PNotifyButtons))
+              closer: false,
+              sticker: false
             });
 
             notice.on('pnotify:afterOpen', () => {
@@ -1161,123 +1251,6 @@
         <button class="btn btn-light my-1 source" onclick="
           PNotifyDesktop.permission();
         ">Explicitly Ask for Notice Permission</button>
-      </div>
-
-      <h5 class="card-header">Buttons Module <small>Sticker and a closer buttons.</small></h5>
-      <div class="card-body">
-        <div class="alert alert-info">The Buttons module is added to PNotify.defaults.modules on this page, so most of the demos on this page include the buttons.</div>
-        <button class="btn btn-light my-1 source" onclick="
-          PNotify.notice({
-            title: 'Sticky Notice',
-            text: 'Check me out! I\'m a sticky notice. You\'ll have to close me yourself.',
-            hide: false
-          });
-        ">Sticky Notice</button>
-        <button class="btn btn-light my-1 source" onclick="
-          PNotify.info({
-            title: 'Sticky Info',
-            text: 'Sticky info, you know, like a newspaper covered in honey.',
-            hide: false
-          });
-        ">Sticky Info</button>
-        <button class="btn btn-light my-1 source" onclick="
-          PNotify.success({
-            title: 'Sticky Success',
-            text: 'Sticky success... I\'m not even gonna make a joke.',
-            hide: false
-          });
-        ">Sticky Success</button>
-        <button class="btn btn-light my-1 source" onclick="
-          PNotify.error({
-            title: 'Uh Oh!',
-            text: 'Something really terrible happened. You really need to read this, so I won\'t close automatically.',
-            hide: false
-          });
-        ">Sticky Error</button>
-        <button class="btn btn-light my-1 source" onclick="
-          PNotify.notice({
-            title: 'Custom Icon Button Notice',
-            text: 'Check me out! My sticker and close buttons have custom icons!',
-            hide: false,
-            modules: new Map([
-              ...PNotify.defaults.modules,
-              [PNotifyButtons, {
-                classes: {
-                  closer: 'fas fa-bomb',
-                  sticker: 'fas',
-                  stuck: 'fa-hourglass',
-                  unstuck: 'fa-anchor'
-                }
-              }]
-            ])
-          });
-        ">Custom Icons</button>
-        <button class="btn btn-light my-1 source" onclick="
-          PNotify.notice({
-            title: 'No Sticky Button Notice',
-            text: 'Check me out! I\'m a sticky notice with no unsticky button. You\'ll have to close me yourself.',
-            hide: false,
-            modules: new Map([
-              ...PNotify.defaults.modules,
-              [PNotifyButtons, {
-                sticker: false
-              }]
-            ])
-          });
-        ">No Sticky Button</button>
-        <button class="btn btn-light my-1 source" onclick="
-          PNotify.notice({
-            title: 'No Close Button Notice',
-            text: 'But, how are you supposed to close me?',
-            hide: false,
-            modules: new Map([
-              ...PNotify.defaults.modules,
-              [PNotifyButtons, {
-                closer: false
-              }]
-            ])
-          });
-        ">No Close Button</button>
-        <button class="btn btn-light my-1 source" onclick="
-          PNotify.notice({
-            title: 'Permanent Buttons Notice',
-            text: 'My buttons are really lonely, so they\'re gonna hang out with us.',
-            modules: new Map([
-              ...PNotify.defaults.modules,
-              [PNotifyButtons, {
-                closerHover: false,
-                stickerHover: false
-              }]
-            ])
-          });
-        ">Permanent Buttons</button>
-        <button class="btn btn-light my-1 source" onclick="
-          const sourceNote = 'Instead of turning off the sticker and closer, you can also just leave out PNotifyButtons.';
-          if (window.permanotice) {
-            window.permanotice.open();
-          } else {
-            window.permanotice = PNotify.notice({
-              title: 'Now Look Here',
-              text: 'There\'s something you need to know, and I won\'t go away until you come to grips with it.',
-              hide: false,
-              modules: new Map([
-                ...PNotify.defaults.modules,
-                [PNotifyButtons, {
-                  closer: false,
-                  sticker: false
-                }],
-                [PNotifyMobile, {
-                  swipeDismiss: false
-                }]
-              ])
-            });
-          }
-        ">Permanotice</button>
-        <button class="btn btn-light my-1 source" onclick="
-          if (window.permanotice) {
-            window.permanotice.close();
-          }
-        ">Close Permanotice</button>
       </div>
 
       <h5 class="card-header">Mobile Module <small>Notices on mobile phones and tablets.</small></h5>
@@ -1642,8 +1615,10 @@
             icon: 'fas fa-question-circle',
             hide: false,
             destroy: true,
+            closer: false,
+            sticker: false,
             modules: new Map([
-              ...[...PNotify.defaults.modules].filter(([mod]) => mod !== PNotifyButtons),
+              ...PNotify.defaults.modules,
               [PNotifyConfirm, {
                 confirm: true
               }]
@@ -1658,6 +1633,8 @@
             text: 'Are you sure?',
             icon: 'fas fa-question-circle',
             hide: false,
+            closer: false,
+            sticker: false,
             destroy: true,
             stack: new PNotify.Stack({
               dir1: 'down',
@@ -1666,7 +1643,7 @@
               overlayClose: false
             }),
             modules: new Map([
-              ...[...PNotify.defaults.modules].filter(([mod]) => mod !== PNotifyButtons),
+              ...PNotify.defaults.modules,
               [PNotifyConfirm, {
                 confirm: true
               }]
@@ -1681,9 +1658,11 @@
             text: 'You have three options to choose from.',
             icon: 'fas fa-question-circle',
             hide: false,
+            closer: false,
+            sticker: false,
             destroy: true,
             modules: new Map([
-              ...[...PNotify.defaults.modules].filter(([mod]) => mod !== PNotifyButtons),
+              ...PNotify.defaults.modules,
               [PNotifyConfirm, {
                 confirm: true,
                 buttons: [
@@ -1732,9 +1711,11 @@
             text: 'What side would you like?',
             icon: 'fas fa-question-circle',
             hide: false,
+            closer: false,
+            sticker: false,
             destroy: true,
             modules: new Map([
-              ...[...PNotify.defaults.modules].filter(([mod]) => mod !== PNotifyButtons),
+              ...PNotify.defaults.modules,
               [PNotifyConfirm, {
                 prompt: true
               }]
@@ -1769,9 +1750,11 @@
             text: 'Write me a poem, please.',
             icon: 'fas fa-question-circle',
             hide: false,
+            closer: false,
+            sticker: false,
             destroy: true,
             modules: new Map([
-              ...[...PNotify.defaults.modules].filter(([mod]) => mod !== PNotifyButtons),
+              ...PNotify.defaults.modules,
               [PNotifyConfirm, {
                 prompt: true,
                 promptMultiLine: true,
@@ -1809,9 +1792,11 @@
             text: 'You have no choice.',
             icon: 'fas fa-info-circle',
             hide: false,
+            closer: false,
+            sticker: false,
             destroy: true,
             modules: new Map([
-              ...[...PNotify.defaults.modules].filter(([mod]) => mod !== PNotifyButtons),
+              ...PNotify.defaults.modules,
               [PNotifyConfirm, {
                 confirm: true,
                 buttons: [{
@@ -1829,9 +1814,11 @@
             text: 'You have no choice.',
             icon: 'fas fa-info-circle',
             hide: false,
+            closer: false,
+            sticker: false,
             destroy: true,
             modules: new Map([
-              ...[...PNotify.defaults.modules].filter(([mod]) => mod !== PNotifyButtons),
+              ...PNotify.defaults.modules,
               [PNotifyConfirm, {
                 confirm: true,
                 buttons: [{
@@ -1849,9 +1836,11 @@
             text: 'You have no choice.',
             icon: 'fas fa-info-circle',
             hide: false,
+            closer: false,
+            sticker: false,
             destroy: true,
             modules: new Map([
-              ...[...PNotify.defaults.modules].filter(([mod]) => mod !== PNotifyButtons),
+              ...PNotify.defaults.modules,
               [PNotifyConfirm, {
                 confirm: true,
                 buttons: [{
@@ -1869,9 +1858,11 @@
             text: 'You have no choice.',
             icon: 'fas fa-info-circle',
             hide: false,
+            closer: false,
+            sticker: false,
             destroy: true,
             modules: new Map([
-              ...[...PNotify.defaults.modules].filter(([mod]) => mod !== PNotifyButtons),
+              ...PNotify.defaults.modules,
               [PNotifyConfirm, {
                 confirm: true,
                 buttons: [{
@@ -1919,14 +1910,9 @@
             text: 'Stacks are used to position notices and determine where new notices will go when they\'re created. Each notice that\'s placed into a stack will be positioned related to the other notices in that stack.\n\nModeless stacks don\'t block the page. Modal stacks block the page so the user can only interact with the notices. Modalish stacks show only one notice, until the user interacts, then they can block the page and show all the notices.',
             icon: 'fas fa-bars',
             hide: false,
+            sticker: false,
             destroy: true,
-            stack: new PNotify.Stack({ modal: true, overlayClosesPinned: true }),
-            modules: new Map([
-              ...PNotify.defaults.modules,
-              [PNotifyButtons, {
-                sticker: false
-              }]
-            ])
+            stack: new PNotify.Stack({ modal: true, overlayClosesPinned: true })
           });
         ">What are stacks?</button>
         <hr />
@@ -2347,6 +2333,8 @@
                 title: 'Tooltip',
                 text: "I'm not in a stack. I'm positioned like a tooltip with JavaScript.",
                 hide: false,
+                closer: false,
+                sticker: false,
                 animateSpeed: 'fast',
                 icon: 'fas fa-comment',
                 // Setting stack to null causes PNotify to ignore this notice when positioning.
@@ -2354,7 +2342,7 @@
                 autoOpen: false,
                 destroy: false,
                 modules: new Map([
-                  ...[...PNotify.defaults.modules].filter(([mod]) => mod !== PNotifyButtons && mod !== PNotifyMobile)
+                  ...[...PNotify.defaults.modules].filter(([mod]) => mod !== PNotifyMobile)
                 ])
               });
               // Close the notice if the user mouses over it.
@@ -2669,16 +2657,11 @@ PNotify.notice({
             text: sourceElement,
             icon: 'fas fa-code',
             hide: false,
+            sticker: false,
             destroy: true,
             width: '80vw',
             maxTextHeight: null,
-            stack: new PNotify.Stack({ modal: true, overlayClosesPinned: true }),
-            modules: new Map([
-              ...PNotify.defaults.modules,
-              [PNotifyButtons, {
-                sticker: false
-              }]
-            ])
+            stack: new PNotify.Stack({ modal: true, overlayClosesPinned: true })
           });
 
           addPrettyCode(text, sourceElement);

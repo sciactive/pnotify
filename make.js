@@ -10,7 +10,6 @@ const pnotifyComponents = [
   'PNotifyAnimate',
   'PNotifyBootstrap3',
   'PNotifyBootstrap4',
-  'PNotifyButtons',
   'PNotifyConfirm',
   'PNotifyDesktop',
   'PNotifyFontAwesome',
