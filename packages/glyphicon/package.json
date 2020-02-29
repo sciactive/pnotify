@@ -1,0 +1,35 @@
+{
+  "name": "@pnotify/glyphicon",
+  "version": "5.0.0-alpha.5",
+  "description": "PNotify - Glyphicon Module",
+  "keywords": [
+    "notice",
+    "notices",
+    "notification",
+    "notifications",
+    "alert",
+    "alerts",
+    "web notifications",
+    "prompts",
+    "non blocking",
+    "notify",
+    "material",
+    "material ui"
+  ],
+  "homepage": "https://github.com/sciactive/pnotify",
+  "bugs": {
+    "url": "https://github.com/sciactive/pnotify/issues"
+  },
+  "license": "Apache-2.0",
+  "author": "Hunter Perrin",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sciactive/pnotify.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

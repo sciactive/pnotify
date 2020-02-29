@@ -3,4 +3,4 @@
 /libtests/*/dist
 /vendor/
 /lib/
-/dist/
+/packages/*/dist/
