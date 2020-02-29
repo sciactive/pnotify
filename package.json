@@ -26,7 +26,7 @@
     "build-dev": "./package-sh.sh npm run build-dev",
     "build": "./package-sh.sh npm run build",
     "watch": "./package-sh.sh npm run watch",
-    "deploy": "git checkout gh-pages && git merge develop && rm -rf ./dist/ && npm run build && npm run build-dev && git add . && git commit -m 'Update built files.' && git push && git checkout develop",
+    "deploy": "git checkout gh-pages && git merge develop && rm -rf ./packages/*/dist/ && npm run build-dev && git add . && git commit -m 'Update built files.' && git push && git checkout develop",
     "lint": "eslint index.html make.js src/*.html src/*.js demo/*"
   },
   "files": [],
