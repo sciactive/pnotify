@@ -6,7 +6,8 @@
   "command": {
     "version": {
       "allowBranch": [
-        "master"
+        "master",
+        "develop"
       ],
       "conventionalCommits": true
     }
