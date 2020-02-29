@@ -730,9 +730,9 @@ notice.on('pnotify:cancel', () => {
 
 # Instance Methods and Properties
 
-* `notice.open()`<br>
+* `notice.open(immediate)`<br>
   Open the notice.
-* `notice.close()`<br>
+* `notice.close(immediate, timerHide, waitAfterward)`<br>
   Close the notice.
 * `notice.update(options)`<br>
   Update the notice with new options.
@@ -858,9 +858,9 @@ Stack methods:
   Position all the notices in the stack.
 * `queuePosition(milliseconds = 10)`<br>
   Queue a position call in that many milliseconds, unless another one is queued beforehand.
-* `close()`<br>
+* `close(immediate)`<br>
   Close all the notices in the stack.
-* `open()`<br>
+* `open(immediate)`<br>
   Open all the notices in the stack.
 * `openLast()`<br>
   Open the last closed/closing notice in the stack.
