@@ -23,20 +23,13 @@
   "license": "Apache-2.0",
   "author": "Hunter Perrin",
   "scripts": {
-    "build-dev": "ENV=development npm run build-umd && npm run build-cleanup",
-    "build": "npm run build-umd && npm run build-es && npm run build-cleanup",
-    "build-umd": "webpack",
-    "build-es": "node make.js",
-    "build-cleanup": "node cleanup.js",
-    "watch": "ENV=development webpack --watch",
+    "build-dev": "./package-sh.sh npm run build-dev",
+    "build": "./package-sh.sh npm run build",
+    "watch": "./package-sh.sh npm run watch",
     "deploy": "git checkout gh-pages && git merge develop && rm -rf ./dist/ && npm run build && npm run build-dev && git add . && git commit -m 'Update built files.' && git push && git checkout develop",
-    "prepublishOnly": "rm -rf ./dist/ && npm run build",
     "lint": "eslint index.html make.js src/*.html src/*.js demo/*"
   },
-  "files": [
-    "dist",
-    "src"
-  ],
+  "files": [],
   "directories": {
     "lib": "dist"
   },
@@ -55,7 +48,6 @@
     }
   },
   "devDependencies": {
-    "@babel/plugin-transform-classes": "^7.8.3",
     "@commitlint/cli": "^8.3.5",
     "@commitlint/config-conventional": "^8.3.4",
     "babel-eslint": "^10.0.3",

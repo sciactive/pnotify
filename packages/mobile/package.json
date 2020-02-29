@@ -23,6 +23,10 @@
   "license": "Apache-2.0",
   "author": "Hunter Perrin",
   "scripts": {
+    "build-dev": "ENV=development webpack",
+    "build": "webpack",
+    "watch": "ENV=development webpack --watch",
+    "prepare": "rm -rf ./dist/ && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

@@ -59,23 +59,23 @@
   <script src="https://cdn.jsdelivr.net/npm/js-beautify@1.10.3/js/lib/beautifier.min.js" integrity="sha256-mtOFRa0v4H67G1yfvpq8Y9olqgFzvOdVvVjaJ7SZF5g=" crossorigin="anonymous"></script>
 
   <!-- PNotify -->
-  <script src="dist/PNotify.js"></script>
-  <!-- <link rel="stylesheet" href="dist/PNotify.css" /> -->
-  <script src="dist/PNotifyBootstrap4.js"></script>
-  <!-- <link rel="stylesheet" href="dist/PNotifyBootstrap4.css" /> -->
-  <script src="dist/PNotifyFontAwesome5.js"></script>
-  <!-- <link rel="stylesheet" href="dist/PNotifyFontAwesome5.css" /> -->
-  <link rel="stylesheet" href="src/PNotifyBrightTheme.css" />
-  <link rel="stylesheet" href="src/PNotifyMaterial.css" />
-  <script src="dist/PNotifyAnimate.js"></script>
-  <script src="dist/PNotifyMobile.js"></script>
-  <!-- <link rel="stylesheet" href="dist/PNotifyMobile.css" /> -->
-  <script src="dist/PNotifyDesktop.js"></script>
-  <!-- <link rel="stylesheet" href="dist/PNotifyDesktop.css" /> -->
-  <script src="dist/PNotifyFontAwesome.js"></script>
-  <script src="dist/PNotifyConfirm.js"></script>
-  <script src="dist/PNotifyReference.js"></script>
-  <!-- <link rel="stylesheet" href="dist/PNotifyReference.css" /> -->
+  <script src="packages/core/dist/PNotify.js"></script>
+  <!-- <link rel="stylesheet" href="packages/core/dist/PNotify.css" /> -->
+  <link rel="stylesheet" href="packages/core/BrightTheme.css" />
+  <link rel="stylesheet" href="packages/core/Material.css" />
+  <script src="packages/bootstrap4/dist/PNotifyBootstrap4.js"></script>
+  <!-- <link rel="stylesheet" href="packages/bootstrap4/dist/PNotifyBootstrap4.css" /> -->
+  <script src="packages/font-awesome5/dist/PNotifyFontAwesome5Fix.js"></script>
+  <script src="packages/font-awesome5/dist/PNotifyFontAwesome5.js"></script>
+  <!-- <link rel="stylesheet" href="packages/font-awesome5/dist/PNotifyFontAwesome5.css" /> -->
+  <script src="packages/animate/dist/PNotifyAnimate.js"></script>
+  <script src="packages/mobile/dist/PNotifyMobile.js"></script>
+  <!-- <link rel="stylesheet" href="packages/mobile/dist/PNotifyMobile.css" /> -->
+  <script src="packages/desktop/dist/PNotifyDesktop.js"></script>
+  <!-- <link rel="stylesheet" href="packages/desktop/dist/PNotifyDesktop.css" /> -->
+  <script src="packages/confirm/dist/PNotifyConfirm.js"></script>
+  <script src="packages/reference/dist/PNotifyReference.js"></script>
+  <!-- <link rel="stylesheet" href="packages/reference/dist/PNotifyReference.css" /> -->
 
   <!-- Custom Styling -->
   <style type="text/css">
@@ -134,7 +134,7 @@
       // ---
       PNotify.defaults.destroy = false;
       PNotify.defaultModules.set(PNotifyMobile, {});
-      PNotify.defaultModules.set(PNotifyFontAwesome, {});
+      PNotify.defaultModules.set(PNotifyFontAwesome5Fix, {});
 
       // ---
       // Notice that opens when the page opens.

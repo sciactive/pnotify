@@ -23,6 +23,12 @@
   "license": "Apache-2.0",
   "author": "Hunter Perrin",
   "scripts": {
+    "build-dev": "ENV=development npm run build-umd && npm run build-cleanup",
+    "build": "npm run build-umd && npm run build-cleanup",
+    "build-umd": "webpack",
+    "build-cleanup": "node cleanup.js",
+    "watch": "ENV=development webpack --watch",
+    "prepare": "rm -rf ./dist/ && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
