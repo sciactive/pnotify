@@ -1,7 +1,7 @@
 {
-  "name": "@pnotify/font-awesome5",
+  "name": "@pnotify/font-awesome5-fix",
   "version": "5.0.0-alpha.5",
-  "description": "PNotify - Font Awesome 5 Module",
+  "description": "PNotify - Font Awesome 5 Fix Module",
   "keywords": [
     "notice",
     "notices",
@@ -33,7 +33,7 @@
     "prepare": "rm -rf ./dist/ && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "main": "dist/PNotifyFontAwesome5.js",
+  "main": "dist/PNotifyFontAwesome5Fix.js",
   "svelte": "index.svelte",
   "publishConfig": {
     "access": "public"

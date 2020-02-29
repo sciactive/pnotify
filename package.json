@@ -72,6 +72,7 @@
     "@pnotify/desktop": "5.0.0-alpha.5",
     "@pnotify/font-awesome4": "5.0.0-alpha.5",
     "@pnotify/font-awesome5": "5.0.0-alpha.5",
+    "@pnotify/font-awesome5-fix": "5.0.0-alpha.5",
     "@pnotify/glyphicon": "5.0.0-alpha.5",
     "@pnotify/mobile": "5.0.0-alpha.5",
     "@pnotify/reference": "5.0.0-alpha.5"
