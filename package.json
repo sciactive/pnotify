@@ -60,7 +60,6 @@
     "@babel/preset-env": "^7.8.4",
     "@commitlint/cli": "^8.3.5",
     "@commitlint/config-conventional": "^8.3.4",
-    "@smui/common": "^1.0.0-beta.20",
     "babel-eslint": "^10.0.3",
     "babel-loader": "^8.0.6",
     "css-loader": "^3.4.2",
@@ -81,5 +80,18 @@
     "svelte-loader": "^2.13.6",
     "webpack": "^4.41.6",
     "webpack-cli": "^3.3.11"
+  },
+  "dependencies": {
+    "@pnotify/animate": "5.0.0-alpha.5",
+    "@pnotify/bootstrap3": "5.0.0-alpha.5",
+    "@pnotify/bootstrap4": "5.0.0-alpha.5",
+    "@pnotify/confirm": "5.0.0-alpha.5",
+    "@pnotify/core": "5.0.0-alpha.5",
+    "@pnotify/desktop": "5.0.0-alpha.5",
+    "@pnotify/font-awesome4": "5.0.0-alpha.5",
+    "@pnotify/font-awesome5": "5.0.0-alpha.5",
+    "@pnotify/glyphicon": "5.0.0-alpha.5",
+    "@pnotify/mobile": "5.0.0-alpha.5",
+    "@pnotify/reference": "5.0.0-alpha.5"
   }
 }

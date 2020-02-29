@@ -31,5 +31,11 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "dependencies": {
+    "@pnotify/core": "^5.0.0-alpha.5"
+  },
+  "devDependencies": {
+    "svelte": "^3.19.1"
   }
 }

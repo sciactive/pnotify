@@ -31,5 +31,14 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "dependencies": {
+    "@pnotify/core": "^5.0.0-alpha.5"
+  },
+  "peerDependencies": {
+    "animate.css": "^3.7.2"
+  },
+  "devDependencies": {
+    "svelte": "^3.19.1"
   }
 }
