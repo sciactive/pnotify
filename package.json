@@ -1,6 +1,6 @@
 {
   "name": "pnotify",
-  "version": "5.0.0-alpha.5",
+  "version": "5.0.0-alpha.6",
   "description": "Beautiful notifications and prompts.",
   "keywords": [
     "notice",
@@ -30,9 +30,6 @@
     "lint": "eslint index.html make.js src/*.html src/*.js demo/*"
   },
   "files": [],
-  "directories": {
-    "lib": "dist"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/sciactive/pnotify.git"
@@ -64,17 +61,17 @@
     "lerna": "^3.18.3"
   },
   "dependencies": {
-    "@pnotify/animate": "5.0.0-alpha.5",
-    "@pnotify/bootstrap3": "5.0.0-alpha.5",
-    "@pnotify/bootstrap4": "5.0.0-alpha.5",
-    "@pnotify/confirm": "5.0.0-alpha.5",
-    "@pnotify/core": "5.0.0-alpha.5",
-    "@pnotify/desktop": "5.0.0-alpha.5",
-    "@pnotify/font-awesome4": "5.0.0-alpha.5",
-    "@pnotify/font-awesome5": "5.0.0-alpha.5",
-    "@pnotify/font-awesome5-fix": "5.0.0-alpha.5",
-    "@pnotify/glyphicon": "5.0.0-alpha.5",
-    "@pnotify/mobile": "5.0.0-alpha.5",
-    "@pnotify/reference": "5.0.0-alpha.5"
+    "@pnotify/animate": "5.0.0-alpha.6",
+    "@pnotify/bootstrap3": "5.0.0-alpha.6",
+    "@pnotify/bootstrap4": "5.0.0-alpha.6",
+    "@pnotify/confirm": "5.0.0-alpha.6",
+    "@pnotify/core": "5.0.0-alpha.6",
+    "@pnotify/desktop": "5.0.0-alpha.6",
+    "@pnotify/font-awesome4": "5.0.0-alpha.6",
+    "@pnotify/font-awesome5": "5.0.0-alpha.6",
+    "@pnotify/font-awesome5-fix": "5.0.0-alpha.6",
+    "@pnotify/glyphicon": "5.0.0-alpha.6",
+    "@pnotify/mobile": "5.0.0-alpha.6",
+    "@pnotify/reference": "5.0.0-alpha.6"
   }
 }
