@@ -12,7 +12,7 @@ PNotify is a vanilla JavaScript notification and [confirmation/prompt](http://sc
 
 http://sciactive.com/pnotify/
 
-<h2>V5 (Development Version)<h2>
+<h2>V5 (Development Version)</h2>
 
 https://sciactive.github.io/pnotify/
 
