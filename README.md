@@ -4,7 +4,7 @@ PNotify is a vanilla JavaScript notification and [confirmation/prompt](http://sc
 
 <h1>v5 is in Alpha</h1>
 
-[PNotify v5](https://github.com/sciactive/pnotify/tree/develop) has some [really awesome changes](https://github.com/sciactive/pnotify/blob/develop/MIGRATING.md), and is currently in alpha release. Feel free to try it out and [submit feedback](https://github.com/sciactive/pnotify/issues).
+[PNotify 5](https://github.com/sciactive/pnotify/tree/develop) has some [really awesome changes](https://github.com/sciactive/pnotify/blob/develop/MIGRATING.md), and is currently in alpha release. Feel free to try it out and [submit feedback](https://github.com/sciactive/pnotify/issues).
 
 <h1>Demos</h1>
 
