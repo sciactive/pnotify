@@ -1,5 +1,11 @@
 # Migrating from PNotify 4
 
+## New Features in v5!!
+
+* [Modalish flow!!](https://sciactive.com/2020/02/11/the-modalish-notification-flow/)
+* Dark Mode!!
+* Svelte 3!!
+
 **PNotify 5** has breaking changes:
 
 ## Major Breaking Changes
