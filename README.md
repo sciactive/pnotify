@@ -4,10 +4,19 @@ PNotify is a JavaScript notification and [confirmation/prompt](http://sciactive.
 
 PNotify implements a unique notification flow called [modalish](https://sciactive.com/2020/02/11/the-modalish-notification-flow/) that provides a good user experience, even when many notifications are shown at once.
 
+<h1>v5 is in Alpha</h1>
+
+[PNotify v5](https://github.com/sciactive/pnotify/tree/develop) has some [really awesome changes](https://github.com/sciactive/pnotify/blob/develop/MIGRATING.md), and is currently in alpha release. Feel free to try it out and [submit feedback](https://github.com/sciactive/pnotify/issues).
+
 <h1>Demos</h1>
 
-* http://sciactive.com/pnotify/ for the latest release
-* https://sciactive.github.io/pnotify/ for what's in development
+<h2>V4 (Stable Version)</h2>
+
+http://sciactive.com/pnotify/
+
+<h2>V5 (Development Version)</h2>
+
+https://sciactive.github.io/pnotify/
 
 <h1>Table of Contents</h1>
 
