@@ -1,51 +1,60 @@
-[![npm version](https://badge.fury.io/js/pnotify.svg)](https://www.npmjs.com/package/pnotify) [![Waffle.io - Columns and their card count](https://badge.waffle.io/sciactive/pnotify.svg?columns=all)](https://waffle.io/sciactive/pnotify) [![jsDelivr Hits](https://data.jsdelivr.com/v1/package/npm/pnotify/badge?style=rounded)](https://www.jsdelivr.com/package/npm/pnotify)
+[![npm version](https://badge.fury.io/js/pnotify.svg)](https://www.npmjs.com/package/pnotify) [![jsDelivr Hits](https://data.jsdelivr.com/v1/package/npm/pnotify/badge?style=rounded)](https://www.jsdelivr.com/package/npm/pnotify)
 
 PNotify is a vanilla JavaScript notification and [confirmation/prompt](http://sciactive.com/pnotify/#confirm-module) library. PNotify can provide [desktop notifications](http://sciactive.com/pnotify/#web-notifications) based on the [Web Notifications spec](http://www.w3.org/TR/notifications/) with fall back to an in-browser notice.
 
+<h1>v5 is in Alpha</h1>
+
+[PNotify v5](https://github.com/sciactive/pnotify/tree/develop) has some [really awesome changes](https://github.com/sciactive/pnotify/blob/develop/MIGRATING.md), and is currently in alpha release. Feel free to try it out and [submit feedback](https://github.com/sciactive/pnotify/issues).
+
 <h1>Demos</h1>
 
-* http://sciactive.com/pnotify/ for the latest release
-* https://sciactive.github.io/pnotify/ for what's in development
+<h2>V4 (Stable Version)</h2>
+
+http://sciactive.com/pnotify/
+
+<h2>V5 (Development Version)<h2>
+
+https://sciactive.github.io/pnotify/
 
 <h1>Table of Contents</h1>
 
 <!-- TOC START min:1 max:3 link:true asterisk:false update:true -->
-- [Getting Started](#getting-started)
-  - [Migrating from PNotify 3](#migrating-from-pnotify-3)
-- [Installation](#installation)
-  - [Svelte](#svelte)
-  - [React](#react)
-  - [Angular](#angular)
-  - [Angular (Injectable)](#angular-injectable)
-  - [AngularJS](#angularjs)
-  - [Vanilla JS (ES5)](#vanilla-js-es5)
-  - [Vanilla JS (ES6)](#vanilla-js-es6)
-- [Styles](#styles)
-  - [Bright Theme](#bright-theme)
-  - [Material](#material)
-    - [Material Icons](#material-icons)
-  - [Bootstrap](#bootstrap)
-  - [Font Awesome (Icons)](#font-awesome-icons)
-- [Creating Notices](#creating-notices)
-- [Options](#options)
-  - [Changing Defaults](#changing-defaults)
-- [Module Options](#module-options)
-  - [Desktop Module](#desktop-module)
-  - [Buttons Module](#buttons-module)
-  - [NonBlock Module](#nonblock-module)
-  - [Mobile Module](#mobile-module)
-  - [Animate Module](#animate-module)
-  - [Confirm Module](#confirm-module)
-  - [History Module](#history-module)
-  - [Callbacks Module](#callbacks-module)
-- [Static Methods and Properties](#static-methods-and-properties)
-- [Instance Methods and Properties](#instance-methods-and-properties)
-  - [From the Svelte Component API](#from-the-svelte-component-api)
-  - [Events](#events)
-- [Stacks](#stacks)
-  - [Example Stack](#example-stack)
-- [Features](#features)
-- [Licensing and Additional Info](#licensing-and-additional-info)
+- [Getting Started](#Getting-Started)
+  - [Migrating from PNotify 3](#Migrating-from-PNotify-3)
+- [Installation](#Installation)
+  - [Svelte](#Svelte)
+  - [React](#React)
+  - [Angular](#Angular)
+  - [Angular (Injectable)](#Angular-Injectable)
+  - [AngularJS](#AngularJS)
+  - [Vanilla JS (ES5)](#Vanilla-JS-ES5)
+  - [Vanilla JS (ES6)](#Vanilla-JS-ES6)
+- [Styles](#Styles)
+  - [Bright Theme](#Bright-Theme)
+  - [Material](#Material)
+    - [Material Icons](#Material-Icons)
+  - [Bootstrap](#Bootstrap)
+  - [Font Awesome (Icons)](#Font-Awesome-Icons)
+- [Creating Notices](#Creating-Notices)
+- [Options](#Options)
+  - [Changing Defaults](#Changing-Defaults)
+- [Module Options](#Module-Options)
+  - [Desktop Module](#Desktop-Module)
+  - [Buttons Module](#Buttons-Module)
+  - [NonBlock Module](#NonBlock-Module)
+  - [Mobile Module](#Mobile-Module)
+  - [Animate Module](#Animate-Module)
+  - [Confirm Module](#Confirm-Module)
+  - [History Module](#History-Module)
+  - [Callbacks Module](#Callbacks-Module)
+- [Static Methods and Properties](#Static-Methods-and-Properties)
+- [Instance Methods and Properties](#Instance-Methods-and-Properties)
+  - [From the Svelte Component API](#From-the-Svelte-Component-API)
+  - [Events](#Events)
+- [Stacks](#Stacks)
+  - [Example Stack](#Example-Stack)
+- [Features](#Features)
+- [Licensing and Additional Info](#Licensing-and-Additional-Info)
 <!-- TOC END -->
 
 # Getting Started
@@ -756,7 +765,7 @@ PNotify.alert({
 
 # Licensing and Additional Info
 
-Copyright 2009-2019 Hunter Perrin
+Copyright 2009-2020 Hunter Perrin
 Copyright 2015 Google, Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
