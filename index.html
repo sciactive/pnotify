@@ -85,7 +85,12 @@
     }
 
     /* Custom styled notice CSS */
-    [data-pnotify].pnotify.custom .pnotify-container {
+    [data-pnotify].custom-elem {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 10pt;
+      line-height: 1.1;
+    }
+    [data-pnotify] .custom-container {
       background-color: #404040;
       background-image: none;
       border: none;
@@ -95,21 +100,16 @@
       padding: 15px;
       font-size: 15px;
     }
-    [data-pnotify].pnotify.custom {
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: 10pt;
-      line-height: 1.1;
-    }
-    [data-pnotify].pnotify.custom .pnotify-title,
-    [data-pnotify].pnotify.custom .pnotify-text {
+    [data-pnotify] .custom-title,
+    [data-pnotify] .custom-text {
       margin-left: 50px;
       color: #FFF;
     }
-    [data-pnotify].pnotify.custom .pnotify-title {
+    [data-pnotify] .custom-title {
       font-weight: bold;
       font-size: 15px;
     }
-    [data-pnotify].pnotify.custom .pnotify-icon {
+    [data-pnotify] .custom-icon {
       color: #FFA;
     }
 
@@ -783,17 +783,18 @@
         <button class="btn btn-light my-1 source" onclick="
           PNotify.notice({
             title: 'Custom Styling',
-            text: 'I have an additional class that\'s used to give me special styling. I always wanted to be pretty. I also use NonBlock.js when modeless.',
-            styling: {},
-            addClass: 'custom',
+            text: 'I have a custom styling name that\'s used to give me special styling. I always wanted to be pretty. I also use NonBlock.js when modeless.',
+            styling: 'custom',
+            maxTextHeight: null,
             addModelessClass: 'nonblock',
             icon: 'far fa-file-image fa-3x'
           });
-        ">Custom Styles</button>
-        <div style="float: right;"><a href="javascript:void(0);" onclick="
+        ">Custom Styling</button>
+        <br />
+        <a href="javascript:void(0);" onclick="
           if (!window.growlModal) {
             window.growlModal = PNotify.info({
-              title: 'Styling Notices Like Growl',
+              title: 'Styling Notices',
               text: document.getElementById('growl'),
               icon: 'fas fa-code',
               hide: false,
@@ -806,18 +807,29 @@
             });
           }
           window.growlModal.open();
-        ">How to style like Growl.</a></div>
+        ">How to custom style like this.</a>
         <div style="display: none;">
           <div id="growl" style="max-height: 70vh; overflow-y: auto;">
             <p>
-              To custom style a notice, you need to use a class. For this
-              example, we'll use "<strong>custom</strong>".
+              To custom style a notice, you can use a styling name like in the
+              demo. For this example, I've used "<strong>custom</strong>".
             </p>
             <p>
-              Here's some CSS to make custom notices look like Growl:
+                Classes with the styling as a prefix get added to various
+                elements for styling. You want your selectors to be more
+                specific than PNotify's selectors, so you can use
+                "[data-pnotify]" to add specificity. This is how the built-in
+                themes work.
             </p>
-            <pre style="min-width: 100%;"><code class="css">/* Notice that your selectors need to be more specific than PNotify's selectors. */
-[data-pnotify].pnotify<strong>.custom</strong> .pnotify-container {
+            <p>
+              Here's the CSS that makes it look like those Growl notices:
+            </p>
+            <pre style="min-width: 100%;"><code class="css">[data-pnotify].<strong>custom</strong>-elem {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 10pt;
+  line-height: 1.1;
+}
+[data-pnotify] .<strong>custom</strong>-container {
   background-color: #404040;
   background-image: none;
   border: none;
@@ -827,34 +839,18 @@
   padding: 15px;
   font-size: 15px;
 }
-[data-pnotify].pnotify<strong>.custom</strong> {
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 10pt;
-  line-height: 1.1;
-}
-[data-pnotify].pnotify<strong>.custom</strong> .pnotify-title,
-[data-pnotify].pnotify<strong>.custom</strong> .pnotify-text {
+[data-pnotify] .<strong>custom</strong>-title,
+[data-pnotify] .<strong>custom</strong>-text {
   margin-left: 50px;
   color: #FFF;
 }
-[data-pnotify].pnotify<strong>.custom</strong> .pnotify-title {
+[data-pnotify] .<strong>custom</strong>-title {
   font-weight: bold;
   font-size: 15px;
 }
-[data-pnotify].pnotify<strong>.custom</strong> .pnotify-icon {
+[data-pnotify] .<strong>custom</strong>-icon {
   color: #FFA;
 }</code></pre>
-            <p>
-              And here's the JavaScript to use this styling:
-            </p>
-            <pre style="min-width: 100%;"><code class="js">PNotify.notice({
-  title: 'Custom Styling',
-  text: 'I have an additional class that\'s used to give me special styling. I always wanted to be pretty.',
-  <strong>styling: {}</strong>,
-  <strong>addClass: 'custom'</strong>,
-  addModelessClass: 'nonblock',
-  icon: 'far fa-file-image fa-3x'
-});</code></pre>
           </div>
         </div>
       </div>
