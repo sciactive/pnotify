@@ -130,7 +130,24 @@
           _notice.refs.elem.removeEventListener('MSAnimationEnd', finished);
           _notice.refs.elem.removeEventListener('oanimationend', finished);
           _notice.refs.elem.removeEventListener('animationend', finished);
-          _notice.set({ '_animatingClass': 'animated' });
+          _notice.set({ '_animatingClass': '' });
+
+          const { stack } = _notice.get();
+            if (stack && stack.overlay) {
+              let stillOpen = false;
+              for (let i = 0; i < PNotify.notices.length; i++) {
+                const notice = PNotify.notices[i];
+                if (notice !== _notice && notice.get().stack === stack && notice.get()._state !== 'closed') {
+                  stillOpen = true;
+                  break;
+                }
+              }
+              if (!stillOpen) {
+                if (stack.overlay.parentNode) {
+                  stack.overlay.parentNode.removeChild(stack.overlay);
+                }
+              }
+            }
           if (callback) {
             callback.call();
           }
