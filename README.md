@@ -484,7 +484,7 @@ PNotify options and default values.
 * `stickerHover: true`<br>
   Only show the sticker button on hover.
 * `labels: {close: 'Close', stick: 'Stick', unstick: 'Unstick'}`<br>
-  Lets you change the displayed text, facilitating internationalization.
+  The various displayed text, helps facilitating internationalization.
 * `remove: true`<br>
   Remove the notice's elements from the DOM after it is closed.
 * `destroy: true`<br>
