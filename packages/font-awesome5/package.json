@@ -1,6 +1,6 @@
 {
   "name": "@pnotify/font-awesome5",
-  "version": "5.0.0-alpha.6",
+  "version": "5.0.0-alpha.7",
   "description": "PNotify - Font Awesome 5 Module",
   "keywords": [
     "notice",
@@ -39,7 +39,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@pnotify/core": "^5.0.0-alpha.6"
+    "@pnotify/core": "^5.0.0-alpha.7"
   },
   "peerDependencies": {
     "@fortawesome/free-solid-svg-icons": "^5.12.1"

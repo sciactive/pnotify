@@ -1,6 +1,6 @@
 {
   "name": "@pnotify/desktop",
-  "version": "5.0.0-alpha.6",
+  "version": "5.0.0-alpha.7",
   "description": "PNotify - Desktop Module",
   "keywords": [
     "notice",
@@ -39,7 +39,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@pnotify/core": "^5.0.0-alpha.6"
+    "@pnotify/core": "^5.0.0-alpha.7"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",
