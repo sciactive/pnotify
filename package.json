@@ -1,6 +1,6 @@
 {
   "name": "pnotify",
-  "version": "5.0.0-alpha.6",
+  "version": "5.0.0-alpha.7",
   "description": "Beautiful notifications and prompts.",
   "keywords": [
     "notice",
@@ -47,31 +47,31 @@
   "devDependencies": {
     "@commitlint/cli": "^8.3.5",
     "@commitlint/config-conventional": "^8.3.4",
-    "babel-eslint": "^10.0.3",
+    "babel-eslint": "^10.1.0",
     "eslint": "^6.8.0",
     "eslint-config-semistandard": "^15.0.0",
-    "eslint-config-standard": "^14.1.0",
+    "eslint-config-standard": "^14.1.1",
     "eslint-plugin-html": "^6.0.0",
-    "eslint-plugin-import": "^2.20.1",
-    "eslint-plugin-node": "^11.0.0",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-react": "^7.18.3",
+    "eslint-plugin-react": "^7.19.0",
     "eslint-plugin-standard": "^4.0.1",
     "husky": "^4.2.3",
     "lerna": "^3.18.3"
   },
   "dependencies": {
-    "@pnotify/animate": "5.0.0-alpha.6",
-    "@pnotify/bootstrap3": "5.0.0-alpha.6",
-    "@pnotify/bootstrap4": "5.0.0-alpha.6",
-    "@pnotify/confirm": "5.0.0-alpha.6",
-    "@pnotify/core": "5.0.0-alpha.6",
-    "@pnotify/desktop": "5.0.0-alpha.6",
-    "@pnotify/font-awesome4": "5.0.0-alpha.6",
-    "@pnotify/font-awesome5": "5.0.0-alpha.6",
-    "@pnotify/font-awesome5-fix": "5.0.0-alpha.6",
-    "@pnotify/glyphicon": "5.0.0-alpha.6",
-    "@pnotify/mobile": "5.0.0-alpha.6",
-    "@pnotify/reference": "5.0.0-alpha.6"
+    "@pnotify/animate": "5.0.0-alpha.7",
+    "@pnotify/bootstrap3": "5.0.0-alpha.7",
+    "@pnotify/bootstrap4": "5.0.0-alpha.7",
+    "@pnotify/confirm": "5.0.0-alpha.7",
+    "@pnotify/core": "5.0.0-alpha.7",
+    "@pnotify/desktop": "5.0.0-alpha.7",
+    "@pnotify/font-awesome4": "5.0.0-alpha.7",
+    "@pnotify/font-awesome5": "5.0.0-alpha.7",
+    "@pnotify/font-awesome5-fix": "5.0.0-alpha.7",
+    "@pnotify/glyphicon": "5.0.0-alpha.7",
+    "@pnotify/mobile": "5.0.0-alpha.7",
+    "@pnotify/reference": "5.0.0-alpha.7"
   }
 }
