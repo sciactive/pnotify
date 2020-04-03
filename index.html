@@ -1199,7 +1199,7 @@
           });
         ">Alternate Text and Title</button>
         <button class="btn btn-light my-1 source" onclick="
-          PNotify.notice({
+          const notice = PNotify.notice({
             title: 'Clicky Desktop Notice',
             text: 'Click me.',
             modules: new Map([
@@ -1208,7 +1208,8 @@
                 icon: false
               }]
             ])
-          }).on('click', e => {
+          });
+          notice.on('click', e => {
             if ([...notice.refs.elem.querySelectorAll('.pnotify-closer *, .pnotify-sticker *')].indexOf(e.target) !== -1) {
               return;
             }
@@ -1216,7 +1217,7 @@
           });
         ">Clicky</button>
         <button class="btn btn-light my-1 source" onclick="
-          PNotify.notice({
+          const notice = PNotify.notice({
             title: 'Sticky Desktop Notice',
             text: 'I\'m a sticky notice. (Some browsers don\'t allow sticky Web Notifications.)',
             hide: false,
@@ -1226,7 +1227,8 @@
                 icon: false
               }]
             ])
-          }).on('click', e => {
+          });
+          notice.on('click', e => {
             if ([...notice.refs.elem.querySelectorAll('.pnotify-closer *, .pnotify-sticker *')].indexOf(e.target) !== -1) {
               return;
             }
