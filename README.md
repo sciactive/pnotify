@@ -1,6 +1,12 @@
 [![npm version](https://badge.fury.io/js/pnotify.svg)](https://www.npmjs.com/package/pnotify) [![jsDelivr Hits](https://data.jsdelivr.com/v1/package/npm/pnotify/badge?style=rounded)](https://www.jsdelivr.com/package/npm/pnotify)
 
-PNotify is a JavaScript notification and [confirmation/prompt](http://sciactive.com/pnotify/#confirm-module) library. PNotify can provide [desktop notifications](http://sciactive.com/pnotify/#web-notifications) based on the [Web Notifications spec](http://www.w3.org/TR/notifications/) with fall back to an in-browser notice.
+<div align="center">
+  <img src="includes/logo.png" alt="PNotify" />
+</div>
+
+A JavaScript notification and [confirmation/prompt](http://sciactive.com/pnotify/#confirm-module) library.
+
+PNotify can provide [desktop notifications](http://sciactive.com/pnotify/#web-notifications) based on the [Web Notifications spec](http://www.w3.org/TR/notifications/) with fall back to an in-browser notice.
 
 PNotify implements a unique notification flow called [modalish](https://sciactive.com/2020/02/11/the-modalish-notification-flow/) that provides a good user experience, even when many notifications are shown at once.
 
@@ -21,39 +27,39 @@ https://sciactive.github.io/pnotify/
 <h1>Table of Contents</h1>
 
 <!-- TOC START min:1 max:3 link:true asterisk:false update:true -->
-- [Getting Started](#Getting-Started)
-  - [Migrating from PNotify 4](#Migrating-from-PNotify-4)
-- [Installation](#Installation)
-  - [Svelte](#Svelte)
-  - [React](#React)
-  - [Angular](#Angular)
-  - [Angular (Injectable)](#Angular-Injectable)
-  - [AngularJS](#AngularJS)
-  - [Vanilla JS (ES5)](#Vanilla-JS-ES5)
-  - [Vanilla JS (ES6)](#Vanilla-JS-ES6)
-- [Styles](#Styles)
-  - [Bright Theme](#Bright-Theme)
-  - [Material](#Material)
-    - [Material Icons](#Material-Icons)
-  - [Bootstrap](#Bootstrap)
-  - [Font Awesome 4 (Icons)](#Font-Awesome-4-Icons)
-  - [Font Awesome 5 (Icons)](#Font-Awesome-5-Icons)
-- [Creating Notices](#Creating-Notices)
-- [Options](#Options)
-  - [Changing Defaults](#Changing-Defaults)
-- [Modules](#Modules)
-  - [Creating Notices with Modules](#Creating-Notices-with-Modules)
-  - [Desktop Module](#Desktop-Module)
-  - [Mobile Module](#Mobile-Module)
-  - [Animate Module](#Animate-Module)
-  - [Confirm Module](#Confirm-Module)
-- [Exported Methods and Properties](#Exported-Methods-and-Properties)
-- [Instance Methods and Properties](#Instance-Methods-and-Properties)
-  - [Events](#Events)
-- [Stacks](#Stacks)
-  - [Example Stack](#Example-Stack)
-- [Features](#Features)
-- [Licensing and Additional Info](#Licensing-and-Additional-Info)
+- [Getting Started](#getting-started)
+  - [Migrating from PNotify 4](#migrating-from-pnotify-4)
+- [Installation](#installation)
+  - [Svelte](#svelte)
+  - [React](#react)
+  - [Angular](#angular)
+  - [Angular (Injectable)](#angular-injectable)
+  - [AngularJS](#angularjs)
+  - [Vanilla JS (ES5)](#vanilla-js-es5)
+  - [Vanilla JS (ES6)](#vanilla-js-es6)
+- [Styles](#styles)
+  - [Bright Theme](#bright-theme)
+  - [Material](#material)
+    - [Material Icons](#material-icons)
+  - [Bootstrap](#bootstrap)
+  - [Font Awesome 4 (Icons)](#font-awesome-4-icons)
+  - [Font Awesome 5 (Icons)](#font-awesome-5-icons)
+- [Creating Notices](#creating-notices)
+- [Options](#options)
+  - [Changing Defaults](#changing-defaults)
+- [Modules](#modules)
+  - [Creating Notices with Modules](#creating-notices-with-modules)
+  - [Desktop Module](#desktop-module)
+  - [Mobile Module](#mobile-module)
+  - [Animate Module](#animate-module)
+  - [Confirm Module](#confirm-module)
+- [Exported Methods and Properties](#exported-methods-and-properties)
+- [Instance Methods and Properties](#instance-methods-and-properties)
+  - [Events](#events)
+- [Stacks](#stacks)
+  - [Example Stack](#example-stack)
+- [Features](#features)
+- [Licensing and Additional Info](#licensing-and-additional-info)
 <!-- TOC END -->
 
 # Getting Started

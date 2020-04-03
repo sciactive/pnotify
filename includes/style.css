@@ -16,7 +16,12 @@ Copyright (C) 2012 SciActive.com. All Rights Reserved.
 .page-banner p {
   font-size: 20px;
   line-height: 24px;
-  margin-top: .5em;
+  margin-top: .5rem;
+}
+.page-banner #description {
+  font-size: 35px;
+  line-height: 38px;
+  margin-bottom: 9rem;
 }
 .page-banner .btn-lg {
   font-size: 26px;
