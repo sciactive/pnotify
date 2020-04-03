@@ -472,7 +472,7 @@ PNotify options and default values.
 * `hide: true`<br>
   After a delay, close the notice.
 * `delay: 8000`<br>
-  Delay in milliseconds before the notice is closed.
+  Delay in milliseconds before the notice is removed. If set to `Infinity`, the notice will not close, but it will not be considered sticky, so it will be closed along with all unstuck notices if the modal backdrop is clicked.
 * `mouseReset: true`<br>
   Reset the hide timer if the mouse moves over the notice.
 * `closer: true`<br>

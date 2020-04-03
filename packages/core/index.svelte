@@ -109,7 +109,10 @@
     shadow: true,
     // After a delay, remove the notice.
     hide: true,
-    // Delay in milliseconds before the notice is removed.
+    // Delay in milliseconds before the notice is removed. If set to `Infinity`,
+    // the notice will not close, but it will not be considered sticky, so it
+    // will be closed along with all unstuck notices if the modal backdrop is
+    // clicked.
     delay: 8000,
     // Reset the hide timer if the mouse moves over the notice.
     mouseReset: true,
@@ -792,7 +795,9 @@
     }
     // Cancel any current close timer.
     cancelClose();
-    _timer = setTimeout(() => close(false, true), (isNaN(delay) ? 0 : delay));
+    if (delay !== Infinity) {
+      _timer = setTimeout(() => close(false, true), (isNaN(delay) ? 0 : delay));
+    }
   }
 
   export function _preventTimerClose (prevent) {
