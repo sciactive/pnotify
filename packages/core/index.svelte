@@ -127,8 +127,8 @@
     // The various displayed text, helps facilitating internationalization.
     labels: {
       close: 'Close',
-      stick: 'Stick',
-      unstick: 'Unstick'
+      stick: 'Pin',
+      unstick: 'Unpin'
     },
     // Remove the notice's elements from the DOM after it is removed.
     remove: true,
