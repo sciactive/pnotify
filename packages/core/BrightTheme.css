@@ -229,3 +229,27 @@ For calculating icon filters, use: https://codepen.io/sosuke/pen/Pjoqqp
   background-color: var(--error-primary-button-background-color);
   color: var(--error-primary-button-text-color);
 }
+[data-pnotify] .brighttheme-notice .brighttheme-countdown {
+  background-color: var(--notice-border-color);
+}
+[data-pnotify] .brighttheme-notice .brighttheme-countdown-bar {
+  background-color: var(--notice-background-color);
+}
+[data-pnotify] .brighttheme-info .brighttheme-countdown {
+  background-color: var(--info-border-color);
+}
+[data-pnotify] .brighttheme-info .brighttheme-countdown-bar {
+  background-color: var(--info-background-color);
+}
+[data-pnotify] .brighttheme-success .brighttheme-countdown {
+  background-color: var(--success-border-color);
+}
+[data-pnotify] .brighttheme-success .brighttheme-countdown-bar {
+  background-color: var(--success-background-color);
+}
+[data-pnotify] .brighttheme-error .brighttheme-countdown {
+  background-color: var(--error-border-color);
+}
+[data-pnotify] .brighttheme-error .brighttheme-countdown-bar {
+  background-color: var(--error-background-color);
+}

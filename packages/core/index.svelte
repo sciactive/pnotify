@@ -409,6 +409,7 @@
   $: modulesAppendContainer = Array.from(modules).filter(([module, options]) => module.position === 'AppendContainer');
 
   export const getState = () => _state;
+  export const getTimer = () => _timer;
   export const getStyle = name => typeof styling === 'string' ? styling + '-' + name : (name in styling ? styling[name] : styling.prefix + '-' + name);
   export const getIcon = name => typeof icons === 'string' ? icons + '-icon-' + name : (name in icons ? icons[name] : icons.prefix + '-icon-' + name);
 
@@ -776,6 +777,7 @@
   export function cancelClose () {
     if (_timer && _timer !== 'prevented') {
       clearTimeout(_timer);
+      _timer = null;
     }
     if (_animOutTimer) {
       clearTimeout(_animOutTimer);
@@ -1042,6 +1044,7 @@
     box-shadow: 0px 6px 28px 0px rgba(0,0,0,0.1);
   }
   :global(.pnotify-container) {
+    position: relative;
     background-position: 0 0;
     padding: .8em;
     height: 100%;

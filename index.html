@@ -62,10 +62,19 @@
   </script>
   <script src="https://cdn.jsdelivr.net/npm/js-beautify@1.10.3/js/lib/beautifier.min.js" integrity="sha256-mtOFRa0v4H67G1yfvpq8Y9olqgFzvOdVvVjaJ7SZF5g=" crossorigin="anonymous"></script>
 
-  <!-- PNotify -->
-  <script src="packages/core/dist/PNotify.js"></script>
+  <!-- PNotify CSS -->
+  <link rel="stylesheet" href="packages/core/dist/PNotify.css" />
   <link rel="stylesheet" href="packages/core/BrightTheme.css" />
   <link rel="stylesheet" href="packages/core/Material.css" />
+  <link rel="stylesheet" href="packages/bootstrap4/dist/PNotifyBootstrap4.css" />
+  <link rel="stylesheet" href="packages/mobile/dist/PNotifyMobile.css" />
+  <link rel="stylesheet" href="packages/desktop/dist/PNotifyDesktop.css" />
+  <link rel="stylesheet" href="packages/confirm/dist/PNotifyConfirm.css" />
+  <link rel="stylesheet" href="packages/countdown/dist/PNotifyCountdown.css" />
+  <link rel="stylesheet" href="packages/reference/dist/PNotifyReference.css" />
+
+  <!-- PNotify JS -->
+  <script src="packages/core/dist/PNotify.js"></script>
   <script src="packages/bootstrap4/dist/PNotifyBootstrap4.js"></script>
   <script src="packages/font-awesome5-fix/dist/PNotifyFontAwesome5Fix.js"></script>
   <script src="packages/font-awesome5/dist/PNotifyFontAwesome5.js"></script>
@@ -73,13 +82,8 @@
   <script src="packages/mobile/dist/PNotifyMobile.js"></script>
   <script src="packages/desktop/dist/PNotifyDesktop.js"></script>
   <script src="packages/confirm/dist/PNotifyConfirm.js"></script>
+  <script src="packages/countdown/dist/PNotifyCountdown.js"></script>
   <script src="packages/reference/dist/PNotifyReference.js"></script>
-  <!-- <link rel="stylesheet" href="packages/core/dist/PNotify.css" />
-  <link rel="stylesheet" href="packages/bootstrap4/dist/PNotifyBootstrap4.css" />
-  <link rel="stylesheet" href="packages/mobile/dist/PNotifyMobile.css" />
-  <link rel="stylesheet" href="packages/desktop/dist/PNotifyDesktop.css" />
-  <link rel="stylesheet" href="packages/confirm/dist/PNotifyConfirm.css" />
-  <link rel="stylesheet" href="packages/reference/dist/PNotifyReference.css" /> -->
 
   <!-- Custom Styling -->
   <style type="text/css">
@@ -1317,6 +1321,72 @@
             ])
           });
         ">No Swipe Dismiss</button>
+      </div>
+
+      <h5 class="card-header">Countdown Module <small>Give an indication of how much time is left.</small></h5>
+      <div class="card-body">
+        <button class="btn btn-light my-1 source" onclick="
+          PNotify.notice({
+            title: 'Countdown Notice',
+            text: 'I\'ve got a countdown display!',
+            modules: new Map([
+              ...PNotify.defaultModules,
+              [PNotifyCountdown, {}]
+            ])
+          });
+        ">Countdown Notice</button>
+        <div class="my-3">
+          Try out the options:
+          <div class="my-1">
+            Type
+            <select id="countdown_type" class="form-control" style="display: inline; width: auto;">
+              <option value="notice">notice</option>
+              <option value="info">info</option>
+              <option value="success">success</option>
+              <option value="error">error</option>
+            </select>
+          </div>
+          <div class="my-1">
+            Anchor
+            <select id="countdown_anchor" class="form-control" style="display: inline; width: auto;">
+              <option value="top">top</option>
+              <option value="bottom" selected>bottom</option>
+              <option value="left">left</option>
+              <option value="right">right</option>
+            </select>
+          </div>
+          <div class="my-1">
+            <label>
+              <input type="checkbox" id="countdown_reverse" />
+              Reverse
+            </label>
+          </div>
+          <div class="my-1">
+            <label>
+              <input type="checkbox" id="countdown_show_time" />
+              Show Time
+            </label>
+          </div>
+          <button class="btn btn-light my-1 source" onclick="
+            const type = document.getElementById('countdown_type').value;
+            const anchor = document.getElementById('countdown_anchor').value;
+            const reverse = document.getElementById('countdown_reverse').checked;
+            const showTime = document.getElementById('countdown_show_time').checked;
+            PNotify.alert({
+              type: type,
+              title: 'Countdown Notice',
+              text: 'I\'ve got a countdown display.',
+              modules: new Map([
+                ...PNotify.defaultModules,
+                [PNotifyCountdown, {
+                  anchor: anchor,
+                  reverse: reverse,
+                  showTime: showTime
+                }]
+              ])
+            });
+          ">Notify!</button>
+        </div>
       </div>
 
       <h5 class="card-header">Animate Module <small>Fluid CSS animations using <a href="https://daneden.github.io/animate.css/" target="_blank">Animate.css</a>.</small></h5>
