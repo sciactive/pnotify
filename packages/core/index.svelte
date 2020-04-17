@@ -392,7 +392,8 @@
   // Grab the icons from the icons object or use provided icons
   $: _widthStyle = typeof width === 'string' ? 'width: ' + width + ';' : '';
   $: _minHeightStyle = typeof minHeight === 'string' ? 'min-height: ' + minHeight + ';' : '';
-  $: _maxTextHeightStyle = typeof maxTextHeight === 'string' ? 'max-height: ' + maxTextHeight + '; overflow-y: auto; overscroll-behavior: contain;' : '';
+  // The bottom padding of .03em is specifically for Firefox, since it will show a scrollbar without it for some reason.
+  $: _maxTextHeightStyle = typeof maxTextHeight === 'string' ? 'max-height: ' + maxTextHeight + '; overflow-y: auto; overscroll-behavior: contain; padding-bottom:.03em;' : '';
   $: _titleElement = title instanceof HTMLElement;
   $: _textElement = text instanceof HTMLElement;
   // Whether the notification is open in a modal stack (or a modalish stack in
