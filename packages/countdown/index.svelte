@@ -35,7 +35,6 @@
 
   export let anchor = defaults.anchor;
   export let reverse = defaults.reverse;
-  export let showTime = defaults.showTime;
 
   let _state = self.getState();
   let _timer = self.getTimer();
