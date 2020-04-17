@@ -227,3 +227,28 @@ Requires stylesheet to work: https://fonts.googleapis.com/css?family=Material+Ic
 
   transition: width .2s ease-out, padding-top .2s ease-out;
 }
+[data-pnotify] .material-notice .material-countdown {
+  background-color: var(--notice-text-color);
+}
+[data-pnotify] .material-notice .material-countdown-bar {
+  background-color: var(--notice-background-color);
+}
+[data-pnotify] .material-info .material-countdown {
+  background-color: var(--info-text-color);
+}
+[data-pnotify] .material-info .material-countdown-bar {
+  background-color: var(--info-background-color);
+}
+[data-pnotify] .material-success .material-countdown {
+  background-color: var(--success-text-color);
+}
+[data-pnotify] .material-success .material-countdown-bar {
+  background-color: var(--success-background-color);
+}
+[data-pnotify] .material-error .material-countdown {
+  background-color: var(--error-text-color);
+}
+[data-pnotify] .material-error .material-countdown-bar {
+  background-color: var(--error-background-color);
+}
+

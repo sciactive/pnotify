@@ -1361,17 +1361,10 @@
               Reverse
             </label>
           </div>
-          <div class="my-1">
-            <label>
-              <input type="checkbox" id="countdown_show_time" />
-              Show Time
-            </label>
-          </div>
           <button class="btn btn-light my-1 source" onclick="
             const type = document.getElementById('countdown_type').value;
             const anchor = document.getElementById('countdown_anchor').value;
             const reverse = document.getElementById('countdown_reverse').checked;
-            const showTime = document.getElementById('countdown_show_time').checked;
             PNotify.alert({
               type: type,
               title: 'Countdown Notice',
@@ -1380,8 +1373,7 @@
                 ...PNotify.defaultModules,
                 [PNotifyCountdown, {
                   anchor: anchor,
-                  reverse: reverse,
-                  showTime: showTime
+                  reverse: reverse
                 }]
               ])
             });

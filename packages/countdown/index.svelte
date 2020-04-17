@@ -5,8 +5,6 @@
     anchor: 'bottom',
     // Whether the countdown shrinks the other way.
     reverse: false,
-    // Whether to show the time in the countdown bar.
-    showTime: false,
   };
 </script>
 
@@ -26,11 +24,6 @@
         width: {(anchor === 'top' || anchor === 'bottom') ? _percent : '100'}%;
       "
     ></div>
-    {#if showTime}
-      <span class="pnotify-countdown-text {self.getStyle('countdown-text')}">
-        {_countdownDisplay}
-      </span>
-    {/if}
   </div>
 {/if}
 
@@ -46,7 +39,6 @@
 
   let _state = self.getState();
   let _timer = self.getTimer();
-  let _countdownDisplay = '';
   let _msLeft = 0;
   let _percent = 100;
 
@@ -58,10 +50,8 @@
       if (timeStart) {
         _msLeft = self.delay - (new Date() - timeStart);
         _percent = _msLeft / self.delay * 100;
-        _countdownDisplay = Math.ceil(_msLeft / 1000);
       } else {
         _percent = _state === 'closing' ? 0 : 100;
-        _countdownDisplay = '';
       }
     }
   }, 100);
@@ -83,7 +73,7 @@
     top: 100%;
     left: 0;
     width: 100%;
-    height: .75em;
+    height: .5em;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -97,13 +87,13 @@
     right: 100%;
     left: auto;
     height: 100%;
-    width: .75em;
+    width: .5em;
   }
   :global(.pnotify-countdown-right) {
     top: 0;
     left: 100%;
     height: 100%;
-    width: .75em;
+    width: .5em;
   }
   :global(.pnotify-countdown-bar) {
     position: absolute;
@@ -116,10 +106,5 @@
     left: auto;
     right: 0;
     bottom: 0;
-  }
-  :global(.pnotify-countdown-text) {
-    z-index: 1;
-    line-height: 0.65em;
-    font-size: 0.65em;
   }
 </style>

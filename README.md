@@ -51,6 +51,7 @@ https://sciactive.github.io/pnotify/
   - [Creating Notices with Modules](#creating-notices-with-modules)
   - [Desktop Module](#desktop-module)
   - [Mobile Module](#mobile-module)
+  - [Countdown Module](#countdown-module)
   - [Animate Module](#animate-module)
   - [Confirm Module](#confirm-module)
 - [Exported Methods and Properties](#exported-methods-and-properties)
@@ -640,6 +641,17 @@ Notices on mobile phones and tablets.
 * `swipeDismiss: true`<br>
   Let the user swipe the notice away.
 
+`}`
+
+## Countdown Module
+
+Give an indication of how much time is left.
+
+`defaults = {`
+* `anchor: 'bottom'`<br>
+  Where the countdown bar should anchor. One of 'top', 'bottom', 'left', or 'right'.
+* `reverse: false`<br>
+  Whether the countdown shrinks the other way.
 `}`
 
 ## Animate Module
