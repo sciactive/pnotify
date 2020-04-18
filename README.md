@@ -93,7 +93,7 @@ In addition to the JS and CSS, be sure to [include a PNotify style](#styles).
 
 ## Svelte
 
-[PNotify in Svelte](https://codesandbox.io/s/nwoxqkvw6m).
+[PNotify in Svelte](https://codesandbox.io/s/pnotify-5-in-svelte-4kyyh).
 
 ```js
 import { alert, defaultModules } from '@pnotify/core';
@@ -106,7 +106,7 @@ alert('Notice me, senpai!');
 
 ## React
 
-[PNotify in React](https://codesandbox.io/s/wwqzk8472w).
+[PNotify in React](https://codesandbox.io/s/pnotify-5-in-react-4g9uk).
 
 ```js
 import { alert, defaultModules } from '@pnotify/core';
@@ -121,7 +121,7 @@ alert('Notice me, senpai!');
 
 ## Angular
 
-[PNotify in Angular](https://codesandbox.io/s/l3pzkl64yq).
+[PNotify in Angular](https://codesandbox.io/s/pnotify-5-in-angular-l8mxu).
 
 ```ts
 import { alert, defaultModules } from '@pnotify/core';
@@ -143,7 +143,7 @@ export class WhateverComponent {
 
 ## Angular (Injectable)
 
-[PNotify in Angular](https://codesandbox.io/s/17yr520yj) as an injectable service.
+[PNotify in Angular (Injectable)](https://codesandbox.io/s/pnotify-5-in-angular-injectable-xnb6k)
 
 ```ts
 // pnotify.service.ts
@@ -187,7 +187,7 @@ export class WhateverComponent {
 
 ## AngularJS
 
-[PNotify in AngularJS](https://codesandbox.io/s/o5mp55p2p9).
+[PNotify in AngularJS](https://codesandbox.io/s/pnotify-5-in-angularjs-fk45i).
 
 ```html
 <link href="node_modules/@pnotify/core/dist/PNotify.css" rel="stylesheet" type="text/css" />
@@ -209,7 +209,7 @@ angular.module('WhateverModule', [])
 
 ## Vanilla JS (ES5)
 
-PNotify in vanilla ECMAScript 5.
+PNotify in vanilla ES5
 
 ```html
 <script type="text/javascript" src="node_modules/@pnotify/core/dist/PNotify.js"></script>
@@ -225,7 +225,7 @@ PNotify in vanilla ECMAScript 5.
 
 ## Vanilla JS (ES6)
 
-PNotify in vanilla ECMAScript 6+.
+[PNotify in vanilla ES6+](https://codesandbox.io/s/pnotify-5-in-vanilla-es6-x4ipu)
 
 ```html
 <link href="node_modules/@pnotify/core/dist/PNotify.css" rel="stylesheet" type="text/css" />
@@ -905,7 +905,7 @@ All of the options are properties as well.
 
 ## Example Stack
 
-Here is an example stack with comments to explain. You can play with it [here](https://codesandbox.io/s/2po6zq9yrr).
+Here is an example stack with comments to explain. You can play with it [here](https://codesandbox.io/s/pnotify-5-example-stack-xgw1z).
 
 ```js
 const stackBottomModal = new Stack({
