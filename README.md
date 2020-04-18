@@ -10,7 +10,7 @@ Upgrade to [the latest version of PNotify](https://github.com/sciactive/pnotify/
 Requirements
 ============
 
-jQuery (1.7 or higher)
+Zepto (1.2 or higher) or jQuery (1.7 or higher)
 
 Getting Started
 ===============
