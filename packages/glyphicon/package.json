@@ -1,6 +1,6 @@
 {
   "name": "@pnotify/glyphicon",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "description": "PNotify - Glyphicon Module",
   "keywords": [
     "notice",
@@ -39,7 +39,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@pnotify/core": "^5.0.0"
+    "@pnotify/core": "^5.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",

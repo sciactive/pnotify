@@ -1,6 +1,6 @@
 {
   "name": "@pnotify/bootstrap3",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "description": "PNotify - Bootstrap 3 Module",
   "keywords": [
     "notice",
@@ -39,7 +39,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@pnotify/core": "^5.0.0"
+    "@pnotify/core": "^5.0.1"
   },
   "peerDependencies": {
     "bootstrap": "^3.4.1"

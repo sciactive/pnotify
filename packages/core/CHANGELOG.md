@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.1](https://github.com/sciactive/pnotify/compare/v5.0.0...v5.0.1) (2020-04-18)
+
+
+### Bug Fixes
+
+* correct runtime dependencies ([65fe80f](https://github.com/sciactive/pnotify/commit/65fe80fb18f7bd2a3d1d6d1540eae617b21925b6))
+
+
+
+
+
 # [5.0.0](https://github.com/sciactive/pnotify/compare/v5.0.0-alpha.7...v5.0.0) (2020-04-17)
 
 
