@@ -1,18 +1,16 @@
-[![Stories in Ready](https://badge.waffle.io/sciactive/pnotify.png?label=ready&title=Ready)](http://waffle.io/sciactive/pnotify) [![Stories in Progress](https://badge.waffle.io/sciactive/pnotify.png?label=in%20progress&title=In%20Progress)](http://waffle.io/sciactive/pnotify)
 [![npm version](https://badge.fury.io/js/pnotify.svg)](https://www.npmjs.com/package/pnotify)
+[![jsDelivr Hits](https://data.jsdelivr.com/v1/package/npm/pnotify/badge?style=rounded)](https://www.jsdelivr.com/package/npm/pnotify)
 
 PNotify is a JavaScript notification plugin, developed by SciActive. PNotify can also provide [desktop notifications](http://sciactive.com/pnotify/#web-notifications) based on the [Web Notifications spec](http://www.w3.org/TR/notifications/). If desktop notifications are not available or not allowed, PNotify will fall back to displaying the notice as a regular, in-browser notice.
 
-Demos
-=====
+<big>This README is for an old version of PNotify.</big>
 
-* http://sciactive.com/pnotify/ for the latest release
-* https://sciactive.github.io/pnotify/ for what's on master (gh-pages to be precise)
+Upgrade to [the latest version of PNotify](https://github.com/sciactive/pnotify/) to get new features and fixes.
 
 Requirements
 ============
 
-jQuery (1.6 or higher)
+jQuery (1.7 or higher)
 
 Getting Started
 ===============

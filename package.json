@@ -1,6 +1,6 @@
 {
   "name": "pnotify",
-  "version": "3.2.0",
+  "version": "3.2.2-dev",
   "main": "dist/pnotify.js",
   "repository": {
     "type": "git",
@@ -16,7 +16,7 @@
     "lib": "dist"
   },
   "dependencies": {
-    "jquery": ">=1.6.0"
+    "jquery": ">=1.7.0"
   },
   "devDependencies": {
     "clean-css": "^4.0.12",
@@ -24,6 +24,8 @@
     "uglify-js": "^2.8.22"
   },
   "scripts": {
-    "dist": "nodejs make.js dist"
+    "prepare": "npm run build",
+    "build": "npm run dist",
+    "dist": "node make.js dist"
   }
 }
