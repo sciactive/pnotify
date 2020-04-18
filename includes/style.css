@@ -29,6 +29,9 @@ Copyright (C) 2012 SciActive.com. All Rights Reserved.
 .page-section {
   margin-bottom: 8rem;
 }
+#logo {
+  max-width: 100%;
+}
 #copyright {
   text-align: center;
   margin-top: 40px;
