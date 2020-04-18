@@ -718,6 +718,7 @@ const myNotice = notice({
   Where the countdown bar should anchor. One of 'top', 'bottom', 'left', or 'right'.
 * `reverse: false`<br>
   Whether the countdown shrinks the other way.
+
 `}`
 
 ## Animate Module
