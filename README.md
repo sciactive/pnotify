@@ -57,7 +57,7 @@ Development - https://sciactive.github.io/pnotify/
 
 # Getting Started
 
-You can get PNotify using NPM. (You can also use [jsDelivr](https://www.jsdelivr.com/package/npm/pnotify).)
+You can get PNotify using NPM or Yarn. (You can also use [jsDelivr](https://www.jsdelivr.com/package/npm/pnotify).)
 
 You *should* install the packages you need individually. Alternatively, you can install all of them at once with the `pnotify` package.
 
@@ -320,6 +320,13 @@ Or a clone from jsDelivr:
 
 ## Bootstrap
 
+```sh
+npm install --save-dev @pnotify/bootstrap3
+npm install --save-dev @pnotify/glyphicon
+# or
+npm install --save-dev @pnotify/bootstrap4
+```
+
 Styling for the popular Bootstrap library. Doesn't support dark mode (but you can use a Bootstrap theme).
 
 Include the CSS:
@@ -354,6 +361,10 @@ Change the "4" to "3" for Bootstrap 3, and also import and set `PNotifyGlyphicon
 
 ## Font Awesome 4 (Icons)
 
+```sh
+npm install --save-dev @pnotify/font-awesome4
+```
+
 To set Font Awesome 4 as the default icons, include the appropriate line from below:
 
 ```js
@@ -371,6 +382,11 @@ defaultModules.set(PNotifyFontAwesome4, {});
 ```
 
 ## Font Awesome 5 (Icons)
+
+```sh
+npm install --save-dev @pnotify/font-awesome5
+npm install --save-dev @pnotify/font-awesome5-fix
+```
 
 To set Font Awesome 5 as the default icons, include the appropriate line from below:
 
@@ -610,7 +626,26 @@ Notifications that display even when the web page is not visible. Implements the
 
 If the user's browser doesn't support Web Notifications, or they deny permission to show them, they will see regular in-browser notices, unless `fallback` is false.
 
-`defaults = {`
+```sh
+npm install --save-dev @pnotify/desktop
+```
+
+```js
+import {notice, defaultModules} from '@pnotify/core';
+import * as PNotifyDesktop from '@pnotify/desktop';
+
+const myNotice = notice({
+  text: "I'm a notice.",
+  modules: new Map([
+    ...defaultModules,
+    [PNotifyDesktop, {
+      // Desktop Module Options
+    }]
+  ])
+});
+```
+
+`PNotifyDesktop.defaults = {`
 * `fallback: true`<br>
   If desktop notifications are not supported or allowed, fall back to a regular notice.
 * `icon: null`<br>
@@ -630,7 +665,26 @@ If the user's browser doesn't support Web Notifications, or they deny permission
 
 Notices on mobile phones and tablets.
 
-`defaults = {`
+```sh
+npm install --save-dev @pnotify/mobile
+```
+
+```js
+import {notice, defaultModules} from '@pnotify/core';
+import * as PNotifyMobile from '@pnotify/mobile';
+
+const myNotice = notice({
+  text: "I'm a notice.",
+  modules: new Map([
+    ...defaultModules,
+    [PNotifyMobile, {
+      // Mobile Module Options
+    }]
+  ])
+});
+```
+
+`PNotifyMobile.defaults = {`
 * `swipeDismiss: true`<br>
   Let the user swipe the notice away.
 
@@ -640,7 +694,26 @@ Notices on mobile phones and tablets.
 
 Give an indication of how much time is left.
 
-`defaults = {`
+```sh
+npm install --save-dev @pnotify/countdown
+```
+
+```js
+import {notice, defaultModules} from '@pnotify/core';
+import * as PNotifyCountdown from '@pnotify/countdown';
+
+const myNotice = notice({
+  text: "I'm a notice.",
+  modules: new Map([
+    ...defaultModules,
+    [PNotifyCountdown, {
+      // Countdown Module Options
+    }]
+  ])
+});
+```
+
+`PNotifyCountdown.defaults = {`
 * `anchor: 'bottom'`<br>
   Where the countdown bar should anchor. One of 'top', 'bottom', 'left', or 'right'.
 * `reverse: false`<br>
@@ -651,7 +724,26 @@ Give an indication of how much time is left.
 
 Fluid CSS animations using [Animate.css](https://daneden.github.io/animate.css/).
 
-`defaults = {`
+```sh
+npm install --save-dev @pnotify/animate
+```
+
+```js
+import {notice, defaultModules} from '@pnotify/core';
+import * as PNotifyAnimate from '@pnotify/animate';
+
+const myNotice = notice({
+  text: "I'm a notice.",
+  modules: new Map([
+    ...defaultModules,
+    [PNotifyAnimate, {
+      // Animate Module Options
+    }]
+  ])
+});
+```
+
+`PNotifyAnimate.defaults = {`
 * `inClass: null`<br>
   The class to use to animate the notice in. If only one of these is set, it will be used for both.
 * `outClass: null`<br>
@@ -665,7 +757,26 @@ The Animate module also creates a method, `attention(aniClass, callback)`, on no
 
 Confirmation dialogs and prompts.
 
-`defaults = {`
+```sh
+npm install --save-dev @pnotify/confirm
+```
+
+```js
+import {notice, defaultModules} from '@pnotify/core';
+import * as PNotifyConfirm from '@pnotify/confirm';
+
+const myNotice = notice({
+  text: "I'm a notice.",
+  modules: new Map([
+    ...defaultModules,
+    [PNotifyConfirm, {
+      // Confirm Module Options
+    }]
+  ])
+});
+```
+
+`PNotifyConfirm.defaults = {`
 * `confirm: false`<br>
   Make a confirmation box.
 * `focus: null`<br>
@@ -793,7 +904,7 @@ Event objects have a `detail` property that contains information about the event
 
 * `pnotify:init` - Fired upon initialization of a new notice. This event bubbles.
 * `pnotify:mount` - Fired when the notice has been mounted into the DOM. This event bubbles.
-* `pnotify:update` - Fired when the notice's state changes. Careful, this includes internal state and can be very noisy.
+* `pnotify:update` - Fired when the notice's state changes. Careful, this includes internal state and can be very noisy (don't do anything computationally expensive on this one).
 * `pnotify:beforeOpen` - Fired before the notice opens. Use `preventDefault()` on the event to cancel this action.
 * `pnotify:afterOpen` - Fired after the notice opens.
 * `pnotify:enterModal` - Fired when the notice enters a modal state. (Opens in a modal stack, or a modalish stack that is in modal state.)
@@ -895,7 +1006,7 @@ There are other methods on the stack class, but you shouldn't use them. They're 
 
 Stack properties:
 
-* `stack.notices` - An "array" of notices. It's actually built on the fly from the double linked list the notices are actually stored in.
+* `stack.notices` - An "array" of notices. It's actually built on the fly from the double linked list the notices are really stored in.
 * `stack.length` - How many notices there are in the stack.
 * `stack.leader` - When a stack is modalish, this is the notice that is open in the non-modal state.
 
@@ -941,9 +1052,10 @@ alert({
   * Timed hiding.
   * Slick animations with Animate.css.
   * Attention getters with Animate.css.
+  * Countdown bar to show time left before notice closes.
 * Highly customizable UI.
   * [Modalish](https://sciactive.com/2020/02/11/the-modalish-notification-flow/), modal, and modeless notification flows.
-  * Sticky notices.
+  * Sticky (pinned) notices.
   * Optional close and stick buttons.
   * Supports non-blocking notices for less intrusive use.
   * Notification types: notice, info, success, and error.
@@ -959,7 +1071,7 @@ alert({
   * Optional notice history for reshowing old notices.
 * Universally compatible.
   * Works with any frontend library (React, Angular, Svelte, Vue, Ember, etc.).
-  * Works well with bundlers (Webpack, Rollup, etc.).
+  * Works with bundlers (Webpack, Rollup, etc.).
   * No dependencies for most features.
 
 # Licensing and Additional Info
