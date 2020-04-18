@@ -4,17 +4,19 @@
 
 * [Modalish flow!!](https://sciactive.com/2020/02/11/the-modalish-notification-flow/)
 * Dark Mode!!
+* [Countdown Module!!](https://github.com/sciactive/pnotify#countdown-module)
 * Svelte 3!!
+* Support for DOM Element Text and Title!!
+* Individual Packages for Core and Modules!!
 
 **PNotify 5** has breaking changes:
 
 ## Major Breaking Changes
 
-* It's built using [Svelte](https://svelte.dev) 3, which has a slightly different component API than Svelte 2.
 * The new modalish flow is the default flow. The default stack is configured to use it. To go back to the old behavior, use `PNotify.defaultStack.maxOpen = Infinity; PNotify.defaultStack.modal = false;`.
 * Using the factory functions is required. Using the `new` keyword will break your notice.
 * IIFE scripts have been replaced with UMD scripts, since static methods and properties are now module exports.
-  * The `dist` folder structure has changed. It's simpler now. All CSS and UMD scripts are right under `dist`, and ES6 modules are under `dist/es`.
+  * The `dist` folder structure has changed. It's simpler now. All CSS and UMD scripts are right under `dist`.
 * The Buttons module has been integrated into PNotify Core. Everyone was using it anyway. All the options are the same (except for `classes`), they're just core options now.
 * Modules dont alter PNotify Core anymore. Instead, they are only used when they are explicitly added to the `modules` option.
   * Since they don't add themselves to PNotify anymore, the ones with a single option to toggle on/off, like Desktop, don't have that option anymore. If you don't want the functionality, don't include the module.
@@ -36,10 +38,11 @@
 * The 'ui-pnotify' class and 'ui-pnotify-\*' classes have been changed to just 'pnotify' and 'pnotify-\*', respectively.
 * The 'ui-pnotify' attribute has been changed to 'data-pnotify'.
 * The `cornerClass` options has been removed, as has the `ui-pnotify-sharp` class. If you want `border-radius: 0;`, just use a custom class.
-* Methods are no longer chainable.
+* Methods are no longer chainable. (Sorry.)
 
 ## Minor Breaking Changes.
 
+* It's built using [Svelte](https://svelte.dev) 3, which has a slightly different component API than Svelte 2.
 * The title is no longer an h4 element. It is now just a div.
 * The deprecated NonBlock module has been removed.
 * White space formatting has changed. HTML notices no longer use `white-space: pre-line;`. Only regular text notices. But also titles do too now.
@@ -50,7 +53,8 @@
 * Animate.css support in legacy browsers has been removed.
 * Some styling props and classes have changed, like pinDown, actionBar, etc.
 * The styling class ending in '-element' has changed to '-elem'.
-* Material styling is no longer a module, but rather a CSS file.
+* Material styling is no longer a module, but rather just a CSS file.
 * There is no longer a Compat module for running PNotify 3 code, and one will not be provided for running PNotify 4 code.
 * `PNotify.styling` renamed to `PNotify.styles`. (Only relevant for creating modules.)
 * The VERSION constant has been removed.
+* The default labels for the sticker button has changed to 'Pin' and 'Unpin'.
