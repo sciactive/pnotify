@@ -13,16 +13,40 @@
   <script type="text/javascript" src="../packages/glyphicon/dist/PNotifyGlyphicon.js"></script>
   <script type="text/javascript" src="../packages/confirm/dist/PNotifyConfirm.js"></script>
   <script type="text/javascript" src="../packages/mobile/dist/PNotifyMobile.js"></script>
-  <!-- <link href="../packages/core/dist/PNotify.css" rel="stylesheet" type="text/css" />
+  <link href="../packages/core/dist/PNotify.css" rel="stylesheet" type="text/css" />
   <link href="../packages/bootstrap3/dist/PNotifyBootstrap3.css" rel="stylesheet" type="text/css" />
-  <link href="../packages/bootstrap4/dist/PNotifyBootstrap4.css" rel="stylesheet" type="text/css" /> -->
+  <link href="../packages/bootstrap4/dist/PNotifyBootstrap4.css" rel="stylesheet" type="text/css" />
   <link href="../packages/core/BrightTheme.css" rel="stylesheet" type="text/css" />
   <link href="../packages/core/Material.css" rel="stylesheet" type="text/css" />
-  <!-- <link href="../packages/confirm/dist/PNotifyConfirm.css" rel="stylesheet" type="text/css" />
+  <link href="../packages/confirm/dist/PNotifyConfirm.css" rel="stylesheet" type="text/css" />
   <link href="../packages/mobile/dist/PNotifyMobile.css" rel="stylesheet" type="text/css" />
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="" id="bootstrap-css" rel="stylesheet" type="text/css" />
   <link href="" id="fontawesome-css" rel="stylesheet" type="text/css" />
+
+  <style type="text/css">
+    body, body.light,
+    button, body.light button,
+    select, body.light select {
+      background-color: white;
+      color: black;
+    }
+
+    body.dark,
+    body.dark button,
+    body.dark select {
+      background-color: black;
+      color: white;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      body, button, select {
+        background-color: black;
+        color: white;
+      }
+    }
+
+  </style>
 
   <script type="text/javascript">
     /* globals PNotify */
@@ -100,6 +124,11 @@
 
       PNotify.defaults.mode = mode;
 
+      document.body.classList.remove('light', 'dark');
+      if (['light', 'dark'].indexOf(mode) !== -1) {
+        document.body.classList.add(mode);
+      }
+
       PNotify.defaultStack.close();
     };
 
@@ -135,7 +164,7 @@
         fontAwesomeCss.href = 'https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css';
         output.innerText += ' Loaded Font Awesome 4.';
       } else if (fontAwesome === '5') {
-        fontAwesomeCss.href = 'https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css';
+        fontAwesomeCss.href = 'https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css';
         output.innerText += ' Loaded Font Awesome 5.';
       } else {
         fontAwesomeCss.href = '';
@@ -193,25 +222,25 @@
     <h2>Test Notices</h2>
     <button onclick="PNotify.notice({
       title: 'Test Notice',
-      text: 'This is a test notice.'
+      text: 'This is a test notice alert.'
     })">Test Notice</button>
     <button onclick="PNotify.info({
-      title: 'Test Notice',
-      text: 'This is a test notice.'
+      title: 'Test Info',
+      text: 'This is a test info alert.'
     })">Test Info</button>
     <button onclick="PNotify.success({
-      title: 'Test Notice',
-      text: 'This is a test notice.'
+      title: 'Test Success',
+      text: 'This is a test success alert.'
     })">Test Success</button>
     <button onclick="PNotify.error({
-      title: 'Test Notice',
-      text: 'This is a test notice.'
+      title: 'Test Error',
+      text: 'This is a test error alert.'
     })">Test Error</button>
     <button onclick="PNotify.info({
-      title: 'This is a test notice.'
+      title: 'This is a test notice with title.'
     })">Just Title</button>
     <button onclick="PNotify.info({
-      text: 'This is a test notice.'
+      text: 'This is a test notice with text.'
     })">Just Text</button>
     <h3>Confirm Module</h3>
     <button onclick="PNotify.notice({
@@ -353,6 +382,7 @@
     loadLibraries();
     window.setStyling();
     window.setIcons();
+    window.setMode();
   </script>
 </body>
 </html>
