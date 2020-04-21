@@ -35,6 +35,7 @@
   },
   "main": "dist/PNotifyCountdown.js",
   "svelte": "index.svelte",
+  "types": "index.d.ts",
   "publishConfig": {
     "access": "public"
   },

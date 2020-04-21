@@ -1,9 +1,7 @@
 <script context="module">
   export const position = 'AppendContainer';
   export const defaults = {
-    // Where the countdown bar should anchor. One of 'top', 'bottom', 'left', or 'right'.
     anchor: 'bottom',
-    // Whether the countdown shrinks the other way.
     reverse: false,
   };
 </script>

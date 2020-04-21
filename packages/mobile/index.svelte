@@ -1,8 +1,7 @@
 <script context="module">
   export const position = 'PrependContainer';
   export const defaults = {
-    // Let the user swipe the notice away.
-    swipeDismiss: true
+    swipeDismiss: true,
   };
 </script>
 <svelte:window on:resize={() => windowInnerWidth = window.innerWidth} />

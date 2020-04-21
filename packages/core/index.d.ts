@@ -209,10 +209,15 @@ declare abstract class NoticeProperties {
   modules: ModuleMap;
 }
 
-interface Module {}
-interface ModuleOptions {}
+export interface Module {}
+export interface ModuleOptions {}
+export interface ModuleExport {
+  default: Module;
+  position: string;
+  defaults: ModuleOptions;
+}
 
-type ModuleMap = Map<Module, ModuleOptions>;
+type ModuleMap = Map<ModuleExport, ModuleOptions>;
 
 export type Options = Partial<NoticeProperties>;
 

@@ -1,28 +1,17 @@
 <script context="module">
   export const position = 'AppendContent';
   export const defaults = {
-    // Make a confirmation box.
     confirm: false,
-    // Make a prompt.
     prompt: false,
-    // Classes to add to the input element of the prompt.
     promptClass: '',
-    // The value of the prompt.
     promptValue: '',
-    // Whether the prompt should accept multiple lines of text.
     promptMultiLine: false,
-    // For confirmation boxes, true means the first button or the button with promptTrigger will be focused, and null means focus will change only for modal notices. For prompts, true or null means focus the prompt. When false, focus will not change.
     focus: null,
-    // Where to align the buttons. (flex-start, center, flex-end, space-around, space-between)
     align: 'flex-end',
-    // The buttons to display, and their callbacks.
     buttons: [
       {
         text: 'Ok',
-        textTrusted: false,
-        addClass: '',
         primary: true,
-        // Whether to trigger this button when the user hits enter in a single line prompt. Also, focus the button if it is a modal prompt.
         promptTrigger: true,
         click: (notice, value) => {
           notice.close();
@@ -31,14 +20,12 @@
       },
       {
         text: 'Cancel',
-        textTrusted: false,
-        addClass: '',
         click: notice => {
           notice.close();
           notice.fire('pnotify:cancel', { notice });
         }
       }
-    ]
+    ],
   };
 </script>
 

@@ -9,6 +9,8 @@
   "author": "",
   "license": "Apache-2.0",
   "devDependencies": {
+    "@pnotify/animate": "file:../../packages/animate",
+    "@pnotify/confirm": "file:../../packages/confirm",
     "@pnotify/core": "file:../../packages/core",
     "typescript": "^3.8.3"
   }

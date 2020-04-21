@@ -1,12 +1,8 @@
 <script context="module">
   export const position = 'PrependContainer';
   export const defaults = {
-    // The class to use to animate the notice in. If only one of these is set,
-    // it will be used for both.
     inClass: null,
-    // The class to use to animate the notice out. If only one of these is set,
-    // it will be used for both.
-    outClass: null
+    outClass: null,
   };
 </script>
 <script>

@@ -1,20 +1,12 @@
 <script context="module">
   export const position = 'PrependContainer';
   export const defaults = {
-    // If desktop notifications are not supported or allowed, fall back to a regular notice.
     fallback: true,
-    // The URL of the icon to display. If false, no icon will show. If null, a default icon will show.
     icon: null,
-    // Using a tag lets you update an existing notice, or keep from duplicating notices between tabs.
-    // If you leave tag null, one will be generated, facilitating the 'update' function.
-    // see: http://www.w3.org/TR/notifications/#tags-example
     tag: null,
-    // Optionally display a different title for the desktop.
     title: null,
-    // Optionally display different text for the desktop.
     text: null,
-    // Any additional options to be passed to the Notification constructor.
-    options: {}
+    options: {},
   };
 
   function requestPermission () {
