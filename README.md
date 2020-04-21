@@ -4,11 +4,11 @@
   <img src="includes/logo.png" alt="PNotify" />
 </div>
 
-A JavaScript notification and [confirmation/prompt](http://sciactive.com/pnotify/#confirm-module) library.
+A JavaScript/TypeScript notification, confirmation, and prompt library.
 
-PNotify can provide [desktop notifications](http://sciactive.com/pnotify/#web-notifications) based on the [Web Notifications spec](http://www.w3.org/TR/notifications/) with fall back to an in-browser notice.
+Notifications can display as toast style, snackbar style, banners, dialogs, alerts, or desktop notifications (using the [Web Notifications spec](http://www.w3.org/TR/notifications/)) with fall back to an in-browser notice.
 
-PNotify implements a unique notification flow called [modalish](https://sciactive.com/2020/02/11/the-modalish-notification-flow/) that provides a good user experience, even when many notifications are shown at once.
+PNotify provides a unique notification flow called [modalish](https://sciactive.com/2020/02/11/the-modalish-notification-flow/) that provides a good user experience, even when many notifications are shown at once.
 
 <h1>Demos</h1>
 
@@ -42,6 +42,7 @@ Development - https://sciactive.github.io/pnotify/
   - [Changing Defaults](#Changing-Defaults)
 - [Modules](#Modules)
   - [Creating Notices with Modules](#Creating-Notices-with-Modules)
+    - [TypeScript](#TypeScript)
   - [Desktop Module](#Desktop-Module)
   - [Mobile Module](#Mobile-Module)
   - [Countdown Module](#Countdown-Module)
@@ -595,7 +596,7 @@ defaultModules.set(PNotifyMobile, {});
 
 // Remove one of the default modules.
 notice({
-  text: "I don't have the PNotifyMobile module.",
+  text: "I don't have the Mobile module.",
   modules: new Map([
     ...[...defaultModules].filter(([mod]) => mod !== PNotifyMobile)
   ])
@@ -603,7 +604,7 @@ notice({
 
 // Add an additional module and options.
 notice({
-  text: "I use the PNotifyAnimate module in addition to the defaults.",
+  text: "I use the Animate module in addition to the defaults.",
   modules: new Map([
     ...defaultModules,
     [PNotifyAnimate, {
@@ -616,12 +617,41 @@ notice({
 // Don't worry about adding a module that's already in the defaults.
 // It's a Map, so only the last instance/options will end up in there.
 notice({
-  text: "I use the PNotifyMobile module with options I specify.",
+  text: "I use the Mobile module with options I specify.",
   modules: new Map([
     ...defaultModules,
     [PNotifyMobile, {
       swipeDismiss: false
     }]
+  ])
+});
+```
+
+### TypeScript
+
+Using modules with TypeScript requires types assertions for module entries, and possibly the `downlevelIteration` TypeScript option.
+
+```ts
+import {notice, defaultModules, Notice, ModuleEntry} from '@pnotify/core';
+import * as PNotifyConfirm from '@pnotify/confirm';
+
+notice({
+  text: "I'm a notice with modules, and my module options are checked by TypeScript.",
+  modules: new Map([
+    // This requires `"downlevelIteration": true` in your TypeScript config.
+    ...defaultModules,
+    [PNotifyConfirm, {
+      confirm: true,
+      buttons: [{
+        text: 'Ok',
+        primary: true,
+        click: (notice: Notice) => notice.close()
+      }]
+      // ***
+      // Notice the type assertion here. It tells TypeScript that the options
+      // are for the Confirm module.
+      // ***
+    }] as ModuleEntry<typeof PNotifyConfirm>,
   ])
 });
 ```

@@ -215,9 +215,12 @@ export interface ModuleExport {
   default: Module;
   position: string;
   defaults: ModuleOptions;
+  [k: string]: any;
 }
 
-type ModuleMap = Map<ModuleExport, ModuleOptions>;
+export type ModuleEntry<T extends ModuleExport = ModuleExport> = [T, Partial<T['defaults']>];
+
+export type ModuleMap = Iterable<ModuleEntry>;
 
 export type Options = Partial<NoticeProperties>;
 
@@ -333,7 +336,7 @@ declare interface DefaultStack extends Stack {
 }
 
 export const defaultStack: DefaultStack;
-export const defaultModules: ModuleMap;
+export const defaultModules: Map<ModuleExport, ModuleOptions>;
 export const defaults: NoticeProperties;
 
 /**
@@ -345,19 +348,39 @@ export function alert(options: Options | string): Notice;
  * Create a PNotify Notice with the type set to 'notice';
  * @param options Notice options.
  */
-export function notice(options: Options | string): Notice & { type: 'notice' };
+export function notice(options: Options | string): Notice & {
+  /**
+   * @default 'notice'
+   */
+  type: Options['type']
+};
 /**
  * Create a PNotify Notice with the type set to 'info';
  * @param options Notice options.
  */
-export function info(options: Options | string): Notice & { type: 'info' };
+export function info(options: Options | string): Notice & {
+  /**
+   * @default 'info'
+   */
+  type: Options['type']
+};
 /**
  * Create a PNotify Notice with the type set to 'success';
  * @param options Notice options.
  */
-export function success(options: Options | string): Notice & { type: 'success' };
+export function success(options: Options | string): Notice & {
+  /**
+   * @default 'success'
+   */
+  type: Options['type']
+};
 /**
  * Create a PNotify Notice with the type set to 'error';
  * @param options Notice options.
  */
-export function error(options: Options | string): Notice & { type: 'error' };
+export function error(options: Options | string): Notice & {
+  /**
+   * @default 'error'
+   */
+  type: Options['type']
+};

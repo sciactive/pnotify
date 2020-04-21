@@ -1,5 +1,4 @@
 import {Module, ModuleOptions} from '@pnotify/core';
-import * as ModuleExport from './';
 
 export as namespace PNotifyMobile;
 
@@ -18,5 +17,3 @@ export default abstract class Mobile extends ModuleProperties
   implements Module {}
 export const position: string;
 export const defaults: ModuleProperties;
-
-export type Entry = [typeof ModuleExport, Options];

@@ -1,5 +1,4 @@
 import {Module, ModuleOptions} from '@pnotify/core';
-import * as ModuleExport from './';
 
 export as namespace PNotifyReference;
 
@@ -20,5 +19,3 @@ export default abstract class Reference extends ModuleProperties
   implements Module {}
 export const position: string;
 export const defaults: ModuleProperties;
-
-export type Entry = [typeof ModuleExport, Options];

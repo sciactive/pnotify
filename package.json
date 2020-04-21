@@ -9,12 +9,22 @@
     "notifications",
     "alert",
     "alerts",
+    "web notification",
     "web notifications",
+    "prompt",
     "prompts",
+    "toast",
+    "toasts",
+    "snackbar",
+    "snackbars",
+    "dialog",
+    "dialogs",
     "non blocking",
     "notify",
     "material",
-    "material ui"
+    "material ui",
+    "modal",
+    "modalish"
   ],
   "homepage": "https://github.com/sciactive/pnotify",
   "bugs": {

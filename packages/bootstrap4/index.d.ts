@@ -1,5 +1,4 @@
 import {Module, ModuleOptions} from '@pnotify/core';
-import * as ModuleExport from './';
 
 export as namespace PNotifyBootsrap4;
 
@@ -11,5 +10,3 @@ export default abstract class Bootsrap4 extends ModuleProperties
   implements Module {}
 export const position: string;
 export const defaults: ModuleProperties;
-
-export type Entry = [typeof ModuleExport, Options];
