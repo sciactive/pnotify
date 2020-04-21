@@ -1,0 +1,15 @@
+{
+  "name": "pnotify-typescript-test",
+  "version": "0.0.0",
+  "description": "Just a test.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "@pnotify/core": "file:../../packages/core",
+    "typescript": "^3.8.3"
+  }
+}

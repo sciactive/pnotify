@@ -37,6 +37,7 @@
   },
   "main": "dist/PNotify.js",
   "svelte": "index.svelte",
+  "types": "index.d.ts",
   "publishConfig": {
     "access": "public"
   },

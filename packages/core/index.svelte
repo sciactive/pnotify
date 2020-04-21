@@ -58,88 +58,40 @@
   export const defaultModules = new Map();
 
   export const defaults = {
-    // Type of the notice. 'notice', 'info', 'success', or 'error'.
     type: 'notice',
-    // The notice's title. Can be a string, an element, or `false` for no title.
     title: false,
-    // Whether to trust the title or escape its contents. (Not allow HTML.)
     titleTrusted: false,
-    // The notice's text. Can be a string, an element, or `false` for no text.
     text: false,
-    // Whether to trust the text or escape its contents. (Not allow HTML.)
     textTrusted: false,
-    // What styling classes to use. (Can be 'brighttheme', 'material', or a
-    // styling object.) (Note that the Bootstrap modules provide a different
-    // default.)
     styling: 'brighttheme',
-    // What icons classes to use (Can be 'brighttheme', 'material', or an icon
-    // object.) (Note that the Font Awesome and Glyphicon modules provide a
-    // different default.)
     icons: 'brighttheme',
-    // Light or dark version of the theme, if supported by the styling. This
-    // overrides the CSS media query when a preference is given. (Can be
-    // 'no-preference', 'light', or 'dark'.)
     mode: 'no-preference',
-    // Additional classes to be added to the notice. (For custom styling.)
     addClass: '',
-    // Additional classes to be added to the notice, only when in modal.
     addModalClass: '',
-    // Additional classes to be added to the notice, only when in modeless.
     addModelessClass: '',
-    // Display the notice immediately when it is created.
     autoOpen: true,
-    // Width of the notice.
     width: '360px',
-    // Minimum height of the notice. It will expand to fit content.
     minHeight: '16px',
-    // Maximum height of the text container. If the text goes beyond this
-    // height, scrollbars will appear. Use null to remove this restriction.
     maxTextHeight: '200px',
-    // Set icon to true to use the default icon for the selected
-    // style/type, false for no icon, or a string for your own icon class.
     icon: true,
-    // The animation to use when displaying and hiding the notice. 'none'
-    // and 'fade' are supported through CSS. Others are supported
-    // through the Animate module and Animate.css.
     animation: 'fade',
-    // Speed at which the notice animates in and out. 'slow', 'normal',
-    // or 'fast'. Respectively, 400ms, 250ms, 100ms.
     animateSpeed: 'normal',
-    // Display a drop shadow.
     shadow: true,
-    // After a delay, remove the notice.
     hide: true,
-    // Delay in milliseconds before the notice is removed. If set to `Infinity`,
-    // the notice will not close, but it will not be considered sticky, so it
-    // will be closed along with all unstuck notices if the modal backdrop is
-    // clicked.
     delay: 8000,
-    // Reset the hide timer if the mouse moves over the notice.
     mouseReset: true,
-    // Provide a button for the user to manually close the notice.
     closer: true,
-    // Only show the closer button on hover.
     closerHover: true,
-    // Provide a button for the user to manually stick the notice.
     sticker: true,
-    // Only show the sticker button on hover.
     stickerHover: true,
-    // The various displayed text, helps facilitating internationalization.
     labels: {
       close: 'Close',
       stick: 'Pin',
       unstick: 'Unpin'
     },
-    // Remove the notice's elements from the DOM after it is removed.
     remove: true,
-    // Whether to remove the notice from the stack (and therefore, stack
-    // history) when it is closed.
     destroy: true,
-    // The stack on which the notices will be placed. Also controls the
-    // direction the notices stack.
     stack: defaultStack,
-    // This is where modules and their options should be added. It is a map of
-    // `module => options` entries.
     modules: defaultModules
   };
 

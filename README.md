@@ -458,9 +458,9 @@ PNotify options and default values.
 * `textTrusted: false`<br>
   Whether to trust the text or escape its contents. (Not allow HTML.)
 * `styling: 'brighttheme'`<br>
-  What styling classes to use. (Can be 'brighttheme', 'material', or a styling object.) (Note that the Bootstrap modules provide a different default.)
+  What styling classes to use. (Can be 'brighttheme', 'material', another string provided by a module, or a styling object.)
 * `icons: 'brighttheme'`<br>
-  What icons classes to use (Can be 'brighttheme', 'material', or an icon object.) (Note that the Font Awesome and Glyphicon modules provide a different default.)
+  What icons classes to use (Can be 'brighttheme', 'material', another string provided by a module, or an icon object.)
 * `mode: 'no-preference'`<br>
   Light or dark version of the theme, if supported by the styling. This overrides the CSS media query when a preference is given. (Can be 'no-preference', 'light', or 'dark'.)
 * `addClass: ''`<br>
