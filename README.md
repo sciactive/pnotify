@@ -19,7 +19,7 @@ You can include PNotify using NPM, Yarn, or Bower. NPM is the prefered method.
 
     npm install pnotify@3
 
-<small>(PNotify 3 used to come with a custom download service. That is no longer available, but you can still make custom downloads by running this repo in a PHP server.)</small>
+> :warning: PNotify 3 used to come with a custom download service. That is no longer available, but you can still make custom downloads by running this repo in a PHP server.
 
 Here's how you'd include the files on your page:
 
