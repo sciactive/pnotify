@@ -19,40 +19,41 @@ Development - https://sciactive.github.io/pnotify/
 <h1>Table of Contents</h1>
 
 <!-- TOC START min:1 max:3 link:true asterisk:false update:true -->
-- [Getting Started](#getting-started)
-  - [Migrating from PNotify 4](#migrating-from-pnotify-4)
-- [Installation](#installation)
-  - [Svelte](#svelte)
-  - [React](#react)
-  - [Angular](#angular)
-  - [Angular (Injectable)](#angular-injectable)
-  - [AngularJS](#angularjs)
-  - [Vanilla JS (ES5)](#vanilla-js-es5)
-  - [Vanilla JS (ES6)](#vanilla-js-es6)
-- [Styles](#styles)
-  - [Bright Theme](#bright-theme)
-  - [Material](#material)
-    - [Material Icons](#material-icons)
-  - [Bootstrap](#bootstrap)
-  - [Font Awesome 4 (Icons)](#font-awesome-4-icons)
-  - [Font Awesome 5 (Icons)](#font-awesome-5-icons)
-- [Creating Notices](#creating-notices)
-- [Options](#options)
-  - [Changing Defaults](#changing-defaults)
-- [Modules](#modules)
-  - [Creating Notices with Modules](#creating-notices-with-modules)
-  - [Desktop Module](#desktop-module)
-  - [Mobile Module](#mobile-module)
-  - [Countdown Module](#countdown-module)
-  - [Animate Module](#animate-module)
-  - [Confirm Module](#confirm-module)
-- [Exported Methods and Properties](#exported-methods-and-properties)
-- [Instance Methods and Properties](#instance-methods-and-properties)
-  - [Events](#events)
-- [Stacks](#stacks)
-  - [Example Stack](#example-stack)
-- [Features](#features)
-- [Licensing and Additional Info](#licensing-and-additional-info)
+- [Getting Started](#Getting-Started)
+  - [Documentation for Old Versions](#Documentation-for-Old-Versions)
+  - [Migrating from PNotify 4](#Migrating-from-PNotify-4)
+- [Installation](#Installation)
+  - [Svelte](#Svelte)
+  - [React](#React)
+  - [Angular](#Angular)
+  - [Angular (Injectable)](#Angular-Injectable)
+  - [AngularJS](#AngularJS)
+  - [Vanilla JS (ES5)](#Vanilla-JS-ES5)
+  - [Vanilla JS (ES6)](#Vanilla-JS-ES6)
+- [Styles](#Styles)
+  - [Bright Theme](#Bright-Theme)
+  - [Material](#Material)
+    - [Material Icons](#Material-Icons)
+  - [Bootstrap](#Bootstrap)
+  - [Font Awesome 4 (Icons)](#Font-Awesome-4-Icons)
+  - [Font Awesome 5 (Icons)](#Font-Awesome-5-Icons)
+- [Creating Notices](#Creating-Notices)
+- [Options](#Options)
+  - [Changing Defaults](#Changing-Defaults)
+- [Modules](#Modules)
+  - [Creating Notices with Modules](#Creating-Notices-with-Modules)
+  - [Desktop Module](#Desktop-Module)
+  - [Mobile Module](#Mobile-Module)
+  - [Countdown Module](#Countdown-Module)
+  - [Animate Module](#Animate-Module)
+  - [Confirm Module](#Confirm-Module)
+- [Exported Methods and Properties](#Exported-Methods-and-Properties)
+- [Instance Methods and Properties](#Instance-Methods-and-Properties)
+  - [Events](#Events)
+- [Stacks](#Stacks)
+  - [Example Stack](#Example-Stack)
+- [Features](#Features)
+- [Licensing and Additional Info](#Licensing-and-Additional-Info)
 <!-- TOC END -->
 
 # Getting Started
@@ -84,6 +85,11 @@ npm install --save-dev @pnotify/mobile
 # Or, you can install this to get them all (if you're lazy).
 npm install --save pnotify
 ```
+
+## Documentation for Old Versions
+
+* [Readme for v4](https://github.com/sciactive/pnotify/blob/v4/README.md) on the [v4 branch](https://github.com/sciactive/pnotify/tree/v4).
+* [Readme for v3](https://github.com/sciactive/pnotify/blob/v3/README.md) on the [v3 branch](https://github.com/sciactive/pnotify/tree/v3).
 
 ## [Migrating from PNotify 4](MIGRATING.md)
 
