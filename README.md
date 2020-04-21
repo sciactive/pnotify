@@ -15,20 +15,17 @@ jQuery (1.7 or higher)
 Getting Started
 ===============
 
-You can include PNotify using NPM, Bower, or a custom download. NPM is the prefered method.
+You can include PNotify using NPM, Yarn, or Bower. NPM is the prefered method.
 
-    npm install pnotify
+    npm install pnotify@3
 
-The PNotify custom download comes with the following files:
+<small>(PNotify 3 used to come with a custom download service. That is no longer available, but you can still make custom downloads by running this repo in a PHP server.)</small>
 
-* `pnotify.custom.js` & `pnotify.custom.min.js` (Minified)
-* `pnotify.custom.css` & `pnotify.custom.min.css` (Minified)
-
-So here's how you'd include them on your page:
+Here's how you'd include the files on your page:
 
 ```html
-<script type="text/javascript" src="pnotify.custom.min.js"></script>
-<link href="pnotify.custom.min.css" media="all" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="node_modules/pnotify/pnotify.js"></script>
+<link href="node_modules/pnotify/pnotify.css" media="all" rel="stylesheet" type="text/css" />
 ```
 
 Now you can use PNotify like this:
