@@ -24,8 +24,8 @@ You can include PNotify using NPM, Yarn, or Bower. NPM is the prefered method.
 Here's how you'd include the files on your page:
 
 ```html
-<script type="text/javascript" src="node_modules/pnotify/pnotify.js"></script>
-<link href="node_modules/pnotify/pnotify.css" media="all" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="node_modules/pnotify/dist/pnotify.js"></script>
+<link href="node_modules/pnotify/dist/pnotify.css" media="all" rel="stylesheet" type="text/css" />
 ```
 
 Now you can use PNotify like this:
