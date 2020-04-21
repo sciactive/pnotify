@@ -1,6 +1,6 @@
 {
   "name": "pnotify",
-  "version": "5.0.1",
+  "version": "5.1.0",
   "description": "Beautiful notifications and prompts.",
   "keywords": [
     "notice",
@@ -71,18 +71,18 @@
     "lerna": "^3.20.2"
   },
   "dependencies": {
-    "@pnotify/animate": "5.0.1",
-    "@pnotify/bootstrap3": "5.0.1",
-    "@pnotify/bootstrap4": "5.0.1",
-    "@pnotify/confirm": "5.0.1",
-    "@pnotify/core": "5.0.1",
-    "@pnotify/countdown": "5.0.1",
-    "@pnotify/desktop": "5.0.1",
-    "@pnotify/font-awesome4": "5.0.1",
-    "@pnotify/font-awesome5": "5.0.1",
-    "@pnotify/font-awesome5-fix": "5.0.1",
-    "@pnotify/glyphicon": "5.0.1",
-    "@pnotify/mobile": "5.0.1",
-    "@pnotify/reference": "5.0.1"
+    "@pnotify/animate": "5.1.0",
+    "@pnotify/bootstrap3": "5.1.0",
+    "@pnotify/bootstrap4": "5.1.0",
+    "@pnotify/confirm": "5.1.0",
+    "@pnotify/core": "5.1.0",
+    "@pnotify/countdown": "5.1.0",
+    "@pnotify/desktop": "5.1.0",
+    "@pnotify/font-awesome4": "5.1.0",
+    "@pnotify/font-awesome5": "5.1.0",
+    "@pnotify/font-awesome5-fix": "5.1.0",
+    "@pnotify/glyphicon": "5.1.0",
+    "@pnotify/mobile": "5.1.0",
+    "@pnotify/reference": "5.1.0"
   }
 }
