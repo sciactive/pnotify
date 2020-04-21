@@ -1,6 +1,6 @@
 {
   "name": "@pnotify/font-awesome4",
-  "version": "5.0.1",
+  "version": "5.1.0",
   "description": "PNotify - Font Awesome 4 Module",
   "keywords": [
     "notice",
@@ -40,7 +40,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@pnotify/core": "^5.0.1"
+    "@pnotify/core": "^5.1.0"
   },
   "peerDependencies": {
     "font-awesome": "^4.7.0"
