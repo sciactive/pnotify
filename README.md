@@ -1,4 +1,4 @@
-[![npm version](https://badge.fury.io/js/pnotify.svg)](https://www.npmjs.com/package/pnotify) [![jsDelivr Hits](https://data.jsdelivr.com/v1/package/npm/pnotify/badge?style=rounded)](https://www.jsdelivr.com/package/npm/pnotify)
+[![npm version](https://img.shields.io/npm/v/pnotify.svg?style=flat&label=npm+version)](https://www.npmjs.com/package/pnotify) [![npm downloads](https://img.shields.io/npm/dm/pnotify.svg?style=flat&label=npm+downloads)](https://www.npmjs.com/package/pnotify) [![jsDelivr Hits](https://img.shields.io/jsdelivr/npm/hm/pnotify.svg?style=flat)](https://www.jsdelivr.com/package/npm/pnotify) [![types](https://img.shields.io/npm/types/@pnotify/core.svg?style=flat)](https://github.com/sciactive/pnotify/blob/master/packages/core/index.d.ts) [![license](https://img.shields.io/github/license/sciactive/pnotify.svg?style=flat)](https://github.com/sciactive/pnotify/blob/master/LICENSE)
 
 <div align="center">
   <img src="includes/logo.png" alt="PNotify" />
