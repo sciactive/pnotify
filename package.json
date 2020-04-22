@@ -38,8 +38,8 @@
     "watch": "./package-sh.sh npm run watch",
     "deploy": "git checkout gh-pages && git merge develop && rm -rf ./packages/*/dist/ && npm run build-dev && git add . && git commit -m 'chore: update built files' && git push && git checkout develop",
     "lint": "eslint index.html demo/* packages/**/*.svelte packages/**/*.js packages/**/*.ts packages/**/*.css",
-    "format": "prettier --config .prettierrc.json --write index.html demo/* packages/**/*.svelte packages/**/*.js packages/**/*.ts packages/**/*.css",
-    "format:check": "prettier --config .prettierrc.json --debug-check --list-different index.html demo/* packages/**/*.svelte packages/**/*.js packages/**/*.ts packages/**/*.css"
+    "format": "prettier --write --config .prettierrc.json --plugin-search-dir=. index.html demo/* packages/**/*.svelte packages/**/*.js packages/**/*.ts packages/**/*.css",
+    "format:check": "prettier --debug-check --list-different --config .prettierrc.json --plugin-search-dir=. index.html demo/* packages/**/*.svelte packages/**/*.js packages/**/*.ts packages/**/*.css"
   },
   "files": [],
   "repository": {
@@ -61,7 +61,7 @@
     "@commitlint/config-conventional": "^8.3.4",
     "babel-eslint": "^10.1.0",
     "eslint": "^6.8.0",
-    "eslint-config-prettier": "^3.3.0",
+    "eslint-config-prettier": "^6.11.0",
     "eslint-config-semistandard": "^15.0.0",
     "eslint-config-standard": "^14.1.1",
     "eslint-plugin-html": "^6.0.2",
@@ -72,7 +72,7 @@
     "eslint-plugin-standard": "^4.0.1",
     "husky": "^4.2.5",
     "lerna": "^3.20.2",
-    "prettier": "^2.0.5",
+    "prettier": "^1.19.1",
     "prettier-plugin-svelte": "^0.7.0"
   },
   "dependencies": {
