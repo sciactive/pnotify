@@ -12,6 +12,113 @@
 
 <svelte:options accessors={true} />
 
+<div bind:this={refs.elem}
+  data-pnotify
+  use:forwardEvents
+  class="
+    pnotify
+    {icon !== false ? 'pnotify-with-icon' : ''}
+    {getStyle('elem')}
+    pnotify-mode-{mode}
+    {addClass}
+    {_animatingClass}
+    {_moveClass}
+    {_stackDirClass}
+    {animation === 'fade' ? 'pnotify-fade-'+animateSpeed : ''}
+    {_modal ? 'pnotify-modal '+addModalClass : addModelessClass}
+    {_masking ? 'pnotify-masking' : ''}
+    {_maskingIn ? 'pnotify-masking-in' : ''}
+    {_moduleClasses.elem.join(' ')}
+  "
+  aria-live="assertive"
+  role="alertdialog"
+  on:mouseenter={handleInteraction}
+  on:mouseleave={handleLeaveInteraction}
+  on:focusin={handleInteraction}
+  on:focusout={handleLeaveInteraction}
+>
+  <div bind:this={refs.container}
+    class="
+      pnotify-container
+      {getStyle('container')}
+      {getStyle(type)}
+      {shadow ? 'pnotify-shadow' : ''}
+      {_moduleClasses.container.join(' ')}
+    "
+    style="{_widthStyle} {_minHeightStyle}"
+    role="alert"
+  >
+    {#each modulesPrependContainer as [module, options] (module)}
+      <svelte:component this={module.default} self={self} {...options} />
+    {/each}
+    {#if closer && !_nonBlock}
+      <div
+        class="pnotify-closer {getStyle('closer')} {(!closerHover || _interacting) ? '' : 'pnotify-hidden'}"
+        role="button"
+        tabindex="0"
+        title={labels.close}
+        on:click={() => close(false)}
+      >
+        <span class={getIcon('closer')}></span>
+      </div>
+    {/if}
+    {#if sticker && !_nonBlock}
+      <div
+        class="pnotify-sticker {getStyle('sticker')} {(!stickerHover || _interacting) ? '' : 'pnotify-hidden'}"
+        role="button"
+        aria-pressed={!hide}
+        tabindex="0"
+        title={hide ? labels.stick : labels.unstick}
+        on:click={() => hide = !hide}
+      >
+        <span class="{getIcon('sticker')} {hide ? getIcon('unstuck') : getIcon('stuck')}"></span>
+      </div>
+    {/if}
+    {#if icon !== false}
+      <div bind:this={refs.iconContainer} class="pnotify-icon {getStyle('icon')}">
+        <span class={icon === true ? getIcon(type) : icon}></span>
+      </div>
+    {/if}
+    <div bind:this={refs.content} class="pnotify-content {getStyle('content')}">
+      {#each modulesPrependContent as [module, options] (module)}
+        <svelte:component this={module.default} self={self} {...options} />
+      {/each}
+      {#if title !== false}
+        <div bind:this={refs.titleContainer} class="pnotify-title {getStyle('title')}">
+          {#if !_titleElement}
+            {#if titleTrusted}
+              {@html title}
+            {:else}
+              <span class="pnotify-pre-line">{title}</span>
+            {/if}
+          {/if}
+        </div>
+      {/if}
+      {#if text !== false}
+        <div bind:this={refs.textContainer}
+          class="pnotify-text {getStyle('text')}"
+          style="{_maxTextHeightStyle}"
+          role="alert"
+        >
+          {#if !_textElement}
+            {#if textTrusted}
+              {@html text}
+            {:else}
+              <span class="pnotify-pre-line">{text}</span>
+            {/if}
+          {/if}
+        </div>
+      {/if}
+      {#each modulesAppendContent as [module, options] (module)}
+        <svelte:component this={module.default} self={self} {...options} />
+      {/each}
+    </div>
+    {#each modulesAppendContainer as [module, options] (module)}
+      <svelte:component this={module.default} self={self} {...options} />
+    {/each}
+  </div>
+</div>
+
 <script context="module">
   import { component } from './Component.js';
   import Stack from './Stack.js';
@@ -124,113 +231,6 @@
     document.addEventListener('DOMContentLoaded', onDocumentLoaded);
   }
 </script>
-
-<div bind:this={refs.elem}
-  data-pnotify
-  use:forwardEvents
-  class="
-    pnotify
-    {icon !== false ? 'pnotify-with-icon' : ''}
-    {getStyle('elem')}
-    pnotify-mode-{mode}
-    {addClass}
-    {_animatingClass}
-    {_moveClass}
-    {_stackDirClass}
-    {animation === 'fade' ? 'pnotify-fade-'+animateSpeed : ''}
-    {_modal ? 'pnotify-modal '+addModalClass : addModelessClass}
-    {_masking ? 'pnotify-masking' : ''}
-    {_maskingIn ? 'pnotify-masking-in' : ''}
-    {_moduleClasses.elem.join(' ')}
-  "
-  aria-live="assertive"
-  role="alertdialog"
-  on:mouseenter={handleInteraction}
-  on:mouseleave={handleLeaveInteraction}
-  on:focusin={handleInteraction}
-  on:focusout={handleLeaveInteraction}
->
-  <div bind:this={refs.container}
-    class="
-      pnotify-container
-      {getStyle('container')}
-      {getStyle(type)}
-      {shadow ? 'pnotify-shadow' : ''}
-      {_moduleClasses.container.join(' ')}
-    "
-    style="{_widthStyle} {_minHeightStyle}"
-    role="alert"
-  >
-    {#each modulesPrependContainer as [module, options] (module)}
-      <svelte:component this={module.default} self={self} {...options} />
-    {/each}
-    {#if closer && !_nonBlock}
-      <div
-        class="pnotify-closer {getStyle('closer')} {(!closerHover || _interacting) ? '' : 'pnotify-hidden'}"
-        role="button"
-        tabindex="0"
-        title={labels.close}
-        on:click={() => close(false)}
-      >
-        <span class={getIcon('closer')}></span>
-      </div>
-    {/if}
-    {#if sticker && !_nonBlock}
-      <div
-        class="pnotify-sticker {getStyle('sticker')} {(!stickerHover || _interacting) ? '' : 'pnotify-hidden'}"
-        role="button"
-        aria-pressed={!hide}
-        tabindex="0"
-        title={hide ? labels.stick : labels.unstick}
-        on:click={() => hide = !hide}
-      >
-        <span class="{getIcon('sticker')} {hide ? getIcon('unstuck') : getIcon('stuck')}"></span>
-      </div>
-    {/if}
-    {#if icon !== false}
-      <div bind:this={refs.iconContainer} class="pnotify-icon {getStyle('icon')}">
-        <span class={icon === true ? getIcon(type) : icon}></span>
-      </div>
-    {/if}
-    <div bind:this={refs.content} class="pnotify-content {getStyle('content')}">
-      {#each modulesPrependContent as [module, options] (module)}
-        <svelte:component this={module.default} self={self} {...options} />
-      {/each}
-      {#if title !== false}
-        <div bind:this={refs.titleContainer} class="pnotify-title {getStyle('title')}">
-          {#if !_titleElement}
-            {#if titleTrusted}
-              {@html title}
-            {:else}
-              <span class="pnotify-pre-line">{title}</span>
-            {/if}
-          {/if}
-        </div>
-      {/if}
-      {#if text !== false}
-        <div bind:this={refs.textContainer}
-          class="pnotify-text {getStyle('text')}"
-          style="{_maxTextHeightStyle}"
-          role="alert"
-        >
-          {#if !_textElement}
-            {#if textTrusted}
-              {@html text}
-            {:else}
-              <span class="pnotify-pre-line">{text}</span>
-            {/if}
-          {/if}
-        </div>
-      {/if}
-      {#each modulesAppendContent as [module, options] (module)}
-        <svelte:component this={module.default} self={self} {...options} />
-      {/each}
-    </div>
-    {#each modulesAppendContainer as [module, options] (module)}
-      <svelte:component this={module.default} self={self} {...options} />
-    {/each}
-  </div>
-</div>
 
 <script>
   import { onMount, beforeUpdate, tick, createEventDispatcher } from 'svelte';

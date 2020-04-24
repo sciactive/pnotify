@@ -1,11 +1,3 @@
-<script context="module">
-  export const position = 'AppendContainer';
-  export const defaults = {
-    anchor: 'bottom',
-    reverse: false,
-  };
-</script>
-
 {#if showCountdown}
   <div
     class="
@@ -24,6 +16,14 @@
     ></div>
   </div>
 {/if}
+
+<script context="module">
+  export const position = 'AppendContainer';
+  export const defaults = {
+    anchor: 'bottom',
+    reverse: false,
+  };
+</script>
 
 <script>
   import {onDestroy} from 'svelte';

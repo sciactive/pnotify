@@ -1,34 +1,3 @@
-<script context="module">
-  export const position = 'AppendContent';
-  export const defaults = {
-    confirm: false,
-    prompt: false,
-    promptClass: '',
-    promptValue: '',
-    promptMultiLine: false,
-    focus: null,
-    align: 'flex-end',
-    buttons: [
-      {
-        text: 'Ok',
-        primary: true,
-        promptTrigger: true,
-        click: (notice, value) => {
-          notice.close();
-          notice.fire('pnotify:confirm', { notice, value });
-        }
-      },
-      {
-        text: 'Cancel',
-        click: notice => {
-          notice.close();
-          notice.fire('pnotify:cancel', { notice });
-        }
-      }
-    ],
-  };
-</script>
-
 {#if confirm || prompt}
   <div
     class="
@@ -94,6 +63,37 @@
     </div>
   </div>
 {/if}
+
+<script context="module">
+  export const position = 'AppendContent';
+  export const defaults = {
+    confirm: false,
+    prompt: false,
+    promptClass: '',
+    promptValue: '',
+    promptMultiLine: false,
+    focus: null,
+    align: 'flex-end',
+    buttons: [
+      {
+        text: 'Ok',
+        primary: true,
+        promptTrigger: true,
+        click: (notice, value) => {
+          notice.close();
+          notice.fire('pnotify:confirm', { notice, value });
+        }
+      },
+      {
+        text: 'Cancel',
+        click: notice => {
+          notice.close();
+          notice.fire('pnotify:cancel', { notice });
+        }
+      }
+    ],
+  };
+</script>
 
 <script>
   // The PNotify notice.

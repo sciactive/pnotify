@@ -1,10 +1,10 @@
+<svelte:window on:resize={() => windowInnerWidth = window.innerWidth} />
 <script context="module">
   export const position = 'PrependContainer';
   export const defaults = {
     swipeDismiss: true,
   };
 </script>
-<svelte:window on:resize={() => windowInnerWidth = window.innerWidth} />
 <script>
   import { onMount, onDestroy } from 'svelte';
 
