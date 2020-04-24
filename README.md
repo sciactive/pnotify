@@ -1106,7 +1106,7 @@ alert({
 
 # Browser Compatibility and Build Size
 
-PNotify provides prebuilt JS files, and those files are run through Babel to provide compatibility with older browsers. As such, their build size grows to maintain compatibility. If this is not acceptable, you can build much smaller (~80%) files yourself with:
+PNotify provides prebuilt JS files, and those files are run through Babel to provide compatibility with older browsers. As such, their build size grows to maintain compatibility. If this is not acceptable, you can build much smaller (~80% of original) files yourself with:
 
 ```sh
 git clone https://github.com/sciactive/pnotify.git
