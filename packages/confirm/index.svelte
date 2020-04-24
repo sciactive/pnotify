@@ -106,20 +106,18 @@
 
 {#if confirm || prompt}
   <div
-    class=" pnotify-confirm {self.getStyle('text')}
-    {self.getStyle('confirm')}
-    "
+    class="pnotify-confirm {self.getStyle('text')}
+    {self.getStyle('confirm')}"
   >
     {#if prompt}
-      <div class=" pnotify-prompt-bar {self.getStyle('prompt-bar')} ">
+      <div class="pnotify-prompt-bar {self.getStyle('prompt-bar')}">
         {#if promptMultiLine}
           <textarea
             rows="5"
             on:keypress={handleKeyPress}
             bind:this={promptMultiElem}
-            class=" pnotify-prompt-input {self.getStyle('input')}
-            {promptClass}
-            "
+            class="pnotify-prompt-input {self.getStyle('input')}
+            {promptClass}"
             bind:value={promptValue}
           />
         {:else}
@@ -127,17 +125,15 @@
             type="text"
             on:keypress={handleKeyPress}
             bind:this={promptSingleElem}
-            class=" pnotify-prompt-input {self.getStyle('input')}
-            {promptClass}
-            "
+            class="pnotify-prompt-input {self.getStyle('input')}
+            {promptClass}"
             bind:value={promptValue}
           />
         {/if}
       </div>
     {/if}
     <div
-      class=" pnotify-action-bar {self.getStyle('action-bar')}
-      "
+      class="pnotify-action-bar {self.getStyle('action-bar')}"
       style="justify-content: {align};"
       bind:this={buttonsElem}
     >
@@ -145,10 +141,9 @@
         <button
           type="button"
           on:click={event => handleClick(button, event)}
-          class=" pnotify-action-button {self.getStyle('btn')}
+          class="pnotify-action-button {self.getStyle('btn')}
           {button.primary ? self.getStyle('btn-primary') : self.getStyle('btn-secondary')}
-          {button.addClass ? button.addClass : ''}
-          "
+          {button.addClass ? button.addClass : ''}"
         >
           {#if button.textTrusted}
             {@html button.text}

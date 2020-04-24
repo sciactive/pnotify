@@ -1,15 +1,15 @@
 <script context="module">
   /*
-  * ====== PNotify ======
-  *
-  * http://sciactive.com/pnotify/
-  *
-  * Copyright 2009-2020 Hunter Perrin
-  * Copyright 2015 Google, Inc.
-  *
-  * Licensed under Apache License, Version 2.0.
-  *  http://www.apache.org/licenses/LICENSE-2.0
-  */
+   * ====== PNotify ======
+   *
+   * http://sciactive.com/pnotify/
+   *
+   * Copyright 2009-2020 Hunter Perrin
+   * Copyright 2015 Google, Inc.
+   *
+   * Licensed under Apache License, Version 2.0.
+   *  http://www.apache.org/licenses/LICENSE-2.0
+   */
 
   import { component } from './Component.js';
   import Stack from './Stack.js';
@@ -131,7 +131,7 @@
 
   const self = get_current_component();
   const dispatch = createEventDispatcher();
-  const forwardEvents = forwardEventsBuilder(current_component, [
+  const forwardEvents = forwardEventsBuilder(self, [
     'pnotify:init',
     'pnotify:mount',
     'pnotify:update',
@@ -868,7 +868,7 @@
   bind:this={refs.elem}
   data-pnotify
   use:forwardEvents
-  class=" pnotify {icon !== false ? 'pnotify-with-icon' : ''}
+  class="pnotify {icon !== false ? 'pnotify-with-icon' : ''}
   {getStyle('elem')} pnotify-mode-{mode}
   {addClass}
   {_animatingClass}
@@ -878,8 +878,7 @@
   {_modal ? 'pnotify-modal ' + addModalClass : addModelessClass}
   {_masking ? 'pnotify-masking' : ''}
   {_maskingIn ? 'pnotify-masking-in' : ''}
-  {_moduleClasses.elem.join(' ')}
-  "
+  {_moduleClasses.elem.join(' ')}"
   aria-live="assertive"
   role="alertdialog"
   on:mouseenter={handleInteraction}
@@ -889,11 +888,10 @@
 >
   <div
     bind:this={refs.container}
-    class=" pnotify-container {getStyle('container')}
+    class="pnotify-container {getStyle('container')}
     {getStyle(type)}
     {shadow ? 'pnotify-shadow' : ''}
-    {_moduleClasses.container.join(' ')}
-    "
+    {_moduleClasses.container.join(' ')}"
     style="{_widthStyle}
     {_minHeightStyle}"
     role="alert"

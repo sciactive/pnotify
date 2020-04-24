@@ -1,6 +1,7 @@
-import {bubble, listen} from 'svelte/internal';
+import { bubble, listen } from 'svelte/internal';
 
 export function forwardEventsBuilder(component, additionalEvents = []) {
+  // prettier-ignore
   const events = [
     'focus', 'blur',
     'fullscreenchange', 'fullscreenerror', 'scroll',
@@ -30,6 +31,6 @@ export function forwardEventsBuilder(component, additionalEvents = []) {
           destructors[i]();
         }
       }
-    }
+    };
   };
 }
