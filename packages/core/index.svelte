@@ -126,10 +126,10 @@
 
 <script>
   import { onMount, beforeUpdate, tick, createEventDispatcher } from 'svelte';
-  import { current_component } from 'svelte/internal';
-  import { forwardEventsBuilder } from '@smui/common/forwardEvents.js';
+  import { get_current_component } from 'svelte/internal';
+  import { forwardEventsBuilder } from './forwardEvents.js';
 
-  const self = current_component;
+  const self = get_current_component();
   const dispatch = createEventDispatcher();
   const forwardEvents = forwardEventsBuilder(current_component, [
     'pnotify:init',

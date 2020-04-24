@@ -41,10 +41,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "dependencies": {
-    "@smui/common": "^1.0.0-beta.21",
-    "svelte": "^3.20.1"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@babel/core": "^7.9.0",
     "@babel/preset-env": "^7.9.5",
@@ -52,6 +49,7 @@
     "css-loader": "^3.5.2",
     "mini-css-extract-plugin": "^0.9.0",
     "style-loader": "^1.1.4",
+    "svelte": "^3.20.1",
     "svelte-loader": "^2.13.6",
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11"
