@@ -54,6 +54,7 @@ Development - https://sciactive.github.io/pnotify/
 - [Stacks](#Stacks)
   - [Example Stack](#Example-Stack)
 - [Features](#Features)
+- [Browser Compatibility and Build Size](#Browser-Compatibility-and-Build-Size)
 - [Licensing and Additional Info](#Licensing-and-Additional-Info)
 <!-- TOC END -->
 
@@ -1102,6 +1103,21 @@ alert({
   * Works with any frontend library (React, Angular, Svelte, Vue, Ember, etc.).
   * Works with bundlers (Webpack, Rollup, etc.).
   * No dependencies for most features.
+
+# Browser Compatibility and Build Size
+
+PNotify provides prebuilt JS files, and those files are run through Babel to provide compatibility with older browsers. As such, their build size grows to maintain compatibility. If this is not acceptable, you can build much smaller (~80%) files yourself with:
+
+```sh
+git clone https://github.com/sciactive/pnotify.git
+cd pnotify
+npm i
+mv .browserslistrc-smallbuild .browserslistrc
+npx lerna bootstrap
+npm build
+```
+
+You should now have `dist` folders in all the packages with smaller (but only compatible with newer browsers) build files. Note that this doesn't apply to Svelte projects, because they build the PNotify *.svelte source files anyway.
 
 # Licensing and Additional Info
 

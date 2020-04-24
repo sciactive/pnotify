@@ -36,7 +36,16 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(html|svelte)$/,
+        test: /\.(js|mjs|svelte)$/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env']
+          }
+        }
+      },
+      {
+        test: /\.svelte$/,
         exclude: /\/node_modules\//,
         use: {
           loader: 'svelte-loader',
@@ -52,16 +61,6 @@ module.exports = {
           MiniCssExtractPlugin.loader,
           'css-loader'
         ]
-      },
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: ['@babel/preset-env']
-          }
-        }
       }
     ]
   }
