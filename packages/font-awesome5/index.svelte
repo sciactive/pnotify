@@ -2,7 +2,7 @@
   export const position = 'PrependContainer';
   export const defaults = {};
 
-  // If you use this module, you might should also use the "PNotifyFontAwesome"
+  // If you use this module, you might should also use the "FontAwesome5Fix"
   // module, which provides support for changing Font Awesome icons in notices.
 
   export function init(eventDetail) {

@@ -76,8 +76,8 @@ npm install --save-dev @pnotify/confirm
 npm install --save-dev @pnotify/countdown
 npm install --save-dev @pnotify/desktop
 npm install --save-dev @pnotify/font-awesome4
-npm install --save-dev @pnotify/font-awesome5
 npm install --save-dev @pnotify/font-awesome5-fix
+npm install --save-dev @pnotify/font-awesome5
 npm install --save-dev @pnotify/glyphicon
 npm install --save-dev @pnotify/mobile
 
@@ -328,8 +328,7 @@ Or a clone from jsDelivr:
 ## Bootstrap
 
 ```sh
-npm install --save-dev @pnotify/bootstrap3
-npm install --save-dev @pnotify/glyphicon
+npm install --save-dev @pnotify/bootstrap3 @pnotify/glyphicon
 # or
 npm install --save-dev @pnotify/bootstrap4
 ```
@@ -391,8 +390,7 @@ defaultModules.set(PNotifyFontAwesome4, {});
 ## Font Awesome 5 (Icons)
 
 ```sh
-npm install --save-dev @pnotify/font-awesome5
-npm install --save-dev @pnotify/font-awesome5-fix
+npm install --save-dev @pnotify/font-awesome5 @pnotify/font-awesome5-fix
 ```
 
 To set Font Awesome 5 as the default icons, include the appropriate line from below:

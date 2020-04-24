@@ -43,7 +43,8 @@
     "@pnotify/core": "^5.1.0"
   },
   "peerDependencies": {
-    "@fortawesome/free-solid-svg-icons": "^5.13.0"
+    "@fortawesome/free-solid-svg-icons": "^5.13.0",
+    "@pnotify/font-awesome5-fix": "^5.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",

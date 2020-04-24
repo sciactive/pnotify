@@ -5,8 +5,7 @@ const devMode = process.env.ENV === 'development';
 module.exports = {
   mode: devMode ? 'development' : 'production',
   entry: {
-    PNotifyFontAwesome5: path.resolve(__dirname, 'index.svelte'),
-    PNotifyFontAwesome5Fix: path.resolve(__dirname, 'fix.svelte')
+    PNotifyFontAwesome5: path.resolve(__dirname, 'index.svelte')
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
