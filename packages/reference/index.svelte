@@ -1,22 +1,6 @@
-<!-- This file is for referencing while you are making a PNotify module. -->
-<!--
-We're going to create a button that will be appended to the notice.
-It will be disabled by default, so we can enable it on mouseover.
--->
-<button
-  class="pnotify-action-button pnotify-reference-button {self.getStyle('btn')}
-  {self.getStyle('btn-secondary')}"
-  type="button"
-  disabled={!mouseIsIn}
-  on:click={doSomething}
->
-  <i class={self.getIcon('refresh')} />
-  &nbsp;{labels.text}
-</button>
-<!-- Since our button is floated, we have to add a clearing div. -->
-<div class="pnotify-reference-clearing" />
-
 <script context="module">
+  // This file is for referencing while you are making a PNotify module.
+
   // This is the position your component will be placed inside the notice's DOM
   // structure. It can be 'PrependContainer', 'PrependContent', 'AppendContent',
   // or 'AppendContainer'.
@@ -66,6 +50,23 @@ It will be disabled by default, so we can enable it on mouseover.
     }, 20);
   }
 </script>
+
+<!--
+We're going to create a button that will be appended to the notice.
+It will be disabled by default, so we can enable it on mouseover.
+-->
+<button
+  class="pnotify-action-button pnotify-reference-button {self.getStyle('btn')}
+  {self.getStyle('btn-secondary')}"
+  type="button"
+  disabled={!mouseIsIn}
+  on:click={doSomething}
+>
+  <i class={self.getIcon('refresh')} />
+  &nbsp;{labels.text}
+</button>
+<!-- Since our button is floated, we have to add a clearing div. -->
+<div class="pnotify-reference-clearing" />
 
 <style>
   .pnotify-reference-button {
