@@ -1,5 +1,3 @@
-<svelte:window on:resize={() => (windowInnerWidth = window.innerWidth)} />
-
 <script context="module">
   export const position = 'PrependContainer';
   export const defaults = {
@@ -154,6 +152,8 @@
     offs.forEach(off => off());
   });
 </script>
+
+<svelte:window on:resize={() => (windowInnerWidth = window.innerWidth)} />
 
 <style>
   :global([data-pnotify] .pnotify-container) {
