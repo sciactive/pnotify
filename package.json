@@ -33,9 +33,9 @@
   "license": "Apache-2.0",
   "author": "Hunter Perrin",
   "scripts": {
-    "build-dev": "./package-sh.sh npm run build-dev",
-    "build": "./package-sh.sh npm run build",
-    "watch": "./package-sh.sh npm run watch",
+    "build-dev": "lerna run --parallel build-dev",
+    "build": "lerna run --parallel build",
+    "watch": "lerna run --parallel watch",
     "deploy": "git checkout gh-pages && git merge develop && rm -rf ./packages/*/dist/ && npm run build-dev && git add . && git commit -m 'chore: update built files' && git push && git checkout develop",
     "format": "prettier --write --config .prettierrc.json --plugin-search-dir=. index.html demo/* packages/**/*.svelte packages/**/*.js packages/**/*.ts packages/**/*.css",
     "lint": "prettier --debug-check --list-different --config .prettierrc.json --plugin-search-dir=. index.html demo/* packages/**/*.svelte packages/**/*.js packages/**/*.ts packages/**/*.css"
