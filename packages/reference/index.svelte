@@ -4,12 +4,14 @@ We're going to create a button that will be appended to the notice.
 It will be disabled by default, so we can enable it on mouseover.
 -->
 <button
-  class="pnotify-action-button pnotify-reference-button {self.getStyle('btn')} {self.getStyle('btn-secondary')}"
+  class="pnotify-action-button pnotify-reference-button {self.getStyle('btn')}
+  {self.getStyle('btn-secondary')}"
   type="button"
-  disabled="{!mouseIsIn}"
+  disabled={!mouseIsIn}
   on:click={doSomething}
 >
-  <i class={self.getIcon('refresh')} />&nbsp;{labels.text}
+  <i class={self.getIcon('refresh')} />
+  &nbsp;{labels.text}
 </button>
 <!-- Since our button is floated, we have to add a clearing div. -->
 <div class="pnotify-reference-clearing" />
@@ -42,8 +44,8 @@ It will be disabled by default, so we can enable it on mouseover.
   // Here you can define variables not meant to be exported as options.
   let mouseIsIn = false;
 
-  let removeMouseEnter = self.on('mouseenter', () => mouseIsIn = true);
-  let removeMouseLeave = self.on('mouseleave', () => mouseIsIn = false);
+  let removeMouseEnter = self.on('mouseenter', () => (mouseIsIn = true));
+  let removeMouseLeave = self.on('mouseleave', () => (mouseIsIn = false));
 
   onDestroy(() => {
     // Remember to clean up.
@@ -51,7 +53,7 @@ It will be disabled by default, so we can enable it on mouseover.
     removeMouseLeave && removeMouseLeave();
   });
 
-  function doSomething () {
+  function doSomething() {
     // Spin the notice around.
     let curAngle = 0;
     const timer = setInterval(() => {

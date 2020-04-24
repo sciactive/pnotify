@@ -2,6 +2,7 @@
   export const position = 'PrependContainer';
   export const defaults = {};
 </script>
+
 <script>
   import { onDestroy, tick } from 'svelte';
 
@@ -14,7 +15,10 @@
   let _updatingSticker = false;
   // Save the old value of icon, so we can do our magic.
   let _oldIcon = self.icon === true ? self.getIcon(self.type) : self.icon;
-  let _oldSticker = self.getIcon('sticker') + ' ' + (self.hide ? self.getIcon('unstuck') : self.getIcon('stuck'));
+  let _oldSticker =
+    self.getIcon('sticker') +
+    ' ' +
+    (self.hide ? self.getIcon('unstuck') : self.getIcon('stuck'));
   let newIcon;
   let newSticker;
 
@@ -29,7 +33,11 @@
 
     newIcon = self.icon === true ? self.getIcon(self.type) : self.icon;
 
-    if (newIcon !== _oldIcon && typeof newIcon === 'string' && newIcon.match(/(^| )fa[srlb]($| )/)) {
+    if (
+      newIcon !== _oldIcon &&
+      typeof newIcon === 'string' &&
+      newIcon.match(/(^| )fa[srlb]($| )/)
+    ) {
       self.icon = false;
       _updatingIcon = true;
       await tick();
@@ -50,9 +58,17 @@
     // In order to make it play nice with Svelte, we have to clear the element
     // and make it again.
 
-    newSticker = self.getIcon('sticker') + ' ' + (self.hide ? self.getIcon('unstuck') : self.getIcon('stuck'));
+    newSticker =
+      self.getIcon('sticker') +
+      ' ' +
+      (self.hide ? self.getIcon('unstuck') : self.getIcon('stuck'));
 
-    if (self.sticker && newSticker !== _oldSticker && typeof newSticker === 'string' && newSticker.match(/(^| )fa[srlb]($| )/)) {
+    if (
+      self.sticker &&
+      newSticker !== _oldSticker &&
+      typeof newSticker === 'string' &&
+      newSticker.match(/(^| )fa[srlb]($| )/)
+    ) {
       self.sticker = false;
       _updatingSticker = true;
       await tick();

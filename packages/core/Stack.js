@@ -1,23 +1,27 @@
 export default class Stack {
-  constructor (options) {
+  constructor(options) {
     // TODO: label for close all button
-    Object.assign(this, {
-      dir1: null,
-      dir2: null,
-      firstpos1: null,
-      firstpos2: null,
-      spacing1: 25,
-      spacing2: 25,
-      push: 'bottom',
-      maxOpen: 1,
-      maxStrategy: 'wait',
-      maxClosureCausesWait: true,
-      modal: 'ish',
-      modalishFlash: true,
-      overlayClose: true,
-      overlayClosesPinned: false,
-      context: (window && document.body) || null
-    }, options);
+    Object.assign(
+      this,
+      {
+        dir1: null,
+        dir2: null,
+        firstpos1: null,
+        firstpos2: null,
+        spacing1: 25,
+        spacing2: 25,
+        push: 'bottom',
+        maxOpen: 1,
+        maxStrategy: 'wait',
+        maxClosureCausesWait: true,
+        modal: 'ish',
+        modalishFlash: true,
+        overlayClose: true,
+        overlayClosesPinned: false,
+        context: (window && document.body) || null
+      },
+      options
+    );
 
     // Validate the options.
     if (this.modal === 'ish' && this.maxOpen !== 1) {
@@ -26,8 +30,14 @@ export default class Stack {
     if (this.modal === 'ish' && !this.dir1) {
       throw new Error('A modalish stack must have a direction.');
     }
-    if (this.push === 'top' && this.modal === 'ish' && this.maxStrategy !== 'close') {
-      throw new Error('A modalish stack that pushes to the top must use the close maxStrategy.');
+    if (
+      this.push === 'top' &&
+      this.modal === 'ish' &&
+      this.maxStrategy !== 'close'
+    ) {
+      throw new Error(
+        'A modalish stack that pushes to the top must use the close maxStrategy.'
+      );
     }
 
     // -- Private properties.
@@ -75,25 +85,36 @@ export default class Stack {
     this._maskingOff = null;
   }
 
-  get notices () {
+  get notices() {
     const notices = [];
     this.forEach(notice => notices.push(notice));
     return notices;
   }
 
-  get length () {
+  get length() {
     return this._length;
   }
 
-  get leader () {
+  get leader() {
     return this._leader;
   }
 
-  forEach (callback, { start = 'oldest', dir = 'newer', skipModuleHandled = false } = {}) {
+  forEach(
+    callback,
+    { start = 'oldest', dir = 'newer', skipModuleHandled = false } = {}
+  ) {
     let node;
-    if (start === 'head' || (start === 'newest' && this.push === 'top') || (start === 'oldest' && this.push === 'bottom')) {
+    if (
+      start === 'head' ||
+      (start === 'newest' && this.push === 'top') ||
+      (start === 'oldest' && this.push === 'bottom')
+    ) {
       node = this._noticeHead.next;
-    } else if (start === 'tail' || (start === 'newest' && this.push === 'bottom') || (start === 'oldest' && this.push === 'top')) {
+    } else if (
+      start === 'tail' ||
+      (start === 'newest' && this.push === 'bottom') ||
+      (start === 'oldest' && this.push === 'top')
+    ) {
       node = this._noticeTail.prev;
     } else if (this._noticeMap.has(start)) {
       node = this._noticeMap.get(start);
@@ -103,45 +124,62 @@ export default class Stack {
     while (node.notice) {
       const notice = node.notice;
       // Get the next node first.
-      if (dir === 'prev' || (this.push === 'top' && dir === 'newer') || (this.push === 'bottom' && dir === 'older')) {
+      if (
+        dir === 'prev' ||
+        (this.push === 'top' && dir === 'newer') ||
+        (this.push === 'bottom' && dir === 'older')
+      ) {
         node = node.prev;
-      } else if (dir === 'next' || (this.push === 'top' && dir === 'older') || (this.push === 'bottom' && dir === 'newer')) {
+      } else if (
+        dir === 'next' ||
+        (this.push === 'top' && dir === 'older') ||
+        (this.push === 'bottom' && dir === 'newer')
+      ) {
         node = node.next;
       } else {
         throw new Error('Invalid dir param.');
       }
       // Call the callback last, just in case the callback removes the notice.
-      if ((!skipModuleHandled || !notice.getModuleHandled()) && callback(notice) === false) {
+      if (
+        (!skipModuleHandled || !notice.getModuleHandled()) &&
+        callback(notice) === false
+      ) {
         break;
       }
     }
   }
 
-  close (immediate) {
+  close(immediate) {
     this.forEach(notice => notice.close(immediate, false, false));
   }
 
-  open (immediate) {
+  open(immediate) {
     this.forEach(notice => notice.open(immediate));
   }
 
-  openLast () {
+  openLast() {
     // Look up the last notice, and display it.
-    this.forEach(notice => {
-      if (['opening', 'open', 'waiting'].indexOf(notice.getState()) === -1) {
-        notice.open();
-        return false;
-      }
-    }, { start: 'newest', dir: 'older' });
+    this.forEach(
+      notice => {
+        if (['opening', 'open', 'waiting'].indexOf(notice.getState()) === -1) {
+          notice.open();
+          return false;
+        }
+      },
+      { start: 'newest', dir: 'older' }
+    );
   }
 
-  position () {
+  position() {
     // Reset the next position data.
     if (this._length > 0) {
       this._resetPositionData();
-      this.forEach(notice => {
-        this._positionNotice(notice);
-      }, { start: 'head', dir: 'next', skipModuleHandled: true });
+      this.forEach(
+        notice => {
+          this._positionNotice(notice);
+        },
+        { start: 'head', dir: 'next', skipModuleHandled: true }
+      );
     } else {
       delete this._nextpos1;
       delete this._nextpos2;
@@ -149,21 +187,21 @@ export default class Stack {
   }
 
   // Queue the position so it doesn't run repeatedly and use up resources.
-  queuePosition (milliseconds = 10) {
+  queuePosition(milliseconds = 10) {
     if (this._posTimer) {
       clearTimeout(this._posTimer);
     }
     this._posTimer = setTimeout(() => this.position(), milliseconds);
   }
 
-  _resetPositionData () {
+  _resetPositionData() {
     this._nextpos1 = this.firstpos1;
     this._nextpos2 = this.firstpos2;
     this._addpos2 = 0;
   }
 
   // Position the notice.
-  _positionNotice (notice, masking = notice === this._masking) {
+  _positionNotice(notice, masking = notice === this._masking) {
     // Get the notice's stack.
     const elem = notice.refs.elem;
     if (!elem) {
@@ -199,8 +237,14 @@ export default class Stack {
       notice._setMoveClass('');
     }
 
-    const spaceY = (this.context === document.body ? window.innerHeight : this.context.scrollHeight);
-    const spaceX = (this.context === document.body ? window.innerWidth : this.context.scrollWidth);
+    const spaceY =
+      this.context === document.body
+        ? window.innerHeight
+        : this.context.scrollHeight;
+    const spaceX =
+      this.context === document.body
+        ? window.innerWidth
+        : this.context.scrollWidth;
 
     let csspos1;
 
@@ -295,13 +339,23 @@ export default class Stack {
       switch (this.dir2) {
         case 'down':
         case 'up':
-          if (elem.offsetHeight + (parseFloat(elem.style.marginTop, 10) || 0) + (parseFloat(elem.style.marginBottom, 10) || 0) > _addpos2) {
+          if (
+            elem.offsetHeight +
+              (parseFloat(elem.style.marginTop, 10) || 0) +
+              (parseFloat(elem.style.marginBottom, 10) || 0) >
+            _addpos2
+          ) {
             _addpos2 = elem.offsetHeight;
           }
           break;
         case 'left':
         case 'right':
-          if (elem.offsetWidth + (parseFloat(elem.style.marginLeft, 10) || 0) + (parseFloat(elem.style.marginRight, 10) || 0) > _addpos2) {
+          if (
+            elem.offsetWidth +
+              (parseFloat(elem.style.marginLeft, 10) || 0) +
+              (parseFloat(elem.style.marginRight, 10) || 0) >
+            _addpos2
+          ) {
             _addpos2 = elem.offsetWidth;
           }
           break;
@@ -313,12 +367,12 @@ export default class Stack {
         case 'down':
         case 'up':
           cssposCross = ['left', 'right'];
-          cssMiddle = (this.context.scrollWidth / 2) - (elem.offsetWidth / 2);
+          cssMiddle = this.context.scrollWidth / 2 - elem.offsetWidth / 2;
           break;
         case 'left':
         case 'right':
           cssposCross = ['top', 'bottom'];
-          cssMiddle = (spaceY / 2) - (elem.offsetHeight / 2);
+          cssMiddle = spaceY / 2 - elem.offsetHeight / 2;
           break;
       }
       elem.style[cssposCross[0]] = cssMiddle + 'px';
@@ -352,8 +406,8 @@ export default class Stack {
       }
     } else {
       // Center the notice on the screen, because the stack has no dir1.
-      const cssMiddleLeft = (spaceX / 2) - (elem.offsetWidth / 2);
-      const cssMiddleTop = (spaceY / 2) - (elem.offsetHeight / 2);
+      const cssMiddleLeft = spaceX / 2 - elem.offsetWidth / 2;
+      const cssMiddleTop = spaceY / 2 - elem.offsetHeight / 2;
       elem.style.left = cssMiddleLeft + 'px';
       elem.style.top = cssMiddleTop + 'px';
       if (!this._animation) {
@@ -372,7 +426,7 @@ export default class Stack {
     }
   }
 
-  _addNotice (notice) {
+  _addNotice(notice) {
     // This is the linked list node.
     const node = {
       notice,
@@ -407,7 +461,11 @@ export default class Stack {
     if (['open', 'opening', 'closing'].indexOf(notice.getState()) !== -1) {
       // If the notice is already open, handle it immediately.
       this._handleNoticeOpened(notice);
-    } else if (this.modal === 'ish' && this.modalishFlash && this._shouldNoticeWait()) {
+    } else if (
+      this.modal === 'ish' &&
+      this.modalishFlash &&
+      this._shouldNoticeWait()
+    ) {
       // If it's not open, and it's going to be a waiting notice, flash it.
       const off = notice.on('pnotify:mount', () => {
         off();
@@ -423,7 +481,7 @@ export default class Stack {
     }
   }
 
-  _removeNotice (notice) {
+  _removeNotice(notice) {
     if (!this._noticeMap.has(notice)) {
       return;
     }
@@ -467,7 +525,7 @@ export default class Stack {
     }
   }
 
-  _setLeader (leader) {
+  _setLeader(leader) {
     if (this._leaderOff) {
       this._leaderOff();
       this._leaderOff = null;
@@ -489,22 +547,28 @@ export default class Stack {
       if (this._overlayOpen) {
         this._collapsingModalState = true;
 
-        this.forEach(notice => {
-          // Allow the notices to timed close.
-          notice._preventTimerClose(false);
+        this.forEach(
+          notice => {
+            // Allow the notices to timed close.
+            notice._preventTimerClose(false);
 
-          // Close and set to wait any open notices other than the leader.
-          if (notice !== this._leader && ['opening', 'open'].indexOf(notice.getState()) !== -1) {
-            if (!nextNoticeFromModalState) {
-              nextNoticeFromModalState = notice;
+            // Close and set to wait any open notices other than the leader.
+            if (
+              notice !== this._leader &&
+              ['opening', 'open'].indexOf(notice.getState()) !== -1
+            ) {
+              if (!nextNoticeFromModalState) {
+                nextNoticeFromModalState = notice;
+              }
+              notice.close(notice === nextNoticeFromModalState, false, true);
             }
-            notice.close(notice === nextNoticeFromModalState, false, true);
+          },
+          {
+            start: this._leader,
+            dir: 'next',
+            skipModuleHandled: true
           }
-        }, {
-          start: this._leader,
-          dir: 'next',
-          skipModuleHandled: true
-        });
+        );
 
         // Remove the modal state overlay.
         this._removeOverlay();
@@ -517,25 +581,31 @@ export default class Stack {
       }
 
       // Set the next waiting notice to be masking.
-      this.forEach(notice => {
-        if (notice === this._leader) {
-          // Skip the leader, and start with the next one.
-          return;
+      this.forEach(
+        notice => {
+          if (notice === this._leader) {
+            // Skip the leader, and start with the next one.
+            return;
+          }
+          // The next notice that is "waiting" is usually fine, but if we're
+          // leaving the modal state, it will still be "closing" here, so we have
+          // to work around that. :P
+          // Also, when coming back from modal state, the notice should
+          // immediately be masking instead of fading in.
+          if (
+            notice.getState() === 'waiting' ||
+            notice === nextNoticeFromModalState
+          ) {
+            this._setMasking(notice, !!nextNoticeFromModalState);
+            return false;
+          }
+        },
+        {
+          start: this._leader,
+          dir: 'next',
+          skipModuleHandled: true
         }
-        // The next notice that is "waiting" is usually fine, but if we're
-        // leaving the modal state, it will still be "closing" here, so we have
-        // to work around that. :P
-        // Also, when coming back from modal state, the notice should
-        // immediately be masking instead of fading in.
-        if (notice.getState() === 'waiting' || notice === nextNoticeFromModalState) {
-          this._setMasking(notice, !!nextNoticeFromModalState);
-          return false;
-        }
-      }, {
-        start: this._leader,
-        dir: 'next',
-        skipModuleHandled: true
-      });
+      );
     };
 
     // If the mouse leaves this notice while it's the leader, then the next
@@ -561,7 +631,7 @@ export default class Stack {
     ]);
   }
 
-  _setMasking (masking, immediate) {
+  _setMasking(masking, immediate) {
     if (this._masking) {
       if (this._masking === masking) {
         // Nothing to do.
@@ -605,18 +675,21 @@ export default class Stack {
 
         this._setMasking(null, true);
 
-        this.forEach(notice => {
-          // Prevent the notices from timed closing.
-          notice._preventTimerClose(true);
+        this.forEach(
+          notice => {
+            // Prevent the notices from timed closing.
+            notice._preventTimerClose(true);
 
-          if (notice.getState() === 'waiting') {
-            notice.open();
+            if (notice.getState() === 'waiting') {
+              notice.open();
+            }
+          },
+          {
+            start: this._leader,
+            dir: 'next',
+            skipModuleHandled: true
           }
-        }, {
-          start: this._leader,
-          dir: 'next',
-          skipModuleHandled: true
-        });
+        );
       }
     };
 
@@ -626,7 +699,7 @@ export default class Stack {
     ]);
   }
 
-  _handleNoticeClosed (notice) {
+  _handleNoticeClosed(notice) {
     if (notice.getModuleHandled()) {
       // We don't deal with notices that are handled by a module.
       return;
@@ -675,7 +748,7 @@ export default class Stack {
     }
   }
 
-  _handleNoticeOpened (notice) {
+  _handleNoticeOpened(notice) {
     if (notice.getModuleHandled()) {
       // We don't deal with notices that are handled by a module.
       return;
@@ -684,12 +757,15 @@ export default class Stack {
     this._openNotices++;
 
     // Check the max in stack.
-    if (!(this.modal === 'ish' && this._overlayOpen) && this.maxOpen !== Infinity && this._openNotices > this.maxOpen && this.maxStrategy === 'close') {
+    if (
+      !(this.modal === 'ish' && this._overlayOpen) &&
+      this.maxOpen !== Infinity &&
+      this._openNotices > this.maxOpen &&
+      this.maxStrategy === 'close'
+    ) {
       let toClose = this._openNotices - this.maxOpen;
       this.forEach(notice => {
-        if (
-          ['opening', 'open'].indexOf(notice.getState()) !== -1
-        ) {
+        if (['opening', 'open'].indexOf(notice.getState()) !== -1) {
           // Close oldest notices, leaving only stack.maxOpen from the stack.
           notice.close(false, false, this.maxClosureCausesWait);
           if (notice === this._leader) {
@@ -705,7 +781,11 @@ export default class Stack {
       this._insertOverlay();
     }
 
-    if (this.modal === 'ish' && (!this._leader || ['opening', 'open', 'closing'].indexOf(this._leader.getState()) === -1)) {
+    if (
+      this.modal === 'ish' &&
+      (!this._leader ||
+        ['opening', 'open', 'closing'].indexOf(this._leader.getState()) === -1)
+    ) {
       this._setLeader(notice);
     }
 
@@ -714,11 +794,16 @@ export default class Stack {
     }
   }
 
-  _shouldNoticeWait () {
-    return (!(this.modal === 'ish' && this._overlayOpen) && this.maxOpen !== Infinity && this._openNotices >= this.maxOpen && this.maxStrategy === 'wait');
+  _shouldNoticeWait() {
+    return (
+      !(this.modal === 'ish' && this._overlayOpen) &&
+      this.maxOpen !== Infinity &&
+      this._openNotices >= this.maxOpen &&
+      this.maxStrategy === 'wait'
+    );
   }
 
-  _insertOverlay () {
+  _insertOverlay() {
     if (!this._overlay) {
       this._overlay = document.createElement('div');
       this._overlay.classList.add('pnotify-modal-overlay');
@@ -740,22 +825,28 @@ export default class Stack {
             this._setLeader(null);
           }
 
-          this.forEach(notice => {
-            if (['closed', 'closing', 'waiting'].indexOf(notice.getState()) !== -1) {
-              return;
-            }
-            if (notice.hide || this.overlayClosesPinned) {
-              notice.close();
-            } else if (!notice.hide && this.modal === 'ish') {
-              if (this._leader) {
-                notice.close(false, false, true);
-              } else {
-                this._setLeader(notice);
+          this.forEach(
+            notice => {
+              if (
+                ['closed', 'closing', 'waiting'].indexOf(notice.getState()) !==
+                -1
+              ) {
+                return;
               }
+              if (notice.hide || this.overlayClosesPinned) {
+                notice.close();
+              } else if (!notice.hide && this.modal === 'ish') {
+                if (this._leader) {
+                  notice.close(false, false, true);
+                } else {
+                  this._setLeader(notice);
+                }
+              }
+            },
+            {
+              skipModuleHandled: true
             }
-          }, {
-            skipModuleHandled: true
-          });
+          );
 
           if (this._overlayOpen) {
             this._removeOverlay();
@@ -765,7 +856,10 @@ export default class Stack {
     }
     if (this._overlay.parentNode !== this.context) {
       this._overlay.classList.remove('pnotify-modal-overlay-in');
-      this._overlay = this.context.insertBefore(this._overlay, this.context.firstChild);
+      this._overlay = this.context.insertBefore(
+        this._overlay,
+        this.context.firstChild
+      );
       this._overlayOpen = true;
       this._overlayInserted = true;
       window.requestAnimationFrame(() => {
@@ -775,7 +869,7 @@ export default class Stack {
     this._collapsingModalState = false;
   }
 
-  _removeOverlay () {
+  _removeOverlay() {
     if (this._overlay.parentNode) {
       this._overlay.classList.remove('pnotify-modal-overlay-in');
       this._overlayOpen = false;

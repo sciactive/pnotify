@@ -22,11 +22,12 @@
     };
   }
 </script>
+
 <style>
   /* correct positioning of icon. */
   :global(.pnotify .bootstrap3-icon > *) {
     position: relative;
-    top: .1rem;
+    top: 0.1rem;
   }
 
   /* Confirm Module */
@@ -36,7 +37,7 @@
   :global(.pnotify.pnotify-with-icon .bootstrap3-ml) {
     margin-left: 24px;
   }
-  :global([dir=rtl] .pnotify.pnotify-with-icon .bootstrap3-ml) {
+  :global([dir='rtl'] .pnotify.pnotify-with-icon .bootstrap3-ml) {
     margin-right: 24px;
     margin-left: 0;
   }

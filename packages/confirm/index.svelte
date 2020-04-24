@@ -1,39 +1,28 @@
 {#if confirm || prompt}
   <div
-    class="
-      pnotify-confirm
-      {self.getStyle('text')}
-      {self.getStyle('confirm')}
+    class=" pnotify-confirm {self.getStyle('text')}
+    {self.getStyle('confirm')}
     "
   >
     {#if prompt}
-      <div
-        class="
-          pnotify-prompt-bar
-          {self.getStyle('prompt-bar')}
-        "
-      >
+      <div class=" pnotify-prompt-bar {self.getStyle('prompt-bar')} ">
         {#if promptMultiLine}
           <textarea
             rows="5"
             on:keypress={handleKeyPress}
             bind:this={promptMultiElem}
-            class="
-              pnotify-prompt-input
-              {self.getStyle('input')}
-              {promptClass}
+            class=" pnotify-prompt-input {self.getStyle('input')}
+            {promptClass}
             "
             bind:value={promptValue}
-          ></textarea>
+          />
         {:else}
           <input
             type="text"
             on:keypress={handleKeyPress}
             bind:this={promptSingleElem}
-            class="
-              pnotify-prompt-input
-              {self.getStyle('input')}
-              {promptClass}
+            class=" pnotify-prompt-input {self.getStyle('input')}
+            {promptClass}
             "
             bind:value={promptValue}
           />
@@ -41,9 +30,7 @@
       </div>
     {/if}
     <div
-      class="
-        pnotify-action-bar
-        {self.getStyle('action-bar')}
+      class=" pnotify-action-bar {self.getStyle('action-bar')}
       "
       style="justify-content: {align};"
       bind:this={buttonsElem}
@@ -52,13 +39,15 @@
         <button
           type="button"
           on:click={event => handleClick(button, event)}
-          class="
-            pnotify-action-button
-            {self.getStyle('btn')}
-            {button.primary ? self.getStyle('btn-primary') : self.getStyle('btn-secondary')}
-            {button.addClass ? button.addClass : ''}
+          class=" pnotify-action-button {self.getStyle('btn')}
+          {button.primary ? self.getStyle('btn-primary') : self.getStyle('btn-secondary')}
+          {button.addClass ? button.addClass : ''}
           "
-        >{#if button.textTrusted}{@html button.text}{:else}{button.text}{/if}</button>
+        >
+          {#if button.textTrusted}
+            {@html button.text}
+          {:else}{button.text}{/if}
+        </button>
       {/each}
     </div>
   </div>
@@ -91,7 +80,7 @@
           notice.fire('pnotify:cancel', { notice });
         }
       }
-    ],
+    ]
   };
 </script>
 
@@ -128,11 +117,9 @@
             focusNextChange = false;
           }
         }
-      } else if (confirm &&
-        (
-          focus === true ||
-          (focus === null && self.stack.modal === true)
-        )
+      } else if (
+        confirm &&
+        (focus === true || (focus === null && self.stack.modal === true))
       ) {
         if (buttons.length && buttonsElem) {
           let i = buttons.length - 1;
@@ -153,13 +140,13 @@
     focusNextChange = true;
   });
 
-  function handleClick (button, event) {
+  function handleClick(button, event) {
     if (button.click) {
       button.click(self, prompt ? promptValue : null, event);
     }
   }
 
-  function handleKeyPress (event) {
+  function handleKeyPress(event) {
     if (event.keyCode === 13 && !event.shiftKey) {
       event.preventDefault();
       const { buttons } = this.get();

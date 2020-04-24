@@ -1,10 +1,12 @@
-<svelte:window on:resize={() => windowInnerWidth = window.innerWidth} />
+<svelte:window on:resize={() => (windowInnerWidth = window.innerWidth)} />
+
 <script context="module">
   export const position = 'PrependContainer';
   export const defaults = {
-    swipeDismiss: true,
+    swipeDismiss: true
   };
 </script>
+
 <script>
   import { onMount, onDestroy } from 'svelte';
 
@@ -93,7 +95,8 @@
         const curXY = e.touches[0]['screen' + direction];
 
         diffXY = curXY - origXY;
-        const opacity = (1 - (Math.abs(diffXY) / noticeWidthHeight)) * noticeOpacity;
+        const opacity =
+          (1 - Math.abs(diffXY) / noticeWidthHeight) * noticeOpacity;
 
         self.refs.elem.style.opacity = opacity;
         self.refs.container.style[csspos] = diffXY + 'px';
@@ -106,7 +109,8 @@
 
         self.refs.container.classList.add('pnotify-mobile-animate-left');
         if (Math.abs(diffXY) > 40) {
-          const goLeft = (diffXY < 0) ? noticeWidthHeight * -2 : noticeWidthHeight * 2;
+          const goLeft =
+            diffXY < 0 ? noticeWidthHeight * -2 : noticeWidthHeight * 2;
           self.refs.elem.style.opacity = 0;
           self.refs.container.style[csspos] = goLeft + 'px';
           self.close();
@@ -150,15 +154,16 @@
     offs.forEach(off => off());
   });
 </script>
+
 <style>
   :global([data-pnotify] .pnotify-container) {
     position: relative;
   }
   :global([data-pnotify] .pnotify-mobile-animate-left) {
-    transition: left .1s ease;
+    transition: left 0.1s ease;
   }
   :global([data-pnotify] .pnotify-mobile-animate-top) {
-    transition: top .1s ease;
+    transition: top 0.1s ease;
   }
   @media (max-width: 480px) {
     /* -- Notice */

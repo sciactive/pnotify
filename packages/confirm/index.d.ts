@@ -1,4 +1,4 @@
-import {Module, ModuleOptions, Notice} from '@pnotify/core';
+import { Module, ModuleOptions, Notice } from '@pnotify/core';
 
 export as namespace PNotifyConfirm;
 

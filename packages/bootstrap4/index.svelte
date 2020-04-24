@@ -22,6 +22,7 @@
     };
   }
 </script>
+
 <style>
   :global(.pnotify .bootstrap4-title) {
     font-size: 1.2rem;
@@ -36,7 +37,7 @@
   :global(.pnotify.pnotify-with-icon .bootstrap4-ml) {
     margin-left: 24px;
   }
-  :global([dir=rtl] .pnotify.pnotify-with-icon .bootstrap4-ml) {
+  :global([dir='rtl'] .pnotify.pnotify-with-icon .bootstrap4-ml) {
     margin-right: 24px;
     margin-left: 0;
   }

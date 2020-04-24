@@ -2,9 +2,10 @@
   export const position = 'PrependContainer';
   export const defaults = {
     inClass: null,
-    outClass: null,
+    outClass: null
   };
 </script>
+
 <script>
   import { onDestroy } from 'svelte';
 
@@ -57,7 +58,7 @@
     }
   });
 
-  function animateIn (callback, immediate) {
+  function animateIn(callback, immediate) {
     // Declare that the notice is animating in.
     self.setAnimating('in');
 
@@ -83,7 +84,7 @@
     }
   }
 
-  function animateOut (callback, immediate) {
+  function animateOut(callback, immediate) {
     // Declare that the notice is animating out.
     self.setAnimating('out');
 

@@ -1,19 +1,15 @@
 {#if showCountdown}
   <div
-    class="
-      pnotify-countdown
-      pnotify-countdown-{anchor}
-      {reverse ? 'pnotify-countdown-reverse' : ''}
-      {self.getStyle('countdown')}
+    class=" pnotify-countdown pnotify-countdown-{anchor}
+    {reverse ? 'pnotify-countdown-reverse' : ''}
+    {self.getStyle('countdown')}
     "
   >
     <div
       class="pnotify-countdown-bar {self.getStyle('countdown-bar')}"
-      style="
-        height: {(anchor === 'right' || anchor === 'left') ? _percent : '100'}%;
-        width: {(anchor === 'top' || anchor === 'bottom') ? _percent : '100'}%;
-      "
-    ></div>
+      style=" height: {anchor === 'right' || anchor === 'left' ? _percent : '100'}%;
+      width: {anchor === 'top' || anchor === 'bottom' ? _percent : '100'}%; "
+    />
   </div>
 {/if}
 
@@ -21,12 +17,12 @@
   export const position = 'AppendContainer';
   export const defaults = {
     anchor: 'bottom',
-    reverse: false,
+    reverse: false
   };
 </script>
 
 <script>
-  import {onDestroy} from 'svelte';
+  import { onDestroy } from 'svelte';
 
   // The PNotify notice.
   export let self = null;
@@ -39,14 +35,18 @@
   let _msLeft = 0;
   let _percent = 100;
 
-  $: showCountdown = ['opening', 'open', 'closing'].indexOf(_state) !== -1 && self.hide && self.delay !== Infinity;
-  $: timeStart = showCountdown && _timer && _timer !== 'prevented' ? new Date() : null;
+  $: showCountdown =
+    ['opening', 'open', 'closing'].indexOf(_state) !== -1 &&
+    self.hide &&
+    self.delay !== Infinity;
+  $: timeStart =
+    showCountdown && _timer && _timer !== 'prevented' ? new Date() : null;
 
   const ival = setInterval(() => {
     if (showCountdown) {
       if (timeStart) {
         _msLeft = self.delay - (new Date() - timeStart);
-        _percent = _msLeft / self.delay * 100;
+        _percent = (_msLeft / self.delay) * 100;
       } else {
         _percent = _state === 'closing' ? 0 : 100;
       }
@@ -70,7 +70,7 @@
     top: 100%;
     left: 0;
     width: 100%;
-    height: .5em;
+    height: 0.5em;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -84,13 +84,13 @@
     right: 100%;
     left: auto;
     height: 100%;
-    width: .5em;
+    width: 0.5em;
   }
   :global(.pnotify-countdown-right) {
     top: 0;
     left: 100%;
     height: 100%;
-    width: .5em;
+    width: 0.5em;
   }
   :global(.pnotify-countdown-bar) {
     position: absolute;

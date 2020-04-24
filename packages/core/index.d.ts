@@ -1,4 +1,4 @@
-import Stack, {StackProperties, StackOptions} from './Stack.js';
+import Stack, { StackProperties, StackOptions } from './Stack.js';
 
 export as namespace PNotify;
 
@@ -218,7 +218,10 @@ export interface ModuleExport {
   [k: string]: any;
 }
 
-export type ModuleEntry<T extends ModuleExport = ModuleExport> = [T, Partial<T['defaults']>];
+export type ModuleEntry<T extends ModuleExport = ModuleExport> = [
+  T,
+  Partial<T['defaults']>
+];
 
 export type ModuleMap = Iterable<ModuleEntry>;
 
@@ -348,39 +351,47 @@ export function alert(options: Options | string): Notice;
  * Create a PNotify Notice with the type set to 'notice';
  * @param options Notice options.
  */
-export function notice(options: Options | string): Notice & {
+export function notice(
+  options: Options | string
+): Notice & {
   /**
    * @default 'notice'
    */
-  type: Options['type']
+  type: Options['type'];
 };
 /**
  * Create a PNotify Notice with the type set to 'info';
  * @param options Notice options.
  */
-export function info(options: Options | string): Notice & {
+export function info(
+  options: Options | string
+): Notice & {
   /**
    * @default 'info'
    */
-  type: Options['type']
+  type: Options['type'];
 };
 /**
  * Create a PNotify Notice with the type set to 'success';
  * @param options Notice options.
  */
-export function success(options: Options | string): Notice & {
+export function success(
+  options: Options | string
+): Notice & {
   /**
    * @default 'success'
    */
-  type: Options['type']
+  type: Options['type'];
 };
 /**
  * Create a PNotify Notice with the type set to 'error';
  * @param options Notice options.
  */
-export function error(options: Options | string): Notice & {
+export function error(
+  options: Options | string
+): Notice & {
   /**
    * @default 'error'
    */
-  type: Options['type']
+  type: Options['type'];
 };

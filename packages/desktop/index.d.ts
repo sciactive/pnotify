@@ -1,4 +1,4 @@
-import {Module, ModuleOptions} from '@pnotify/core';
+import { Module, ModuleOptions } from '@pnotify/core';
 
 export as namespace PNotifyDesktop;
 
