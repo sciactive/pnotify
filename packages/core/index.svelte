@@ -234,15 +234,13 @@
   let _oldHide = hide;
 
   // Grab the icons from the icons object or use provided icons
-  $: _widthStyle = typeof width === 'string' ? 'width: ' + width + ';' : '';
+  $: _widthStyle = typeof width === 'string' ? `width: ${width};` : '';
   $: _minHeightStyle =
-    typeof minHeight === 'string' ? 'min-height: ' + minHeight + ';' : '';
+    typeof minHeight === 'string' ? `min-height: ${minHeight};` : '';
   // The bottom padding of .03em is specifically for Firefox, since it will show a scrollbar without it for some reason.
   $: _maxTextHeightStyle =
     typeof maxTextHeight === 'string'
-      ? 'max-height: ' +
-        maxTextHeight +
-        '; overflow-y: auto; overscroll-behavior: contain; padding-bottom:.03em;'
+      ? `max-height: ${maxTextHeight}; overflow-y: auto; overscroll-behavior: contain; padding-bottom:.03em;`
       : '';
   $: _titleElement = title instanceof HTMLElement;
   $: _textElement = text instanceof HTMLElement;
@@ -258,7 +256,7 @@
     (addModalClass.match(/\bnonblock\b/) && _modal) ||
     (addModelessClass.match(/\bnonblock\b/) && !_modal);
   // This is for specific styling for how notices stack.
-  $: _stackDirClass = stack && stack.dir1 ? 'pnotify-stack-' + stack.dir1 : '';
+  $: _stackDirClass = stack && stack.dir1 ? `pnotify-stack-${stack.dir1}` : '';
 
   // Filter through the module objects, getting an array for each position.
   $: modulesPrependContainer = Array.from(modules).filter(
@@ -278,16 +276,16 @@
   export const getTimer = () => _timer;
   export const getStyle = name =>
     typeof styling === 'string'
-      ? styling + '-' + name
+      ? `${styling}-${name}`
       : name in styling
       ? styling[name]
-      : styling.prefix + '-' + name;
+      : `${styling.prefix}-${name}`;
   export const getIcon = name =>
     typeof icons === 'string'
-      ? icons + '-icon-' + name
+      ? `${icons}-icon-${name}`
       : name in icons
       ? icons[name]
-      : icons.prefix + '-icon-' + name;
+      : `${icons.prefix}-icon-${name}`;
 
   $: if (_titleElement && refs.titleContainer) {
     refs.titleContainer.appendChild(title);
@@ -390,10 +388,10 @@
     }
     let target = refs.elem || (stack && stack.context) || document.body;
     if (!target) {
-      dispatch('pnotify:' + event, eventDetail);
+      dispatch(`pnotify:${event}`, eventDetail);
       return true;
     }
-    const eventObj = new Event('pnotify:' + event, {
+    const eventObj = new Event(`pnotify:${event}`, {
       bubbles: event === 'init' || event === 'mount',
       cancelable: event.startsWith('before')
     });
@@ -874,8 +872,8 @@
   {_animatingClass}
   {_moveClass}
   {_stackDirClass}
-  {animation === 'fade' ? 'pnotify-fade-' + animateSpeed : ''}
-  {_modal ? 'pnotify-modal ' + addModalClass : addModelessClass}
+  {animation === 'fade' ? `pnotify-fade-${animateSpeed}` : ''}
+  {_modal ? `pnotify-modal ${addModalClass}` : addModelessClass}
   {_masking ? 'pnotify-masking' : ''}
   {_maskingIn ? 'pnotify-masking-in' : ''}
   {_moduleClasses.elem.join(' ')}"

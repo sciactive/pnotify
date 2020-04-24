@@ -46,7 +46,7 @@
         curAngle = 0;
         clearInterval(timer);
       }
-      self.refs.elem.style.transform = 'rotate(' + curAngle + 'deg)';
+      self.refs.elem.style.transform = `rotate(${curAngle}deg)`;
     }, 20);
   }
 </script>

@@ -52,8 +52,8 @@
         animSpeed = self.animateSpeed;
       }
       animSpeed = animSpeed / 1000;
-      if (self.refs.elem.style.animationDuration !== animSpeed + 's') {
-        self.refs.elem.style.animationDuration = animSpeed + 's';
+      if (self.refs.elem.style.animationDuration !== `${animSpeed}s`) {
+        self.refs.elem.style.animationDuration = `${animSpeed}s`;
       }
     }
   });
@@ -80,7 +80,7 @@
     if (immediate) {
       finished();
     } else {
-      self.setAnimatingClass('pnotify-in animated ' + (inClass || outClass));
+      self.setAnimatingClass(`pnotify-in animated ${inClass || outClass}`);
     }
   }
 
@@ -108,7 +108,7 @@
     if (immediate) {
       finished();
     } else {
-      self.setAnimatingClass('pnotify-in animated ' + (outClass || inClass));
+      self.setAnimatingClass(`pnotify-in animated ${outClass || inClass}`);
     }
   }
 

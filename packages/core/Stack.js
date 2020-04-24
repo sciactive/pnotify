@@ -328,7 +328,7 @@ export default class Stack {
 
       // Move the notice on dir2.
       if (_nextpos2 != null) {
-        elem.style[csspos2] = _nextpos2 + 'px';
+        elem.style[csspos2] = `${_nextpos2}px`;
         if (!this._animation) {
           // eslint-disable-next-line no-unused-expressions
           elem.style[csspos2]; // Read from the DOM for update.
@@ -375,7 +375,7 @@ export default class Stack {
           cssMiddle = spaceY / 2 - elem.offsetHeight / 2;
           break;
       }
-      elem.style[cssposCross[0]] = cssMiddle + 'px';
+      elem.style[cssposCross[0]] = `${cssMiddle}px`;
       elem.style[cssposCross[1]] = 'auto';
       if (!this._animation) {
         // eslint-disable-next-line no-unused-expressions
@@ -386,7 +386,7 @@ export default class Stack {
     if (this.dir1) {
       // Move the notice on dir1.
       if (_nextpos1 != null) {
-        elem.style[csspos1] = _nextpos1 + 'px';
+        elem.style[csspos1] = `${_nextpos1}px`;
         if (!this._animation) {
           // eslint-disable-next-line no-unused-expressions
           elem.style[csspos1]; // Read from the DOM for update.
@@ -408,8 +408,8 @@ export default class Stack {
       // Center the notice on the screen, because the stack has no dir1.
       const cssMiddleLeft = spaceX / 2 - elem.offsetWidth / 2;
       const cssMiddleTop = spaceY / 2 - elem.offsetHeight / 2;
-      elem.style.left = cssMiddleLeft + 'px';
-      elem.style.top = cssMiddleTop + 'px';
+      elem.style.left = `${cssMiddleLeft}px`;
+      elem.style.top = `${cssMiddleTop}px`;
       if (!this._animation) {
         // eslint-disable-next-line no-unused-expressions
         elem.style.left; // Read from the DOM for update.
@@ -808,14 +808,14 @@ export default class Stack {
       this._overlay = document.createElement('div');
       this._overlay.classList.add('pnotify-modal-overlay');
       if (this.dir1) {
-        this._overlay.classList.add('pnotify-modal-overlay-' + this.dir1);
+        this._overlay.classList.add(`pnotify-modal-overlay-${this.dir1}`);
       }
       if (this.overlayClose) {
         this._overlay.classList.add('pnotify-modal-overlay-closes');
       }
       if (this.context !== document.body) {
-        this._overlay.style.height = this.context.scrollHeight + 'px';
-        this._overlay.style.width = this.context.scrollWidth + 'px';
+        this._overlay.style.height = `${this.context.scrollHeight}px`;
+        this._overlay.style.width = `${this.context.scrollWidth}px`;
       }
       // Close the notices on overlay click.
       this._overlay.addEventListener('click', () => {

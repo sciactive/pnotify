@@ -16,9 +16,7 @@
   // Save the old value of icon, so we can do our magic.
   let _oldIcon = self.icon === true ? self.getIcon(self.type) : self.icon;
   let _oldSticker =
-    self.getIcon('sticker') +
-    ' ' +
-    (self.hide ? self.getIcon('unstuck') : self.getIcon('stuck'));
+    `${self.getIcon('sticker')} ${self.hide ? self.getIcon('unstuck') : self.getIcon('stuck')}`;
   let newIcon;
   let newSticker;
 
@@ -59,9 +57,7 @@
     // and make it again.
 
     newSticker =
-      self.getIcon('sticker') +
-      ' ' +
-      (self.hide ? self.getIcon('unstuck') : self.getIcon('stuck'));
+      `${self.getIcon('sticker')} ${self.hide ? self.getIcon('unstuck') : self.getIcon('stuck')}`;
 
     if (
       self.sticker &&

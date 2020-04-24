@@ -79,8 +79,8 @@
           }
         }
 
-        origXY = e.touches[0]['screen' + direction];
-        noticeWidthHeight = self.refs.elem['scroll' + span];
+        origXY = e.touches[0][`screen${direction}`];
+        noticeWidthHeight = self.refs.elem[`scroll${span}`];
         noticeOpacity = window.getComputedStyle(self.refs.elem)['opacity'];
         self.refs.container.style[csspos] = 0;
       }),
@@ -90,14 +90,14 @@
           return;
         }
 
-        const curXY = e.touches[0]['screen' + direction];
+        const curXY = e.touches[0][`screen${direction}`];
 
         diffXY = curXY - origXY;
         const opacity =
           (1 - Math.abs(diffXY) / noticeWidthHeight) * noticeOpacity;
 
         self.refs.elem.style.opacity = opacity;
-        self.refs.container.style[csspos] = diffXY + 'px';
+        self.refs.container.style[csspos] = `${diffXY}px`;
       }),
 
       self.on('touchend', () => {
@@ -110,7 +110,7 @@
           const goLeft =
             diffXY < 0 ? noticeWidthHeight * -2 : noticeWidthHeight * 2;
           self.refs.elem.style.opacity = 0;
-          self.refs.container.style[csspos] = goLeft + 'px';
+          self.refs.container.style[csspos] = `${goLeft}px`;
           self.close();
         } else {
           self.refs.elem.style.removeProperty('opacity');

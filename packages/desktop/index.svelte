@@ -186,7 +186,7 @@
 
     if (!_tag || tag !== null) {
       _tag =
-        tag === null ? 'PNotify-' + Math.round(Math.random() * 1000000) : tag;
+        tag === null ? `PNotify-${Math.round(Math.random() * 1000000)}` : tag;
     }
 
     const desktopOptions = {
