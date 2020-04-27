@@ -857,7 +857,6 @@
 
       _maskingIn = false;
       refs.elem && refs.elem.addEventListener('transitionend', finished);
-      // eslint-disable-next-line no-unused-expressions
       refs.elem && refs.elem.style.opacity; // This line is necessary for some reason. Some notices don't fade without it.
       // Just in case the event doesn't fire, call it after 650 ms.
       _maskingTimer = setTimeout(finished, 650);

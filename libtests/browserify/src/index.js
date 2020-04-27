@@ -9,7 +9,7 @@ document.getElementById('button1').addEventListener('click', function () {
 });
 
 document.getElementById('button2').addEventListener('click', function () {
-  var PNotifyConfirm = require('pnotify/dist/umd/PNotifyConfirm'); // eslint-disable-line no-unused-vars
+  var PNotifyConfirm = require('pnotify/dist/umd/PNotifyConfirm');
 
   PNotify.notice({
     title: 'Yay!',

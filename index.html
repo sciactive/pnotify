@@ -218,8 +218,6 @@
 
     <!-- Demo Code -->
     <script type="text/javascript">
-      /* eslint-env browser, jquery */
-      /* globals PNotify */
       window.addEventListener('DOMContentLoaded', () => {
         // ---
         // Set defaults.
@@ -523,8 +521,6 @@
           >
         </div>
         <script type="text/javascript">
-          /* eslint-env browser, jquery */
-          /* globals PNotify */
           window.addEventListener('DOMContentLoaded', () => {
             document
               .getElementById('style-brighttheme')
@@ -1253,8 +1249,6 @@
             Max Text Height
           </button>
           <script type="text/javascript">
-            /* eslint-env browser, jquery */
-            /* globals PNotify */
             window.showRich = function showRich() {
               PNotify.notice({
                 title:
@@ -1300,8 +1294,6 @@
             </script>
           </div>
           <script type="text/javascript">
-            /* eslint-env browser, jquery */
-            /* globals PNotify */
             window.dynNotice = function dynNotice() {
               let percent = 0;
               const notice = PNotify.info({
@@ -1667,8 +1659,6 @@
             Notice to Error to Success to Info
           </button>
           <script type="text/javascript">
-            /* eslint-env browser, jquery */
-            /* globals PNotify */
             window.fakeLoad = function fakeLoad() {
               let curValue = 1;
               let progress;
@@ -2895,8 +2885,6 @@
           <hr />
           Modalish. Top Left. Moves down, then right. Pushes to stack top.<br />
           <script type="text/javascript">
-            /* eslint-env browser, jquery */
-            /* globals PNotify */
             window.showStackTopLeft = function showStackTopLeft(type) {
               if (typeof window.stackTopLeft === 'undefined') {
                 window.stackTopLeft = new PNotify.Stack({
@@ -2969,8 +2957,6 @@
           <hr />
           Modalish. Bottom Left. Moves right, then up. Pushes to stack top.<br />
           <script type="text/javascript">
-            /* eslint-env browser, jquery */
-            /* globals PNotify */
             window.showStackBottomLeft = function showStackBottomLeft(type) {
               if (typeof window.stackBottomLeft === 'undefined') {
                 window.stackBottomLeft = new PNotify.Stack({
@@ -3044,8 +3030,6 @@
           Modalish. Bottom Right. Moves up, then left. Pushes to stack
           bottom.<br />
           <script type="text/javascript">
-            /* eslint-env browser, jquery */
-            /* globals PNotify */
             window.showStackBottomRight = function showStackBottomRight(type) {
               if (typeof window.stackBottomRight === 'undefined') {
                 window.stackBottomRight = new PNotify.Stack({
@@ -3116,8 +3100,6 @@
           <hr />
           Modeless. Top Center. Moves down. Pushes to stack bottom.<br />
           <script type="text/javascript">
-            /* eslint-env browser, jquery */
-            /* globals PNotify */
             window.showStackTopCenter = function showStackTopCenter(type) {
               if (typeof window.stackTopCenter === 'undefined') {
                 window.stackTopCenter = new PNotify.Stack({
@@ -3188,8 +3170,6 @@
           <hr />
           Modal. Centered. Moves up. Pushes to stack top.<br />
           <script type="text/javascript">
-            /* eslint-env browser, jquery */
-            /* globals PNotify */
             window.showStackModal = function showStackModal(type) {
               if (typeof window.stackModal === 'undefined') {
                 window.stackModal = new PNotify.Stack({
@@ -3277,8 +3257,6 @@
           <hr />
           Modal. Moves down, then right. Pushes to stack bottom.<br />
           <script type="text/javascript">
-            /* eslint-env browser, jquery */
-            /* globals PNotify */
             window.showStackModalLeft = function showStackModalLeft(type) {
               if (typeof window.stackModalLeft === 'undefined') {
                 window.stackModalLeft = new PNotify.Stack({
@@ -3368,8 +3346,6 @@
           Top bar style. Modeless. Moves down, then right. Pushes to stack
           top.<br />
           <script type="text/javascript">
-            /* eslint-env browser, jquery */
-            /* globals PNotify */
             window.showStackBarTop = function showStackBarTop(type) {
               if (typeof window.stackBarTop === 'undefined') {
                 window.stackBarTop = new PNotify.Stack({
@@ -3452,8 +3428,6 @@
           Bottom bar style. Modalish. Moves up, then right. Pushes to stack
           bottom.<br />
           <script type="text/javascript">
-            /* eslint-env browser, jquery */
-            /* globals PNotify */
             window.showStackBarBottom = function showStackBarBottom(type) {
               if (typeof window.stackBarBottom === 'undefined') {
                 window.stackBarBottom = new PNotify.Stack({
@@ -3532,8 +3506,6 @@
           <hr />
           No stack.<br />
           <script type="text/javascript">
-            /* eslint-env browser, jquery */
-            /* globals PNotify */
             window.addEventListener('DOMContentLoaded', () => {
               window.makeTooltip = function makeTooltip() {
                 window.tooltip = PNotify.notice({
@@ -3576,8 +3548,6 @@
           You can specify a context element for your notices to be placed in.
           <hr />
           <script type="text/javascript">
-            /* eslint-env browser, jquery */
-            /* globals PNotify */
             window.showStackContext = function showStackContext(type, modal) {
               if (typeof window.stackContext === 'undefined') {
                 window.stackContext = new PNotify.Stack({
@@ -3826,39 +3796,39 @@ PNotify.notice({
         <h2>Comments</h2>
         <hr />
       </div>
-      <div id="commentContainer">
-        <div style="text-align: center;">
-          <button
-            class="btn btn-primary"
-            onclick="
-              document.getElementById('commentContainer').innerHTML = document.getElementById('disqusLoader').innerHTML.replace(/screeept/g, 'script');
-            "
-          >
-            Load Comments
-          </button>
-        </div>
-        <script type="text/html" id="disqusLoader">
-          <div id="disqus_thread"></div>
-          <screeept type="text/javascript">
-              var disqus_config = function () {
-                this.page.url = 'https://sciactive.com/pnotify/';
-                this.page.identifier = 'demo';
-              };
-              (function() { // DON'T EDIT BELOW THIS LINE
-                  var d = document, s = d.createElement('script');
-                  s.src = 'https://pnotify.disqus.com/embed.js';
-                  s.setAttribute('data-timestamp', +new Date());
-                  (d.head || d.body).appendChild(s);
-              })();
-          </screeept>
-          <a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-        </script>
+      <div id="commentLoader" style="text-align: center;">
+        <button
+          class="btn btn-primary"
+          onclick="
+            loadDisqus();
+            (node => node.parentNode.removeChild(node))(document.getElementById('commentLoader'));
+          "
+        >
+          Load Comments
+        </button>
       </div>
+      <div id="disqus_thread"></div>
+      <a href="https://disqus.com" class="dsq-brlink"
+        >comments powered by <span class="logo-disqus">Disqus</span></a
+      >
+      <script type="text/javascript">
+        var disqus_config = function() {
+          this.page.url = 'https://sciactive.com/pnotify/';
+          this.page.identifier = 'demo';
+        };
+        function loadDisqus() {
+          // DON'T EDIT BELOW THIS LINE
+          var d = document,
+            s = d.createElement('script');
+          s.src = 'https://pnotify.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        }
+      </script>
     </div>
     <p id="copyright">&copy; 2011-2020 Hunter Perrin. All Rights Reserved.</p>
 
     <script type="text/javascript">
-      /* eslint-env browser, jquery */
       window.addEventListener('DOMContentLoaded', () => {
         // ---
         // This creates all those source code view buttons.
@@ -3921,7 +3891,7 @@ PNotify.notice({
             // Check if the code is calling a function. Include that function.
             const match = text.match(
               /^\s*(?:window\.)?(\w+)\s*\([^\)]*\);\s*$/
-            ); // eslint-disable-line no-useless-escape
+            );
             if (match) {
               const fName = match[1];
               addPrettyCode(window[fName].toString(), sourceElement);

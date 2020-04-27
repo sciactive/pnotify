@@ -73,7 +73,7 @@
     if (typeof Notification !== 'undefined' && 'permission' in Notification) {
       return Notification.permission === 'granted';
     } else if ('webkitNotifications' in window) {
-      return window.webkitNotifications.checkPermission() == 0; // eslint-disable-line eqeqeq
+      return window.webkitNotifications.checkPermission() == 0;
     }
     return false;
   }
