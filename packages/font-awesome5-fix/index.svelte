@@ -14,11 +14,13 @@
   let _updatingIcon = false;
   let _updatingSticker = false;
   // Save the old value of icon, so we can do our magic.
-  let _oldIcon = self.icon === true ? self.getIcon(self.type) : self.icon;
+  let _oldIconProp = self.icon;
+  let _oldIconValue = self.icon === true ? self.getIcon(self.type) : self.icon;
   let _oldSticker = `${self.getIcon('sticker')} ${
     self.hide ? self.getIcon('unstuck') : self.getIcon('stuck')
   }`;
-  let newIcon;
+  let newIconProp;
+  let newIconValue;
   let newSticker;
 
   const removeIconHandler = self.on('pnotify:update', () => {
@@ -30,24 +32,27 @@
     // In order to make it play nice with Svelte, we have to clear the element
     // and make it again.
 
-    newIcon = self.icon === true ? self.getIcon(self.type) : self.icon;
+    newIconProp = self.icon;
+    newIconValue = self.icon === true ? self.getIcon(self.type) : self.icon;
 
     if (
-      newIcon !== _oldIcon &&
-      typeof newIcon === 'string' &&
-      newIcon.match(/(^| )fa[srlb]($| )/)
+      newIconValue !== _oldIconValue &&
+      typeof newIconValue === 'string' &&
+      newIconValue.match(/(^| )fa[srlb]($| )/)
     ) {
       self.icon = false;
       _updatingIcon = true;
       tick().then(() => {
-        self.icon = newIcon;
+        self.icon = newIconProp;
         _updatingIcon = false;
         // Update seved icon.
-        _oldIcon = newIcon;
+        _oldIconProp = newIconProp;
+        _oldIconValue = newIconValue;
       });
     } else {
       // Update seved icon.
-      _oldIcon = newIcon;
+      _oldIconProp = newIconProp;
+      _oldIconValue = newIconValue;
     }
   });
 
