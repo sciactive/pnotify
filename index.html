@@ -3796,34 +3796,35 @@ PNotify.notice({
         <h2>Comments</h2>
         <hr />
       </div>
-      <div id="commentContainer">
-        <div style="text-align: center;">
-          <button
-            class="btn btn-primary"
-            onclick="
-              document.getElementById('commentContainer').innerHTML = document.getElementById('disqusLoader').innerHTML.replace(/screeept/g, 'script');
-            "
-          >
-            Load Comments
-          </button>
-        </div>
-        <script type="text/html" id="disqusLoader">
-          <div id="disqus_thread"></div>
-          <screeept type="text/javascript">
-              var disqus_config = function () {
-                this.page.url = 'https://sciactive.com/pnotify/';
-                this.page.identifier = 'demo';
-              };
-              (function() { // DON'T EDIT BELOW THIS LINE
-                  var d = document, s = d.createElement('script');
-                  s.src = 'https://pnotify.disqus.com/embed.js';
-                  s.setAttribute('data-timestamp', +new Date());
-                  (d.head || d.body).appendChild(s);
-              })();
-          </screeept>
-          <a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-        </script>
+      <div id="commentLoader" style="text-align: center;">
+        <button
+          class="btn btn-primary"
+          onclick="
+            loadDisqus();
+            (node => node.parentNode.removeChild(node))(document.getElementById('commentLoader'));
+          "
+        >
+          Load Comments
+        </button>
       </div>
+      <div id="disqus_thread"></div>
+      <a href="https://disqus.com" class="dsq-brlink"
+        >comments powered by <span class="logo-disqus">Disqus</span></a
+      >
+      <script type="text/javascript">
+        var disqus_config = function() {
+          this.page.url = 'https://sciactive.com/pnotify/';
+          this.page.identifier = 'demo';
+        };
+        function loadDisqus() {
+          // DON'T EDIT BELOW THIS LINE
+          var d = document,
+            s = d.createElement('script');
+          s.src = 'https://pnotify.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        }
+      </script>
     </div>
     <p id="copyright">&copy; 2011-2020 Hunter Perrin. All Rights Reserved.</p>
 
