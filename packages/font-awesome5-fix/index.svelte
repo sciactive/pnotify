@@ -15,12 +15,13 @@
   let _updatingSticker = false;
   // Save the old value of icon, so we can do our magic.
   let _oldIcon = self.icon === true ? self.getIcon(self.type) : self.icon;
-  let _oldSticker =
-    `${self.getIcon('sticker')} ${self.hide ? self.getIcon('unstuck') : self.getIcon('stuck')}`;
+  let _oldSticker = `${self.getIcon('sticker')} ${
+    self.hide ? self.getIcon('unstuck') : self.getIcon('stuck')
+  }`;
   let newIcon;
   let newSticker;
 
-  const removeIconHandler = self.on('pnotify:update', async () => {
+  const removeIconHandler = self.on('pnotify:update', () => {
     if (_updatingIcon) {
       return;
     }
@@ -38,16 +39,19 @@
     ) {
       self.icon = false;
       _updatingIcon = true;
-      await tick();
-      self.icon = newIcon;
-      _updatingIcon = false;
+      tick().then(() => {
+        self.icon = newIcon;
+        _updatingIcon = false;
+        // Update seved icon.
+        _oldIcon = newIcon;
+      });
+    } else {
+      // Update seved icon.
+      _oldIcon = newIcon;
     }
-
-    // Update seved icon.
-    _oldIcon = newIcon;
   });
 
-  const removeStickerHandler = self.on('pnotify:update', async () => {
+  const removeStickerHandler = self.on('pnotify:update', () => {
     if (_updatingSticker) {
       return;
     }
@@ -56,8 +60,9 @@
     // In order to make it play nice with Svelte, we have to clear the element
     // and make it again.
 
-    newSticker =
-      `${self.getIcon('sticker')} ${self.hide ? self.getIcon('unstuck') : self.getIcon('stuck')}`;
+    newSticker = `${self.getIcon('sticker')} ${
+      self.hide ? self.getIcon('unstuck') : self.getIcon('stuck')
+    }`;
 
     if (
       self.sticker &&
@@ -67,13 +72,16 @@
     ) {
       self.sticker = false;
       _updatingSticker = true;
-      await tick();
-      self.sticker = true;
-      _updatingSticker = false;
+      tick().then(() => {
+        self.sticker = true;
+        _updatingSticker = false;
+        // Update seved icon.
+        _oldSticker = newSticker;
+      });
+    } else {
+      // Update seved icon.
+      _oldSticker = newSticker;
     }
-
-    // Update seved icon.
-    _oldSticker = newSticker;
   });
 
   onDestroy(() => {

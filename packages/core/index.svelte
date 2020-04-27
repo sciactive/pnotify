@@ -323,7 +323,7 @@
     }
   });
 
-  beforeUpdate(async () => {
+  beforeUpdate(() => {
     dispatchLifecycleEvent('update');
 
     // Update the timed hiding.
@@ -565,7 +565,7 @@
   };
 
   // Animate the notice in.
-  export let animateIn = async (callback, immediate) => {
+  export let animateIn = (callback, immediate) => {
     // Declare that the notice is animating in.
     _animating = 'in';
     const finished = event => {
@@ -603,19 +603,21 @@
     if (animation === 'fade' && !immediate) {
       refs.elem && refs.elem.addEventListener('transitionend', finished);
       _animatingClass = 'pnotify-in';
-      await tick();
-      _animatingClass = 'pnotify-in pnotify-fade-in';
-      // Just in case the event doesn't fire, call it after 650 ms.
-      _animInTimer = setTimeout(finished, 650);
+      tick().then(() => {
+        _animatingClass = 'pnotify-in pnotify-fade-in';
+        // Just in case the event doesn't fire, call it after 650 ms.
+        _animInTimer = setTimeout(finished, 650);
+      });
     } else {
       _animatingClass = 'pnotify-in';
-      await tick();
-      finished();
+      tick().then(() => {
+        finished();
+      });
     }
   };
 
   // Animate the notice out.
-  export let animateOut = async (callback, immediate) => {
+  export let animateOut = (callback, immediate) => {
     // Declare that the notice is animating out.
     _animating = 'out';
     const finished = event => {
@@ -664,8 +666,9 @@
       _animOutTimer = setTimeout(finished, 650);
     } else {
       _animatingClass = '';
-      await tick();
-      finished();
+      tick().then(() => {
+        finished();
+      });
     }
   };
 
@@ -791,7 +794,7 @@
     return (_moveClass = value);
   }
 
-  export async function _setMasking(value, immediate, callback) {
+  export function _setMasking(value, immediate, callback) {
     if (_maskingTimer) {
       clearTimeout(_maskingTimer);
     }
@@ -802,27 +805,29 @@
       _masking = true;
       _maskingIn = !!immediate;
       insertIntoDOM();
-      await tick();
-      window.requestAnimationFrame(() => {
-        if (_masking) {
-          if (immediate && callback) {
-            callback();
-          } else {
-            _maskingIn = true;
-            const finished = () => {
+      tick().then(() => {
+        window.requestAnimationFrame(() => {
+          if (_masking) {
+            if (immediate && callback) {
+              callback();
+            } else {
+              _maskingIn = true;
+              const finished = () => {
+                refs.elem &&
+                  refs.elem.removeEventListener('transitionend', finished);
+                if (_maskingTimer) {
+                  clearTimeout(_maskingTimer);
+                }
+                if (_maskingIn && callback) {
+                  callback();
+                }
+              };
               refs.elem &&
-                refs.elem.removeEventListener('transitionend', finished);
-              if (_maskingTimer) {
-                clearTimeout(_maskingTimer);
-              }
-              if (_maskingIn && callback) {
-                callback();
-              }
-            };
-            refs.elem && refs.elem.addEventListener('transitionend', finished);
-            _maskingTimer = setTimeout(finished, 650);
+                refs.elem.addEventListener('transitionend', finished);
+              _maskingTimer = setTimeout(finished, 650);
+            }
           }
-        }
+        });
       });
     } else if (immediate) {
       _masking = false;
