@@ -1,5 +1,5 @@
 import PNotify from 'pnotify/dist/es/PNotify';
-import PNotifyConfirm from 'pnotify/dist/es/PNotifyConfirm'; // eslint-disable-line no-unused-vars
+import PNotifyConfirm from 'pnotify/dist/es/PNotifyConfirm';
 
 export default function moduleNotice () {
   return PNotify.notice({

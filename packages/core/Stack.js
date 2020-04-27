@@ -330,7 +330,6 @@ export default class Stack {
       if (_nextpos2 != null) {
         elem.style[csspos2] = `${_nextpos2}px`;
         if (!this._animation) {
-          // eslint-disable-next-line no-unused-expressions
           elem.style[csspos2]; // Read from the DOM for update.
         }
       }
@@ -378,7 +377,6 @@ export default class Stack {
       elem.style[cssposCross[0]] = `${cssMiddle}px`;
       elem.style[cssposCross[1]] = 'auto';
       if (!this._animation) {
-        // eslint-disable-next-line no-unused-expressions
         elem.style[cssposCross[0]]; // Read from the DOM for update.
       }
     }
@@ -388,7 +386,6 @@ export default class Stack {
       if (_nextpos1 != null) {
         elem.style[csspos1] = `${_nextpos1}px`;
         if (!this._animation) {
-          // eslint-disable-next-line no-unused-expressions
           elem.style[csspos1]; // Read from the DOM for update.
         }
       }
@@ -411,7 +408,6 @@ export default class Stack {
       elem.style.left = `${cssMiddleLeft}px`;
       elem.style.top = `${cssMiddleTop}px`;
       if (!this._animation) {
-        // eslint-disable-next-line no-unused-expressions
         elem.style.left; // Read from the DOM for update.
       }
     }

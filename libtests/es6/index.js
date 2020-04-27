@@ -1,5 +1,5 @@
 import PNotify from '../../dist/es/PNotify.js';
-import PNotifyConfirm from '../../dist/es/PNotifyConfirm.js'; // eslint-disable-line no-unused-vars
+import PNotifyConfirm from '../../dist/es/PNotifyConfirm.js';
 
 document.getElementById('button1').addEventListener('click', function () {
   PNotify.notice({
