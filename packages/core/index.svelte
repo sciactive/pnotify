@@ -871,17 +871,7 @@
   bind:this={refs.elem}
   data-pnotify
   use:forwardEvents
-  class="pnotify {icon !== false ? 'pnotify-with-icon' : ''}
-  {getStyle('elem')} pnotify-mode-{mode}
-  {addClass}
-  {_animatingClass}
-  {_moveClass}
-  {_stackDirClass}
-  {animation === 'fade' ? `pnotify-fade-${animateSpeed}` : ''}
-  {_modal ? `pnotify-modal ${addModalClass}` : addModelessClass}
-  {_masking ? 'pnotify-masking' : ''}
-  {_maskingIn ? 'pnotify-masking-in' : ''}
-  {_moduleClasses.elem.join(' ')}"
+  class={`pnotify ${icon !== false ? 'pnotify-with-icon' : ''} ${getStyle('elem')} pnotify-mode-${mode} ${addClass} ${_animatingClass} ${_moveClass} ${_stackDirClass} ${animation === 'fade' ? `pnotify-fade-${animateSpeed}` : ''} ${_modal ? `pnotify-modal ${addModalClass}` : addModelessClass} ${_masking ? 'pnotify-masking' : ''} ${_maskingIn ? 'pnotify-masking-in' : ''} ${_moduleClasses.elem.join(' ')}`}
   aria-live="assertive"
   role="alertdialog"
   on:mouseenter={handleInteraction}
@@ -891,12 +881,8 @@
 >
   <div
     bind:this={refs.container}
-    class="pnotify-container {getStyle('container')}
-    {getStyle(type)}
-    {shadow ? 'pnotify-shadow' : ''}
-    {_moduleClasses.container.join(' ')}"
-    style="{_widthStyle}
-    {_minHeightStyle}"
+    class={`pnotify-container ${getStyle('container')} ${getStyle(type)} ${shadow ? 'pnotify-shadow' : ''} ${_moduleClasses.container.join(' ')}`}
+    style={`${_widthStyle} ${_minHeightStyle}`}
     role="alert"
   >
     {#each modulesPrependContainer as [module, options] (module)}
@@ -904,8 +890,7 @@
     {/each}
     {#if closer && !_nonBlock}
       <div
-        class="pnotify-closer {getStyle('closer')}
-        {!closerHover || _interacting ? '' : 'pnotify-hidden'}"
+        class={`pnotify-closer ${getStyle('closer')} ${!closerHover || _interacting ? '' : 'pnotify-hidden'}`}
         role="button"
         tabindex="0"
         title={labels.close}
@@ -916,8 +901,7 @@
     {/if}
     {#if sticker && !_nonBlock}
       <div
-        class="pnotify-sticker {getStyle('sticker')}
-        {!stickerHover || _interacting ? '' : 'pnotify-hidden'}"
+        class={`pnotify-sticker ${getStyle('sticker')} ${!stickerHover || _interacting ? '' : 'pnotify-hidden'}`}
         role="button"
         aria-pressed={!hide}
         tabindex="0"
@@ -925,27 +909,29 @@
         on:click={() => (hide = !hide)}
       >
         <span
-          class="{getIcon('sticker')}
-          {hide ? getIcon('unstuck') : getIcon('stuck')}"
+          class={`${getIcon('sticker')} ${hide ? getIcon('unstuck') : getIcon('stuck')}`}
         />
       </div>
     {/if}
     {#if icon !== false}
       <div
         bind:this={refs.iconContainer}
-        class="pnotify-icon {getStyle('icon')}"
+        class={`pnotify-icon ${getStyle('icon')}`}
       >
         <span class={icon === true ? getIcon(type) : icon} />
       </div>
     {/if}
-    <div bind:this={refs.content} class="pnotify-content {getStyle('content')}">
+    <div
+      bind:this={refs.content}
+      class={`pnotify-content ${getStyle('content')}`}
+    >
       {#each modulesPrependContent as [module, options] (module)}
         <svelte:component this={module.default} {self} {...options} />
       {/each}
       {#if title !== false}
         <div
           bind:this={refs.titleContainer}
-          class="pnotify-title {getStyle('title')}"
+          class={`pnotify-title ${getStyle('title')}`}
         >
           {#if !_titleElement}
             {#if titleTrusted}
@@ -959,7 +945,7 @@
       {#if text !== false}
         <div
           bind:this={refs.textContainer}
-          class="pnotify-text {getStyle('text')}"
+          class={`pnotify-text ${getStyle('text')}`}
           style={_maxTextHeightStyle}
           role="alert"
         >

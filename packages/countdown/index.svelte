@@ -51,14 +51,11 @@
 
 {#if showCountdown}
   <div
-    class="pnotify-countdown pnotify-countdown-{anchor}
-    {reverse ? 'pnotify-countdown-reverse' : ''}
-    {self.getStyle('countdown')}"
+    class={`pnotify-countdown pnotify-countdown-${anchor} ${reverse ? 'pnotify-countdown-reverse' : ''} ${self.getStyle('countdown')}`}
   >
     <div
-      class="pnotify-countdown-bar {self.getStyle('countdown-bar')}"
-      style="height: {anchor === 'right' || anchor === 'left' ? _percent : '100'}%;
-      width: {anchor === 'top' || anchor === 'bottom' ? _percent : '100'}%;"
+      class={`pnotify-countdown-bar ${self.getStyle('countdown-bar')}`}
+      style={`height: ${anchor === 'right' || anchor === 'left' ? _percent : '100'}%; width: ${anchor === 'top' || anchor === 'bottom' ? _percent : '100'}%;`}
     />
   </div>
 {/if}

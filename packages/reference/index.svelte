@@ -56,8 +56,7 @@ We're going to create a button that will be appended to the notice.
 It will be disabled by default, so we can enable it on mouseover.
 -->
 <button
-  class="pnotify-action-button pnotify-reference-button {self.getStyle('btn')}
-  {self.getStyle('btn-secondary')}"
+  class={`pnotify-action-button pnotify-reference-button ${self.getStyle('btn')} ${self.getStyle('btn-secondary')}`}
   type="button"
   disabled={!mouseIsIn}
   on:click={doSomething}
