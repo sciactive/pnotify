@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.1.1](https://github.com/sciactive/pnotify/compare/v5.1.0...v5.1.1) (2020-04-27)
+
+
+### Bug Fixes
+
+* font awesome fix changing from fa icon ([33b3733](https://github.com/sciactive/pnotify/commit/33b3733143628a34bba39f5ef030bc5746529119))
+* font awesome icon change after the first change ([1d9239d](https://github.com/sciactive/pnotify/commit/1d9239df5113059d0fa3cff5efc6a6d5455003f7)), closes [#391](https://github.com/sciactive/pnotify/issues/391)
+* remove erroneous fa5 fix file from fa5 module ([642facf](https://github.com/sciactive/pnotify/commit/642facf218d7f71bfb3cf57ceff56709b0c58beb))
+* reverse colors on countdown bar ([2ebc862](https://github.com/sciactive/pnotify/commit/2ebc862ab920936ac4ffa13df23dcaddf2addc1c)), closes [#390](https://github.com/sciactive/pnotify/issues/390)
+* run build js through babel ([edd8ce7](https://github.com/sciactive/pnotify/commit/edd8ce7f5e8ea008114e178dc5f0a9b08b9c7d5e)), closes [#389](https://github.com/sciactive/pnotify/issues/389)
+
+
+
+# 5.1.0 (2020-04-21)
+
+
+
+
+
 # [5.1.0](https://github.com/sciactive/pnotify/compare/v5.0.1...v5.1.0) (2020-04-21)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "@pnotify/core",
-  "version": "5.1.0",
+  "version": "5.1.1",
   "description": "PNotify Core",
   "keywords": [
     "notice",
@@ -41,7 +41,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "dependencies": {},
   "devDependencies": {
     "@babel/core": "^7.9.0",
     "@babel/preset-env": "^7.9.5",

@@ -1,6 +1,6 @@
 {
   "name": "@pnotify/confirm",
-  "version": "5.1.0",
+  "version": "5.1.1",
   "description": "PNotify - Confirm Module",
   "keywords": [
     "notice",
@@ -40,7 +40,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@pnotify/core": "^5.1.0"
+    "@pnotify/core": "^5.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
