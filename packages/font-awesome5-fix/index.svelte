@@ -37,8 +37,10 @@
 
     if (
       newIconValue !== _oldIconValue &&
-      typeof newIconValue === 'string' &&
-      newIconValue.match(/(^| )fa[srlb]($| )/)
+      ((typeof newIconValue === 'string' &&
+        newIconValue.match(/(^| )fa[srlb]($| )/)) ||
+        (typeof _oldIconValue === 'string' &&
+          _oldIconValue.match(/(^| )fa[srlb]($| )/)))
     ) {
       self.icon = false;
       _updatingIcon = true;
