@@ -1,6 +1,6 @@
 {
   "name": "@pnotify/animate",
-  "version": "5.1.1",
+  "version": "5.1.2",
   "description": "PNotify - Animate Module",
   "keywords": [
     "notice",
@@ -40,7 +40,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@pnotify/core": "^5.1.1"
+    "@pnotify/core": "^5.1.2"
   },
   "peerDependencies": {
     "animate.css": "^3.7.2"

@@ -1,6 +1,6 @@
 {
   "name": "@pnotify/countdown",
-  "version": "5.1.1",
+  "version": "5.1.2",
   "description": "PNotify - Countdown Module",
   "keywords": [
     "notice",
@@ -40,7 +40,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@pnotify/core": "^5.1.1"
+    "@pnotify/core": "^5.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
