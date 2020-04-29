@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.1.2](https://github.com/sciactive/pnotify/compare/v5.1.1...v5.1.2) (2020-04-29)
+
+**Note:** Version bump only for package @pnotify/font-awesome4
+
+
+
+
+
+## [5.1.1](https://github.com/sciactive/pnotify/compare/v5.1.0...v5.1.1) (2020-04-27)
+
+
+### Bug Fixes
+
+* run build js through babel ([edd8ce7](https://github.com/sciactive/pnotify/commit/edd8ce7f5e8ea008114e178dc5f0a9b08b9c7d5e)), closes [#389](https://github.com/sciactive/pnotify/issues/389)
+
+
+
+
+
 # [5.1.0](https://github.com/sciactive/pnotify/compare/v5.0.1...v5.1.0) (2020-04-21)
 
 

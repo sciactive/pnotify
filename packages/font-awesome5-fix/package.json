@@ -1,6 +1,6 @@
 {
   "name": "@pnotify/font-awesome5-fix",
-  "version": "5.1.0",
+  "version": "5.1.2",
   "description": "PNotify - Font Awesome 5 Fix Module",
   "keywords": [
     "notice",
@@ -27,9 +27,9 @@
     "url": "https://github.com/sciactive/pnotify.git"
   },
   "scripts": {
-    "build-dev": "ENV=development webpack",
-    "build": "webpack",
-    "watch": "ENV=development webpack --watch",
+    "build-dev": "ENV=development rollup -c",
+    "build": "rollup -c",
+    "watch": "ENV=development rollup -c -w",
     "prepare": "rm -rf ./dist/ && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -40,7 +40,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@pnotify/core": "^5.1.0"
+    "@pnotify/core": "^5.1.2"
   },
   "peerDependencies": {
     "@fortawesome/free-solid-svg-icons": "^5.13.0"
@@ -48,13 +48,13 @@
   "devDependencies": {
     "@babel/core": "^7.9.0",
     "@babel/preset-env": "^7.9.5",
-    "babel-loader": "^8.1.0",
     "core-js": "^3.6.5",
-    "css-loader": "^3.5.2",
-    "mini-css-extract-plugin": "^0.9.0",
-    "svelte": "^3.20.1",
-    "svelte-loader": "^2.13.6",
-    "webpack": "^4.42.1",
-    "webpack-cli": "^3.3.11"
+    "rollup": "^2.7.3",
+    "rollup-plugin-babel": "^4.4.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-postcss": "^3.1.1",
+    "rollup-plugin-svelte": "^5.2.1",
+    "rollup-plugin-terser": "^5.3.0",
+    "svelte": "^3.20.1"
   }
 }
