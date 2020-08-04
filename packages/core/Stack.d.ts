@@ -118,7 +118,7 @@ export default class Stack extends StackProperties {
    * An "array" of notices. It's actually built on the fly from the double
    * linked list the notices are actually stored in.
    */
-  readonly notices: Notice[];
+  readonly notices: (typeof Notice)[];
   /**
    * How many notices there are in the stack.
    */
@@ -127,7 +127,7 @@ export default class Stack extends StackProperties {
    * When a stack is modalish, this is the notice that is open in the non-modal
    * state.
    */
-  readonly leader: Notice | null;
+  readonly leader: typeof Notice | null;
 
   constructor(options: StackOptions);
 
@@ -139,14 +139,14 @@ export default class Stack extends StackProperties {
    * @param options Controls which direction to iterate notices.
    */
   forEach(
-    callback: (notice?: Notice) => void,
+    callback: (notice?: typeof Notice) => void,
     options?: {
       /**
        * Where to start the iteration.
        *
        * @default 'oldest'
        */
-      start: Notice | 'head' | 'tail' | 'oldest' | 'newest';
+      start: typeof Notice | 'head' | 'tail' | 'oldest' | 'newest';
       /**
        * Which direction in the double linked list to iterate.
        *
