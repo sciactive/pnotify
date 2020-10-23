@@ -237,11 +237,8 @@
   $: _widthStyle = typeof width === 'string' ? `width: ${width};` : '';
   $: _minHeightStyle =
     typeof minHeight === 'string' ? `min-height: ${minHeight};` : '';
-  // The bottom padding of .03em is specifically for Firefox, since it will show a scrollbar without it for some reason.
   $: _maxTextHeightStyle =
-    typeof maxTextHeight === 'string'
-      ? `max-height: ${maxTextHeight}; overflow-y: auto; overscroll-behavior: contain; padding-bottom:.03em;`
-      : '';
+    typeof maxTextHeight === 'string' ? `max-height: ${maxTextHeight};` : '';
   $: _titleElement = title instanceof HTMLElement;
   $: _textElement = text instanceof HTMLElement;
   // Whether the notification is open in a modal stack (or a modalish stack in
@@ -370,7 +367,12 @@
     _interacting = false;
 
     // Start the close timer.
-    if (hide && mouseReset && _animating !== 'out') {
+    if (
+      hide &&
+      mouseReset &&
+      _animating !== 'out' &&
+      ['open', 'opening'].indexOf(_state) !== -1
+    ) {
       queueClose();
     }
   }
@@ -609,8 +611,13 @@
         _animInTimer = setTimeout(finished, 650);
       });
     } else {
-      _animatingClass = 'pnotify-in';
+      const _animation = animation;
+      animation = 'none';
+      _animatingClass = `pnotify-in ${
+        _animation === 'fade' ? 'pnotify-fade-in' : ''
+      }`;
       tick().then(() => {
+        animation = _animation;
         finished();
       });
     }
@@ -889,7 +896,7 @@
     {/each}
     {#if closer && !_nonBlock}
       <div
-        class={`pnotify-closer ${getStyle('closer')} ${!closerHover || _interacting ? '' : 'pnotify-hidden'}`}
+        class={`pnotify-closer ${getStyle('closer')} ${(!closerHover || _interacting) && !_masking ? '' : 'pnotify-hidden'}`}
         role="button"
         tabindex="0"
         title={labels.close}
@@ -900,7 +907,7 @@
     {/if}
     {#if sticker && !_nonBlock}
       <div
-        class={`pnotify-sticker ${getStyle('sticker')} ${!stickerHover || _interacting ? '' : 'pnotify-hidden'}`}
+        class={`pnotify-sticker ${getStyle('sticker')} ${(!stickerHover || _interacting) && !_masking ? '' : 'pnotify-hidden'}`}
         role="button"
         aria-pressed={!hide}
         tabindex="0"
@@ -944,7 +951,7 @@
       {#if text !== false}
         <div
           bind:this={refs.textContainer}
-          class={`pnotify-text ${getStyle('text')}`}
+          class={`pnotify-text ${getStyle('text')} ${_maxTextHeightStyle === '' ? '' : 'pnotify-text-with-max-height'}`}
           style={_maxTextHeightStyle}
           role="alert"
         >
@@ -1123,6 +1130,12 @@
     margin-bottom: 0.4em;
     margin-top: 0;
   }
+  :global(.pnotify-text-with-max-height) {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    /* The bottom padding of .03em is specifically for Firefox, since it will show a scrollbar without it for some reason. */
+    padding-bottom: 0.03em;
+  }
   :global(.pnotify.pnotify-with-icon .pnotify-content) {
     margin-left: 24px;
   }
@@ -1153,7 +1166,7 @@
     z-index: 2;
     transition: opacity 0.25s linear;
     opacity: 0;
-    padding: 0 1rem;
+    padding: 0;
     display: flex;
     justify-content: center;
     align-items: flex-end;
