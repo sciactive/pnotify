@@ -1,6 +1,7 @@
 /*
 Color Scheme: https://www.google.com/design/spec/style/color.html#color-color-palette
 Requires stylesheet to work: https://fonts.googleapis.com/css?family=Material+Icons
+And optionally: https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap
 */
 [data-pnotify].material-elem,
 [data-pnotify].material-elem.pnotify-mode-light {
@@ -59,7 +60,10 @@ Requires stylesheet to work: https://fonts.googleapis.com/css?family=Material+Ic
   padding: 24px;
 }
 [data-pnotify] .material-title {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
   font-size: 20px;
+  letter-spacing: 0.15px;
   margin-bottom: 20px;
   line-height: 24px;
 }
@@ -67,7 +71,10 @@ Requires stylesheet to work: https://fonts.googleapis.com/css?family=Material+Ic
   margin-bottom: 0;
 }
 [data-pnotify] .material-text {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
   font-size: 16px;
+  letter-spacing: 0.5px;
   line-height: 24px;
 }
 [data-pnotify].pnotify-with-icon .material-content {
@@ -182,11 +189,14 @@ Requires stylesheet to work: https://fonts.googleapis.com/css?family=Material+Ic
 
   transition: background-color 0.3s;
 
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: 1.25px;
   text-transform: uppercase;
   height: 36px;
   margin: 6px;
   min-width: 64px;
-  font-weight: bold;
 }
 [data-pnotify] .material-btn.material-btn-primary {
   color: var(--primary-button-text-color);

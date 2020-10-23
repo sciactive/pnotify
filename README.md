@@ -280,7 +280,7 @@ import '@pnotify/core/dist/BrightTheme.css';
 
 ## Material
 
-The Material style. Supports dark mode. Requires [material-design-icons](https://www.npmjs.com/package/material-design-icons). Include the CSS file in your page:
+The Material style. Supports dark mode. Requires [material-design-icons](https://www.npmjs.com/package/material-design-icons) and optionally the Roboto font. Include the CSS file in your page:
 
 ```html
 <link href="node_modules/@pnotify/core/dist/Material.css" rel="stylesheet" type="text/css" />
@@ -338,6 +338,16 @@ Or a clone from jsDelivr:
 ```html
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/material-icons-font@2.0.0/material-icons-font.css" />
 
+```
+
+### Roboto Font
+
+The Material style uses the "400" and "500" weights of Roboto. It will fall back to "sans-serif".
+
+You can use the Google Font CDN:
+
+```html
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" />
 ```
 
 ## Bootstrap
