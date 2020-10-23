@@ -3872,7 +3872,7 @@ PNotify.notice({
             const sourceElement = document.createElement('div');
 
             PNotify.info({
-              title: button.textContent + ' - Source',
+              title: button.textContent.trim() + ' - Source',
               text: sourceElement,
               icon: 'fas fa-code',
               hide: false,

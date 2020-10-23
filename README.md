@@ -60,7 +60,7 @@ Development - https://sciactive.github.io/pnotify/
 
 # Getting Started
 
-You can get PNotify using NPM or Yarn. (You can also use [jsDelivr](https://www.jsdelivr.com/package/npm/pnotify).)
+You can get PNotify using NPM or Yarn. (You can also use [jsDelivr](https://www.jsdelivr.com/package/npm/@pnotify/core).)
 
 You *should* install the packages you need individually. Alternatively, you can install all of them at once with the `pnotify` package.
 
@@ -84,8 +84,8 @@ npm install --save-dev @pnotify/mobile
 
 # ...
 
-# Or, you can install this to get them all (if you're lazy).
-npm install --save pnotify
+# Or, you can install this to get them all.
+npm install --save-dev pnotify
 ```
 
 ## Documentation for Old Versions
@@ -109,7 +109,9 @@ import * as PNotifyMobile from '@pnotify/mobile';
 
 defaultModules.set(PNotifyMobile, {});
 
-alert('Notice me, senpai!');
+alert({
+  text: 'Notice me, senpai!'
+});
 ```
 
 ## React
@@ -124,7 +126,9 @@ import '@pnotify/mobile/dist/PNotifyMobile.css';
 
 defaultModules.set(PNotifyMobile, {});
 
-alert('Notice me, senpai!');
+alert({
+  text: 'Notice me, senpai!'
+});
 ```
 
 ## Angular
@@ -142,7 +146,9 @@ defaultModules.set(PNotifyMobile, {});
 //...
 export class WhateverComponent {
   constructor() {
-    alert('Notice me, senpai!');
+    alert({
+      text: 'Notice me, senpai!'
+    });
   }
 }
 ```
@@ -188,7 +194,9 @@ export class WhateverComponent {
   alert = undefined;
   constructor(pnotifyService: PNotifyService) {
     this.alert = pnotifyService.getPNotifyAlert();
-    this.alert('Notice me, senpai!');
+    this.alert({
+      text: 'Notice me, senpai!'
+    });
   }
 }
 ```
@@ -211,7 +219,9 @@ PNotify.defaultModules.set(PNotifyMobile, {});
 angular.module('WhateverModule', [])
   .value('PNotify', PNotify)
   .controller('WhateverController', ['PNotify', function(PNotify) {
-    PNotify.alert('Notice me, senpai!');
+    PNotify.alert({
+      text: 'Notice me, senpai!'
+    });
   }]);
 ```
 
@@ -227,7 +237,9 @@ PNotify in vanilla ES5
 <script type="text/javascript">
   PNotify.defaultModules.set(PNotifyMobile, {});
 
-  PNotify.alert('Notice me, senpai!');
+  PNotify.alert({
+    text: 'Notice me, senpai!'
+  });
 </script>
 ```
 
@@ -244,7 +256,9 @@ PNotify in vanilla ES5
 
   defaultModules.set(PNotifyMobile, {});
 
-  alert('Notice me, senpai!');
+  alert({
+    text: 'Notice me, senpai!'
+  });
 </script>
 ```
 
