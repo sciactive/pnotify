@@ -19,43 +19,45 @@ Development - https://sciactive.github.io/pnotify/
 <h1>Table of Contents</h1>
 
 <!-- TOC START min:1 max:3 link:true asterisk:false update:true -->
-- [Getting Started](#Getting-Started)
-  - [Documentation for Old Versions](#Documentation-for-Old-Versions)
-  - [Migrating from PNotify 4](#Migrating-from-PNotify-4)
-- [Installation](#Installation)
-  - [Svelte](#Svelte)
-  - [React](#React)
-  - [Angular](#Angular)
-  - [Angular (Injectable)](#Angular-Injectable)
-  - [AngularJS](#AngularJS)
-  - [Vanilla JS (ES5)](#Vanilla-JS-ES5)
-  - [Vanilla JS (ES6)](#Vanilla-JS-ES6)
-- [Styles](#Styles)
-  - [Bright Theme](#Bright-Theme)
-  - [Material](#Material)
-    - [Material Icons](#Material-Icons)
-  - [Bootstrap](#Bootstrap)
-  - [Font Awesome 4 (Icons)](#Font-Awesome-4-Icons)
-  - [Font Awesome 5 (Icons)](#Font-Awesome-5-Icons)
-- [Creating Notices](#Creating-Notices)
-- [Options](#Options)
-  - [Changing Defaults](#Changing-Defaults)
-- [Modules](#Modules)
-  - [Creating Notices with Modules](#Creating-Notices-with-Modules)
-    - [TypeScript](#TypeScript)
-  - [Desktop Module](#Desktop-Module)
-  - [Mobile Module](#Mobile-Module)
-  - [Countdown Module](#Countdown-Module)
-  - [Animate Module](#Animate-Module)
-  - [Confirm Module](#Confirm-Module)
-- [Exported Methods and Properties](#Exported-Methods-and-Properties)
-- [Instance Methods and Properties](#Instance-Methods-and-Properties)
-  - [Events](#Events)
-- [Stacks](#Stacks)
-  - [Example Stack](#Example-Stack)
-- [Features](#Features)
-- [Browser Compatibility and Build Size](#Browser-Compatibility-and-Build-Size)
-- [Licensing and Additional Info](#Licensing-and-Additional-Info)
+- [Getting Started](#getting-started)
+  - [Documentation for Old Versions](#documentation-for-old-versions)
+  - [Migrating from PNotify 4](#migrating-from-pnotify-4)
+- [Installation](#installation)
+  - [Svelte](#svelte)
+  - [React](#react)
+  - [Angular](#angular)
+  - [Angular (Injectable)](#angular-injectable)
+  - [AngularJS](#angularjs)
+  - [Vanilla JS (ES5)](#vanilla-js-es5)
+  - [Vanilla JS (ES6)](#vanilla-js-es6)
+- [Styles](#styles)
+  - [Bright Theme](#bright-theme)
+  - [Material](#material)
+    - [Material Icons](#material-icons)
+    - [Roboto Font](#roboto-font)
+  - [Bootstrap](#bootstrap)
+  - [Font Awesome 4 (Icons)](#font-awesome-4-icons)
+  - [Font Awesome 5 (Icons)](#font-awesome-5-icons)
+- [Creating Notices](#creating-notices)
+- [Options](#options)
+  - [Changing Defaults](#changing-defaults)
+- [Modules](#modules)
+  - [Creating Notices with Modules](#creating-notices-with-modules)
+    - [TypeScript](#typescript)
+  - [Desktop Module](#desktop-module)
+  - [Mobile Module](#mobile-module)
+  - [Countdown Module](#countdown-module)
+  - [Animate Module](#animate-module)
+  - [Confirm Module](#confirm-module)
+  - [Paginate Module](#paginate-module)
+- [Exported Methods and Properties](#exported-methods-and-properties)
+- [Instance Methods and Properties](#instance-methods-and-properties)
+  - [Events](#events)
+- [Stacks](#stacks)
+  - [Example Stack](#example-stack)
+- [Features](#features)
+- [Browser Compatibility and Build Size](#browser-compatibility-and-build-size)
+- [Licensing and Additional Info](#licensing-and-additional-info)
 <!-- TOC END -->
 
 # Getting Started
@@ -897,6 +899,43 @@ notice.on('pnotify:cancel', () => {
   // User canceled, continue here...
 });
 ```
+
+## Paginate Module
+
+Provide an index and count of the notices in the stack, and/or buttons to let the user page through them.
+
+```sh
+npm install --save-dev @pnotify/paginate
+```
+
+```js
+import {notice, defaultModules} from '@pnotify/core';
+import * as PNotifyPaginate from '@pnotify/paginate';
+
+const myNotice = notice({
+  text: "I'm a notice.",
+  modules: new Map([
+    ...defaultModules,
+    [PNotifyPaginate, {
+      // Paginate Module Options
+    }]
+  ])
+});
+```
+
+`PNotifyPaginate.defaults = {`
+* `buttons: true`<br>
+  Show next and previous buttons.
+* `count: true`<br>
+  Show the stack notice count.
+* `immediateTransition: true`<br>
+  Immediately transition to the next/previous notice (without animations).
+* `waiting: true`<br>
+  After transitioning, set the closed notice to "waiting" state.
+* `labels: {previous: 'Previous', next: 'Next', of: 'of'}`<br>
+  Various texts. Allows for internationalization.
+
+`}`
 
 # Exported Methods and Properties
 

@@ -159,6 +159,7 @@
       rel="stylesheet"
       href="packages/countdown/dist/PNotifyCountdown.css"
     />
+    <link rel="stylesheet" href="packages/paginate/dist/PNotifyPaginate.css" />
     <link
       rel="stylesheet"
       href="packages/reference/dist/PNotifyReference.css"
@@ -174,6 +175,7 @@
     <script src="packages/desktop/dist/PNotifyDesktop.js"></script>
     <script src="packages/confirm/dist/PNotifyConfirm.js"></script>
     <script src="packages/countdown/dist/PNotifyCountdown.js"></script>
+    <script src="packages/paginate/dist/PNotifyPaginate.js"></script>
     <script src="packages/reference/dist/PNotifyReference.js"></script>
 
     <!-- Custom Styling -->
@@ -2835,6 +2837,118 @@
           >
             Alert Style Error
           </button>
+        </div>
+
+        <h5 class="card-header">
+          Paginate Module
+          <small>Show buttons to let the user page through notices.</small>
+        </h5>
+        <div class="card-body">
+          <script type="text/javascript">
+            window.showPaginate = function showPaginate(type) {
+              if (typeof window.stackPaginate === 'undefined') {
+                window.stackPaginate = new PNotify.Stack({
+                  dir1: 'down',
+                  dir2: 'left',
+                  firstpos1: 25,
+                  firstpos2: 25,
+                  modal: false,
+                  context: document.getElementById('paginate-context')
+                });
+              }
+              const opts = {
+                title: "It's a Notice",
+                text:
+                  'The notice gives you a bit more context about the other notices.',
+                stack: window.stackPaginate,
+                destroy: true,
+                modules: new Map([
+                  ...PNotify.defaultModules,
+                  [PNotifyPaginate, {}]
+                ])
+              };
+              switch (type) {
+                case 'error':
+                  opts.title = 'Oh No';
+                  opts.text = 'Watch out for that water tower!';
+                  opts.type = 'error';
+                  break;
+                case 'info':
+                  opts.title = 'Breaking News';
+                  opts.text = 'Have you met Ted?';
+                  opts.type = 'info';
+                  break;
+                case 'success':
+                  opts.title = 'Good News Everyone';
+                  opts.text =
+                    "I've invented a device that bites shiny metal asses.";
+                  opts.type = 'success';
+                  break;
+              }
+              PNotify.alert(opts);
+            };
+          </script>
+          <button
+            class="btn btn-light my-1 source"
+            onclick="
+              showPaginate('notice');
+            "
+          >
+            Paginate Notice
+          </button>
+          <button
+            class="btn btn-light my-1 source"
+            onclick="
+              showPaginate('info');
+            "
+          >
+            Paginate Info
+          </button>
+          <button
+            class="btn btn-light my-1 source"
+            onclick="
+              showPaginate('success');
+            "
+          >
+            Paginate Success
+          </button>
+          <button
+            class="btn btn-light my-1 source"
+            onclick="
+              showPaginate('error');
+            "
+          >
+            Paginate Error
+          </button>
+
+          <div class="row justify-content-md-center mt-3">
+            <div class="col-md-10">
+              <div class="card">
+                <div
+                  id="paginate-context"
+                  class="card-body"
+                  style="height: 350px; position: relative; overflow: auto;"
+                >
+                  <div class="my-3">
+                    <h3>Paginate Demo</h3>
+                    <hr />
+                  </div>
+                  <p>
+                    I'm the context for the paginate demo. I'm here since the
+                    Paginate module works best with a certain kind of setup:
+                  </p>
+                  <ul>
+                    <li>Max 1 shown notice in the stack.</li>
+                    <li>Destroy turned on. (So the count is correct.)</li>
+                    <li>
+                      Modalish turned off. (Or you can turn off the paginate
+                      buttons for just the count.)
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <h5 class="card-header">

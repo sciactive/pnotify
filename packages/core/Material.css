@@ -245,3 +245,42 @@ And optionally: https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&dis
 [data-pnotify] .material-countdown-bar {
   background-color: var(--material-text-color);
 }
+
+[data-pnotify] .material-paginate {
+  display: inline-flex;
+  flex-direction: column;
+}
+[data-pnotify] .material-paginate-buttons {
+  margin-right: 6px;
+}
+[data-pnotify] .material-paginate-btn {
+  margin: 0 0 0 6px;
+  border: 0;
+  padding: 0;
+}
+[data-pnotify] .material-paginate-btn,
+[data-pnotify] .material-paginate-btn:after {
+  display: inline-block;
+  font-family: 'Material Icons';
+  height: 20px;
+  width: 20px;
+  font-size: 20px;
+  line-height: 24px;
+  position: relative;
+}
+[data-pnotify] .material-paginate-btn:disabled:after,
+[data-pnotify] .material-paginate-btn[aria-disabled='true']:after {
+  opacity: 0.5;
+}
+[data-pnotify] .material-paginate-previous:after {
+  content: 'arrow_back';
+}
+[data-pnotify] .material-paginate-next:after {
+  content: 'arrow_forward';
+}
+[data-pnotify] .material-paginate-count {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  letter-spacing: 0.25px;
+}
