@@ -10,14 +10,6 @@ For calculating icon filters, use: https://codepen.io/sosuke/pen/Pjoqqp
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
   border-radius: 0;
-  --notice-primary-button-background-color: var(--notice-border-color);
-  --notice-primary-button-text-color: var(--notice-text-color);
-  --info-primary-button-background-color: var(--info-border-color);
-  --info-primary-button-text-color: var(--info-text-color);
-  --success-primary-button-background-color: var(--success-border-color);
-  --success-primary-button-text-color: var(--success-text-color);
-  --error-primary-button-background-color: var(--error-border-color);
-  --error-primary-button-text-color: var(--error-text-color);
 }
 [data-pnotify].brighttheme-elem,
 [data-pnotify].brighttheme-elem.pnotify-mode-light {
@@ -88,8 +80,54 @@ For calculating icon filters, use: https://codepen.io/sosuke/pen/Pjoqqp
   --error-icon-filter: invert(70%) sepia(24%) saturate(717%) hue-rotate(315deg)
     brightness(103%) contrast(104%);
 }
+
+[data-pnotify] .brighttheme-notice {
+  --brighttheme-background-color: var(--notice-background-color);
+  --brighttheme-border-color: var(--notice-border-color);
+  --brighttheme-text-color: var(--notice-text-color);
+  --brighttheme-icon-filter: var(--notice-icon-filter);
+  --brighttheme-primary-button-background-color: var(--notice-border-color);
+  --brighttheme-primary-button-text-color: var(--notice-text-color);
+}
+[data-pnotify] .brighttheme-info {
+  --brighttheme-background-color: var(--info-background-color);
+  --brighttheme-border-color: var(--info-border-color);
+  --brighttheme-text-color: var(--info-text-color);
+  --brighttheme-icon-filter: var(--info-icon-filter);
+  --brighttheme-primary-button-background-color: var(--info-border-color);
+  --brighttheme-primary-button-text-color: var(--info-text-color);
+}
+[data-pnotify] .brighttheme-success {
+  --brighttheme-background-color: var(--success-background-color);
+  --brighttheme-border-color: var(--success-border-color);
+  --brighttheme-text-color: var(--success-text-color);
+  --brighttheme-icon-filter: var(--success-icon-filter);
+  --brighttheme-primary-button-background-color: var(--success-border-color);
+  --brighttheme-primary-button-text-color: var(--success-text-color);
+}
+[data-pnotify] .brighttheme-error {
+  --brighttheme-background-color: var(--error-background-color);
+  --brighttheme-border-color: var(--error-border-color);
+  --brighttheme-text-color: var(--error-text-color);
+  --brighttheme-icon-filter: var(--error-icon-filter);
+  --brighttheme-primary-button-background-color: var(--error-border-color);
+  --brighttheme-primary-button-text-color: var(--error-text-color);
+}
+
 [data-pnotify] .brighttheme-container {
   padding: 1.3rem;
+  background-color: var(--brighttheme-background-color);
+  border: 0 solid var(--brighttheme-border-color);
+  color: var(--brighttheme-text-color);
+}
+[data-pnotify] .brighttheme-error {
+  background-image: repeating-linear-gradient(
+    135deg,
+    transparent,
+    transparent 35px,
+    rgba(255, 255, 255, 0.3) 35px,
+    rgba(255, 255, 255, 0.3) 70px
+  );
 }
 [data-pnotify].pnotify-with-icon .brighttheme-content {
   margin-left: calc(1.3rem + 16px);
@@ -119,6 +157,7 @@ For calculating icon filters, use: https://codepen.io/sosuke/pen/Pjoqqp
   display: flex;
   justify-content: center;
   align-items: center;
+  filter: var(--brighttheme-icon-filter);
 }
 [data-pnotify] .brighttheme-icon,
 [data-pnotify] .brighttheme-icon > span,
@@ -136,53 +175,6 @@ For calculating icon filters, use: https://codepen.io/sosuke/pen/Pjoqqp
   line-height: 1rem;
 }
 
-[data-pnotify] .brighttheme-notice {
-  background-color: var(--notice-background-color);
-  border: 0 solid var(--notice-border-color);
-  color: var(--notice-text-color);
-}
-[data-pnotify] .brighttheme-info {
-  background-color: var(--info-background-color);
-  border: 0 solid var(--info-border-color);
-  color: var(--info-text-color);
-}
-[data-pnotify] .brighttheme-success {
-  background-color: var(--success-background-color);
-  border: 0 solid var(--success-border-color);
-  color: var(--success-text-color);
-}
-[data-pnotify] .brighttheme-error {
-  background-color: var(--error-background-color);
-  background-image: repeating-linear-gradient(
-    135deg,
-    transparent,
-    transparent 35px,
-    rgba(255, 255, 255, 0.3) 35px,
-    rgba(255, 255, 255, 0.3) 70px
-  );
-  border: 0 solid var(--error-border-color);
-  color: var(--error-text-color);
-}
-[data-pnotify] .brighttheme-icon-notice,
-[data-pnotify] .brighttheme-notice .brighttheme-icon-closer,
-[data-pnotify] .brighttheme-notice .brighttheme-icon-sticker {
-  filter: var(--notice-icon-filter);
-}
-[data-pnotify] .brighttheme-icon-info,
-[data-pnotify] .brighttheme-info .brighttheme-icon-closer,
-[data-pnotify] .brighttheme-info .brighttheme-icon-sticker {
-  filter: var(--info-icon-filter);
-}
-[data-pnotify] .brighttheme-icon-success,
-[data-pnotify] .brighttheme-success .brighttheme-icon-closer,
-[data-pnotify] .brighttheme-success .brighttheme-icon-sticker {
-  filter: var(--success-icon-filter);
-}
-[data-pnotify] .brighttheme-icon-error,
-[data-pnotify] .brighttheme-error .brighttheme-icon-closer,
-[data-pnotify] .brighttheme-error .brighttheme-icon-sticker {
-  filter: var(--error-icon-filter);
-}
 [data-pnotify] .brighttheme-icon-notice:after {
   content: url(data:image/svg+xml;charset=utf-8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHZlcnNpb249IjEuMSIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMTMsMTNIMTFWN0gxM00xMywxN0gxMVYxNUgxM00xMiwyQTEwLDEwIDAgMCwwIDIsMTJBMTAsMTAgMCAwLDAgMTIsMjJBMTAsMTAgMCAwLDAgMjIsMTJBMTAsMTAgMCAwLDAgMTIsMloiLz48L3N2Zz4=);
 }
@@ -220,57 +212,16 @@ For calculating icon filters, use: https://codepen.io/sosuke/pen/Pjoqqp
   border: none;
   background: transparent;
   cursor: pointer;
+  color: var(--brighttheme-text-color);
+}
+[data-pnotify] .brighttheme-btn-primary {
+  background-color: var(--brighttheme-primary-button-background-color);
+  color: var(--brighttheme-primary-button-text-color);
 }
 
-[data-pnotify] .brighttheme-notice .brighttheme-btn {
-  color: var(--notice-text-color);
+[data-pnotify] .brighttheme-countdown {
+  background-color: var(--brighttheme-background-color);
 }
-[data-pnotify] .brighttheme-notice .brighttheme-btn-primary {
-  background-color: var(--notice-primary-button-background-color);
-  color: var(--notice-primary-button-text-color);
-}
-[data-pnotify] .brighttheme-info .brighttheme-btn {
-  color: var(--info-text-color);
-}
-[data-pnotify] .brighttheme-info .brighttheme-btn-primary {
-  background-color: var(--info-primary-button-background-color);
-  color: var(--info-primary-button-text-color);
-}
-[data-pnotify] .brighttheme-success .brighttheme-btn {
-  color: var(--success-text-color);
-}
-[data-pnotify] .brighttheme-success .brighttheme-btn-primary {
-  background-color: var(--success-primary-button-background-color);
-  color: var(--success-primary-button-text-color);
-}
-[data-pnotify] .brighttheme-error .brighttheme-btn {
-  color: var(--error-text-color);
-}
-[data-pnotify] .brighttheme-error .brighttheme-btn-primary {
-  background-color: var(--error-primary-button-background-color);
-  color: var(--error-primary-button-text-color);
-}
-[data-pnotify] .brighttheme-notice .brighttheme-countdown {
-  background-color: var(--notice-background-color);
-}
-[data-pnotify] .brighttheme-notice .brighttheme-countdown-bar {
-  background-color: var(--notice-border-color);
-}
-[data-pnotify] .brighttheme-info .brighttheme-countdown {
-  background-color: var(--info-background-color);
-}
-[data-pnotify] .brighttheme-info .brighttheme-countdown-bar {
-  background-color: var(--info-border-color);
-}
-[data-pnotify] .brighttheme-success .brighttheme-countdown {
-  background-color: var(--success-background-color);
-}
-[data-pnotify] .brighttheme-success .brighttheme-countdown-bar {
-  background-color: var(--success-border-color);
-}
-[data-pnotify] .brighttheme-error .brighttheme-countdown {
-  background-color: var(--error-background-color);
-}
-[data-pnotify] .brighttheme-error .brighttheme-countdown-bar {
-  background-color: var(--error-border-color);
+[data-pnotify] .brighttheme-countdown-bar {
+  background-color: var(--brighttheme-border-color);
 }

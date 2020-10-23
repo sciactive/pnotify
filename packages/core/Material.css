@@ -51,6 +51,24 @@ And optionally: https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&dis
   --primary-button-text-focus-color: #e0f7fa;
   --input-focus-underline-color: #e1f5fe;
 }
+
+[data-pnotify] .material-notice {
+  --material-background-color: var(--notice-background-color);
+  --material-text-color: var(--notice-text-color);
+}
+[data-pnotify] .material-info {
+  --material-background-color: var(--info-background-color);
+  --material-text-color: var(--info-text-color);
+}
+[data-pnotify] .material-success {
+  --material-background-color: var(--success-background-color);
+  --material-text-color: var(--success-text-color);
+}
+[data-pnotify] .material-error {
+  --material-background-color: var(--error-background-color);
+  --material-text-color: var(--error-text-color);
+}
+
 [data-pnotify].material-elem.pnotify-shadow {
   -webkit-box-shadow: 0px 6px 24px 0px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 0px 6px 24px 0px rgba(0, 0, 0, 0.2);
@@ -58,6 +76,9 @@ And optionally: https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&dis
 }
 [data-pnotify] .material-container {
   padding: 24px;
+  background-color: var(--material-background-color);
+  border: none;
+  color: var(--material-text-color);
 }
 [data-pnotify] .material-title {
   font-family: 'Roboto', sans-serif;
@@ -107,26 +128,6 @@ And optionally: https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&dis
   margin-right: 0;
 }
 
-[data-pnotify] .material-notice {
-  background-color: var(--notice-background-color);
-  border: none;
-  color: var(--notice-text-color);
-}
-[data-pnotify] .material-info {
-  background-color: var(--info-background-color);
-  border: none;
-  color: var(--info-text-color);
-}
-[data-pnotify] .material-success {
-  background-color: var(--success-background-color);
-  border: none;
-  color: var(--success-text-color);
-}
-[data-pnotify] .material-error {
-  background-color: var(--error-background-color);
-  border: none;
-  color: var(--error-text-color);
-}
 [data-pnotify] .material-icon-notice:after {
   content: 'priority_high';
 }
@@ -237,27 +238,10 @@ And optionally: https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&dis
 
   transition: width 0.2s ease-out, padding-top 0.2s ease-out;
 }
-[data-pnotify] .material-notice .material-countdown {
-  background-color: var(--notice-background-color);
+
+[data-pnotify] .material-countdown {
+  background-color: var(--material-background-color);
 }
-[data-pnotify] .material-notice .material-countdown-bar {
-  background-color: var(--notice-text-color);
-}
-[data-pnotify] .material-info .material-countdown {
-  background-color: var(--info-background-color);
-}
-[data-pnotify] .material-info .material-countdown-bar {
-  background-color: var(--info-text-color);
-}
-[data-pnotify] .material-success .material-countdown {
-  background-color: var(--success-background-color);
-}
-[data-pnotify] .material-success .material-countdown-bar {
-  background-color: var(--success-text-color);
-}
-[data-pnotify] .material-error .material-countdown {
-  background-color: var(--error-background-color);
-}
-[data-pnotify] .material-error .material-countdown-bar {
-  background-color: var(--error-text-color);
+[data-pnotify] .material-countdown-bar {
+  background-color: var(--material-text-color);
 }
