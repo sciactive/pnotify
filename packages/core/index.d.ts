@@ -244,8 +244,10 @@ export abstract class Notice extends NoticeProperties {
   /**
    * Open the notice.
    * @param immediate Don't animate, just open immediately.
+   * @returns A promise that is rejected if the opening wasn't successful, or
+   *          resolved once it is.
    */
-  open(immediate?: boolean): void;
+  open(immediate?: boolean): Promise;
 
   /**
    * Close the notice.
@@ -253,12 +255,14 @@ export abstract class Notice extends NoticeProperties {
    * @param timerHide Used to determine whether the notice was closed by timing
    *                  out.
    * @param waitAfterward Set state to waiting after it's closed.
+   * @returns A promise that is rejected if the closing wasn't successful, or
+   *          resolved once it is.
    */
   close(
     immediate?: boolean,
     timerHide?: boolean,
     waitAfterward?: boolean
-  ): void;
+  ): Promise;
 
   /**
    * Cancel any closing operation the notice is going through.

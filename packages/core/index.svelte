@@ -233,6 +233,11 @@
   // Save the old value of hide, so we can reset the timer if it changes.
   let _oldHide = hide;
 
+  // Promise that resolves when the notice has opened.
+  let _openPromise = null;
+  // Promise that resolved when the notice closes.
+  let _closePromise = null;
+
   // Grab the icons from the icons object or use provided icons
   $: _widthStyle = typeof width === 'string' ? `width: ${width};` : '';
   $: _minHeightStyle =
@@ -241,13 +246,6 @@
     typeof maxTextHeight === 'string' ? `max-height: ${maxTextHeight};` : '';
   $: _titleElement = title instanceof HTMLElement;
   $: _textElement = text instanceof HTMLElement;
-  // Whether the notification is open in a modal stack (or a modalish stack in
-  // modal state).
-  $: _modal =
-    stack &&
-    (stack.modal === true ||
-      (stack.modal === 'ish' && _timer === 'prevented')) &&
-    ['open', 'opening', 'closing'].indexOf(_state) !== -1;
   $: _nonBlock =
     addClass.match(/\bnonblock\b/) ||
     (addModalClass.match(/\bnonblock\b/) && _modal) ||
@@ -292,23 +290,38 @@
     refs.textContainer.appendChild(text);
   }
 
+  // Whether the notification is in a modal stack (or a modalish stack in modal
+  // state).
+  let _modal =
+    stack &&
+    (stack.modal === true || (stack.modal === 'ish' && _timer === 'prevented'));
+
   let _oldStack = NaN;
+  let _stackBeforeAddOverlayOff = null;
+  let _stackAfterRemoveOverlayOff = null;
   $: if (_oldStack !== stack) {
     if (_oldStack) {
       // Remove the notice from the old stack.
       _oldStack._removeNotice(self);
+      // Remove the listeners.
+      _modal = false;
+      _stackBeforeAddOverlayOff();
+      _stackAfterRemoveOverlayOff();
     }
     if (stack) {
       // Add the notice to the stack.
       stack._addNotice(self);
+      // Add listeners for modal state.
+      _stackBeforeAddOverlayOff = stack.on('beforeAddOverlay', () => {
+        _modal = true;
+        dispatchLifecycleEvent('enterModal');
+      });
+      _stackAfterRemoveOverlayOff = stack.on('afterRemoveOverlay', () => {
+        _modal = false;
+        dispatchLifecycleEvent('leaveModal');
+      });
     }
     _oldStack = stack;
-  }
-
-  let _oldModal = false;
-  $: if (_oldModal !== _modal) {
-    dispatchLifecycleEvent(_modal ? 'enterModal' : 'leaveModal');
-    _oldModal = _modal;
   }
 
   onMount(() => {
@@ -316,7 +329,7 @@
 
     // Display the notice.
     if (autoOpen) {
-      open();
+      open().catch(() => {});
     }
   });
 
@@ -423,22 +436,22 @@
   // Display the notice.
   export let open = immediate => {
     if (_state === 'opening') {
-      return;
+      return _openPromise;
     }
     if (_state === 'open') {
       if (hide) {
         queueClose();
       }
-      return;
+      return Promise.resolve();
     }
 
-    if (!_moduleHandled && stack && stack._shouldNoticeWait()) {
+    if (!_moduleHandled && stack && stack._shouldNoticeWait(self)) {
       _state = 'waiting';
-      return;
+      return Promise.reject();
     }
 
     if (!dispatchLifecycleEvent('beforeOpen', { immediate })) {
-      return;
+      return Promise.reject();
     }
 
     _state = 'opening';
@@ -446,6 +459,14 @@
     // This makes the notice visibity: hidden; so its dimensions can be
     // determined.
     _animatingClass = 'pnotify-initial pnotify-hidden';
+
+    let resolve;
+    let reject;
+    const promise = new Promise((res, rej) => {
+      resolve = res;
+      reject = rej;
+    });
+    _openPromise = promise;
 
     const afterOpenCallback = () => {
       // Now set it to hide.
@@ -456,16 +477,14 @@
       _state = 'open';
 
       dispatchLifecycleEvent('afterOpen', { immediate });
-    };
 
-    if (stack) {
-      // Notify the stack that a notice has opened.
-      stack._handleNoticeOpened(self);
-    }
+      _openPromise = null;
+      resolve();
+    };
 
     if (_moduleOpen) {
       afterOpenCallback();
-      return;
+      return Promise.resolve();
     }
 
     insertIntoDOM();
@@ -473,6 +492,8 @@
     // Wait until the DOM is updated.
     window.requestAnimationFrame(() => {
       if (_state !== 'opening') {
+        reject();
+        _openPromise = null;
         return;
       }
 
@@ -493,12 +514,17 @@
 
       animateIn(afterOpenCallback, immediate);
     });
+
+    return promise;
   };
 
   // Remove the notice.
   export let close = (immediate, timerHide, waitAfterward) => {
-    if (_state === 'closing' || _state === 'closed') {
-      return;
+    if (_state === 'closing') {
+      return _closePromise;
+    }
+    if (_state === 'closed') {
+      return Promise.resolve();
     }
 
     const runDestroy = () => {
@@ -514,7 +540,7 @@
 
     if (_state === 'waiting') {
       if (waitAfterward) {
-        return;
+        return Promise.resolve();
       }
       _state = 'closed';
       // It's debatable whether the notice should be destroyed in this case, but
@@ -522,7 +548,7 @@
       if (destroy && !waitAfterward) {
         runDestroy();
       }
-      return;
+      return Promise.resolve();
     }
 
     if (
@@ -532,7 +558,7 @@
         waitAfterward
       })
     ) {
-      return;
+      return Promise.reject();
     }
 
     _state = 'closing';
@@ -543,6 +569,14 @@
     }
     _timer = null;
 
+    let resolve;
+    let reject;
+    const promise = new Promise((res, rej) => {
+      resolve = res;
+      reject = rej;
+    });
+    _closePromise = promise;
+
     animateOut(() => {
       _interacting = false;
       _timerHide = false;
@@ -552,18 +586,21 @@
         timerHide,
         waitAfterward
       });
-      if (stack) {
-        stack._handleNoticeClosed(self);
-      }
-      if (destroy && !waitAfterward) {
-        // If we're supposed to destroy the notice, run the destroy module
-        // events, remove from stack, and let Svelte handle DOM removal.
-        runDestroy();
-      } else if (remove && !waitAfterward) {
-        // If we're supposed to remove the notice from the DOM, do it.
-        removeFromDOM();
+      _closePromise = null;
+      resolve();
+      if (!waitAfterward) {
+        if (destroy) {
+          // If we're supposed to destroy the notice, run the destroy module
+          // events, remove from stack, and let Svelte handle DOM removal.
+          runDestroy();
+        } else if (remove) {
+          // If we're supposed to remove the notice from the DOM, do it.
+          removeFromDOM();
+        }
       }
     }, immediate);
+
+    return promise;
   };
 
   // Animate the notice in.

@@ -898,9 +898,9 @@ notice.on('pnotify:cancel', () => {
 # Instance Methods and Properties
 
 * `notice.open(immediate)`<br>
-  Open the notice.
+  Open the notice. Returns a promise that is rejected on failure or resolved on completion.
 * `notice.close(immediate, timerHide, waitAfterward)`<br>
-  Close the notice.
+  Close the notice. Returns a promise that is rejected on failure or resolved on completion.
 * `notice.update(options)`<br>
   Update the notice with new options.
 * `notice.on(eventName, callback)`<br>
@@ -1031,6 +1031,10 @@ Stack methods:
   Open all the notices in the stack.
 * `openLast()`<br>
   Open the last closed/closing notice in the stack.
+* `swap(one, theOther, immediate = false, waitAfter = false)`<br>
+  If `one` is open, close it and open `theOther` instead. Returns a promise that is rejected on failure or resolved on completion.
+* `on(event, callback)`<br>
+  Add an event listener. Returns a function that will remove the listener when called.
 
 There are other methods on the stack class, but you shouldn't use them. They're meant to be internal, so they begin with an underscore.
 
@@ -1041,6 +1045,43 @@ Stack properties:
 * `stack.leader` - When a stack is modalish, this is the notice that is open in the non-modal state.
 
 All of the options are properties as well.
+
+Stack events and `event.detail` contents:
+
+* `'beforePosition', { stack }`<br>
+  Before the notices in the stack are positioned.
+* `'afterPosition', { stack }`<br>
+  After the notices in the stack are positioned.
+* `'beforeAddNotice', { stack, notice }`<br>
+  Before a notice is added to the stack.
+* `'afterAddNotice', { stack, notice }`<br>
+  After a notice is added to the stack.
+* `'beforeOpenNotice', { stack, notice }`<br>
+  Before a notice in the stack is opened.
+* `'afterOpenNotice', { stack, notice }`<br>
+  After a notice in the stack is opened.
+* `'beforeCloseNotice', { stack, notice }`<br>
+  Before a notice in the stack is closed.
+* `'afterCloseNotice', { stack, notice }`<br>
+  After a notice in the stack is closed.
+* `'beforeRemoveNotice', { stack, notice }`<br>
+  Before a notice is removed from the stack.
+* `'afterRemoveNotice', { stack, notice }`<br>
+  After a notice is removed from the stack.
+* `'beforeSetLeader', { stack, leader }`<br>
+  Before a notice is set as the leader of the stack. The leader is the notice that is open in a Modalish stack.
+* `'afterSetLeader', { stack, leader }`<br>
+  After a notice is set as the leader of the stack. The leader is the notice that is open in a Modalish stack.
+* `'beforeAddOverlay', { stack }`<br>
+  Before the stack opens an overlay, indicating it is in modal mode.
+* `'afterAddOverlay', { stack }`<br>
+  After the stack opens an overlay, indicating it is in modal mode.
+* `'beforeRemoveOverlay', { stack }`<br>
+  Before the stack closes and removes the overlay, indicating it is exiting modal mode.
+* `'afterRemoveOverlay', { stack }`<br>
+  After the stack closes and removes the overlay, indicating it is exiting modal mode.
+* `'overlayClose', { stack, clickEvent }`<br>
+  When the user clicks the overlay to close the stack. You can call `clickEvent.preventDefault()` to cancel the close action.
 
 > :warning: Calling something like `alert({text: 'notice', stack: new Stack({dir1: 'down', firstpos1: 25})});` may not do what you want. It will create a notice, but that notice will be in its own stack and will overlap other notices.
 
