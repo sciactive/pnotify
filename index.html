@@ -1618,7 +1618,15 @@
                 ])
               });
 
+              let off = notice.on('pnotify:beforeClose', event => {
+                listener1(event);
+              });
+
               const listener1 = event => {
+                if (!event.detail.timerHide) {
+                  off();
+                  return;
+                }
                 notice.update({
                   title: 'Error',
                   text: 'Uh oh. Now I\'ve become an error.',
@@ -1627,13 +1635,17 @@
                 notice.attention('swing');
                 notice.queueClose();
                 event.preventDefault();
-                const off = notice.on('pnotify:beforeClose', event => {
+                off();
+                off = notice.on('pnotify:beforeClose', event => {
                   listener2(event);
-                  off();
                 });
               };
 
               const listener2 = event => {
+                if (!event.detail.timerHide) {
+                  off();
+                  return;
+                }
                 notice.update({
                   title: 'Success',
                   text: 'I fixed the error!',
@@ -1642,13 +1654,17 @@
                 notice.attention('swing');
                 notice.queueClose();
                 event.preventDefault();
-                const off = notice.on('pnotify:beforeClose', event => {
+                off();
+                off = notice.on('pnotify:beforeClose', event => {
                   listener3(event);
-                  off();
                 });
               };
 
               const listener3 = event => {
+                if (!event.detail.timerHide) {
+                  off();
+                  return;
+                }
                 notice.update({
                   title: 'Info',
                   text: 'Everything\'s cool now.',
@@ -1657,12 +1673,8 @@
                 notice.attention('swing');
                 notice.queueClose();
                 event.preventDefault();
-              };
-
-              const off = notice.on('pnotify:beforeClose', event => {
-                listener1(event);
                 off();
-              });
+              };
             "
           >
             Notice to Error to Success to Info
@@ -2599,6 +2611,8 @@
                           title: 'You\'ve Chosen a Side',
                           text: 'You want fries.',
                           icon: true,
+                          closer: true,
+                          sticker: true,
                           type: 'info',
                           hide: true,
                           modules: new Map(PNotify.defaultModules)
@@ -2610,6 +2624,8 @@
                           title: 'You\'ve Chosen a Side',
                           text: 'You want mashed potatoes.',
                           icon: true,
+                          closer: true,
+                          sticker: true,
                           type: 'info',
                           hide: true,
                           modules: new Map(PNotify.defaultModules)
@@ -2621,6 +2637,8 @@
                           title: 'You\'ve Chosen a Side',
                           text: 'You want fruit.',
                           icon: true,
+                          closer: true,
+                          sticker: true,
                           type: 'info',
                           hide: true,
                           modules: new Map(PNotify.defaultModules)
@@ -2658,6 +2676,8 @@
                   title: 'You\'ve Chosen a Side',
                   text: 'You want ' + e.detail.value + '.',
                   icon: true,
+                  closer: true,
+                  sticker: true,
                   type: 'info',
                   hide: true,
                   modules: new Map(PNotify.defaultModules)
@@ -2669,6 +2689,8 @@
                   title: 'You Don\'t Want a Side',
                   text: 'No soup for you!',
                   icon: true,
+                  closer: true,
+                  sticker: true,
                   type: 'info',
                   hide: true,
                   modules: new Map(PNotify.defaultModules)
