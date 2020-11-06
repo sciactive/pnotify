@@ -7,7 +7,7 @@ import path from 'path';
 import pkg from './package.json';
 const devMode = process.env.ENV === 'development';
 
-const cssFiles = ['BrightTheme', 'Material'];
+const cssFiles = ['BrightTheme', 'Material', 'Angeler'];
 
 export default [
   {

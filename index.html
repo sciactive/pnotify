@@ -148,6 +148,7 @@
     <link rel="stylesheet" href="packages/core/dist/PNotify.css" />
     <link rel="stylesheet" href="packages/core/dist/BrightTheme.css" />
     <link rel="stylesheet" href="packages/core/dist/Material.css" />
+    <link rel="stylesheet" href="packages/core/dist/Angeler.css" />
     <link
       rel="stylesheet"
       href="packages/bootstrap4/dist/PNotifyBootstrap4.css"
@@ -480,6 +481,30 @@
                 class="form-check-input"
                 type="radio"
                 name="styling"
+                id="style-angeler"
+                autocomplete="off"
+              />
+              <label class="form-check-label" for="style-angeler"
+                >Angeler</label
+              >
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="styling"
+                id="style-angeler-extended"
+                autocomplete="off"
+              />
+              <label class="form-check-label" for="style-angeler-extended"
+                >Angeler (Extended)</label
+              >
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="styling"
                 id="style-bootstrap4"
                 autocomplete="off"
               />
@@ -538,10 +563,12 @@
                 PNotify.defaultModules.delete(PNotifyFontAwesome5);
                 PNotify.defaults.styling = 'brighttheme';
                 PNotify.defaults.icons = 'brighttheme';
+                PNotify.defaults.addClass = '';
+                PNotify.defaults.closerHover = true;
                 PNotify.notice({
                   title: 'Styling Change',
                   text:
-                    'From now on, notices will be styled with Bright Theme, the stand alone theme.'
+                    'From now on, notices will be styled with Bright Theme, the default theme.'
                 });
               });
 
@@ -552,10 +579,43 @@
                 PNotify.defaultModules.delete(PNotifyFontAwesome5);
                 PNotify.defaults.styling = 'material';
                 PNotify.defaults.icons = 'material';
+                PNotify.defaults.addClass = '';
+                PNotify.defaults.closerHover = true;
+                PNotify.notice({
+                  title: 'Styling Change',
+                  text: 'From now on, notices will be styled with Material.'
+                });
+              });
+
+            document
+              .getElementById('style-angeler')
+              .addEventListener('change', e => {
+                PNotify.defaultModules.delete(PNotifyBootstrap4);
+                PNotify.defaultModules.delete(PNotifyFontAwesome5);
+                PNotify.defaults.styling = 'angeler';
+                PNotify.defaults.icons = 'angeler';
+                PNotify.defaults.addClass = '';
+                PNotify.defaults.closerHover = false;
                 PNotify.notice({
                   title: 'Styling Change',
                   text:
-                    'From now on, notices will be styled with Material Style Module.'
+                    'From now on, notices will be styled with Angeler. They will also always show the closer button, which is how Angela designed it.'
+                });
+              });
+
+            document
+              .getElementById('style-angeler-extended')
+              .addEventListener('change', e => {
+                PNotify.defaultModules.delete(PNotifyBootstrap4);
+                PNotify.defaultModules.delete(PNotifyFontAwesome5);
+                PNotify.defaults.styling = 'angeler';
+                PNotify.defaults.icons = 'angeler';
+                PNotify.defaults.addClass = 'angeler-extended';
+                PNotify.defaults.closerHover = false;
+                PNotify.notice({
+                  title: 'Styling Change',
+                  text:
+                    'From now on, notices will be styled with Angeler, and use the extended variant. They will also always show the closer button, which is how Angela designed it.'
                 });
               });
 
@@ -564,6 +624,8 @@
               .addEventListener('change', e => {
                 PNotify.defaultModules.set(PNotifyBootstrap4, {});
                 PNotify.defaultModules.set(PNotifyFontAwesome5, {});
+                PNotify.defaults.addClass = '';
+                PNotify.defaults.closerHover = true;
                 PNotify.notice({
                   title: 'Styling Change',
                   text:

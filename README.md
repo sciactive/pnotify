@@ -35,6 +35,7 @@ Development - https://sciactive.github.io/pnotify/
   - [Material](#material)
     - [Material Icons](#material-icons)
     - [Roboto Font](#roboto-font)
+  - [Angeler](#angeler)
   - [Bootstrap](#bootstrap)
   - [Font Awesome 4 (Icons)](#font-awesome-4-icons)
   - [Font Awesome 5 (Icons)](#font-awesome-5-icons)
@@ -268,7 +269,7 @@ PNotify in vanilla ES5
 
 ## Bright Theme
 
-The default, standalone theme, Bright Theme. Supports dark mode. Include the CSS file in your page:
+The default theme, Bright Theme. Supports dark mode. Include the CSS file in your page:
 
 ```html
 <link href="node_modules/@pnotify/core/dist/BrightTheme.css" rel="stylesheet" type="text/css" />
@@ -282,7 +283,7 @@ import '@pnotify/core/dist/BrightTheme.css';
 
 ## Material
 
-The Material style. Supports dark mode. Requires [material-design-icons](https://www.npmjs.com/package/material-design-icons) and optionally the Roboto font. Include the CSS file in your page:
+The Material theme. Supports dark mode. Requires [material-design-icons](https://www.npmjs.com/package/material-design-icons) and optionally the Roboto font. Include the CSS file in your page:
 
 ```html
 <link href="node_modules/@pnotify/core/dist/Material.css" rel="stylesheet" type="text/css" />
@@ -351,6 +352,41 @@ You can use the Google Font CDN:
 ```html
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" />
 ```
+
+## Angeler
+
+The Angeler theme. Supports dark mode. Include the CSS file in your page:
+
+```html
+<link href="node_modules/@pnotify/core/dist/Angeler.css" rel="stylesheet" type="text/css" />
+```
+
+Or if you're using a packager that imports CSS:
+
+```js
+import '@pnotify/core/dist/Angeler.css';
+```
+
+It's recommended that you set the close button to not hide by default, as that is how Angela designed the theme to look best.
+
+```js
+import { defaults } from '@pnotify/core';
+// or
+const { defaults } = require('@pnotify/core');
+
+defaults.closerHover = false;
+```
+
+You can use the `angeler-extended` class to use the alternate, more spacious styling for the Angeler theme. This works great for big, center of the page notices, like page errors.
+
+```js
+alert({
+  text: "I'll be more expanded than normal, with a separated title line.",
+  addClass: 'angeler-extended'
+});
+```
+
+> :info: It's named after Angela Murrell, who designed it, and it's pronounced like An-jel-er.
 
 ## Bootstrap
 
