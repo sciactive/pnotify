@@ -40,7 +40,6 @@
     offAfterOpen = self.on('pnotify:afterOpen', getValues);
 
     ival = setInterval(() => {
-      console.log({ showCountdown, timeStart });
       if (showCountdown) {
         if (timeStart) {
           _msLeft = self.delay - (new Date() - timeStart);
