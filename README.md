@@ -1101,6 +1101,8 @@ Stack options and their defaults:
   Whether clicking on the modal overlay should close the stack's notices.
 * `overlayClosesPinned: false`<br>
   Whether clicking on the modal to close notices also closes notices that have been pinned (`hide === false`).
+* `positioned: true`<br>
+  Whether the notices in this stack are positioned by the stack. If false, the notices are simply part of the normal flow.
 * `context: document.body`<br>
   The DOM element this stack's notices should appear in.
 

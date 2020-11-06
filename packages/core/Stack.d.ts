@@ -100,6 +100,13 @@ declare abstract class StackProperties {
    */
   overlayClosesPinned: boolean;
   /**
+   * Whether the notices in this stack are positioned by the stack. If false,
+   * the notices are simply part of the normal flow.
+   *
+   * @default true
+   */
+  positioned: boolean;
+  /**
    * The DOM element this stack's notices should appear in.
    *
    * @default document.body
