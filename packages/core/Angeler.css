@@ -174,11 +174,6 @@ Add the class 'angeler-extended' to the notice to use extended styling.
   padding-top: 1rem;
   min-width: 100%;
 }
-/* [data-pnotify] .pnotify-text.angeler-text {
-  padding: 0.5rem;
-  border: 1px solid var(--angeler-text-border-color);
-  border-radius: 2px;
-} */
 [data-pnotify] .angeler-icon,
 [data-pnotify] .angeler-closer,
 [data-pnotify] .angeler-sticker {
@@ -297,10 +292,6 @@ Add the class 'angeler-extended' to the notice to use extended styling.
   margin-top: 0;
   background-color: rgba(255, 255, 255, 0.2);
   color: var(--angeler-text-color);
-  /* background-color: rgba(255, 255, 255, 0.85);
-  backdrop-filter: hue-rotate(15deg);
-  filter: contrast(1.2);
-  color: var(--angeler-background-color); */
   border: 0;
   border-radius: 2px;
 }
