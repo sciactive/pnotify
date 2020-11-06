@@ -8,8 +8,6 @@ For calculating icon filters, use: https://codepen.io/sosuke/pen/Pjoqqp
 Add the class 'angeler-extended' to the notice to use extended styling.
 */
 [data-pnotify].angeler-elem {
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
   border-radius: 0;
   --ui-feature-color: #555;
 }
@@ -141,8 +139,6 @@ Add the class 'angeler-extended' to the notice to use extended styling.
 
 [data-pnotify] .angeler-container {
   padding: 1rem;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
   border-radius: 4px;
   background-color: var(--angeler-background-color);
   border: var(--angeler-border-width) solid var(--angeler-border-color);
@@ -310,10 +306,35 @@ Add the class 'angeler-extended' to the notice to use extended styling.
   color: var(--angeler-primary-button-text-color);
 }
 
-[data-pnotify] .angeler-countdown,
+[data-pnotify].pnotify-with-countdown .angeler-container {
+  border-radius: 4px 4px 0 0;
+}
+[data-pnotify].pnotify-with-countdown.pnotify-with-countdown-top
+  .angeler-container {
+  border-radius: 0 0 4px 4px;
+}
+[data-pnotify].pnotify-with-countdown.pnotify-with-countdown-left
+  .angeler-container {
+  border-radius: 0 4px 4px 0;
+}
+[data-pnotify].pnotify-with-countdown.pnotify-with-countdown-right
+  .angeler-container {
+  border-radius: 4px 0 0 4px;
+}
+[data-pnotify] .angeler-countdown {
+  border-radius: 0 0 4px 4px;
+  z-index: -1;
+}
+[data-pnotify] .angeler-countdown.pnotify-countdown-top {
+  border-radius: 4px 4px 0 0;
+}
+[data-pnotify] .angeler-countdown.pnotify-countdown-left {
+  border-radius: 4px 0 0 4px;
+}
+[data-pnotify] .angeler-countdown.pnotify-countdown-right {
+  border-radius: 0 4px 4px 0;
+}
 [data-pnotify] .angeler-countdown-bar {
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
   border-radius: 4px;
 }
 [data-pnotify] .angeler-countdown {

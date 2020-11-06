@@ -29,6 +29,23 @@
     self.delay !== Infinity;
   $: timeStart =
     showCountdown && _timer && _timer !== 'prevented' ? new Date() : null;
+  $: {
+    self.removeModuleClass(
+      'elem',
+      'pnotify-with-countdown',
+      'pnotify-with-countdown-bottom',
+      'pnotify-with-countdown-top',
+      'pnotify-with-countdown-left',
+      'pnotify-with-countdown-right'
+    );
+    if (showCountdown) {
+      self.addModuleClass(
+        'elem',
+        'pnotify-with-countdown',
+        `pnotify-with-countdown-${anchor}`
+      );
+    }
+  }
 
   const getValues = () => {
     _state = self.getState();
