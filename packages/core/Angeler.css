@@ -269,8 +269,8 @@ Add the class 'angeler-extended' to the notice to use extended styling.
 
 [data-pnotify] .angeler-confirm {
   margin-top: calc(1rem - 5px);
+  width: 100%;
 }
-
 [data-pnotify] .angeler-prompt-bar {
   margin-bottom: 1rem;
 }
