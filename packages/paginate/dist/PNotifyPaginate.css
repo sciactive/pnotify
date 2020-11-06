@@ -1,0 +1,1 @@
+.pnotify-paginate{float:right;display:flex;align-items:center;justify-content:center}.pnotify-paginate-buttons{display:flex}.pnotify-paginate-button{display:inline-block;margin:0 0.5em;cursor:pointer}.pnotify-paginate-button:disabled,.pnotify-paginate-button[aria-disabled='true']{cursor:initial}.pnotify-paginate-count{font-size:0.9em}

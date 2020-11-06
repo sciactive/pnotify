@@ -1,6 +1,7 @@
 /*
 Color Scheme: https://www.google.com/design/spec/style/color.html#color-color-palette
 Requires stylesheet to work: https://fonts.googleapis.com/css?family=Material+Icons
+And optionally: https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap
 */
 [data-pnotify].material-elem,
 [data-pnotify].material-elem.pnotify-mode-light {
@@ -50,6 +51,24 @@ Requires stylesheet to work: https://fonts.googleapis.com/css?family=Material+Ic
   --primary-button-text-focus-color: #e0f7fa;
   --input-focus-underline-color: #e1f5fe;
 }
+
+[data-pnotify] .material-notice {
+  --material-background-color: var(--notice-background-color);
+  --material-text-color: var(--notice-text-color);
+}
+[data-pnotify] .material-info {
+  --material-background-color: var(--info-background-color);
+  --material-text-color: var(--info-text-color);
+}
+[data-pnotify] .material-success {
+  --material-background-color: var(--success-background-color);
+  --material-text-color: var(--success-text-color);
+}
+[data-pnotify] .material-error {
+  --material-background-color: var(--error-background-color);
+  --material-text-color: var(--error-text-color);
+}
+
 [data-pnotify].material-elem.pnotify-shadow {
   -webkit-box-shadow: 0px 6px 24px 0px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 0px 6px 24px 0px rgba(0, 0, 0, 0.2);
@@ -57,9 +76,15 @@ Requires stylesheet to work: https://fonts.googleapis.com/css?family=Material+Ic
 }
 [data-pnotify] .material-container {
   padding: 24px;
+  background-color: var(--material-background-color);
+  border: none;
+  color: var(--material-text-color);
 }
 [data-pnotify] .material-title {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
   font-size: 20px;
+  letter-spacing: 0.15px;
   margin-bottom: 20px;
   line-height: 24px;
 }
@@ -67,7 +92,10 @@ Requires stylesheet to work: https://fonts.googleapis.com/css?family=Material+Ic
   margin-bottom: 0;
 }
 [data-pnotify] .material-text {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
   font-size: 16px;
+  letter-spacing: 0.5px;
   line-height: 24px;
 }
 [data-pnotify].pnotify-with-icon .material-content {
@@ -100,26 +128,6 @@ Requires stylesheet to work: https://fonts.googleapis.com/css?family=Material+Ic
   margin-right: 0;
 }
 
-[data-pnotify] .material-notice {
-  background-color: var(--notice-background-color);
-  border: none;
-  color: var(--notice-text-color);
-}
-[data-pnotify] .material-info {
-  background-color: var(--info-background-color);
-  border: none;
-  color: var(--info-text-color);
-}
-[data-pnotify] .material-success {
-  background-color: var(--success-background-color);
-  border: none;
-  color: var(--success-text-color);
-}
-[data-pnotify] .material-error {
-  background-color: var(--error-background-color);
-  border: none;
-  color: var(--error-text-color);
-}
 [data-pnotify] .material-icon-notice:after {
   content: 'priority_high';
 }
@@ -182,11 +190,14 @@ Requires stylesheet to work: https://fonts.googleapis.com/css?family=Material+Ic
 
   transition: background-color 0.3s;
 
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: 1.25px;
   text-transform: uppercase;
   height: 36px;
   margin: 6px;
   min-width: 64px;
-  font-weight: bold;
 }
 [data-pnotify] .material-btn.material-btn-primary {
   color: var(--primary-button-text-color);
@@ -227,27 +238,49 @@ Requires stylesheet to work: https://fonts.googleapis.com/css?family=Material+Ic
 
   transition: width 0.2s ease-out, padding-top 0.2s ease-out;
 }
-[data-pnotify] .material-notice .material-countdown {
-  background-color: var(--notice-background-color);
+
+[data-pnotify] .material-countdown {
+  background-color: var(--material-background-color);
 }
-[data-pnotify] .material-notice .material-countdown-bar {
-  background-color: var(--notice-text-color);
+[data-pnotify] .material-countdown-bar {
+  background-color: var(--material-text-color);
 }
-[data-pnotify] .material-info .material-countdown {
-  background-color: var(--info-background-color);
+
+[data-pnotify] .material-paginate {
+  display: inline-flex;
+  flex-direction: column;
 }
-[data-pnotify] .material-info .material-countdown-bar {
-  background-color: var(--info-text-color);
+[data-pnotify] .material-paginate-buttons {
+  margin-right: 6px;
 }
-[data-pnotify] .material-success .material-countdown {
-  background-color: var(--success-background-color);
+[data-pnotify] .material-paginate-btn {
+  margin: 0 0 0 6px;
+  border: 0;
+  padding: 0;
 }
-[data-pnotify] .material-success .material-countdown-bar {
-  background-color: var(--success-text-color);
+[data-pnotify] .material-paginate-btn,
+[data-pnotify] .material-paginate-btn:after {
+  display: inline-block;
+  font-family: 'Material Icons';
+  height: 20px;
+  width: 20px;
+  font-size: 20px;
+  line-height: 24px;
+  position: relative;
 }
-[data-pnotify] .material-error .material-countdown {
-  background-color: var(--error-background-color);
+[data-pnotify] .material-paginate-btn:disabled:after,
+[data-pnotify] .material-paginate-btn[aria-disabled='true']:after {
+  opacity: 0.5;
 }
-[data-pnotify] .material-error .material-countdown-bar {
-  background-color: var(--error-text-color);
+[data-pnotify] .material-paginate-previous:after {
+  content: 'arrow_back';
+}
+[data-pnotify] .material-paginate-next:after {
+  content: 'arrow_forward';
+}
+[data-pnotify] .material-paginate-count {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  letter-spacing: 0.25px;
 }

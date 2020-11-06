@@ -1,7 +1,7 @@
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (global = global || self, factory(global.PNotifyCountdown = {}));
+  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.PNotifyPaginate = {}));
 }(this, (function (exports) { 'use strict';
 
   function _typeof(obj) {
@@ -103,11 +103,13 @@
   }
 
   function _createSuper(Derived) {
-    return function () {
+    var hasNativeReflectConstruct = _isNativeReflectConstruct();
+
+    return function _createSuperInternal() {
       var Super = _getPrototypeOf(Derived),
           result;
 
-      if (_isNativeReflectConstruct()) {
+      if (hasNativeReflectConstruct) {
         var NewTarget = _getPrototypeOf(this).constructor;
 
         result = Reflect.construct(Super, arguments, NewTarget);
@@ -171,7 +173,7 @@
     if (typeof o === "string") return _arrayLikeToArray(o, minLen);
     var n = Object.prototype.toString.call(o).slice(8, -1);
     if (n === "Object" && o.constructor) n = o.constructor.name;
-    if (n === "Map" || n === "Set") return Array.from(n);
+    if (n === "Map" || n === "Set") return Array.from(o);
     if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
   }
 
@@ -213,6 +215,10 @@
     return a != a ? b == b : a !== b || a && _typeof(a) === 'object' || typeof a === 'function';
   }
 
+  function is_empty(obj) {
+    return Object.keys(obj).length === 0;
+  }
+
   function append(target, node) {
     target.appendChild(node);
   }
@@ -233,8 +239,15 @@
     return document.createTextNode(data);
   }
 
-  function empty() {
-    return text('');
+  function space() {
+    return text(' ');
+  }
+
+  function listen(node, event, handler, options) {
+    node.addEventListener(event, handler, options);
+    return function () {
+      return node.removeEventListener(event, handler, options);
+    };
   }
 
   function attr(node, attribute, value) {
@@ -243,6 +256,11 @@
 
   function children(element) {
     return Array.from(element.childNodes);
+  }
+
+  function set_data(text, data) {
+    data = '' + data;
+    if (text.wholeText !== data) text.data = data;
   }
 
   var current_component;
@@ -298,6 +316,7 @@
         update(component.$$);
       }
 
+      set_current_component(null);
       dirty_components.length = 0;
 
       while (binding_callbacks.length) {
@@ -417,14 +436,15 @@
       context: new Map(parent_component ? parent_component.$$.context : []),
       // everything else
       callbacks: blank_object(),
-      dirty: dirty
+      dirty: dirty,
+      skip_bound: false
     };
     var ready = false;
     $$.ctx = instance ? instance(component, prop_values, function (i, ret) {
       var value = (arguments.length <= 2 ? 0 : arguments.length - 2) ? arguments.length <= 2 ? undefined : arguments[2] : ret;
 
       if ($$.ctx && not_equal($$.ctx[i], $$.ctx[i] = value)) {
-        if ($$.bound[i]) $$.bound[i](value);
+        if (!$$.skip_bound && $$.bound[i]) $$.bound[i](value);
         if (ready) make_dirty(component, i);
       }
 
@@ -478,241 +498,507 @@
       }
     }, {
       key: "$set",
-      value: function $set() {// overridden by instance, if it has props
+      value: function $set($$props) {
+        if (this.$$set && !is_empty($$props)) {
+          this.$$.skip_bound = true;
+          this.$$set($$props);
+          this.$$.skip_bound = false;
+        }
       }
     }]);
 
     return SvelteComponent;
   }();
 
-  function create_if_block(ctx) {
-    var div1;
+  function create_if_block_1(ctx) {
+    var div2;
     var div0;
+    var div0_tabindex_value;
+    var div0_aria_disabled_value;
     var div0_class_value;
-    var div0_style_value;
+    var div0_title_value;
+    var t;
+    var div1;
+    var div1_tabindex_value;
+    var div1_aria_disabled_value;
     var div1_class_value;
+    var div1_title_value;
+    var div2_class_value;
+    var mounted;
+    var dispose;
     return {
       c: function c() {
-        div1 = element("div");
+        div2 = element("div");
         div0 = element("div");
-        attr(div0, "class", div0_class_value = "pnotify-countdown-bar ".concat(
+        t = space();
+        div1 = element("div");
+        attr(div0, "role", "button");
+        attr(div0, "tabindex", div0_tabindex_value =
+        /*currentIndex*/
+        ctx[4] === 1 ? "-1" : "0");
+        attr(div0, "aria-disabled", div0_aria_disabled_value =
+        /*currentIndex*/
+        ctx[4] === 1);
+        attr(div0, "class", div0_class_value = "pnotify-paginate-button ".concat(
         /*self*/
-        ctx[0].getStyle("countdown-bar")));
-        attr(div0, "style", div0_style_value = "height: ".concat(
-        /*anchor*/
-        ctx[1] === "right" ||
-        /*anchor*/
-        ctx[1] === "left" ?
-        /*_percent*/
-        ctx[3] : "100", "%; width: ").concat(
-        /*anchor*/
-        ctx[1] === "top" ||
-        /*anchor*/
-        ctx[1] === "bottom" ?
-        /*_percent*/
-        ctx[3] : "100", "%;"));
-        attr(div1, "class", div1_class_value = "pnotify-countdown pnotify-countdown-".concat(
-        /*anchor*/
-        ctx[1], " ").concat(
-        /*reverse*/
-        ctx[2] ? "pnotify-countdown-reverse" : "", " ").concat(
+        ctx[0].getStyle("paginate-btn"), " ").concat(
         /*self*/
-        ctx[0].getStyle("countdown")));
+        ctx[0].getStyle("paginate-previous")));
+        attr(div0, "title", div0_title_value =
+        /*labels*/
+        ctx[3].previous);
+        attr(div1, "role", "button");
+        attr(div1, "tabindex", div1_tabindex_value =
+        /*currentIndex*/
+        ctx[4] ===
+        /*stackLength*/
+        ctx[5] ? "-1" : "0");
+        attr(div1, "aria-disabled", div1_aria_disabled_value =
+        /*currentIndex*/
+        ctx[4] ===
+        /*stackLength*/
+        ctx[5]);
+        attr(div1, "class", div1_class_value = "pnotify-paginate-button ".concat(
+        /*self*/
+        ctx[0].getStyle("paginate-btn"), " ").concat(
+        /*self*/
+        ctx[0].getStyle("paginate-next")));
+        attr(div1, "title", div1_title_value =
+        /*labels*/
+        ctx[3].next);
+        attr(div2, "class", div2_class_value = "pnotify-paginate-buttons ".concat(
+        /*self*/
+        ctx[0].getStyle("paginate-buttons")));
       },
       m: function m(target, anchor) {
-        insert(target, div1, anchor);
-        append(div1, div0);
+        insert(target, div2, anchor);
+        append(div2, div0);
+        append(div2, t);
+        append(div2, div1);
+
+        if (!mounted) {
+          dispose = [listen(div0, "click",
+          /*click_handler*/
+          ctx[10]), listen(div1, "click",
+          /*click_handler_1*/
+          ctx[11])];
+          mounted = true;
+        }
       },
       p: function p(ctx, dirty) {
         if (dirty &
+        /*currentIndex*/
+        16 && div0_tabindex_value !== (div0_tabindex_value =
+        /*currentIndex*/
+        ctx[4] === 1 ? "-1" : "0")) {
+          attr(div0, "tabindex", div0_tabindex_value);
+        }
+
+        if (dirty &
+        /*currentIndex*/
+        16 && div0_aria_disabled_value !== (div0_aria_disabled_value =
+        /*currentIndex*/
+        ctx[4] === 1)) {
+          attr(div0, "aria-disabled", div0_aria_disabled_value);
+        }
+
+        if (dirty &
         /*self*/
-        1 && div0_class_value !== (div0_class_value = "pnotify-countdown-bar ".concat(
+        1 && div0_class_value !== (div0_class_value = "pnotify-paginate-button ".concat(
         /*self*/
-        ctx[0].getStyle("countdown-bar")))) {
+        ctx[0].getStyle("paginate-btn"), " ").concat(
+        /*self*/
+        ctx[0].getStyle("paginate-previous")))) {
           attr(div0, "class", div0_class_value);
         }
 
         if (dirty &
-        /*anchor, _percent*/
-        10 && div0_style_value !== (div0_style_value = "height: ".concat(
-        /*anchor*/
-        ctx[1] === "right" ||
-        /*anchor*/
-        ctx[1] === "left" ?
-        /*_percent*/
-        ctx[3] : "100", "%; width: ").concat(
-        /*anchor*/
-        ctx[1] === "top" ||
-        /*anchor*/
-        ctx[1] === "bottom" ?
-        /*_percent*/
-        ctx[3] : "100", "%;"))) {
-          attr(div0, "style", div0_style_value);
+        /*labels*/
+        8 && div0_title_value !== (div0_title_value =
+        /*labels*/
+        ctx[3].previous)) {
+          attr(div0, "title", div0_title_value);
         }
 
         if (dirty &
-        /*anchor, reverse, self*/
-        7 && div1_class_value !== (div1_class_value = "pnotify-countdown pnotify-countdown-".concat(
-        /*anchor*/
-        ctx[1], " ").concat(
-        /*reverse*/
-        ctx[2] ? "pnotify-countdown-reverse" : "", " ").concat(
+        /*currentIndex, stackLength*/
+        48 && div1_tabindex_value !== (div1_tabindex_value =
+        /*currentIndex*/
+        ctx[4] ===
+        /*stackLength*/
+        ctx[5] ? "-1" : "0")) {
+          attr(div1, "tabindex", div1_tabindex_value);
+        }
+
+        if (dirty &
+        /*currentIndex, stackLength*/
+        48 && div1_aria_disabled_value !== (div1_aria_disabled_value =
+        /*currentIndex*/
+        ctx[4] ===
+        /*stackLength*/
+        ctx[5])) {
+          attr(div1, "aria-disabled", div1_aria_disabled_value);
+        }
+
+        if (dirty &
         /*self*/
-        ctx[0].getStyle("countdown")))) {
+        1 && div1_class_value !== (div1_class_value = "pnotify-paginate-button ".concat(
+        /*self*/
+        ctx[0].getStyle("paginate-btn"), " ").concat(
+        /*self*/
+        ctx[0].getStyle("paginate-next")))) {
           attr(div1, "class", div1_class_value);
+        }
+
+        if (dirty &
+        /*labels*/
+        8 && div1_title_value !== (div1_title_value =
+        /*labels*/
+        ctx[3].next)) {
+          attr(div1, "title", div1_title_value);
+        }
+
+        if (dirty &
+        /*self*/
+        1 && div2_class_value !== (div2_class_value = "pnotify-paginate-buttons ".concat(
+        /*self*/
+        ctx[0].getStyle("paginate-buttons")))) {
+          attr(div2, "class", div2_class_value);
         }
       },
       d: function d(detaching) {
-        if (detaching) detach(div1);
+        if (detaching) detach(div2);
+        mounted = false;
+        run_all(dispose);
+      }
+    };
+  } // (121:2) {#if count}
+
+
+  function create_if_block(ctx) {
+    var div;
+    var span0;
+    var t0;
+    var span0_class_value;
+    var t1;
+    var span1;
+    var t2_value =
+    /*labels*/
+    ctx[3].of + "";
+    var t2;
+    var span1_class_value;
+    var t3;
+    var span2;
+    var t4;
+    var span2_class_value;
+    var div_class_value;
+    return {
+      c: function c() {
+        div = element("div");
+        span0 = element("span");
+        t0 = text(
+        /*currentIndex*/
+        ctx[4]);
+        t1 = space();
+        span1 = element("span");
+        t2 = text(t2_value);
+        t3 = space();
+        span2 = element("span");
+        t4 = text(
+        /*stackLength*/
+        ctx[5]);
+        attr(span0, "class", span0_class_value = "pnotify-paginate-count-current ".concat(
+        /*self*/
+        ctx[0].getStyle("paginate-count-current")));
+        attr(span1, "class", span1_class_value = "pnotify-paginate-count-of ".concat(
+        /*self*/
+        ctx[0].getStyle("paginate-count-of")));
+        attr(span2, "class", span2_class_value = "pnotify-paginate-count-total ".concat(
+        /*self*/
+        ctx[0].getStyle("paginate-count-total")));
+        attr(div, "class", div_class_value = "pnotify-paginate-count ".concat(
+        /*self*/
+        ctx[0].getStyle("paginate-count")));
+      },
+      m: function m(target, anchor) {
+        insert(target, div, anchor);
+        append(div, span0);
+        append(span0, t0);
+        append(div, t1);
+        append(div, span1);
+        append(span1, t2);
+        append(div, t3);
+        append(div, span2);
+        append(span2, t4);
+      },
+      p: function p(ctx, dirty) {
+        if (dirty &
+        /*currentIndex*/
+        16) set_data(t0,
+        /*currentIndex*/
+        ctx[4]);
+
+        if (dirty &
+        /*self*/
+        1 && span0_class_value !== (span0_class_value = "pnotify-paginate-count-current ".concat(
+        /*self*/
+        ctx[0].getStyle("paginate-count-current")))) {
+          attr(span0, "class", span0_class_value);
+        }
+
+        if (dirty &
+        /*labels*/
+        8 && t2_value !== (t2_value =
+        /*labels*/
+        ctx[3].of + "")) set_data(t2, t2_value);
+
+        if (dirty &
+        /*self*/
+        1 && span1_class_value !== (span1_class_value = "pnotify-paginate-count-of ".concat(
+        /*self*/
+        ctx[0].getStyle("paginate-count-of")))) {
+          attr(span1, "class", span1_class_value);
+        }
+
+        if (dirty &
+        /*stackLength*/
+        32) set_data(t4,
+        /*stackLength*/
+        ctx[5]);
+
+        if (dirty &
+        /*self*/
+        1 && span2_class_value !== (span2_class_value = "pnotify-paginate-count-total ".concat(
+        /*self*/
+        ctx[0].getStyle("paginate-count-total")))) {
+          attr(span2, "class", span2_class_value);
+        }
+
+        if (dirty &
+        /*self*/
+        1 && div_class_value !== (div_class_value = "pnotify-paginate-count ".concat(
+        /*self*/
+        ctx[0].getStyle("paginate-count")))) {
+          attr(div, "class", div_class_value);
+        }
+      },
+      d: function d(detaching) {
+        if (detaching) detach(div);
       }
     };
   }
 
   function create_fragment(ctx) {
-    var if_block_anchor;
-    var if_block =
-    /*showCountdown*/
-    ctx[4] && create_if_block(ctx);
+    var div;
+    var t;
+    var div_class_value;
+    var if_block0 =
+    /*buttons*/
+    ctx[1] && create_if_block_1(ctx);
+    var if_block1 =
+    /*count*/
+    ctx[2] && create_if_block(ctx);
     return {
       c: function c() {
-        if (if_block) if_block.c();
-        if_block_anchor = empty();
+        div = element("div");
+        if (if_block0) if_block0.c();
+        t = space();
+        if (if_block1) if_block1.c();
+        attr(div, "class", div_class_value = "pnotify-paginate ".concat(
+        /*self*/
+        ctx[0].getStyle("paginate")));
       },
       m: function m(target, anchor) {
-        if (if_block) if_block.m(target, anchor);
-        insert(target, if_block_anchor, anchor);
+        insert(target, div, anchor);
+        if (if_block0) if_block0.m(div, null);
+        append(div, t);
+        if (if_block1) if_block1.m(div, null);
       },
       p: function p(ctx, _ref) {
         var _ref2 = _slicedToArray(_ref, 1),
             dirty = _ref2[0];
 
         if (
-        /*showCountdown*/
-        ctx[4]) {
-          if (if_block) {
-            if_block.p(ctx, dirty);
+        /*buttons*/
+        ctx[1]) {
+          if (if_block0) {
+            if_block0.p(ctx, dirty);
           } else {
-            if_block = create_if_block(ctx);
-            if_block.c();
-            if_block.m(if_block_anchor.parentNode, if_block_anchor);
+            if_block0 = create_if_block_1(ctx);
+            if_block0.c();
+            if_block0.m(div, t);
           }
-        } else if (if_block) {
-          if_block.d(1);
-          if_block = null;
+        } else if (if_block0) {
+          if_block0.d(1);
+          if_block0 = null;
+        }
+
+        if (
+        /*count*/
+        ctx[2]) {
+          if (if_block1) {
+            if_block1.p(ctx, dirty);
+          } else {
+            if_block1 = create_if_block(ctx);
+            if_block1.c();
+            if_block1.m(div, null);
+          }
+        } else if (if_block1) {
+          if_block1.d(1);
+          if_block1 = null;
+        }
+
+        if (dirty &
+        /*self*/
+        1 && div_class_value !== (div_class_value = "pnotify-paginate ".concat(
+        /*self*/
+        ctx[0].getStyle("paginate")))) {
+          attr(div, "class", div_class_value);
         }
       },
       i: noop,
       o: noop,
       d: function d(detaching) {
-        if (if_block) if_block.d(detaching);
-        if (detaching) detach(if_block_anchor);
+        if (detaching) detach(div);
+        if (if_block0) if_block0.d();
+        if (if_block1) if_block1.d();
       }
     };
   }
 
-  var position = "AppendContainer";
+  var position = "PrependContainer";
   var defaults = {
-    anchor: "bottom",
-    reverse: false
+    buttons: true,
+    count: true,
+    immediateTransition: true,
+    waiting: true,
+    labels: {
+      previous: "Previous",
+      next: "Next",
+      of: "of"
+    }
   };
 
   function instance($$self, $$props, $$invalidate) {
     var _$$props$self = $$props.self,
         self = _$$props$self === void 0 ? null : _$$props$self;
-    var _$$props$anchor = $$props.anchor,
-        anchor = _$$props$anchor === void 0 ? defaults.anchor : _$$props$anchor;
-    var _$$props$reverse = $$props.reverse,
-        reverse = _$$props$reverse === void 0 ? defaults.reverse : _$$props$reverse;
+    var _$$props$buttons = $$props.buttons,
+        buttons = _$$props$buttons === void 0 ? defaults.buttons : _$$props$buttons;
+    var _$$props$count = $$props.count,
+        count = _$$props$count === void 0 ? defaults.count : _$$props$count;
+    var _$$props$immediateTra = $$props.immediateTransition,
+        immediateTransition = _$$props$immediateTra === void 0 ? defaults.immediateTransition : _$$props$immediateTra;
+    var _$$props$waiting = $$props.waiting,
+        waiting = _$$props$waiting === void 0 ? defaults.waiting : _$$props$waiting;
+    var _$$props$labels = $$props.labels,
+        labels = _$$props$labels === void 0 ? defaults.labels : _$$props$labels;
+    var currentIndex;
+    var stackLength;
 
-    var _state = self.getState();
+    var handlerCallback = function handlerCallback() {
+      $$invalidate(4, currentIndex = 0);
 
-    var _timer = self.getTimer();
+      try {
+        self.stack.forEach(function (notice) {
+          return $$invalidate(4, currentIndex++, currentIndex);
+        }, {
+          start: self,
+          dir: "prev"
+        });
+      } catch (e) {
+        if (e.message !== "Invalid start param.") {
+          throw e;
+        }
+      }
 
-    var _msLeft = 0;
-    var _percent = 100;
-    var ival;
-    var offUpdate;
-    var offAfterOpen;
-
-    var getValues = function getValues() {
-      $$invalidate(5, _state = self.getState());
-      $$invalidate(6, _timer = self.getTimer());
+      $$invalidate(5, stackLength = self.stack.length);
     };
 
+    var addHandlerOff;
+    var removeHandlerOff;
+    var beforeOpenHandlerOff;
     onMount(function () {
-      offUpdate = self.on("pnotify:update", getValues);
-      offAfterOpen = self.on("pnotify:afterOpen", getValues);
-      ival = setInterval(function () {
-        console.log({
-          showCountdown: showCountdown,
-          timeStart: timeStart
-        });
-
-        if (showCountdown) {
-          if (timeStart) {
-            _msLeft = self.delay - (new Date() - timeStart);
-            $$invalidate(3, _percent = _msLeft / self.delay * 100);
-          } else {
-            $$invalidate(3, _percent = _state === "closing" ? 0 : 100);
-          }
-        }
-      }, 100);
+      handlerCallback();
+      addHandlerOff = self.stack.on("afterAddNotice", handlerCallback);
+      removeHandlerOff = self.stack.on("afterRemoveNotice", handlerCallback);
+      beforeOpenHandlerOff = self.on("beforeOpen", handlerCallback);
     });
     onDestroy(function () {
-      offUpdate && offUpdate();
-      offAfterOpen && offAfterOpen();
-      clearInterval(ival);
+      addHandlerOff();
+      removeHandlerOff();
+      beforeOpenHandlerOff();
     });
 
-    $$self.$set = function ($$props) {
+    function handleNext() {
+      self.stack.forEach(function (notice) {
+        if (notice !== self && (notice.getState() === "waiting" || !waiting && notice.getState() === "closed")) {
+          self.stack.swap(self, notice, immediateTransition, waiting);
+          return false;
+        }
+      }, {
+        start: self,
+        dir: "next"
+      });
+    }
+
+    function handlePrevious() {
+      self.stack.forEach(function (notice) {
+        if (notice !== self && notice.getState() === "waiting") {
+          self.stack.swap(self, notice, immediateTransition, true);
+          return false;
+        }
+      }, {
+        start: self,
+        dir: "prev"
+      });
+    }
+
+    var click_handler = function click_handler(event) {
+      return handlePrevious();
+    };
+
+    var click_handler_1 = function click_handler_1(event) {
+      return handleNext();
+    };
+
+    $$self.$$set = function ($$props) {
       if ("self" in $$props) $$invalidate(0, self = $$props.self);
-      if ("anchor" in $$props) $$invalidate(1, anchor = $$props.anchor);
-      if ("reverse" in $$props) $$invalidate(2, reverse = $$props.reverse);
+      if ("buttons" in $$props) $$invalidate(1, buttons = $$props.buttons);
+      if ("count" in $$props) $$invalidate(2, count = $$props.count);
+      if ("immediateTransition" in $$props) $$invalidate(8, immediateTransition = $$props.immediateTransition);
+      if ("waiting" in $$props) $$invalidate(9, waiting = $$props.waiting);
+      if ("labels" in $$props) $$invalidate(3, labels = $$props.labels);
     };
 
-    var showCountdown;
-    var timeStart;
-
-    $$self.$$.update = function () {
-      if ($$self.$$.dirty &
-      /*_state, self*/
-      33) {
-         $$invalidate(4, showCountdown = ["opening", "open", "closing"].indexOf(_state) !== -1 && self.hide && self.delay !== Infinity);
-      }
-
-      if ($$self.$$.dirty &
-      /*showCountdown, _timer*/
-      80) {
-         timeStart = showCountdown && _timer && _timer !== "prevented" ? new Date() : null;
-      }
-    };
-
-    return [self, anchor, reverse, _percent, showCountdown];
+    return [self, buttons, count, labels, currentIndex, stackLength, handleNext, handlePrevious, immediateTransition, waiting, click_handler, click_handler_1];
   }
 
-  var Countdown = /*#__PURE__*/function (_SvelteComponent) {
-    _inherits(Countdown, _SvelteComponent);
+  var Paginate = /*#__PURE__*/function (_SvelteComponent) {
+    _inherits(Paginate, _SvelteComponent);
 
-    var _super = _createSuper(Countdown);
+    var _super = _createSuper(Paginate);
 
-    function Countdown(options) {
+    function Paginate(options) {
       var _this;
 
-      _classCallCheck(this, Countdown);
+      _classCallCheck(this, Paginate);
 
       _this = _super.call(this);
       init(_assertThisInitialized(_this), options, instance, create_fragment, safe_not_equal, {
         self: 0,
-        anchor: 1,
-        reverse: 2
+        buttons: 1,
+        count: 2,
+        immediateTransition: 8,
+        waiting: 9,
+        labels: 3
       });
       return _this;
     }
 
-    return Countdown;
+    return Paginate;
   }(SvelteComponent);
 
-  exports.default = Countdown;
+  exports.default = Paginate;
   exports.defaults = defaults;
   exports.position = position;
 

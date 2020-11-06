@@ -903,7 +903,8 @@
 
       this._overlayOpen = false; // Whether the overlay is currently inserted into the DOM.
 
-      this._overlayInserted = false; // Whether the modal state is collapsing. (Notices go back to waiting and shouldn't resposition.)
+      this._overlayInserted = false; // Whether the modal state is collapsing. (Notices go back to waiting and
+      // shouldn't resposition.)
 
       this._collapsingModalState = false; // The leader is the first open notice in a modalish stack.
 
@@ -911,7 +912,12 @@
       this._leaderOff = null; // The next waiting notice that is masking.
 
       this._masking = null;
-      this._maskingOff = null;
+      this._maskingOff = null; // Swapping notices, so don't open a new one. Set to the opening notice on
+      // swap.
+
+      this._swapping = false; // Event listener callbacks.
+
+      this._callbacks = {};
     }
 
     _createClass(Stack, [{
@@ -983,21 +989,71 @@
         });
       }
     }, {
+      key: "swap",
+      value: function swap(one, theOther) {
+        var _this = this;
+
+        var immediate = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+        var waitAfter = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+
+        if (['open', 'opening', 'closing'].indexOf(one.getState()) === -1) {
+          // One is closed. Return rejected promise.
+          return Promise.reject();
+        }
+
+        this._swapping = theOther;
+        return one.close(immediate, false, waitAfter).then(function () {
+          return theOther.open(immediate);
+        })["finally"](function () {
+          _this._swapping = false;
+        });
+      }
+    }, {
+      key: "on",
+      value: function on(event, callback) {
+        var _this2 = this;
+
+        if (!(event in this._callbacks)) {
+          this._callbacks[event] = [];
+        }
+
+        this._callbacks[event].push(callback);
+
+        return function () {
+          _this2._callbacks[event].splice(_this2._callbacks[event].indexOf(callback), 1);
+        };
+      }
+    }, {
+      key: "fire",
+      value: function fire(event) {
+        var detail = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+        detail.stack = this;
+
+        if (event in this._callbacks) {
+          this._callbacks[event].forEach(function (cb) {
+            return cb(detail);
+          });
+        }
+      }
+    }, {
       key: "position",
       value: function position() {
-        var _this = this;
+        var _this3 = this;
 
         // Reset the next position data.
         if (this._length > 0) {
+          this.fire('beforePosition');
+
           this._resetPositionData();
 
           this.forEach(function (notice) {
-            _this._positionNotice(notice);
+            _this3._positionNotice(notice);
           }, {
             start: 'head',
             dir: 'next',
             skipModuleHandled: true
           });
+          this.fire('afterPosition');
         } else {
           delete this._nextpos1;
           delete this._nextpos2;
@@ -1007,7 +1063,7 @@
     }, {
       key: "queuePosition",
       value: function queuePosition() {
-        var _this2 = this;
+        var _this4 = this;
 
         var milliseconds = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 10;
 
@@ -1016,7 +1072,7 @@
         }
 
         this._posTimer = setTimeout(function () {
-          return _this2.position();
+          return _this4.position();
         }, milliseconds);
       }
     }, {
@@ -1248,13 +1304,155 @@
     }, {
       key: "_addNotice",
       value: function _addNotice(notice) {
-        var _this3 = this;
+        var _this5 = this;
 
-        // This is the linked list node.
+        this.fire('beforeAddNotice', {
+          notice: notice
+        });
+
+        var handleNoticeOpen = function handleNoticeOpen() {
+          _this5.fire('beforeOpenNotice', {
+            notice: notice
+          });
+
+          if (notice.getModuleHandled()) {
+            // We don't deal with notices that are handled by a module.
+            _this5.fire('afterOpenNotice', {
+              notice: notice
+            });
+
+            return;
+          }
+
+          _this5._openNotices++; // Check the max in stack.
+
+          if (!(_this5.modal === 'ish' && _this5._overlayOpen) && _this5.maxOpen !== Infinity && _this5._openNotices > _this5.maxOpen && _this5.maxStrategy === 'close') {
+            var toClose = _this5._openNotices - _this5.maxOpen;
+
+            _this5.forEach(function (notice) {
+              if (['opening', 'open'].indexOf(notice.getState()) !== -1) {
+                // Close oldest notices, leaving only stack.maxOpen from the stack.
+                notice.close(false, false, _this5.maxClosureCausesWait);
+
+                if (notice === _this5._leader) {
+                  _this5._setLeader(null);
+                }
+
+                toClose--;
+                return !!toClose;
+              }
+            });
+          }
+
+          if (_this5.modal === true) {
+            _this5._insertOverlay();
+          }
+
+          if (_this5.modal === 'ish' && (!_this5._leader || ['opening', 'open', 'closing'].indexOf(_this5._leader.getState()) === -1)) {
+            _this5._setLeader(notice);
+          }
+
+          if (_this5.modal === 'ish' && _this5._overlayOpen) {
+            notice._preventTimerClose(true);
+          } // this.queuePosition(0);
+
+
+          _this5.fire('afterOpenNotice', {
+            notice: notice
+          });
+        };
+
+        var handleNoticeClosed = function handleNoticeClosed() {
+          _this5.fire('beforeCloseNotice', {
+            notice: notice
+          });
+
+          if (notice.getModuleHandled()) {
+            // We don't deal with notices that are handled by a module.
+            _this5.fire('afterCloseNotice', {
+              notice: notice
+            });
+
+            return;
+          }
+
+          _this5._openNotices--;
+
+          if (_this5.modal === 'ish' && notice === _this5._leader) {
+            _this5._setLeader(null);
+
+            if (_this5._masking) {
+              _this5._setMasking(null);
+            }
+          }
+
+          if (!_this5._swapping && _this5.maxOpen !== Infinity && _this5._openNotices < _this5.maxOpen) {
+            var done = false;
+
+            var open = function open(contender) {
+              if (contender !== notice && contender.getState() === 'waiting') {
+                contender.open()["catch"](function () {});
+
+                if (_this5._openNotices >= _this5.maxOpen) {
+                  done = true;
+                  return false;
+                }
+              }
+            };
+
+            if (_this5.maxStrategy === 'wait') {
+              // Check for the next waiting notice and open it.
+              _this5.forEach(open, {
+                start: notice,
+                dir: 'next'
+              });
+
+              if (!done) {
+                _this5.forEach(open, {
+                  start: notice,
+                  dir: 'prev'
+                });
+              }
+            } else if (_this5.maxStrategy === 'close' && _this5.maxClosureCausesWait) {
+              // Check for the last closed notice and re-open it.
+              _this5.forEach(open, {
+                start: notice,
+                dir: 'older'
+              });
+
+              if (!done) {
+                _this5.forEach(open, {
+                  start: notice,
+                  dir: 'newer'
+                });
+              }
+            }
+          }
+
+          if (_this5._openNotices <= 0) {
+            _this5._openNotices = 0;
+
+            _this5._resetPositionData();
+
+            if (_this5._overlayOpen && !_this5._swapping) {
+              _this5._removeOverlay();
+            }
+          } else if (!_this5._collapsingModalState) {
+            _this5.queuePosition(0);
+          }
+
+          _this5.fire('afterCloseNotice', {
+            notice: notice
+          });
+        }; // This is the linked list node.
+
+
         var node = {
           notice: notice,
           prev: null,
-          next: null
+          next: null,
+          beforeOpenOff: notice.on('pnotify:beforeOpen', handleNoticeOpen),
+          afterCloseOff: notice.on('pnotify:afterClose', handleNoticeClosed)
         }; // Push to the correct side of the linked list.
 
         if (this.push === 'top') {
@@ -1277,7 +1475,7 @@
 
         if (!this._listener) {
           this._listener = function () {
-            return _this3.position();
+            return _this5.position();
           };
 
           this.context.addEventListener('pnotify:position', this._listener);
@@ -1285,8 +1483,8 @@
 
         if (['open', 'opening', 'closing'].indexOf(notice.getState()) !== -1) {
           // If the notice is already open, handle it immediately.
-          this._handleNoticeOpened(notice);
-        } else if (this.modal === 'ish' && this.modalishFlash && this._shouldNoticeWait()) {
+          handleNoticeOpen();
+        } else if (this.modal === 'ish' && this.modalishFlash && this._shouldNoticeWait(notice)) {
           // If it's not open, and it's going to be a waiting notice, flash it.
           var off = notice.on('pnotify:mount', function () {
             off();
@@ -1295,15 +1493,19 @@
               notice._setMasking(false);
             });
 
-            _this3._resetPositionData();
+            _this5._resetPositionData();
 
-            _this3._positionNotice(_this3._leader);
+            _this5._positionNotice(_this5._leader);
 
             window.requestAnimationFrame(function () {
-              _this3._positionNotice(notice, true);
+              _this5._positionNotice(notice, true);
             });
           });
         }
+
+        this.fire('afterAddNotice', {
+          notice: notice
+        });
       }
     }, {
       key: "_removeNotice",
@@ -1311,6 +1513,10 @@
         if (!this._noticeMap.has(notice)) {
           return;
         }
+
+        this.fire('beforeRemoveNotice', {
+          notice: notice
+        });
 
         var node = this._noticeMap.get(notice);
 
@@ -1328,7 +1534,11 @@
         node.prev.next = node.next;
         node.next.prev = node.prev;
         node.prev = null;
-        node.next = null; // Remove the notice from the map.
+        node.next = null;
+        node.beforeOpenOff();
+        node.beforeOpenOff = null;
+        node.afterCloseOff();
+        node.afterCloseOff = null; // Remove the notice from the map.
 
         this._noticeMap["delete"](notice); // Reduce the length to match.
 
@@ -1349,11 +1559,19 @@
         if (['open', 'opening', 'closing'].indexOf(notice.getState()) !== -1) {
           this._handleNoticeClosed(notice);
         }
+
+        this.fire('afterRemoveNotice', {
+          notice: notice
+        });
       }
     }, {
       key: "_setLeader",
       value: function _setLeader(leader) {
-        var _this4 = this;
+        var _this6 = this;
+
+        this.fire('beforeSetLeader', {
+          leader: leader
+        });
 
         if (this._leaderOff) {
           this._leaderOff();
@@ -1364,6 +1582,9 @@
         this._leader = leader;
 
         if (!this._leader) {
+          this.fire('afterSetLeader', {
+            leader: leader
+          });
           return;
         } // If the mouse enters this notice while it's the leader, then the next
         // waiting notice should start masking.
@@ -1373,15 +1594,15 @@
           // This is a workaround for leaving the modal state.
           var nextNoticeFromModalState = null; // If the leader is moused over:
 
-          if (_this4._overlayOpen) {
-            _this4._collapsingModalState = true;
+          if (_this6._overlayOpen) {
+            _this6._collapsingModalState = true;
 
-            _this4.forEach(function (notice) {
+            _this6.forEach(function (notice) {
               // Allow the notices to timed close.
               notice._preventTimerClose(false); // Close and set to wait any open notices other than the leader.
 
 
-              if (notice !== _this4._leader && ['opening', 'open'].indexOf(notice.getState()) !== -1) {
+              if (notice !== _this6._leader && ['opening', 'open'].indexOf(notice.getState()) !== -1) {
                 if (!nextNoticeFromModalState) {
                   nextNoticeFromModalState = notice;
                 }
@@ -1389,13 +1610,13 @@
                 notice.close(notice === nextNoticeFromModalState, false, true);
               }
             }, {
-              start: _this4._leader,
+              start: _this6._leader,
               dir: 'next',
               skipModuleHandled: true
             }); // Remove the modal state overlay.
 
 
-            _this4._removeOverlay();
+            _this6._removeOverlay();
           } // Turn off any masking off timer that may still be running.
 
 
@@ -1405,8 +1626,8 @@
           } // Set the next waiting notice to be masking.
 
 
-          _this4.forEach(function (notice) {
-            if (notice === _this4._leader) {
+          _this6.forEach(function (notice) {
+            if (notice === _this6._leader) {
               // Skip the leader, and start with the next one.
               return;
             } // The next notice that is "waiting" is usually fine, but if we're
@@ -1417,12 +1638,12 @@
 
 
             if (notice.getState() === 'waiting' || notice === nextNoticeFromModalState) {
-              _this4._setMasking(notice, !!nextNoticeFromModalState);
+              _this6._setMasking(notice, !!nextNoticeFromModalState);
 
               return false;
             }
           }, {
-            start: _this4._leader,
+            start: _this6._leader,
             dir: 'next',
             skipModuleHandled: true
           });
@@ -1442,7 +1663,7 @@
           maskingOffTimer = setTimeout(function () {
             maskingOffTimer = null;
 
-            _this4._setMasking(null);
+            _this6._setMasking(null);
           }, 750);
         };
 
@@ -1453,11 +1674,15 @@
             });
           };
         }([this._leader.on('mouseenter', leaderInteraction), this._leader.on('focusin', leaderInteraction), this._leader.on('mouseleave', leaderLeaveInteraction), this._leader.on('focusout', leaderLeaveInteraction)]);
+
+        this.fire('afterSetLeader', {
+          leader: leader
+        });
       }
     }, {
       key: "_setMasking",
       value: function _setMasking(masking, immediate) {
-        var _this5 = this;
+        var _this7 = this;
 
         if (this._masking) {
           if (this._masking === masking) {
@@ -1492,20 +1717,20 @@
 
 
         window.requestAnimationFrame(function () {
-          if (_this5._masking) {
-            _this5._positionNotice(_this5._masking);
+          if (_this7._masking) {
+            _this7._positionNotice(_this7._masking);
           }
         });
 
         var maskingInteraction = function maskingInteraction() {
           // If the masked notice is moused over or focused, the stack enters the
           // modal state, and the notices appear.
-          if (_this5.modal === 'ish') {
-            _this5._insertOverlay();
+          if (_this7.modal === 'ish') {
+            _this7._insertOverlay();
 
-            _this5._setMasking(null, true);
+            _this7._setMasking(null, true);
 
-            _this5.forEach(function (notice) {
+            _this7.forEach(function (notice) {
               // Prevent the notices from timed closing.
               notice._preventTimerClose(true);
 
@@ -1513,7 +1738,7 @@
                 notice.open();
               }
             }, {
-              start: _this5._leader,
+              start: _this7._leader,
               dir: 'next',
               skipModuleHandled: true
             });
@@ -1529,106 +1754,9 @@
         }([this._masking.on('mouseenter', maskingInteraction), this._masking.on('focusin', maskingInteraction)]);
       }
     }, {
-      key: "_handleNoticeClosed",
-      value: function _handleNoticeClosed(notice) {
-        var _this6 = this;
-
-        if (notice.getModuleHandled()) {
-          // We don't deal with notices that are handled by a module.
-          return;
-        }
-
-        this._openNotices--;
-
-        if (this.modal === 'ish' && notice === this._leader) {
-          this._setLeader(null);
-
-          if (this._masking) {
-            this._setMasking(null);
-          }
-        }
-
-        if (this.maxOpen !== Infinity && this._openNotices < this.maxOpen) {
-          var open = function open(notice) {
-            if (notice.getState() === 'waiting') {
-              notice.open();
-
-              if (_this6._openNotices >= _this6.maxOpen) {
-                return false;
-              }
-            }
-          };
-
-          if (this.maxStrategy === 'wait') {
-            // Check for the next waiting notice and open it.
-            this.forEach(open, {
-              start: notice,
-              dir: 'next'
-            });
-          } else if (this.maxStrategy === 'close' && this.maxClosureCausesWait) {
-            // Check for the last closed notice and re-open it.
-            this.forEach(open, {
-              start: notice,
-              dir: 'older'
-            });
-          }
-        }
-
-        if (this._openNotices <= 0) {
-          this._openNotices = 0;
-
-          if (this._overlayOpen) {
-            this._removeOverlay();
-          }
-        } else if (!this._collapsingModalState) {
-          this.queuePosition(0);
-        }
-      }
-    }, {
-      key: "_handleNoticeOpened",
-      value: function _handleNoticeOpened(notice) {
-        var _this7 = this;
-
-        if (notice.getModuleHandled()) {
-          // We don't deal with notices that are handled by a module.
-          return;
-        }
-
-        this._openNotices++; // Check the max in stack.
-
-        if (!(this.modal === 'ish' && this._overlayOpen) && this.maxOpen !== Infinity && this._openNotices > this.maxOpen && this.maxStrategy === 'close') {
-          var toClose = this._openNotices - this.maxOpen;
-          this.forEach(function (notice) {
-            if (['opening', 'open'].indexOf(notice.getState()) !== -1) {
-              // Close oldest notices, leaving only stack.maxOpen from the stack.
-              notice.close(false, false, _this7.maxClosureCausesWait);
-
-              if (notice === _this7._leader) {
-                _this7._setLeader(null);
-              }
-
-              toClose--;
-              return !!toClose;
-            }
-          });
-        }
-
-        if (this.modal === true) {
-          this._insertOverlay();
-        }
-
-        if (this.modal === 'ish' && (!this._leader || ['opening', 'open', 'closing'].indexOf(this._leader.getState()) === -1)) {
-          this._setLeader(notice);
-        }
-
-        if (this.modal === 'ish' && this._overlayOpen) {
-          notice._preventTimerClose(true);
-        }
-      }
-    }, {
       key: "_shouldNoticeWait",
-      value: function _shouldNoticeWait() {
-        return !(this.modal === 'ish' && this._overlayOpen) && this.maxOpen !== Infinity && this._openNotices >= this.maxOpen && this.maxStrategy === 'wait';
+      value: function _shouldNoticeWait(notice) {
+        return this._swapping !== notice && !(this.modal === 'ish' && this._overlayOpen) && this.maxOpen !== Infinity && this._openNotices >= this.maxOpen && this.maxStrategy === 'wait';
       }
     }, {
       key: "_insertOverlay",
@@ -1654,8 +1782,16 @@
           } // Close the notices on overlay click.
 
 
-          this._overlay.addEventListener('click', function () {
+          this._overlay.addEventListener('click', function (clickEvent) {
             if (_this8.overlayClose) {
+              _this8.fire('overlayClose', {
+                clickEvent: clickEvent
+              });
+
+              if (clickEvent.defaultPrevented) {
+                return;
+              }
+
               if (_this8._leader) {
                 // Clear the leader. A new one will be found while closing.
                 _this8._setLeader(null);
@@ -1687,6 +1823,8 @@
         }
 
         if (this._overlay.parentNode !== this.context) {
+          this.fire('beforeAddOverlay');
+
           this._overlay.classList.remove('pnotify-modal-overlay-in');
 
           this._overlay = this.context.insertBefore(this._overlay, this.context.firstChild);
@@ -1694,6 +1832,8 @@
           this._overlayInserted = true;
           window.requestAnimationFrame(function () {
             _this8._overlay.classList.add('pnotify-modal-overlay-in');
+
+            _this8.fire('afterAddOverlay');
           });
         }
 
@@ -1705,6 +1845,8 @@
         var _this9 = this;
 
         if (this._overlay.parentNode) {
+          this.fire('beforeRemoveOverlay');
+
           this._overlay.classList.remove('pnotify-modal-overlay-in');
 
           this._overlayOpen = false;
@@ -1713,6 +1855,8 @@
 
             if (_this9._overlay.parentNode) {
               _this9._overlay.parentNode.removeChild(_this9._overlay);
+
+              _this9.fire('afterRemoveOverlay');
             }
           }, 250);
           setTimeout(function () {
@@ -1782,31 +1926,31 @@
 
   function get_each_context(ctx, list, i) {
     var child_ctx = ctx.slice();
-    child_ctx[106] = list[i][0];
-    child_ctx[107] = list[i][1];
+    child_ctx[109] = list[i][0];
+    child_ctx[110] = list[i][1];
     return child_ctx;
   }
 
   function get_each_context_1(ctx, list, i) {
     var child_ctx = ctx.slice();
-    child_ctx[106] = list[i][0];
-    child_ctx[107] = list[i][1];
+    child_ctx[109] = list[i][0];
+    child_ctx[110] = list[i][1];
     return child_ctx;
   }
 
   function get_each_context_2(ctx, list, i) {
     var child_ctx = ctx.slice();
-    child_ctx[106] = list[i][0];
-    child_ctx[107] = list[i][1];
+    child_ctx[109] = list[i][0];
+    child_ctx[110] = list[i][1];
     return child_ctx;
   }
 
   function get_each_context_3(ctx, list, i) {
     var child_ctx = ctx.slice();
-    child_ctx[106] = list[i][0];
-    child_ctx[107] = list[i][1];
+    child_ctx[109] = list[i][0];
+    child_ctx[110] = list[i][1];
     return child_ctx;
-  } // (887:4) {#each modulesPrependContainer as [module, options] (module)}
+  } // (931:4) {#each modulesPrependContainer as [module, options] (module)}
 
 
   function create_each_block_3(key_1, ctx) {
@@ -1819,10 +1963,10 @@
       ctx[41]
     },
     /*options*/
-    ctx[107]];
+    ctx[110]];
     var switch_value =
     /*module*/
-    ctx[106]["default"];
+    ctx[109]["default"];
 
     function switch_props(ctx) {
       var switch_instance_props = {};
@@ -1872,11 +2016,11 @@
         /*modulesPrependContainer*/
         64 && get_spread_object(
         /*options*/
-        ctx[107])]) : {};
+        ctx[110])]) : {};
 
         if (switch_value !== (switch_value =
         /*module*/
-        ctx[106]["default"])) {
+        ctx[109]["default"])) {
           if (switch_instance) {
             group_outros();
             var old_component = switch_instance;
@@ -1913,7 +2057,7 @@
         if (switch_instance) destroy_component(switch_instance, detaching);
       }
     };
-  } // (890:4) {#if closer && !_nonBlock}
+  } // (934:4) {#if closer && !_nonBlock}
 
 
   function create_if_block_8(ctx) {
@@ -1932,11 +2076,13 @@
         ctx[21]("closer"));
         attr(div, "class", div_class_value = "pnotify-closer ".concat(
         /*getStyle*/
-        ctx[20]("closer"), " ").concat(!
+        ctx[20]("closer"), " ").concat((!
         /*closerHover*/
         ctx[16] ||
         /*_interacting*/
-        ctx[25] ? "" : "pnotify-hidden"));
+        ctx[25]) && !
+        /*_masking*/
+        ctx[27] ? "" : "pnotify-hidden"));
         attr(div, "role", "button");
         attr(div, "tabindex", "0");
         attr(div, "title", div_title_value =
@@ -1949,18 +2095,20 @@
         if (remount) dispose();
         dispose = listen(div, "click",
         /*click_handler*/
-        ctx[98]);
+        ctx[101]);
       },
       p: function p(ctx, dirty) {
         if (dirty[0] &
-        /*closerHover, _interacting*/
-        33619968 && div_class_value !== (div_class_value = "pnotify-closer ".concat(
+        /*closerHover, _interacting, _masking*/
+        167837696 && div_class_value !== (div_class_value = "pnotify-closer ".concat(
         /*getStyle*/
-        ctx[20]("closer"), " ").concat(!
+        ctx[20]("closer"), " ").concat((!
         /*closerHover*/
         ctx[16] ||
         /*_interacting*/
-        ctx[25] ? "" : "pnotify-hidden"))) {
+        ctx[25]) && !
+        /*_masking*/
+        ctx[27] ? "" : "pnotify-hidden"))) {
           attr(div, "class", div_class_value);
         }
 
@@ -1977,7 +2125,7 @@
         dispose();
       }
     };
-  } // (901:4) {#if sticker && !_nonBlock}
+  } // (945:4) {#if sticker && !_nonBlock}
 
 
   function create_if_block_7(ctx) {
@@ -1996,26 +2144,28 @@
         /*getIcon*/
         ctx[21]("sticker"), " ").concat(
         /*hide*/
-        ctx[1] ?
+        ctx[2] ?
         /*getIcon*/
         ctx[21]("unstuck") :
         /*getIcon*/
         ctx[21]("stuck")));
         attr(div, "class", div_class_value = "pnotify-sticker ".concat(
         /*getStyle*/
-        ctx[20]("sticker"), " ").concat(!
+        ctx[20]("sticker"), " ").concat((!
         /*stickerHover*/
         ctx[18] ||
         /*_interacting*/
-        ctx[25] ? "" : "pnotify-hidden"));
+        ctx[25]) && !
+        /*_masking*/
+        ctx[27] ? "" : "pnotify-hidden"));
         attr(div, "role", "button");
         attr(div, "aria-pressed", div_aria_pressed_value = !
         /*hide*/
-        ctx[1]);
+        ctx[2]);
         attr(div, "tabindex", "0");
         attr(div, "title", div_title_value =
         /*hide*/
-        ctx[1] ?
+        ctx[2] ?
         /*labels*/
         ctx[19].stick :
         /*labels*/
@@ -2027,16 +2177,16 @@
         if (remount) dispose();
         dispose = listen(div, "click",
         /*click_handler_1*/
-        ctx[99]);
+        ctx[102]);
       },
       p: function p(ctx, dirty) {
         if (dirty[0] &
         /*hide*/
-        2 && span_class_value !== (span_class_value = "".concat(
+        4 && span_class_value !== (span_class_value = "".concat(
         /*getIcon*/
         ctx[21]("sticker"), " ").concat(
         /*hide*/
-        ctx[1] ?
+        ctx[2] ?
         /*getIcon*/
         ctx[21]("unstuck") :
         /*getIcon*/
@@ -2045,30 +2195,32 @@
         }
 
         if (dirty[0] &
-        /*stickerHover, _interacting*/
-        33816576 && div_class_value !== (div_class_value = "pnotify-sticker ".concat(
+        /*stickerHover, _interacting, _masking*/
+        168034304 && div_class_value !== (div_class_value = "pnotify-sticker ".concat(
         /*getStyle*/
-        ctx[20]("sticker"), " ").concat(!
+        ctx[20]("sticker"), " ").concat((!
         /*stickerHover*/
         ctx[18] ||
         /*_interacting*/
-        ctx[25] ? "" : "pnotify-hidden"))) {
+        ctx[25]) && !
+        /*_masking*/
+        ctx[27] ? "" : "pnotify-hidden"))) {
           attr(div, "class", div_class_value);
         }
 
         if (dirty[0] &
         /*hide*/
-        2 && div_aria_pressed_value !== (div_aria_pressed_value = !
+        4 && div_aria_pressed_value !== (div_aria_pressed_value = !
         /*hide*/
-        ctx[1])) {
+        ctx[2])) {
           attr(div, "aria-pressed", div_aria_pressed_value);
         }
 
         if (dirty[0] &
         /*hide, labels*/
-        524290 && div_title_value !== (div_title_value =
+        524292 && div_title_value !== (div_title_value =
         /*hide*/
-        ctx[1] ?
+        ctx[2] ?
         /*labels*/
         ctx[19].stick :
         /*labels*/
@@ -2081,7 +2233,7 @@
         dispose();
       }
     };
-  } // (915:4) {#if icon !== false}
+  } // (959:4) {#if icon !== false}
 
 
   function create_if_block_6(ctx) {
@@ -2095,13 +2247,13 @@
         span = element("span");
         attr(span, "class", span_class_value =
         /*icon*/
-        ctx[11] === true ?
+        ctx[12] === true ?
         /*getIcon*/
         ctx[21](
         /*type*/
-        ctx[2]) :
+        ctx[3]) :
         /*icon*/
-        ctx[11]);
+        ctx[12]);
         attr(div, "class", div_class_value = "pnotify-icon ".concat(
         /*getStyle*/
         ctx[20]("icon")));
@@ -2111,20 +2263,20 @@
         append(div, span);
         /*div_binding*/
 
-        ctx[100](div);
+        ctx[103](div);
       },
       p: function p(ctx, dirty) {
         if (dirty[0] &
         /*icon, type*/
-        2052 && span_class_value !== (span_class_value =
+        4104 && span_class_value !== (span_class_value =
         /*icon*/
-        ctx[11] === true ?
+        ctx[12] === true ?
         /*getIcon*/
         ctx[21](
         /*type*/
-        ctx[2]) :
+        ctx[3]) :
         /*icon*/
-        ctx[11])) {
+        ctx[12])) {
           attr(span, "class", span_class_value);
         }
       },
@@ -2132,10 +2284,10 @@
         if (detaching) detach(div);
         /*div_binding*/
 
-        ctx[100](null);
+        ctx[103](null);
       }
     };
-  } // (927:6) {#each modulesPrependContent as [module, options] (module)}
+  } // (971:6) {#each modulesPrependContent as [module, options] (module)}
 
 
   function create_each_block_2(key_1, ctx) {
@@ -2148,10 +2300,10 @@
       ctx[41]
     },
     /*options*/
-    ctx[107]];
+    ctx[110]];
     var switch_value =
     /*module*/
-    ctx[106]["default"];
+    ctx[109]["default"];
 
     function switch_props(ctx) {
       var switch_instance_props = {};
@@ -2201,11 +2353,11 @@
         /*modulesPrependContent*/
         128 && get_spread_object(
         /*options*/
-        ctx[107])]) : {};
+        ctx[110])]) : {};
 
         if (switch_value !== (switch_value =
         /*module*/
-        ctx[106]["default"])) {
+        ctx[109]["default"])) {
           if (switch_instance) {
             group_outros();
             var old_component = switch_instance;
@@ -2242,7 +2394,7 @@
         if (switch_instance) destroy_component(switch_instance, detaching);
       }
     };
-  } // (930:6) {#if title !== false}
+  } // (974:6) {#if title !== false}
 
 
   function create_if_block_3(ctx) {
@@ -2250,7 +2402,7 @@
     var div_class_value;
     var if_block = !
     /*_titleElement*/
-    ctx[32] && create_if_block_4(ctx);
+    ctx[33] && create_if_block_4(ctx);
     return {
       c: function c() {
         div = element("div");
@@ -2264,12 +2416,12 @@
         if (if_block) if_block.m(div, null);
         /*div_binding_1*/
 
-        ctx[101](div);
+        ctx[104](div);
       },
       p: function p(ctx, dirty) {
         if (!
         /*_titleElement*/
-        ctx[32]) {
+        ctx[33]) {
           if (if_block) {
             if_block.p(ctx, dirty);
           } else {
@@ -2287,10 +2439,10 @@
         if (if_block) if_block.d();
         /*div_binding_1*/
 
-        ctx[101](null);
+        ctx[104](null);
       }
     };
-  } // (935:10) {#if !_titleElement}
+  } // (979:10) {#if !_titleElement}
 
 
   function create_if_block_4(ctx) {
@@ -2299,7 +2451,7 @@
     function select_block_type(ctx, dirty) {
       if (
       /*titleTrusted*/
-      ctx[4]) return create_if_block_5;
+      ctx[5]) return create_if_block_5;
       return create_else_block_1;
     }
 
@@ -2332,7 +2484,7 @@
         if (detaching) detach(if_block_anchor);
       }
     };
-  } // (938:12) {:else}
+  } // (982:12) {:else}
 
 
   function create_else_block_1(ctx) {
@@ -2343,7 +2495,7 @@
         span = element("span");
         t = text(
         /*title*/
-        ctx[3]);
+        ctx[4]);
         attr(span, "class", "pnotify-pre-line");
       },
       m: function m(target, anchor) {
@@ -2353,15 +2505,15 @@
       p: function p(ctx, dirty) {
         if (dirty[0] &
         /*title*/
-        8) set_data(t,
+        16) set_data(t,
         /*title*/
-        ctx[3]);
+        ctx[4]);
       },
       d: function d(detaching) {
         if (detaching) detach(span);
       }
     };
-  } // (936:12) {#if titleTrusted}
+  } // (980:12) {#if titleTrusted}
 
 
   function create_if_block_5(ctx) {
@@ -2370,7 +2522,7 @@
       c: function c() {
         html_tag = new HtmlTag(
         /*title*/
-        ctx[3], null);
+        ctx[4], null);
       },
       m: function m(target, anchor) {
         html_tag.m(target, anchor);
@@ -2378,15 +2530,15 @@
       p: function p(ctx, dirty) {
         if (dirty[0] &
         /*title*/
-        8) html_tag.p(
+        16) html_tag.p(
         /*title*/
-        ctx[3]);
+        ctx[4]);
       },
       d: function d(detaching) {
         if (detaching) html_tag.d();
       }
     };
-  } // (944:6) {#if text !== false}
+  } // (988:6) {#if text !== false}
 
 
   function create_if_block(ctx) {
@@ -2394,17 +2546,19 @@
     var div_class_value;
     var if_block = !
     /*_textElement*/
-    ctx[33] && create_if_block_1(ctx);
+    ctx[34] && create_if_block_1(ctx);
     return {
       c: function c() {
         div = element("div");
         if (if_block) if_block.c();
         attr(div, "class", div_class_value = "pnotify-text ".concat(
         /*getStyle*/
-        ctx[20]("text")));
+        ctx[20]("text"), " ").concat(
+        /*_maxTextHeightStyle*/
+        ctx[32] === "" ? "" : "pnotify-text-with-max-height"));
         attr(div, "style",
         /*_maxTextHeightStyle*/
-        ctx[31]);
+        ctx[32]);
         attr(div, "role", "alert");
       },
       m: function m(target, anchor) {
@@ -2412,12 +2566,12 @@
         if (if_block) if_block.m(div, null);
         /*div_binding_2*/
 
-        ctx[102](div);
+        ctx[105](div);
       },
       p: function p(ctx, dirty) {
         if (!
         /*_textElement*/
-        ctx[33]) {
+        ctx[34]) {
           if (if_block) {
             if_block.p(ctx, dirty);
           } else {
@@ -2432,10 +2586,20 @@
 
         if (dirty[1] &
         /*_maxTextHeightStyle*/
-        1) {
+        2 && div_class_value !== (div_class_value = "pnotify-text ".concat(
+        /*getStyle*/
+        ctx[20]("text"), " ").concat(
+        /*_maxTextHeightStyle*/
+        ctx[32] === "" ? "" : "pnotify-text-with-max-height"))) {
+          attr(div, "class", div_class_value);
+        }
+
+        if (dirty[1] &
+        /*_maxTextHeightStyle*/
+        2) {
           attr(div, "style",
           /*_maxTextHeightStyle*/
-          ctx[31]);
+          ctx[32]);
         }
       },
       d: function d(detaching) {
@@ -2443,10 +2607,10 @@
         if (if_block) if_block.d();
         /*div_binding_2*/
 
-        ctx[102](null);
+        ctx[105](null);
       }
     };
-  } // (951:10) {#if !_textElement}
+  } // (995:10) {#if !_textElement}
 
 
   function create_if_block_1(ctx) {
@@ -2455,7 +2619,7 @@
     function select_block_type_1(ctx, dirty) {
       if (
       /*textTrusted*/
-      ctx[6]) return create_if_block_2;
+      ctx[7]) return create_if_block_2;
       return create_else_block;
     }
 
@@ -2488,7 +2652,7 @@
         if (detaching) detach(if_block_anchor);
       }
     };
-  } // (954:12) {:else}
+  } // (998:12) {:else}
 
 
   function create_else_block(ctx) {
@@ -2499,7 +2663,7 @@
         span = element("span");
         t = text(
         /*text*/
-        ctx[5]);
+        ctx[6]);
         attr(span, "class", "pnotify-pre-line");
       },
       m: function m(target, anchor) {
@@ -2509,15 +2673,15 @@
       p: function p(ctx, dirty) {
         if (dirty[0] &
         /*text*/
-        32) set_data(t,
+        64) set_data(t,
         /*text*/
-        ctx[5]);
+        ctx[6]);
       },
       d: function d(detaching) {
         if (detaching) detach(span);
       }
     };
-  } // (952:12) {#if textTrusted}
+  } // (996:12) {#if textTrusted}
 
 
   function create_if_block_2(ctx) {
@@ -2526,7 +2690,7 @@
       c: function c() {
         html_tag = new HtmlTag(
         /*text*/
-        ctx[5], null);
+        ctx[6], null);
       },
       m: function m(target, anchor) {
         html_tag.m(target, anchor);
@@ -2534,15 +2698,15 @@
       p: function p(ctx, dirty) {
         if (dirty[0] &
         /*text*/
-        32) html_tag.p(
+        64) html_tag.p(
         /*text*/
-        ctx[5]);
+        ctx[6]);
       },
       d: function d(detaching) {
         if (detaching) html_tag.d();
       }
     };
-  } // (960:6) {#each modulesAppendContent as [module, options] (module)}
+  } // (1004:6) {#each modulesAppendContent as [module, options] (module)}
 
 
   function create_each_block_1(key_1, ctx) {
@@ -2555,10 +2719,10 @@
       ctx[41]
     },
     /*options*/
-    ctx[107]];
+    ctx[110]];
     var switch_value =
     /*module*/
-    ctx[106]["default"];
+    ctx[109]["default"];
 
     function switch_props(ctx) {
       var switch_instance_props = {};
@@ -2608,11 +2772,11 @@
         /*modulesAppendContent*/
         256 && get_spread_object(
         /*options*/
-        ctx[107])]) : {};
+        ctx[110])]) : {};
 
         if (switch_value !== (switch_value =
         /*module*/
-        ctx[106]["default"])) {
+        ctx[109]["default"])) {
           if (switch_instance) {
             group_outros();
             var old_component = switch_instance;
@@ -2649,7 +2813,7 @@
         if (switch_instance) destroy_component(switch_instance, detaching);
       }
     };
-  } // (964:4) {#each modulesAppendContainer as [module, options] (module)}
+  } // (1008:4) {#each modulesAppendContainer as [module, options] (module)}
 
 
   function create_each_block(key_1, ctx) {
@@ -2662,10 +2826,10 @@
       ctx[41]
     },
     /*options*/
-    ctx[107]];
+    ctx[110]];
     var switch_value =
     /*module*/
-    ctx[106]["default"];
+    ctx[109]["default"];
 
     function switch_props(ctx) {
       var switch_instance_props = {};
@@ -2715,11 +2879,11 @@
         /*modulesAppendContainer*/
         512 && get_spread_object(
         /*options*/
-        ctx[107])]) : {};
+        ctx[110])]) : {};
 
         if (switch_value !== (switch_value =
         /*module*/
-        ctx[106]["default"])) {
+        ctx[109]["default"])) {
           if (switch_instance) {
             group_outros();
             var old_component = switch_instance;
@@ -2792,7 +2956,7 @@
     var get_key = function get_key(ctx) {
       return (
         /*module*/
-        ctx[106]
+        ctx[109]
       );
     };
 
@@ -2814,7 +2978,7 @@
     ctx[35] && create_if_block_7(ctx);
     var if_block2 =
     /*icon*/
-    ctx[11] !== false && create_if_block_6(ctx);
+    ctx[12] !== false && create_if_block_6(ctx);
     var each_value_2 =
     /*modulesPrependContent*/
     ctx[38];
@@ -2822,7 +2986,7 @@
     var get_key_1 = function get_key_1(ctx) {
       return (
         /*module*/
-        ctx[106]
+        ctx[109]
       );
     };
 
@@ -2836,10 +3000,10 @@
 
     var if_block3 =
     /*title*/
-    ctx[3] !== false && create_if_block_3(ctx);
+    ctx[4] !== false && create_if_block_3(ctx);
     var if_block4 =
     /*text*/
-    ctx[5] !== false && create_if_block(ctx);
+    ctx[6] !== false && create_if_block(ctx);
     var each_value_1 =
     /*modulesAppendContent*/
     ctx[39];
@@ -2847,7 +3011,7 @@
     var get_key_2 = function get_key_2(ctx) {
       return (
         /*module*/
-        ctx[106]
+        ctx[109]
       );
     };
 
@@ -2866,7 +3030,7 @@
     var get_key_3 = function get_key_3(ctx) {
       return (
         /*module*/
-        ctx[106]
+        ctx[109]
       );
     };
 
@@ -2925,27 +3089,27 @@
         /*getStyle*/
         ctx[20](
         /*type*/
-        ctx[2]), " ").concat(
+        ctx[3]), " ").concat(
         /*shadow*/
         ctx[14] ? "pnotify-shadow" : "", " ").concat(
         /*_moduleClasses*/
         ctx[26].container.join(" ")));
         attr(div1, "style", div1_style_value = "".concat(
         /*_widthStyle*/
-        ctx[29], " ").concat(
+        ctx[30], " ").concat(
         /*_minHeightStyle*/
-        ctx[30]));
+        ctx[31]));
         attr(div1, "role", "alert");
         attr(div2, "data-pnotify", "");
         attr(div2, "class", div2_class_value = "pnotify ".concat(
         /*icon*/
-        ctx[11] !== false ? "pnotify-with-icon" : "", " ").concat(
+        ctx[12] !== false ? "pnotify-with-icon" : "", " ").concat(
         /*getStyle*/
         ctx[20]("elem"), " pnotify-mode-").concat(
         /*mode*/
-        ctx[7], " ").concat(
-        /*addClass*/
         ctx[8], " ").concat(
+        /*addClass*/
+        ctx[9], " ").concat(
         /*_animatingClass*/
         ctx[23], " ").concat(
         /*_moveClass*/
@@ -2953,15 +3117,15 @@
         /*_stackDirClass*/
         ctx[36], " ").concat(
         /*animation*/
-        ctx[12] === "fade" ? "pnotify-fade-".concat(
+        ctx[1] === "fade" ? "pnotify-fade-".concat(
         /*animateSpeed*/
         ctx[13]) : "", " ").concat(
         /*_modal*/
-        ctx[34] ? "pnotify-modal ".concat(
+        ctx[29] ? "pnotify-modal ".concat(
         /*addModalClass*/
-        ctx[9]) :
+        ctx[10]) :
         /*addModelessClass*/
-        ctx[10], " ").concat(
+        ctx[11], " ").concat(
         /*_masking*/
         ctx[27] ? "pnotify-masking" : "", " ").concat(
         /*_maskingIn*/
@@ -3004,7 +3168,7 @@
         /*div0_binding*/
 
 
-        ctx[103](div0);
+        ctx[106](div0);
         append(div1, t7);
 
         for (var _i11 = 0; _i11 < each_blocks.length; _i11 += 1) {
@@ -3013,10 +3177,10 @@
         /*div1_binding*/
 
 
-        ctx[104](div1);
+        ctx[107](div1);
         /*div2_binding*/
 
-        ctx[105](div2);
+        ctx[108](div2);
         current = true;
         if (remount) run_all(dispose);
         dispose = [action_destroyer(forwardEvents_action =
@@ -3079,7 +3243,7 @@
 
         if (
         /*icon*/
-        ctx[11] !== false) {
+        ctx[12] !== false) {
           if (if_block2) {
             if_block2.p(ctx, dirty);
           } else {
@@ -3105,7 +3269,7 @@
 
         if (
         /*title*/
-        ctx[3] !== false) {
+        ctx[4] !== false) {
           if (if_block3) {
             if_block3.p(ctx, dirty);
           } else {
@@ -3120,7 +3284,7 @@
 
         if (
         /*text*/
-        ctx[5] !== false) {
+        ctx[6] !== false) {
           if (if_block4) {
             if_block4.p(ctx, dirty);
           } else {
@@ -3157,13 +3321,13 @@
 
         if (!current || dirty[0] &
         /*type, shadow, _moduleClasses*/
-        67125252 && div1_class_value !== (div1_class_value = "pnotify-container ".concat(
+        67125256 && div1_class_value !== (div1_class_value = "pnotify-container ".concat(
         /*getStyle*/
         ctx[20]("container"), " ").concat(
         /*getStyle*/
         ctx[20](
         /*type*/
-        ctx[2]), " ").concat(
+        ctx[3]), " ").concat(
         /*shadow*/
         ctx[14] ? "pnotify-shadow" : "", " ").concat(
         /*_moduleClasses*/
@@ -3172,28 +3336,30 @@
         }
 
         if (!current || dirty[0] &
-        /*_widthStyle, _minHeightStyle*/
-        1610612736 && div1_style_value !== (div1_style_value = "".concat(
         /*_widthStyle*/
-        ctx[29], " ").concat(
+        1073741824 | dirty[1] &
         /*_minHeightStyle*/
-        ctx[30]))) {
+        1 && div1_style_value !== (div1_style_value = "".concat(
+        /*_widthStyle*/
+        ctx[30], " ").concat(
+        /*_minHeightStyle*/
+        ctx[31]))) {
           attr(div1, "style", div1_style_value);
         }
 
         if (!current || dirty[0] &
-        /*icon, mode, addClass, _animatingClass, _moveClass, animation, animateSpeed, addModalClass, addModelessClass, _masking, _maskingIn, _moduleClasses*/
-        494944128 | dirty[1] &
-        /*_stackDirClass, _modal*/
-        40 && div2_class_value !== (div2_class_value = "pnotify ".concat(
+        /*icon, mode, addClass, _animatingClass, _moveClass, animation, animateSpeed, _modal, addModalClass, addModelessClass, _masking, _maskingIn, _moduleClasses*/
+        1031814914 | dirty[1] &
+        /*_stackDirClass*/
+        32 && div2_class_value !== (div2_class_value = "pnotify ".concat(
         /*icon*/
-        ctx[11] !== false ? "pnotify-with-icon" : "", " ").concat(
+        ctx[12] !== false ? "pnotify-with-icon" : "", " ").concat(
         /*getStyle*/
         ctx[20]("elem"), " pnotify-mode-").concat(
         /*mode*/
-        ctx[7], " ").concat(
-        /*addClass*/
         ctx[8], " ").concat(
+        /*addClass*/
+        ctx[9], " ").concat(
         /*_animatingClass*/
         ctx[23], " ").concat(
         /*_moveClass*/
@@ -3201,15 +3367,15 @@
         /*_stackDirClass*/
         ctx[36], " ").concat(
         /*animation*/
-        ctx[12] === "fade" ? "pnotify-fade-".concat(
+        ctx[1] === "fade" ? "pnotify-fade-".concat(
         /*animateSpeed*/
         ctx[13]) : "", " ").concat(
         /*_modal*/
-        ctx[34] ? "pnotify-modal ".concat(
+        ctx[29] ? "pnotify-modal ".concat(
         /*addModalClass*/
-        ctx[9]) :
+        ctx[10]) :
         /*addModelessClass*/
-        ctx[10], " ").concat(
+        ctx[11], " ").concat(
         /*_masking*/
         ctx[27] ? "pnotify-masking" : "", " ").concat(
         /*_maskingIn*/
@@ -3283,7 +3449,7 @@
         /*div0_binding*/
 
 
-        ctx[103](null);
+        ctx[106](null);
 
         for (var _i23 = 0; _i23 < each_blocks.length; _i23 += 1) {
           each_blocks[_i23].d();
@@ -3291,10 +3457,10 @@
         /*div1_binding*/
 
 
-        ctx[104](null);
+        ctx[107](null);
         /*div2_binding*/
 
-        ctx[105](null);
+        ctx[108](null);
         run_all(dispose);
       }
     };
@@ -3536,7 +3702,11 @@
     var _maskingIn = false;
     var _maskingTimer = null; // Save the old value of hide, so we can reset the timer if it changes.
 
-    var _oldHide = hide;
+    var _oldHide = hide; // Promise that resolves when the notice has opened.
+
+    var _openPromise = null; // Promise that resolved when the notice closes.
+
+    var _closePromise = null;
 
     var getState = function getState() {
       return _state;
@@ -3552,15 +3722,20 @@
 
     var getIcon = function getIcon(name) {
       return typeof icons === "string" ? "".concat(icons, "-icon-").concat(name) : name in icons ? icons[name] : "".concat(icons.prefix, "-icon-").concat(name);
-    };
+    }; // Whether the notification is in a modal stack (or a modalish stack in modal
+    // state).
+
+
+    var _modal = stack && (stack.modal === true || stack.modal === "ish" && _timer === "prevented");
 
     var _oldStack = NaN;
-    var _oldModal = false;
+    var _stackBeforeAddOverlayOff = null;
+    var _stackAfterRemoveOverlayOff = null;
     onMount(function () {
       dispatchLifecycleEvent("mount"); // Display the notice.
 
       if (autoOpen) {
-        open();
+        open()["catch"](function () {});
       }
     });
     beforeUpdate(function () {
@@ -3603,7 +3778,7 @@
     function handleLeaveInteraction(e) {
       $$invalidate(25, _interacting = false); // Start the close timer.
 
-      if (hide && mouseReset && _animating !== "out") {
+      if (hide && mouseReset && _animating !== "out" && ["open", "opening"].indexOf(_state) !== -1) {
         queueClose();
       }
     } // This runs an event on all the modules.
@@ -3666,7 +3841,7 @@
     var _$$props$open = $$props.open,
         open = _$$props$open === void 0 ? function (immediate) {
       if (_state === "opening") {
-        return;
+        return _openPromise;
       }
 
       if (_state === "open") {
@@ -3674,25 +3849,32 @@
           queueClose();
         }
 
-        return;
+        return Promise.resolve();
       }
 
-      if (!_moduleHandled && stack && stack._shouldNoticeWait()) {
-        $$invalidate(81, _state = "waiting");
-        return;
+      if (!_moduleHandled && stack && stack._shouldNoticeWait(self)) {
+        _state = "waiting";
+        return Promise.reject();
       }
 
       if (!dispatchLifecycleEvent("beforeOpen", {
         immediate: immediate
       })) {
-        return;
+        return Promise.reject();
       }
 
-      $$invalidate(81, _state = "opening");
+      _state = "opening";
       $$invalidate(27, _masking = false); // This makes the notice visibity: hidden; so its dimensions can be
       // determined.
 
       $$invalidate(23, _animatingClass = "pnotify-initial pnotify-hidden");
+      var resolve;
+      var reject;
+      var promise = new Promise(function (res, rej) {
+        resolve = res;
+        reject = rej;
+      });
+      _openPromise = promise;
 
       var afterOpenCallback = function afterOpenCallback() {
         // Now set it to hide.
@@ -3700,26 +3882,25 @@
           queueClose();
         }
 
-        $$invalidate(81, _state = "open");
+        _state = "open";
         dispatchLifecycleEvent("afterOpen", {
           immediate: immediate
         });
+        _openPromise = null;
+        resolve();
       };
-
-      if (stack) {
-        // Notify the stack that a notice has opened.
-        stack._handleNoticeOpened(self);
-      }
 
       if (_moduleOpen) {
         afterOpenCallback();
-        return;
+        return Promise.resolve();
       }
 
       insertIntoDOM(); // Wait until the DOM is updated.
 
       window.requestAnimationFrame(function () {
         if (_state !== "opening") {
+          reject();
+          _openPromise = null;
           return;
         }
 
@@ -3743,11 +3924,16 @@
 
         animateIn(afterOpenCallback, immediate);
       });
+      return promise;
     } : _$$props$open;
     var _$$props$close = $$props.close,
         close = _$$props$close === void 0 ? function (immediate, timerHide, waitAfterward) {
-      if (_state === "closing" || _state === "closed") {
-        return;
+      if (_state === "closing") {
+        return _closePromise;
+      }
+
+      if (_state === "closed") {
+        return Promise.resolve();
       }
 
       var runDestroy = function runDestroy() {
@@ -3765,17 +3951,17 @@
 
       if (_state === "waiting") {
         if (waitAfterward) {
-          return;
+          return Promise.resolve();
         }
 
-        $$invalidate(81, _state = "closed"); // It's debatable whether the notice should be destroyed in this case, but
+        _state = "closed"; // It's debatable whether the notice should be destroyed in this case, but
         // I'm going to go ahead and say yes.
 
         if (destroy && !waitAfterward) {
           runDestroy();
         }
 
-        return;
+        return Promise.resolve();
       }
 
       if (!dispatchLifecycleEvent("beforeClose", {
@@ -3783,40 +3969,46 @@
         timerHide: timerHide,
         waitAfterward: waitAfterward
       })) {
-        return;
+        return Promise.reject();
       }
 
-      $$invalidate(81, _state = "closing");
+      _state = "closing";
       _timerHide = !!timerHide; // Make sure it's a boolean.
 
       if (_timer && _timer !== "prevented" && clearTimeout) {
         clearTimeout(_timer);
       }
 
-      $$invalidate(82, _timer = null);
+      _timer = null;
+      var resolve;
+      var promise = new Promise(function (res, rej) {
+        resolve = res;
+      });
+      _closePromise = promise;
       animateOut(function () {
         $$invalidate(25, _interacting = false);
         _timerHide = false;
-        $$invalidate(81, _state = waitAfterward ? "waiting" : "closed");
+        _state = waitAfterward ? "waiting" : "closed";
         dispatchLifecycleEvent("afterClose", {
           immediate: immediate,
           timerHide: timerHide,
           waitAfterward: waitAfterward
         });
+        _closePromise = null;
+        resolve();
 
-        if (stack) {
-          stack._handleNoticeClosed(self);
-        }
-
-        if (destroy && !waitAfterward) {
-          // If we're supposed to destroy the notice, run the destroy module
-          // events, remove from stack, and let Svelte handle DOM removal.
-          runDestroy();
-        } else if (remove && !waitAfterward) {
-          // If we're supposed to remove the notice from the DOM, do it.
-          removeFromDOM();
+        if (!waitAfterward) {
+          if (destroy) {
+            // If we're supposed to destroy the notice, run the destroy module
+            // events, remove from stack, and let Svelte handle DOM removal.
+            runDestroy();
+          } else if (remove) {
+            // If we're supposed to remove the notice from the DOM, do it.
+            removeFromDOM();
+          }
         }
       }, immediate);
+      return promise;
     } : _$$props$close;
     var _$$props$animateIn = $$props.animateIn,
         animateIn = _$$props$animateIn === void 0 ? function (callback, immediate) {
@@ -3872,8 +4064,11 @@
           _animInTimer = setTimeout(finished, 650);
         });
       } else {
-        $$invalidate(23, _animatingClass = "pnotify-in");
+        var _animation = animation;
+        $$invalidate(1, animation = "none");
+        $$invalidate(23, _animatingClass = "pnotify-in ".concat(_animation === "fade" ? "pnotify-fade-in" : ""));
         tick().then(function () {
+          $$invalidate(1, animation = _animation);
           finished();
         });
       }
@@ -3942,7 +4137,7 @@
     function cancelClose() {
       if (_timer && _timer !== "prevented") {
         clearTimeout(_timer);
-        $$invalidate(82, _timer = null);
+        _timer = null;
       }
 
       if (_animOutTimer) {
@@ -3951,7 +4146,7 @@
 
       if (_state === "closing") {
         // If it's animating out, stop it.
-        $$invalidate(81, _state = "open");
+        _state = "open";
         _animating = false;
         $$invalidate(23, _animatingClass = animation === "fade" ? "pnotify-in pnotify-fade-in" : "pnotify-in");
       }
@@ -3966,18 +4161,18 @@
       cancelClose();
 
       if (delay !== Infinity) {
-        $$invalidate(82, _timer = setTimeout(function () {
+        _timer = setTimeout(function () {
           return close(false, true);
-        }, isNaN(delay) ? 0 : delay));
+        }, isNaN(delay) ? 0 : delay);
       }
     }
 
     function _preventTimerClose(prevent) {
       if (prevent) {
         cancelClose();
-        $$invalidate(82, _timer = "prevented");
+        _timer = "prevented";
       } else if (_timer === "prevented") {
-        $$invalidate(82, _timer = null);
+        _timer = null;
 
         if (_state === "open" && hide) {
           queueClose();
@@ -4156,7 +4351,7 @@
     };
 
     var click_handler_1 = function click_handler_1() {
-      return $$invalidate(1, hide = !hide);
+      return $$invalidate(2, hide = !hide);
     };
 
     function div_binding($$value) {
@@ -4204,26 +4399,26 @@
     $$self.$set = function ($$props) {
       if ("modules" in $$props) $$invalidate(46, modules = $$props.modules);
       if ("stack" in $$props) $$invalidate(45, stack = $$props.stack);
-      if ("type" in $$props) $$invalidate(2, type = $$props.type);
-      if ("title" in $$props) $$invalidate(3, title = $$props.title);
-      if ("titleTrusted" in $$props) $$invalidate(4, titleTrusted = $$props.titleTrusted);
-      if ("text" in $$props) $$invalidate(5, text = $$props.text);
-      if ("textTrusted" in $$props) $$invalidate(6, textTrusted = $$props.textTrusted);
+      if ("type" in $$props) $$invalidate(3, type = $$props.type);
+      if ("title" in $$props) $$invalidate(4, title = $$props.title);
+      if ("titleTrusted" in $$props) $$invalidate(5, titleTrusted = $$props.titleTrusted);
+      if ("text" in $$props) $$invalidate(6, text = $$props.text);
+      if ("textTrusted" in $$props) $$invalidate(7, textTrusted = $$props.textTrusted);
       if ("styling" in $$props) $$invalidate(47, styling = $$props.styling);
       if ("icons" in $$props) $$invalidate(48, icons = $$props.icons);
-      if ("mode" in $$props) $$invalidate(7, mode = $$props.mode);
-      if ("addClass" in $$props) $$invalidate(8, addClass = $$props.addClass);
-      if ("addModalClass" in $$props) $$invalidate(9, addModalClass = $$props.addModalClass);
-      if ("addModelessClass" in $$props) $$invalidate(10, addModelessClass = $$props.addModelessClass);
+      if ("mode" in $$props) $$invalidate(8, mode = $$props.mode);
+      if ("addClass" in $$props) $$invalidate(9, addClass = $$props.addClass);
+      if ("addModalClass" in $$props) $$invalidate(10, addModalClass = $$props.addModalClass);
+      if ("addModelessClass" in $$props) $$invalidate(11, addModelessClass = $$props.addModelessClass);
       if ("autoOpen" in $$props) $$invalidate(49, autoOpen = $$props.autoOpen);
       if ("width" in $$props) $$invalidate(50, width = $$props.width);
       if ("minHeight" in $$props) $$invalidate(51, minHeight = $$props.minHeight);
       if ("maxTextHeight" in $$props) $$invalidate(52, maxTextHeight = $$props.maxTextHeight);
-      if ("icon" in $$props) $$invalidate(11, icon = $$props.icon);
-      if ("animation" in $$props) $$invalidate(12, animation = $$props.animation);
+      if ("icon" in $$props) $$invalidate(12, icon = $$props.icon);
+      if ("animation" in $$props) $$invalidate(1, animation = $$props.animation);
       if ("animateSpeed" in $$props) $$invalidate(13, animateSpeed = $$props.animateSpeed);
       if ("shadow" in $$props) $$invalidate(14, shadow = $$props.shadow);
-      if ("hide" in $$props) $$invalidate(1, hide = $$props.hide);
+      if ("hide" in $$props) $$invalidate(2, hide = $$props.hide);
       if ("delay" in $$props) $$invalidate(53, delay = $$props.delay);
       if ("mouseReset" in $$props) $$invalidate(54, mouseReset = $$props.mouseReset);
       if ("closer" in $$props) $$invalidate(15, closer = $$props.closer);
@@ -4249,8 +4444,6 @@
 
     var _textElement;
 
-    var _modal;
-
     var _nonBlock;
 
     var _stackDirClass;
@@ -4265,49 +4458,73 @@
       /*width*/
       524288) {
         // Grab the icons from the icons object or use provided icons
-         $$invalidate(29, _widthStyle = typeof width === "string" ? "width: ".concat(width, ";") : "");
+         $$invalidate(30, _widthStyle = typeof width === "string" ? "width: ".concat(width, ";") : "");
       }
 
       if ($$self.$$.dirty[1] &
       /*minHeight*/
       1048576) {
-         $$invalidate(30, _minHeightStyle = typeof minHeight === "string" ? "min-height: ".concat(minHeight, ";") : "");
+         $$invalidate(31, _minHeightStyle = typeof minHeight === "string" ? "min-height: ".concat(minHeight, ";") : "");
       }
 
       if ($$self.$$.dirty[1] &
       /*maxTextHeight*/
       2097152) {
-        // The bottom padding of .03em is specifically for Firefox, since it will show a scrollbar without it for some reason.
-         $$invalidate(31, _maxTextHeightStyle = typeof maxTextHeight === "string" ? "max-height: ".concat(maxTextHeight, "; overflow-y: auto; overscroll-behavior: contain; padding-bottom:.03em;") : "");
+         $$invalidate(32, _maxTextHeightStyle = typeof maxTextHeight === "string" ? "max-height: ".concat(maxTextHeight, ";") : "");
       }
 
       if ($$self.$$.dirty[0] &
       /*title*/
-      8) {
-         $$invalidate(32, _titleElement = title instanceof HTMLElement);
+      16) {
+         $$invalidate(33, _titleElement = title instanceof HTMLElement);
       }
 
       if ($$self.$$.dirty[0] &
       /*text*/
-      32) {
-         $$invalidate(33, _textElement = text instanceof HTMLElement);
+      64) {
+         $$invalidate(34, _textElement = text instanceof HTMLElement);
       }
 
       if ($$self.$$.dirty[1] &
       /*stack*/
-      16384 | $$self.$$.dirty[2] &
-      /*_timer, _state*/
-      1572864) {
-        // Whether the notification is open in a modal stack (or a modalish stack in
-        // modal state).
-         $$invalidate(34, _modal = stack && (stack.modal === true || stack.modal === "ish" && _timer === "prevented") && ["open", "opening", "closing"].indexOf(_state) !== -1);
+      16384 | $$self.$$.dirty[3] &
+      /*_oldStack, _stackBeforeAddOverlayOff, _stackAfterRemoveOverlayOff*/
+      7) {
+         if (_oldStack !== stack) {
+          if (_oldStack) {
+            // Remove the notice from the old stack.
+            _oldStack._removeNotice(self); // Remove the listeners.
+
+
+            $$invalidate(29, _modal = false);
+
+            _stackBeforeAddOverlayOff();
+
+            _stackAfterRemoveOverlayOff();
+          }
+
+          if (stack) {
+            // Add the notice to the stack.
+            stack._addNotice(self); // Add listeners for modal state.
+
+
+            $$invalidate(94, _stackBeforeAddOverlayOff = stack.on("beforeAddOverlay", function () {
+              $$invalidate(29, _modal = true);
+              dispatchLifecycleEvent("enterModal");
+            }));
+            $$invalidate(95, _stackAfterRemoveOverlayOff = stack.on("afterRemoveOverlay", function () {
+              $$invalidate(29, _modal = false);
+              dispatchLifecycleEvent("leaveModal");
+            }));
+          }
+
+          $$invalidate(93, _oldStack = stack);
+        }
       }
 
       if ($$self.$$.dirty[0] &
-      /*addClass, addModalClass, addModelessClass*/
-      1792 | $$self.$$.dirty[1] &
-      /*_modal*/
-      8) {
+      /*addClass, addModalClass, _modal, addModelessClass*/
+      536874496) {
          $$invalidate(35, _nonBlock = addClass.match(/\bnonblock\b/) || addModalClass.match(/\bnonblock\b/) && _modal || addModelessClass.match(/\bnonblock\b/) && !_modal);
       }
 
@@ -4369,9 +4586,9 @@
 
       if ($$self.$$.dirty[0] &
       /*refs, title*/
-      9 | $$self.$$.dirty[1] &
+      17 | $$self.$$.dirty[1] &
       /*_titleElement*/
-      2) {
+      4) {
          if (_titleElement && refs.titleContainer) {
           refs.titleContainer.appendChild(title);
         }
@@ -4379,47 +4596,16 @@
 
       if ($$self.$$.dirty[0] &
       /*refs, text*/
-      33 | $$self.$$.dirty[1] &
+      65 | $$self.$$.dirty[1] &
       /*_textElement*/
-      4) {
+      8) {
          if (_textElement && refs.textContainer) {
           refs.textContainer.appendChild(text);
         }
       }
-
-      if ($$self.$$.dirty[1] &
-      /*stack*/
-      16384 | $$self.$$.dirty[2] &
-      /*_oldStack*/
-      536870912) {
-         if (_oldStack !== stack) {
-          if (_oldStack) {
-            // Remove the notice from the old stack.
-            _oldStack._removeNotice(self);
-          }
-
-          if (stack) {
-            // Add the notice to the stack.
-            stack._addNotice(self);
-          }
-
-          $$invalidate(91, _oldStack = stack);
-        }
-      }
-
-      if ($$self.$$.dirty[1] &
-      /*_modal*/
-      8 | $$self.$$.dirty[2] &
-      /*_oldModal*/
-      1073741824) {
-         if (_oldModal !== _modal) {
-          dispatchLifecycleEvent(_modal ? "enterModal" : "leaveModal");
-          $$invalidate(92, _oldModal = _modal);
-        }
-      }
     };
 
-    return [refs, hide, type, title, titleTrusted, text, textTrusted, mode, addClass, addModalClass, addModelessClass, icon, animation, animateSpeed, shadow, closer, closerHover, sticker, stickerHover, labels, getStyle, getIcon, close, _animatingClass, _moveClass, _interacting, _moduleClasses, _masking, _maskingIn, _widthStyle, _minHeightStyle, _maxTextHeightStyle, _titleElement, _textElement, _modal, _nonBlock, _stackDirClass, modulesPrependContainer, modulesPrependContent, modulesAppendContent, modulesAppendContainer, self, forwardEvents, handleInteraction, handleLeaveInteraction, stack, modules, styling, icons, autoOpen, width, minHeight, maxTextHeight, delay, mouseReset, remove, destroy, getState, getTimer, open, animateIn, animateOut, cancelClose, queueClose, _preventTimerClose, on, update, fire, addModuleClass, removeModuleClass, hasModuleClass, getModuleHandled, setModuleHandled, getModuleOpen, setModuleOpen, setAnimating, getAnimatingClass, setAnimatingClass, _getMoveClass, _setMoveClass, _setMasking, _state, _timer, _animInTimer, _animOutTimer, _animating, _timerHide, _moduleHandled, _moduleOpen, _maskingTimer, _oldHide, _oldStack, _oldModal, dispatch, selfDefaults, dispatchLifecycleEvent, insertIntoDOM, removeFromDOM, click_handler, click_handler_1, div_binding, div_binding_1, div_binding_2, div0_binding, div1_binding, div2_binding];
+    return [refs, animation, hide, type, title, titleTrusted, text, textTrusted, mode, addClass, addModalClass, addModelessClass, icon, animateSpeed, shadow, closer, closerHover, sticker, stickerHover, labels, getStyle, getIcon, close, _animatingClass, _moveClass, _interacting, _moduleClasses, _masking, _maskingIn, _modal, _widthStyle, _minHeightStyle, _maxTextHeightStyle, _titleElement, _textElement, _nonBlock, _stackDirClass, modulesPrependContainer, modulesPrependContent, modulesAppendContent, modulesAppendContainer, self, forwardEvents, handleInteraction, handleLeaveInteraction, stack, modules, styling, icons, autoOpen, width, minHeight, maxTextHeight, delay, mouseReset, remove, destroy, getState, getTimer, open, animateIn, animateOut, cancelClose, queueClose, _preventTimerClose, on, update, fire, addModuleClass, removeModuleClass, hasModuleClass, getModuleHandled, setModuleHandled, getModuleOpen, setModuleOpen, setAnimating, getAnimatingClass, setAnimatingClass, _getMoveClass, _setMoveClass, _setMasking, _state, _timer, _animInTimer, _animOutTimer, _animating, _timerHide, _moduleHandled, _moduleOpen, _maskingTimer, _oldHide, _openPromise, _closePromise, _oldStack, _stackBeforeAddOverlayOff, _stackAfterRemoveOverlayOff, dispatch, selfDefaults, dispatchLifecycleEvent, insertIntoDOM, removeFromDOM, click_handler, click_handler_1, div_binding, div_binding_1, div_binding_2, div0_binding, div1_binding, div2_binding];
   }
 
   var Core = /*#__PURE__*/function (_SvelteComponent) {
@@ -4437,26 +4623,26 @@
         modules: 46,
         stack: 45,
         refs: 0,
-        type: 2,
-        title: 3,
-        titleTrusted: 4,
-        text: 5,
-        textTrusted: 6,
+        type: 3,
+        title: 4,
+        titleTrusted: 5,
+        text: 6,
+        textTrusted: 7,
         styling: 47,
         icons: 48,
-        mode: 7,
-        addClass: 8,
-        addModalClass: 9,
-        addModelessClass: 10,
+        mode: 8,
+        addClass: 9,
+        addModalClass: 10,
+        addModelessClass: 11,
         autoOpen: 49,
         width: 50,
         minHeight: 51,
         maxTextHeight: 52,
-        icon: 11,
-        animation: 12,
+        icon: 12,
+        animation: 1,
         animateSpeed: 13,
         shadow: 14,
-        hide: 1,
+        hide: 2,
         delay: 53,
         mouseReset: 54,
         closer: 15,
@@ -4527,7 +4713,7 @@
     }, {
       key: "type",
       get: function get() {
-        return this.$$.ctx[2];
+        return this.$$.ctx[3];
       },
       set: function set(type) {
         this.$set({
@@ -4538,7 +4724,7 @@
     }, {
       key: "title",
       get: function get() {
-        return this.$$.ctx[3];
+        return this.$$.ctx[4];
       },
       set: function set(title) {
         this.$set({
@@ -4549,7 +4735,7 @@
     }, {
       key: "titleTrusted",
       get: function get() {
-        return this.$$.ctx[4];
+        return this.$$.ctx[5];
       },
       set: function set(titleTrusted) {
         this.$set({
@@ -4560,7 +4746,7 @@
     }, {
       key: "text",
       get: function get() {
-        return this.$$.ctx[5];
+        return this.$$.ctx[6];
       },
       set: function set(text) {
         this.$set({
@@ -4571,7 +4757,7 @@
     }, {
       key: "textTrusted",
       get: function get() {
-        return this.$$.ctx[6];
+        return this.$$.ctx[7];
       },
       set: function set(textTrusted) {
         this.$set({
@@ -4604,7 +4790,7 @@
     }, {
       key: "mode",
       get: function get() {
-        return this.$$.ctx[7];
+        return this.$$.ctx[8];
       },
       set: function set(mode) {
         this.$set({
@@ -4615,7 +4801,7 @@
     }, {
       key: "addClass",
       get: function get() {
-        return this.$$.ctx[8];
+        return this.$$.ctx[9];
       },
       set: function set(addClass) {
         this.$set({
@@ -4626,7 +4812,7 @@
     }, {
       key: "addModalClass",
       get: function get() {
-        return this.$$.ctx[9];
+        return this.$$.ctx[10];
       },
       set: function set(addModalClass) {
         this.$set({
@@ -4637,7 +4823,7 @@
     }, {
       key: "addModelessClass",
       get: function get() {
-        return this.$$.ctx[10];
+        return this.$$.ctx[11];
       },
       set: function set(addModelessClass) {
         this.$set({
@@ -4692,7 +4878,7 @@
     }, {
       key: "icon",
       get: function get() {
-        return this.$$.ctx[11];
+        return this.$$.ctx[12];
       },
       set: function set(icon) {
         this.$set({
@@ -4703,7 +4889,7 @@
     }, {
       key: "animation",
       get: function get() {
-        return this.$$.ctx[12];
+        return this.$$.ctx[1];
       },
       set: function set(animation) {
         this.$set({
@@ -4736,7 +4922,7 @@
     }, {
       key: "hide",
       get: function get() {
-        return this.$$.ctx[1];
+        return this.$$.ctx[2];
       },
       set: function set(hide) {
         this.$set({

@@ -510,7 +510,6 @@
 
     var _tag;
 
-    self.setModuleHandled(true);
     self.on("pnotify:beforeOpen", function () {
       if (!_permission) {
         requestPermission();
@@ -637,6 +636,14 @@
             $$invalidate(0, self.animation = "none", self);
             genNotice();
           }
+        }
+      }
+
+      if ($$self.$$.dirty &
+      /*self, _permission*/
+      1) {
+         {
+          self.setModuleHandled(_permission);
         }
       }
     };
