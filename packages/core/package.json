@@ -1,6 +1,6 @@
 {
   "name": "@pnotify/core",
-  "version": "5.1.2",
+  "version": "5.2.0",
   "description": "PNotify Core",
   "keywords": [
     "notice",
@@ -52,6 +52,5 @@
     "rollup-plugin-svelte": "^5.2.3",
     "rollup-plugin-terser": "^5.3.1",
     "svelte": "^3.29.4"
-  },
-  "dependencies": {}
+  }
 }

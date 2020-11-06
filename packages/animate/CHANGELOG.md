@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.2.0](https://github.com/sciactive/pnotify/compare/v5.1.2...v5.2.0) (2020-11-06)
+
+**Note:** Version bump only for package @pnotify/animate
+
+
+
+
+
 ## [5.1.2](https://github.com/sciactive/pnotify/compare/v5.1.1...v5.1.2) (2020-04-29)
 
 **Note:** Version bump only for package @pnotify/animate
