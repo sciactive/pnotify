@@ -75,7 +75,8 @@ export default class Stack {
     this._overlayOpen = false;
     // Whether the overlay is currently inserted into the DOM.
     this._overlayInserted = false;
-    // Whether the modal state is collapsing. (Notices go back to waiting and shouldn't resposition.)
+    // Whether the modal state is collapsing. (Notices go back to waiting and
+    // shouldn't resposition.)
     this._collapsingModalState = false;
     // The leader is the first open notice in a modalish stack.
     this._leader = null;
@@ -83,6 +84,11 @@ export default class Stack {
     // The next waiting notice that is masking.
     this._masking = null;
     this._maskingOff = null;
+    // Swapping notices, so don't open a new one. Set to the opening notice on
+    // swap.
+    this._swapping = false;
+    // Event listener callbacks.
+    this._callbacks = {};
   }
 
   get notices() {
@@ -170,9 +176,44 @@ export default class Stack {
     );
   }
 
+  swap(one, theOther, immediate = false, waitAfter = false) {
+    if (['open', 'opening', 'closing'].indexOf(one.getState()) === -1) {
+      // One is closed. Return rejected promise.
+      return Promise.reject();
+    }
+    this._swapping = theOther;
+    return one
+      .close(immediate, false, waitAfter)
+      .then(() => theOther.open(immediate))
+      .finally(() => {
+        this._swapping = false;
+      });
+  }
+
+  on(event, callback) {
+    if (!(event in this._callbacks)) {
+      this._callbacks[event] = [];
+    }
+    this._callbacks[event].push(callback);
+    return () => {
+      this._callbacks[event].splice(
+        this._callbacks[event].indexOf(callback),
+        1
+      );
+    };
+  }
+
+  fire(event, detail = {}) {
+    detail.stack = this;
+    if (event in this._callbacks) {
+      this._callbacks[event].forEach(cb => cb(detail));
+    }
+  }
+
   position() {
     // Reset the next position data.
     if (this._length > 0) {
+      this.fire('beforePosition');
       this._resetPositionData();
       this.forEach(
         notice => {
@@ -180,6 +221,7 @@ export default class Stack {
         },
         { start: 'head', dir: 'next', skipModuleHandled: true }
       );
+      this.fire('afterPosition');
     } else {
       delete this._nextpos1;
       delete this._nextpos2;
@@ -423,11 +465,143 @@ export default class Stack {
   }
 
   _addNotice(notice) {
+    this.fire('beforeAddNotice', { notice });
+
+    const handleNoticeOpen = () => {
+      this.fire('beforeOpenNotice', { notice });
+
+      if (notice.getModuleHandled()) {
+        // We don't deal with notices that are handled by a module.
+        this.fire('afterOpenNotice', { notice });
+        return;
+      }
+
+      this._openNotices++;
+
+      // Check the max in stack.
+      if (
+        !(this.modal === 'ish' && this._overlayOpen) &&
+        this.maxOpen !== Infinity &&
+        this._openNotices > this.maxOpen &&
+        this.maxStrategy === 'close'
+      ) {
+        let toClose = this._openNotices - this.maxOpen;
+        this.forEach(notice => {
+          if (['opening', 'open'].indexOf(notice.getState()) !== -1) {
+            // Close oldest notices, leaving only stack.maxOpen from the stack.
+            notice.close(false, false, this.maxClosureCausesWait);
+            if (notice === this._leader) {
+              this._setLeader(null);
+            }
+            toClose--;
+            return !!toClose;
+          }
+        });
+      }
+
+      if (this.modal === true) {
+        this._insertOverlay();
+      }
+
+      if (
+        this.modal === 'ish' &&
+        (!this._leader ||
+          ['opening', 'open', 'closing'].indexOf(this._leader.getState()) ===
+            -1)
+      ) {
+        this._setLeader(notice);
+      }
+
+      if (this.modal === 'ish' && this._overlayOpen) {
+        notice._preventTimerClose(true);
+      }
+
+      // this.queuePosition(0);
+
+      this.fire('afterOpenNotice', { notice });
+    };
+
+    const handleNoticeClosed = () => {
+      this.fire('beforeCloseNotice', { notice });
+
+      if (notice.getModuleHandled()) {
+        // We don't deal with notices that are handled by a module.
+        this.fire('afterCloseNotice', { notice });
+        return;
+      }
+
+      this._openNotices--;
+
+      if (this.modal === 'ish' && notice === this._leader) {
+        this._setLeader(null);
+        if (this._masking) {
+          this._setMasking(null);
+        }
+      }
+
+      if (
+        !this._swapping &&
+        this.maxOpen !== Infinity &&
+        this._openNotices < this.maxOpen
+      ) {
+        let done = false;
+        const open = contender => {
+          if (contender !== notice && contender.getState() === 'waiting') {
+            contender.open().catch(() => {});
+            if (this._openNotices >= this.maxOpen) {
+              done = true;
+              return false;
+            }
+          }
+        };
+        if (this.maxStrategy === 'wait') {
+          // Check for the next waiting notice and open it.
+          this.forEach(open, {
+            start: notice,
+            dir: 'next'
+          });
+          if (!done) {
+            this.forEach(open, {
+              start: notice,
+              dir: 'prev'
+            });
+          }
+        } else if (this.maxStrategy === 'close' && this.maxClosureCausesWait) {
+          // Check for the last closed notice and re-open it.
+          this.forEach(open, {
+            start: notice,
+            dir: 'older'
+          });
+          if (!done) {
+            this.forEach(open, {
+              start: notice,
+              dir: 'newer'
+            });
+          }
+        }
+      }
+
+      if (this._openNotices <= 0) {
+        this._openNotices = 0;
+        this._resetPositionData();
+
+        if (this._overlayOpen && !this._swapping) {
+          this._removeOverlay();
+        }
+      } else if (!this._collapsingModalState) {
+        this.queuePosition(0);
+      }
+
+      this.fire('afterCloseNotice', { notice });
+    };
+
     // This is the linked list node.
     const node = {
       notice,
       prev: null,
-      next: null
+      next: null,
+      beforeOpenOff: notice.on('pnotify:beforeOpen', handleNoticeOpen),
+      afterCloseOff: notice.on('pnotify:afterClose', handleNoticeClosed)
     };
 
     // Push to the correct side of the linked list.
@@ -456,11 +630,11 @@ export default class Stack {
 
     if (['open', 'opening', 'closing'].indexOf(notice.getState()) !== -1) {
       // If the notice is already open, handle it immediately.
-      this._handleNoticeOpened(notice);
+      handleNoticeOpen();
     } else if (
       this.modal === 'ish' &&
       this.modalishFlash &&
-      this._shouldNoticeWait()
+      this._shouldNoticeWait(notice)
     ) {
       // If it's not open, and it's going to be a waiting notice, flash it.
       const off = notice.on('pnotify:mount', () => {
@@ -475,12 +649,17 @@ export default class Stack {
         });
       });
     }
+
+    this.fire('afterAddNotice', { notice });
   }
 
   _removeNotice(notice) {
     if (!this._noticeMap.has(notice)) {
       return;
     }
+
+    this.fire('beforeRemoveNotice', { notice });
+
     const node = this._noticeMap.get(notice);
 
     if (this._leader === notice) {
@@ -498,6 +677,10 @@ export default class Stack {
     node.next.prev = node.prev;
     node.prev = null;
     node.next = null;
+    node.beforeOpenOff();
+    node.beforeOpenOff = null;
+    node.afterCloseOff();
+    node.afterCloseOff = null;
 
     // Remove the notice from the map.
     this._noticeMap.delete(notice);
@@ -519,9 +702,13 @@ export default class Stack {
     if (['open', 'opening', 'closing'].indexOf(notice.getState()) !== -1) {
       this._handleNoticeClosed(notice);
     }
+
+    this.fire('afterRemoveNotice', { notice });
   }
 
   _setLeader(leader) {
+    this.fire('beforeSetLeader', { leader });
+
     if (this._leaderOff) {
       this._leaderOff();
       this._leaderOff = null;
@@ -530,6 +717,7 @@ export default class Stack {
     this._leader = leader;
 
     if (!this._leader) {
+      this.fire('afterSetLeader', { leader });
       return;
     }
 
@@ -625,6 +813,8 @@ export default class Stack {
       this._leader.on('mouseleave', leaderLeaveInteraction),
       this._leader.on('focusout', leaderLeaveInteraction)
     ]);
+
+    this.fire('afterSetLeader', { leader });
   }
 
   _setMasking(masking, immediate) {
@@ -695,103 +885,9 @@ export default class Stack {
     ]);
   }
 
-  _handleNoticeClosed(notice) {
-    if (notice.getModuleHandled()) {
-      // We don't deal with notices that are handled by a module.
-      return;
-    }
-
-    this._openNotices--;
-
-    if (this.modal === 'ish' && notice === this._leader) {
-      this._setLeader(null);
-      if (this._masking) {
-        this._setMasking(null);
-      }
-    }
-
-    if (this.maxOpen !== Infinity && this._openNotices < this.maxOpen) {
-      const open = notice => {
-        if (notice.getState() === 'waiting') {
-          notice.open();
-          if (this._openNotices >= this.maxOpen) {
-            return false;
-          }
-        }
-      };
-      if (this.maxStrategy === 'wait') {
-        // Check for the next waiting notice and open it.
-        this.forEach(open, {
-          start: notice,
-          dir: 'next'
-        });
-      } else if (this.maxStrategy === 'close' && this.maxClosureCausesWait) {
-        // Check for the last closed notice and re-open it.
-        this.forEach(open, {
-          start: notice,
-          dir: 'older'
-        });
-      }
-    }
-
-    if (this._openNotices <= 0) {
-      this._openNotices = 0;
-      if (this._overlayOpen) {
-        this._removeOverlay();
-      }
-    } else if (!this._collapsingModalState) {
-      this.queuePosition(0);
-    }
-  }
-
-  _handleNoticeOpened(notice) {
-    if (notice.getModuleHandled()) {
-      // We don't deal with notices that are handled by a module.
-      return;
-    }
-
-    this._openNotices++;
-
-    // Check the max in stack.
-    if (
-      !(this.modal === 'ish' && this._overlayOpen) &&
-      this.maxOpen !== Infinity &&
-      this._openNotices > this.maxOpen &&
-      this.maxStrategy === 'close'
-    ) {
-      let toClose = this._openNotices - this.maxOpen;
-      this.forEach(notice => {
-        if (['opening', 'open'].indexOf(notice.getState()) !== -1) {
-          // Close oldest notices, leaving only stack.maxOpen from the stack.
-          notice.close(false, false, this.maxClosureCausesWait);
-          if (notice === this._leader) {
-            this._setLeader(null);
-          }
-          toClose--;
-          return !!toClose;
-        }
-      });
-    }
-
-    if (this.modal === true) {
-      this._insertOverlay();
-    }
-
-    if (
-      this.modal === 'ish' &&
-      (!this._leader ||
-        ['opening', 'open', 'closing'].indexOf(this._leader.getState()) === -1)
-    ) {
-      this._setLeader(notice);
-    }
-
-    if (this.modal === 'ish' && this._overlayOpen) {
-      notice._preventTimerClose(true);
-    }
-  }
-
-  _shouldNoticeWait() {
+  _shouldNoticeWait(notice) {
     return (
+      this._swapping !== notice &&
       !(this.modal === 'ish' && this._overlayOpen) &&
       this.maxOpen !== Infinity &&
       this._openNotices >= this.maxOpen &&
@@ -814,8 +910,14 @@ export default class Stack {
         this._overlay.style.width = `${this.context.scrollWidth}px`;
       }
       // Close the notices on overlay click.
-      this._overlay.addEventListener('click', () => {
+      this._overlay.addEventListener('click', clickEvent => {
         if (this.overlayClose) {
+          this.fire('overlayClose', { clickEvent });
+
+          if (clickEvent.defaultPrevented) {
+            return;
+          }
+
           if (this._leader) {
             // Clear the leader. A new one will be found while closing.
             this._setLeader(null);
@@ -851,6 +953,7 @@ export default class Stack {
       });
     }
     if (this._overlay.parentNode !== this.context) {
+      this.fire('beforeAddOverlay');
       this._overlay.classList.remove('pnotify-modal-overlay-in');
       this._overlay = this.context.insertBefore(
         this._overlay,
@@ -860,6 +963,7 @@ export default class Stack {
       this._overlayInserted = true;
       window.requestAnimationFrame(() => {
         this._overlay.classList.add('pnotify-modal-overlay-in');
+        this.fire('afterAddOverlay');
       });
     }
     this._collapsingModalState = false;
@@ -867,12 +971,15 @@ export default class Stack {
 
   _removeOverlay() {
     if (this._overlay.parentNode) {
+      this.fire('beforeRemoveOverlay');
+
       this._overlay.classList.remove('pnotify-modal-overlay-in');
       this._overlayOpen = false;
       setTimeout(() => {
         this._overlayInserted = false;
         if (this._overlay.parentNode) {
           this._overlay.parentNode.removeChild(this._overlay);
+          this.fire('afterRemoveOverlay');
         }
       }, 250);
       setTimeout(() => {

@@ -180,6 +180,39 @@ export default class Stack extends StackProperties {
   openLast(): void;
 
   /**
+   * If `one` is open, close it and open `theOther`.
+   * @param one The currently open notice.
+   * @param theOther The notice to replace it with.
+   * @param immediate Don't animate the notices, instead open/close immediately.
+   * @param waitAfter Put `one` in a "waiting" state after it's closed.
+   * @returns A promise that is rejected if the swap wasn't successful, or
+   *          resolved once it is.
+   */
+  swap(
+    one: Notice,
+    theOther: Notice,
+    immediate: boolean = false,
+    waitAfter: boolean = false
+  ): Promise;
+
+  /**
+   * Add an event listener.
+   * @param event The event to listen for.
+   * @param callback The function to run when the event occurs.
+   * @returns A function that will remove the event listener when called.
+   */
+  on(event: string, callback: (event?: Event) => void): () => void;
+
+  /**
+   * Fire a lifecycle event's listeners.
+   *
+   * (You probably shouldn't run this yourself.)
+   * @param event The event.
+   * @param detail An object to include on the event as the `detail` property.
+   */
+  fire(event: string, detail: {} = {}): void;
+
+  /**
    * Position all the notices in the stack.
    */
   position(): void;

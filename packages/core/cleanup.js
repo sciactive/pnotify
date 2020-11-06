@@ -6,4 +6,5 @@ const fs = require('fs');
 try {
   fs.unlinkSync('dist/BrightTheme.js');
   fs.unlinkSync('dist/Material.js');
+  fs.unlinkSync('dist/Angeler.js');
 } catch (e) {}

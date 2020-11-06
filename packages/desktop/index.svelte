@@ -123,7 +123,9 @@
     }
   }
 
-  self.setModuleHandled(true);
+  $: {
+    self.setModuleHandled(_permission);
+  }
 
   self.on('pnotify:beforeOpen', () => {
     if (!_permission) {

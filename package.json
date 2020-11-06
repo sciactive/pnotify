@@ -62,7 +62,8 @@
     "husky": "^4.2.5",
     "lerna": "^3.20.2",
     "prettier": "^1.19.1",
-    "prettier-plugin-svelte": "^0.7.0"
+    "prettier-plugin-svelte": "^0.7.0",
+    "svelte": "^3.29.4"
   },
   "dependencies": {
     "@pnotify/animate": "5.1.2",
