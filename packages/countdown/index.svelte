@@ -7,7 +7,7 @@
 </script>
 
 <script>
-  import { onDestroy } from 'svelte';
+  import { onMount, onDestroy } from 'svelte';
 
   // The PNotify notice.
   export let self = null;
@@ -19,6 +19,9 @@
   let _timer = self.getTimer();
   let _msLeft = 0;
   let _percent = 100;
+  let ival;
+  let offUpdate;
+  let offAfterOpen;
 
   $: showCountdown =
     ['opening', 'open', 'closing'].indexOf(_state) !== -1 &&
@@ -27,24 +30,31 @@
   $: timeStart =
     showCountdown && _timer && _timer !== 'prevented' ? new Date() : null;
 
-  const ival = setInterval(() => {
-    if (showCountdown) {
-      if (timeStart) {
-        _msLeft = self.delay - (new Date() - timeStart);
-        _percent = (_msLeft / self.delay) * 100;
-      } else {
-        _percent = _state === 'closing' ? 0 : 100;
-      }
-    }
-  }, 100);
-
-  const onUpdateRemover = self.on('pnotify:update', () => {
+  const getValues = () => {
     _state = self.getState();
     _timer = self.getTimer();
+  };
+
+  onMount(() => {
+    offUpdate = self.on('pnotify:update', getValues);
+    offAfterOpen = self.on('pnotify:afterOpen', getValues);
+
+    ival = setInterval(() => {
+      console.log({ showCountdown, timeStart });
+      if (showCountdown) {
+        if (timeStart) {
+          _msLeft = self.delay - (new Date() - timeStart);
+          _percent = (_msLeft / self.delay) * 100;
+        } else {
+          _percent = _state === 'closing' ? 0 : 100;
+        }
+      }
+    }, 100);
   });
 
   onDestroy(() => {
-    onUpdateRemover();
+    offUpdate && offUpdate();
+    offAfterOpen && offAfterOpen();
     clearInterval(ival);
   });
 </script>
