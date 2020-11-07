@@ -18,6 +18,7 @@ export default class Stack {
         modalishFlash: true,
         overlayClose: true,
         overlayClosesPinned: false,
+        positioned: true,
         context: (window && document.body) || null
       },
       options
@@ -212,7 +213,7 @@ export default class Stack {
 
   position() {
     // Reset the next position data.
-    if (this._length > 0) {
+    if (this.positioned && this._length > 0) {
       this.fire('beforePosition');
       this._resetPositionData();
       this.forEach(
@@ -244,7 +245,11 @@ export default class Stack {
 
   // Position the notice.
   _positionNotice(notice, masking = notice === this._masking) {
-    // Get the notice's stack.
+    if (!this.positioned) {
+      return;
+    }
+
+    // Get the notice's element.
     const elem = notice.refs.elem;
     if (!elem) {
       return;

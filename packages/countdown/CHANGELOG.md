@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.2.0](https://github.com/sciactive/pnotify/compare/v5.1.2...v5.2.0) (2020-11-06)
+
+
+### Bug Fixes
+
+* fix an issue with Countdown module not updating bar ([860ef8e](https://github.com/sciactive/pnotify/commit/860ef8ed0d7fbfbc095a27d0d3637ec7455bdda7))
+* fix countdown bar appearance in Angeler theme ([ec5d7f1](https://github.com/sciactive/pnotify/commit/ec5d7f13b31f81fda7cea57ef1baa67f7c99f8f2))
+
+
+
+
+
 ## [5.1.2](https://github.com/sciactive/pnotify/compare/v5.1.1...v5.1.2) (2020-04-29)
 
 **Note:** Version bump only for package @pnotify/countdown

@@ -914,7 +914,7 @@
   bind:this={refs.elem}
   data-pnotify
   use:forwardEvents
-  class={`pnotify ${icon !== false ? 'pnotify-with-icon' : ''} ${getStyle('elem')} pnotify-mode-${mode} ${addClass} ${_animatingClass} ${_moveClass} ${_stackDirClass} ${animation === 'fade' ? `pnotify-fade-${animateSpeed}` : ''} ${_modal ? `pnotify-modal ${addModalClass}` : addModelessClass} ${_masking ? 'pnotify-masking' : ''} ${_maskingIn ? 'pnotify-masking-in' : ''} ${_moduleClasses.elem.join(' ')}`}
+  class={`pnotify ${!stack || stack.positioned ? 'pnotify-positioned' : ''} ${icon !== false ? 'pnotify-with-icon' : ''} ${getStyle('elem')} pnotify-mode-${mode} ${addClass} ${_animatingClass} ${_moveClass} ${_stackDirClass} ${animation === 'fade' ? `pnotify-fade-${animateSpeed}` : ''} ${_modal ? `pnotify-modal ${addModalClass}` : addModelessClass} ${_masking ? 'pnotify-masking' : ''} ${_maskingIn ? 'pnotify-masking-in' : ''} ${_moduleClasses.elem.join(' ')}`}
   aria-live="assertive"
   role="alertdialog"
   on:mouseenter={handleInteraction}
@@ -1013,7 +1013,7 @@
 
 <style>
   /* -- Notice */
-  :global(body > .pnotify) {
+  :global(body > .pnotify.pnotify-positioned) {
     /* Notices in the body context should be fixed to the viewport. */
     position: fixed;
     /* Ensures notices are above everything */
@@ -1023,12 +1023,14 @@
     z-index: 100042;
   }
   :global(.pnotify) {
-    position: absolute;
     height: auto;
-    z-index: 1;
     display: none;
     transition: opacity 0.1s linear;
     opacity: 0;
+  }
+  :global(.pnotify.pnotify-positioned) {
+    position: absolute;
+    z-index: 1;
   }
   :global(.pnotify.pnotify-modal) {
     z-index: 3;

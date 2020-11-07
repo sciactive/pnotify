@@ -1,6 +1,6 @@
 {
   "name": "pnotify",
-  "version": "5.1.2",
+  "version": "5.2.0",
   "description": "Beautiful notifications and prompts.",
   "keywords": [
     "notice",
@@ -57,8 +57,8 @@
     }
   },
   "devDependencies": {
-    "@commitlint/cli": "^8.3.5",
-    "@commitlint/config-conventional": "^8.3.4",
+    "@commitlint/cli": "^11.0.0",
+    "@commitlint/config-conventional": "^11.0.0",
     "husky": "^4.2.5",
     "lerna": "^3.20.2",
     "prettier": "^1.19.1",
@@ -66,18 +66,19 @@
     "svelte": "^3.29.4"
   },
   "dependencies": {
-    "@pnotify/animate": "5.1.2",
-    "@pnotify/bootstrap3": "5.1.2",
-    "@pnotify/bootstrap4": "5.1.2",
-    "@pnotify/confirm": "5.1.2",
-    "@pnotify/core": "5.1.2",
-    "@pnotify/countdown": "5.1.2",
-    "@pnotify/desktop": "5.1.2",
-    "@pnotify/font-awesome4": "5.1.2",
-    "@pnotify/font-awesome5": "5.1.2",
-    "@pnotify/font-awesome5-fix": "5.1.2",
-    "@pnotify/glyphicon": "5.1.2",
-    "@pnotify/mobile": "5.1.2",
-    "@pnotify/reference": "5.1.2"
+    "@pnotify/animate": "5.2.0",
+    "@pnotify/bootstrap3": "5.2.0",
+    "@pnotify/bootstrap4": "5.2.0",
+    "@pnotify/confirm": "5.2.0",
+    "@pnotify/core": "5.2.0",
+    "@pnotify/countdown": "5.2.0",
+    "@pnotify/desktop": "5.2.0",
+    "@pnotify/font-awesome4": "5.2.0",
+    "@pnotify/font-awesome5": "5.2.0",
+    "@pnotify/font-awesome5-fix": "5.2.0",
+    "@pnotify/glyphicon": "5.2.0",
+    "@pnotify/mobile": "5.2.0",
+    "@pnotify/paginate": "5.2.0",
+    "@pnotify/reference": "5.2.0"
   }
 }

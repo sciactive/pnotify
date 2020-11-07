@@ -224,6 +224,11 @@
         width: 70%;
         border-radius: 0;
       }
+
+      /* Unpositioned notices margin. */
+      #unpositioned-context > * {
+        margin-bottom: 1em;
+      }
     </style>
 
     <!-- Demo Code -->
@@ -3915,6 +3920,81 @@
           >
             Error
           </button>
+          <br />
+          <script type="text/javascript">
+            window.showUnpositionedStack = function showUnpositionedStack(
+              type
+            ) {
+              if (typeof window.unpositionedStack === 'undefined') {
+                window.unpositionedStack = new PNotify.Stack({
+                  maxOpen: Infinity,
+                  modal: false,
+                  positioned: false,
+                  context: document.getElementById('unpositioned-context')
+                });
+              }
+              const opts = {
+                title: 'Over Here',
+                text:
+                  "I'm in an unpositioned stack. That means I'm not taken out of the flow, and my position is determined by the browser.",
+                width: '100%',
+                shadow: false,
+                stack: window.unpositionedStack
+              };
+              switch (type) {
+                case 'error':
+                  opts.title = 'Oh No';
+                  opts.text = 'Watch out for that water tower!';
+                  opts.type = 'error';
+                  break;
+                case 'info':
+                  opts.title = 'Breaking News';
+                  opts.text = 'Have you met Ted?';
+                  opts.type = 'info';
+                  break;
+                case 'success':
+                  opts.title = 'Good News Everyone';
+                  opts.text =
+                    "I've invented a device that bites shiny metal asses.";
+                  opts.type = 'success';
+                  break;
+              }
+              PNotify.alert(opts);
+            };
+          </script>
+          Unpositioned Stack:<br />
+          <button
+            class="btn btn-light my-1 source"
+            onclick="
+              showUnpositionedStack('notice');
+            "
+          >
+            Notice
+          </button>
+          <button
+            class="btn btn-light my-1 source"
+            onclick="
+              showUnpositionedStack('info');
+            "
+          >
+            Info
+          </button>
+          <button
+            class="btn btn-light my-1 source"
+            onclick="
+              showUnpositionedStack('success');
+            "
+          >
+            Success
+          </button>
+          <button
+            class="btn btn-light my-1 source"
+            onclick="
+              showUnpositionedStack('error');
+            "
+          >
+            Error
+          </button>
           <div class="row justify-content-md-center mt-3">
             <div class="col-md-10">
               <div class="card">
@@ -3927,6 +4007,7 @@
                     <h3>Stack Context</h3>
                     <hr />
                   </div>
+                  <div id="unpositioned-context"></div>
                   <p>
                     I'm the stack context where notices will be placed. I'm
                     position: relative, so the notices will be positioned

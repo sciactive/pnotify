@@ -1,7 +1,20 @@
-[![npm version](https://img.shields.io/npm/v/pnotify.svg?style=flat&label=npm+version)](https://www.npmjs.com/package/pnotify) [![npm downloads](https://img.shields.io/npm/dm/pnotify.svg?style=flat&label=npm+downloads)](https://www.npmjs.com/package/pnotify) [![jsDelivr Hits](https://img.shields.io/jsdelivr/npm/hm/pnotify.svg?style=flat)](https://www.jsdelivr.com/package/npm/pnotify) [![types](https://img.shields.io/npm/types/@pnotify/core.svg?style=flat)](https://github.com/sciactive/pnotify/blob/master/packages/core/index.d.ts) [![license](https://img.shields.io/github/license/sciactive/pnotify.svg?style=flat)](https://github.com/sciactive/pnotify/blob/master/LICENSE)
-
 <div align="center">
   <img src="includes/logo.png" alt="PNotify" />
+  <div>
+    <a href="https://www.npmjs.com/package/pnotify"><img src="https://img.shields.io/npm/v/pnotify.svg?style=flat&label=npm+version" title="npm version" /></a>
+    <a href="https://github.com/sciactive/pnotify/blob/master/packages/core/index.d.ts"><img src="https://img.shields.io/npm/types/@pnotify/core.svg?style=flat" title="types" /></a>
+    <a href="https://github.com/sciactive/pnotify/blob/master/LICENSE"><img src="https://img.shields.io/github/license/sciactive/pnotify.svg?style=flat" title="license" /></a>
+  </div>
+  <div>
+    v4:
+    <a href="https://www.npmjs.com/package/pnotify"><img src="https://img.shields.io/npm/dm/pnotify.svg?style=flat&label=npm+downloads" title="npm downloads" /></a>
+    <a href="https://www.jsdelivr.com/package/npm/pnotify"><img src="https://img.shields.io/jsdelivr/npm/hm/pnotify.svg?style=flat" title="jsDelivr Hits" /></a>
+  </div>
+  <div>
+    v5:
+    <a href="https://www.npmjs.com/package/@pnotify/core"><img src="https://img.shields.io/npm/dm/@pnotify/core.svg?style=flat&label=npm+downloads" title="npm downloads" /></a>
+    <a href="https://www.jsdelivr.com/package/npm/@pnotify/core"><img src="https://img.shields.io/jsdelivr/npm/hm/@pnotify/core.svg?style=flat" title="jsDelivr Hits" /></a>
+  </div>
 </div>
 
 A JavaScript/TypeScript notification, confirmation, and prompt library.
@@ -1101,6 +1114,8 @@ Stack options and their defaults:
   Whether clicking on the modal overlay should close the stack's notices.
 * `overlayClosesPinned: false`<br>
   Whether clicking on the modal to close notices also closes notices that have been pinned (`hide === false`).
+* `positioned: true`<br>
+  Whether the notices in this stack are positioned by the stack. If false, the notices are simply part of the normal flow.
 * `context: document.body`<br>
   The DOM element this stack's notices should appear in.
 

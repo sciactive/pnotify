@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.2.0](https://github.com/sciactive/pnotify/compare/v5.1.2...v5.2.0) (2020-11-06)
+
+
+### Bug Fixes
+
+* fix positioning of fallback desktop notice in modalish stacks ([66ea908](https://github.com/sciactive/pnotify/commit/66ea9085292ad16ecf2035ee797c492413f21189))
+
+
+
+
+
 ## [5.1.2](https://github.com/sciactive/pnotify/compare/v5.1.1...v5.1.2) (2020-04-29)
 
 **Note:** Version bump only for package @pnotify/desktop
