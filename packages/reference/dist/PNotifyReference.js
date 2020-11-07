@@ -1,7 +1,7 @@
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (global = global || self, factory(global.PNotifyReference = {}));
+  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.PNotifyReference = {}));
 }(this, (function (exports) { 'use strict';
 
   function _typeof(obj) {
@@ -103,11 +103,13 @@
   }
 
   function _createSuper(Derived) {
-    return function () {
+    var hasNativeReflectConstruct = _isNativeReflectConstruct();
+
+    return function _createSuperInternal() {
       var Super = _getPrototypeOf(Derived),
           result;
 
-      if (_isNativeReflectConstruct()) {
+      if (hasNativeReflectConstruct) {
         var NewTarget = _getPrototypeOf(this).constructor;
 
         result = Reflect.construct(Super, arguments, NewTarget);
@@ -171,7 +173,7 @@
     if (typeof o === "string") return _arrayLikeToArray(o, minLen);
     var n = Object.prototype.toString.call(o).slice(8, -1);
     if (n === "Object" && o.constructor) n = o.constructor.name;
-    if (n === "Map" || n === "Set") return Array.from(n);
+    if (n === "Map" || n === "Set") return Array.from(o);
     if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
   }
 
@@ -211,6 +213,10 @@
 
   function safe_not_equal(a, b) {
     return a != a ? b == b : a !== b || a && _typeof(a) === 'object' || typeof a === 'function';
+  }
+
+  function is_empty(obj) {
+    return Object.keys(obj).length === 0;
   }
 
   function null_to_empty(value) {
@@ -258,7 +264,7 @@
 
   function set_data(text, data) {
     data = '' + data;
-    if (text.data !== data) text.data = data;
+    if (text.wholeText !== data) text.data = data;
   }
 
   var current_component;
@@ -268,7 +274,7 @@
   }
 
   function get_current_component() {
-    if (!current_component) throw new Error("Function called outside component initialization");
+    if (!current_component) throw new Error('Function called outside component initialization');
     return current_component;
   }
 
@@ -310,6 +316,7 @@
         update(component.$$);
       }
 
+      set_current_component(null);
       dirty_components.length = 0;
 
       while (binding_callbacks.length) {
@@ -429,14 +436,15 @@
       context: new Map(parent_component ? parent_component.$$.context : []),
       // everything else
       callbacks: blank_object(),
-      dirty: dirty
+      dirty: dirty,
+      skip_bound: false
     };
     var ready = false;
     $$.ctx = instance ? instance(component, prop_values, function (i, ret) {
       var value = (arguments.length <= 2 ? 0 : arguments.length - 2) ? arguments.length <= 2 ? undefined : arguments[2] : ret;
 
       if ($$.ctx && not_equal($$.ctx[i], $$.ctx[i] = value)) {
-        if ($$.bound[i]) $$.bound[i](value);
+        if (!$$.skip_bound && $$.bound[i]) $$.bound[i](value);
         if (ready) make_dirty(component, i);
       }
 
@@ -490,7 +498,12 @@
       }
     }, {
       key: "$set",
-      value: function $set() {// overridden by instance, if it has props
+      value: function $set($$props) {
+        if (this.$$set && !is_empty($$props)) {
+          this.$$.skip_bound = true;
+          this.$$set($$props);
+          this.$$.skip_bound = false;
+        }
       }
     }]);
 
@@ -510,6 +523,7 @@
     var button_disabled_value;
     var t2;
     var div;
+    var mounted;
     var dispose;
     return {
       c: function c() {
@@ -533,17 +547,20 @@
         ctx[2];
         attr(div, "class", "pnotify-reference-clearing svelte-1tn3i34");
       },
-      m: function m(target, anchor, remount) {
+      m: function m(target, anchor) {
         insert(target, button, anchor);
         append(button, i);
         append(button, t0);
         append(button, t1);
         insert(target, t2, anchor);
         insert(target, div, anchor);
-        if (remount) dispose();
-        dispose = listen(button, "click",
-        /*doSomething*/
-        ctx[3]);
+
+        if (!mounted) {
+          dispose = listen(button, "click",
+          /*doSomething*/
+          ctx[3]);
+          mounted = true;
+        }
       },
       p: function p(ctx, _ref) {
         var _ref2 = _slicedToArray(_ref, 1),
@@ -587,6 +604,7 @@
         if (detaching) detach(button);
         if (detaching) detach(t2);
         if (detaching) detach(div);
+        mounted = false;
         dispose();
       }
     };
@@ -635,7 +653,7 @@
       }, 20);
     }
 
-    $$self.$set = function ($$props) {
+    $$self.$$set = function ($$props) {
       if ("self" in $$props) $$invalidate(0, self = $$props.self);
       if ("labels" in $$props) $$invalidate(1, labels = $$props.labels);
     };

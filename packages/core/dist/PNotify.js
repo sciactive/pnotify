@@ -1,7 +1,7 @@
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (global = global || self, factory(global.PNotify = {}));
+  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.PNotify = {}));
 }(this, (function (exports) { 'use strict';
 
   function _typeof(obj) {
@@ -169,11 +169,13 @@
   }
 
   function _createSuper(Derived) {
-    return function () {
+    var hasNativeReflectConstruct = _isNativeReflectConstruct();
+
+    return function _createSuperInternal() {
       var Super = _getPrototypeOf(Derived),
           result;
 
-      if (_isNativeReflectConstruct()) {
+      if (hasNativeReflectConstruct) {
         var NewTarget = _getPrototypeOf(this).constructor;
 
         result = Reflect.construct(Super, arguments, NewTarget);
@@ -237,7 +239,7 @@
     if (typeof o === "string") return _arrayLikeToArray(o, minLen);
     var n = Object.prototype.toString.call(o).slice(8, -1);
     if (n === "Object" && o.constructor) n = o.constructor.name;
-    if (n === "Map" || n === "Set") return Array.from(n);
+    if (n === "Map" || n === "Set") return Array.from(o);
     if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
   }
 
@@ -286,6 +288,10 @@
 
   function safe_not_equal(a, b) {
     return a != a ? b == b : a !== b || a && _typeof(a) === 'object' || typeof a === 'function';
+  }
+
+  function is_empty(obj) {
+    return Object.keys(obj).length === 0;
   }
 
   function action_destroyer(action_result) {
@@ -337,7 +343,7 @@
 
   function set_data(text, data) {
     data = '' + data;
-    if (text.data !== data) text.data = data;
+    if (text.wholeText !== data) text.data = data;
   }
 
   function custom_event(type, detail) {
@@ -347,39 +353,47 @@
   }
 
   var HtmlTag = /*#__PURE__*/function () {
-    function HtmlTag(html) {
-      var anchor = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+    function HtmlTag() {
+      var anchor = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
 
       _classCallCheck(this, HtmlTag);
 
-      this.e = element('div');
       this.a = anchor;
-      this.u(html);
+      this.e = this.n = null;
     }
 
     _createClass(HtmlTag, [{
       key: "m",
-      value: function m(target) {
-        var anchor = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+      value: function m(html, target) {
+        var anchor = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
 
-        for (var i = 0; i < this.n.length; i += 1) {
-          insert(target, this.n[i], anchor);
+        if (!this.e) {
+          this.e = element(target.nodeName);
+          this.t = target;
+          this.h(html);
         }
 
-        this.t = target;
+        this.i(anchor);
       }
     }, {
-      key: "u",
-      value: function u(html) {
+      key: "h",
+      value: function h(html) {
         this.e.innerHTML = html;
         this.n = Array.from(this.e.childNodes);
+      }
+    }, {
+      key: "i",
+      value: function i(anchor) {
+        for (var i = 0; i < this.n.length; i += 1) {
+          insert(this.t, this.n[i], anchor);
+        }
       }
     }, {
       key: "p",
       value: function p(html) {
         this.d();
-        this.u(html);
-        this.m(this.t, this.a);
+        this.h(html);
+        this.i(this.a);
       }
     }, {
       key: "d",
@@ -398,7 +412,7 @@
   }
 
   function get_current_component() {
-    if (!current_component) throw new Error("Function called outside component initialization");
+    if (!current_component) throw new Error('Function called outside component initialization');
     return current_component;
   }
 
@@ -478,6 +492,7 @@
         update(component.$$);
       }
 
+      set_current_component(null);
       dirty_components.length = 0;
 
       while (binding_callbacks.length) {
@@ -563,7 +578,7 @@
     }
   }
 
-  var globals = typeof window !== 'undefined' ? window : global;
+  var globals = typeof window !== 'undefined' ? window : typeof globalThis !== 'undefined' ? globalThis : global;
 
   function outro_and_destroy_block(block, lookup) {
     transition_out(block, 1, 1, function () {
@@ -607,7 +622,7 @@
 
     function insert(block) {
       transition_in(block, 1);
-      block.m(node, next, lookup.has(block.key));
+      block.m(node, next);
       lookup.set(block.key, block);
       next = block.first;
       n--;
@@ -768,14 +783,15 @@
       context: new Map(parent_component ? parent_component.$$.context : []),
       // everything else
       callbacks: blank_object(),
-      dirty: dirty
+      dirty: dirty,
+      skip_bound: false
     };
     var ready = false;
     $$.ctx = instance ? instance(component, prop_values, function (i, ret) {
       var value = (arguments.length <= 2 ? 0 : arguments.length - 2) ? arguments.length <= 2 ? undefined : arguments[2] : ret;
 
       if ($$.ctx && not_equal($$.ctx[i], $$.ctx[i] = value)) {
-        if ($$.bound[i]) $$.bound[i](value);
+        if (!$$.skip_bound && $$.bound[i]) $$.bound[i](value);
         if (ready) make_dirty(component, i);
       }
 
@@ -829,7 +845,12 @@
       }
     }, {
       key: "$set",
-      value: function $set() {// overridden by instance, if it has props
+      value: function $set($$props) {
+        if (this.$$set && !is_empty($$props)) {
+          this.$$.skip_bound = true;
+          this.$$set($$props);
+          this.$$.skip_bound = false;
+        }
       }
     }]);
 
@@ -856,6 +877,7 @@
         modalishFlash: true,
         overlayClose: true,
         overlayClosesPinned: false,
+        positioned: true,
         context: window && document.body || null
       }, options); // Validate the options.
 
@@ -1041,7 +1063,7 @@
         var _this3 = this;
 
         // Reset the next position data.
-        if (this._length > 0) {
+        if (this.positioned && this._length > 0) {
           this.fire('beforePosition');
 
           this._resetPositionData();
@@ -1087,7 +1109,12 @@
       key: "_positionNotice",
       value: function _positionNotice(notice) {
         var masking = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : notice === this._masking;
-        // Get the notice's stack.
+
+        if (!this.positioned) {
+          return;
+        } // Get the notice's element.
+
+
         var elem = notice.refs.elem;
 
         if (!elem) {
@@ -1955,12 +1982,13 @@
 
   function create_each_block_3(key_1, ctx) {
     var first;
+    var switch_instance;
     var switch_instance_anchor;
     var current;
     var switch_instance_spread_levels = [{
       self:
       /*self*/
-      ctx[41]
+      ctx[42]
     },
     /*options*/
     ctx[110]];
@@ -1981,7 +2009,7 @@
     }
 
     if (switch_value) {
-      var switch_instance = new switch_value(switch_props());
+      switch_instance = new switch_value(switch_props());
     }
 
     return {
@@ -2006,15 +2034,15 @@
       p: function p(ctx, dirty) {
         var switch_instance_changes = dirty[1] &
         /*self, modulesPrependContainer*/
-        1088 ? get_spread_update(switch_instance_spread_levels, [dirty[1] &
+        2176 ? get_spread_update(switch_instance_spread_levels, [dirty[1] &
         /*self*/
-        1024 && {
+        2048 && {
           self:
           /*self*/
-          ctx[41]
+          ctx[42]
         }, dirty[1] &
         /*modulesPrependContainer*/
-        64 && get_spread_object(
+        128 && get_spread_object(
         /*options*/
         ctx[110])]) : {};
 
@@ -2066,6 +2094,7 @@
     var span_class_value;
     var div_class_value;
     var div_title_value;
+    var mounted;
     var dispose;
     return {
       c: function c() {
@@ -2073,55 +2102,59 @@
         span = element("span");
         attr(span, "class", span_class_value =
         /*getIcon*/
-        ctx[21]("closer"));
+        ctx[22]("closer"));
         attr(div, "class", div_class_value = "pnotify-closer ".concat(
         /*getStyle*/
-        ctx[20]("closer"), " ").concat((!
+        ctx[21]("closer"), " ").concat((!
         /*closerHover*/
-        ctx[16] ||
+        ctx[17] ||
         /*_interacting*/
-        ctx[25]) && !
+        ctx[26]) && !
         /*_masking*/
-        ctx[27] ? "" : "pnotify-hidden"));
+        ctx[28] ? "" : "pnotify-hidden"));
         attr(div, "role", "button");
         attr(div, "tabindex", "0");
         attr(div, "title", div_title_value =
         /*labels*/
-        ctx[19].close);
+        ctx[20].close);
       },
-      m: function m(target, anchor, remount) {
+      m: function m(target, anchor) {
         insert(target, div, anchor);
         append(div, span);
-        if (remount) dispose();
-        dispose = listen(div, "click",
-        /*click_handler*/
-        ctx[101]);
+
+        if (!mounted) {
+          dispose = listen(div, "click",
+          /*click_handler*/
+          ctx[81]);
+          mounted = true;
+        }
       },
       p: function p(ctx, dirty) {
         if (dirty[0] &
         /*closerHover, _interacting, _masking*/
-        167837696 && div_class_value !== (div_class_value = "pnotify-closer ".concat(
+        335675392 && div_class_value !== (div_class_value = "pnotify-closer ".concat(
         /*getStyle*/
-        ctx[20]("closer"), " ").concat((!
+        ctx[21]("closer"), " ").concat((!
         /*closerHover*/
-        ctx[16] ||
+        ctx[17] ||
         /*_interacting*/
-        ctx[25]) && !
+        ctx[26]) && !
         /*_masking*/
-        ctx[27] ? "" : "pnotify-hidden"))) {
+        ctx[28] ? "" : "pnotify-hidden"))) {
           attr(div, "class", div_class_value);
         }
 
         if (dirty[0] &
         /*labels*/
-        524288 && div_title_value !== (div_title_value =
+        1048576 && div_title_value !== (div_title_value =
         /*labels*/
-        ctx[19].close)) {
+        ctx[20].close)) {
           attr(div, "title", div_title_value);
         }
       },
       d: function d(detaching) {
         if (detaching) detach(div);
+        mounted = false;
         dispose();
       }
     };
@@ -2135,6 +2168,7 @@
     var div_class_value;
     var div_aria_pressed_value;
     var div_title_value;
+    var mounted;
     var dispose;
     return {
       c: function c() {
@@ -2142,94 +2176,98 @@
         span = element("span");
         attr(span, "class", span_class_value = "".concat(
         /*getIcon*/
-        ctx[21]("sticker"), " ").concat(
+        ctx[22]("sticker"), " ").concat(
         /*hide*/
-        ctx[2] ?
+        ctx[3] ?
         /*getIcon*/
-        ctx[21]("unstuck") :
+        ctx[22]("unstuck") :
         /*getIcon*/
-        ctx[21]("stuck")));
+        ctx[22]("stuck")));
         attr(div, "class", div_class_value = "pnotify-sticker ".concat(
         /*getStyle*/
-        ctx[20]("sticker"), " ").concat((!
+        ctx[21]("sticker"), " ").concat((!
         /*stickerHover*/
-        ctx[18] ||
+        ctx[19] ||
         /*_interacting*/
-        ctx[25]) && !
+        ctx[26]) && !
         /*_masking*/
-        ctx[27] ? "" : "pnotify-hidden"));
+        ctx[28] ? "" : "pnotify-hidden"));
         attr(div, "role", "button");
         attr(div, "aria-pressed", div_aria_pressed_value = !
         /*hide*/
-        ctx[2]);
+        ctx[3]);
         attr(div, "tabindex", "0");
         attr(div, "title", div_title_value =
         /*hide*/
-        ctx[2] ?
+        ctx[3] ?
         /*labels*/
-        ctx[19].stick :
+        ctx[20].stick :
         /*labels*/
-        ctx[19].unstick);
+        ctx[20].unstick);
       },
-      m: function m(target, anchor, remount) {
+      m: function m(target, anchor) {
         insert(target, div, anchor);
         append(div, span);
-        if (remount) dispose();
-        dispose = listen(div, "click",
-        /*click_handler_1*/
-        ctx[102]);
+
+        if (!mounted) {
+          dispose = listen(div, "click",
+          /*click_handler_1*/
+          ctx[82]);
+          mounted = true;
+        }
       },
       p: function p(ctx, dirty) {
         if (dirty[0] &
         /*hide*/
-        4 && span_class_value !== (span_class_value = "".concat(
+        8 && span_class_value !== (span_class_value = "".concat(
         /*getIcon*/
-        ctx[21]("sticker"), " ").concat(
+        ctx[22]("sticker"), " ").concat(
         /*hide*/
-        ctx[2] ?
+        ctx[3] ?
         /*getIcon*/
-        ctx[21]("unstuck") :
+        ctx[22]("unstuck") :
         /*getIcon*/
-        ctx[21]("stuck")))) {
+        ctx[22]("stuck")))) {
           attr(span, "class", span_class_value);
         }
 
         if (dirty[0] &
         /*stickerHover, _interacting, _masking*/
-        168034304 && div_class_value !== (div_class_value = "pnotify-sticker ".concat(
+        336068608 && div_class_value !== (div_class_value = "pnotify-sticker ".concat(
         /*getStyle*/
-        ctx[20]("sticker"), " ").concat((!
+        ctx[21]("sticker"), " ").concat((!
         /*stickerHover*/
-        ctx[18] ||
+        ctx[19] ||
         /*_interacting*/
-        ctx[25]) && !
+        ctx[26]) && !
         /*_masking*/
-        ctx[27] ? "" : "pnotify-hidden"))) {
+        ctx[28] ? "" : "pnotify-hidden"))) {
           attr(div, "class", div_class_value);
         }
 
         if (dirty[0] &
         /*hide*/
-        4 && div_aria_pressed_value !== (div_aria_pressed_value = !
+        8 && div_aria_pressed_value !== (div_aria_pressed_value = !
         /*hide*/
-        ctx[2])) {
+        ctx[3])) {
           attr(div, "aria-pressed", div_aria_pressed_value);
         }
 
         if (dirty[0] &
         /*hide, labels*/
-        524292 && div_title_value !== (div_title_value =
+        1048584 && div_title_value !== (div_title_value =
         /*hide*/
-        ctx[2] ?
+        ctx[3] ?
         /*labels*/
-        ctx[19].stick :
+        ctx[20].stick :
         /*labels*/
-        ctx[19].unstick)) {
+        ctx[20].unstick)) {
           attr(div, "title", div_title_value);
         }
       },
       d: function d(detaching) {
         if (detaching) detach(div);
+        mounted = false;
         dispose();
       }
     };
@@ -2247,36 +2285,36 @@
         span = element("span");
         attr(span, "class", span_class_value =
         /*icon*/
-        ctx[12] === true ?
+        ctx[13] === true ?
         /*getIcon*/
-        ctx[21](
+        ctx[22](
         /*type*/
-        ctx[3]) :
+        ctx[4]) :
         /*icon*/
-        ctx[12]);
+        ctx[13]);
         attr(div, "class", div_class_value = "pnotify-icon ".concat(
         /*getStyle*/
-        ctx[20]("icon")));
+        ctx[21]("icon")));
       },
       m: function m(target, anchor) {
         insert(target, div, anchor);
         append(div, span);
         /*div_binding*/
 
-        ctx[103](div);
+        ctx[83](div);
       },
       p: function p(ctx, dirty) {
         if (dirty[0] &
         /*icon, type*/
-        4104 && span_class_value !== (span_class_value =
+        8208 && span_class_value !== (span_class_value =
         /*icon*/
-        ctx[12] === true ?
+        ctx[13] === true ?
         /*getIcon*/
-        ctx[21](
+        ctx[22](
         /*type*/
-        ctx[3]) :
+        ctx[4]) :
         /*icon*/
-        ctx[12])) {
+        ctx[13])) {
           attr(span, "class", span_class_value);
         }
       },
@@ -2284,7 +2322,7 @@
         if (detaching) detach(div);
         /*div_binding*/
 
-        ctx[103](null);
+        ctx[83](null);
       }
     };
   } // (971:6) {#each modulesPrependContent as [module, options] (module)}
@@ -2292,12 +2330,13 @@
 
   function create_each_block_2(key_1, ctx) {
     var first;
+    var switch_instance;
     var switch_instance_anchor;
     var current;
     var switch_instance_spread_levels = [{
       self:
       /*self*/
-      ctx[41]
+      ctx[42]
     },
     /*options*/
     ctx[110]];
@@ -2318,7 +2357,7 @@
     }
 
     if (switch_value) {
-      var switch_instance = new switch_value(switch_props());
+      switch_instance = new switch_value(switch_props());
     }
 
     return {
@@ -2343,15 +2382,15 @@
       p: function p(ctx, dirty) {
         var switch_instance_changes = dirty[1] &
         /*self, modulesPrependContent*/
-        1152 ? get_spread_update(switch_instance_spread_levels, [dirty[1] &
+        2304 ? get_spread_update(switch_instance_spread_levels, [dirty[1] &
         /*self*/
-        1024 && {
+        2048 && {
           self:
           /*self*/
-          ctx[41]
+          ctx[42]
         }, dirty[1] &
         /*modulesPrependContent*/
-        128 && get_spread_object(
+        256 && get_spread_object(
         /*options*/
         ctx[110])]) : {};
 
@@ -2402,26 +2441,26 @@
     var div_class_value;
     var if_block = !
     /*_titleElement*/
-    ctx[33] && create_if_block_4(ctx);
+    ctx[34] && create_if_block_4(ctx);
     return {
       c: function c() {
         div = element("div");
         if (if_block) if_block.c();
         attr(div, "class", div_class_value = "pnotify-title ".concat(
         /*getStyle*/
-        ctx[20]("title")));
+        ctx[21]("title")));
       },
       m: function m(target, anchor) {
         insert(target, div, anchor);
         if (if_block) if_block.m(div, null);
         /*div_binding_1*/
 
-        ctx[104](div);
+        ctx[84](div);
       },
       p: function p(ctx, dirty) {
         if (!
         /*_titleElement*/
-        ctx[33]) {
+        ctx[34]) {
           if (if_block) {
             if_block.p(ctx, dirty);
           } else {
@@ -2439,7 +2478,7 @@
         if (if_block) if_block.d();
         /*div_binding_1*/
 
-        ctx[104](null);
+        ctx[84](null);
       }
     };
   } // (979:10) {#if !_titleElement}
@@ -2451,7 +2490,7 @@
     function select_block_type(ctx, dirty) {
       if (
       /*titleTrusted*/
-      ctx[5]) return create_if_block_5;
+      ctx[6]) return create_if_block_5;
       return create_else_block_1;
     }
 
@@ -2495,7 +2534,7 @@
         span = element("span");
         t = text(
         /*title*/
-        ctx[4]);
+        ctx[5]);
         attr(span, "class", "pnotify-pre-line");
       },
       m: function m(target, anchor) {
@@ -2505,9 +2544,9 @@
       p: function p(ctx, dirty) {
         if (dirty[0] &
         /*title*/
-        16) set_data(t,
+        32) set_data(t,
         /*title*/
-        ctx[4]);
+        ctx[5]);
       },
       d: function d(detaching) {
         if (detaching) detach(span);
@@ -2518,23 +2557,27 @@
 
   function create_if_block_5(ctx) {
     var html_tag;
+    var html_anchor;
     return {
       c: function c() {
-        html_tag = new HtmlTag(
-        /*title*/
-        ctx[4], null);
+        html_anchor = empty();
+        html_tag = new HtmlTag(html_anchor);
       },
       m: function m(target, anchor) {
-        html_tag.m(target, anchor);
+        html_tag.m(
+        /*title*/
+        ctx[5], target, anchor);
+        insert(target, html_anchor, anchor);
       },
       p: function p(ctx, dirty) {
         if (dirty[0] &
         /*title*/
-        16) html_tag.p(
+        32) html_tag.p(
         /*title*/
-        ctx[4]);
+        ctx[5]);
       },
       d: function d(detaching) {
+        if (detaching) detach(html_anchor);
         if (detaching) html_tag.d();
       }
     };
@@ -2546,19 +2589,19 @@
     var div_class_value;
     var if_block = !
     /*_textElement*/
-    ctx[34] && create_if_block_1(ctx);
+    ctx[35] && create_if_block_1(ctx);
     return {
       c: function c() {
         div = element("div");
         if (if_block) if_block.c();
         attr(div, "class", div_class_value = "pnotify-text ".concat(
         /*getStyle*/
-        ctx[20]("text"), " ").concat(
+        ctx[21]("text"), " ").concat(
         /*_maxTextHeightStyle*/
-        ctx[32] === "" ? "" : "pnotify-text-with-max-height"));
+        ctx[33] === "" ? "" : "pnotify-text-with-max-height"));
         attr(div, "style",
         /*_maxTextHeightStyle*/
-        ctx[32]);
+        ctx[33]);
         attr(div, "role", "alert");
       },
       m: function m(target, anchor) {
@@ -2566,12 +2609,12 @@
         if (if_block) if_block.m(div, null);
         /*div_binding_2*/
 
-        ctx[105](div);
+        ctx[85](div);
       },
       p: function p(ctx, dirty) {
         if (!
         /*_textElement*/
-        ctx[34]) {
+        ctx[35]) {
           if (if_block) {
             if_block.p(ctx, dirty);
           } else {
@@ -2586,20 +2629,20 @@
 
         if (dirty[1] &
         /*_maxTextHeightStyle*/
-        2 && div_class_value !== (div_class_value = "pnotify-text ".concat(
+        4 && div_class_value !== (div_class_value = "pnotify-text ".concat(
         /*getStyle*/
-        ctx[20]("text"), " ").concat(
+        ctx[21]("text"), " ").concat(
         /*_maxTextHeightStyle*/
-        ctx[32] === "" ? "" : "pnotify-text-with-max-height"))) {
+        ctx[33] === "" ? "" : "pnotify-text-with-max-height"))) {
           attr(div, "class", div_class_value);
         }
 
         if (dirty[1] &
         /*_maxTextHeightStyle*/
-        2) {
+        4) {
           attr(div, "style",
           /*_maxTextHeightStyle*/
-          ctx[32]);
+          ctx[33]);
         }
       },
       d: function d(detaching) {
@@ -2607,7 +2650,7 @@
         if (if_block) if_block.d();
         /*div_binding_2*/
 
-        ctx[105](null);
+        ctx[85](null);
       }
     };
   } // (995:10) {#if !_textElement}
@@ -2619,7 +2662,7 @@
     function select_block_type_1(ctx, dirty) {
       if (
       /*textTrusted*/
-      ctx[7]) return create_if_block_2;
+      ctx[8]) return create_if_block_2;
       return create_else_block;
     }
 
@@ -2663,7 +2706,7 @@
         span = element("span");
         t = text(
         /*text*/
-        ctx[6]);
+        ctx[7]);
         attr(span, "class", "pnotify-pre-line");
       },
       m: function m(target, anchor) {
@@ -2673,9 +2716,9 @@
       p: function p(ctx, dirty) {
         if (dirty[0] &
         /*text*/
-        64) set_data(t,
+        128) set_data(t,
         /*text*/
-        ctx[6]);
+        ctx[7]);
       },
       d: function d(detaching) {
         if (detaching) detach(span);
@@ -2686,23 +2729,27 @@
 
   function create_if_block_2(ctx) {
     var html_tag;
+    var html_anchor;
     return {
       c: function c() {
-        html_tag = new HtmlTag(
-        /*text*/
-        ctx[6], null);
+        html_anchor = empty();
+        html_tag = new HtmlTag(html_anchor);
       },
       m: function m(target, anchor) {
-        html_tag.m(target, anchor);
+        html_tag.m(
+        /*text*/
+        ctx[7], target, anchor);
+        insert(target, html_anchor, anchor);
       },
       p: function p(ctx, dirty) {
         if (dirty[0] &
         /*text*/
-        64) html_tag.p(
+        128) html_tag.p(
         /*text*/
-        ctx[6]);
+        ctx[7]);
       },
       d: function d(detaching) {
+        if (detaching) detach(html_anchor);
         if (detaching) html_tag.d();
       }
     };
@@ -2711,12 +2758,13 @@
 
   function create_each_block_1(key_1, ctx) {
     var first;
+    var switch_instance;
     var switch_instance_anchor;
     var current;
     var switch_instance_spread_levels = [{
       self:
       /*self*/
-      ctx[41]
+      ctx[42]
     },
     /*options*/
     ctx[110]];
@@ -2737,7 +2785,7 @@
     }
 
     if (switch_value) {
-      var switch_instance = new switch_value(switch_props());
+      switch_instance = new switch_value(switch_props());
     }
 
     return {
@@ -2762,15 +2810,15 @@
       p: function p(ctx, dirty) {
         var switch_instance_changes = dirty[1] &
         /*self, modulesAppendContent*/
-        1280 ? get_spread_update(switch_instance_spread_levels, [dirty[1] &
+        2560 ? get_spread_update(switch_instance_spread_levels, [dirty[1] &
         /*self*/
-        1024 && {
+        2048 && {
           self:
           /*self*/
-          ctx[41]
+          ctx[42]
         }, dirty[1] &
         /*modulesAppendContent*/
-        256 && get_spread_object(
+        512 && get_spread_object(
         /*options*/
         ctx[110])]) : {};
 
@@ -2818,12 +2866,13 @@
 
   function create_each_block(key_1, ctx) {
     var first;
+    var switch_instance;
     var switch_instance_anchor;
     var current;
     var switch_instance_spread_levels = [{
       self:
       /*self*/
-      ctx[41]
+      ctx[42]
     },
     /*options*/
     ctx[110]];
@@ -2844,7 +2893,7 @@
     }
 
     if (switch_value) {
-      var switch_instance = new switch_value(switch_props());
+      switch_instance = new switch_value(switch_props());
     }
 
     return {
@@ -2869,15 +2918,15 @@
       p: function p(ctx, dirty) {
         var switch_instance_changes = dirty[1] &
         /*self, modulesAppendContainer*/
-        1536 ? get_spread_update(switch_instance_spread_levels, [dirty[1] &
+        3072 ? get_spread_update(switch_instance_spread_levels, [dirty[1] &
         /*self*/
-        1024 && {
+        2048 && {
           self:
           /*self*/
-          ctx[41]
+          ctx[42]
         }, dirty[1] &
         /*modulesAppendContainer*/
-        512 && get_spread_object(
+        1024 && get_spread_object(
         /*options*/
         ctx[110])]) : {};
 
@@ -2948,10 +2997,11 @@
     var div2_class_value;
     var forwardEvents_action;
     var current;
+    var mounted;
     var dispose;
     var each_value_3 =
     /*modulesPrependContainer*/
-    ctx[37];
+    ctx[38];
 
     var get_key = function get_key(ctx) {
       return (
@@ -2968,20 +3018,20 @@
 
     var if_block0 =
     /*closer*/
-    ctx[15] && !
+    ctx[16] && !
     /*_nonBlock*/
-    ctx[35] && create_if_block_8(ctx);
+    ctx[36] && create_if_block_8(ctx);
     var if_block1 =
     /*sticker*/
-    ctx[17] && !
+    ctx[18] && !
     /*_nonBlock*/
-    ctx[35] && create_if_block_7(ctx);
+    ctx[36] && create_if_block_7(ctx);
     var if_block2 =
     /*icon*/
-    ctx[12] !== false && create_if_block_6(ctx);
+    ctx[13] !== false && create_if_block_6(ctx);
     var each_value_2 =
     /*modulesPrependContent*/
-    ctx[38];
+    ctx[39];
 
     var get_key_1 = function get_key_1(ctx) {
       return (
@@ -3000,13 +3050,13 @@
 
     var if_block3 =
     /*title*/
-    ctx[4] !== false && create_if_block_3(ctx);
+    ctx[5] !== false && create_if_block_3(ctx);
     var if_block4 =
     /*text*/
-    ctx[6] !== false && create_if_block(ctx);
+    ctx[7] !== false && create_if_block(ctx);
     var each_value_1 =
     /*modulesAppendContent*/
-    ctx[39];
+    ctx[40];
 
     var get_key_2 = function get_key_2(ctx) {
       return (
@@ -3025,7 +3075,7 @@
 
     var each_value =
     /*modulesAppendContainer*/
-    ctx[40];
+    ctx[41];
 
     var get_key_3 = function get_key_3(ctx) {
       return (
@@ -3082,60 +3132,64 @@
 
         attr(div0, "class", div0_class_value = "pnotify-content ".concat(
         /*getStyle*/
-        ctx[20]("content")));
+        ctx[21]("content")));
         attr(div1, "class", div1_class_value = "pnotify-container ".concat(
         /*getStyle*/
-        ctx[20]("container"), " ").concat(
+        ctx[21]("container"), " ").concat(
         /*getStyle*/
-        ctx[20](
+        ctx[21](
         /*type*/
-        ctx[3]), " ").concat(
+        ctx[4]), " ").concat(
         /*shadow*/
-        ctx[14] ? "pnotify-shadow" : "", " ").concat(
+        ctx[15] ? "pnotify-shadow" : "", " ").concat(
         /*_moduleClasses*/
-        ctx[26].container.join(" ")));
+        ctx[27].container.join(" ")));
         attr(div1, "style", div1_style_value = "".concat(
         /*_widthStyle*/
-        ctx[30], " ").concat(
+        ctx[31], " ").concat(
         /*_minHeightStyle*/
-        ctx[31]));
+        ctx[32]));
         attr(div1, "role", "alert");
         attr(div2, "data-pnotify", "");
-        attr(div2, "class", div2_class_value = "pnotify ".concat(
+        attr(div2, "class", div2_class_value = "pnotify ".concat(!
+        /*stack*/
+        ctx[0] ||
+        /*stack*/
+        ctx[0].positioned ? "pnotify-positioned" : "", " ").concat(
         /*icon*/
-        ctx[12] !== false ? "pnotify-with-icon" : "", " ").concat(
+        ctx[13] !== false ? "pnotify-with-icon" : "", " ").concat(
         /*getStyle*/
-        ctx[20]("elem"), " pnotify-mode-").concat(
+        ctx[21]("elem"), " pnotify-mode-").concat(
         /*mode*/
-        ctx[8], " ").concat(
-        /*addClass*/
         ctx[9], " ").concat(
+        /*addClass*/
+        ctx[10], " ").concat(
         /*_animatingClass*/
-        ctx[23], " ").concat(
-        /*_moveClass*/
         ctx[24], " ").concat(
+        /*_moveClass*/
+        ctx[25], " ").concat(
         /*_stackDirClass*/
-        ctx[36], " ").concat(
+        ctx[37], " ").concat(
         /*animation*/
-        ctx[1] === "fade" ? "pnotify-fade-".concat(
+        ctx[2] === "fade" ? "pnotify-fade-".concat(
         /*animateSpeed*/
-        ctx[13]) : "", " ").concat(
+        ctx[14]) : "", " ").concat(
         /*_modal*/
-        ctx[29] ? "pnotify-modal ".concat(
+        ctx[30] ? "pnotify-modal ".concat(
         /*addModalClass*/
-        ctx[10]) :
+        ctx[11]) :
         /*addModelessClass*/
-        ctx[11], " ").concat(
+        ctx[12], " ").concat(
         /*_masking*/
-        ctx[27] ? "pnotify-masking" : "", " ").concat(
+        ctx[28] ? "pnotify-masking" : "", " ").concat(
         /*_maskingIn*/
-        ctx[28] ? "pnotify-masking-in" : "", " ").concat(
+        ctx[29] ? "pnotify-masking-in" : "", " ").concat(
         /*_moduleClasses*/
-        ctx[26].elem.join(" ")));
+        ctx[27].elem.join(" ")));
         attr(div2, "aria-live", "assertive");
         attr(div2, "role", "alertdialog");
       },
-      m: function m(target, anchor, remount) {
+      m: function m(target, anchor) {
         insert(target, div2, anchor);
         append(div2, div1);
 
@@ -3168,7 +3222,7 @@
         /*div0_binding*/
 
 
-        ctx[106](div0);
+        ctx[86](div0);
         append(div1, t7);
 
         for (var _i11 = 0; _i11 < each_blocks.length; _i11 += 1) {
@@ -3177,31 +3231,34 @@
         /*div1_binding*/
 
 
-        ctx[107](div1);
+        ctx[87](div1);
         /*div2_binding*/
 
-        ctx[108](div2);
+        ctx[88](div2);
         current = true;
-        if (remount) run_all(dispose);
-        dispose = [action_destroyer(forwardEvents_action =
-        /*forwardEvents*/
-        ctx[42].call(null, div2)), listen(div2, "mouseenter",
-        /*handleInteraction*/
-        ctx[43]), listen(div2, "mouseleave",
-        /*handleLeaveInteraction*/
-        ctx[44]), listen(div2, "focusin",
-        /*handleInteraction*/
-        ctx[43]), listen(div2, "focusout",
-        /*handleLeaveInteraction*/
-        ctx[44])];
+
+        if (!mounted) {
+          dispose = [action_destroyer(forwardEvents_action =
+          /*forwardEvents*/
+          ctx[43].call(null, div2)), listen(div2, "mouseenter",
+          /*handleInteraction*/
+          ctx[44]), listen(div2, "mouseleave",
+          /*handleLeaveInteraction*/
+          ctx[45]), listen(div2, "focusin",
+          /*handleInteraction*/
+          ctx[44]), listen(div2, "focusout",
+          /*handleLeaveInteraction*/
+          ctx[45])];
+          mounted = true;
+        }
       },
       p: function p(ctx, dirty) {
         if (dirty[1] &
         /*modulesPrependContainer, self*/
-        1088) {
+        2176) {
           var _each_value_ =
           /*modulesPrependContainer*/
-          ctx[37];
+          ctx[38];
           group_outros();
           each_blocks_3 = update_keyed_each(each_blocks_3, dirty, get_key, 1, ctx, _each_value_, each0_lookup, div1, outro_and_destroy_block, create_each_block_3, t0, get_each_context_3);
           check_outros();
@@ -3209,9 +3266,9 @@
 
         if (
         /*closer*/
-        ctx[15] && !
+        ctx[16] && !
         /*_nonBlock*/
-        ctx[35]) {
+        ctx[36]) {
           if (if_block0) {
             if_block0.p(ctx, dirty);
           } else {
@@ -3226,9 +3283,9 @@
 
         if (
         /*sticker*/
-        ctx[17] && !
+        ctx[18] && !
         /*_nonBlock*/
-        ctx[35]) {
+        ctx[36]) {
           if (if_block1) {
             if_block1.p(ctx, dirty);
           } else {
@@ -3243,7 +3300,7 @@
 
         if (
         /*icon*/
-        ctx[12] !== false) {
+        ctx[13] !== false) {
           if (if_block2) {
             if_block2.p(ctx, dirty);
           } else {
@@ -3258,10 +3315,10 @@
 
         if (dirty[1] &
         /*modulesPrependContent, self*/
-        1152) {
+        2304) {
           var _each_value_2 =
           /*modulesPrependContent*/
-          ctx[38];
+          ctx[39];
           group_outros();
           each_blocks_2 = update_keyed_each(each_blocks_2, dirty, get_key_1, 1, ctx, _each_value_2, each1_lookup, div0, outro_and_destroy_block, create_each_block_2, t4, get_each_context_2);
           check_outros();
@@ -3269,7 +3326,7 @@
 
         if (
         /*title*/
-        ctx[4] !== false) {
+        ctx[5] !== false) {
           if (if_block3) {
             if_block3.p(ctx, dirty);
           } else {
@@ -3284,7 +3341,7 @@
 
         if (
         /*text*/
-        ctx[6] !== false) {
+        ctx[7] !== false) {
           if (if_block4) {
             if_block4.p(ctx, dirty);
           } else {
@@ -3299,10 +3356,10 @@
 
         if (dirty[1] &
         /*modulesAppendContent, self*/
-        1280) {
+        2560) {
           var _each_value_3 =
           /*modulesAppendContent*/
-          ctx[39];
+          ctx[40];
           group_outros();
           each_blocks_1 = update_keyed_each(each_blocks_1, dirty, get_key_2, 1, ctx, _each_value_3, each2_lookup, div0, outro_and_destroy_block, create_each_block_1, null, get_each_context_1);
           check_outros();
@@ -3310,10 +3367,10 @@
 
         if (dirty[1] &
         /*modulesAppendContainer, self*/
-        1536) {
+        3072) {
           var _each_value =
           /*modulesAppendContainer*/
-          ctx[40];
+          ctx[41];
           group_outros();
           each_blocks = update_keyed_each(each_blocks, dirty, get_key_3, 1, ctx, _each_value, each3_lookup, div1, outro_and_destroy_block, create_each_block, null, get_each_context);
           check_outros();
@@ -3321,67 +3378,69 @@
 
         if (!current || dirty[0] &
         /*type, shadow, _moduleClasses*/
-        67125256 && div1_class_value !== (div1_class_value = "pnotify-container ".concat(
+        134250512 && div1_class_value !== (div1_class_value = "pnotify-container ".concat(
         /*getStyle*/
-        ctx[20]("container"), " ").concat(
+        ctx[21]("container"), " ").concat(
         /*getStyle*/
-        ctx[20](
+        ctx[21](
         /*type*/
-        ctx[3]), " ").concat(
+        ctx[4]), " ").concat(
         /*shadow*/
-        ctx[14] ? "pnotify-shadow" : "", " ").concat(
+        ctx[15] ? "pnotify-shadow" : "", " ").concat(
         /*_moduleClasses*/
-        ctx[26].container.join(" ")))) {
+        ctx[27].container.join(" ")))) {
           attr(div1, "class", div1_class_value);
         }
 
-        if (!current || dirty[0] &
+        if (!current || dirty[1] &
+        /*_widthStyle, _minHeightStyle*/
+        3 && div1_style_value !== (div1_style_value = "".concat(
         /*_widthStyle*/
-        1073741824 | dirty[1] &
+        ctx[31], " ").concat(
         /*_minHeightStyle*/
-        1 && div1_style_value !== (div1_style_value = "".concat(
-        /*_widthStyle*/
-        ctx[30], " ").concat(
-        /*_minHeightStyle*/
-        ctx[31]))) {
+        ctx[32]))) {
           attr(div1, "style", div1_style_value);
         }
 
         if (!current || dirty[0] &
-        /*icon, mode, addClass, _animatingClass, _moveClass, animation, animateSpeed, _modal, addModalClass, addModelessClass, _masking, _maskingIn, _moduleClasses*/
-        1031814914 | dirty[1] &
+        /*stack, icon, mode, addClass, _animatingClass, _moveClass, animation, animateSpeed, _modal, addModalClass, addModelessClass, _masking, _maskingIn, _moduleClasses*/
+        2063629829 | dirty[1] &
         /*_stackDirClass*/
-        32 && div2_class_value !== (div2_class_value = "pnotify ".concat(
+        64 && div2_class_value !== (div2_class_value = "pnotify ".concat(!
+        /*stack*/
+        ctx[0] ||
+        /*stack*/
+        ctx[0].positioned ? "pnotify-positioned" : "", " ").concat(
         /*icon*/
-        ctx[12] !== false ? "pnotify-with-icon" : "", " ").concat(
+        ctx[13] !== false ? "pnotify-with-icon" : "", " ").concat(
         /*getStyle*/
-        ctx[20]("elem"), " pnotify-mode-").concat(
+        ctx[21]("elem"), " pnotify-mode-").concat(
         /*mode*/
-        ctx[8], " ").concat(
-        /*addClass*/
         ctx[9], " ").concat(
+        /*addClass*/
+        ctx[10], " ").concat(
         /*_animatingClass*/
-        ctx[23], " ").concat(
-        /*_moveClass*/
         ctx[24], " ").concat(
+        /*_moveClass*/
+        ctx[25], " ").concat(
         /*_stackDirClass*/
-        ctx[36], " ").concat(
+        ctx[37], " ").concat(
         /*animation*/
-        ctx[1] === "fade" ? "pnotify-fade-".concat(
+        ctx[2] === "fade" ? "pnotify-fade-".concat(
         /*animateSpeed*/
-        ctx[13]) : "", " ").concat(
+        ctx[14]) : "", " ").concat(
         /*_modal*/
-        ctx[29] ? "pnotify-modal ".concat(
+        ctx[30] ? "pnotify-modal ".concat(
         /*addModalClass*/
-        ctx[10]) :
+        ctx[11]) :
         /*addModelessClass*/
-        ctx[11], " ").concat(
+        ctx[12], " ").concat(
         /*_masking*/
-        ctx[27] ? "pnotify-masking" : "", " ").concat(
+        ctx[28] ? "pnotify-masking" : "", " ").concat(
         /*_maskingIn*/
-        ctx[28] ? "pnotify-masking-in" : "", " ").concat(
+        ctx[29] ? "pnotify-masking-in" : "", " ").concat(
         /*_moduleClasses*/
-        ctx[26].elem.join(" ")))) {
+        ctx[27].elem.join(" ")))) {
           attr(div2, "class", div2_class_value);
         }
       },
@@ -3449,7 +3508,7 @@
         /*div0_binding*/
 
 
-        ctx[106](null);
+        ctx[86](null);
 
         for (var _i23 = 0; _i23 < each_blocks.length; _i23 += 1) {
           each_blocks[_i23].d();
@@ -3457,10 +3516,11 @@
         /*div1_binding*/
 
 
-        ctx[107](null);
+        ctx[87](null);
         /*div2_binding*/
 
-        ctx[108](null);
+        ctx[88](null);
+        mounted = false;
         run_all(dispose);
       }
     };
@@ -3759,7 +3819,7 @@
     });
 
     function handleInteraction(e) {
-      $$invalidate(25, _interacting = true); // Stop animation, reset the removal timer when the user interacts.
+      $$invalidate(26, _interacting = true); // Stop animation, reset the removal timer when the user interacts.
 
       if (mouseReset && _state === "closing") {
         if (!_timerHide) {
@@ -3776,7 +3836,7 @@
     }
 
     function handleLeaveInteraction(e) {
-      $$invalidate(25, _interacting = false); // Start the close timer.
+      $$invalidate(26, _interacting = false); // Start the close timer.
 
       if (hide && mouseReset && _animating !== "out" && ["open", "opening"].indexOf(_state) !== -1) {
         queueClose();
@@ -3864,10 +3924,10 @@
       }
 
       _state = "opening";
-      $$invalidate(27, _masking = false); // This makes the notice visibity: hidden; so its dimensions can be
+      $$invalidate(28, _masking = false); // This makes the notice visibity: hidden; so its dimensions can be
       // determined.
 
-      $$invalidate(23, _animatingClass = "pnotify-initial pnotify-hidden");
+      $$invalidate(24, _animatingClass = "pnotify-initial pnotify-hidden");
       var resolve;
       var reject;
       var promise = new Promise(function (res, rej) {
@@ -3906,7 +3966,7 @@
 
         if (stack) {
           // Mark the stack so it won't animate the new notice.
-          $$invalidate(45, stack._animation = false, stack);
+          $$invalidate(0, stack._animation = false, stack);
 
           if (stack.push === "top") {
             // Reset the position data so the notice is positioned as the first
@@ -3919,7 +3979,7 @@
 
           stack.queuePosition(0); // Reset animation.
 
-          $$invalidate(45, stack._animation = true, stack);
+          $$invalidate(0, stack._animation = true, stack);
         }
 
         animateIn(afterOpenCallback, immediate);
@@ -3986,7 +4046,7 @@
       });
       _closePromise = promise;
       animateOut(function () {
-        $$invalidate(25, _interacting = false);
+        $$invalidate(26, _interacting = false);
         _timerHide = false;
         _state = waitAfterward ? "waiting" : "closed";
         dispatchLifecycleEvent("afterClose", {
@@ -4057,18 +4117,18 @@
 
       if (animation === "fade" && !immediate) {
         refs.elem && refs.elem.addEventListener("transitionend", finished);
-        $$invalidate(23, _animatingClass = "pnotify-in");
+        $$invalidate(24, _animatingClass = "pnotify-in");
         tick().then(function () {
-          $$invalidate(23, _animatingClass = "pnotify-in pnotify-fade-in"); // Just in case the event doesn't fire, call it after 650 ms.
+          $$invalidate(24, _animatingClass = "pnotify-in pnotify-fade-in"); // Just in case the event doesn't fire, call it after 650 ms.
 
           _animInTimer = setTimeout(finished, 650);
         });
       } else {
         var _animation = animation;
-        $$invalidate(1, animation = "none");
-        $$invalidate(23, _animatingClass = "pnotify-in ".concat(_animation === "fade" ? "pnotify-fade-in" : ""));
+        $$invalidate(2, animation = "none");
+        $$invalidate(24, _animatingClass = "pnotify-in ".concat(_animation === "fade" ? "pnotify-fade-in" : ""));
         tick().then(function () {
-          $$invalidate(1, animation = _animation);
+          $$invalidate(2, animation = _animation);
           finished();
         });
       }
@@ -4107,7 +4167,7 @@
         }
 
         if (!refs.elem || !refs.elem.style.opacity || refs.elem.style.opacity === "0" || !visible) {
-          $$invalidate(23, _animatingClass = "");
+          $$invalidate(24, _animatingClass = "");
 
           if (callback) {
             callback.call();
@@ -4123,11 +4183,11 @@
 
       if (animation === "fade" && !immediate) {
         refs.elem && refs.elem.addEventListener("transitionend", finished);
-        $$invalidate(23, _animatingClass = "pnotify-in"); // Just in case the event doesn't fire, call it after 650 ms.
+        $$invalidate(24, _animatingClass = "pnotify-in"); // Just in case the event doesn't fire, call it after 650 ms.
 
         _animOutTimer = setTimeout(finished, 650);
       } else {
-        $$invalidate(23, _animatingClass = "");
+        $$invalidate(24, _animatingClass = "");
         tick().then(function () {
           finished();
         });
@@ -4148,7 +4208,7 @@
         // If it's animating out, stop it.
         _state = "open";
         _animating = false;
-        $$invalidate(23, _animatingClass = animation === "fade" ? "pnotify-in pnotify-fade-in" : "pnotify-in");
+        $$invalidate(24, _animatingClass = animation === "fade" ? "pnotify-in pnotify-fade-in" : "pnotify-in");
       }
     }
 
@@ -4201,7 +4261,7 @@
         }
       }
 
-      $$invalidate(26, _moduleClasses);
+      $$invalidate(27, _moduleClasses);
     }
 
     function removeModuleClass(element) {
@@ -4215,7 +4275,7 @@
         }
       }
 
-      $$invalidate(26, _moduleClasses);
+      $$invalidate(27, _moduleClasses);
     }
 
     function hasModuleClass(element) {
@@ -4255,7 +4315,7 @@
     }
 
     function setAnimatingClass(value) {
-      return $$invalidate(23, _animatingClass = value);
+      return $$invalidate(24, _animatingClass = value);
     }
 
     function _getMoveClass() {
@@ -4263,7 +4323,7 @@
     }
 
     function _setMoveClass(value) {
-      return $$invalidate(24, _moveClass = value);
+      return $$invalidate(25, _moveClass = value);
     }
 
     function _setMasking(value, immediate, callback) {
@@ -4276,8 +4336,8 @@
       }
 
       if (value) {
-        $$invalidate(27, _masking = true);
-        $$invalidate(28, _maskingIn = !!immediate);
+        $$invalidate(28, _masking = true);
+        $$invalidate(29, _maskingIn = !!immediate);
         insertIntoDOM();
         tick().then(function () {
           window.requestAnimationFrame(function () {
@@ -4285,7 +4345,7 @@
               if (immediate && callback) {
                 callback();
               } else {
-                $$invalidate(28, _maskingIn = true);
+                $$invalidate(29, _maskingIn = true);
 
                 var finished = function finished() {
                   refs.elem && refs.elem.removeEventListener("transitionend", finished);
@@ -4306,8 +4366,8 @@
           });
         });
       } else if (immediate) {
-        $$invalidate(27, _masking = false);
-        $$invalidate(28, _maskingIn = false);
+        $$invalidate(28, _masking = false);
+        $$invalidate(29, _maskingIn = false);
 
         if (remove && ["open", "opening", "closing"].indexOf(_state) === -1) {
           removeFromDOM();
@@ -4325,7 +4385,7 @@
           }
 
           if (!_maskingIn) {
-            $$invalidate(27, _masking = false);
+            $$invalidate(28, _masking = false);
 
             if (remove && ["open", "opening", "closing"].indexOf(_state) === -1) {
               removeFromDOM();
@@ -4337,7 +4397,7 @@
           }
         };
 
-        $$invalidate(28, _maskingIn = false);
+        $$invalidate(29, _maskingIn = false);
         refs.elem && refs.elem.addEventListener("transitionend", finished);
         refs.elem && refs.elem.style.opacity; // This line is necessary for some reason. Some notices don't fade without it.
         // Just in case the event doesn't fire, call it after 650 ms.
@@ -4351,85 +4411,85 @@
     };
 
     var click_handler_1 = function click_handler_1() {
-      return $$invalidate(2, hide = !hide);
+      return $$invalidate(3, hide = !hide);
     };
 
     function div_binding($$value) {
       binding_callbacks[$$value ? "unshift" : "push"](function () {
         refs.iconContainer = $$value;
-        $$invalidate(0, refs);
+        $$invalidate(1, refs);
       });
     }
 
     function div_binding_1($$value) {
       binding_callbacks[$$value ? "unshift" : "push"](function () {
         refs.titleContainer = $$value;
-        $$invalidate(0, refs);
+        $$invalidate(1, refs);
       });
     }
 
     function div_binding_2($$value) {
       binding_callbacks[$$value ? "unshift" : "push"](function () {
         refs.textContainer = $$value;
-        $$invalidate(0, refs);
+        $$invalidate(1, refs);
       });
     }
 
     function div0_binding($$value) {
       binding_callbacks[$$value ? "unshift" : "push"](function () {
         refs.content = $$value;
-        $$invalidate(0, refs);
+        $$invalidate(1, refs);
       });
     }
 
     function div1_binding($$value) {
       binding_callbacks[$$value ? "unshift" : "push"](function () {
         refs.container = $$value;
-        $$invalidate(0, refs);
+        $$invalidate(1, refs);
       });
     }
 
     function div2_binding($$value) {
       binding_callbacks[$$value ? "unshift" : "push"](function () {
         refs.elem = $$value;
-        $$invalidate(0, refs);
+        $$invalidate(1, refs);
       });
     }
 
-    $$self.$set = function ($$props) {
+    $$self.$$set = function ($$props) {
       if ("modules" in $$props) $$invalidate(46, modules = $$props.modules);
-      if ("stack" in $$props) $$invalidate(45, stack = $$props.stack);
-      if ("type" in $$props) $$invalidate(3, type = $$props.type);
-      if ("title" in $$props) $$invalidate(4, title = $$props.title);
-      if ("titleTrusted" in $$props) $$invalidate(5, titleTrusted = $$props.titleTrusted);
-      if ("text" in $$props) $$invalidate(6, text = $$props.text);
-      if ("textTrusted" in $$props) $$invalidate(7, textTrusted = $$props.textTrusted);
+      if ("stack" in $$props) $$invalidate(0, stack = $$props.stack);
+      if ("type" in $$props) $$invalidate(4, type = $$props.type);
+      if ("title" in $$props) $$invalidate(5, title = $$props.title);
+      if ("titleTrusted" in $$props) $$invalidate(6, titleTrusted = $$props.titleTrusted);
+      if ("text" in $$props) $$invalidate(7, text = $$props.text);
+      if ("textTrusted" in $$props) $$invalidate(8, textTrusted = $$props.textTrusted);
       if ("styling" in $$props) $$invalidate(47, styling = $$props.styling);
       if ("icons" in $$props) $$invalidate(48, icons = $$props.icons);
-      if ("mode" in $$props) $$invalidate(8, mode = $$props.mode);
-      if ("addClass" in $$props) $$invalidate(9, addClass = $$props.addClass);
-      if ("addModalClass" in $$props) $$invalidate(10, addModalClass = $$props.addModalClass);
-      if ("addModelessClass" in $$props) $$invalidate(11, addModelessClass = $$props.addModelessClass);
+      if ("mode" in $$props) $$invalidate(9, mode = $$props.mode);
+      if ("addClass" in $$props) $$invalidate(10, addClass = $$props.addClass);
+      if ("addModalClass" in $$props) $$invalidate(11, addModalClass = $$props.addModalClass);
+      if ("addModelessClass" in $$props) $$invalidate(12, addModelessClass = $$props.addModelessClass);
       if ("autoOpen" in $$props) $$invalidate(49, autoOpen = $$props.autoOpen);
       if ("width" in $$props) $$invalidate(50, width = $$props.width);
       if ("minHeight" in $$props) $$invalidate(51, minHeight = $$props.minHeight);
       if ("maxTextHeight" in $$props) $$invalidate(52, maxTextHeight = $$props.maxTextHeight);
-      if ("icon" in $$props) $$invalidate(12, icon = $$props.icon);
-      if ("animation" in $$props) $$invalidate(1, animation = $$props.animation);
-      if ("animateSpeed" in $$props) $$invalidate(13, animateSpeed = $$props.animateSpeed);
-      if ("shadow" in $$props) $$invalidate(14, shadow = $$props.shadow);
-      if ("hide" in $$props) $$invalidate(2, hide = $$props.hide);
+      if ("icon" in $$props) $$invalidate(13, icon = $$props.icon);
+      if ("animation" in $$props) $$invalidate(2, animation = $$props.animation);
+      if ("animateSpeed" in $$props) $$invalidate(14, animateSpeed = $$props.animateSpeed);
+      if ("shadow" in $$props) $$invalidate(15, shadow = $$props.shadow);
+      if ("hide" in $$props) $$invalidate(3, hide = $$props.hide);
       if ("delay" in $$props) $$invalidate(53, delay = $$props.delay);
       if ("mouseReset" in $$props) $$invalidate(54, mouseReset = $$props.mouseReset);
-      if ("closer" in $$props) $$invalidate(15, closer = $$props.closer);
-      if ("closerHover" in $$props) $$invalidate(16, closerHover = $$props.closerHover);
-      if ("sticker" in $$props) $$invalidate(17, sticker = $$props.sticker);
-      if ("stickerHover" in $$props) $$invalidate(18, stickerHover = $$props.stickerHover);
-      if ("labels" in $$props) $$invalidate(19, labels = $$props.labels);
+      if ("closer" in $$props) $$invalidate(16, closer = $$props.closer);
+      if ("closerHover" in $$props) $$invalidate(17, closerHover = $$props.closerHover);
+      if ("sticker" in $$props) $$invalidate(18, sticker = $$props.sticker);
+      if ("stickerHover" in $$props) $$invalidate(19, stickerHover = $$props.stickerHover);
+      if ("labels" in $$props) $$invalidate(20, labels = $$props.labels);
       if ("remove" in $$props) $$invalidate(55, remove = $$props.remove);
       if ("destroy" in $$props) $$invalidate(56, destroy = $$props.destroy);
       if ("open" in $$props) $$invalidate(59, open = $$props.open);
-      if ("close" in $$props) $$invalidate(22, close = $$props.close);
+      if ("close" in $$props) $$invalidate(23, close = $$props.close);
       if ("animateIn" in $$props) $$invalidate(60, animateIn = $$props.animateIn);
       if ("animateOut" in $$props) $$invalidate(61, animateOut = $$props.animateOut);
     };
@@ -4458,45 +4518,45 @@
       /*width*/
       524288) {
         // Grab the icons from the icons object or use provided icons
-         $$invalidate(30, _widthStyle = typeof width === "string" ? "width: ".concat(width, ";") : "");
+         $$invalidate(31, _widthStyle = typeof width === "string" ? "width: ".concat(width, ";") : "");
       }
 
       if ($$self.$$.dirty[1] &
       /*minHeight*/
       1048576) {
-         $$invalidate(31, _minHeightStyle = typeof minHeight === "string" ? "min-height: ".concat(minHeight, ";") : "");
+         $$invalidate(32, _minHeightStyle = typeof minHeight === "string" ? "min-height: ".concat(minHeight, ";") : "");
       }
 
       if ($$self.$$.dirty[1] &
       /*maxTextHeight*/
       2097152) {
-         $$invalidate(32, _maxTextHeightStyle = typeof maxTextHeight === "string" ? "max-height: ".concat(maxTextHeight, ";") : "");
+         $$invalidate(33, _maxTextHeightStyle = typeof maxTextHeight === "string" ? "max-height: ".concat(maxTextHeight, ";") : "");
       }
 
       if ($$self.$$.dirty[0] &
       /*title*/
-      16) {
-         $$invalidate(33, _titleElement = title instanceof HTMLElement);
+      32) {
+         $$invalidate(34, _titleElement = title instanceof HTMLElement);
       }
 
       if ($$self.$$.dirty[0] &
       /*text*/
-      64) {
-         $$invalidate(34, _textElement = text instanceof HTMLElement);
+      128) {
+         $$invalidate(35, _textElement = text instanceof HTMLElement);
       }
 
-      if ($$self.$$.dirty[1] &
+      if ($$self.$$.dirty[0] &
       /*stack*/
-      16384 | $$self.$$.dirty[3] &
+      1 | $$self.$$.dirty[3] &
       /*_oldStack, _stackBeforeAddOverlayOff, _stackAfterRemoveOverlayOff*/
-      7) {
+      1792) {
          if (_oldStack !== stack) {
           if (_oldStack) {
             // Remove the notice from the old stack.
             _oldStack._removeNotice(self); // Remove the listeners.
 
 
-            $$invalidate(29, _modal = false);
+            $$invalidate(30, _modal = false);
 
             _stackBeforeAddOverlayOff();
 
@@ -4508,38 +4568,38 @@
             stack._addNotice(self); // Add listeners for modal state.
 
 
-            $$invalidate(94, _stackBeforeAddOverlayOff = stack.on("beforeAddOverlay", function () {
-              $$invalidate(29, _modal = true);
+            $$invalidate(102, _stackBeforeAddOverlayOff = stack.on("beforeAddOverlay", function () {
+              $$invalidate(30, _modal = true);
               dispatchLifecycleEvent("enterModal");
             }));
-            $$invalidate(95, _stackAfterRemoveOverlayOff = stack.on("afterRemoveOverlay", function () {
-              $$invalidate(29, _modal = false);
+            $$invalidate(103, _stackAfterRemoveOverlayOff = stack.on("afterRemoveOverlay", function () {
+              $$invalidate(30, _modal = false);
               dispatchLifecycleEvent("leaveModal");
             }));
           }
 
-          $$invalidate(93, _oldStack = stack);
+          $$invalidate(101, _oldStack = stack);
         }
       }
 
       if ($$self.$$.dirty[0] &
       /*addClass, addModalClass, _modal, addModelessClass*/
-      536874496) {
-         $$invalidate(35, _nonBlock = addClass.match(/\bnonblock\b/) || addModalClass.match(/\bnonblock\b/) && _modal || addModelessClass.match(/\bnonblock\b/) && !_modal);
+      1073748992) {
+         $$invalidate(36, _nonBlock = addClass.match(/\bnonblock\b/) || addModalClass.match(/\bnonblock\b/) && _modal || addModelessClass.match(/\bnonblock\b/) && !_modal);
       }
 
-      if ($$self.$$.dirty[1] &
+      if ($$self.$$.dirty[0] &
       /*stack*/
-      16384) {
+      1) {
         // This is for specific styling for how notices stack.
-         $$invalidate(36, _stackDirClass = stack && stack.dir1 ? "pnotify-stack-".concat(stack.dir1) : "");
+         $$invalidate(37, _stackDirClass = stack && stack.dir1 ? "pnotify-stack-".concat(stack.dir1) : "");
       }
 
       if ($$self.$$.dirty[1] &
       /*modules*/
       32768) {
         // Filter through the module objects, getting an array for each position.
-         $$invalidate(37, modulesPrependContainer = Array.from(modules).filter(function (_ref3) {
+         $$invalidate(38, modulesPrependContainer = Array.from(modules).filter(function (_ref3) {
           var _ref4 = _slicedToArray(_ref3, 2),
               module = _ref4[0],
               options = _ref4[1];
@@ -4551,7 +4611,7 @@
       if ($$self.$$.dirty[1] &
       /*modules*/
       32768) {
-         $$invalidate(38, modulesPrependContent = Array.from(modules).filter(function (_ref5) {
+         $$invalidate(39, modulesPrependContent = Array.from(modules).filter(function (_ref5) {
           var _ref6 = _slicedToArray(_ref5, 2),
               module = _ref6[0],
               options = _ref6[1];
@@ -4563,7 +4623,7 @@
       if ($$self.$$.dirty[1] &
       /*modules*/
       32768) {
-         $$invalidate(39, modulesAppendContent = Array.from(modules).filter(function (_ref7) {
+         $$invalidate(40, modulesAppendContent = Array.from(modules).filter(function (_ref7) {
           var _ref8 = _slicedToArray(_ref7, 2),
               module = _ref8[0],
               options = _ref8[1];
@@ -4575,7 +4635,7 @@
       if ($$self.$$.dirty[1] &
       /*modules*/
       32768) {
-         $$invalidate(40, modulesAppendContainer = Array.from(modules).filter(function (_ref9) {
+         $$invalidate(41, modulesAppendContainer = Array.from(modules).filter(function (_ref9) {
           var _ref10 = _slicedToArray(_ref9, 2),
               module = _ref10[0],
               options = _ref10[1];
@@ -4586,9 +4646,9 @@
 
       if ($$self.$$.dirty[0] &
       /*refs, title*/
-      17 | $$self.$$.dirty[1] &
+      34 | $$self.$$.dirty[1] &
       /*_titleElement*/
-      4) {
+      8) {
          if (_titleElement && refs.titleContainer) {
           refs.titleContainer.appendChild(title);
         }
@@ -4596,16 +4656,16 @@
 
       if ($$self.$$.dirty[0] &
       /*refs, text*/
-      65 | $$self.$$.dirty[1] &
+      130 | $$self.$$.dirty[1] &
       /*_textElement*/
-      8) {
+      16) {
          if (_textElement && refs.textContainer) {
           refs.textContainer.appendChild(text);
         }
       }
     };
 
-    return [refs, animation, hide, type, title, titleTrusted, text, textTrusted, mode, addClass, addModalClass, addModelessClass, icon, animateSpeed, shadow, closer, closerHover, sticker, stickerHover, labels, getStyle, getIcon, close, _animatingClass, _moveClass, _interacting, _moduleClasses, _masking, _maskingIn, _modal, _widthStyle, _minHeightStyle, _maxTextHeightStyle, _titleElement, _textElement, _nonBlock, _stackDirClass, modulesPrependContainer, modulesPrependContent, modulesAppendContent, modulesAppendContainer, self, forwardEvents, handleInteraction, handleLeaveInteraction, stack, modules, styling, icons, autoOpen, width, minHeight, maxTextHeight, delay, mouseReset, remove, destroy, getState, getTimer, open, animateIn, animateOut, cancelClose, queueClose, _preventTimerClose, on, update, fire, addModuleClass, removeModuleClass, hasModuleClass, getModuleHandled, setModuleHandled, getModuleOpen, setModuleOpen, setAnimating, getAnimatingClass, setAnimatingClass, _getMoveClass, _setMoveClass, _setMasking, _state, _timer, _animInTimer, _animOutTimer, _animating, _timerHide, _moduleHandled, _moduleOpen, _maskingTimer, _oldHide, _openPromise, _closePromise, _oldStack, _stackBeforeAddOverlayOff, _stackAfterRemoveOverlayOff, dispatch, selfDefaults, dispatchLifecycleEvent, insertIntoDOM, removeFromDOM, click_handler, click_handler_1, div_binding, div_binding_1, div_binding_2, div0_binding, div1_binding, div2_binding];
+    return [stack, refs, animation, hide, type, title, titleTrusted, text, textTrusted, mode, addClass, addModalClass, addModelessClass, icon, animateSpeed, shadow, closer, closerHover, sticker, stickerHover, labels, getStyle, getIcon, close, _animatingClass, _moveClass, _interacting, _moduleClasses, _masking, _maskingIn, _modal, _widthStyle, _minHeightStyle, _maxTextHeightStyle, _titleElement, _textElement, _nonBlock, _stackDirClass, modulesPrependContainer, modulesPrependContent, modulesAppendContent, modulesAppendContainer, self, forwardEvents, handleInteraction, handleLeaveInteraction, modules, styling, icons, autoOpen, width, minHeight, maxTextHeight, delay, mouseReset, remove, destroy, getState, getTimer, open, animateIn, animateOut, cancelClose, queueClose, _preventTimerClose, on, update, fire, addModuleClass, removeModuleClass, hasModuleClass, getModuleHandled, setModuleHandled, getModuleOpen, setModuleOpen, setAnimating, getAnimatingClass, setAnimatingClass, _getMoveClass, _setMoveClass, _setMasking, click_handler, click_handler_1, div_binding, div_binding_1, div_binding_2, div0_binding, div1_binding, div2_binding];
   }
 
   var Core = /*#__PURE__*/function (_SvelteComponent) {
@@ -4621,43 +4681,43 @@
       _this = _super.call(this);
       init(_assertThisInitialized(_this), options, instance, create_fragment, safe_not_equal, {
         modules: 46,
-        stack: 45,
-        refs: 0,
-        type: 3,
-        title: 4,
-        titleTrusted: 5,
-        text: 6,
-        textTrusted: 7,
+        stack: 0,
+        refs: 1,
+        type: 4,
+        title: 5,
+        titleTrusted: 6,
+        text: 7,
+        textTrusted: 8,
         styling: 47,
         icons: 48,
-        mode: 8,
-        addClass: 9,
-        addModalClass: 10,
-        addModelessClass: 11,
+        mode: 9,
+        addClass: 10,
+        addModalClass: 11,
+        addModelessClass: 12,
         autoOpen: 49,
         width: 50,
         minHeight: 51,
         maxTextHeight: 52,
-        icon: 12,
-        animation: 1,
-        animateSpeed: 13,
-        shadow: 14,
-        hide: 2,
+        icon: 13,
+        animation: 2,
+        animateSpeed: 14,
+        shadow: 15,
+        hide: 3,
         delay: 53,
         mouseReset: 54,
-        closer: 15,
-        closerHover: 16,
-        sticker: 17,
-        stickerHover: 18,
-        labels: 19,
+        closer: 16,
+        closerHover: 17,
+        sticker: 18,
+        stickerHover: 19,
+        labels: 20,
         remove: 55,
         destroy: 56,
         getState: 57,
         getTimer: 58,
-        getStyle: 20,
-        getIcon: 21,
+        getStyle: 21,
+        getIcon: 22,
         open: 59,
-        close: 22,
+        close: 23,
         animateIn: 60,
         animateOut: 61,
         cancelClose: 62,
@@ -4697,7 +4757,7 @@
     }, {
       key: "stack",
       get: function get() {
-        return this.$$.ctx[45];
+        return this.$$.ctx[0];
       },
       set: function set(stack) {
         this.$set({
@@ -4708,12 +4768,12 @@
     }, {
       key: "refs",
       get: function get() {
-        return this.$$.ctx[0];
+        return this.$$.ctx[1];
       }
     }, {
       key: "type",
       get: function get() {
-        return this.$$.ctx[3];
+        return this.$$.ctx[4];
       },
       set: function set(type) {
         this.$set({
@@ -4724,7 +4784,7 @@
     }, {
       key: "title",
       get: function get() {
-        return this.$$.ctx[4];
+        return this.$$.ctx[5];
       },
       set: function set(title) {
         this.$set({
@@ -4735,7 +4795,7 @@
     }, {
       key: "titleTrusted",
       get: function get() {
-        return this.$$.ctx[5];
+        return this.$$.ctx[6];
       },
       set: function set(titleTrusted) {
         this.$set({
@@ -4746,7 +4806,7 @@
     }, {
       key: "text",
       get: function get() {
-        return this.$$.ctx[6];
+        return this.$$.ctx[7];
       },
       set: function set(text) {
         this.$set({
@@ -4757,7 +4817,7 @@
     }, {
       key: "textTrusted",
       get: function get() {
-        return this.$$.ctx[7];
+        return this.$$.ctx[8];
       },
       set: function set(textTrusted) {
         this.$set({
@@ -4790,7 +4850,7 @@
     }, {
       key: "mode",
       get: function get() {
-        return this.$$.ctx[8];
+        return this.$$.ctx[9];
       },
       set: function set(mode) {
         this.$set({
@@ -4801,7 +4861,7 @@
     }, {
       key: "addClass",
       get: function get() {
-        return this.$$.ctx[9];
+        return this.$$.ctx[10];
       },
       set: function set(addClass) {
         this.$set({
@@ -4812,7 +4872,7 @@
     }, {
       key: "addModalClass",
       get: function get() {
-        return this.$$.ctx[10];
+        return this.$$.ctx[11];
       },
       set: function set(addModalClass) {
         this.$set({
@@ -4823,7 +4883,7 @@
     }, {
       key: "addModelessClass",
       get: function get() {
-        return this.$$.ctx[11];
+        return this.$$.ctx[12];
       },
       set: function set(addModelessClass) {
         this.$set({
@@ -4878,7 +4938,7 @@
     }, {
       key: "icon",
       get: function get() {
-        return this.$$.ctx[12];
+        return this.$$.ctx[13];
       },
       set: function set(icon) {
         this.$set({
@@ -4889,7 +4949,7 @@
     }, {
       key: "animation",
       get: function get() {
-        return this.$$.ctx[1];
+        return this.$$.ctx[2];
       },
       set: function set(animation) {
         this.$set({
@@ -4900,7 +4960,7 @@
     }, {
       key: "animateSpeed",
       get: function get() {
-        return this.$$.ctx[13];
+        return this.$$.ctx[14];
       },
       set: function set(animateSpeed) {
         this.$set({
@@ -4911,7 +4971,7 @@
     }, {
       key: "shadow",
       get: function get() {
-        return this.$$.ctx[14];
+        return this.$$.ctx[15];
       },
       set: function set(shadow) {
         this.$set({
@@ -4922,7 +4982,7 @@
     }, {
       key: "hide",
       get: function get() {
-        return this.$$.ctx[2];
+        return this.$$.ctx[3];
       },
       set: function set(hide) {
         this.$set({
@@ -4955,7 +5015,7 @@
     }, {
       key: "closer",
       get: function get() {
-        return this.$$.ctx[15];
+        return this.$$.ctx[16];
       },
       set: function set(closer) {
         this.$set({
@@ -4966,7 +5026,7 @@
     }, {
       key: "closerHover",
       get: function get() {
-        return this.$$.ctx[16];
+        return this.$$.ctx[17];
       },
       set: function set(closerHover) {
         this.$set({
@@ -4977,7 +5037,7 @@
     }, {
       key: "sticker",
       get: function get() {
-        return this.$$.ctx[17];
+        return this.$$.ctx[18];
       },
       set: function set(sticker) {
         this.$set({
@@ -4988,7 +5048,7 @@
     }, {
       key: "stickerHover",
       get: function get() {
-        return this.$$.ctx[18];
+        return this.$$.ctx[19];
       },
       set: function set(stickerHover) {
         this.$set({
@@ -4999,7 +5059,7 @@
     }, {
       key: "labels",
       get: function get() {
-        return this.$$.ctx[19];
+        return this.$$.ctx[20];
       },
       set: function set(labels) {
         this.$set({
@@ -5042,12 +5102,12 @@
     }, {
       key: "getStyle",
       get: function get() {
-        return this.$$.ctx[20];
+        return this.$$.ctx[21];
       }
     }, {
       key: "getIcon",
       get: function get() {
-        return this.$$.ctx[21];
+        return this.$$.ctx[22];
       }
     }, {
       key: "open",
@@ -5063,7 +5123,7 @@
     }, {
       key: "close",
       get: function get() {
-        return this.$$.ctx[22];
+        return this.$$.ctx[23];
       },
       set: function set(close) {
         this.$set({

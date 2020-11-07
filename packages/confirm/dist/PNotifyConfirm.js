@@ -1,7 +1,7 @@
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (global = global || self, factory(global.PNotifyConfirm = {}));
+  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.PNotifyConfirm = {}));
 }(this, (function (exports) { 'use strict';
 
   function _typeof(obj) {
@@ -103,11 +103,13 @@
   }
 
   function _createSuper(Derived) {
-    return function () {
+    var hasNativeReflectConstruct = _isNativeReflectConstruct();
+
+    return function _createSuperInternal() {
       var Super = _getPrototypeOf(Derived),
           result;
 
-      if (_isNativeReflectConstruct()) {
+      if (hasNativeReflectConstruct) {
         var NewTarget = _getPrototypeOf(this).constructor;
 
         result = Reflect.construct(Super, arguments, NewTarget);
@@ -171,7 +173,7 @@
     if (typeof o === "string") return _arrayLikeToArray(o, minLen);
     var n = Object.prototype.toString.call(o).slice(8, -1);
     if (n === "Object" && o.constructor) n = o.constructor.name;
-    if (n === "Map" || n === "Set") return Array.from(n);
+    if (n === "Map" || n === "Set") return Array.from(o);
     if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
   }
 
@@ -211,6 +213,10 @@
 
   function safe_not_equal(a, b) {
     return a != a ? b == b : a !== b || a && _typeof(a) === 'object' || typeof a === 'function';
+  }
+
+  function is_empty(obj) {
+    return Object.keys(obj).length === 0;
   }
 
   function append(target, node) {
@@ -264,49 +270,55 @@
 
   function set_data(text, data) {
     data = '' + data;
-    if (text.data !== data) text.data = data;
+    if (text.wholeText !== data) text.data = data;
   }
 
   function set_input_value(input, value) {
-    if (value != null || input.value) {
-      input.value = value;
-    }
+    input.value = value == null ? '' : value;
   }
 
   var HtmlTag = /*#__PURE__*/function () {
-    function HtmlTag(html) {
-      var anchor = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+    function HtmlTag() {
+      var anchor = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
 
       _classCallCheck(this, HtmlTag);
 
-      this.e = element('div');
       this.a = anchor;
-      this.u(html);
+      this.e = this.n = null;
     }
 
     _createClass(HtmlTag, [{
       key: "m",
-      value: function m(target) {
-        var anchor = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+      value: function m(html, target) {
+        var anchor = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
 
-        for (var i = 0; i < this.n.length; i += 1) {
-          insert(target, this.n[i], anchor);
+        if (!this.e) {
+          this.e = element(target.nodeName);
+          this.t = target;
+          this.h(html);
         }
 
-        this.t = target;
+        this.i(anchor);
       }
     }, {
-      key: "u",
-      value: function u(html) {
+      key: "h",
+      value: function h(html) {
         this.e.innerHTML = html;
         this.n = Array.from(this.e.childNodes);
+      }
+    }, {
+      key: "i",
+      value: function i(anchor) {
+        for (var i = 0; i < this.n.length; i += 1) {
+          insert(this.t, this.n[i], anchor);
+        }
       }
     }, {
       key: "p",
       value: function p(html) {
         this.d();
-        this.u(html);
-        this.m(this.t, this.a);
+        this.h(html);
+        this.i(this.a);
       }
     }, {
       key: "d",
@@ -358,6 +370,7 @@
         update(component.$$);
       }
 
+      set_current_component(null);
       dirty_components.length = 0;
 
       while (binding_callbacks.length) {
@@ -477,14 +490,15 @@
       context: new Map(parent_component ? parent_component.$$.context : []),
       // everything else
       callbacks: blank_object(),
-      dirty: dirty
+      dirty: dirty,
+      skip_bound: false
     };
     var ready = false;
     $$.ctx = instance ? instance(component, prop_values, function (i, ret) {
       var value = (arguments.length <= 2 ? 0 : arguments.length - 2) ? arguments.length <= 2 ? undefined : arguments[2] : ret;
 
       if ($$.ctx && not_equal($$.ctx[i], $$.ctx[i] = value)) {
-        if ($$.bound[i]) $$.bound[i](value);
+        if (!$$.skip_bound && $$.bound[i]) $$.bound[i](value);
         if (ready) make_dirty(component, i);
       }
 
@@ -538,7 +552,12 @@
       }
     }, {
       key: "$set",
-      value: function $set() {// overridden by instance, if it has props
+      value: function $set($$props) {
+        if (this.$$set && !is_empty($$props)) {
+          this.$$.skip_bound = true;
+          this.$$set($$props);
+          this.$$.skip_bound = false;
+        }
       }
     }]);
 
@@ -606,7 +625,7 @@
         /*div0_binding*/
 
 
-        ctx[20](div0);
+        ctx[19](div0);
       },
       p: function p(ctx, dirty) {
         if (
@@ -686,7 +705,7 @@
         destroy_each(each_blocks, detaching);
         /*div0_binding*/
 
-        ctx[20](null);
+        ctx[19](null);
       }
     };
   } // (111:4) {#if prompt}
@@ -749,6 +768,7 @@
   function create_else_block_1(ctx) {
     var input;
     var input_class_value;
+    var mounted;
     var dispose;
     return {
       c: function c() {
@@ -760,20 +780,23 @@
         /*promptClass*/
         ctx[4]));
       },
-      m: function m(target, anchor, remount) {
+      m: function m(target, anchor) {
         insert(target, input, anchor);
         /*input_binding*/
 
-        ctx[17](input);
+        ctx[16](input);
         set_input_value(input,
         /*promptValue*/
         ctx[0]);
-        if (remount) run_all(dispose);
-        dispose = [listen(input, "keypress",
-        /*handleKeyPress*/
-        ctx[12]), listen(input, "input",
-        /*input_input_handler*/
-        ctx[18])];
+
+        if (!mounted) {
+          dispose = [listen(input, "keypress",
+          /*handleKeyPress*/
+          ctx[12]), listen(input, "input",
+          /*input_input_handler*/
+          ctx[17])];
+          mounted = true;
+        }
       },
       p: function p(ctx, dirty) {
         if (dirty &
@@ -800,7 +823,8 @@
         if (detaching) detach(input);
         /*input_binding*/
 
-        ctx[17](null);
+        ctx[16](null);
+        mounted = false;
         run_all(dispose);
       }
     };
@@ -810,6 +834,7 @@
   function create_if_block_3(ctx) {
     var textarea;
     var textarea_class_value;
+    var mounted;
     var dispose;
     return {
       c: function c() {
@@ -821,20 +846,23 @@
         /*promptClass*/
         ctx[4]));
       },
-      m: function m(target, anchor, remount) {
+      m: function m(target, anchor) {
         insert(target, textarea, anchor);
         /*textarea_binding*/
 
-        ctx[15](textarea);
+        ctx[14](textarea);
         set_input_value(textarea,
         /*promptValue*/
         ctx[0]);
-        if (remount) run_all(dispose);
-        dispose = [listen(textarea, "keypress",
-        /*handleKeyPress*/
-        ctx[12]), listen(textarea, "input",
-        /*textarea_input_handler*/
-        ctx[16])];
+
+        if (!mounted) {
+          dispose = [listen(textarea, "keypress",
+          /*handleKeyPress*/
+          ctx[12]), listen(textarea, "input",
+          /*textarea_input_handler*/
+          ctx[15])];
+          mounted = true;
+        }
       },
       p: function p(ctx, dirty) {
         if (dirty &
@@ -859,7 +887,8 @@
         if (detaching) detach(textarea);
         /*textarea_binding*/
 
-        ctx[15](null);
+        ctx[14](null);
+        mounted = false;
         run_all(dispose);
       }
     };
@@ -897,12 +926,15 @@
     var raw_value =
     /*button*/
     ctx[21].text + "";
+    var html_anchor;
     return {
       c: function c() {
-        html_tag = new HtmlTag(raw_value, null);
+        html_anchor = empty();
+        html_tag = new HtmlTag(html_anchor);
       },
       m: function m(target, anchor) {
-        html_tag.m(target, anchor);
+        html_tag.m(raw_value, target, anchor);
+        insert(target, html_anchor, anchor);
       },
       p: function p(ctx, dirty) {
         if (dirty &
@@ -912,6 +944,7 @@
         ctx[21].text + "")) html_tag.p(raw_value);
       },
       d: function d(detaching) {
+        if (detaching) detach(html_anchor);
         if (detaching) html_tag.d();
       }
     };
@@ -922,6 +955,7 @@
     var button;
     var t;
     var button_class_value;
+    var mounted;
     var dispose;
 
     function select_block_type_1(ctx, dirty) {
@@ -943,7 +977,7 @@
 
       return (
         /*click_handler*/
-        (_ctx = ctx)[19].apply(_ctx, [
+        (_ctx = ctx)[18].apply(_ctx, [
         /*button*/
         ctx[21]].concat(args))
       );
@@ -969,12 +1003,15 @@
         /*button*/
         ctx[21].addClass : ""));
       },
-      m: function m(target, anchor, remount) {
+      m: function m(target, anchor) {
         insert(target, button, anchor);
         if_block.m(button, null);
         append(button, t);
-        if (remount) dispose();
-        dispose = listen(button, "click", click_handler);
+
+        if (!mounted) {
+          dispose = listen(button, "click", click_handler);
+          mounted = true;
+        }
       },
       p: function p(new_ctx, dirty) {
         ctx = new_ctx;
@@ -1012,6 +1049,7 @@
       d: function d(detaching) {
         if (detaching) detach(button);
         if_block.d();
+        mounted = false;
         dispose();
       }
     };
@@ -1118,7 +1156,7 @@
     var buttonsElem;
     var focusNextChange = false;
     self.on("pnotify:afterOpen", function () {
-      $$invalidate(14, focusNextChange = true);
+      $$invalidate(20, focusNextChange = true);
     });
 
     function handleClick(button, event) {
@@ -1144,7 +1182,8 @@
 
     function textarea_binding($$value) {
       binding_callbacks[$$value ? "unshift" : "push"](function () {
-        $$invalidate(8, promptMultiElem = $$value);
+        promptMultiElem = $$value;
+        $$invalidate(8, promptMultiElem);
       });
     }
 
@@ -1155,7 +1194,8 @@
 
     function input_binding($$value) {
       binding_callbacks[$$value ? "unshift" : "push"](function () {
-        $$invalidate(9, promptSingleElem = $$value);
+        promptSingleElem = $$value;
+        $$invalidate(9, promptSingleElem);
       });
     }
 
@@ -1170,11 +1210,12 @@
 
     function div0_binding($$value) {
       binding_callbacks[$$value ? "unshift" : "push"](function () {
-        $$invalidate(10, buttonsElem = $$value);
+        buttonsElem = $$value;
+        $$invalidate(10, buttonsElem);
       });
     }
 
-    $$self.$set = function ($$props) {
+    $$self.$$set = function ($$props) {
       if ("self" in $$props) $$invalidate(1, self = $$props.self);
       if ("confirm" in $$props) $$invalidate(2, confirm = $$props.confirm);
       if ("prompt" in $$props) $$invalidate(3, prompt = $$props.prompt);
@@ -1189,19 +1230,19 @@
     $$self.$$.update = function () {
       if ($$self.$$.dirty &
       /*focusNextChange, prompt, focus, promptMultiLine, promptMultiElem, promptSingleElem, confirm, self, buttons, buttonsElem*/
-      26542) {
+      1058734) {
          {
           if (focusNextChange) {
             if (prompt && focus !== false) {
               if (promptMultiLine) {
                 if (promptMultiElem) {
                   promptMultiElem.focus();
-                  $$invalidate(14, focusNextChange = false);
+                  $$invalidate(20, focusNextChange = false);
                 }
               } else {
                 if (promptSingleElem) {
                   promptSingleElem.focus();
-                  $$invalidate(14, focusNextChange = false);
+                  $$invalidate(20, focusNextChange = false);
                 }
               }
             } else if (confirm && (focus === true || focus === null && self.stack.modal === true)) {
@@ -1217,7 +1258,7 @@
                 }
 
                 buttonsElem.children[i].focus();
-                $$invalidate(14, focusNextChange = false);
+                $$invalidate(20, focusNextChange = false);
               }
             }
           }
@@ -1225,7 +1266,7 @@
       }
     };
 
-    return [promptValue, self, confirm, prompt, promptClass, promptMultiLine, align, buttons, promptMultiElem, promptSingleElem, buttonsElem, handleClick, handleKeyPress, focus, focusNextChange, textarea_binding, textarea_input_handler, input_binding, input_input_handler, click_handler, div0_binding];
+    return [promptValue, self, confirm, prompt, promptClass, promptMultiLine, align, buttons, promptMultiElem, promptSingleElem, buttonsElem, handleClick, handleKeyPress, focus, textarea_binding, textarea_input_handler, input_binding, input_input_handler, click_handler, div0_binding];
   }
 
   var Confirm = /*#__PURE__*/function (_SvelteComponent) {

@@ -270,7 +270,7 @@
   }
 
   function get_current_component() {
-    if (!current_component) throw new Error("Function called outside component initialization");
+    if (!current_component) throw new Error('Function called outside component initialization');
     return current_component;
   }
 

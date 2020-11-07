@@ -1,7 +1,7 @@
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (global = global || self, factory(global.PNotifyCountdown = {}));
+  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.PNotifyCountdown = {}));
 }(this, (function (exports) { 'use strict';
 
   function _typeof(obj) {
@@ -103,11 +103,13 @@
   }
 
   function _createSuper(Derived) {
-    return function () {
+    var hasNativeReflectConstruct = _isNativeReflectConstruct();
+
+    return function _createSuperInternal() {
       var Super = _getPrototypeOf(Derived),
           result;
 
-      if (_isNativeReflectConstruct()) {
+      if (hasNativeReflectConstruct) {
         var NewTarget = _getPrototypeOf(this).constructor;
 
         result = Reflect.construct(Super, arguments, NewTarget);
@@ -171,7 +173,7 @@
     if (typeof o === "string") return _arrayLikeToArray(o, minLen);
     var n = Object.prototype.toString.call(o).slice(8, -1);
     if (n === "Object" && o.constructor) n = o.constructor.name;
-    if (n === "Map" || n === "Set") return Array.from(n);
+    if (n === "Map" || n === "Set") return Array.from(o);
     if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
   }
 
@@ -213,6 +215,10 @@
     return a != a ? b == b : a !== b || a && _typeof(a) === 'object' || typeof a === 'function';
   }
 
+  function is_empty(obj) {
+    return Object.keys(obj).length === 0;
+  }
+
   function append(target, node) {
     target.appendChild(node);
   }
@@ -252,7 +258,7 @@
   }
 
   function get_current_component() {
-    if (!current_component) throw new Error("Function called outside component initialization");
+    if (!current_component) throw new Error('Function called outside component initialization');
     return current_component;
   }
 
@@ -298,6 +304,7 @@
         update(component.$$);
       }
 
+      set_current_component(null);
       dirty_components.length = 0;
 
       while (binding_callbacks.length) {
@@ -417,14 +424,15 @@
       context: new Map(parent_component ? parent_component.$$.context : []),
       // everything else
       callbacks: blank_object(),
-      dirty: dirty
+      dirty: dirty,
+      skip_bound: false
     };
     var ready = false;
     $$.ctx = instance ? instance(component, prop_values, function (i, ret) {
       var value = (arguments.length <= 2 ? 0 : arguments.length - 2) ? arguments.length <= 2 ? undefined : arguments[2] : ret;
 
       if ($$.ctx && not_equal($$.ctx[i], $$.ctx[i] = value)) {
-        if ($$.bound[i]) $$.bound[i](value);
+        if (!$$.skip_bound && $$.bound[i]) $$.bound[i](value);
         if (ready) make_dirty(component, i);
       }
 
@@ -478,7 +486,12 @@
       }
     }, {
       key: "$set",
-      value: function $set() {// overridden by instance, if it has props
+      value: function $set($$props) {
+        if (this.$$set && !is_empty($$props)) {
+          this.$$.skip_bound = true;
+          this.$$set($$props);
+          this.$$.skip_bound = false;
+        }
       }
     }]);
 
@@ -643,11 +656,6 @@
       offUpdate = self.on("pnotify:update", getValues);
       offAfterOpen = self.on("pnotify:afterOpen", getValues);
       ival = setInterval(function () {
-        console.log({
-          showCountdown: showCountdown,
-          timeStart: timeStart
-        });
-
         if (showCountdown) {
           if (timeStart) {
             _msLeft = self.delay - (new Date() - timeStart);
@@ -664,7 +672,7 @@
       clearInterval(ival);
     });
 
-    $$self.$set = function ($$props) {
+    $$self.$$set = function ($$props) {
       if ("self" in $$props) $$invalidate(0, self = $$props.self);
       if ("anchor" in $$props) $$invalidate(1, anchor = $$props.anchor);
       if ("reverse" in $$props) $$invalidate(2, reverse = $$props.reverse);
@@ -684,6 +692,18 @@
       /*showCountdown, _timer*/
       80) {
          timeStart = showCountdown && _timer && _timer !== "prevented" ? new Date() : null;
+      }
+
+      if ($$self.$$.dirty &
+      /*self, showCountdown, anchor*/
+      19) {
+         {
+          self.removeModuleClass("elem", "pnotify-with-countdown", "pnotify-with-countdown-bottom", "pnotify-with-countdown-top", "pnotify-with-countdown-left", "pnotify-with-countdown-right");
+
+          if (showCountdown) {
+            self.addModuleClass("elem", "pnotify-with-countdown", "pnotify-with-countdown-".concat(anchor));
+          }
+        }
       }
     };
 

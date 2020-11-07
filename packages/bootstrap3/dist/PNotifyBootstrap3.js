@@ -1,7 +1,7 @@
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (global = global || self, factory(global.PNotifyBootstrap3 = {}));
+  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.PNotifyBootstrap3 = {}));
 }(this, (function (exports) { 'use strict';
 
   function _typeof(obj) {
@@ -103,11 +103,13 @@
   }
 
   function _createSuper(Derived) {
-    return function () {
+    var hasNativeReflectConstruct = _isNativeReflectConstruct();
+
+    return function _createSuperInternal() {
       var Super = _getPrototypeOf(Derived),
           result;
 
-      if (_isNativeReflectConstruct()) {
+      if (hasNativeReflectConstruct) {
         var NewTarget = _getPrototypeOf(this).constructor;
 
         result = Reflect.construct(Super, arguments, NewTarget);
@@ -136,7 +138,7 @@
     if (typeof o === "string") return _arrayLikeToArray(o, minLen);
     var n = Object.prototype.toString.call(o).slice(8, -1);
     if (n === "Object" && o.constructor) n = o.constructor.name;
-    if (n === "Map" || n === "Set") return Array.from(n);
+    if (n === "Map" || n === "Set") return Array.from(o);
     if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
   }
 
@@ -172,6 +174,10 @@
 
   function safe_not_equal(a, b) {
     return a != a ? b == b : a !== b || a && _typeof(a) === 'object' || typeof a === 'function';
+  }
+
+  function is_empty(obj) {
+    return Object.keys(obj).length === 0;
   }
 
   function detach(node) {
@@ -222,6 +228,7 @@
         update(component.$$);
       }
 
+      set_current_component(null);
       dirty_components.length = 0;
 
       while (binding_callbacks.length) {
@@ -341,14 +348,15 @@
       context: new Map(parent_component ? parent_component.$$.context : []),
       // everything else
       callbacks: blank_object(),
-      dirty: dirty
+      dirty: dirty,
+      skip_bound: false
     };
     var ready = false;
     $$.ctx = instance ? instance(component, prop_values, function (i, ret) {
       var value = (arguments.length <= 2 ? 0 : arguments.length - 2) ? arguments.length <= 2 ? undefined : arguments[2] : ret;
 
       if ($$.ctx && not_equal($$.ctx[i], $$.ctx[i] = value)) {
-        if ($$.bound[i]) $$.bound[i](value);
+        if (!$$.skip_bound && $$.bound[i]) $$.bound[i](value);
         if (ready) make_dirty(component, i);
       }
 
@@ -402,7 +410,12 @@
       }
     }, {
       key: "$set",
-      value: function $set() {// overridden by instance, if it has props
+      value: function $set($$props) {
+        if (this.$$set && !is_empty($$props)) {
+          this.$$.skip_bound = true;
+          this.$$set($$props);
+          this.$$.skip_bound = false;
+        }
       }
     }]);
 

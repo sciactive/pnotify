@@ -1,7 +1,7 @@
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (global = global || self, factory(global.PNotifyMobile = {}));
+  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.PNotifyMobile = {}));
 }(this, (function (exports) { 'use strict';
 
   function _typeof(obj) {
@@ -103,11 +103,13 @@
   }
 
   function _createSuper(Derived) {
-    return function () {
+    var hasNativeReflectConstruct = _isNativeReflectConstruct();
+
+    return function _createSuperInternal() {
       var Super = _getPrototypeOf(Derived),
           result;
 
-      if (_isNativeReflectConstruct()) {
+      if (hasNativeReflectConstruct) {
         var NewTarget = _getPrototypeOf(this).constructor;
 
         result = Reflect.construct(Super, arguments, NewTarget);
@@ -136,7 +138,7 @@
     if (typeof o === "string") return _arrayLikeToArray(o, minLen);
     var n = Object.prototype.toString.call(o).slice(8, -1);
     if (n === "Object" && o.constructor) n = o.constructor.name;
-    if (n === "Map" || n === "Set") return Array.from(n);
+    if (n === "Map" || n === "Set") return Array.from(o);
     if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
   }
 
@@ -174,6 +176,10 @@
     return a != a ? b == b : a !== b || a && _typeof(a) === 'object' || typeof a === 'function';
   }
 
+  function is_empty(obj) {
+    return Object.keys(obj).length === 0;
+  }
+
   function detach(node) {
     node.parentNode.removeChild(node);
   }
@@ -196,7 +202,7 @@
   }
 
   function get_current_component() {
-    if (!current_component) throw new Error("Function called outside component initialization");
+    if (!current_component) throw new Error('Function called outside component initialization');
     return current_component;
   }
 
@@ -242,6 +248,7 @@
         update(component.$$);
       }
 
+      set_current_component(null);
       dirty_components.length = 0;
 
       while (binding_callbacks.length) {
@@ -293,7 +300,7 @@
     }
   }
 
-  var globals = typeof window !== 'undefined' ? window : global;
+  var globals = typeof window !== 'undefined' ? window : typeof globalThis !== 'undefined' ? globalThis : global;
 
   function mount_component(component, target, anchor) {
     var _component$$$ = component.$$,
@@ -363,14 +370,15 @@
       context: new Map(parent_component ? parent_component.$$.context : []),
       // everything else
       callbacks: blank_object(),
-      dirty: dirty
+      dirty: dirty,
+      skip_bound: false
     };
     var ready = false;
     $$.ctx = instance ? instance(component, prop_values, function (i, ret) {
       var value = (arguments.length <= 2 ? 0 : arguments.length - 2) ? arguments.length <= 2 ? undefined : arguments[2] : ret;
 
       if ($$.ctx && not_equal($$.ctx[i], $$.ctx[i] = value)) {
-        if ($$.bound[i]) $$.bound[i](value);
+        if (!$$.skip_bound && $$.bound[i]) $$.bound[i](value);
         if (ready) make_dirty(component, i);
       }
 
@@ -424,7 +432,12 @@
       }
     }, {
       key: "$set",
-      value: function $set() {// overridden by instance, if it has props
+      value: function $set($$props) {
+        if (this.$$set && !is_empty($$props)) {
+          this.$$.skip_bound = true;
+          this.$$set($$props);
+          this.$$.skip_bound = false;
+        }
       }
     }]);
 
@@ -434,19 +447,23 @@
   var window_1 = globals.window;
 
   function create_fragment(ctx) {
+    var mounted;
     var dispose;
     return {
       c: noop,
-      m: function m(target, anchor, remount) {
-        if (remount) dispose();
-        dispose = listen(window_1, "resize",
-        /*resize_handler*/
-        ctx[11]);
+      m: function m(target, anchor) {
+        if (!mounted) {
+          dispose = listen(window_1, "resize",
+          /*resize_handler*/
+          ctx[3]);
+          mounted = true;
+        }
       },
       p: noop,
       i: noop,
       o: noop,
       d: function d(detaching) {
+        mounted = false;
         dispose();
       }
     };
@@ -564,7 +581,7 @@
       return $$invalidate(0, windowInnerWidth = window.innerWidth);
     };
 
-    $$self.$set = function ($$props) {
+    $$self.$$set = function ($$props) {
       if ("self" in $$props) $$invalidate(1, self = $$props.self);
       if ("swipeDismiss" in $$props) $$invalidate(2, swipeDismiss = $$props.swipeDismiss);
     };
@@ -607,7 +624,7 @@
       }
     };
 
-    return [windowInnerWidth, self, swipeDismiss, origXY, diffXY, noticeWidthHeight, noticeOpacity, csspos, direction, span, offs, resize_handler];
+    return [windowInnerWidth, self, swipeDismiss, resize_handler];
   }
 
   var Mobile = /*#__PURE__*/function (_SvelteComponent) {
