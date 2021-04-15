@@ -1,4 +1,4 @@
-import Notice from './';
+import {Notice} from './';
 
 declare abstract class StackProperties {
   /**
