@@ -97,6 +97,7 @@ npm install --save-dev @pnotify/font-awesome5-fix
 npm install --save-dev @pnotify/font-awesome5
 npm install --save-dev @pnotify/glyphicon
 npm install --save-dev @pnotify/mobile
+npm install --save-dev @pnotify/paginate
 
 # ...
 
