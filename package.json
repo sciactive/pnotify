@@ -59,6 +59,7 @@
   },
   "dependencies": {
     "@pnotify/animate": "5.2.0",
+    "@pnotify/bootstrap3": "5.2.0",
     "@pnotify/bootstrap4": "5.2.0",
     "@pnotify/confirm": "5.2.0",
     "@pnotify/core": "5.2.0",

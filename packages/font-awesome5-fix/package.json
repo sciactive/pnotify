@@ -43,9 +43,6 @@
   "dependencies": {
     "@pnotify/core": "^5.2.0"
   },
-  "peerDependencies": {
-    "@fortawesome/free-solid-svg-icons": "^5.13.0"
-  },
   "devDependencies": {
     "@babel/core": "^7.20.2",
     "@babel/preset-env": "^7.20.2",
