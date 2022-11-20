@@ -3,3 +3,4 @@ dist
 CHANGELOG.md
 /libtests
 /includes
+/lerna.json

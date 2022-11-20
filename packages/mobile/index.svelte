@@ -1,7 +1,9 @@
+<svelte:window on:resize={() => (windowInnerWidth = window.innerWidth)} />
+
 <script context="module">
   export const position = 'PrependContainer';
   export const defaults = {
-    swipeDismiss: true
+    swipeDismiss: true,
   };
 </script>
 
@@ -56,7 +58,7 @@
 
   onMount(() => {
     offs = [
-      self.on('touchstart', e => {
+      self.on('touchstart', (e) => {
         if (!swipeDismiss) {
           return;
         }
@@ -85,7 +87,7 @@
         self.refs.container.style[csspos] = 0;
       }),
 
-      self.on('touchmove', e => {
+      self.on('touchmove', (e) => {
         if (!origXY || !swipeDismiss) {
           return;
         }
@@ -144,16 +146,14 @@
         self.refs.elem.style.removeProperty('opacity');
         self.refs.container.style.removeProperty('left');
         self.refs.container.style.removeProperty('top');
-      })
+      }),
     ];
   });
 
   onDestroy(() => {
-    offs.forEach(off => off());
+    offs.forEach((off) => off());
   });
 </script>
-
-<svelte:window on:resize={() => (windowInnerWidth = window.innerWidth)} />
 
 <style>
   :global([data-pnotify] .pnotify-container) {

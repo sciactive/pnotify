@@ -355,9 +355,7 @@ export function alert(options: Options | string): Notice;
  * Create a PNotify Notice with the type set to 'notice';
  * @param options Notice options.
  */
-export function notice(
-  options: Options | string
-): Notice & {
+export function notice(options: Options | string): Notice & {
   /**
    * @default 'notice'
    */
@@ -367,9 +365,7 @@ export function notice(
  * Create a PNotify Notice with the type set to 'info';
  * @param options Notice options.
  */
-export function info(
-  options: Options | string
-): Notice & {
+export function info(options: Options | string): Notice & {
   /**
    * @default 'info'
    */
@@ -379,9 +375,7 @@ export function info(
  * Create a PNotify Notice with the type set to 'success';
  * @param options Notice options.
  */
-export function success(
-  options: Options | string
-): Notice & {
+export function success(options: Options | string): Notice & {
   /**
    * @default 'success'
    */
@@ -391,9 +385,7 @@ export function success(
  * Create a PNotify Notice with the type set to 'error';
  * @param options Notice options.
  */
-export function error(
-  options: Options | string
-): Notice & {
+export function error(options: Options | string): Notice & {
   /**
    * @default 'error'
    */

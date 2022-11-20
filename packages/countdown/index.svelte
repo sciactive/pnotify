@@ -1,8 +1,25 @@
+{#if showCountdown}
+  <div
+    class={`pnotify-countdown pnotify-countdown-${anchor} ${
+      reverse ? 'pnotify-countdown-reverse' : ''
+    } ${self.getStyle('countdown')}`}
+  >
+    <div
+      class={`pnotify-countdown-bar ${self.getStyle('countdown-bar')}`}
+      style={`height: ${
+        anchor === 'right' || anchor === 'left' ? _percent : '100'
+      }%; width: ${
+        anchor === 'top' || anchor === 'bottom' ? _percent : '100'
+      }%;`}
+    />
+  </div>
+{/if}
+
 <script context="module">
   export const position = 'AppendContainer';
   export const defaults = {
     anchor: 'bottom',
-    reverse: false
+    reverse: false,
   };
 </script>
 
@@ -74,17 +91,6 @@
     clearInterval(ival);
   });
 </script>
-
-{#if showCountdown}
-  <div
-    class={`pnotify-countdown pnotify-countdown-${anchor} ${reverse ? 'pnotify-countdown-reverse' : ''} ${self.getStyle('countdown')}`}
-  >
-    <div
-      class={`pnotify-countdown-bar ${self.getStyle('countdown-bar')}`}
-      style={`height: ${anchor === 'right' || anchor === 'left' ? _percent : '100'}%; width: ${anchor === 'top' || anchor === 'bottom' ? _percent : '100'}%;`}
-    />
-  </div>
-{/if}
 
 <style>
   :global(.pnotify-countdown) {

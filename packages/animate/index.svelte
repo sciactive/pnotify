@@ -2,7 +2,7 @@
   export const position = 'PrependContainer';
   export const defaults = {
     inClass: null,
-    outClass: null
+    outClass: null,
   };
 </script>
 
@@ -23,13 +23,13 @@
     self.$set({
       animation: 'none',
       animateIn,
-      animateOut
+      animateOut,
     });
   } else {
     self.$set({
       animation: _animation,
       animateIn: _animateIn,
-      animateOut: _animateOut
+      animateOut: _animateOut,
     });
   }
 
@@ -37,7 +37,7 @@
     self.$set({
       animation: _animation,
       animateIn: _animateIn,
-      animateOut: _animateOut
+      animateOut: _animateOut,
     });
   });
 
@@ -63,7 +63,7 @@
     self.setAnimating('in');
 
     let off;
-    const finished = event => {
+    const finished = (event) => {
       if (event && self.refs.elem && event.target !== self.refs.elem) {
         return;
       }
@@ -89,7 +89,7 @@
     self.setAnimating('out');
 
     let off;
-    const finished = event => {
+    const finished = (event) => {
       if (event && self.refs.elem && event.target !== self.refs.elem) {
         return;
       }

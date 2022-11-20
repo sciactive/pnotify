@@ -18,7 +18,7 @@
       btn: 'btn mx-1',
       'btn-primary': 'btn-primary',
       'btn-secondary': 'btn-secondary',
-      input: 'form-control'
+      input: 'form-control',
     };
   }
 </script>

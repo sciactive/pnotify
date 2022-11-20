@@ -72,5 +72,8 @@
     "@pnotify/mobile": "5.2.0",
     "@pnotify/paginate": "5.2.0",
     "@pnotify/reference": "5.2.0"
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
   }
 }

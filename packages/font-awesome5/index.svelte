@@ -22,7 +22,7 @@
       unstuck: 'fa-pause',
 
       // Reference Module (Useful for other modules.)
-      refresh: 'fas fa-sync'
+      refresh: 'fas fa-sync',
     };
   }
 </script>

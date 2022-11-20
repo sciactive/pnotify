@@ -32,6 +32,7 @@ Development - https://sciactive.github.io/pnotify/
 <h1>Table of Contents</h1>
 
 <!-- TOC START min:1 max:3 link:true asterisk:false update:true -->
+
 - [Getting Started](#getting-started)
   - [Documentation for Old Versions](#documentation-for-old-versions)
   - [Migrating from PNotify 4](#migrating-from-pnotify-4)
@@ -78,7 +79,7 @@ Development - https://sciactive.github.io/pnotify/
 
 You can get PNotify using NPM or Yarn. (You can also use [jsDelivr](https://www.jsdelivr.com/package/npm/@pnotify/core).)
 
-You *should* install the packages you need individually. Alternatively, you can install all of them at once with the `pnotify` package.
+You _should_ install the packages you need individually. Alternatively, you can install all of them at once with the `pnotify` package.
 
 ```sh
 # Install the packages you need individually.
@@ -107,8 +108,8 @@ npm install --save-dev pnotify
 
 ## Documentation for Old Versions
 
-* [Readme for v4](https://github.com/sciactive/pnotify/blob/v4/README.md) on the [v4 branch](https://github.com/sciactive/pnotify/tree/v4).
-* [Readme for v3](https://github.com/sciactive/pnotify/blob/v3/README.md) on the [v3 branch](https://github.com/sciactive/pnotify/tree/v3).
+- [Readme for v4](https://github.com/sciactive/pnotify/blob/v4/README.md) on the [v4 branch](https://github.com/sciactive/pnotify/tree/v4).
+- [Readme for v3](https://github.com/sciactive/pnotify/blob/v3/README.md) on the [v3 branch](https://github.com/sciactive/pnotify/tree/v3).
 
 ## [Migrating from PNotify 4](MIGRATING.md)
 
@@ -127,7 +128,7 @@ import * as PNotifyMobile from '@pnotify/mobile';
 defaultModules.set(PNotifyMobile, {});
 
 alert({
-  text: 'Notice me, senpai!'
+  text: 'Notice me, senpai!',
 });
 ```
 
@@ -144,7 +145,7 @@ import '@pnotify/mobile/dist/PNotifyMobile.css';
 defaultModules.set(PNotifyMobile, {});
 
 alert({
-  text: 'Notice me, senpai!'
+  text: 'Notice me, senpai!',
 });
 ```
 
@@ -164,7 +165,7 @@ defaultModules.set(PNotifyMobile, {});
 export class WhateverComponent {
   constructor() {
     alert({
-      text: 'Notice me, senpai!'
+      text: 'Notice me, senpai!',
     });
   }
 }
@@ -223,9 +224,18 @@ export class WhateverComponent {
 [PNotify in AngularJS](https://codesandbox.io/s/pnotify-5-in-angularjs-fk45i).
 
 ```html
-<link href="node_modules/@pnotify/core/dist/PNotify.css" rel="stylesheet" type="text/css" />
-<link href="node_modules/@pnotify/mobile/dist/PNotifyMobile.css" rel="stylesheet" type="text/css" />
+<link
+  href="node_modules/@pnotify/core/dist/PNotify.css"
+  rel="stylesheet"
+  type="text/css"
+/>
+<link
+  href="node_modules/@pnotify/mobile/dist/PNotifyMobile.css"
+  rel="stylesheet"
+  type="text/css"
+/>
 ```
+
 ```js
 var angular = require('angular');
 var PNotify = require('@pnotify/core');
@@ -233,13 +243,17 @@ var PNotifyMobile = require('@pnotify/mobile');
 
 PNotify.defaultModules.set(PNotifyMobile, {});
 
-angular.module('WhateverModule', [])
+angular
+  .module('WhateverModule', [])
   .value('PNotify', PNotify)
-  .controller('WhateverController', ['PNotify', function(PNotify) {
-    PNotify.alert({
-      text: 'Notice me, senpai!'
-    });
-  }]);
+  .controller('WhateverController', [
+    'PNotify',
+    function (PNotify) {
+      PNotify.alert({
+        text: 'Notice me, senpai!',
+      });
+    },
+  ]);
 ```
 
 ## Vanilla JS (ES5)
@@ -247,15 +261,29 @@ angular.module('WhateverModule', [])
 PNotify in vanilla ES5
 
 ```html
-<script type="text/javascript" src="node_modules/@pnotify/core/dist/PNotify.js"></script>
-<link href="node_modules/@pnotify/core/dist/PNotify.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="node_modules/@pnotify/mobile/dist/PNotifyMobile.js"></script>
-<link href="node_modules/@pnotify/mobile/dist/PNotifyMobile.css" rel="stylesheet" type="text/css" />
+<script
+  type="text/javascript"
+  src="node_modules/@pnotify/core/dist/PNotify.js"
+></script>
+<link
+  href="node_modules/@pnotify/core/dist/PNotify.css"
+  rel="stylesheet"
+  type="text/css"
+/>
+<script
+  type="text/javascript"
+  src="node_modules/@pnotify/mobile/dist/PNotifyMobile.js"
+></script>
+<link
+  href="node_modules/@pnotify/mobile/dist/PNotifyMobile.css"
+  rel="stylesheet"
+  type="text/css"
+/>
 <script type="text/javascript">
   PNotify.defaultModules.set(PNotifyMobile, {});
 
   PNotify.alert({
-    text: 'Notice me, senpai!'
+    text: 'Notice me, senpai!',
   });
 </script>
 ```
@@ -265,16 +293,27 @@ PNotify in vanilla ES5
 [PNotify in vanilla ES6+](https://codesandbox.io/s/pnotify-5-in-vanilla-es6-x4ipu)
 
 ```html
-<link href="node_modules/@pnotify/core/dist/PNotify.css" rel="stylesheet" type="text/css" />
-<link href="node_modules/@pnotify/mobile/dist/PNotifyMobile.css" rel="stylesheet" type="text/css" />
+<link
+  href="node_modules/@pnotify/core/dist/PNotify.css"
+  rel="stylesheet"
+  type="text/css"
+/>
+<link
+  href="node_modules/@pnotify/mobile/dist/PNotifyMobile.css"
+  rel="stylesheet"
+  type="text/css"
+/>
 <script type="module">
-  import { alert, defaultModules } from 'node_modules/@pnotify/core/dist/PNotify.js';
+  import {
+    alert,
+    defaultModules,
+  } from 'node_modules/@pnotify/core/dist/PNotify.js';
   import * as PNotifyMobile from 'node_modules/@pnotify/mobile/dist/PNotifyMobile.js';
 
   defaultModules.set(PNotifyMobile, {});
 
   alert({
-    text: 'Notice me, senpai!'
+    text: 'Notice me, senpai!',
   });
 </script>
 ```
@@ -286,7 +325,11 @@ PNotify in vanilla ES5
 The default theme, Bright Theme. Supports dark mode. Include the CSS file in your page:
 
 ```html
-<link href="node_modules/@pnotify/core/dist/BrightTheme.css" rel="stylesheet" type="text/css" />
+<link
+  href="node_modules/@pnotify/core/dist/BrightTheme.css"
+  rel="stylesheet"
+  type="text/css"
+/>
 ```
 
 Or if you're using a packager that imports CSS:
@@ -300,7 +343,11 @@ import '@pnotify/core/dist/BrightTheme.css';
 The Material theme. Supports dark mode. Requires [material-design-icons](https://www.npmjs.com/package/material-design-icons) and optionally the Roboto font. Include the CSS file in your page:
 
 ```html
-<link href="node_modules/@pnotify/core/dist/Material.css" rel="stylesheet" type="text/css" />
+<link
+  href="node_modules/@pnotify/core/dist/Material.css"
+  rel="stylesheet"
+  type="text/css"
+/>
 ```
 
 Or if you're using a packager that imports CSS:
@@ -335,7 +382,10 @@ npm install --save material-design-icon-fonts
 ```
 
 ```html
-<link rel="stylesheet" href="node_modules/material-design-icons/iconfont/material-icons.css" />
+<link
+  rel="stylesheet"
+  href="node_modules/material-design-icons/iconfont/material-icons.css"
+/>
 ```
 
 Or if you're using a packager that imports CSS:
@@ -347,14 +397,19 @@ import 'material-design-icons/iconfont/material-icons.css';
 Alternatively, you can use the Google Fonts CDN:
 
 ```html
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Material+Icons" />
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css?family=Material+Icons"
+/>
 ```
 
 Or a clone from jsDelivr:
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/material-icons-font@2.0.0/material-icons-font.css" />
-
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/material-icons-font@2.0.0/material-icons-font.css"
+/>
 ```
 
 ### Roboto Font
@@ -364,7 +419,10 @@ The Material style uses the "400" and "500" weights of Roboto. It will fall back
 You can use the Google Font CDN:
 
 ```html
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" />
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap"
+/>
 ```
 
 ## Angeler
@@ -372,7 +430,11 @@ You can use the Google Font CDN:
 The Angeler theme. Supports dark mode. Include the CSS file in your page:
 
 ```html
-<link href="node_modules/@pnotify/core/dist/Angeler.css" rel="stylesheet" type="text/css" />
+<link
+  href="node_modules/@pnotify/core/dist/Angeler.css"
+  rel="stylesheet"
+  type="text/css"
+/>
 ```
 
 Or if you're using a packager that imports CSS:
@@ -396,7 +458,7 @@ You can use the `angeler-extended` class to use the alternate, more spacious sty
 ```js
 alert({
   text: "I'll be more expanded than normal, with a separated title line.",
-  addClass: 'angeler-extended'
+  addClass: 'angeler-extended',
 });
 ```
 
@@ -415,7 +477,10 @@ Styling for the popular Bootstrap library. Doesn't support dark mode (but you ca
 Include the CSS:
 
 ```html
-<link rel="stylesheet" href="node_modules/@pnotify/bootstrap4/dist/PNotifyBootstrap4.css" />
+<link
+  rel="stylesheet"
+  href="node_modules/@pnotify/bootstrap4/dist/PNotifyBootstrap4.css"
+/>
 ```
 
 Or if you're using a packager that imports CSS:
@@ -503,24 +568,24 @@ const { alert, notice, info, success, error } = require('@pnotify/core');
 // Manually set the type.
 const myAlert = alert({
   text: "I'm an alert.",
-  type: 'info'
+  type: 'info',
 });
 
 // Automatically set the type.
 const myNotice = notice({
-  text: "I'm a notice."
+  text: "I'm a notice.",
 });
 
 const myInfo = info({
-  text: "I'm an info message."
+  text: "I'm an info message.",
 });
 
 const mySuccess = success({
-  text: "I'm a success message."
+  text: "I'm a success message.",
 });
 
 const myError = error({
-  text: "I'm an error message."
+  text: "I'm an error message.",
 });
 ```
 
@@ -529,67 +594,68 @@ const myError = error({
 PNotify options and default values.
 
 `defaults = {`
-* `type: 'notice'`<br>
+
+- `type: 'notice'`<br>
   Type of the notice. 'notice', 'info', 'success', or 'error'.
-* `title: false`<br>
+- `title: false`<br>
   The notice's title. Can be a string, an element, or `false` for no title.
-* `titleTrusted: false`<br>
+- `titleTrusted: false`<br>
   Whether to trust the title or escape its contents. (Not allow HTML.)
-* `text: false`<br>
+- `text: false`<br>
   The notice's text. Can be a string, an element, or `false` for no text.
-* `textTrusted: false`<br>
+- `textTrusted: false`<br>
   Whether to trust the text or escape its contents. (Not allow HTML.)
-* `styling: 'brighttheme'`<br>
+- `styling: 'brighttheme'`<br>
   What styling classes to use. (Can be 'brighttheme', 'material', another string provided by a module, or a styling object.)
-* `icons: 'brighttheme'`<br>
+- `icons: 'brighttheme'`<br>
   What icons classes to use (Can be 'brighttheme', 'material', another string provided by a module, or an icon object.)
-* `mode: 'no-preference'`<br>
+- `mode: 'no-preference'`<br>
   Light or dark version of the theme, if supported by the styling. This overrides the CSS media query when a preference is given. (Can be 'no-preference', 'light', or 'dark'.)
-* `addClass: ''`<br>
+- `addClass: ''`<br>
   Additional classes to be added to the notice. (For custom styling.)
-* `addModalClass: ''`<br>
+- `addModalClass: ''`<br>
   Additional classes to be added to the notice, only when in modal.
-* `addModelessClass: ''`<br>
+- `addModelessClass: ''`<br>
   Additional classes to be added to the notice, only when in modeless.
-* `autoOpen: true`<br>
+- `autoOpen: true`<br>
   Open the notice immediately when it is created.
-* `width: '360px'`<br>
+- `width: '360px'`<br>
   Width of the notice.
-* `minHeight: '16px'`<br>
+- `minHeight: '16px'`<br>
   Minimum height of the notice. It will expand to fit content.
-* `maxTextHeight: '200px'`
+- `maxTextHeight: '200px'`
   Maximum height of the text container. If the text goes beyond this height, scrollbars will appear. Use null to remove this restriction.
-* `icon: true`<br>
+- `icon: true`<br>
   Set icon to true to use the default icon for the selected style/type, false for no icon, or a string for your own icon class.
-* `animation: 'fade'`<br>
+- `animation: 'fade'`<br>
   The animation to use when displaying and hiding the notice. 'none' and 'fade' are supported through CSS. Others are supported through the Animate module and Animate.css.
-* `animateSpeed: 'normal'`<br>
+- `animateSpeed: 'normal'`<br>
   Speed at which the notice animates in and out. 'slow', 'normal', or 'fast'. Respectively, 400ms, 250ms, 100ms.
-* `shadow: true`<br>
+- `shadow: true`<br>
   Display a drop shadow.
-* `hide: true`<br>
+- `hide: true`<br>
   After a delay, close the notice.
-* `delay: 8000`<br>
+- `delay: 8000`<br>
   Delay in milliseconds before the notice is removed. If set to `Infinity`, the notice will not close, but it will not be considered sticky, so it will be closed along with all unstuck notices if the modal backdrop is clicked.
-* `mouseReset: true`<br>
+- `mouseReset: true`<br>
   Reset the hide timer if the mouse moves over the notice.
-* `closer: true`<br>
+- `closer: true`<br>
   Provide a button for the user to manually close the notice.
-* `closerHover: true`<br>
+- `closerHover: true`<br>
   Only show the closer button on hover.
-* `sticker: true`<br>
+- `sticker: true`<br>
   Provide a button for the user to manually stick the notice.
-* `stickerHover: true`<br>
+- `stickerHover: true`<br>
   Only show the sticker button on hover.
-* `labels: {close: 'Close', stick: 'Pin', unstick: 'Unpin'}`<br>
+- `labels: {close: 'Close', stick: 'Pin', unstick: 'Unpin'}`<br>
   The various displayed text, helps facilitating internationalization.
-* `remove: true`<br>
+- `remove: true`<br>
   Remove the notice's elements from the DOM after it is closed.
-* `destroy: true`<br>
+- `destroy: true`<br>
   Whether to remove the notice from the stack (and therefore, stack history) when it is closed.
-* `stack: defaultStack`<br>
+- `stack: defaultStack`<br>
   The stack on which the notices will be placed. Also controls the direction the notices stack.
-* `modules: defaultModules`<br>
+- `modules: defaultModules`<br>
   This is where modules and their options should be added. It is a map of `module => options` entries.
 
 `}`
@@ -603,14 +669,14 @@ defaultStack = new Stack({
   spacing1: 36,
   spacing2: 36,
   push: 'bottom',
-  context: document.body
-})
+  context: document.body,
+});
 ```
 
 [Learn more about stacks.](#Stacks)
 
 ```js
-defaultModules = new Map()
+defaultModules = new Map();
 ```
 
 ## Changing Defaults
@@ -673,32 +739,38 @@ defaultModules.set(PNotifyMobile, {});
 notice({
   text: "I don't have the Mobile module.",
   modules: new Map([
-    ...[...defaultModules].filter(([mod]) => mod !== PNotifyMobile)
-  ])
+    ...[...defaultModules].filter(([mod]) => mod !== PNotifyMobile),
+  ]),
 });
 
 // Add an additional module and options.
 notice({
-  text: "I use the Animate module in addition to the defaults.",
+  text: 'I use the Animate module in addition to the defaults.',
   modules: new Map([
     ...defaultModules,
-    [PNotifyAnimate, {
-      inClass: 'fadeInDown',
-      outClass: 'fadeOutUp'
-    }]
-  ])
+    [
+      PNotifyAnimate,
+      {
+        inClass: 'fadeInDown',
+        outClass: 'fadeOutUp',
+      },
+    ],
+  ]),
 });
 
 // Don't worry about adding a module that's already in the defaults.
 // It's a Map, so only the last instance/options will end up in there.
 notice({
-  text: "I use the Mobile module with options I specify.",
+  text: 'I use the Mobile module with options I specify.',
   modules: new Map([
     ...defaultModules,
-    [PNotifyMobile, {
-      swipeDismiss: false
-    }]
-  ])
+    [
+      PNotifyMobile,
+      {
+        swipeDismiss: false,
+      },
+    ],
+  ]),
 });
 ```
 
@@ -707,7 +779,7 @@ notice({
 Using modules with TypeScript requires types assertions for module entries, and possibly the `downlevelIteration` TypeScript option.
 
 ```ts
-import {notice, defaultModules, Notice, ModuleEntry} from '@pnotify/core';
+import { notice, defaultModules, Notice, ModuleEntry } from '@pnotify/core';
 import * as PNotifyConfirm from '@pnotify/confirm';
 
 notice({
@@ -715,19 +787,24 @@ notice({
   modules: new Map([
     // This requires `"downlevelIteration": true` in your TypeScript config.
     ...defaultModules,
-    [PNotifyConfirm, {
-      confirm: true,
-      buttons: [{
-        text: 'Ok',
-        primary: true,
-        click: (notice: Notice) => notice.close()
-      }]
-      // ***
-      // Notice the type assertion here. It tells TypeScript that the options
-      // are for the Confirm module.
-      // ***
-    }] as ModuleEntry<typeof PNotifyConfirm>,
-  ])
+    [
+      PNotifyConfirm,
+      {
+        confirm: true,
+        buttons: [
+          {
+            text: 'Ok',
+            primary: true,
+            click: (notice: Notice) => notice.close(),
+          },
+        ],
+        // ***
+        // Notice the type assertion here. It tells TypeScript that the options
+        // are for the Confirm module.
+        // ***
+      },
+    ] as ModuleEntry<typeof PNotifyConfirm>,
+  ]),
 });
 ```
 
@@ -742,32 +819,36 @@ npm install --save-dev @pnotify/desktop
 ```
 
 ```js
-import {notice, defaultModules} from '@pnotify/core';
+import { notice, defaultModules } from '@pnotify/core';
 import * as PNotifyDesktop from '@pnotify/desktop';
 
 const myNotice = notice({
   text: "I'm a notice.",
   modules: new Map([
     ...defaultModules,
-    [PNotifyDesktop, {
-      // Desktop Module Options
-    }]
-  ])
+    [
+      PNotifyDesktop,
+      {
+        // Desktop Module Options
+      },
+    ],
+  ]),
 });
 ```
 
 `PNotifyDesktop.defaults = {`
-* `fallback: true`<br>
+
+- `fallback: true`<br>
   If desktop notifications are not supported or allowed, fall back to a regular notice.
-* `icon: null`<br>
+- `icon: null`<br>
   The URL of the icon to display. If false, no icon will show. If null, a default icon will show.
-* `tag: null`<br>
+- `tag: null`<br>
   Using a tag lets you update an existing notice, or keep from duplicating notices between tabs. If you leave tag null, one will be generated, facilitating the `update` function.
-* `title: null`<br>
+- `title: null`<br>
   Optionally display a different title for the desktop.
-* `text: null`<br>
+- `text: null`<br>
   Optionally display different text for the desktop.
-* `options: {}`<br>
+- `options: {}`<br>
   Any additional options to be passed to the Notification constructor.
 
 `}`
@@ -781,22 +862,26 @@ npm install --save-dev @pnotify/mobile
 ```
 
 ```js
-import {notice, defaultModules} from '@pnotify/core';
+import { notice, defaultModules } from '@pnotify/core';
 import * as PNotifyMobile from '@pnotify/mobile';
 
 const myNotice = notice({
   text: "I'm a notice.",
   modules: new Map([
     ...defaultModules,
-    [PNotifyMobile, {
-      // Mobile Module Options
-    }]
-  ])
+    [
+      PNotifyMobile,
+      {
+        // Mobile Module Options
+      },
+    ],
+  ]),
 });
 ```
 
 `PNotifyMobile.defaults = {`
-* `swipeDismiss: true`<br>
+
+- `swipeDismiss: true`<br>
   Let the user swipe the notice away.
 
 `}`
@@ -810,24 +895,28 @@ npm install --save-dev @pnotify/countdown
 ```
 
 ```js
-import {notice, defaultModules} from '@pnotify/core';
+import { notice, defaultModules } from '@pnotify/core';
 import * as PNotifyCountdown from '@pnotify/countdown';
 
 const myNotice = notice({
   text: "I'm a notice.",
   modules: new Map([
     ...defaultModules,
-    [PNotifyCountdown, {
-      // Countdown Module Options
-    }]
-  ])
+    [
+      PNotifyCountdown,
+      {
+        // Countdown Module Options
+      },
+    ],
+  ]),
 });
 ```
 
 `PNotifyCountdown.defaults = {`
-* `anchor: 'bottom'`<br>
+
+- `anchor: 'bottom'`<br>
   Where the countdown bar should anchor. One of 'top', 'bottom', 'left', or 'right'.
-* `reverse: false`<br>
+- `reverse: false`<br>
   Whether the countdown shrinks the other way.
 
 `}`
@@ -841,24 +930,28 @@ npm install --save-dev @pnotify/animate
 ```
 
 ```js
-import {notice, defaultModules} from '@pnotify/core';
+import { notice, defaultModules } from '@pnotify/core';
 import * as PNotifyAnimate from '@pnotify/animate';
 
 const myNotice = notice({
   text: "I'm a notice.",
   modules: new Map([
     ...defaultModules,
-    [PNotifyAnimate, {
-      // Animate Module Options
-    }]
-  ])
+    [
+      PNotifyAnimate,
+      {
+        // Animate Module Options
+      },
+    ],
+  ]),
 });
 ```
 
 `PNotifyAnimate.defaults = {`
-* `inClass: null`<br>
+
+- `inClass: null`<br>
   The class to use to animate the notice in. If only one of these is set, it will be used for both.
-* `outClass: null`<br>
+- `outClass: null`<br>
   The class to use to animate the notice out. If only one of these is set, it will be used for both.
 
 `}`
@@ -874,34 +967,38 @@ npm install --save-dev @pnotify/confirm
 ```
 
 ```js
-import {notice, defaultModules} from '@pnotify/core';
+import { notice, defaultModules } from '@pnotify/core';
 import * as PNotifyConfirm from '@pnotify/confirm';
 
 const myNotice = notice({
   text: "I'm a notice.",
   modules: new Map([
     ...defaultModules,
-    [PNotifyConfirm, {
-      // Confirm Module Options
-    }]
-  ])
+    [
+      PNotifyConfirm,
+      {
+        // Confirm Module Options
+      },
+    ],
+  ]),
 });
 ```
 
 `PNotifyConfirm.defaults = {`
-* `confirm: false`<br>
+
+- `confirm: false`<br>
   Make a confirmation box.
-* `focus: null`<br>
+- `focus: null`<br>
   For confirmation boxes, true means the first button or the button with promptTrigger will be focused, and null means focus will change only for modal notices. For prompts, true or null means focus the prompt. When false, focus will not change.
-* `prompt: false`<br>
+- `prompt: false`<br>
   Make a prompt.
-* `promptClass: ''`<br>
+- `promptClass: ''`<br>
   Classes to add to the input element of the prompt.
-* `promptValue: ''`<br>
+- `promptValue: ''`<br>
   The value of the prompt. (Note that this is two-way bound to the input.)
-* `promptMultiLine: false`<br>
+- `promptMultiLine: false`<br>
   Whether the prompt should accept multiple lines of text.
-* `align: 'flex-end'`<br>
+- `align: 'flex-end'`<br>
   Where to align the buttons. (flex-start, center, flex-end, space-around, space-between)
 
 ```js
@@ -912,19 +1009,20 @@ buttons: [
     promptTrigger: true,
     click: (notice, value) => {
       notice.close();
-      notice.fire('pnotify:confirm', {notice, value});
-    }
+      notice.fire('pnotify:confirm', { notice, value });
+    },
   },
   {
     text: 'Cancel',
     click: (notice) => {
       notice.close();
-      notice.fire('pnotify:cancel', {notice});
-    }
-  }
-]
+      notice.fire('pnotify:cancel', { notice });
+    },
+  },
+];
 ```
-* The buttons to display, and their callbacks. If a button has promptTrigger set to true, it will be triggered when the user hits enter in a prompt (unless they hold shift).
+
+- The buttons to display, and their callbacks. If a button has promptTrigger set to true, it will be triggered when the user hits enter in a prompt (unless they hold shift).
 
 `}`
 
@@ -938,9 +1036,9 @@ const notice = alert({
   hide: false,
   modules: {
     Confirm: {
-      confirm: true
-    }
-  }
+      confirm: true,
+    },
+  },
 });
 notice.on('pnotify:confirm', () => {
   // User confirmed, continue here...
@@ -959,113 +1057,117 @@ npm install --save-dev @pnotify/paginate
 ```
 
 ```js
-import {notice, defaultModules} from '@pnotify/core';
+import { notice, defaultModules } from '@pnotify/core';
 import * as PNotifyPaginate from '@pnotify/paginate';
 
 const myNotice = notice({
   text: "I'm a notice.",
   modules: new Map([
     ...defaultModules,
-    [PNotifyPaginate, {
-      // Paginate Module Options
-    }]
-  ])
+    [
+      PNotifyPaginate,
+      {
+        // Paginate Module Options
+      },
+    ],
+  ]),
 });
 ```
 
 `PNotifyPaginate.defaults = {`
-* `buttons: true`<br>
+
+- `buttons: true`<br>
   Show next and previous buttons.
-* `count: true`<br>
+- `count: true`<br>
   Show the stack notice count.
-* `immediateTransition: true`<br>
+- `immediateTransition: true`<br>
   Immediately transition to the next/previous notice (without animations).
-* `waiting: true`<br>
+- `waiting: true`<br>
   After transitioning, set the closed notice to "waiting" state.
-* `labels: {previous: 'Previous', next: 'Next', of: 'of'}`<br>
+- `labels: {previous: 'Previous', next: 'Next', of: 'of'}`<br>
   Various texts. Allows for internationalization.
 
 `}`
 
 # Exported Methods and Properties
 
-* `alert(options)`<br>
+- `alert(options)`<br>
   Create and return a notice with the default type.
-* `notice(options)`<br>
+- `notice(options)`<br>
   Create and return a notice with 'notice' type.
-* `info(options)`<br>
+- `info(options)`<br>
   Create and return a notice with 'info' type.
-* `success(options)`<br>
+- `success(options)`<br>
   Create and return a notice with 'success' type.
-* `error(options)`<br>
+- `error(options)`<br>
   Create and return a notice with 'error' type.
-* `defaults`<br>
+- `defaults`<br>
   Defaults for options.
-* `defaultStack`<br>
+- `defaultStack`<br>
   The default stack object.
-* `styles`<br>
+- `styles`<br>
   Styles objects.
-* `icons`<br>
+- `icons`<br>
   Icons objects.
 
 # Instance Methods and Properties
 
-* `notice.open(immediate)`<br>
+- `notice.open(immediate)`<br>
   Open the notice. Returns a promise that is rejected on failure or resolved on completion.
-* `notice.close(immediate, timerHide, waitAfterward)`<br>
+- `notice.close(immediate, timerHide, waitAfterward)`<br>
   Close the notice. Returns a promise that is rejected on failure or resolved on completion.
-* `notice.update(options)`<br>
+- `notice.update(options)`<br>
   Update the notice with new options.
-* `notice.on(eventName, callback)`<br>
+- `notice.on(eventName, callback)`<br>
   Invokes the callback whenever the notice dispatches the event. Callback receives an `event` argument with a `detail` prop. Returns a function that removes the handler when invoked.
-* `notice.fire(eventName, detail)`<br>
+- `notice.fire(eventName, detail)`<br>
   Fire an event.
-* `notice.getState()`<br>
+- `notice.getState()`<br>
   Returns the state of the notice. Can be 'waiting', 'opening', 'open', 'closing', or 'closed'.
-* `notice.addModuleClass(element, ...classNames)`<br>
+- `notice.addModuleClass(element, ...classNames)`<br>
   This is for modules to add classes to the notice or container element.
-* `notice.removeModuleClass(element, ...classNames)`<br>
+- `notice.removeModuleClass(element, ...classNames)`<br>
   This is for modules to remove classes from the notice or container element.
-* `notice.hasModuleClass(element, ...classNames)`<br>
+- `notice.hasModuleClass(element, ...classNames)`<br>
   This is for modules to test classes on the notice or container element.
-* `notice.refs.elem`<br>
+- `notice.refs.elem`<br>
   The notice's DOM element.
-* `notice.refs.container`<br>
+- `notice.refs.container`<br>
   The container DOM element.
-* `notice.refs.content`<br>
+- `notice.refs.content`<br>
   The content DOM element. (Title and text containers are in here.)
-* `notice.refs.titleContainer`<br>
+- `notice.refs.titleContainer`<br>
   The title container DOM element.
-* `notice.refs.textContainer`<br>
+- `notice.refs.textContainer`<br>
   The text container DOM element.
-* `notice.refs.iconContainer`<br>
+- `notice.refs.iconContainer`<br>
   The icon container DOM element.
 
 ## Events
 
 Event objects have a `detail` property that contains information about the event, including a reference to the notice itself.
 
-* `pnotify:init` - Fired upon initialization of a new notice. This event bubbles.
-* `pnotify:mount` - Fired when the notice has been mounted into the DOM. This event bubbles.
-* `pnotify:update` - Fired when the notice's state changes. Careful, this includes internal state and can be very noisy (don't do anything computationally expensive on this one).
-* `pnotify:beforeOpen` - Fired before the notice opens. Use `preventDefault()` on the event to cancel this action.
-* `pnotify:afterOpen` - Fired after the notice opens.
-* `pnotify:enterModal` - Fired when the notice enters a modal state. (Opens in a modal stack, or a modalish stack that is in modal state.)
-* `pnotify:leaveModal` - Fired when the notice leaves a modal state.
-* `pnotify:beforeClose` - Fired before the notice closes. Use `preventDefault()` on the event to cancel this action.
-* `pnotify:afterClose` - Fired after the notice closes.
-* `pnotify:beforeDestroy` - Fired before the notice is destroyed. Use `preventDefault()` on the event to cancel this action.
-* `pnotify:afterDestroy` - Fired after the notice is destroyed.
+- `pnotify:init` - Fired upon initialization of a new notice. This event bubbles.
+- `pnotify:mount` - Fired when the notice has been mounted into the DOM. This event bubbles.
+- `pnotify:update` - Fired when the notice's state changes. Careful, this includes internal state and can be very noisy (don't do anything computationally expensive on this one).
+- `pnotify:beforeOpen` - Fired before the notice opens. Use `preventDefault()` on the event to cancel this action.
+- `pnotify:afterOpen` - Fired after the notice opens.
+- `pnotify:enterModal` - Fired when the notice enters a modal state. (Opens in a modal stack, or a modalish stack that is in modal state.)
+- `pnotify:leaveModal` - Fired when the notice leaves a modal state.
+- `pnotify:beforeClose` - Fired before the notice closes. Use `preventDefault()` on the event to cancel this action.
+- `pnotify:afterClose` - Fired after the notice closes.
+- `pnotify:beforeDestroy` - Fired before the notice is destroyed. Use `preventDefault()` on the event to cancel this action.
+- `pnotify:afterDestroy` - Fired after the notice is destroyed.
 
 From the [Svelte Component API](https://svelte.dev/docs#Client-side_component_API).
 
 Don't use these. I'm putting them in here to document that you should not use them. That way, if you do, and you file a bug report, I can point to this section in the README, and tell you that you did a bad.
 
-* `notice.$set(options)`<br>
+- `notice.$set(options)`<br>
   You should use `update(options)` instead. The Svelte API may change.
-* `notice.$on(event, callback)`<br>
+- `notice.$on(event, callback)`<br>
   You should use `on(event, callback)` instead. The Svelte API may change.
-* `notice.$destroy()`<br>
+- `notice.$destroy()`<br>
   You should use `close()` with `destroy: true` instead. It will animate the notice out and remove it from the `stack.notices` array. Removes the component from the DOM and any observers/event listeners.
 
 # Stacks
@@ -1073,129 +1175,129 @@ Don't use these. I'm putting them in here to document that you should not use th
 A stack is an instance of the `Stack` class used to determine where to position notices and how they interact with each other.
 
 ```js
-import {alert, Stack} from '@pnotify/core';
+import { alert, Stack } from '@pnotify/core';
 
 const myStack = new Stack({
-  dir1: 'up'
+  dir1: 'up',
 });
 
 alert({
-  text: 'I\'m a notice centered at the bottom!',
-  stack: myStack
+  text: "I'm a notice centered at the bottom!",
+  stack: myStack,
 });
 ```
 
 Stack options and their defaults:
 
-* `dir1: null`<br>
+- `dir1: null`<br>
   The primary stacking direction. Can be `'up'`, `'down'`, `'right'`, or `'left'`.
-* `firstpos1: null`<br>
+- `firstpos1: null`<br>
   Number of pixels from the edge of the context, relative to `dir1`, the first notice will appear. If null, the current position of the notice, whatever that is, will be used.
-* `spacing1: 25`<br>
+- `spacing1: 25`<br>
   Number of pixels between notices along `dir1`.
-* `dir2: null`<br>
+- `dir2: null`<br>
   The secondary stacking direction. Should be a perpendicular direction to `dir1`. The notices will continue in this direction when they reach the edge of the viewport along `dir1`.
-* `firstpos2: null`<br>
+- `firstpos2: null`<br>
   Number of pixels from the edge of the context, relative to `dir2`, the first notice will appear. If null, the current position of the notice, whatever that is, will be used.
-* `spacing2: 25`<br>
+- `spacing2: 25`<br>
   Number of pixels between notices along `dir2`.
-* `push: 'bottom'`<br>
+- `push: 'bottom'`<br>
   Where, in the stack, to push new notices. Can be `'top'` or `'bottom'`.
-* `maxOpen: 1`<br>
+- `maxOpen: 1`<br>
   How many notices are allowed to be open in this stack at once.
-* `maxStrategy: 'wait'`<br>
+- `maxStrategy: 'wait'`<br>
   The strategy to use to ensure `maxOpen`. Can be `'wait'`, which will cause new notices to wait their turn, or `'close'`, which will remove the oldest notice to make room for a new one.
-* `maxClosureCausesWait: true`<br>
+- `maxClosureCausesWait: true`<br>
   Whether the notices that are closed to abide by `maxOpen` when `maxStrategy === 'close'` should wait and reopen in turn.
-* `modal: 'ish'`<br>
+- `modal: 'ish'`<br>
   Whether the stack should be modal (`true`), modeless (`false`), or modalish (`'ish'`). Modalish stacks are cool. See https://sciactive.com/2020/02/11/the-modalish-notification-flow/.
-* `modalishFlash: true`<br>
+- `modalishFlash: true`<br>
   Whether new notices that start waiting in a modalish stack should flash under the leader notice to show that they have been added.
-* `overlayClose: true`<br>
+- `overlayClose: true`<br>
   Whether clicking on the modal overlay should close the stack's notices.
-* `overlayClosesPinned: false`<br>
+- `overlayClosesPinned: false`<br>
   Whether clicking on the modal to close notices also closes notices that have been pinned (`hide === false`).
-* `positioned: true`<br>
+- `positioned: true`<br>
   Whether the notices in this stack are positioned by the stack. If false, the notices are simply part of the normal flow.
-* `context: document.body`<br>
+- `context: document.body`<br>
   The DOM element this stack's notices should appear in.
 
 Stack behavior:
 
-* If there is no `dir1` property, the notice will be centered in the context.
-* If there is a `dir1` and no `dir2`, the notices will be centered along the axis of `dir1`.
-* The `firstpos*` values are relative to an edge determined by the corresponding `dir*` value.
-  * `dirX === 'up'` means `firstposX` is relative to the **bottom** edge.
-  * `dirX === 'down'` means `firstposX` is relative to the **top** edge.
-  * `dirX === 'left'` means `firstposX` is relative to the **right** edge.
-  * `dirX === 'right'` means `firstposX` is relative to the **left** edge.
-* Stacks are independent of each other, so a stack doesn't know and doesn't care if it overlaps (and blocks) another stack.
-* Stack objects are used and manipulated by PNotify, and therefore, should likely be a variable when passed. Only use `stack: new Stack({...})` in your options if you intend to have only one notice open like that.
+- If there is no `dir1` property, the notice will be centered in the context.
+- If there is a `dir1` and no `dir2`, the notices will be centered along the axis of `dir1`.
+- The `firstpos*` values are relative to an edge determined by the corresponding `dir*` value.
+  - `dirX === 'up'` means `firstposX` is relative to the **bottom** edge.
+  - `dirX === 'down'` means `firstposX` is relative to the **top** edge.
+  - `dirX === 'left'` means `firstposX` is relative to the **right** edge.
+  - `dirX === 'right'` means `firstposX` is relative to the **left** edge.
+- Stacks are independent of each other, so a stack doesn't know and doesn't care if it overlaps (and blocks) another stack.
+- Stack objects are used and manipulated by PNotify, and therefore, should likely be a variable when passed. Only use `stack: new Stack({...})` in your options if you intend to have only one notice open like that.
 
 Stack methods:
 
-* `forEach(callback, { start = 'oldest', dir = 'newer', skipModuleHandled = false } = {})`<br>
+- `forEach(callback, { start = 'oldest', dir = 'newer', skipModuleHandled = false } = {})`<br>
   Run a callback for all the notices in the stack. `start` can be 'head', 'tail', 'oldest', or 'newest'. `dir` can be 'next', 'prev', 'older', or 'newer'.
-* `position()`<br>
+- `position()`<br>
   Position all the notices in the stack.
-* `queuePosition(milliseconds = 10)`<br>
+- `queuePosition(milliseconds = 10)`<br>
   Queue a position call in that many milliseconds, unless another one is queued beforehand.
-* `close(immediate)`<br>
+- `close(immediate)`<br>
   Close all the notices in the stack.
-* `open(immediate)`<br>
+- `open(immediate)`<br>
   Open all the notices in the stack.
-* `openLast()`<br>
+- `openLast()`<br>
   Open the last closed/closing notice in the stack.
-* `swap(one, theOther, immediate = false, waitAfter = false)`<br>
+- `swap(one, theOther, immediate = false, waitAfter = false)`<br>
   If `one` is open, close it and open `theOther` instead. Returns a promise that is rejected on failure or resolved on completion.
-* `on(event, callback)`<br>
+- `on(event, callback)`<br>
   Add an event listener. Returns a function that will remove the listener when called.
 
 There are other methods on the stack class, but you shouldn't use them. They're meant to be internal, so they begin with an underscore.
 
 Stack properties:
 
-* `stack.notices` - An "array" of notices. It's actually built on the fly from the double linked list the notices are really stored in.
-* `stack.length` - How many notices there are in the stack.
-* `stack.leader` - When a stack is modalish, this is the notice that is open in the non-modal state.
+- `stack.notices` - An "array" of notices. It's actually built on the fly from the double linked list the notices are really stored in.
+- `stack.length` - How many notices there are in the stack.
+- `stack.leader` - When a stack is modalish, this is the notice that is open in the non-modal state.
 
 All of the options are properties as well.
 
 Stack events and `event.detail` contents:
 
-* `'beforePosition', { stack }`<br>
+- `'beforePosition', { stack }`<br>
   Before the notices in the stack are positioned.
-* `'afterPosition', { stack }`<br>
+- `'afterPosition', { stack }`<br>
   After the notices in the stack are positioned.
-* `'beforeAddNotice', { stack, notice }`<br>
+- `'beforeAddNotice', { stack, notice }`<br>
   Before a notice is added to the stack.
-* `'afterAddNotice', { stack, notice }`<br>
+- `'afterAddNotice', { stack, notice }`<br>
   After a notice is added to the stack.
-* `'beforeOpenNotice', { stack, notice }`<br>
+- `'beforeOpenNotice', { stack, notice }`<br>
   Before a notice in the stack is opened.
-* `'afterOpenNotice', { stack, notice }`<br>
+- `'afterOpenNotice', { stack, notice }`<br>
   After a notice in the stack is opened.
-* `'beforeCloseNotice', { stack, notice }`<br>
+- `'beforeCloseNotice', { stack, notice }`<br>
   Before a notice in the stack is closed.
-* `'afterCloseNotice', { stack, notice }`<br>
+- `'afterCloseNotice', { stack, notice }`<br>
   After a notice in the stack is closed.
-* `'beforeRemoveNotice', { stack, notice }`<br>
+- `'beforeRemoveNotice', { stack, notice }`<br>
   Before a notice is removed from the stack.
-* `'afterRemoveNotice', { stack, notice }`<br>
+- `'afterRemoveNotice', { stack, notice }`<br>
   After a notice is removed from the stack.
-* `'beforeSetLeader', { stack, leader }`<br>
+- `'beforeSetLeader', { stack, leader }`<br>
   Before a notice is set as the leader of the stack. The leader is the notice that is open in a Modalish stack.
-* `'afterSetLeader', { stack, leader }`<br>
+- `'afterSetLeader', { stack, leader }`<br>
   After a notice is set as the leader of the stack. The leader is the notice that is open in a Modalish stack.
-* `'beforeAddOverlay', { stack }`<br>
+- `'beforeAddOverlay', { stack }`<br>
   Before the stack opens an overlay, indicating it is in modal mode.
-* `'afterAddOverlay', { stack }`<br>
+- `'afterAddOverlay', { stack }`<br>
   After the stack opens an overlay, indicating it is in modal mode.
-* `'beforeRemoveOverlay', { stack }`<br>
+- `'beforeRemoveOverlay', { stack }`<br>
   Before the stack closes and removes the overlay, indicating it is exiting modal mode.
-* `'afterRemoveOverlay', { stack }`<br>
+- `'afterRemoveOverlay', { stack }`<br>
   After the stack closes and removes the overlay, indicating it is exiting modal mode.
-* `'overlayClose', { stack, clickEvent }`<br>
+- `'overlayClose', { stack, clickEvent }`<br>
   When the user clicks the overlay to close the stack. You can call `clickEvent.preventDefault()` to cancel the close action.
 
 > :warning: Calling something like `alert({text: 'notice', stack: new Stack({dir1: 'down', firstpos1: 25})});` may not do what you want. It will create a notice, but that notice will be in its own stack and will overlap other notices.
@@ -1213,7 +1315,7 @@ const stackBottomModal = new Stack({
   push: 'top', // Each new notice will appear at the bottom of the screen, which is where the 'top' of the stack is. Other notices will be pushed up.
   modal: true, // When a notice appears in this stack, a modal overlay will be created.
   overlayClose: true, // When the user clicks on the overlay, all notices in this stack will be closed.
-  context: document.getElementById('page-container') // The notices will be placed in the 'page-container' element.
+  context: document.getElementById('page-container'), // The notices will be placed in the 'page-container' element.
 });
 ```
 
@@ -1223,42 +1325,44 @@ If you just want to position a single notice programmatically, and don't want to
 alert({
   text: "Notice that's positioned in its own stack.",
   stack: new Stack({
-    dir1: 'down', dir2: 'right', // Position from the top left corner.
-    firstpos1: 90, firstpos2: 90 // 90px from the top, 90px from the left.
-  })
+    dir1: 'down',
+    dir2: 'right', // Position from the top left corner.
+    firstpos1: 90,
+    firstpos2: 90, // 90px from the top, 90px from the left.
+  }),
 });
 ```
 
 # Features
 
-* Rich graphical features and effects.
-  * Automatic dark mode support.
-  * Material, Bootstrap 3/4, Font Awesome 4/5, or the stand-alone theme, Bright Theme.
-  * Mobile styling and swipe support.
-  * Timed hiding.
-  * Slick animations with Animate.css.
-  * Attention getters with Animate.css.
-  * Countdown bar to show time left before notice closes.
-* Highly customizable UI.
-  * [Modalish](https://sciactive.com/2020/02/11/the-modalish-notification-flow/), modal, and modeless notification flows.
-  * Sticky (pinned) notices.
-  * Optional close and stick buttons.
-  * Supports non-blocking notices for less intrusive use.
-  * Notification types: notice, info, success, and error.
-  * Stacks allow notices to position together or independently.
-  * Control stack direction and push to top or bottom.
-  * Confirm dialogs, alert buttons, and prompts.
-  * RTL language support.
-* Feature rich API.
-  * Desktop notifications based on the Web Notifications standard.
-  * Dynamically update existing notices.
-  * Put text, HTML, or DOM elements in notices.
-    * By default, escapes text to prevent XSS attacks.
-  * Optional notice history for reshowing old notices.
-* Universally compatible.
-  * Works with any frontend library (React, Angular, Svelte, Vue, Ember, etc.).
-  * Works with bundlers (Webpack, Rollup, etc.).
-  * No dependencies for most features.
+- Rich graphical features and effects.
+  - Automatic dark mode support.
+  - Material, Bootstrap 3/4, Font Awesome 4/5, or the stand-alone theme, Bright Theme.
+  - Mobile styling and swipe support.
+  - Timed hiding.
+  - Slick animations with Animate.css.
+  - Attention getters with Animate.css.
+  - Countdown bar to show time left before notice closes.
+- Highly customizable UI.
+  - [Modalish](https://sciactive.com/2020/02/11/the-modalish-notification-flow/), modal, and modeless notification flows.
+  - Sticky (pinned) notices.
+  - Optional close and stick buttons.
+  - Supports non-blocking notices for less intrusive use.
+  - Notification types: notice, info, success, and error.
+  - Stacks allow notices to position together or independently.
+  - Control stack direction and push to top or bottom.
+  - Confirm dialogs, alert buttons, and prompts.
+  - RTL language support.
+- Feature rich API.
+  - Desktop notifications based on the Web Notifications standard.
+  - Dynamically update existing notices.
+  - Put text, HTML, or DOM elements in notices.
+    - By default, escapes text to prevent XSS attacks.
+  - Optional notice history for reshowing old notices.
+- Universally compatible.
+  - Works with any frontend library (React, Angular, Svelte, Vue, Ember, etc.).
+  - Works with bundlers (Webpack, Rollup, etc.).
+  - No dependencies for most features.
 
 # Browser Compatibility and Build Size
 
@@ -1273,7 +1377,7 @@ npx lerna bootstrap
 npm build
 ```
 
-You should now have `dist` folders in all the packages with smaller (but only compatible with newer browsers) build files. Note that this doesn't apply to Svelte projects, because they build the PNotify *.svelte source files anyway.
+You should now have `dist` folders in all the packages with smaller (but only compatible with newer browsers) build files. Note that this doesn't apply to Svelte projects, because they build the PNotify \*.svelte source files anyway.
 
 # Licensing and Additional Info
 

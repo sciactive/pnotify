@@ -246,7 +246,7 @@
         // ---
         PNotify.notice({
           title: 'PNotify',
-          text: 'Welcome to the demo site. Try our fresh demos.'
+          text: 'Welcome to the demo site. Try our fresh demos.',
         });
       });
     </script>
@@ -255,7 +255,7 @@
     data-spy="scroll"
     data-target=".navbar"
     data-offset="0"
-    style="position: relative;"
+    style="position: relative"
   >
     <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light">
       <div class="container">
@@ -370,14 +370,14 @@
     <section class="container page-banner" id="overview">
       <h1><img src="includes/logo.png" alt="PNotify" id="logo" /></h1>
       <p id="description">Beautiful notifications and prompts.</p>
-      <p class="dev-note" style="display: none;">
+      <p class="dev-note" style="display: none">
         You probably want to go to the
         <a href="https://sciactive.com/pnotify/">production site</a>, cause
         things will be broken here.
       </p>
       <div class="row align-items-stretch">
         <div class="col-md-4 my-3">
-          <div class="card" style="height: 100%;">
+          <div class="card" style="height: 100%">
             <h5 class="card-header">
               <i class="fas fa-mobile"></i> Mobile Ready
             </h5>
@@ -388,7 +388,7 @@
           </div>
         </div>
         <div class="col-md-4 my-3">
-          <div class="card" style="height: 100%;">
+          <div class="card" style="height: 100%">
             <h5 class="card-header">
               <i class="fas fa-asterisk"></i> Unobtrusive
             </h5>
@@ -404,7 +404,7 @@
           </div>
         </div>
         <div class="col-md-4 my-3">
-          <div class="card" style="height: 100%;">
+          <div class="card" style="height: 100%">
             <h5 class="card-header"><i class="fas fa-gift"></i> Open Source</h5>
             <div class="card-body">
               PNotify is distributed under the permissive
@@ -426,10 +426,17 @@
       </div>
       <div
         class="dev-note"
-        style="display: none; position: fixed; z-index: -1; bottom: 20px; left: 20px; opacity: .4;"
+        style="
+          display: none;
+          position: fixed;
+          z-index: -1;
+          bottom: 20px;
+          left: 20px;
+          opacity: 0.4;
+        "
       >
         <div class="alert alert-danger">
-          <h5 style="margin-top: 0;">
+          <h5 style="margin-top: 0">
             <i class="fas fa-exclamation-triangle"></i> Caution warning danger
             attention!
           </h5>
@@ -563,7 +570,7 @@
           window.addEventListener('DOMContentLoaded', () => {
             document
               .getElementById('style-brighttheme')
-              .addEventListener('change', e => {
+              .addEventListener('change', (e) => {
                 PNotify.defaultModules.delete(PNotifyBootstrap4);
                 PNotify.defaultModules.delete(PNotifyFontAwesome5);
                 PNotify.defaults.styling = 'brighttheme';
@@ -572,14 +579,13 @@
                 PNotify.defaults.closerHover = true;
                 PNotify.notice({
                   title: 'Styling Change',
-                  text:
-                    'From now on, notices will be styled with Bright Theme, the default theme.'
+                  text: 'From now on, notices will be styled with Bright Theme, the default theme.',
                 });
               });
 
             document
               .getElementById('style-material')
-              .addEventListener('change', e => {
+              .addEventListener('change', (e) => {
                 PNotify.defaultModules.delete(PNotifyBootstrap4);
                 PNotify.defaultModules.delete(PNotifyFontAwesome5);
                 PNotify.defaults.styling = 'material';
@@ -588,13 +594,13 @@
                 PNotify.defaults.closerHover = true;
                 PNotify.notice({
                   title: 'Styling Change',
-                  text: 'From now on, notices will be styled with Material.'
+                  text: 'From now on, notices will be styled with Material.',
                 });
               });
 
             document
               .getElementById('style-angeler')
-              .addEventListener('change', e => {
+              .addEventListener('change', (e) => {
                 PNotify.defaultModules.delete(PNotifyBootstrap4);
                 PNotify.defaultModules.delete(PNotifyFontAwesome5);
                 PNotify.defaults.styling = 'angeler';
@@ -603,14 +609,13 @@
                 PNotify.defaults.closerHover = false;
                 PNotify.notice({
                   title: 'Styling Change',
-                  text:
-                    'From now on, notices will be styled with Angeler. They will also always show the closer button, which is how Angela designed it.'
+                  text: 'From now on, notices will be styled with Angeler. They will also always show the closer button, which is how Angela designed it.',
                 });
               });
 
             document
               .getElementById('style-angeler-extended')
-              .addEventListener('change', e => {
+              .addEventListener('change', (e) => {
                 PNotify.defaultModules.delete(PNotifyBootstrap4);
                 PNotify.defaultModules.delete(PNotifyFontAwesome5);
                 PNotify.defaults.styling = 'angeler';
@@ -619,28 +624,26 @@
                 PNotify.defaults.closerHover = false;
                 PNotify.notice({
                   title: 'Styling Change',
-                  text:
-                    'From now on, notices will be styled with Angeler, and use the extended variant. They will also always show the closer button, which is how Angela designed it.'
+                  text: 'From now on, notices will be styled with Angeler, and use the extended variant. They will also always show the closer button, which is how Angela designed it.',
                 });
               });
 
             document
               .getElementById('style-bootstrap4')
-              .addEventListener('change', e => {
+              .addEventListener('change', (e) => {
                 PNotify.defaultModules.set(PNotifyBootstrap4, {});
                 PNotify.defaultModules.set(PNotifyFontAwesome5, {});
                 PNotify.defaults.addClass = '';
                 PNotify.defaults.closerHover = true;
                 PNotify.notice({
                   title: 'Styling Change',
-                  text:
-                    'From now on, notices will be styled with Bootstrap 4 w/ Font Awesome 5 Icons.'
+                  text: 'From now on, notices will be styled with Bootstrap 4 w/ Font Awesome 5 Icons.',
                 });
               });
 
             document
               .getElementById('mode-no-preference')
-              .addEventListener('change', e => {
+              .addEventListener('change', (e) => {
                 PNotify.defaults.mode = 'no-preference';
                 document.getElementById(
                   'bootstrap-light'
@@ -651,13 +654,13 @@
                 ).attributes.media.value = '(prefers-color-scheme: dark)';
                 PNotify.notice({
                   title: 'Mode Change',
-                  text: 'From now on, notices will show in system default mode.'
+                  text: 'From now on, notices will show in system default mode.',
                 });
               });
 
             document
               .getElementById('mode-light')
-              .addEventListener('change', e => {
+              .addEventListener('change', (e) => {
                 PNotify.defaults.mode = 'light';
                 document.getElementById(
                   'bootstrap-light'
@@ -668,13 +671,13 @@
                 ).attributes.media.value = '(width: 0px)';
                 PNotify.notice({
                   title: 'Mode Change',
-                  text: 'From now on, notices will show in light mode.'
+                  text: 'From now on, notices will show in light mode.',
                 });
               });
 
             document
               .getElementById('mode-dark')
-              .addEventListener('change', e => {
+              .addEventListener('change', (e) => {
                 PNotify.defaults.mode = 'dark';
                 document.getElementById(
                   'bootstrap-light'
@@ -685,7 +688,7 @@
                   '(prefers-color-scheme: no-preference), (prefers-color-scheme: light), (prefers-color-scheme: dark)';
                 PNotify.notice({
                   title: 'Mode Change',
-                  text: 'From now on, notices will show in dark mode.'
+                  text: 'From now on, notices will show in dark mode.',
                 });
               });
           });
@@ -1106,7 +1109,7 @@
           >
             Forms
           </button>
-          <div id="form_notice" style="display: none;">
+          <div id="form_notice" style="display: none">
             <form action="" method="post">
               <div class="mt-0 mb-3">
                 <h3>Login to Continue</h3>
@@ -1176,7 +1179,7 @@
           >
             DOM Element
           </button>
-          <div style="display: none;">
+          <div style="display: none">
             <h4 id="dom_notice_title">DOM Element Notice</h4>
             <div id="dom_notice_text" class="accordion">
               <div class="card">
@@ -1226,9 +1229,7 @@
                   aria-labelledby="headingTwo"
                   data-parent="#dom_notice_text"
                 >
-                  <div class="card-body">
-                    Of course it is.
-                  </div>
+                  <div class="card-body">Of course it is.</div>
                 </div>
               </div>
               <div class="card">
@@ -1337,7 +1338,7 @@
                   'span> text.</' +
                   'span>',
                 textTrusted: true,
-                maxTextHeight: null
+                maxTextHeight: null,
               });
             };
           </script>
@@ -1360,7 +1361,7 @@
           >
             Or Keep it Safe
           </button>
-          <div id="evil_html" style="display: none;">
+          <div id="evil_html" style="display: none">
             <div>As you can see, I don't allow HTML in my content.</div>
             <div>This prevents things like cross site scripting attacks:</div>
             <script type="text/javascript">
@@ -1379,7 +1380,7 @@
                 shadow: false,
                 width: '200px',
                 closer: false,
-                sticker: false
+                sticker: false,
               });
 
               notice.on('pnotify:afterOpen', () => {
@@ -1388,7 +1389,7 @@
                   const interval = setInterval(() => {
                     percent += 2;
                     const options = {
-                      text: percent + '% complete.'
+                      text: percent + '% complete.',
                     };
                     if (percent === 80) {
                       options.title = 'Almost There';
@@ -1456,8 +1457,8 @@
             "
             >How to custom style like this.</a
           >
-          <div style="display: none;">
-            <div id="growl" style="max-height: 70vh; overflow-y: auto;">
+          <div style="display: none">
+            <div id="growl" style="max-height: 70vh; overflow-y: auto">
               <p>
                 To custom style a notice, you can use a styling name like in the
                 demo. For this example, I've used "<strong>custom</strong>".
@@ -1469,11 +1470,9 @@
                 "[data-pnotify]" to add specificity. This is how the built-in
                 themes work.
               </p>
-              <p>
-                Here's the CSS that makes it look like those Growl notices:
-              </p>
+              <p>Here's the CSS that makes it look like those Growl notices:</p>
               <pre
-                style="min-width: 100%;"
+                style="min-width: 100%"
               ><code class="css">[data-pnotify].<strong>custom</strong>-elem {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 10pt;
@@ -1765,7 +1764,7 @@
                 hide: false,
                 destroy: true,
                 closer: false,
-                sticker: false
+                sticker: false,
               });
 
               notice.on('pnotify:afterOpen', () => {
@@ -1779,19 +1778,19 @@
                     plus = 0.25;
                     notice.update({
                       title: 'Aligning discrete worms',
-                      icon: 'fas fa-circle-notch fa-spin'
+                      icon: 'fas fa-circle-notch fa-spin',
                     });
                   }
                   if (curValue === 80) {
                     notice.update({
                       title: 'Connecting end points',
-                      icon: 'fas fa-sync fa-spin'
+                      icon: 'fas fa-sync fa-spin',
                     });
                   }
                   if (curValue === 90) {
                     notice.update({
                       title: 'Dividing and conquering',
-                      icon: 'fas fa-spinner fa-pulse'
+                      icon: 'fas fa-spinner fa-pulse',
                     });
                   }
                   if (curValue >= 100) {
@@ -2118,7 +2117,7 @@
               <select
                 id="countdown_type"
                 class="form-control"
-                style="display: inline; width: auto;"
+                style="display: inline; width: auto"
               >
                 <option value="notice">notice</option>
                 <option value="info">info</option>
@@ -2131,7 +2130,7 @@
               <select
                 id="countdown_anchor"
                 class="form-control"
-                style="display: inline; width: auto;"
+                style="display: inline; width: auto"
               >
                 <option value="top">top</option>
                 <option value="bottom" selected>bottom</option>
@@ -2278,7 +2277,7 @@
               <select
                 id="animate_in"
                 class="form-control"
-                style="display: inline; width: auto;"
+                style="display: inline; width: auto"
               >
                 <option value="bounceIn">bounceIn</option>
                 <option value="bounceInDown">bounceInDown</option>
@@ -2319,7 +2318,7 @@
               <select
                 id="animate_out"
                 class="form-control"
-                style="display: inline; width: auto;"
+                style="display: inline; width: auto"
               >
                 <option value="bounceOut">bounceOut</option>
                 <option value="bounceOutDown">bounceOutDown</option>
@@ -2942,19 +2941,18 @@
                   firstpos1: 25,
                   firstpos2: 25,
                   modal: false,
-                  context: document.getElementById('paginate-context')
+                  context: document.getElementById('paginate-context'),
                 });
               }
               const opts = {
                 title: "It's a Notice",
-                text:
-                  'The notice gives you a bit more context about the other notices.',
+                text: 'The notice gives you a bit more context about the other notices.',
                 stack: window.stackPaginate,
                 destroy: true,
                 modules: new Map([
                   ...PNotify.defaultModules,
-                  [PNotifyPaginate, {}]
-                ])
+                  [PNotifyPaginate, {}],
+                ]),
               };
               switch (type) {
                 case 'error':
@@ -3016,7 +3014,7 @@
                 <div
                   id="paginate-context"
                   class="card-body"
-                  style="height: 350px; position: relative; overflow: auto;"
+                  style="height: 350px; position: relative; overflow: auto"
                 >
                   <div class="my-3">
                     <h3>Paginate Demo</h3>
@@ -3103,13 +3101,13 @@
                   firstpos1: 25,
                   firstpos2: 25,
                   push: 'top',
-                  maxStrategy: 'close'
+                  maxStrategy: 'close',
                 });
               }
               const opts = {
                 title: 'Over Here',
                 text: "Check me out. I'm in a different stack.",
-                stack: window.stackTopLeft
+                stack: window.stackTopLeft,
               };
               switch (type) {
                 case 'error':
@@ -3175,13 +3173,13 @@
                   firstpos1: 25,
                   firstpos2: 25,
                   push: 'top',
-                  maxStrategy: 'close'
+                  maxStrategy: 'close',
                 });
               }
               const opts = {
                 title: 'Over Here',
                 text: "Check me out. I'm in a different stack.",
-                stack: window.stackBottomLeft
+                stack: window.stackBottomLeft,
               };
               switch (type) {
                 case 'error':
@@ -3246,13 +3244,13 @@
                   dir1: 'up',
                   dir2: 'left',
                   firstpos1: 25,
-                  firstpos2: 25
+                  firstpos2: 25,
                 });
               }
               const opts = {
                 title: 'Over Here',
                 text: "Check me out. I'm in a different stack.",
-                stack: window.stackBottomRight
+                stack: window.stackBottomRight,
               };
               switch (type) {
                 case 'error':
@@ -3316,13 +3314,13 @@
                   dir1: 'down',
                   firstpos1: 25,
                   modal: false,
-                  maxOpen: Infinity
+                  maxOpen: Infinity,
                 });
               }
               const opts = {
                 title: 'Over Here',
                 text: "Check me out. I'm in a different stack.",
-                stack: window.stackTopCenter
+                stack: window.stackTopCenter,
               };
               switch (type) {
                 case 'error':
@@ -3387,7 +3385,7 @@
                   firstpos1: 25,
                   push: 'top',
                   modal: true,
-                  maxOpen: Infinity
+                  maxOpen: Infinity,
                 });
               }
               const opts = {
@@ -3404,12 +3402,12 @@
                         {
                           text: 'Another',
                           primary: true,
-                          click: () => showStackModal(type)
-                        }
-                      ]
-                    }
-                  ]
-                ])
+                          click: () => showStackModal(type),
+                        },
+                      ],
+                    },
+                  ],
+                ]),
               };
               switch (type) {
                 case 'error':
@@ -3475,7 +3473,7 @@
                   firstpos1: 25,
                   firstpos2: 25,
                   modal: true,
-                  maxOpen: Infinity
+                  maxOpen: Infinity,
                 });
               }
               const opts = {
@@ -3492,12 +3490,12 @@
                         {
                           text: 'Another',
                           primary: true,
-                          click: () => showStackModalLeft(type)
-                        }
-                      ]
-                    }
-                  ]
-                ])
+                          click: () => showStackModalLeft(type),
+                        },
+                      ],
+                    },
+                  ],
+                ]),
               };
               switch (type) {
                 case 'error':
@@ -3564,7 +3562,7 @@
                   firstpos1: 0,
                   spacing1: 0,
                   push: 'top',
-                  maxOpen: Infinity
+                  maxOpen: Infinity,
                 });
               }
               const opts = {
@@ -3573,7 +3571,7 @@
                 addClass: 'stack-bar-top',
                 shadow: false,
                 width: '100%',
-                stack: window.stackBarTop
+                stack: window.stackBarTop,
               };
               switch (type) {
                 case 'error':
@@ -3643,7 +3641,7 @@
                 window.stackBarBottom = new PNotify.Stack({
                   dir1: 'up',
                   firstpos1: 0,
-                  spacing1: 0
+                  spacing1: 0,
                 });
               }
               const opts = {
@@ -3652,7 +3650,7 @@
                 addClass: 'stack-bar-bottom',
                 shadow: false,
                 width: '100%',
-                stack: window.stackBarBottom
+                stack: window.stackBarBottom,
               };
               switch (type) {
                 case 'error':
@@ -3720,8 +3718,7 @@
               window.makeTooltip = function makeTooltip() {
                 window.tooltip = PNotify.notice({
                   title: 'Tooltip',
-                  text:
-                    "I'm not in a stack. I'm positioned like a tooltip with JavaScript.",
+                  text: "I'm not in a stack. I'm positioned like a tooltip with JavaScript.",
                   hide: false,
                   closer: false,
                   sticker: false,
@@ -3734,8 +3731,8 @@
                   modules: new Map([
                     ...[...PNotify.defaultModules].filter(
                       ([mod]) => mod !== PNotifyMobile
-                    )
-                  ])
+                    ),
+                  ]),
                 });
                 // Close the notice if the user mouses over it.
                 window.tooltip.on('mouseout', () => window.tooltip.close());
@@ -3765,7 +3762,7 @@
                   dir2: 'left',
                   firstpos1: 25,
                   firstpos2: 25,
-                  context: document.getElementById('stack-context')
+                  context: document.getElementById('stack-context'),
                 });
               }
               if (typeof window.stackContextModeless === 'undefined') {
@@ -3776,7 +3773,7 @@
                   firstpos2: 25,
                   context: document.getElementById('stack-context'),
                   modal: false,
-                  maxOpen: Infinity
+                  maxOpen: Infinity,
                 });
               }
               if (typeof window.stackContextModal === 'undefined') {
@@ -3785,7 +3782,7 @@
                   firstpos1: 25,
                   context: document.getElementById('stack-context'),
                   modal: true,
-                  maxOpen: Infinity
+                  maxOpen: Infinity,
                 });
               }
               const opts = {
@@ -3796,7 +3793,7 @@
                     ? window.stackContext
                     : modal
                     ? window.stackContextModal
-                    : window.stackContextModeless
+                    : window.stackContextModeless,
               };
               switch (type) {
                 case 'error':
@@ -3930,16 +3927,15 @@
                   maxOpen: Infinity,
                   modal: false,
                   positioned: false,
-                  context: document.getElementById('unpositioned-context')
+                  context: document.getElementById('unpositioned-context'),
                 });
               }
               const opts = {
                 title: 'Over Here',
-                text:
-                  "I'm in an unpositioned stack. That means I'm not taken out of the flow, and my position is determined by the browser.",
+                text: "I'm in an unpositioned stack. That means I'm not taken out of the flow, and my position is determined by the browser.",
                 width: '100%',
                 shadow: false,
-                stack: window.unpositionedStack
+                stack: window.unpositionedStack,
               };
               switch (type) {
                 case 'error':
@@ -4001,7 +3997,7 @@
                 <div
                   id="stack-context"
                   class="card-body"
-                  style="height: 350px; position: relative; overflow: auto;"
+                  style="height: 350px; position: relative; overflow: auto"
                 >
                   <div class="my-3">
                     <h3>Stack Context</h3>
@@ -4014,7 +4010,7 @@
                     relative to me. My overflow is set to auto, so the notices
                     won't show beyond my borders.
                   </p>
-                  <p style="text-align: center;">
+                  <p style="text-align: center">
                     <img
                       alt="Happy face"
                       src="includes/le_happy_face_by_luchocas.png"
@@ -4076,13 +4072,13 @@ PNotify.notice({
     <div
       id="comments"
       class="container page-section"
-      style="margin-bottom: 20px;"
+      style="margin-bottom: 20px"
     >
       <div class="my-3">
         <h2>Comments</h2>
         <hr />
       </div>
-      <div id="commentLoader" style="text-align: center;">
+      <div id="commentLoader" style="text-align: center">
         <button
           class="btn btn-primary"
           onclick="
@@ -4098,7 +4094,7 @@ PNotify.notice({
         >comments powered by <span class="logo-disqus">Disqus</span></a
       >
       <script type="text/javascript">
-        var disqus_config = function() {
+        var disqus_config = function () {
           this.page.url = 'https://sciactive.com/pnotify/';
           this.page.identifier = 'demo';
         };
@@ -4119,7 +4115,7 @@ PNotify.notice({
         // ---
         // This creates all those source code view buttons.
         // ---
-        const makeSourceButton = button => {
+        const makeSourceButton = (button) => {
           button.classList.remove('source');
           // Wrap the button in a container.
           const contain = document.createElement('div');
@@ -4135,7 +4131,7 @@ PNotify.notice({
           sourceButton.classList.add(...button.classList.values());
           contain.appendChild(sourceButton);
 
-          sourceButton.addEventListener('click', e => {
+          sourceButton.addEventListener('click', (e) => {
             let text = '';
 
             function addText(more) {
@@ -4168,8 +4164,8 @@ PNotify.notice({
               maxTextHeight: null,
               stack: new PNotify.Stack({
                 modal: true,
-                overlayClosesPinned: true
-              })
+                overlayClosesPinned: true,
+              }),
             });
 
             addPrettyCode(text, sourceElement);
@@ -4196,7 +4192,7 @@ PNotify.notice({
           codeBlock.style.overflowY = 'auto';
           codeBlock.classList.add('js');
           codeBlock.textContent = window.beautifier.js(code, {
-            indent_size: 2
+            indent_size: 2,
           });
           const pre = document.createElement('pre');
           pre.appendChild(codeBlock);
@@ -4204,13 +4200,13 @@ PNotify.notice({
           window.hljs.highlightBlock(codeBlock);
         };
 
-        document.body.addEventListener('mouseenter', e => {
+        document.body.addEventListener('mouseenter', (e) => {
           if (e.target.classList.contains('source')) {
             makeSourceButton(e.target);
           }
         });
 
-        document.body.addEventListener('click', e => {
+        document.body.addEventListener('click', (e) => {
           if (e.target.classList.contains('source')) {
             makeSourceButton(e.target);
           }
@@ -4218,7 +4214,7 @@ PNotify.notice({
 
         document
           .querySelectorAll('.source')
-          .forEach(el => makeSourceButton(el));
+          .forEach((el) => makeSourceButton(el));
       });
 
       window.hljs.initHighlightingOnLoad(); // Format source in help.

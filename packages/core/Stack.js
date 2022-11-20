@@ -19,7 +19,7 @@ export default class Stack {
         overlayClose: true,
         overlayClosesPinned: false,
         positioned: true,
-        context: (window && document.body) || null
+        context: (window && document.body) || null,
       },
       options
     );
@@ -47,13 +47,13 @@ export default class Stack {
     this._noticeHead = {
       notice: null,
       prev: null,
-      next: null
+      next: null,
     };
     // The tail of the notice double linked list.
     this._noticeTail = {
       notice: null,
       prev: this._noticeHead,
-      next: null
+      next: null,
     };
     this._noticeHead.next = this._noticeTail;
     // The map of notices to nodes.
@@ -94,7 +94,7 @@ export default class Stack {
 
   get notices() {
     const notices = [];
-    this.forEach(notice => notices.push(notice));
+    this.forEach((notice) => notices.push(notice));
     return notices;
   }
 
@@ -157,17 +157,17 @@ export default class Stack {
   }
 
   close(immediate) {
-    this.forEach(notice => notice.close(immediate, false, false));
+    this.forEach((notice) => notice.close(immediate, false, false));
   }
 
   open(immediate) {
-    this.forEach(notice => notice.open(immediate));
+    this.forEach((notice) => notice.open(immediate));
   }
 
   openLast() {
     // Look up the last notice, and display it.
     this.forEach(
-      notice => {
+      (notice) => {
         if (['opening', 'open', 'waiting'].indexOf(notice.getState()) === -1) {
           notice.open();
           return false;
@@ -207,7 +207,7 @@ export default class Stack {
   fire(event, detail = {}) {
     detail.stack = this;
     if (event in this._callbacks) {
-      this._callbacks[event].forEach(cb => cb(detail));
+      this._callbacks[event].forEach((cb) => cb(detail));
     }
   }
 
@@ -217,7 +217,7 @@ export default class Stack {
       this.fire('beforePosition');
       this._resetPositionData();
       this.forEach(
-        notice => {
+        (notice) => {
           this._positionNotice(notice);
         },
         { start: 'head', dir: 'next', skipModuleHandled: true }
@@ -271,7 +271,7 @@ export default class Stack {
       this.firstpos2,
       this._nextpos1,
       this._nextpos2,
-      this._addpos2
+      this._addpos2,
     ];
 
     // Read from the DOM to cause refresh.
@@ -300,7 +300,7 @@ export default class Stack {
         down: 'top',
         up: 'bottom',
         left: 'right',
-        right: 'left'
+        right: 'left',
       }[this.dir1];
 
       // Calculate the current pos1 value.
@@ -331,7 +331,7 @@ export default class Stack {
         down: 'top',
         up: 'bottom',
         left: 'right',
-        right: 'left'
+        right: 'left',
       }[this.dir2];
 
       // Calculate the current pos2 value.
@@ -491,7 +491,7 @@ export default class Stack {
         this.maxStrategy === 'close'
       ) {
         let toClose = this._openNotices - this.maxOpen;
-        this.forEach(notice => {
+        this.forEach((notice) => {
           if (['opening', 'open'].indexOf(notice.getState()) !== -1) {
             // Close oldest notices, leaving only stack.maxOpen from the stack.
             notice.close(false, false, this.maxClosureCausesWait);
@@ -550,7 +550,7 @@ export default class Stack {
         this._openNotices < this.maxOpen
       ) {
         let done = false;
-        const open = contender => {
+        const open = (contender) => {
           if (contender !== notice && contender.getState() === 'waiting') {
             contender.open().catch(() => {});
             if (this._openNotices >= this.maxOpen) {
@@ -563,24 +563,24 @@ export default class Stack {
           // Check for the next waiting notice and open it.
           this.forEach(open, {
             start: notice,
-            dir: 'next'
+            dir: 'next',
           });
           if (!done) {
             this.forEach(open, {
               start: notice,
-              dir: 'prev'
+              dir: 'prev',
             });
           }
         } else if (this.maxStrategy === 'close' && this.maxClosureCausesWait) {
           // Check for the last closed notice and re-open it.
           this.forEach(open, {
             start: notice,
-            dir: 'older'
+            dir: 'older',
           });
           if (!done) {
             this.forEach(open, {
               start: notice,
-              dir: 'newer'
+              dir: 'newer',
             });
           }
         }
@@ -606,7 +606,7 @@ export default class Stack {
       prev: null,
       next: null,
       beforeOpenOff: notice.on('pnotify:beforeOpen', handleNoticeOpen),
-      afterCloseOff: notice.on('pnotify:afterClose', handleNoticeClosed)
+      afterCloseOff: notice.on('pnotify:afterClose', handleNoticeClosed),
     };
 
     // Push to the correct side of the linked list.
@@ -737,7 +737,7 @@ export default class Stack {
         this._collapsingModalState = true;
 
         this.forEach(
-          notice => {
+          (notice) => {
             // Allow the notices to timed close.
             notice._preventTimerClose(false);
 
@@ -755,7 +755,7 @@ export default class Stack {
           {
             start: this._leader,
             dir: 'next',
-            skipModuleHandled: true
+            skipModuleHandled: true,
           }
         );
 
@@ -771,7 +771,7 @@ export default class Stack {
 
       // Set the next waiting notice to be masking.
       this.forEach(
-        notice => {
+        (notice) => {
           if (notice === this._leader) {
             // Skip the leader, and start with the next one.
             return;
@@ -792,7 +792,7 @@ export default class Stack {
         {
           start: this._leader,
           dir: 'next',
-          skipModuleHandled: true
+          skipModuleHandled: true,
         }
       );
     };
@@ -812,11 +812,14 @@ export default class Stack {
       }, 750);
     };
 
-    this._leaderOff = (offs => () => offs.map(off => off()))([
+    this._leaderOff = (
+      (offs) => () =>
+        offs.map((off) => off())
+    )([
       this._leader.on('mouseenter', leaderInteraction),
       this._leader.on('focusin', leaderInteraction),
       this._leader.on('mouseleave', leaderLeaveInteraction),
-      this._leader.on('focusout', leaderLeaveInteraction)
+      this._leader.on('focusout', leaderLeaveInteraction),
     ]);
 
     this.fire('afterSetLeader', { leader });
@@ -867,7 +870,7 @@ export default class Stack {
         this._setMasking(null, true);
 
         this.forEach(
-          notice => {
+          (notice) => {
             // Prevent the notices from timed closing.
             notice._preventTimerClose(true);
 
@@ -878,15 +881,18 @@ export default class Stack {
           {
             start: this._leader,
             dir: 'next',
-            skipModuleHandled: true
+            skipModuleHandled: true,
           }
         );
       }
     };
 
-    this._maskingOff = (offs => () => offs.map(off => off()))([
+    this._maskingOff = (
+      (offs) => () =>
+        offs.map((off) => off())
+    )([
       this._masking.on('mouseenter', maskingInteraction),
-      this._masking.on('focusin', maskingInteraction)
+      this._masking.on('focusin', maskingInteraction),
     ]);
   }
 
@@ -915,7 +921,7 @@ export default class Stack {
         this._overlay.style.width = `${this.context.scrollWidth}px`;
       }
       // Close the notices on overlay click.
-      this._overlay.addEventListener('click', clickEvent => {
+      this._overlay.addEventListener('click', (clickEvent) => {
         if (this.overlayClose) {
           this.fire('overlayClose', { clickEvent });
 
@@ -929,7 +935,7 @@ export default class Stack {
           }
 
           this.forEach(
-            notice => {
+            (notice) => {
               if (
                 ['closed', 'closing', 'waiting'].indexOf(notice.getState()) !==
                 -1
@@ -947,7 +953,7 @@ export default class Stack {
               }
             },
             {
-              skipModuleHandled: true
+              skipModuleHandled: true,
             }
           );
 

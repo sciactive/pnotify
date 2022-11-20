@@ -6,7 +6,8 @@ declare abstract class ModuleProperties implements ModuleOptions {}
 
 export type Options = Partial<ModuleProperties>;
 
-export default abstract class Glyphicon extends ModuleProperties
+export default abstract class Glyphicon
+  extends ModuleProperties
   implements Module {}
 export const position: string;
 export const defaults: ModuleProperties;

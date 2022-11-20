@@ -1,3 +1,21 @@
+<!--
+We're going to create a button that will be appended to the notice.
+It will be disabled by default, so we can enable it on mouseover.
+-->
+<button
+  class={`pnotify-action-button pnotify-reference-button ${self.getStyle(
+    'btn'
+  )} ${self.getStyle('btn-secondary')}`}
+  type="button"
+  disabled={!mouseIsIn}
+  on:click={doSomething}
+>
+  <i class={self.getIcon('refresh')} />
+  &nbsp;{labels.text}
+</button>
+<!-- Since our button is floated, we have to add a clearing div. -->
+<div class="pnotify-reference-clearing" />
+
 <script context="module">
   // This file is for referencing while you are making a PNotify module.
 
@@ -11,8 +29,8 @@
     // If you are displaying any text, you should use a labels options to
     // support internationalization.
     labels: {
-      text: 'Spin Around'
-    }
+      text: 'Spin Around',
+    },
   };
 </script>
 
@@ -50,22 +68,6 @@
     }, 20);
   }
 </script>
-
-<!--
-We're going to create a button that will be appended to the notice.
-It will be disabled by default, so we can enable it on mouseover.
--->
-<button
-  class={`pnotify-action-button pnotify-reference-button ${self.getStyle('btn')} ${self.getStyle('btn-secondary')}`}
-  type="button"
-  disabled={!mouseIsIn}
-  on:click={doSomething}
->
-  <i class={self.getIcon('refresh')} />
-  &nbsp;{labels.text}
-</button>
-<!-- Since our button is floated, we have to add a clearing div. -->
-<div class="pnotify-reference-clearing" />
 
 <style>
   .pnotify-reference-button {

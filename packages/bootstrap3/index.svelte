@@ -18,7 +18,7 @@
       btn: 'btn btn-default bootstrap3-mx-1',
       'btn-primary': 'btn-primary',
       'btn-secondary': '',
-      input: 'form-control'
+      input: 'form-control',
     };
   }
 </script>

@@ -4,7 +4,7 @@ import { babel } from '@rollup/plugin-babel';
 import postcss from 'rollup-plugin-postcss';
 import { minify } from 'rollup-plugin-esbuild-minify';
 import path from 'path';
-import pkg from './package.json' assert { type: "json" };
+import pkg from './package.json' assert { type: 'json' };
 const devMode = process.env.ENV === 'development';
 
 export default {
@@ -13,23 +13,23 @@ export default {
     file: pkg.main,
     format: 'umd',
     name: path.basename(pkg.main, '.js'),
-    exports: 'named'
+    exports: 'named',
   },
   plugins: [
     nodeResolve({
-      browser: true
+      browser: true,
     }),
     svelte({
-      emitCss: true
+      emitCss: true,
     }),
     babel({
       presets: ['@babel/preset-env'],
-      extensions: ['.js', '.mjs', '.svelte']
+      extensions: ['.js', '.mjs', '.svelte'],
     }),
     postcss({
       extract: true,
-      minimize: !devMode
+      minimize: !devMode,
     }),
-    ...(devMode ? [] : [minify()])
-  ]
+    ...(devMode ? [] : [minify()]),
+  ],
 };

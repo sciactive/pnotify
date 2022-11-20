@@ -18,7 +18,7 @@ export function forwardEventsBuilder(component, additionalEvents = []) {
     bubble(component, e);
   }
 
-  return node => {
+  return (node) => {
     const destructors = [];
 
     for (let i = 0; i < events.length; i++) {
@@ -30,7 +30,7 @@ export function forwardEventsBuilder(component, additionalEvents = []) {
         for (let i = 0; i < destructors.length; i++) {
           destructors[i]();
         }
-      }
+      },
     };
   };
 }

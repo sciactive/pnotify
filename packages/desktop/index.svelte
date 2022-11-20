@@ -6,7 +6,7 @@
     tag: null,
     title: null,
     text: null,
-    options: {}
+    options: {},
   };
 
   function requestPermission() {
@@ -193,7 +193,7 @@
 
     const desktopOptions = {
       body: text || self.text,
-      tag: _tag
+      tag: _tag,
     };
     if (!self.hide) {
       desktopOptions.requireInteraction = true;

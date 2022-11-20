@@ -19,7 +19,7 @@
       unstuck: 'fa-pause',
 
       // Reference Module (Useful for other modules.)
-      refresh: 'fa fa-refresh'
+      refresh: 'fa fa-refresh',
     };
   }
 </script>

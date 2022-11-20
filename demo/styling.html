@@ -121,7 +121,7 @@
         PNotify.defaultModules.set(PNotifyMobile, {});
       });
 
-      window.setStyling = function() {
+      window.setStyling = function () {
         var styling = document.getElementById('styling').value;
 
         switch (styling) {
@@ -147,7 +147,7 @@
         PNotify.defaultStack.close();
       };
 
-      window.setIcons = function() {
+      window.setIcons = function () {
         var icons = document.getElementById('icons').value;
 
         switch (icons) {
@@ -183,7 +183,7 @@
         PNotify.defaultStack.close();
       };
 
-      window.setMode = function() {
+      window.setMode = function () {
         var mode = document.getElementById('mode').value;
 
         PNotify.defaults.mode = mode;
@@ -196,7 +196,7 @@
         PNotify.defaultStack.close();
       };
 
-      window.setRtl = function() {
+      window.setRtl = function () {
         var rtl = document.getElementById('rtl').checked;
 
         if (rtl) {
@@ -244,7 +244,7 @@
   </head>
 
   <body>
-    <div style="padding: 0 30px; margin: 20px 0;">
+    <div style="padding: 0 30px; margin: 20px 0">
       <h1>Styling Demo</h1>
       <p>
         Use this page to check out various PNotify styling options. The Buttons,

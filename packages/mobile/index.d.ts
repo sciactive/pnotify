@@ -13,7 +13,8 @@ declare abstract class ModuleProperties implements ModuleOptions {
 
 export type Options = Partial<ModuleProperties>;
 
-export default abstract class Mobile extends ModuleProperties
+export default abstract class Mobile
+  extends ModuleProperties
   implements Module {}
 export const position: string;
 export const defaults: ModuleProperties;

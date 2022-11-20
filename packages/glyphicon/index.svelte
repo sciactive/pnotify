@@ -19,7 +19,7 @@
       unstuck: 'glyphicon-pause',
 
       // Reference Module (Useful for other modules.)
-      refresh: 'glyphicon glyphicon-refresh'
+      refresh: 'glyphicon glyphicon-refresh',
     };
   }
 </script>

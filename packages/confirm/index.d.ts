@@ -94,7 +94,8 @@ export interface Button {
 
 export type Options = Partial<ModuleProperties>;
 
-export default abstract class Confirm extends ModuleProperties
+export default abstract class Confirm
+  extends ModuleProperties
   implements Module {}
 export const position: string;
 export const defaults: ModuleProperties;

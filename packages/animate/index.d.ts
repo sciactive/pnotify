@@ -21,7 +21,8 @@ declare abstract class ModuleProperties implements ModuleOptions {
 
 export type Options = Partial<ModuleProperties>;
 
-export default abstract class Animate extends ModuleProperties
+export default abstract class Animate
+  extends ModuleProperties
   implements Module {}
 export const position: string;
 export const defaults: ModuleProperties;
