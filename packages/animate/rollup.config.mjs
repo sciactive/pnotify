@@ -1,10 +1,10 @@
-import nodeResolve from 'rollup-plugin-node-resolve';
+import nodeResolve from '@rollup/plugin-node-resolve';
 import svelte from 'rollup-plugin-svelte';
-import babel from 'rollup-plugin-babel';
+import { babel } from '@rollup/plugin-babel';
 import postcss from 'rollup-plugin-postcss';
-import { terser } from 'rollup-plugin-terser';
+import { minify } from 'rollup-plugin-esbuild-minify';
 import path from 'path';
-import pkg from './package.json';
+import pkg from './package.json' assert { type: "json" };
 const devMode = process.env.ENV === 'development';
 
 export default {
@@ -30,6 +30,6 @@ export default {
       extract: true,
       minimize: !devMode
     }),
-    ...(devMode ? [] : [terser()])
+    ...(devMode ? [] : [minify()])
   ]
 };

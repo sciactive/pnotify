@@ -27,10 +27,11 @@
     "url": "https://github.com/sciactive/pnotify.git"
   },
   "scripts": {
+    "clean": "test -d dist && rm -r dist || true",
     "build-dev": "ENV=development rollup -c",
     "build": "rollup -c",
     "watch": "ENV=development rollup -c -w",
-    "prepare": "rm -rf ./dist/ && npm run build",
+    "prepare": "npm run clean && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "main": "dist/PNotifyAnimate.js",
@@ -46,15 +47,15 @@
     "animate.css": "^3.7.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.3",
-    "@babel/preset-env": "^7.12.1",
-    "core-js": "^3.7.0",
-    "rollup": "^2.33.1",
-    "rollup-plugin-babel": "^4.4.0",
-    "rollup-plugin-node-resolve": "^5.2.0",
-    "rollup-plugin-postcss": "^3.1.8",
-    "rollup-plugin-svelte": "^5.2.3",
-    "rollup-plugin-terser": "^5.3.1",
-    "svelte": "^3.29.4"
+    "@babel/core": "^7.20.2",
+    "@babel/preset-env": "^7.20.2",
+    "@rollup/plugin-babel": "^6.0.2",
+    "@rollup/plugin-node-resolve": "^15.0.1",
+    "core-js": "^3.26.1",
+    "rollup": "^3.3.0",
+    "rollup-plugin-esbuild-minify": "^1.0.7",
+    "rollup-plugin-postcss": "^4.0.2",
+    "rollup-plugin-svelte": "^7.1.0",
+    "svelte": "^3.53.1"
   }
 }

@@ -37,37 +37,28 @@
     "build": "lerna run --parallel build",
     "watch": "lerna run --parallel watch",
     "deploy": "git checkout gh-pages && git merge develop && rm -rf ./packages/*/dist/ && npm run build-dev && git add . && git commit -m 'chore: update built files' && git push && git checkout develop",
-    "format": "prettier --write --config .prettierrc.json --plugin-search-dir=. index.html demo/* packages/**/*.svelte packages/**/*.js packages/**/*.ts packages/**/*.css",
-    "lint": "prettier --check --config .prettierrc.json --plugin-search-dir=. index.html demo/* packages/**/*.svelte packages/**/*.js packages/**/*.ts packages/**/*.css"
+    "format": "prettier --write --ignore-unknown .",
+    "lint": "prettier --check --ignore-unknown .",
+    "bootstrap": "lerna bootstrap",
+    "prepare": "husky install && npm run bootstrap && npm run lint"
   },
   "files": [],
   "repository": {
     "type": "git",
     "url": "https://github.com/sciactive/pnotify.git"
   },
-  "commitlint": {
-    "extends": [
-      "@commitlint/config-conventional"
-    ]
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint",
-      "commit-msg": "commitlint -e $HUSKY_GIT_PARAMS"
-    }
-  },
   "devDependencies": {
-    "@commitlint/cli": "^11.0.0",
-    "@commitlint/config-conventional": "^11.0.0",
-    "husky": "^4.2.5",
-    "lerna": "^3.20.2",
-    "prettier": "^1.19.1",
-    "prettier-plugin-svelte": "^0.7.0",
-    "svelte": "^3.29.4"
+    "@commitlint/cli": "^17.2.0",
+    "@commitlint/config-conventional": "^17.2.0",
+    "husky": "^8.0.2",
+    "lerna": "^6.0.3",
+    "lint-staged": "^13.0.3",
+    "prettier": "^2.7.1",
+    "prettier-plugin-svelte": "^2.8.1",
+    "svelte": "^3.53.1"
   },
   "dependencies": {
     "@pnotify/animate": "5.2.0",
-    "@pnotify/bootstrap3": "5.2.0",
     "@pnotify/bootstrap4": "5.2.0",
     "@pnotify/confirm": "5.2.0",
     "@pnotify/core": "5.2.0",

@@ -2,6 +2,5 @@
   "singleQuote": true,
   "printWidth": 80,
   "semi": true,
-  "svelteSortOrder" : "scripts-markup-styles",
-  "svelteBracketNewLine": true
+  "svelteSortOrder": "options-markup-scripts-styles"
 }
