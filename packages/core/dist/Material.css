@@ -1,0 +1,286 @@
+/*
+Color Scheme: https://www.google.com/design/spec/style/color.html#color-color-palette
+Requires stylesheet to work: https://fonts.googleapis.com/css?family=Material+Icons
+And optionally: https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap
+*/
+[data-pnotify].material-elem,
+[data-pnotify].material-elem.pnotify-mode-light {
+  /* https://material.io/design/color/the-color-system.html#tools-for-picking-colors */
+  --notice-background-color: #fff59d;
+  --notice-text-color: #000;
+  --info-background-color: #9dfff5;
+  --info-text-color: #000;
+  --success-background-color: #a7ff9d;
+  --success-text-color: #000;
+  --error-background-color: #ffc49d;
+  --error-text-color: #000;
+  --primary-button-text-color: #3f51b5;
+  --primary-button-text-focus-color: #303f9f;
+  --input-focus-underline-color: #3f51b5;
+
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  font-size: 14px;
+}
+@media (prefers-color-scheme: dark) {
+  [data-pnotify].material-elem.pnotify-mode-no-preference {
+    --notice-background-color: #ff8f00;
+    --notice-text-color: #fff;
+    --info-background-color: #006eff;
+    --info-text-color: #fff;
+    --success-background-color: #00c000;
+    --success-text-color: #fff;
+    --error-background-color: #ff1100;
+    --error-text-color: #fff;
+    --primary-button-text-color: #e1f5fe;
+    --primary-button-text-focus-color: #e0f7fa;
+    --input-focus-underline-color: #e1f5fe;
+  }
+}
+[data-pnotify].material-elem.pnotify-mode-dark {
+  --notice-background-color: #ff8f00;
+  --notice-text-color: #fff;
+  --info-background-color: #006eff;
+  --info-text-color: #fff;
+  --success-background-color: #00c000;
+  --success-text-color: #fff;
+  --error-background-color: #ff1100;
+  --error-text-color: #fff;
+  --primary-button-text-color: #e1f5fe;
+  --primary-button-text-focus-color: #e0f7fa;
+  --input-focus-underline-color: #e1f5fe;
+}
+
+[data-pnotify] .material-notice {
+  --material-background-color: var(--notice-background-color);
+  --material-text-color: var(--notice-text-color);
+}
+[data-pnotify] .material-info {
+  --material-background-color: var(--info-background-color);
+  --material-text-color: var(--info-text-color);
+}
+[data-pnotify] .material-success {
+  --material-background-color: var(--success-background-color);
+  --material-text-color: var(--success-text-color);
+}
+[data-pnotify] .material-error {
+  --material-background-color: var(--error-background-color);
+  --material-text-color: var(--error-text-color);
+}
+
+[data-pnotify].material-elem.pnotify-shadow {
+  -webkit-box-shadow: 0px 6px 24px 0px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0px 6px 24px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 6px 24px 0px rgba(0, 0, 0, 0.2);
+}
+[data-pnotify] .material-container {
+  padding: 24px;
+  background-color: var(--material-background-color);
+  border: none;
+  color: var(--material-text-color);
+}
+[data-pnotify] .material-title {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+  font-size: 20px;
+  letter-spacing: 0.15px;
+  margin-bottom: 20px;
+  line-height: 24px;
+}
+[data-pnotify] .material-title:last-child {
+  margin-bottom: 0;
+}
+[data-pnotify] .material-text {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  letter-spacing: 0.5px;
+  line-height: 24px;
+}
+[data-pnotify].pnotify-with-icon .material-content {
+  margin-left: 32px;
+}
+[dir='rtl'] [data-pnotify].pnotify-with-icon .material-content {
+  margin-right: 32px;
+  margin-left: 0;
+}
+[data-pnotify] .material-icon,
+[data-pnotify] .material-closer,
+[data-pnotify] .material-sticker,
+[data-pnotify] .material-icon > span:after,
+[data-pnotify] .material-icon-closer:after,
+[data-pnotify] .material-icon-sticker:after {
+  font-family: 'Material Icons';
+  height: 20px;
+  width: 20px;
+  font-size: 20px;
+  line-height: 24px;
+  position: relative;
+}
+[data-pnotify] .material-action-bar {
+  margin-top: 20px;
+  margin-right: -16px;
+  margin-bottom: -16px;
+}
+[dir='rtl'] [data-pnotify] .material-action-bar {
+  margin-left: -16px;
+  margin-right: 0;
+}
+
+[data-pnotify] .material-icon-notice:after {
+  content: 'priority_high';
+}
+[data-pnotify] .material-icon-info:after {
+  content: 'info';
+}
+[data-pnotify] .material-icon-success:after {
+  content: 'done';
+}
+[data-pnotify] .material-icon-error:after {
+  content: 'error';
+}
+[data-pnotify] .material-icon-closer:after {
+  content: 'close';
+}
+[data-pnotify] .material-icon-unstuck:after {
+  content: 'pause';
+}
+[data-pnotify] .material-icon-stuck:after {
+  content: 'play_arrow';
+}
+
+[data-pnotify] .material-input {
+  display: block;
+  width: 100%;
+  margin-bottom: 8px;
+
+  padding: 15px 0 8px;
+  background-color: transparent;
+  color: inherit;
+  border-radius: 0;
+
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom-style: solid;
+  border-bottom-color: inherit;
+  border-bottom-width: 1px;
+}
+[data-pnotify] .material-input:focus {
+  outline: none;
+  border-bottom-color: var(--input-focus-underline-color);
+  border-bottom-width: 2px;
+}
+
+/* CSS Material Buttons from https://codepen.io/sebj54/pen/oxluI */
+[data-pnotify] .material-btn {
+  position: relative;
+
+  padding: 0 16px;
+
+  overflow: hidden;
+
+  border-width: 0;
+  outline: none;
+  border-radius: 2px;
+
+  background-color: transparent;
+  color: inherit;
+
+  transition: background-color 0.3s;
+
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: 1.25px;
+  text-transform: uppercase;
+  height: 36px;
+  margin: 6px;
+  min-width: 64px;
+}
+[data-pnotify] .material-btn.material-btn-primary {
+  color: var(--primary-button-text-color);
+}
+[data-pnotify] .material-btn:hover,
+[data-pnotify] .material-btn:focus {
+  background-color: rgba(0, 0, 0, 0.12);
+  color: inherit;
+}
+[data-pnotify] .material-btn.material-btn-primary:hover,
+[data-pnotify] .material-btn.material-btn-primary:focus {
+  color: var(--primary-button-text-focus-color);
+}
+[data-pnotify] .material-btn:before {
+  content: '';
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  display: block;
+  width: 0;
+  padding-top: 0;
+
+  border-radius: 100%;
+
+  background-color: rgba(153, 153, 153, 0.4);
+
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+[data-pnotify] .material-btn:active:before {
+  width: 120%;
+  padding-top: 120%;
+
+  transition: width 0.2s ease-out, padding-top 0.2s ease-out;
+}
+
+[data-pnotify] .material-countdown {
+  background-color: var(--material-background-color);
+}
+[data-pnotify] .material-countdown-bar {
+  background-color: var(--material-text-color);
+}
+
+[data-pnotify] .material-paginate {
+  display: inline-flex;
+  flex-direction: column;
+}
+[data-pnotify] .material-paginate-buttons {
+  margin-right: 6px;
+}
+[data-pnotify] .material-paginate-btn {
+  margin: 0 0 0 6px;
+  border: 0;
+  padding: 0;
+}
+[data-pnotify] .material-paginate-btn,
+[data-pnotify] .material-paginate-btn:after {
+  display: inline-block;
+  font-family: 'Material Icons';
+  height: 20px;
+  width: 20px;
+  font-size: 20px;
+  line-height: 24px;
+  position: relative;
+}
+[data-pnotify] .material-paginate-btn:disabled:after,
+[data-pnotify] .material-paginate-btn[aria-disabled='true']:after {
+  opacity: 0.5;
+}
+[data-pnotify] .material-paginate-previous:after {
+  content: 'arrow_back';
+}
+[data-pnotify] .material-paginate-next:after {
+  content: 'arrow_forward';
+}
+[data-pnotify] .material-paginate-count {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  letter-spacing: 0.25px;
+}
