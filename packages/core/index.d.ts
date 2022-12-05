@@ -2,7 +2,7 @@ import Stack, { StackProperties, StackOptions } from './Stack.js';
 
 export as namespace PNotify;
 
-declare abstract class NoticeProperties {
+export declare abstract class NoticeProperties {
   /**
    * Type of the notice. 'notice', 'info', 'success', or 'error'.
    *
